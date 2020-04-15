@@ -1,5 +1,5 @@
 workspace:
-    base: /vue
+    base: /nuxt
     path: src/github.com/g70245/mirror-media-nuxt
 pipeline:
     start_slack:
