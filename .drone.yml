@@ -24,7 +24,7 @@ pipeline:
         - /tmp/cache:/cache
       when:
         event: [push]
-        branch: [dev, stage, master]
+        branch: [dev, master]
     
     get_dev_config:
       image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
@@ -35,17 +35,6 @@ pipeline:
       when:
         event: [push]
         branch: [dev]
-    
-    get_stage_config:
-      image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
-      secrets: [google_credentials]
-      commands:
-      - gcloud source repos clone default ../default
-      #- cp ../default/mirror-media-nuxt/stage/nuxt.config.js ./nuxt.config.js
-      #- cp ../default/mirror-media-nuxt/stage/.kube.yml ./.kube.yml
-      when:
-        event: [push]
-        branch: stage
   
     builds:
       image: node:12.16.2-slim
@@ -55,7 +44,7 @@ pipeline:
       - yarn run build
       when:
         event: [push]
-        branch: [dev, stage, master]
+        branch: [dev, master]
     
     publish:
       image: plugins/gcr
@@ -66,7 +55,7 @@ pipeline:
       secrets: [google_credentials]
       when:
         event: [push]
-        branch: [dev, stage]
+        branch: [dev, master]
     
     deploy_dev:
       image: nytimes/drone-gke
@@ -84,25 +73,6 @@ pipeline:
       when:
         event: [push]
         branch: [dev]
-  
-    deploy_stage:
-      image: nytimes/drone-gke
-      zone: asia-east1-a
-      cluster: prod-readr
-      # For debugging
-      dry_run: false
-      verbose: true
-      secrets:
-        - source: google_credentials
-          target: token
-      vars:
-        image: gcr.io/mirrormedia-1470651750304/${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}
-        app: ${DRONE_REPO_NAME}
-        tier: frontend-stage
-        branch: stage
-      when:
-        event: [push]
-        branch: stage
     
     upload:
       image: plugins/gcs
@@ -126,7 +96,7 @@ pipeline:
       volumes:
         - /tmp/cache:/cache
       when:
-        branch: [dev, stage, master]
+        branch: [dev, master]
     
     finish_slack:
       image: plugins/slack
