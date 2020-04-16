@@ -76,6 +76,15 @@
     >
       <img :src="links.instagram.imagePath" alt="instagram" />
     </a>
+    <a
+      class="footer-rss-feed"
+      :href="links.rssFeed.href"
+      target="_blank"
+      rel="noopener noreferrer"
+      @click="handleClickRssFeed"
+    >
+      <img :src="links.rssFeed.imagePath" alt="rss-feed" />
+    </a>
   </footer>
 </template>
 
@@ -166,6 +175,15 @@ export default {
             eventAction: 'click',
             eventLabel: 'footer instagram'
           }
+        },
+        rssFeed: {
+          imagePath: require('~/assets/feed@2x.png'),
+          href: 'https://www.mirrormedia.mg/rss/rss.xml',
+          ga: {
+            eventCategory: 'footer',
+            eventAction: 'click',
+            eventLabel: 'footer feed'
+          }
         }
       }
     }
@@ -197,6 +215,9 @@ export default {
     },
     handleClickInstagram() {
       this.$ga.event(this.links.instagram.ga)
+    },
+    handleClickRssFeed() {
+      this.$ga.event(this.links.rssFeed.ga)
     }
   }
 }

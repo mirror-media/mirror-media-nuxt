@@ -230,3 +230,28 @@ describe('icon link of instagram', () => {
     })
   })
 })
+
+describe('icon link of rss-feed', () => {
+  test('should render proper href', () => {
+    const wrapper = shallowMount(BaseFooter)
+    const link = wrapper.find('.footer-rss-feed')
+    expect(link.attributes().href).toBe(wrapper.vm.links.rssFeed.href)
+  })
+  test('should call $ga method with properties ', () => {
+    const $ga = {
+      event: jest.fn()
+    }
+    const wrapper = shallowMount(BaseFooter, {
+      mocks: {
+        $ga
+      }
+    })
+    const link = wrapper.find('.footer-rss-feed')
+    link.trigger('click')
+    expect($ga.event).toHaveBeenCalledWith({
+      eventCategory: wrapper.vm.links.rssFeed.ga.eventCategory,
+      eventAction: wrapper.vm.links.rssFeed.ga.eventAction,
+      eventLabel: wrapper.vm.links.rssFeed.ga.eventLabel
+    })
+  })
+})
