@@ -78,3 +78,29 @@ describe('text link of activity', () => {
     })
   })
 })
+
+describe('text link of download-app', () => {
+  test('should render proper href and textContent', () => {
+    const wrapper = shallowMount(BaseFooter)
+    const link = wrapper.find('.footer-download-app')
+    expect(link.text()).toBe(wrapper.vm.links.downloadApp.textContent)
+    expect(link.attributes().href).toBe(wrapper.vm.links.downloadApp.href)
+  })
+  test('should call $ga method with properties ', () => {
+    const $ga = {
+      event: jest.fn()
+    }
+    const wrapper = shallowMount(BaseFooter, {
+      mocks: {
+        $ga
+      }
+    })
+    const link = wrapper.find('.footer-download-app')
+    link.trigger('click')
+    expect($ga.event).toHaveBeenCalledWith({
+      eventCategory: wrapper.vm.links.downloadApp.ga.eventCategory,
+      eventAction: wrapper.vm.links.downloadApp.ga.eventAction,
+      eventLabel: wrapper.vm.links.downloadApp.ga.eventLabel
+    })
+  })
+})

@@ -24,6 +24,14 @@
       @click="handleClickActivity"
       v-text="links.activity.textContent"
     />
+    <a
+      class="footer-download-app"
+      :href="links.downloadApp.href"
+      target="_blank"
+      rel="noopener noreferrer"
+      @click="handleClickDownloadApp"
+      v-text="links.downloadApp.textContent"
+    />
   </footer>
 </template>
 
@@ -60,6 +68,15 @@ export default {
             eventAction: 'click',
             eventLabel: 'footer activity'
           }
+        },
+        downloadApp: {
+          textContent: '下載ＡＰＰ',
+          href: 'https://www.mirrormedia.mg/story/20161228corpmkt001/',
+          ga: {
+            eventCategory: 'footer',
+            eventAction: 'click',
+            eventLabel: 'footer download'
+          }
         }
       }
     }
@@ -73,6 +90,9 @@ export default {
     },
     handleClickActivity() {
       this.$ga.event(this.links.activity.ga)
+    },
+    handleClickDownloadApp() {
+      this.$ga.event(this.links.downloadApp.ga)
     }
   }
 }
