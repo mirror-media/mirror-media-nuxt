@@ -16,6 +16,14 @@
       @click="handleClickAd"
       v-text="links.ad.textContent"
     />
+    <a
+      class="footer-activity"
+      :href="links.activity.href"
+      target="_blank"
+      rel="noopener noreferrer"
+      @click="handleClickActivity"
+      v-text="links.activity.textContent"
+    />
   </footer>
 </template>
 
@@ -43,6 +51,15 @@ export default {
             eventAction: 'click',
             eventLabel: 'footer ad'
           }
+        },
+        activity: {
+          textContent: '活動專區',
+          href: 'https://www.mirrormedia.mg/category/campaign',
+          ga: {
+            eventCategory: 'footer',
+            eventAction: 'click',
+            eventLabel: 'footer activity'
+          }
         }
       }
     }
@@ -53,6 +70,9 @@ export default {
     },
     handleClickAd() {
       this.$ga.event(this.links.ad.ga)
+    },
+    handleClickActivity() {
+      this.$ga.event(this.links.activity.ga)
     }
   }
 }

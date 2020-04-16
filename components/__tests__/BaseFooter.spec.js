@@ -52,3 +52,29 @@ describe('text link of ad', () => {
     })
   })
 })
+
+describe('text link of activity', () => {
+  test('should render proper href and textContent', () => {
+    const wrapper = shallowMount(BaseFooter)
+    const link = wrapper.find('.footer-activity')
+    expect(link.text()).toBe(wrapper.vm.links.activity.textContent)
+    expect(link.attributes().href).toBe(wrapper.vm.links.activity.href)
+  })
+  test('should call $ga method with properties ', () => {
+    const $ga = {
+      event: jest.fn()
+    }
+    const wrapper = shallowMount(BaseFooter, {
+      mocks: {
+        $ga
+      }
+    })
+    const link = wrapper.find('.footer-activity')
+    link.trigger('click')
+    expect($ga.event).toHaveBeenCalledWith({
+      eventCategory: wrapper.vm.links.activity.ga.eventCategory,
+      eventAction: wrapper.vm.links.activity.ga.eventAction,
+      eventLabel: wrapper.vm.links.activity.ga.eventLabel
+    })
+  })
+})
