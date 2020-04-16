@@ -49,6 +49,15 @@
     >
       <img :src="links.line.imagePath" alt="line" />
     </a>
+    <a
+      class="footer-weibo"
+      :href="links.weibo.href"
+      target="_blank"
+      rel="noopener noreferrer"
+      @click="handleClickWeibo"
+    >
+      <img :src="links.weibo.imagePath" alt="weibo" />
+    </a>
   </footer>
 </template>
 
@@ -112,6 +121,15 @@ export default {
             eventAction: 'click',
             eventLabel: 'footer line'
           }
+        },
+        weibo: {
+          imagePath: require('~/assets/weibo@2x.png'),
+          href: 'http://www.weibo.com/u/6030041924?is_all=1',
+          ga: {
+            eventCategory: 'footer',
+            eventAction: 'click',
+            eventLabel: 'footer weibo'
+          }
         }
       }
     }
@@ -134,6 +152,9 @@ export default {
     },
     handleClickLine() {
       this.$ga.event(this.links.line.ga)
+    },
+    handleClickWeibo() {
+      this.$ga.event(this.links.weibo.ga)
     }
   }
 }

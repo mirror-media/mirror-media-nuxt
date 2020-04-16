@@ -155,3 +155,28 @@ describe('icon link of line', () => {
     })
   })
 })
+
+describe('icon link of weibo', () => {
+  test('should render proper href', () => {
+    const wrapper = shallowMount(BaseFooter)
+    const link = wrapper.find('.footer-weibo')
+    expect(link.attributes().href).toBe(wrapper.vm.links.weibo.href)
+  })
+  test('should call $ga method with properties ', () => {
+    const $ga = {
+      event: jest.fn()
+    }
+    const wrapper = shallowMount(BaseFooter, {
+      mocks: {
+        $ga
+      }
+    })
+    const link = wrapper.find('.footer-weibo')
+    link.trigger('click')
+    expect($ga.event).toHaveBeenCalledWith({
+      eventCategory: wrapper.vm.links.weibo.ga.eventCategory,
+      eventAction: wrapper.vm.links.weibo.ga.eventAction,
+      eventLabel: wrapper.vm.links.weibo.ga.eventLabel
+    })
+  })
+})
