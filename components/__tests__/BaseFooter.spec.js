@@ -104,3 +104,29 @@ describe('text link of download-app', () => {
     })
   })
 })
+
+describe('text link of auth', () => {
+  test('should render proper href and textContent', () => {
+    const wrapper = shallowMount(BaseFooter)
+    const link = wrapper.find('.footer-auth')
+    expect(link.text()).toBe(wrapper.vm.links.auth.textContent)
+    expect(link.attributes().href).toBe(wrapper.vm.links.auth.href)
+  })
+  test('should call $ga method with properties ', () => {
+    const $ga = {
+      event: jest.fn()
+    }
+    const wrapper = shallowMount(BaseFooter, {
+      mocks: {
+        $ga
+      }
+    })
+    const link = wrapper.find('.footer-auth')
+    link.trigger('click')
+    expect($ga.event).toHaveBeenCalledWith({
+      eventCategory: wrapper.vm.links.auth.ga.eventCategory,
+      eventAction: wrapper.vm.links.auth.ga.eventAction,
+      eventLabel: wrapper.vm.links.auth.ga.eventLabel
+    })
+  })
+})

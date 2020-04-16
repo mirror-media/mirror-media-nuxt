@@ -32,6 +32,14 @@
       @click="handleClickDownloadApp"
       v-text="links.downloadApp.textContent"
     />
+    <a
+      class="footer-auth"
+      :href="links.auth.href"
+      target="_blank"
+      rel="noopener noreferrer"
+      @click="handleClickAuth"
+      v-text="links.auth.textContent"
+    />
   </footer>
 </template>
 
@@ -77,6 +85,15 @@ export default {
             eventAction: 'click',
             eventLabel: 'footer download'
           }
+        },
+        auth: {
+          textContent: '內容授權',
+          href: 'https://www.mirrormedia.mg/story/webauthorize/',
+          ga: {
+            eventCategory: 'footer',
+            eventAction: 'click',
+            eventLabel: 'footer auth'
+          }
         }
       }
     }
@@ -93,6 +110,9 @@ export default {
     },
     handleClickDownloadApp() {
       this.$ga.event(this.links.downloadApp.ga)
+    },
+    handleClickAuth() {
+      this.$ga.event(this.links.auth.ga)
     }
   }
 }
