@@ -9,7 +9,7 @@ spec:
   ports:
   - port: 80
     protocol: TCP
-    targetPort: 80
+    targetPort: 3000
   type: LoadBalancer
 ---
 apiVersion: extensions/v1beta1
@@ -32,7 +32,7 @@ spec:
         # imagePullPolicy: IfNotPresent
         name: {{.app}}
         ports:
-        - containerPort: 80
+        - containerPort: 3000
           protocol: TCP
       terminationGracePeriodSeconds: 30
   minReadySeconds: 20
