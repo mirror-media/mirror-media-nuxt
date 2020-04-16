@@ -8,6 +8,14 @@
       @click="handleClickSubscribe"
       v-text="links.subscribe.textContent"
     />
+    <a
+      class="footer-ad"
+      :href="links.ad.href"
+      target="_blank"
+      rel="noopener noreferrer"
+      @click="handleClickAd"
+      v-text="links.ad.textContent"
+    />
   </footer>
 </template>
 
@@ -25,6 +33,16 @@ export default {
             eventAction: 'click',
             eventLabel: 'footer subscribe'
           }
+        },
+        ad: {
+          textContent: '廣告合作',
+          href:
+            'https://www.mirrormedia.mg/story/ad1018001/index.html?utm_source=mm&utm_medium=footer&utm_campaign=salesteam',
+          ga: {
+            eventCategory: 'footer',
+            eventAction: 'click',
+            eventLabel: 'footer ad'
+          }
         }
       }
     }
@@ -32,6 +50,9 @@ export default {
   methods: {
     handleClickSubscribe() {
       this.$ga.event(this.links.subscribe.ga)
+    },
+    handleClickAd() {
+      this.$ga.event(this.links.ad.ga)
     }
   }
 }
