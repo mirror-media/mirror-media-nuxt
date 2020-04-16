@@ -67,6 +67,15 @@
     >
       <img :src="links.facebook.imagePath" alt="facebook" />
     </a>
+    <a
+      class="footer-instagram"
+      :href="links.instagram.href"
+      target="_blank"
+      rel="noopener noreferrer"
+      @click="handleClickInstagram"
+    >
+      <img :src="links.instagram.imagePath" alt="instagram" />
+    </a>
   </footer>
 </template>
 
@@ -148,6 +157,15 @@ export default {
             eventAction: 'click',
             eventLabel: 'footer facebook'
           }
+        },
+        instagram: {
+          imagePath: require('~/assets/instagram@2x.png'),
+          href: 'https://www.instagram.com/mirror_media/',
+          ga: {
+            eventCategory: 'footer',
+            eventAction: 'click',
+            eventLabel: 'footer instagram'
+          }
         }
       }
     }
@@ -176,6 +194,9 @@ export default {
     },
     handleClickFacebook() {
       this.$ga.event(this.links.facebook.ga)
+    },
+    handleClickInstagram() {
+      this.$ga.event(this.links.instagram.ga)
     }
   }
 }

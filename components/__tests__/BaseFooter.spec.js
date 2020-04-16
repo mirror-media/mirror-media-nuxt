@@ -205,3 +205,28 @@ describe('icon link of facebook', () => {
     })
   })
 })
+
+describe('icon link of instagram', () => {
+  test('should render proper href', () => {
+    const wrapper = shallowMount(BaseFooter)
+    const link = wrapper.find('.footer-instagram')
+    expect(link.attributes().href).toBe(wrapper.vm.links.instagram.href)
+  })
+  test('should call $ga method with properties ', () => {
+    const $ga = {
+      event: jest.fn()
+    }
+    const wrapper = shallowMount(BaseFooter, {
+      mocks: {
+        $ga
+      }
+    })
+    const link = wrapper.find('.footer-instagram')
+    link.trigger('click')
+    expect($ga.event).toHaveBeenCalledWith({
+      eventCategory: wrapper.vm.links.instagram.ga.eventCategory,
+      eventAction: wrapper.vm.links.instagram.ga.eventAction,
+      eventLabel: wrapper.vm.links.instagram.ga.eventLabel
+    })
+  })
+})
