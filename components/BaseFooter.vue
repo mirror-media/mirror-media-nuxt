@@ -58,6 +58,15 @@
     >
       <img :src="links.weibo.imagePath" alt="weibo" />
     </a>
+    <a
+      class="footer-facebook"
+      :href="links.facebook.href"
+      target="_blank"
+      rel="noopener noreferrer"
+      @click="handleClickFacebook"
+    >
+      <img :src="links.facebook.imagePath" alt="facebook" />
+    </a>
   </footer>
 </template>
 
@@ -130,6 +139,15 @@ export default {
             eventAction: 'click',
             eventLabel: 'footer weibo'
           }
+        },
+        facebook: {
+          imagePath: require('~/assets/facebook@2x.png'),
+          href: 'https://www.facebook.com/mirrormediamg/',
+          ga: {
+            eventCategory: 'footer',
+            eventAction: 'click',
+            eventLabel: 'footer facebook'
+          }
         }
       }
     }
@@ -155,6 +173,9 @@ export default {
     },
     handleClickWeibo() {
       this.$ga.event(this.links.weibo.ga)
+    },
+    handleClickFacebook() {
+      this.$ga.event(this.links.facebook.ga)
     }
   }
 }

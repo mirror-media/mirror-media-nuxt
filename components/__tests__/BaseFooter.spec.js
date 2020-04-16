@@ -180,3 +180,28 @@ describe('icon link of weibo', () => {
     })
   })
 })
+
+describe('icon link of facebook', () => {
+  test('should render proper href', () => {
+    const wrapper = shallowMount(BaseFooter)
+    const link = wrapper.find('.footer-facebook')
+    expect(link.attributes().href).toBe(wrapper.vm.links.facebook.href)
+  })
+  test('should call $ga method with properties ', () => {
+    const $ga = {
+      event: jest.fn()
+    }
+    const wrapper = shallowMount(BaseFooter, {
+      mocks: {
+        $ga
+      }
+    })
+    const link = wrapper.find('.footer-facebook')
+    link.trigger('click')
+    expect($ga.event).toHaveBeenCalledWith({
+      eventCategory: wrapper.vm.links.facebook.ga.eventCategory,
+      eventAction: wrapper.vm.links.facebook.ga.eventAction,
+      eventLabel: wrapper.vm.links.facebook.ga.eventLabel
+    })
+  })
+})
