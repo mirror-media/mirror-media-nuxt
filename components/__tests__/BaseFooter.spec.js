@@ -255,3 +255,28 @@ describe('icon link of rss-feed', () => {
     })
   })
 })
+
+describe('icon link of email', () => {
+  test('should render proper href', () => {
+    const wrapper = shallowMount(BaseFooter)
+    const link = wrapper.find('.footer-email')
+    expect(link.attributes().href).toBe(wrapper.vm.links.email.href)
+  })
+  test('should call $ga method with properties ', () => {
+    const $ga = {
+      event: jest.fn()
+    }
+    const wrapper = shallowMount(BaseFooter, {
+      mocks: {
+        $ga
+      }
+    })
+    const link = wrapper.find('.footer-email')
+    link.trigger('click')
+    expect($ga.event).toHaveBeenCalledWith({
+      eventCategory: wrapper.vm.links.email.ga.eventCategory,
+      eventAction: wrapper.vm.links.email.ga.eventAction,
+      eventLabel: wrapper.vm.links.email.ga.eventLabel
+    })
+  })
+})

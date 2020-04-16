@@ -85,6 +85,15 @@
     >
       <img :src="links.rssFeed.imagePath" alt="rss-feed" />
     </a>
+    <a
+      class="footer-email"
+      :href="links.email.href"
+      target="_blank"
+      rel="noopener noreferrer"
+      @click="handleClickEmail"
+    >
+      <img :src="links.email.imagePath" alt="email" />
+    </a>
   </footer>
 </template>
 
@@ -184,6 +193,15 @@ export default {
             eventAction: 'click',
             eventLabel: 'footer feed'
           }
+        },
+        email: {
+          imagePath: require('~/assets/mail@2x.png'),
+          href: 'mailto:mirror885@mirrormedia.mg',
+          ga: {
+            eventCategory: 'footer',
+            eventAction: 'click',
+            eventLabel: 'footer email'
+          }
         }
       }
     }
@@ -218,6 +236,9 @@ export default {
     },
     handleClickRssFeed() {
       this.$ga.event(this.links.rssFeed.ga)
+    },
+    handleClickEmail() {
+      this.$ga.event(this.links.email.ga)
     }
   }
 }
