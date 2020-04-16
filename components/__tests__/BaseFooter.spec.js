@@ -130,3 +130,28 @@ describe('text link of auth', () => {
     })
   })
 })
+
+describe('icon link of line', () => {
+  test('should render proper href', () => {
+    const wrapper = shallowMount(BaseFooter)
+    const link = wrapper.find('.footer-line')
+    expect(link.attributes().href).toBe(wrapper.vm.links.line.href)
+  })
+  test('should call $ga method with properties ', () => {
+    const $ga = {
+      event: jest.fn()
+    }
+    const wrapper = shallowMount(BaseFooter, {
+      mocks: {
+        $ga
+      }
+    })
+    const link = wrapper.find('.footer-line')
+    link.trigger('click')
+    expect($ga.event).toHaveBeenCalledWith({
+      eventCategory: wrapper.vm.links.line.ga.eventCategory,
+      eventAction: wrapper.vm.links.line.ga.eventAction,
+      eventLabel: wrapper.vm.links.line.ga.eventLabel
+    })
+  })
+})

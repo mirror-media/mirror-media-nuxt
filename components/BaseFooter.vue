@@ -40,6 +40,15 @@
       @click="handleClickAuth"
       v-text="links.auth.textContent"
     />
+    <a
+      class="footer-line"
+      :href="links.line.href"
+      target="_blank"
+      rel="noopener noreferrer"
+      @click="handleClickLine"
+    >
+      <img :src="links.line.imagePath" alt="line" />
+    </a>
   </footer>
 </template>
 
@@ -94,6 +103,15 @@ export default {
             eventAction: 'click',
             eventLabel: 'footer auth'
           }
+        },
+        line: {
+          imagePath: require('~/assets/line@2x.png'),
+          href: 'https://line.me/R/ti/p/%40cuk1273e',
+          ga: {
+            eventCategory: 'footer',
+            eventAction: 'click',
+            eventLabel: 'footer line'
+          }
         }
       }
     }
@@ -113,6 +131,9 @@ export default {
     },
     handleClickAuth() {
       this.$ga.event(this.links.auth.ga)
+    },
+    handleClickLine() {
+      this.$ga.event(this.links.line.ga)
     }
   }
 }
