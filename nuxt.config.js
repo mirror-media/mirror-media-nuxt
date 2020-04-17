@@ -27,7 +27,10 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [
+    '~/plugins/vuePluginsGlobal.js',
+    '~/plugins/vueDirectivesGlobal.js',
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -41,12 +44,23 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/google-analytics',
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
+  /*
+   ** googleAnalytics module configuration
+   ** https://github.com/nuxt-community/analytics-module
+   */
+  googleAnalytics: {
+    id: 'UA-83609754-1',
+    debug: {
+      sendHitTask: process.env.NODE_ENV === 'production',
+    },
+  },
   /*
    ** Build configuration
    */
