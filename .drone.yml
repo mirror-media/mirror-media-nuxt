@@ -1,0 +1,117 @@
+workspace:
+    base: /nuxt
+    path: src/github.com/g70245/mirror-media-nuxt
+pipeline:
+    start_slack:
+      image: plugins/slack
+      channel: jenkins
+      secrets: [slack_webhook]
+      username: drone
+      icon_url: https://avatars2.githubusercontent.com/u/2181346?s=200&v=4
+      template: >
+        *start* building *{{repo.name}}* <${DRONE_BUILD_LINK}|#{{build.number}}>.
+        Someone gave *{{build.branch}}* a little push.
+      when:
+        event: [push]
+    
+    restore-cache:
+      image: drillster/drone-volume-cache
+      restore: true
+      mount:
+        - ./.yarn-cache
+        - ./node_modules
+      volumes:
+        - /tmp/cache:/cache
+      when:
+        event: [push]
+        branch: [dev, master]
+    
+    get_dev_config:
+      image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
+      secrets: [google_credentials]
+      commands:
+      - gcloud source repos clone default ../default
+      #- cp ../default/mirror-media-nuxt/dev/nuxt.config.js ./nuxt.config.js
+      when:
+        event: [push]
+        branch: [dev]
+  
+    builds:
+      image: node:12.16.2-slim
+      commands:
+      - apt-get update && apt-get install -y node-gyp
+      - yarn install
+      - yarn run build
+      when:
+        event: [push]
+        branch: [dev, master]
+    
+    publish:
+      image: plugins/gcr
+      repo: mirrormedia-1470651750304/${DRONE_REPO_NAME}
+      tag: ${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}
+      environment:
+        - DOCKER_LAUNCH_DEBUG=true
+      secrets: [google_credentials]
+      when:
+        event: [push]
+        branch: [dev, master]
+    
+    deploy_dev:
+      image: nytimes/drone-gke
+      zone: asia-east1-a
+      cluster: dev
+      namespace: default
+      verbose: true
+      secrets:
+        - source: google_credentials
+          target: token
+      vars:
+        image: gcr.io/mirrormedia-1470651750304/${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}
+        app: ${DRONE_REPO_NAME}
+        tier: frontend
+      when:
+        event: [push]
+        branch: [dev]
+    
+    upload:
+      image: plugins/gcs
+      source: distribution
+      target: readr-files/distribution/
+      acl: allUsers:READER
+      # cache_control: public, max-age=3600
+      secrets:
+        - source: google_credentials
+          target: token
+      when:
+        event: push
+        branch: master
+  
+    rebuild-cache:
+      image: drillster/drone-volume-cache
+      rebuild: true
+      mount:
+        - ./.yarn-cache
+        - ./node_modules
+      volumes:
+        - /tmp/cache:/cache
+      when:
+        branch: [dev, master]
+    
+    finish_slack:
+      image: plugins/slack
+      channel: jenkins
+      secrets: [slack_webhook]
+      username: drone
+      icon_url: https://avatars2.githubusercontent.com/u/2181346?s=200&v=4
+      when:
+        status: [success, failure]
+        event: [push]
+      template: >
+        {{#success build.status}}
+          *success* ${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER} was well served.
+          Check out our new <https://nuxt.mirrormedia.mg|mirror-media-nuxt>.
+        {{else}}
+          Houston, we have a problem. Build <${DRONE_BUILD_LINK}|#{{build.number}}> failed.
+        {{/success}}
+  
