@@ -109,8 +109,8 @@ export default {
           ga: {
             eventCategory: 'footer',
             eventAction: 'click',
-            eventLabel: 'footer subscribe'
-          }
+            eventLabel: 'footer subscribe',
+          },
         },
         ad: {
           textContent: '廣告合作',
@@ -119,8 +119,8 @@ export default {
           ga: {
             eventCategory: 'footer',
             eventAction: 'click',
-            eventLabel: 'footer ad'
-          }
+            eventLabel: 'footer ad',
+          },
         },
         activity: {
           textContent: '活動專區',
@@ -128,8 +128,8 @@ export default {
           ga: {
             eventCategory: 'footer',
             eventAction: 'click',
-            eventLabel: 'footer activity'
-          }
+            eventLabel: 'footer activity',
+          },
         },
         downloadApp: {
           textContent: '下載ＡＰＰ',
@@ -137,8 +137,8 @@ export default {
           ga: {
             eventCategory: 'footer',
             eventAction: 'click',
-            eventLabel: 'footer download'
-          }
+            eventLabel: 'footer download',
+          },
         },
         auth: {
           textContent: '內容授權',
@@ -146,8 +146,8 @@ export default {
           ga: {
             eventCategory: 'footer',
             eventAction: 'click',
-            eventLabel: 'footer auth'
-          }
+            eventLabel: 'footer auth',
+          },
         },
         line: {
           imagePath: require('~/assets/line@2x.png'),
@@ -155,8 +155,8 @@ export default {
           ga: {
             eventCategory: 'footer',
             eventAction: 'click',
-            eventLabel: 'footer line'
-          }
+            eventLabel: 'footer line',
+          },
         },
         weibo: {
           imagePath: require('~/assets/weibo@2x.png'),
@@ -164,8 +164,8 @@ export default {
           ga: {
             eventCategory: 'footer',
             eventAction: 'click',
-            eventLabel: 'footer weibo'
-          }
+            eventLabel: 'footer weibo',
+          },
         },
         facebook: {
           imagePath: require('~/assets/facebook@2x.png'),
@@ -173,8 +173,8 @@ export default {
           ga: {
             eventCategory: 'footer',
             eventAction: 'click',
-            eventLabel: 'footer facebook'
-          }
+            eventLabel: 'footer facebook',
+          },
         },
         instagram: {
           imagePath: require('~/assets/instagram@2x.png'),
@@ -182,8 +182,8 @@ export default {
           ga: {
             eventCategory: 'footer',
             eventAction: 'click',
-            eventLabel: 'footer instagram'
-          }
+            eventLabel: 'footer instagram',
+          },
         },
         rssFeed: {
           imagePath: require('~/assets/feed@2x.png'),
@@ -191,8 +191,8 @@ export default {
           ga: {
             eventCategory: 'footer',
             eventAction: 'click',
-            eventLabel: 'footer feed'
-          }
+            eventLabel: 'footer feed',
+          },
         },
         email: {
           imagePath: require('~/assets/mail@2x.png'),
@@ -200,10 +200,10 @@ export default {
           ga: {
             eventCategory: 'footer',
             eventAction: 'click',
-            eventLabel: 'footer email'
-          }
-        }
-      }
+            eventLabel: 'footer email',
+          },
+        },
+      },
     }
   },
   methods: {
@@ -239,8 +239,8 @@ export default {
     },
     handleClickEmail() {
       this.$ga.event(this.links.email.ga)
-    }
-  }
+    },
+  },
 }
 </script>
 
