@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
-    "cross-env": "^7.0.2",
     "@nuxtjs/google-analytics": "^2.2.3",
+    "cross-env": "^7.0.2",
     "express": "^4.16.4",
     "nuxt": "^2.0.0"
   },
@@ -41,8 +41,10 @@
     "jest": "^25.3.0",
     "jest-transform-stub": "^2.0.0",
     "lint-staged": "^10.0.0",
+    "node-sass": "^4.13.1",
     "nodemon": "^2.0.3",
     "prettier": "^2.0.4",
+    "sass-loader": "^8.0.2",
     "vue-jest": "^4.0.0-0"
   }
 }
