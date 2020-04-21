@@ -14,9 +14,10 @@ ENV NUXT_HOST 0.0.0.0
 ENV NUXT_PORT 3000
 
 COPY . $APP_DIR
+RUN yarn global add pm2
 RUN yarn build
 
 RUN yarn cache clean
 
 EXPOSE 3000
-CMD [ "yarn", "start" ]
+CMD [ "pm2-runtime", "start", "-i", "max", "--name", "mm-nuxt", "yarn", "--", "run", "start" ]
