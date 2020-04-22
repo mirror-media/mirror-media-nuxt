@@ -1,6 +1,16 @@
 <template>
   <div>
     <nuxt />
-    <BaseFooter />
+    <UIFooter />
   </div>
 </template>
+
+<script>
+import UIFooter from '~/components/UIFooter'
+
+export default {
+  components: {
+    UIFooter,
+  },
+}
+</script>
