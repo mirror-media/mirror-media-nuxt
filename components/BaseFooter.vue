@@ -1,99 +1,103 @@
 <template>
-  <footer>
-    <a
-      class="footer-subscribe"
-      :href="links.subscribe.href"
-      target="_blank"
-      rel="noopener noreferrer"
-      @click="handleClickSubscribe"
-      v-text="links.subscribe.textContent"
-    />
-    <a
-      class="footer-ad"
-      :href="links.ad.href"
-      target="_blank"
-      rel="noopener noreferrer"
-      @click="handleClickAd"
-      v-text="links.ad.textContent"
-    />
-    <a
-      class="footer-activity"
-      :href="links.activity.href"
-      target="_blank"
-      rel="noopener noreferrer"
-      @click="handleClickActivity"
-      v-text="links.activity.textContent"
-    />
-    <a
-      class="footer-download-app"
-      :href="links.downloadApp.href"
-      target="_blank"
-      rel="noopener noreferrer"
-      @click="handleClickDownloadApp"
-      v-text="links.downloadApp.textContent"
-    />
-    <a
-      class="footer-auth"
-      :href="links.auth.href"
-      target="_blank"
-      rel="noopener noreferrer"
-      @click="handleClickAuth"
-      v-text="links.auth.textContent"
-    />
-    <a
-      class="footer-line"
-      :href="links.line.href"
-      target="_blank"
-      rel="noopener noreferrer"
-      @click="handleClickLine"
-    >
-      <img :src="links.line.imagePath" alt="line" />
-    </a>
-    <a
-      class="footer-weibo"
-      :href="links.weibo.href"
-      target="_blank"
-      rel="noopener noreferrer"
-      @click="handleClickWeibo"
-    >
-      <img :src="links.weibo.imagePath" alt="weibo" />
-    </a>
-    <a
-      class="footer-facebook"
-      :href="links.facebook.href"
-      target="_blank"
-      rel="noopener noreferrer"
-      @click="handleClickFacebook"
-    >
-      <img :src="links.facebook.imagePath" alt="facebook" />
-    </a>
-    <a
-      class="footer-instagram"
-      :href="links.instagram.href"
-      target="_blank"
-      rel="noopener noreferrer"
-      @click="handleClickInstagram"
-    >
-      <img :src="links.instagram.imagePath" alt="instagram" />
-    </a>
-    <a
-      class="footer-rss-feed"
-      :href="links.rssFeed.href"
-      target="_blank"
-      rel="noopener noreferrer"
-      @click="handleClickRssFeed"
-    >
-      <img :src="links.rssFeed.imagePath" alt="rss-feed" />
-    </a>
-    <a
-      class="footer-email"
-      :href="links.email.href"
-      target="_blank"
-      rel="noopener noreferrer"
-      @click="handleClickEmail"
-    >
-      <img :src="links.email.imagePath" alt="email" />
-    </a>
+  <footer class="footer">
+    <nav class="footer-text-links">
+      <a
+        class="footer-subscribe"
+        :href="links.subscribe.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click="handleClickSubscribe"
+        v-text="links.subscribe.textContent"
+      />
+      <a
+        class="footer-ad"
+        :href="links.ad.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click="handleClickAd"
+        v-text="links.ad.textContent"
+      />
+      <a
+        class="footer-activity"
+        :href="links.activity.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click="handleClickActivity"
+        v-text="links.activity.textContent"
+      />
+      <a
+        class="footer-download-app"
+        :href="links.downloadApp.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click="handleClickDownloadApp"
+        v-text="links.downloadApp.textContent"
+      />
+      <a
+        class="footer-auth"
+        :href="links.auth.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click="handleClickAuth"
+        v-text="links.auth.textContent"
+      />
+    </nav>
+    <nav class="footer-icon-links">
+      <a
+        class="footer-line"
+        :href="links.line.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click="handleClickLine"
+      >
+        <img :src="links.line.imagePath" alt="line" />
+      </a>
+      <a
+        class="footer-weibo"
+        :href="links.weibo.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click="handleClickWeibo"
+      >
+        <img :src="links.weibo.imagePath" alt="weibo" />
+      </a>
+      <a
+        class="footer-facebook"
+        :href="links.facebook.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click="handleClickFacebook"
+      >
+        <img :src="links.facebook.imagePath" alt="facebook" />
+      </a>
+      <a
+        class="footer-instagram"
+        :href="links.instagram.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click="handleClickInstagram"
+      >
+        <img :src="links.instagram.imagePath" alt="instagram" />
+      </a>
+      <a
+        class="footer-rss-feed"
+        :href="links.rssFeed.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click="handleClickRssFeed"
+      >
+        <img :src="links.rssFeed.imagePath" alt="rss-feed" />
+      </a>
+      <a
+        class="footer-email"
+        :href="links.email.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        @click="handleClickEmail"
+      >
+        <img :src="links.email.imagePath" alt="email" />
+      </a>
+    </nav>
   </footer>
 </template>
 
@@ -244,4 +248,50 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="sass" scoped>
+.footer
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2)
+  padding: 10px 20px
+  @media (min-width: 1200px)
+    box-shadow: none
+    padding: 15px 15px 50px 15px
+    border-top: 2px solid #000
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+.footer-text-links
+  color: rgba(0, 0, 0, .4)
+  text-align: center
+  font-size: 19.2px
+  a:not(:first-child)
+    &::before
+      content: '-'
+      padding: 0 4px 0 0
+  .footer-download-app, .footer-auth
+    display: none
+  @media (min-width: 1200px)
+    color: #34495e
+    text-align: left
+    font-size: 16px
+    font-weight: 700
+    a:not(:first-child)
+      &::before
+        display: none
+    .footer-download-app, .footer-auth
+      display: initial
+    a + a
+      margin: 0 0 0 26px
+
+.footer-icon-links
+  display: none
+  @media (min-width: 1200px)
+    display: flex
+    a
+      display: inline-block
+      height: 20px
+      img
+        height: 100%
+    a + a
+      margin: 0 0 0 26px
+</style>
