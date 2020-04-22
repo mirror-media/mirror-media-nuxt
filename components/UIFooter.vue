@@ -6,7 +6,7 @@
         :href="links.subscribe.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleClickSubscribe"
+        @click="handleSendGA(links.subscribe.ga)"
         v-text="links.subscribe.textContent"
       />
       <a
@@ -14,7 +14,7 @@
         :href="links.ad.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleClickAd"
+        @click="handleSendGA(links.ad.ga)"
         v-text="links.ad.textContent"
       />
       <a
@@ -22,7 +22,7 @@
         :href="links.activity.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleClickActivity"
+        @click="handleSendGA(links.activity.ga)"
         v-text="links.activity.textContent"
       />
       <a
@@ -30,7 +30,7 @@
         :href="links.downloadApp.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleClickDownloadApp"
+        @click="handleSendGA(links.downloadApp.ga)"
         v-text="links.downloadApp.textContent"
       />
       <a
@@ -38,7 +38,7 @@
         :href="links.auth.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleClickAuth"
+        @click="handleSendGA(links.auth.ga)"
         v-text="links.auth.textContent"
       />
     </nav>
@@ -48,7 +48,7 @@
         :href="links.line.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleClickLine"
+        @click="handleSendGA(links.line.ga)"
       >
         <img :src="links.line.imagePath" alt="line" />
       </a>
@@ -57,7 +57,7 @@
         :href="links.weibo.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleClickWeibo"
+        @click="handleSendGA(links.weibo.ga)"
       >
         <img :src="links.weibo.imagePath" alt="weibo" />
       </a>
@@ -66,7 +66,7 @@
         :href="links.facebook.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleClickFacebook"
+        @click="handleSendGA(links.facebook.ga)"
       >
         <img :src="links.facebook.imagePath" alt="facebook" />
       </a>
@@ -75,7 +75,7 @@
         :href="links.instagram.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleClickInstagram"
+        @click="handleSendGA(links.instagram.ga)"
       >
         <img :src="links.instagram.imagePath" alt="instagram" />
       </a>
@@ -84,7 +84,7 @@
         :href="links.rssFeed.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleClickRssFeed"
+        @click="handleSendGA(links.rssFeed.ga)"
       >
         <img :src="links.rssFeed.imagePath" alt="rss-feed" />
       </a>
@@ -93,7 +93,7 @@
         :href="links.email.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleClickEmail"
+        @click="handleSendGA(links.email.ga)"
       >
         <img :src="links.email.imagePath" alt="email" />
       </a>
@@ -208,41 +208,21 @@ export default {
           },
         },
       },
+      gaError: 'please provide valid param in handleSendGA',
     }
   },
   methods: {
-    handleClickSubscribe() {
-      this.$ga.event(this.links.subscribe.ga)
-    },
-    handleClickAd() {
-      this.$ga.event(this.links.ad.ga)
-    },
-    handleClickActivity() {
-      this.$ga.event(this.links.activity.ga)
-    },
-    handleClickDownloadApp() {
-      this.$ga.event(this.links.downloadApp.ga)
-    },
-    handleClickAuth() {
-      this.$ga.event(this.links.auth.ga)
-    },
-    handleClickLine() {
-      this.$ga.event(this.links.line.ga)
-    },
-    handleClickWeibo() {
-      this.$ga.event(this.links.weibo.ga)
-    },
-    handleClickFacebook() {
-      this.$ga.event(this.links.facebook.ga)
-    },
-    handleClickInstagram() {
-      this.$ga.event(this.links.instagram.ga)
-    },
-    handleClickRssFeed() {
-      this.$ga.event(this.links.rssFeed.ga)
-    },
-    handleClickEmail() {
-      this.$ga.event(this.links.email.ga)
+    handleSendGA(param = {}) {
+      const paramValid =
+        Object.keys(param).length !== 0 &&
+        'eventCategory' in param &&
+        'eventAction' in param &&
+        'eventLabel' in param
+      if (!paramValid) {
+        throw new Error(this.gaError)
+      }
+
+      this.$ga.event(param)
     },
   },
 }
