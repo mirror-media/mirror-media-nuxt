@@ -1,9 +1,9 @@
 import { shallowMount } from '@vue/test-utils'
-import BaseFooter from '../BaseFooter.vue'
+import UIFooter from '../UIFooter.vue'
 
 describe('text link of subscribe', () => {
   test('should render proper href and textContent', () => {
-    const wrapper = shallowMount(BaseFooter)
+    const wrapper = shallowMount(UIFooter)
     const link = wrapper.find('.footer-subscribe')
     expect(link.text()).toBe(wrapper.vm.links.subscribe.textContent)
     expect(link.attributes().href).toBe(wrapper.vm.links.subscribe.href)
@@ -12,7 +12,7 @@ describe('text link of subscribe', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(BaseFooter, {
+    const wrapper = shallowMount(UIFooter, {
       mocks: {
         $ga,
       },
@@ -29,7 +29,7 @@ describe('text link of subscribe', () => {
 
 describe('text link of ad', () => {
   test('should render proper href and textContent', () => {
-    const wrapper = shallowMount(BaseFooter)
+    const wrapper = shallowMount(UIFooter)
     const link = wrapper.find('.footer-ad')
     expect(link.text()).toBe(wrapper.vm.links.ad.textContent)
     expect(link.attributes().href).toBe(wrapper.vm.links.ad.href)
@@ -38,7 +38,7 @@ describe('text link of ad', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(BaseFooter, {
+    const wrapper = shallowMount(UIFooter, {
       mocks: {
         $ga,
       },
@@ -55,7 +55,7 @@ describe('text link of ad', () => {
 
 describe('text link of activity', () => {
   test('should render proper href and textContent', () => {
-    const wrapper = shallowMount(BaseFooter)
+    const wrapper = shallowMount(UIFooter)
     const link = wrapper.find('.footer-activity')
     expect(link.text()).toBe(wrapper.vm.links.activity.textContent)
     expect(link.attributes().href).toBe(wrapper.vm.links.activity.href)
@@ -64,7 +64,7 @@ describe('text link of activity', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(BaseFooter, {
+    const wrapper = shallowMount(UIFooter, {
       mocks: {
         $ga,
       },
@@ -81,7 +81,7 @@ describe('text link of activity', () => {
 
 describe('text link of download-app', () => {
   test('should render proper href and textContent', () => {
-    const wrapper = shallowMount(BaseFooter)
+    const wrapper = shallowMount(UIFooter)
     const link = wrapper.find('.footer-download-app')
     expect(link.text()).toBe(wrapper.vm.links.downloadApp.textContent)
     expect(link.attributes().href).toBe(wrapper.vm.links.downloadApp.href)
@@ -90,7 +90,7 @@ describe('text link of download-app', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(BaseFooter, {
+    const wrapper = shallowMount(UIFooter, {
       mocks: {
         $ga,
       },
@@ -107,7 +107,7 @@ describe('text link of download-app', () => {
 
 describe('text link of auth', () => {
   test('should render proper href and textContent', () => {
-    const wrapper = shallowMount(BaseFooter)
+    const wrapper = shallowMount(UIFooter)
     const link = wrapper.find('.footer-auth')
     expect(link.text()).toBe(wrapper.vm.links.auth.textContent)
     expect(link.attributes().href).toBe(wrapper.vm.links.auth.href)
@@ -116,7 +116,7 @@ describe('text link of auth', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(BaseFooter, {
+    const wrapper = shallowMount(UIFooter, {
       mocks: {
         $ga,
       },
@@ -133,7 +133,7 @@ describe('text link of auth', () => {
 
 describe('icon link of line', () => {
   test('should render proper href', () => {
-    const wrapper = shallowMount(BaseFooter)
+    const wrapper = shallowMount(UIFooter)
     const link = wrapper.find('.footer-line')
     expect(link.attributes().href).toBe(wrapper.vm.links.line.href)
   })
@@ -141,7 +141,7 @@ describe('icon link of line', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(BaseFooter, {
+    const wrapper = shallowMount(UIFooter, {
       mocks: {
         $ga,
       },
@@ -158,7 +158,7 @@ describe('icon link of line', () => {
 
 describe('icon link of weibo', () => {
   test('should render proper href', () => {
-    const wrapper = shallowMount(BaseFooter)
+    const wrapper = shallowMount(UIFooter)
     const link = wrapper.find('.footer-weibo')
     expect(link.attributes().href).toBe(wrapper.vm.links.weibo.href)
   })
@@ -166,7 +166,7 @@ describe('icon link of weibo', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(BaseFooter, {
+    const wrapper = shallowMount(UIFooter, {
       mocks: {
         $ga,
       },
@@ -183,7 +183,7 @@ describe('icon link of weibo', () => {
 
 describe('icon link of facebook', () => {
   test('should render proper href', () => {
-    const wrapper = shallowMount(BaseFooter)
+    const wrapper = shallowMount(UIFooter)
     const link = wrapper.find('.footer-facebook')
     expect(link.attributes().href).toBe(wrapper.vm.links.facebook.href)
   })
@@ -191,7 +191,7 @@ describe('icon link of facebook', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(BaseFooter, {
+    const wrapper = shallowMount(UIFooter, {
       mocks: {
         $ga,
       },
@@ -208,7 +208,7 @@ describe('icon link of facebook', () => {
 
 describe('icon link of instagram', () => {
   test('should render proper href', () => {
-    const wrapper = shallowMount(BaseFooter)
+    const wrapper = shallowMount(UIFooter)
     const link = wrapper.find('.footer-instagram')
     expect(link.attributes().href).toBe(wrapper.vm.links.instagram.href)
   })
@@ -216,7 +216,7 @@ describe('icon link of instagram', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(BaseFooter, {
+    const wrapper = shallowMount(UIFooter, {
       mocks: {
         $ga,
       },
@@ -233,7 +233,7 @@ describe('icon link of instagram', () => {
 
 describe('icon link of rss-feed', () => {
   test('should render proper href', () => {
-    const wrapper = shallowMount(BaseFooter)
+    const wrapper = shallowMount(UIFooter)
     const link = wrapper.find('.footer-rss-feed')
     expect(link.attributes().href).toBe(wrapper.vm.links.rssFeed.href)
   })
@@ -241,7 +241,7 @@ describe('icon link of rss-feed', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(BaseFooter, {
+    const wrapper = shallowMount(UIFooter, {
       mocks: {
         $ga,
       },
@@ -258,7 +258,7 @@ describe('icon link of rss-feed', () => {
 
 describe('icon link of email', () => {
   test('should render proper href', () => {
-    const wrapper = shallowMount(BaseFooter)
+    const wrapper = shallowMount(UIFooter)
     const link = wrapper.find('.footer-email')
     expect(link.attributes().href).toBe(wrapper.vm.links.email.href)
   })
@@ -266,7 +266,7 @@ describe('icon link of email', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(BaseFooter, {
+    const wrapper = shallowMount(UIFooter, {
       mocks: {
         $ga,
       },
