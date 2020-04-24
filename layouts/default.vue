@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import UIFooter from '~/components/UIFooter'
+import UIFooter from '~/components/UIFooter.vue'
 
 export default {
   components: {
