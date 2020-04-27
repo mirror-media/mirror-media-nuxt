@@ -45,6 +45,7 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/google-analytics',
+    '@nuxtjs/style-resources',
   ],
   /*
    ** Axios module configuration
@@ -60,6 +61,10 @@ module.exports = {
     debug: {
       sendHitTask: process.env.NODE_ENV === 'production',
     },
+  },
+
+  styleResources: {
+    sass: '~/sass/*.sass',
   },
   /*
    ** Build configuration
