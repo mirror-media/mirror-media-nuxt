@@ -32,7 +32,8 @@
     "express": "^4.16.4",
     "helmet": "^3.22.0",
     "nuxt": "^2.0.0",
-    "vue-infinite-loading": "^2.4.5"
+    "vue-infinite-loading": "^2.4.5",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
