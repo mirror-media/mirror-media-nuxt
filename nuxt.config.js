@@ -70,6 +70,10 @@ module.exports = {
      */
     extend(config, ctx) {
       config.resolve.extensions = ['.js']
+
+      // lodash-webpack-plugin
+      const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+      config.plugins.push(new LodashModuleReplacementPlugin({ paths: true }))
     },
   },
 }
