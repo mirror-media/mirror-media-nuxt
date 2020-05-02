@@ -1,6 +1,6 @@
 <template>
   <nav class="header-nav">
-    <UIHeaderNavSection :sections="sections" />
+    <UIHeaderNavSection :sections="sections" :partners="partners" />
     <!-- <UIHeaderNavTopic :topics="topics" /> -->
   </nav>
 </template>
@@ -21,6 +21,10 @@ export default {
       required: true,
     },
     topics: {
+      type: Array,
+      required: true,
+    },
+    partners: {
       type: Array,
       required: true,
     },

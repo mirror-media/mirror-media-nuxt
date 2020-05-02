@@ -1,6 +1,6 @@
 <template>
   <header>
-    <UIHeaderNav :sections="sections" :topics="topics" />
+    <UIHeaderNav :sections="sections" :topics="topics" :partners="partners" />
   </header>
 </template>
 

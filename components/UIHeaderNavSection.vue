@@ -4,11 +4,11 @@
       <div class="section section--home active">
         <nuxt-link to="/">首頁</nuxt-link>
       </div>
+
       <div
         v-for="section in featuredSections"
         :key="section.id"
-        class="section"
-        :class="[section.name]"
+        :class="`section section--${section.name}`"
       >
         <nuxt-link :to="`/section/${section.name}`">
           {{ section.title }}
@@ -20,6 +20,19 @@
             :to="`/category/${category.name}`"
           >
             {{ category.title }}
+          </nuxt-link>
+        </div>
+      </div>
+
+      <div class="section section--external">
+        <div>健康醫療</div>
+        <div class="section__dropdown">
+          <nuxt-link
+            v-for="partner in publicPartner"
+            :key="partner.id"
+            :to="`/externals/${partner.name}`"
+          >
+            {{ partner.display }}
           </nuxt-link>
         </div>
       </div>
@@ -35,18 +48,25 @@ export default {
       type: Array,
       required: true,
     },
+    partners: {
+      type: Array,
+      required: true,
+    },
   },
   computed: {
     featuredSections() {
       // todo why return this.sections.filter(section => section.isFeatured && section.id && section.name)
       return this.sections.filter((section) => section.isFeatured)
     },
+    publicPartner() {
+      return this.partners.filter((partner) => partner.public)
+    },
   },
 }
 </script>
 
 <style lang="sass" scoped>
-$sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #009045, "people": #efa256, "videohub": #969696, "international": #911f27, "foodtravel": #eac151, "mafalda": #662d8e, "culture": #009245, "carandwatch": #003153)
+$sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #009045, "people": #efa256, "videohub": #969696, "international": #911f27, "foodtravel": #eac151, "mafalda": #662d8e, "culture": #009245, "carandwatch": #003153, "external": #ee5a24)
 
 .header-nav-section
   font-size: 14px
@@ -88,6 +108,7 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
     color: #808080
     cursor: pointer
     user-select: none
+    line-height: 1.15
     @media (min-width: 1200px)
       color: #fff
       padding: 12px 0
@@ -95,7 +116,7 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
       border-top-width: 3px
       border-top-style: solid
       @each $name, $color in $sections-color
-        &.#{$name}
+        &--#{$name}
           border-top-color: $color
           &:hover
             background-color: $color
@@ -133,6 +154,4 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
         line-height: 1.3
         display: block
         padding: 12px 10px
-    > a
-      line-height: 1.15
 </style>
