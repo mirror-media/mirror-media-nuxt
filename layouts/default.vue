@@ -11,7 +11,7 @@ import ContainerHeader from '~/components/ContainerHeader.vue'
 import UIFooter from '~/components/UIFooter.vue'
 
 export default {
-  middleware: ['fetchHeaderData'],
+  middleware: ['fetchDefaultCommonData'],
   components: {
     UIFooter,
     ContainerHeader,

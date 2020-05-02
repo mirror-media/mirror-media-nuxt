@@ -13,5 +13,5 @@
       ]
     }
   },
-  "plugins": ["lodash"]
+  "plugins": ["lodash", "@babel/plugin-proposal-optional-chaining"]
 }

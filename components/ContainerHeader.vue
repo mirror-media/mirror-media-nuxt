@@ -1,12 +1,11 @@
 <template>
   <header>
-    <UIHeaderNav :sections="sections" />
+    <UIHeaderNav :sections="sections" :topics="topics" />
   </header>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import _ from 'lodash'
 
 import UIHeaderNav from './UIHeaderNav.vue'
 
@@ -17,9 +16,9 @@ export default {
   },
   computed: {
     ...mapState({
-      sections: (state) => _.get(state, 'sections._items', []),
-      topics: (state) => _.get(state, 'topics._items', []),
-      partners: (state) => _.get(state, 'partners._items', []),
+      sections: (state) => state.sections?.items ?? [],
+      topics: (state) => state.topics?.items ?? [],
+      partners: (state) => state.partners?.items ?? [],
     }),
   },
 }
