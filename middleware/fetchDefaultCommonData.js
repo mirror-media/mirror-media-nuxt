@@ -1,29 +1,29 @@
-import { get as axiosGet } from 'axios'
 import { camelizeKeys } from 'humps'
 
-export default async function fetchDefaultCommonData({ store }) {
-  // const [comboData, partnerData] = await axiosAll([
-  //   fetchComboData(),
-  //   fetchPartnerData(),
-  // ])
+export default async function fetchDefaultCommonData({ store, $axios }) {
+  const [comboResult, partnerResult] = await Promise.allSettled([
+    fetchComboData($axios),
+    fetchPartnerData($axios),
+  ])
 
-  const { data: comboData = {} } = await fetchComboData()
-  store.commit(
-    'setSectionsData',
-    camelizeKeys(comboData).endpoints?.sections ?? {}
-  )
-  store.commit('setTopicsData', camelizeKeys(comboData).endpoints?.topics ?? {})
+  if (comboResult.status === 'fulfilled') {
+    const { endpoints = {} } = camelizeKeys(comboResult.value.data)
 
-  const { data: partnerData = {} } = await fetchPartnerData()
-  store.commit('setPartnersData', camelizeKeys(partnerData))
+    store.commit('setSectionsData', endpoints.sections ?? {})
+    store.commit('setTopicsData', endpoints.topics ?? {})
+  }
+
+  if (partnerResult.status === 'fulfilled') {
+    store.commit('setPartnersData', camelizeKeys(partnerResult.value.data))
+  }
 }
 
-function fetchComboData() {
-  return axiosGet(
+function fetchComboData($axios) {
+  return $axios.get(
     'https://api.mirrormedia.mg/combo?endpoint=sections&endpoint=topics'
   )
 }
 
-function fetchPartnerData() {
-  return axiosGet('https://api.mirrormedia.mg/partners?max_results=25&page=1')
+function fetchPartnerData($axios) {
+  return $axios.get('https://api.mirrormedia.mg/partners?max_results=25&page=1')
 }
