@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="section section--external">
+      <div v-if="breakpointUpLG" class="section section--external">
         <div>健康醫療</div>
         <div class="section__dropdown">
           <nuxt-link
@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'UIHeaderNavSection',
   props: {
@@ -54,6 +56,10 @@ export default {
     },
   },
   computed: {
+    ...mapState(['viewport']),
+    breakpointUpLG() {
+      return this.viewport.width >= 1200
+    },
     featuredSections() {
       // todo why return this.sections.filter(section => section.isFeatured && section.id && section.name)
       return this.sections.filter((section) => section.isFeatured)
