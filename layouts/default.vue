@@ -16,6 +16,28 @@ export default {
     UIFooter,
     ContainerHeader,
   },
+  beforeMount() {
+    this.updateViewport()
+
+    window.addEventListener('resize', this.updateViewport)
+    window.addEventListener('orientationChange', this.updateViewport)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.updateViewport)
+    window.removeEventListener('orientationChange', this.updateViewport)
+  },
+  methods: {
+    updateViewport() {
+      this.$requestTick(() => {
+        const htmlEl = document.documentElement
+        const width = htmlEl.clientWidth
+        const height = htmlEl.clientHeight
+        const viewport = { width, height }
+
+        this.$store.commit('setViewport', viewport)
+      })
+    },
+  },
 }
 </script>
 

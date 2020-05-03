@@ -1,4 +1,7 @@
 export default {
+  setViewport(state, viewport) {
+    state.viewport = viewport
+  },
   setSectionsData(state, data) {
     state.sections = data
   },
