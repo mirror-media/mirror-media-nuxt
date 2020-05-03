@@ -39,7 +39,13 @@ describe('computed Vuex state', () => {
 
 describe('markup', () => {
   test('has a header tag', () => {
-    const store = new Vuex.Store()
+    const store = new Vuex.Store({
+      state: {
+        sections: {},
+        topics: {},
+        partners: {},
+      },
+    })
     const wrapper = shallowMount(ContainerHeader, { store, localVue })
 
     expect(wrapper.contains('header')).toBe(true)
