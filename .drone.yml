@@ -110,7 +110,7 @@ pipeline:
       template: >
         {{#success build.status}}
           *success* ${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER} was well served.
-          Check out our new <https://nuxt.mirrormedia.mg|mirror-media-nuxt>.
+          Check out our new <https://nuxt-dev.mirrormedia.mg|mirror-media-nuxt>.
         {{else}}
           Houston, we have a problem. Build <${DRONE_BUILD_LINK}|#{{build.number}}> failed.
         {{/success}}
