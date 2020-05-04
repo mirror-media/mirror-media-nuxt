@@ -32,6 +32,10 @@ module.exports = {
     '~/plugins/vueDirectivesGlobal.js',
   ],
   /*
+   ** Nuxt.js Server Middleware
+   */
+  serverMiddleware: ['~/api/headers.js'],
+  /*
    ** Nuxt.js dev-modules
    */
   buildModules: [
