@@ -2,16 +2,18 @@
   <section class="header-nav-section">
     <div class="wrapper">
       <div class="section section--home active">
-        <nuxt-link to="/">首頁</nuxt-link>
+        <nuxt-link to="/">
+          <h2>首頁</h2>
+        </nuxt-link>
       </div>
 
       <div
-        v-for="section in featuredSections"
+        v-for="section in displayedSections"
         :key="section.id"
         :class="`section section--${section.name}`"
       >
         <nuxt-link :to="`/section/${section.name}`">
-          {{ section.title }}
+          <h2>{{ section.title }}</h2>
         </nuxt-link>
         <div class="section__dropdown">
           <nuxt-link
@@ -19,20 +21,20 @@
             :key="category.id"
             :to="`/category/${category.name}`"
           >
-            {{ category.title }}
+            <h3>{{ category.title }}</h3>
           </nuxt-link>
         </div>
       </div>
 
       <div class="section section--external">
-        <div>健康醫療</div>
+        <h2>健康醫療</h2>
         <div class="section__dropdown">
           <nuxt-link
-            v-for="partner in publicPartner"
+            v-for="partner in displayedPartner"
             :key="partner.id"
             :to="`/externals/${partner.name}`"
           >
-            {{ partner.display }}
+            <h3>{{ partner.display }}</h3>
           </nuxt-link>
         </div>
       </div>
@@ -54,11 +56,10 @@ export default {
     },
   },
   computed: {
-    featuredSections() {
-      // todo why return this.sections.filter(section => section.isFeatured && section.id && section.name)
+    displayedSections() {
       return this.sections.filter((section) => section.isFeatured)
     },
-    publicPartner() {
+    displayedPartner() {
       return this.partners.filter((partner) => partner.public)
     },
   },
@@ -147,8 +148,7 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
     &__dropdown
       position: absolute
       display: none
-      // todo width: 110px
-      width: 100%
+      width: 110px
       left: 0
       top: 100%
       background-color: #333
@@ -156,5 +156,5 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
       a
         line-height: 1.3
         display: block
-        padding: 12px 10px
+        padding: 13px 10px
 </style>
