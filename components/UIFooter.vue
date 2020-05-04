@@ -232,7 +232,7 @@ export default {
 .footer
   box-shadow: 0 0 10px rgba(0, 0, 0, .2)
   padding: 10px 20px
-  @media (min-width: 1200px)
+  @include media-breakpoint-up(xl)
     box-shadow: none
     padding: 15px 15px 50px 15px
     border-top: 2px solid #000
@@ -250,7 +250,7 @@ export default {
       padding: 0 4px 0 0
   .footer-download-app, .footer-auth
     display: none
-  @media (min-width: 1200px)
+  @include media-breakpoint-up(xl)
     color: #34495e
     text-align: left
     font-size: 16px
@@ -265,7 +265,7 @@ export default {
 
 .footer-icon-links
   display: none
-  @media (min-width: 1200px)
+  @include media-breakpoint-up(xl)
     display: flex
     a
       display: inline-block
