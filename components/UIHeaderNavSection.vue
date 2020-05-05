@@ -62,6 +62,8 @@ export default {
     displayedPartner() {
       return this.partners.filter((partner) => partner.public)
     },
+    // currentSectionName() {
+    // },
   },
 }
 </script>
@@ -77,7 +79,7 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
 
   display: flex
   justify-content: center
-  @media (min-width: 1200px)
+  @include media-breakpoint-up(xl)
     background-color: #064f77
     font-size: 16px
     height: auto
@@ -94,7 +96,7 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
     margin-left: auto
     margin-right: auto
     text-align: center
-    @media (min-width: 1200px)
+    @include media-breakpoint-up(xl)
       width: 100%
       height: auto
       justify-content: center
@@ -110,7 +112,7 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
     cursor: pointer
     user-select: none
     line-height: 1.15
-    @media (min-width: 1200px)
+    @include media-breakpoint-up(xl)
       color: #fff
       padding: 12px 0
       min-width: calc(100% / 11)
@@ -127,23 +129,28 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
         display: block
       &--home
         display: none
-    @media (max-width: 1199.98px)
-      &:hover
-        color: #34495e
-      &.active
-        color: #34495e
-        &::after
-          content: ''
-          position: absolute
-          left: 50%
-          transform: translateX(-50%)
-          bottom: 0
-          height: 3px
-          width: calc(100% - 22px)
-          background-color: #34495e
+    &:hover
+      color: #34495e
+      @include media-breakpoint-up(xl)
+        color: #fff
+    &.active
+      color: #34495e
+      @include media-breakpoint-up(xl)
+        color: #fff
+      &::after
+        content: ''
+        position: absolute
+        left: 50%
+        transform: translateX(-50%)
+        bottom: 0
+        height: 3px
+        width: calc(100% - 22px)
+        background-color: #34495e
+        @include media-breakpoint-up(xl)
+          content: none
     &--external
       display: none
-      @media (min-width: 1200px)
+      @include media-breakpoint-up(xl)
         display: block
     &__dropdown
       position: absolute
