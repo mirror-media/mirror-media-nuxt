@@ -1,23 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import UIFooter from '../UIFooter.vue'
 
-describe('handleSendGA method', () => {
-  test('should throw error when argument is invalid', () => {
-    const wrapper = shallowMount(UIFooter)
-    expect(() => {
-      wrapper.vm.handleSendGA()
-    }).toThrow(wrapper.vm.gaError)
-    const mockInvalidParam = {
-      eventCategoryInvalid: 'category',
-      eventAction: 'action',
-      eventLabel: 'label',
-    }
-    expect(() => {
-      wrapper.vm.handleSendGA(mockInvalidParam)
-    }).toThrow(wrapper.vm.gaError)
-  })
-})
-
 describe('text link of subscribe', () => {
   test('should render proper href and textContent', () => {
     const wrapper = shallowMount(UIFooter)
