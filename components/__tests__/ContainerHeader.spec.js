@@ -37,6 +37,32 @@ describe('computed Vuex state', () => {
   })
 })
 
+describe('handleSendGA', () => {
+  const store = new Vuex.Store({
+    state: {
+      sections: {},
+      topics: {},
+      partners: {},
+    },
+  })
+  const wrapper = shallowMount(ContainerHeader, { store, localVue })
+
+  test('should throw error when argument is invalid', () => {
+    expect(() => {
+      wrapper.vm.handleSendGA()
+    }).toThrow(wrapper.vm.gaError)
+
+    const invalidArgs = {
+      eventCategoryInvalid: 'header',
+      eventAction: 'click',
+      eventLabel: 'section readr',
+    }
+    expect(() => {
+      wrapper.vm.handleSendGA(invalidArgs)
+    }).toThrow(wrapper.vm.gaError)
+  })
+})
+
 describe('markup', () => {
   test('has a header tag', () => {
     const store = new Vuex.Store({
