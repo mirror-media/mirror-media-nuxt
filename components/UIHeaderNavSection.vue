@@ -1,6 +1,6 @@
 <template>
   <section class="header-nav-section">
-    <div class="wrapper">
+    <div class="container">
       <div class="section section--home active">
         <nuxt-link to="/">
           <h2>首頁</h2>
@@ -84,7 +84,7 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
     font-size: 16px
     height: auto
     overflow: visible
-  .wrapper
+  .container
     // to hide scrollbar
     height: 48px
 
@@ -98,7 +98,7 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
     text-align: center
     @include media-breakpoint-up(xl)
       width: 100%
-      height: auto
+      height: 45px
       justify-content: center
       overflow: visible
   .section
@@ -114,7 +114,8 @@ $sections-color: ("news": #30bac8, "entertainment": #bf3284, "businessmoney": #0
     line-height: 1.15
     @include media-breakpoint-up(xl)
       color: #fff
-      padding: 12px 0
+      padding: 0
+      line-height: 42px
       min-width: calc(100% / 11)
       border-top-width: 3px
       border-top-style: solid
