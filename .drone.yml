@@ -2,7 +2,7 @@ workspace:
     base: /nuxt
     path: src/github.com/g70245/mirror-media-nuxt
 pipeline:
-    start_slack:
+    startSlack:
       image: plugins/slack
       channel: jenkins
       secrets: [slack_webhook]
@@ -14,7 +14,7 @@ pipeline:
       when:
         event: [push]
     
-    restore-cache:
+    restoreCache:
       image: drillster/drone-volume-cache
       restore: true
       mount:
@@ -26,7 +26,7 @@ pipeline:
         event: [push]
         branch: [dev, master]
     
-    get_dev_config:
+    getDevConfig:
       image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
       secrets: [google_credentials]
       commands:
@@ -36,7 +36,17 @@ pipeline:
         event: [push]
         branch: [dev]
   
-    builds:
+    getProdConfig:
+      image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
+      secrets: [google_credentials]
+      commands:
+      - gcloud source repos clone default ../default
+      #- cp ../default/mirror-media-nuxt/prod/nuxt.config.js ./nuxt.config.js
+      when:
+        event: [push]
+        branch: [master]
+
+    build:
       image: node:12.16.2-slim
       commands:
       - apt-get update && apt-get install -y node-gyp
@@ -57,7 +67,7 @@ pipeline:
         event: [push]
         branch: [dev, master]
     
-    deploy_dev:
+    deployDev:
       image: nytimes/drone-gke
       zone: asia-east1-a
       cluster: dev
@@ -87,7 +97,7 @@ pipeline:
         event: push
         branch: master
   
-    rebuild-cache:
+    rebuildCache:
       image: drillster/drone-volume-cache
       rebuild: true
       mount:
@@ -98,7 +108,7 @@ pipeline:
       when:
         branch: [dev, master]
     
-    finish_slack:
+    finishSlack:
       image: plugins/slack
       channel: jenkins
       secrets: [slack_webhook]
