@@ -16,4 +16,8 @@ module.exports = {
     '<rootDir>/components/**/*.vue',
     '<rootDir>/pages/**/*.vue',
   ],
+  setupFiles: [
+    '<rootDir>/plugins/vueDirectivesGlobal.js',
+    '<rootDir>/plugins/vuePluginsGlobal.js',
+  ],
 }
