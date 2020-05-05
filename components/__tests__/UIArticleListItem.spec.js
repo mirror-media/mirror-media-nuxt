@@ -154,4 +154,14 @@ describe('info wrapper', () => {
     const p = wrapper.find('p')
     expect(p.text()).toBe(infoDescription)
   })
+  test('should render proper backgroundColor from props "infoBackgroundColor"', () => {
+    const infoBackgroundColor = '#000000' // rgb(0, 0, 0)
+    const wrapper = createWrapper(UIArticleListItem, {
+      propsData: {
+        infoBackgroundColor,
+      },
+    })
+    const infoWrapper = wrapper.find('.info-wrapper')
+    expect(infoWrapper.element.style['background-color']).toBe('rgb(0, 0, 0)')
+  })
 })

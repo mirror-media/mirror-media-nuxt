@@ -9,8 +9,15 @@
       }"
       v-text="imgText"
     />
-    <h1 v-text="infoTitle" />
-    <p v-text="infoDescription" />
+    <div
+      class="info-wrapper"
+      :style="{
+        backgroundColor: infoBackgroundColor,
+      }"
+    >
+      <h1 v-text="infoTitle" />
+      <p v-text="infoDescription" />
+    </div>
   </div>
 </template>
 
@@ -40,6 +47,10 @@ export default {
     infoDescription: {
       type: String,
       default: '',
+    },
+    infoBackgroundColor: {
+      type: String,
+      default: 'white',
     },
   },
   data() {
