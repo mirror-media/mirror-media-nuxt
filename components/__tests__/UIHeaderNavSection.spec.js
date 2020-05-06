@@ -35,41 +35,18 @@ describe('normal section nav', () => {
   })
 
   test('render the proper section link', () => {
-    expect(wrapper.find(`.section--${sectionDisplayed.name}`).exists()).toBe(
-      true
-    )
     const link = wrapper.find(`[to="/section/${sectionDisplayed.name}"]`)
-    expect(link.find('h2').text()).toBe(sectionDisplayed.title)
+    expect(link.text()).toBe(sectionDisplayed.title)
 
-    expect(wrapper.find(`.section--${sectionNotDisplayed.name}`).exists()).toBe(
-      false
-    )
-  })
-
-  test('render the proper dropdown category link', () => {
-    const [category] = sectionDisplayed.categories
     expect(
-      wrapper
-        .find(`.section--${sectionDisplayed.name} .section__dropdown`)
-        .exists()
-    ).toBe(true)
+      wrapper.find(`[to="/section/${sectionNotDisplayed.name}"]`).exists()
+    ).toBe(false)
+  })
+
+  test('render the proper category link', () => {
+    const [category] = sectionDisplayed.categories
     const link = wrapper.find(`[to="/category/${category.name}"]`)
-    expect(link.find('h3').text()).toBe(category.title)
-  })
-})
-
-describe('home section nav', () => {
-  const wrapper = shallowMount(UIHeaderNavSection, {
-    propsData: {
-      sections: [],
-      partners: [],
-    },
-    stubs: ['nuxt-link'],
-  })
-
-  test('render the proper link', () => {
-    const link = wrapper.find('[to="/"]')
-    expect(link.find('h2').text()).toBe('首頁')
+    expect(link.text()).toBe(category.title)
   })
 })
 
@@ -82,13 +59,9 @@ describe('external section nav', () => {
     stubs: ['nuxt-link'],
   })
 
-  test('render the proper external title', () => {
-    expect(wrapper.find('.section--external h2').text()).toBe('健康醫療')
-  })
-
-  test('render the proper dropdown partner link', () => {
+  test('render the proper partner link', () => {
     const link = wrapper.find(`[to="/externals/${partnerDisplayed.name}"]`)
-    expect(link.find('h3').text()).toBe(partnerDisplayed.display)
+    expect(link.text()).toBe(partnerDisplayed.display)
 
     expect(
       wrapper.find(`[to="/externals/${partnerNotDisplayed.name}"]`).exists()
@@ -154,5 +127,19 @@ describe('emitGA method', () => {
         eventLabel: `external ${partnerDisplayed.name}`,
       },
     ])
+  })
+})
+
+describe('markup', () => {
+  test('render correctly', () => {
+    const wrapper = shallowMount(UIHeaderNavSection, {
+      propsData: {
+        sections: [sectionDisplayed],
+        partners: [partnerDisplayed],
+      },
+      stubs: ['nuxt-link'],
+    })
+
+    expect(wrapper.element).toMatchSnapshot()
   })
 })

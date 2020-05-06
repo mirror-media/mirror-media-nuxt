@@ -16,33 +16,7 @@ describe('topic nav', () => {
 
   test('render the proper topic link', () => {
     const linkNormal = wrapper.find(`[to="/topic/${topic.id}"]`)
-    expect(linkNormal.find('h2').text()).toBe(topic.name)
-
-    const linkMore = wrapper.find('[to="/section/topic"]')
-    expect(linkMore.find('h2').text()).toBe('更多')
-  })
-})
-
-describe('sub-brand nav', () => {
-  const wrapper = shallowMount(UIHeaderNavTopic, {
-    propsData: {
-      topics: [],
-    },
-    stubs: ['nuxt-link'],
-  })
-
-  test('render the proper sub-brand link', () => {
-    const voiceLink = wrapper.find('[href="https://voice.mirrorfiction.com/"]')
-    expect(voiceLink.attributes().target).toBe('_blank')
-    expect(voiceLink.find('img').attributes().alt).toBe('鏡好聽')
-
-    const fictionLink = wrapper.find('[href="https://www.mirrorfiction.com/"]')
-    expect(fictionLink.attributes().target).toBe('_blank')
-    expect(fictionLink.find('img').attributes().alt).toBe('鏡文學')
-
-    const readrLink = wrapper.find('[href="https://www.readr.tw/"]')
-    expect(readrLink.attributes().target).toBe('_blank')
-    expect(readrLink.find('img').attributes().alt).toBe('READr 讀+')
+    expect(linkNormal.text()).toBe(topic.name)
   })
 })
 
@@ -110,5 +84,18 @@ describe('emitGA method', () => {
         eventLabel: 'section readr',
       },
     ])
+  })
+})
+
+describe('markup', () => {
+  test('render correctly', () => {
+    const wrapper = shallowMount(UIHeaderNavTopic, {
+      propsData: {
+        topics: [topic],
+      },
+      stubs: ['nuxt-link'],
+    })
+
+    expect(wrapper.element).toMatchSnapshot()
   })
 })

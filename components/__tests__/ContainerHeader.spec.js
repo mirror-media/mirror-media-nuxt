@@ -111,7 +111,7 @@ describe('handleSendGA method', () => {
 })
 
 describe('markup', () => {
-  test('has a header tag', () => {
+  test('render correctly', () => {
     const wrapper = shallowMount(ContainerHeader, {
       mocks: {
         $store: {
@@ -124,6 +124,6 @@ describe('markup', () => {
       },
     })
 
-    expect(wrapper.contains('header')).toBe(true)
+    expect(wrapper.element).toMatchSnapshot()
   })
 })

@@ -24,20 +24,20 @@ export default {
     ])
 
     if (topicsResult.status === 'fulfilled') {
-      this.commitTopicsDataToStore(topicsResult)
+      this.commitTopicsData(topicsResult)
     }
 
     if (partnersResult.status === 'fulfilled') {
-      this.commitPartnersDataToStore(partnersResult)
+      this.commitPartnersData(partnersResult)
     }
   },
   methods: {
-    commitTopicsDataToStore(result) {
+    commitTopicsData(result) {
       const topicsData = camelizeKeys(result.value.data)
 
       this.$store.commit('setTopicsData', topicsData.endpoints?.topics ?? {})
     },
-    commitPartnersDataToStore(result) {
+    commitPartnersData(result) {
       this.$store.commit('setPartnersData', camelizeKeys(result.value.data))
     },
   },
