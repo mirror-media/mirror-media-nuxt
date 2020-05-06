@@ -90,5 +90,6 @@ sw.*
 *.swp
 
 # Config
+configs/
 config.js
 gcskeyfile.json

@@ -31,7 +31,7 @@ pipeline:
       secrets: [google_credentials]
       commands:
       - gcloud source repos clone default ../default
-      #- cp ../default/mirror-media-nuxt/dev/nuxt.config.js ./nuxt.config.js
+      - cp ../default/mirror-media-nuxt/dev/config.js ./configs/config.js
       when:
         event: [push]
         branch: [dev]
@@ -41,7 +41,7 @@ pipeline:
       secrets: [google_credentials]
       commands:
       - gcloud source repos clone default ../default
-      #- cp ../default/mirror-media-nuxt/prod/nuxt.config.js ./nuxt.config.js
+      - cp ../default/mirror-media-nuxt/prod/config.js ./configs/config.js
       when:
         event: [push]
         branch: [master]
