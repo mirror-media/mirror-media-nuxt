@@ -1,22 +1,21 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
+import { shallowMount } from '@vue/test-utils'
 import ContainerHeader from '../ContainerHeader.vue'
 import UIHeaderNavSection from '../UIHeaderNavSection.vue'
 import UIHeaderNavTopic from '../UIHeaderNavTopic.vue'
 
-const localVue = createLocalVue()
-localVue.use(Vuex)
-
 describe('Vuex state computed', () => {
   test('get the proper data', () => {
-    const store = new Vuex.Store({
-      state: {
-        sections: { items: [{ name: 'news' }] },
-        topics: { items: [{ name: '網紅星勢力' }] },
-        partners: { items: [{ name: 'healthnews' }] },
+    const wrapper = shallowMount(ContainerHeader, {
+      mocks: {
+        $store: {
+          state: {
+            sections: { items: [{ name: 'news' }] },
+            topics: { items: [{ name: '網紅星勢力' }] },
+            partners: { items: [{ name: 'healthnews' }] },
+          },
+        },
       },
     })
-    const wrapper = shallowMount(ContainerHeader, { store, localVue })
 
     expect(wrapper.vm.sections).toEqual([{ name: 'news' }])
     expect(wrapper.vm.topics).toEqual([{ name: '網紅星勢力' }])
@@ -24,14 +23,17 @@ describe('Vuex state computed', () => {
   })
 
   test('get an empty array when the data is undefined', () => {
-    const store = new Vuex.Store({
-      state: {
-        sections: {},
-        topics: {},
-        partners: {},
+    const wrapper = shallowMount(ContainerHeader, {
+      mocks: {
+        $store: {
+          state: {
+            sections: {},
+            topics: {},
+            partners: {},
+          },
+        },
       },
     })
-    const wrapper = shallowMount(ContainerHeader, { store, localVue })
 
     expect(wrapper.vm.sections).toEqual([])
     expect(wrapper.vm.topics).toEqual([])
@@ -40,16 +42,20 @@ describe('Vuex state computed', () => {
 })
 
 describe('handleSendGA method', () => {
-  const store = new Vuex.Store({
+  const $store = {
     state: {
       sections: {},
       topics: {},
       partners: {},
     },
-  })
+  }
 
   test('throw error when the argument is invalid', () => {
-    const wrapper = shallowMount(ContainerHeader, { store, localVue })
+    const wrapper = shallowMount(ContainerHeader, {
+      mocks: {
+        $store,
+      },
+    })
 
     expect(() => {
       wrapper.vm.handleSendGA()
@@ -72,9 +78,8 @@ describe('handleSendGA method', () => {
     const wrapper = shallowMount(ContainerHeader, {
       mocks: {
         $ga,
+        $store,
       },
-      store,
-      localVue,
     })
     const gaArgs = {
       eventCategory: 'header',
@@ -92,9 +97,8 @@ describe('handleSendGA method', () => {
     const wrapper = shallowMount(ContainerHeader, {
       mocks: {
         $ga,
+        $store,
       },
-      store,
-      localVue,
     })
     const gaArgs = {
       eventCategory: 'header',
@@ -108,14 +112,17 @@ describe('handleSendGA method', () => {
 
 describe('markup', () => {
   test('has a header tag', () => {
-    const store = new Vuex.Store({
-      state: {
-        sections: {},
-        topics: {},
-        partners: {},
+    const wrapper = shallowMount(ContainerHeader, {
+      mocks: {
+        $store: {
+          state: {
+            sections: {},
+            topics: {},
+            partners: {},
+          },
+        },
       },
     })
-    const wrapper = shallowMount(ContainerHeader, { store, localVue })
 
     expect(wrapper.contains('header')).toBe(true)
   })
