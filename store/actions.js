@@ -1,7 +1,10 @@
 import { camelizeKeys } from 'humps'
 
 export default {
-  async nuxtServerInit({ commit, dispatch }) {
+  nuxtServerInit({ dispatch }) {
+    dispatch('fetchGlobalData')
+  },
+  async fetchGlobalData({ commit, dispatch }) {
     const sectionsResult = await dispatch('fetchSectionsData')
 
     commit(

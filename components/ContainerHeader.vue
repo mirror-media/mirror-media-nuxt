@@ -38,7 +38,7 @@ export default {
   methods: {
     handleSendGA(param = {}) {
       const expectedKeys = ['eventCategory', 'eventAction', 'eventLabel']
-      const paramValid = expectedKeys.every(function validateParams(key) {
+      const paramValid = expectedKeys.every(function validateParam(key) {
         return Object.prototype.hasOwnProperty.call(param, key)
       })
 
