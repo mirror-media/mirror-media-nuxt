@@ -1,7 +1,11 @@
 <template>
   <header>
     <nav class="header-nav">
-      <UIHeaderNavSection :sections="sections" :partners="partners" />
+      <UIHeaderNavSection
+        :sections="sections"
+        :partners="partners"
+        @sendGA="handleSendGA"
+      />
       <UIHeaderNavTopic :topics="topics" @sendGA="handleSendGA" />
     </nav>
   </header>
