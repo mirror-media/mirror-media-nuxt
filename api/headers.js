@@ -10,7 +10,7 @@ module.exports = function (req, res, next) {
     return next()
   }
 
-  if (hostname.match(/www.mirrormedia.mg/gs)) {
+  if (hostname.match(/mirrormedia.mg/gs)) {
     if (
       req.url.match(
         /^\/$|^\/(section|category|topic|externals|search|author|tag)\//gs
