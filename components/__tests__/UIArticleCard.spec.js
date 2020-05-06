@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import _ from 'lodash'
-import UIArticleListItem from '../UIArticleListItem.vue'
+import UIArticleCard from '../UIArticleCard.vue'
 
 // customizer to overwrite properties if the source object properties are an empty object or an array, like overwrite store object/array by empty object/array.
 const customizer = (objValue, srcValue) => {
@@ -37,7 +37,7 @@ describe('href behaviour', () => {
   test('should open a new tab if props "href" is matching "^https?://"', () => {
     const hrefPropsMockHttp = 'http://www.google.com'
     window.open = jest.fn()
-    let wrapper = createWrapper(UIArticleListItem, {
+    let wrapper = createWrapper(UIArticleCard, {
       propsData: {
         href: hrefPropsMockHttp,
       },
@@ -50,7 +50,7 @@ describe('href behaviour', () => {
       'noreferrer'
     )
     const hrefPropsMockHttps = 'https://www.google.com'
-    wrapper = createWrapper(UIArticleListItem, {
+    wrapper = createWrapper(UIArticleCard, {
       propsData: {
         href: hrefPropsMockHttps,
       },
@@ -68,7 +68,7 @@ describe('href behaviour', () => {
     const $router = {
       push: jest.fn(),
     }
-    const wrapper = createWrapper(UIArticleListItem, {
+    const wrapper = createWrapper(UIArticleCard, {
       propsData: {
         href: hrefPropsMock,
       },
@@ -86,7 +86,7 @@ describe('GA event', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = createWrapper(UIArticleListItem, {
+    const wrapper = createWrapper(UIArticleCard, {
       mocks: {
         $ga,
       },
@@ -103,7 +103,7 @@ describe('GA event', () => {
 describe('images wrapper', () => {
   test('should render proper src', () => {
     const imgSrc = 'http://test.png'
-    const wrapper = createWrapper(UIArticleListItem, {
+    const wrapper = createWrapper(UIArticleCard, {
       propsData: {
         imgSrc,
       },
@@ -113,7 +113,7 @@ describe('images wrapper', () => {
   })
   test('should render proper textContent from props "imgText"', () => {
     const imgText = 'section'
-    const wrapper = createWrapper(UIArticleListItem, {
+    const wrapper = createWrapper(UIArticleCard, {
       propsData: {
         imgText,
       },
@@ -123,7 +123,7 @@ describe('images wrapper', () => {
   })
   test('should render proper backgroundColor from props "imgTextBackgroundColor"', () => {
     const imgTextBackgroundColor = '#000000' // rgb(0, 0, 0)
-    const wrapper = createWrapper(UIArticleListItem, {
+    const wrapper = createWrapper(UIArticleCard, {
       propsData: {
         imgTextBackgroundColor,
       },
@@ -136,7 +136,7 @@ describe('images wrapper', () => {
 describe('info wrapper', () => {
   test('should render proper textContent from props "title"', () => {
     const infoTitle = 'test title'
-    const wrapper = shallowMount(UIArticleListItem, {
+    const wrapper = shallowMount(UIArticleCard, {
       propsData: {
         infoTitle,
       },
@@ -146,7 +146,7 @@ describe('info wrapper', () => {
   })
   test('should render proper textContent from props "description"', () => {
     const infoDescription = 'test description'
-    const wrapper = shallowMount(UIArticleListItem, {
+    const wrapper = shallowMount(UIArticleCard, {
       propsData: {
         infoDescription,
       },
@@ -156,12 +156,12 @@ describe('info wrapper', () => {
   })
   test('should render proper backgroundColor from props "infoBackgroundColor"', () => {
     const infoBackgroundColor = '#000000' // rgb(0, 0, 0)
-    const wrapper = createWrapper(UIArticleListItem, {
+    const wrapper = createWrapper(UIArticleCard, {
       propsData: {
         infoBackgroundColor,
       },
     })
-    const infoWrapper = wrapper.find('.info-wrapper')
+    const infoWrapper = wrapper.find('.bottom-wrapper')
     expect(infoWrapper.element.style['background-color']).toBe('rgb(0, 0, 0)')
   })
 })
