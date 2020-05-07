@@ -34,7 +34,10 @@ module.exports = {
   /*
    ** Nuxt.js Server Middleware
    */
-  serverMiddleware: ['~/api/headers.js'],
+  serverMiddleware: [
+    '~/api/headers.js',
+    { path: '/api', handler: '~/api/index.js' },
+  ],
   /*
    ** Nuxt.js dev-modules
    */
