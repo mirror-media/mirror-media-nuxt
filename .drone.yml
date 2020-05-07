@@ -35,17 +35,7 @@ pipeline:
       when:
         event: [push]
         branch: [dev]
-  
-    getProdConfig:
-      image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
-      secrets: [google_credentials]
-      commands:
-      - gcloud source repos clone configs ../configs
-      - cp ../configs/mirror-media/mirror-media-nuxt/prod/config.js ./configs/config.js
-      when:
-        event: [push]
-        branch: [master]
-
+    
     build:
       image: node:12.16.2-slim
       commands:
