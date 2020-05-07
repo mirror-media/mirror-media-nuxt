@@ -64,16 +64,17 @@ export default {
   display: flex
   flex-wrap: wrap
   &__list-item
+    width: 100%
     & + &
       margin: 40px 0 0 0
   @include media-breakpoint-up(md)
     margin: -20px 0 0 -20px
     &__list-item
-      max-width: calc(50% - 20px)
+      width: calc(50% - 20px)
       margin: 40px 0 0 20px
       & + &
         margin: 40px 0 0 20px
   @include media-breakpoint-up(xl)
     &__list-item
-      max-width: calc(33.33% - 20px)
+      width: calc(33.33% - 20px)
 </style>
