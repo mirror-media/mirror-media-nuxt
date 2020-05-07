@@ -61,7 +61,11 @@ module.exports = {
    ** https://github.com/nuxt-community/analytics-module
    */
   googleAnalytics: {
-    id: 'UA-83609754-1',
+    id: () => {
+      return document.domain.match(/^(www|nuxt).mirrormedia.mg/gs)
+        ? 'UA-83609754-1'
+        : 'UA-83609754-2'
+    },
     debug: {
       sendHitTask: process.env.NODE_ENV === 'production',
     },
