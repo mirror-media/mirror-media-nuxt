@@ -101,6 +101,7 @@ export default {
 
 .top-wrapper
   position: relative
+  background-color: white
   &__text
     position: absolute
     left: 0
