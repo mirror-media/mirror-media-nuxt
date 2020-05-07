@@ -73,19 +73,6 @@ pipeline:
       when:
         event: [push]
         branch: [dev]
-    
-    upload:
-      image: plugins/gcs
-      source: distribution
-      target: readr-files/distribution/
-      acl: allUsers:READER
-      # cache_control: public, max-age=3600
-      secrets:
-        - source: google_credentials
-          target: token
-      when:
-        event: push
-        branch: master
   
     rebuildCache:
       image: drillster/drone-volume-cache
