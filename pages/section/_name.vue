@@ -10,7 +10,6 @@
 import UIArticleList from '~/components/UIArticleList.vue'
 
 export default {
-  layout: 'listing',
   components: {
     UIArticleList,
   },
