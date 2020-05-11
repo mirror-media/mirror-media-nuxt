@@ -126,6 +126,11 @@ export default {
     width: 100%
     height: 100%
     object-fit: cover
+    &[lazy=loading]
+      width: 30%
+      height: auto
+      left: 35%
+      bottom: 25%
 
 .bottom-wrapper
   padding: 15px 30px
