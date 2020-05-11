@@ -7,7 +7,7 @@
           :key="topic.id"
           class="topic topic--normal"
           :to="`/topic/${topic.id}`"
-          @click.native="emitGA('header', 'click', `topic ${topic.name}`)"
+          @click.native="emitGA(`topic ${topic.name}`)"
         >
           <h2>{{ topic.name }}</h2>
         </nuxt-link>
@@ -16,7 +16,7 @@
       <nuxt-link
         to="/section/topic"
         class="topic"
-        @click.native="emitGA('header', 'click', 'topic 更多')"
+        @click.native="emitGA('topic 更多')"
       >
         <h2>更多</h2>
       </nuxt-link>
@@ -25,21 +25,21 @@
         <a
           href="https://voice.mirrorfiction.com/"
           target="_blank"
-          @click="emitGA('header', 'click', 'section mirrorvoice')"
+          @click="emitGA('section mirrorvoice')"
         >
           <img src="~/assets/mirrorvoice.png" alt="鏡好聽" />
         </a>
         <a
           href="https://www.mirrorfiction.com/"
           target="_blank"
-          @click="emitGA('header', 'click', 'section mirrorfiction')"
+          @click="emitGA('section mirrorfiction')"
         >
           <img src="~/assets/mirrorfiction.png" alt="鏡文學" />
         </a>
         <a
           href="https://www.readr.tw/"
           target="_blank"
-          @click="emitGA('header', 'click', 'section readr')"
+          @click="emitGA('section readr')"
         >
           <img src="~/assets/readrlogo-gary.png" alt="READr 讀+" />
         </a>
@@ -58,10 +58,10 @@ export default {
     },
   },
   methods: {
-    emitGA(eventCategory, eventAction, eventLabel) {
+    emitGA(eventLabel) {
       this.$emit('sendGA', {
-        eventCategory,
-        eventAction,
+        eventCategory: 'header',
+        eventAction: 'click',
         eventLabel,
       })
     },

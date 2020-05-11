@@ -2,10 +2,7 @@
   <section class="header-nav-section">
     <div class="container">
       <div class="section section--home active">
-        <nuxt-link
-          to="/"
-          @click.native="emitGA('header', 'click', 'section home')"
-        >
+        <nuxt-link to="/" @click.native="emitGA('section home')">
           <h2>首頁</h2>
         </nuxt-link>
       </div>
@@ -17,7 +14,7 @@
       >
         <nuxt-link
           :to="`/section/${section.name}`"
-          @click.native="emitGA('header', 'click', `section ${section.name}`)"
+          @click.native="emitGA(`section ${section.name}`)"
         >
           <h2>{{ section.title }}</h2>
         </nuxt-link>
@@ -26,9 +23,7 @@
             v-for="category in section.categories"
             :key="category.id"
             :to="`/category/${category.name}`"
-            @click.native="
-              emitGA('header', 'click', `category ${category.name}`)
-            "
+            @click.native="emitGA(`category ${category.name}`)"
           >
             <h3>{{ category.title }}</h3>
           </nuxt-link>
@@ -42,9 +37,7 @@
             v-for="partner in displayedPartner"
             :key="partner.id"
             :to="`/externals/${partner.name}`"
-            @click.native="
-              emitGA('header', 'click', `external ${partner.name}`)
-            "
+            @click.native="emitGA(`external ${partner.name}`)"
           >
             <h3>{{ partner.display }}</h3>
           </nuxt-link>
@@ -78,10 +71,10 @@ export default {
     // },
   },
   methods: {
-    emitGA(eventCategory, eventAction, eventLabel) {
+    emitGA(eventLabel) {
       this.$emit('sendGA', {
-        eventCategory,
-        eventAction,
+        eventCategory: 'header',
+        eventAction: 'click',
         eventLabel,
       })
     },
