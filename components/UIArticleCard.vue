@@ -93,6 +93,11 @@ export default {
 .article
   box-shadow: 5px 5px 5px #bcbcbc
   cursor: pointer
+  height: 100%
+  display: flex
+  flex-direction: column
+  &__bottom-wrapper
+    flex: 1 1 auto
   @include media-breakpoint-up(xl)
     transition: all .3s ease-in-out
     &:hover
@@ -135,6 +140,9 @@ export default {
 .bottom-wrapper
   padding: 15px 30px
   text-align: justify
+  display: flex
+  flex-direction: column
+  justify-content: space-between
   h1
     font-size: 20.8px
     font-weight: 300
