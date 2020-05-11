@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
@@ -23,6 +24,8 @@ async function start() {
   }
 
   app.use(helmet())
+
+  app.use(bodyParser.json())
 
   // Give nuxt middleware to express
   app.use(nuxt.render)
