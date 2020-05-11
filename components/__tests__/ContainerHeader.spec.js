@@ -50,27 +50,6 @@ describe('handleSendGA method', () => {
     },
   }
 
-  test('throw error when the argument is invalid', () => {
-    const wrapper = shallowMount(ContainerHeader, {
-      mocks: {
-        $store,
-      },
-    })
-
-    expect(() => {
-      wrapper.vm.handleSendGA()
-    }).toThrow(wrapper.vm.gaError)
-
-    const invalidArgs = {
-      eventCategoryInvalid: 'header',
-      eventAction: 'click',
-      eventLabel: 'section news',
-    }
-    expect(() => {
-      wrapper.vm.handleSendGA(invalidArgs)
-    }).toThrow(wrapper.vm.gaError)
-  })
-
   test('call $ga method when UIHeaderNavTopic.vue emits sendGA', () => {
     const $ga = {
       event: jest.fn(),

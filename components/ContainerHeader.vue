@@ -23,11 +23,6 @@ export default {
     UIHeaderNavSection,
     UIHeaderNavTopic,
   },
-  data() {
-    return {
-      gaError: 'please provide a valid argument in handleSendGA',
-    }
-  },
   computed: {
     ...mapState({
       sections: (state) => state.sections.data.items ?? [],
@@ -37,15 +32,6 @@ export default {
   },
   methods: {
     handleSendGA(param = {}) {
-      const expectedKeys = ['eventCategory', 'eventAction', 'eventLabel']
-      const paramValid = expectedKeys.every(function validateParam(key) {
-        return Object.prototype.hasOwnProperty.call(param, key)
-      })
-
-      if (!paramValid) {
-        throw new Error(this.gaError)
-      }
-
       this.$ga.event(param)
     },
   },
