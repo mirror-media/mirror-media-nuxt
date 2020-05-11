@@ -1,7 +1,11 @@
 <template>
   <section class="section">
     <div>
-      <UIArticleList :list-title="'test'" :list-data="listData" />
+      <UIArticleList
+        :list-title="'時事、生活'"
+        :list-title-color="'#30BACB'"
+        :list-data="listData"
+      />
     </div>
   </section>
 </template>
@@ -13,58 +17,23 @@ export default {
   components: {
     UIArticleList,
   },
+  async fetch() {
+    const response = await this.$axios.get(
+      'http://api.mirrormedia.mg/posts?where={"sections":{"$in":["57e1e0e5ee85930e00cad4e9"]}}&max_results=9&page=1&sort=-publishedDate'
+    )
+    const listData = response.data._items.map((item) => ({
+      href: `/story/${item.slug}`,
+      imgSrc: item.heroImage.image.resizedTargets.mobile.url,
+      imgText: '時事、生活',
+      imgTextBackgroundColor: '#30BACB',
+      infoTitle: item.title,
+      infoDescription: item.brief.apiData[0].content[0],
+    }))
+    this.listData = listData
+  },
   data() {
     return {
-      listData: [
-        {
-          href: '/',
-          // imgSrc: 'test imgSrc',
-          imgText: 'test imgText',
-          imgTextBackgroundColor: 'black',
-          infoTitle: 'test infoTitle',
-          infoDescription: 'test infoDescription',
-        },
-        {
-          href: '/',
-          // imgSrc: 'test imgSrc',
-          imgText: 'test imgText',
-          imgTextBackgroundColor: 'black',
-          infoTitle: 'test infoTitle',
-          infoDescription: 'test infoDescription',
-        },
-        {
-          href: '/',
-          // imgSrc: 'test imgSrc',
-          imgText: 'test imgText',
-          imgTextBackgroundColor: 'black',
-          infoTitle: 'test infoTitle',
-          infoDescription: 'test infoDescription',
-        },
-        {
-          href: '/',
-          // imgSrc: 'test imgSrc',
-          imgText: 'test imgText',
-          imgTextBackgroundColor: 'black',
-          infoTitle: 'test infoTitle',
-          infoDescription: 'test infoDescription',
-        },
-        {
-          href: '/',
-          // imgSrc: 'test imgSrc',
-          imgText: 'test imgText',
-          imgTextBackgroundColor: 'black',
-          infoTitle: 'test infoTitle',
-          infoDescription: 'test infoDescription',
-        },
-        {
-          href: '/',
-          // imgSrc: 'test imgSrc',
-          imgText: 'test imgText',
-          imgTextBackgroundColor: 'black',
-          infoTitle: 'test infoTitle',
-          infoDescription: 'test infoDescription',
-        },
-      ],
+      listData: [],
     }
   },
 }
