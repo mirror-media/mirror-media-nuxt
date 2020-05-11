@@ -9,9 +9,9 @@ describe('Vuex state computed', () => {
       mocks: {
         $store: {
           state: {
-            sections: { items: [{ name: 'news' }] },
-            topics: { items: [{ name: '網紅星勢力' }] },
-            partners: { items: [{ name: 'healthnews' }] },
+            sections: { data: { items: [{ name: 'news' }] } },
+            topics: { data: { items: [{ name: '網紅星勢力' }] } },
+            partners: { data: { items: [{ name: 'healthnews' }] } },
           },
         },
       },
@@ -27,9 +27,9 @@ describe('Vuex state computed', () => {
       mocks: {
         $store: {
           state: {
-            sections: {},
-            topics: {},
-            partners: {},
+            sections: { data: {} },
+            topics: { data: {} },
+            partners: { data: {} },
           },
         },
       },
@@ -44,9 +44,9 @@ describe('Vuex state computed', () => {
 describe('handleSendGA method', () => {
   const $store = {
     state: {
-      sections: {},
-      topics: {},
-      partners: {},
+      sections: { data: {} },
+      topics: { data: {} },
+      partners: { data: {} },
     },
   }
 
@@ -116,9 +116,9 @@ describe('markup', () => {
       mocks: {
         $store: {
           state: {
-            sections: {},
-            topics: {},
-            partners: {},
+            sections: { data: {} },
+            topics: { data: {} },
+            partners: { data: {} },
           },
         },
       },

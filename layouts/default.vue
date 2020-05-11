@@ -19,8 +19,8 @@ export default {
   },
   async fetch() {
     const [topicsResult, partnersResult] = await Promise.allSettled([
-      this.$store.dispatch('fetchTopicsData'),
-      this.$store.dispatch('fetchPartnersData'),
+      this.$store.dispatch('topics/fetchTopicsData'),
+      this.$store.dispatch('partners/fetchPartnersData'),
     ])
 
     if (topicsResult.status === 'fulfilled') {
@@ -35,10 +35,16 @@ export default {
     commitTopicsData(result) {
       const topicsData = camelizeKeys(result.value.data)
 
-      this.$store.commit('setTopicsData', topicsData.endpoints?.topics ?? {})
+      this.$store.commit(
+        'topics/setTopicsData',
+        topicsData.endpoints?.topics ?? {}
+      )
     },
     commitPartnersData(result) {
-      this.$store.commit('setPartnersData', camelizeKeys(result.value.data))
+      this.$store.commit(
+        'partners/setPartnersData',
+        camelizeKeys(result.value.data)
+      )
     },
   },
 }

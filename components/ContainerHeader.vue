@@ -30,9 +30,9 @@ export default {
   },
   computed: {
     ...mapState({
-      sections: (state) => state.sections.items ?? [],
-      topics: (state) => state.topics.items ?? [],
-      partners: (state) => state.partners.items ?? [],
+      sections: (state) => state.sections.data.items ?? [],
+      topics: (state) => state.topics.data.items ?? [],
+      partners: (state) => state.partners.data.items ?? [],
     }),
   },
   methods: {
