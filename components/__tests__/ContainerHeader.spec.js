@@ -3,7 +3,7 @@ import ContainerHeader from '../ContainerHeader.vue'
 import UIHeaderNavSection from '../UIHeaderNavSection.vue'
 import UIHeaderNavTopic from '../UIHeaderNavTopic.vue'
 
-describe('Vuex state computed', () => {
+describe('computed from Vuex state', () => {
   test('get the proper data', () => {
     const wrapper = shallowMount(ContainerHeader, {
       mocks: {

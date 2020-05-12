@@ -14,8 +14,8 @@ import UIFooter from '~/components/UIFooter.vue'
 
 export default {
   components: {
-    UIFooter,
     ContainerHeader,
+    UIFooter,
   },
   async fetch() {
     const [topicsResult, partnersResult] = await Promise.allSettled([
