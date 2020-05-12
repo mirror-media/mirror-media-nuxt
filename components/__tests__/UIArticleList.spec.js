@@ -24,6 +24,16 @@ describe('list title', () => {
     const h1 = wrapper.find('h1')
     expect(h1.element.style.color).toBe('rgb(0, 0, 0)')
   })
+  test('do not render title if "listTitle" props is empty string', () => {
+    const listTitle = ''
+    const wrapper = shallowMount(UIArticleList, {
+      propsData: {
+        listTitle,
+      },
+    })
+    const h1 = wrapper.find('h1')
+    expect(h1.exists()).toBe(false)
+  })
 })
 
 describe('render list items', () => {
@@ -60,5 +70,15 @@ describe('render list items', () => {
       const value = tuple[1]
       expect(article.props()[key]).toBe(value)
     })
+  })
+  test('do not render list if "listData" props is empty array', () => {
+    const listData = []
+    const wrapper = shallowMount(UIArticleList, {
+      propsData: {
+        listData,
+      },
+    })
+    const list = wrapper.find('ol')
+    expect(list.exists()).toBe(false)
   })
 })

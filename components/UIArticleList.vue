@@ -1,14 +1,14 @@
 <template>
   <section class="list-wrapper">
     <h1
-      v-if="listTitle !== ''"
+      v-if="showTitle"
       class="title"
       :style="{
         color: listTitleColor,
       }"
       v-text="listTitle"
     />
-    <ol v-if="listData.length > 0" class="list-wrapper__list list">
+    <ol v-if="showList" class="list-wrapper__list list">
       <li v-for="(item, i) in listData" :key="i" class="list__list-item">
         <UIArticleCard
           :href="item.href"
@@ -41,6 +41,14 @@ export default {
     listData: {
       type: Array,
       default: () => [],
+    },
+  },
+  computed: {
+    showTitle() {
+      return this.listTitle !== ''
+    },
+    showList() {
+      return this.listData.length > 0
     },
   },
 }
