@@ -7,7 +7,9 @@
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'Story',
+}
 </script>
 
 <style lang="scss" scoped></style>

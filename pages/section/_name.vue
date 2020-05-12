@@ -14,6 +14,7 @@
 import UIArticleList from '~/components/UIArticleList.vue'
 
 export default {
+  name: 'Section',
   components: {
     UIArticleList,
   },
