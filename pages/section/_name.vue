@@ -21,7 +21,8 @@ export default {
     const response = await this.$axios.get(
       'http://api.mirrormedia.mg/posts?where={"sections":{"$in":["57e1e0e5ee85930e00cad4e9"]}}&max_results=9&page=1&sort=-publishedDate'
     )
-    const listData = response.data._items.map(this.mapDataToComponentProps)
+    let listData = response.data?._items ?? []
+    listData = listData.map(this.mapDataToComponentProps)
     this.listData = listData
   },
   data() {
@@ -41,12 +42,12 @@ export default {
     },
     mapDataToComponentProps(item) {
       return {
-        href: `/story/${item.slug}`,
-        imgSrc: item.heroImage.image.resizedTargets.mobile.url,
+        href: item.slug ? `/story/${item.slug}` : '/',
+        imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url ?? '',
         imgText: '時事、生活',
         imgTextBackgroundColor: '#30BACB',
-        infoTitle: item.title,
-        infoDescription: this.createInfoDescriptions(item.brief.apiData),
+        infoTitle: item.title ?? '',
+        infoDescription: this.createInfoDescriptions(item.brief?.apiData ?? []),
       }
     },
   },
