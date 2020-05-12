@@ -9,7 +9,7 @@
       v-text="listTitle"
     />
     <ol v-if="showList" class="list-wrapper__list list">
-      <li v-for="(item, i) in listData" :key="i" class="list__list-item">
+      <li v-for="item in listData" :key="item.id" class="list__list-item">
         <UIArticleCard
           :href="item.href"
           :imgSrc="item.imgSrc"
