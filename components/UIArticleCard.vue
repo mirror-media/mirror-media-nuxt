@@ -1,5 +1,11 @@
 <template>
-  <div class="article" @click="handleClick">
+  <a
+    :href="href"
+    class="article"
+    target="_blank"
+    rel="noopener noreferrer"
+    @click="handleClick"
+  >
     <div class="article__top-wrapper top-wrapper">
       <div v-lazy-container="{ selector: 'img' }" class="top-wrapper__img img">
         <img :data-src="imgSrc" />
@@ -21,7 +27,7 @@
       <h1 v-text="infoTitle" />
       <p v-text="infoDescription" />
     </div>
-  </div>
+  </a>
 </template>
 
 <script>
@@ -65,24 +71,8 @@ export default {
       },
     }
   },
-  computed: {
-    isHrefHttp() {
-      return this.isHTTP(this.href)
-    },
-  },
   methods: {
-    isHTTP(string) {
-      return RegExp('^https?://').test(string)
-    },
-    handleLink() {
-      if (this.isHrefHttp) {
-        window.open(this.href, '_blank', 'noopener', 'noreferrer')
-      } else {
-        this.$router.push(this.href)
-      }
-    },
     handleClick() {
-      this.handleLink()
       this.$ga.event(this.ga)
     },
   },

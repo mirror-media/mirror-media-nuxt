@@ -35,49 +35,23 @@ const createWrapper = (Component, overrides) => {
 
 describe('href behaviour', () => {
   test('should open a new tab if props "href" is matching "^https?://"', () => {
-    const hrefPropsMockHttp = 'http://www.google.com'
-    window.open = jest.fn()
+    const hrefPropsMockPathAbsolute = 'http://www.google.com'
     let wrapper = createWrapper(UIArticleCard, {
       propsData: {
-        href: hrefPropsMockHttp,
+        href: hrefPropsMockPathAbsolute,
       },
     })
-    wrapper.trigger('click')
-    expect(window.open).toHaveBeenCalledWith(
-      hrefPropsMockHttp,
-      '_blank',
-      'noopener',
-      'noreferrer'
-    )
-    const hrefPropsMockHttps = 'https://www.google.com'
+    let link = wrapper.find('a')
+    expect(link.attributes().href).toBe(hrefPropsMockPathAbsolute)
+
+    const hrefPropsMockPathRelative = '/story/test-slug'
     wrapper = createWrapper(UIArticleCard, {
       propsData: {
-        href: hrefPropsMockHttps,
+        href: hrefPropsMockPathRelative,
       },
     })
-    wrapper.trigger('click')
-    expect(window.open).toHaveBeenCalledWith(
-      hrefPropsMockHttps,
-      '_blank',
-      'noopener',
-      'noreferrer'
-    )
-  })
-  test('should perform a router push if props href is not matching "^https?://"', () => {
-    const hrefPropsMock = '/test'
-    const $router = {
-      push: jest.fn(),
-    }
-    const wrapper = createWrapper(UIArticleCard, {
-      propsData: {
-        href: hrefPropsMock,
-      },
-      mocks: {
-        $router,
-      },
-    })
-    wrapper.trigger('click')
-    expect($router.push).toHaveBeenCalledWith(hrefPropsMock)
+    link = wrapper.find('a')
+    expect(link.attributes().href).toBe(hrefPropsMockPathRelative)
   })
 })
 
