@@ -41,6 +41,7 @@ export default {
     listData: {
       type: Array,
       default: () => [],
+      required: true,
     },
   },
   computed: {

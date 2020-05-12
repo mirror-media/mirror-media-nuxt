@@ -36,26 +36,32 @@ export default {
     href: {
       type: String,
       default: '/',
+      required: true,
     },
     imgSrc: {
       type: String,
       default: require('~/assets/notImage.png'),
+      required: true,
     },
     imgText: {
       type: String,
       default: '',
+      required: true,
     },
     imgTextBackgroundColor: {
       type: String,
       default: 'white',
+      required: true,
     },
     infoTitle: {
       type: String,
       default: '',
+      required: true,
     },
     infoDescription: {
       type: String,
       default: '',
+      required: true,
     },
     infoBackgroundColor: {
       type: String,
