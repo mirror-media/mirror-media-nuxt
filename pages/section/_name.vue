@@ -31,11 +31,11 @@ export default {
     }
   },
   methods: {
-    createInfoDescriptions(apiData) {
-      const filterString = function (content) {
+    createInfoDescriptions(apiData = []) {
+      const filterString = function (content = '') {
         return typeof content === 'string'
       }
-      const getStringContents = function (data) {
+      const getStringContents = function (data = { content: [] }) {
         return data.content.filter(filterString).join('')
       }
       return apiData.map(getStringContents).join('')
