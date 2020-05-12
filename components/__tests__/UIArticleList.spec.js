@@ -8,6 +8,7 @@ describe('list title', () => {
     const wrapper = shallowMount(UIArticleList, {
       propsData: {
         listTitle,
+        listData: [],
       },
     })
     const h1 = wrapper.find('h1')
@@ -19,6 +20,7 @@ describe('list title', () => {
       propsData: {
         listTitle: 'test title',
         listTitleColor,
+        listData: [],
       },
     })
     const h1 = wrapper.find('h1')
@@ -29,6 +31,7 @@ describe('list title', () => {
     const wrapper = shallowMount(UIArticleList, {
       propsData: {
         listTitle,
+        listData: [],
       },
     })
     const h1 = wrapper.find('h1')

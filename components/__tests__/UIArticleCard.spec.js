@@ -39,6 +39,11 @@ describe('href behaviour', () => {
     let wrapper = createWrapper(UIArticleCard, {
       propsData: {
         href: hrefPropsMockPathAbsolute,
+        imgSrc: '',
+        imgText: '',
+        imgTextBackgroundColor: '',
+        infoTitle: '',
+        infoDescription: '',
       },
     })
     let link = wrapper.find('a')
@@ -48,6 +53,11 @@ describe('href behaviour', () => {
     wrapper = createWrapper(UIArticleCard, {
       propsData: {
         href: hrefPropsMockPathRelative,
+        imgSrc: '',
+        imgText: '',
+        imgTextBackgroundColor: '',
+        infoTitle: '',
+        infoDescription: '',
       },
     })
     link = wrapper.find('a')
@@ -61,6 +71,14 @@ describe('GA event', () => {
       event: jest.fn(),
     }
     const wrapper = createWrapper(UIArticleCard, {
+      propsData: {
+        href: '',
+        imgSrc: '',
+        imgText: '',
+        imgTextBackgroundColor: '',
+        infoTitle: '',
+        infoDescription: '',
+      },
       mocks: {
         $ga,
       },
@@ -79,7 +97,12 @@ describe('images wrapper', () => {
     const imgSrc = 'http://test.png'
     const wrapper = createWrapper(UIArticleCard, {
       propsData: {
+        href: '',
         imgSrc,
+        imgText: '',
+        imgTextBackgroundColor: '',
+        infoTitle: '',
+        infoDescription: '',
       },
     })
     const img = wrapper.find('img')
@@ -89,7 +112,12 @@ describe('images wrapper', () => {
     const imgText = 'section'
     const wrapper = createWrapper(UIArticleCard, {
       propsData: {
+        href: '',
+        imgSrc: '',
         imgText,
+        imgTextBackgroundColor: '',
+        infoTitle: '',
+        infoDescription: '',
       },
     })
     const span = wrapper.find('span')
@@ -99,7 +127,12 @@ describe('images wrapper', () => {
     const imgTextBackgroundColor = '#000000' // rgb(0, 0, 0)
     const wrapper = createWrapper(UIArticleCard, {
       propsData: {
+        href: '',
+        imgSrc: '',
+        imgText: '',
         imgTextBackgroundColor,
+        infoTitle: '',
+        infoDescription: '',
       },
     })
     const span = wrapper.find('span')
@@ -112,7 +145,12 @@ describe('info wrapper', () => {
     const infoTitle = 'test title'
     const wrapper = shallowMount(UIArticleCard, {
       propsData: {
+        href: '',
+        imgSrc: '',
+        imgText: '',
+        imgTextBackgroundColor: '',
         infoTitle,
+        infoDescription: '',
       },
     })
     const h1 = wrapper.find('h1')
@@ -122,6 +160,11 @@ describe('info wrapper', () => {
     const infoDescription = 'test description'
     const wrapper = shallowMount(UIArticleCard, {
       propsData: {
+        href: '',
+        imgSrc: '',
+        imgText: '',
+        imgTextBackgroundColor: '',
+        infoTitle: '',
         infoDescription,
       },
     })
@@ -132,6 +175,12 @@ describe('info wrapper', () => {
     const infoBackgroundColor = '#000000' // rgb(0, 0, 0)
     const wrapper = createWrapper(UIArticleCard, {
       propsData: {
+        href: '',
+        imgSrc: '',
+        imgText: '',
+        imgTextBackgroundColor: '',
+        infoTitle: '',
+        infoDescription: '',
         infoBackgroundColor,
       },
     })
