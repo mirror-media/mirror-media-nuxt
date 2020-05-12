@@ -2,9 +2,9 @@
   <section class="section">
     <div>
       <UIArticleList
-        :list-title="'時事、生活'"
-        :list-title-color="'#30BACB'"
-        :list-data="listData"
+        :listTitle="'時事、生活'"
+        :listTitleColor="'#30BACB'"
+        :listData="listData"
       />
     </div>
   </section>

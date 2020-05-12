@@ -12,11 +12,11 @@
       <li v-for="(item, i) in listData" :key="i" class="list__list-item">
         <UIArticleCard
           :href="item.href"
-          :img-src="item.imgSrc"
-          :img-text="item.imgText"
-          :img-text-background-color="item.imgTextBackgroundColor"
-          :info-title="item.infoTitle"
-          :info-description="item.infoDescription"
+          :imgSrc="item.imgSrc"
+          :imgText="item.imgText"
+          :imgTextBackgroundColor="item.imgTextBackgroundColor"
+          :infoTitle="item.infoTitle"
+          :infoDescription="item.infoDescription"
         />
       </li>
     </ol>
