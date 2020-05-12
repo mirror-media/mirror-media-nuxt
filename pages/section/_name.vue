@@ -32,14 +32,8 @@ export default {
     }
   },
   methods: {
-    createInfoDescriptions(apiData = []) {
-      const filterString = function (content = '') {
-        return typeof content === 'string'
-      }
-      const getStringContents = function (data = { content: [] }) {
-        return data.content.filter(filterString).join('')
-      }
-      return apiData.map(getStringContents).join('')
+    stripHtmlTag(html = '') {
+      return html.replace(/<\/?[^>]+(>|$)/g, '')
     },
     mapDataToComponentProps(item) {
       return {
@@ -49,7 +43,7 @@ export default {
         imgText: '時事、生活',
         imgTextBackgroundColor: '#30BACB',
         infoTitle: item.title ?? '',
-        infoDescription: this.createInfoDescriptions(item.brief?.apiData ?? []),
+        infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
       }
     },
   },

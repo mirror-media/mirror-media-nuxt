@@ -1,30 +1,15 @@
 import { shallowMount } from '@vue/test-utils'
 import page from '../section/_name.vue'
 
-describe('createInfoDescriptions method', () => {
-  test('should return all the string primitives in content array', () => {
+describe('stripHtmlTag method', () => {
+  test('should strip html tags successfully', () => {
     const wrapper = shallowMount(page)
-    const data = [
-      {
-        content: ['foo', 'bar'],
-      },
-      {
-        content: ['123'],
-      },
-    ]
-    expect(wrapper.vm.createInfoDescriptions(data)).toBe('foobar123')
+    const html = '<div><script></script><p>foo</p><p>bar</p><p>123</p></div>'
+    expect(wrapper.vm.stripHtmlTag(html)).toBe('foobar123')
   })
-
-  test('should skip all the non-string item in content array', () => {
+  test('should return the same result if there is not html tags', () => {
     const wrapper = shallowMount(page)
-    const data = [
-      {
-        content: ['foo', 'bar', {}, [], true, null, undefined, 123],
-      },
-      {
-        content: ['123'],
-      },
-    ]
-    expect(wrapper.vm.createInfoDescriptions(data)).toBe('foobar123')
+    const html = 'foobar123'
+    expect(wrapper.vm.stripHtmlTag(html)).toBe('foobar123')
   })
 })
