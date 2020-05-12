@@ -25,6 +25,7 @@
 
 <script>
 import UIArticleCard from './UIArticleCard.vue'
+
 export default {
   components: {
     UIArticleCard,
