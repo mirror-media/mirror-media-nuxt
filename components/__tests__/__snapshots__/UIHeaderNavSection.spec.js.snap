@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`markup render correctly 1`] = `
+<section
+  class="header-nav-section"
+>
+  <div
+    class="container"
+  >
+    <div
+      class="section section--home active"
+    >
+      <nuxt-link-stub
+        to="/"
+      >
+        <h2>
+          首頁
+        </h2>
+      </nuxt-link-stub>
+    </div>
+     
+    <div
+      class="section section--culture"
+    >
+      <nuxt-link-stub
+        to="/section/culture"
+      >
+        <h2>
+          文化
+        </h2>
+      </nuxt-link-stub>
+       
+      <div
+        class="section__dropdown"
+      >
+        <nuxt-link-stub
+          to="/category/bookreview"
+        >
+          <h3>
+            書評
+          </h3>
+        </nuxt-link-stub>
+      </div>
+    </div>
+     
+    <div
+      class="section section--external"
+    >
+      <h2>
+        健康醫療
+      </h2>
+       
+      <div
+        class="section__dropdown"
+      >
+        <nuxt-link-stub
+          to="/externals/healthnews"
+        >
+          <h3>
+            健康醫療網新聞
+          </h3>
+        </nuxt-link-stub>
+      </div>
+    </div>
+  </div>
+</section>
+`;
