@@ -75,7 +75,7 @@ module.exports = {
   },
 
   styleResources: {
-    sass: '~/sass/*.sass',
+    scss: '~/scss/*.scss',
   },
   /*
    ** Build configuration
