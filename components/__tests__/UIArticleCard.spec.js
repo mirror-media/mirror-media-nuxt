@@ -1,37 +1,17 @@
 import { shallowMount } from '@vue/test-utils'
-import _ from 'lodash'
 import UIArticleCard from '../UIArticleCard.vue'
+import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
-// customizer to overwrite properties if the source object properties are an empty object or an array, like overwrite store object/array by empty object/array.
-const customizer = (objValue, srcValue) => {
-  if (Array.isArray(srcValue)) {
-    return srcValue
-  }
-  if (srcValue instanceof Object && Object.keys(srcValue).length === 0) {
-    return srcValue
-  }
-}
-
-// createWrapper factory
-// usage: createWrapper({ mocks: {}, store: createStore({ getters: {} }), //... })
-// if you want to overwrite default mounting options,
-// or want to keep reference to a mock in test.
-const createWrapper = (Component, overrides) => {
-  const defaultMountingOptions = {
-    mocks: {
-      $router: {
-        push: jest.fn(),
-      },
-      $ga: {
-        event: jest.fn(),
-      },
+const createWrapper = createWrapperHelper({
+  mocks: {
+    $router: {
+      push: jest.fn(),
     },
-  }
-  return shallowMount(
-    Component,
-    _.mergeWith(defaultMountingOptions, overrides, customizer)
-  )
-}
+    $ga: {
+      event: jest.fn(),
+    },
+  },
+})
 
 describe('href behaviour', () => {
   test('should open a new tab if props "href" is matching "^https?://"', () => {
