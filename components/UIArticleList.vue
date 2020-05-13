@@ -56,35 +56,48 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-.title
-  padding: 0 32px
-  font-size: 24px
-  font-weight: 400
-  @include media-breakpoint-up(md)
-    padding: 0 16px
-  @include media-breakpoint-up(xl)
-    padding: 0
+<style lang="scss" scoped>
+.title {
+  padding: 0 32px;
+  font-size: 24px;
+  font-weight: 400;
+  @include media-breakpoint-up(md) {
+    padding: 0 16px;
+  }
+  @include media-breakpoint-up(xl) {
+    padding: 0;
+  }
+}
 
-.list-wrapper
-  &__list
-    margin: 20px 0 0 0
+.list-wrapper {
+  &__list {
+    margin: 20px 0 0 0;
+  }
+}
 
-.list
-  display: flex
-  flex-wrap: wrap
-  &__list-item
-    width: 100%
-    & + &
-      margin: 40px 0 0 0
-  @include media-breakpoint-up(md)
-    margin: -20px 0 0 -20px
-    &__list-item
-      width: calc(50% - 20px)
-      margin: 40px 0 0 20px
-      & + &
-        margin: 40px 0 0 20px
-  @include media-breakpoint-up(xl)
-    &__list-item
-      width: calc(33.33% - 20px)
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  &__list-item {
+    width: 100%;
+    & + & {
+      margin: 40px 0 0 0;
+    }
+  }
+  @include media-breakpoint-up(md) {
+    margin: -20px 0 0 -20px;
+    &__list-item {
+      width: calc(50% - 20px);
+      margin: 40px 0 0 20px;
+      & + & {
+        margin: 40px 0 0 20px;
+      }
+    }
+  }
+  @include media-breakpoint-up(xl) {
+    &__list-item {
+      width: calc(33.33% - 20px);
+    }
+  }
+}
 </style>
