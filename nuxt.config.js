@@ -44,6 +44,20 @@ module.exports = {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
+    /*
+     ** googleAnalytics module configuration
+     ** https://github.com/nuxt-community/analytics-module
+     */
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: () => {
+          return document.domain.match(/^(www|nuxt).mirrormedia.mg/gs)
+            ? 'UA-83609754-1'
+            : 'UA-83609754-2'
+        },
+      },
+    ],
   ],
   /*
    ** Nuxt.js modules
@@ -51,7 +65,6 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/google-analytics',
     '@nuxtjs/style-resources',
   ],
   /*
@@ -59,21 +72,6 @@ module.exports = {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
-  /*
-   ** googleAnalytics module configuration
-   ** https://github.com/nuxt-community/analytics-module
-   */
-  googleAnalytics: {
-    id: () => {
-      return document.domain.match(/^(www|nuxt).mirrormedia.mg/gs)
-        ? 'UA-83609754-1'
-        : 'UA-83609754-2'
-    },
-    debug: {
-      sendHitTask: process.env.NODE_ENV === 'production',
-    },
-  },
-
   styleResources: {
     scss: '~/scss/*.scss',
   },
