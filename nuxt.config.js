@@ -44,6 +44,7 @@ module.exports = {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
+    '@nuxtjs/style-resources',
     /*
      ** googleAnalytics module configuration
      ** https://github.com/nuxt-community/analytics-module
@@ -65,7 +66,6 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/style-resources',
   ],
   /*
    ** Axios module configuration
