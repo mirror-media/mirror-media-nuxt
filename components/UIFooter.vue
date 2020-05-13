@@ -213,50 +213,68 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-.footer
-  box-shadow: 0 0 10px rgba(0, 0, 0, .2)
-  padding: 10px 20px
-  @include media-breakpoint-up(xl)
-    box-shadow: none
-    padding: 15px 15px 50px 15px
-    border-top: 2px solid #000
-    display: flex
-    align-items: center
-    justify-content: space-between
+<style lang="scss" scoped>
+.footer {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px 20px;
+  @include media-breakpoint-up(xl) {
+    box-shadow: none;
+    padding: 15px 15px 50px 15px;
+    border-top: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
 
-.footer-text-links
-  color: rgba(0, 0, 0, .4)
-  text-align: center
-  font-size: 19.2px
-  a:not(:first-child)
-    &::before
-      content: '-'
-      padding: 0 4px 0 0
-  .footer-download-app, .footer-auth
-    display: none
-  @include media-breakpoint-up(xl)
-    color: #34495e
-    text-align: left
-    font-size: 16px
-    font-weight: 700
-    a:not(:first-child)
-      &::before
-        display: none
-    .footer-download-app, .footer-auth
-      display: initial
-    a + a
-      margin: 0 0 0 26px
+.footer-text-links {
+  color: rgba(0, 0, 0, 0.4);
+  text-align: center;
+  font-size: 19.2px;
+  a:not(:first-child) {
+    &::before {
+      content: '-';
+      padding: 0 4px 0 0;
+    }
+  }
+  .footer-download-app,
+  .footer-auth {
+    display: none;
+  }
+  @include media-breakpoint-up(xl) {
+    color: #34495e;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 700;
+    a:not(:first-child) {
+      &::before {
+        display: none;
+      }
+    }
+    .footer-download-app,
+    .footer-auth {
+      display: initial;
+    }
+    a + a {
+      margin: 0 0 0 26px;
+    }
+  }
+}
 
-.footer-icon-links
-  display: none
-  @include media-breakpoint-up(xl)
-    display: flex
-    a
-      display: inline-block
-      height: 20px
-      img
-        height: 100%
-    a + a
-      margin: 0 0 0 26px
+.footer-icon-links {
+  display: none;
+  @include media-breakpoint-up(xl) {
+    display: flex;
+    a {
+      display: inline-block;
+      height: 20px;
+      img {
+        height: 100%;
+      }
+    }
+    a + a {
+      margin: 0 0 0 26px;
+    }
+  }
+}
 </style>

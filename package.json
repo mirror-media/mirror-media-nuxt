@@ -33,6 +33,8 @@
     "helmet": "^3.22.0",
     "nuxt": "^2.12.2",
     "vue-lazyload": "^1.3.3",
+    "humps": "^2.0.1",
+    "lodash": "^4.17.15",
     "vue-infinite-loading": "^2.4.5"
   },
   "devDependencies": {
