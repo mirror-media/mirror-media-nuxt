@@ -2,6 +2,8 @@
 
 exports[`markup render correctly 1`] = `
 <header>
+  <uisearchbar-stub />
+   
   <nav
     class="header-nav"
   >

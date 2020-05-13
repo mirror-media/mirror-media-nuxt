@@ -1,5 +1,6 @@
 <template>
   <header>
+    <UISearchBar />
     <nav class="header-nav">
       <UIHeaderNavSection
         :sections="sections"
@@ -14,12 +15,14 @@
 <script>
 import { mapState } from 'vuex'
 
+import UISearchBar from './UISearchBar.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
 
 export default {
   name: 'ContainerHeader',
   components: {
+    UISearchBar,
     UIHeaderNavSection,
     UIHeaderNavTopic,
   },
@@ -39,8 +42,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header-nav {
+header {
   background-color: #f5f5f5;
+}
+.header-nav {
   box-shadow: 0 2px 1px rgba(#000, 0.2);
   position: relative;
   z-index: 99;
