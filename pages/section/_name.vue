@@ -1,12 +1,11 @@
 <template>
   <section class="section">
-    <div>
-      <UIArticleList
-        :listTitle="'時事、生活'"
-        :listTitleColor="'#30BACB'"
-        :listData="listData"
-      />
-    </div>
+    <UIArticleList
+      class="list"
+      :listTitle="'時事、生活'"
+      :listTitleColor="'#30BACB'"
+      :listData="listData"
+    />
   </section>
 </template>
 
@@ -61,6 +60,12 @@ export default {
     max-width: 1024px;
     padding: 0;
     margin: auto;
+  }
+}
+
+.list {
+  @include media-breakpoint-up(md) {
+    margin: 8px 0 0 0;
   }
 }
 </style>
