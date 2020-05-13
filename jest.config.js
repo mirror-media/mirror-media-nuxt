@@ -4,7 +4,7 @@ module.exports = {
     '^~/(.*)$': '<rootDir>/$1',
     '^vue$': 'vue/dist/vue.common.js',
   },
-  moduleFileExtensions: ['js'],
+  moduleFileExtensions: ['js', 'vue'],
   transform: {
     '^.+\\.js$': 'babel-jest',
     '.*\\.(vue)$': 'vue-jest',
@@ -15,5 +15,9 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
     '<rootDir>/pages/**/*.vue',
+  ],
+  setupFiles: [
+    '<rootDir>/plugins/vueDirectivesGlobal.js',
+    '<rootDir>/plugins/vuePluginsGlobal.js',
   ],
 }

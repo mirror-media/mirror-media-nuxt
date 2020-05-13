@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div :class="[{ listing: isListing }]">
     <ContainerHeader />
     <nuxt />
-    <UIFooter />
+    <UIFooter :class="[{ 'footer--listing': isListing }]" />
   </div>
 </template>
 
@@ -31,6 +31,12 @@ export default {
       this.commitPartnersData(partnersResult)
     }
   },
+  computed: {
+    isListing() {
+      const listingRouteNames = ['section-name']
+      return listingRouteNames.includes(this.$route.name)
+    },
+  },
   methods: {
     commitTopicsData(result) {
       const topicsData = camelizeKeys(result.value.data)
@@ -50,4 +56,22 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="scss" scoped>
+.listing {
+  background-color: #f2f2f2;
+  padding: 0 0 60px 0;
+  @include media-breakpoint-up(xl) {
+    padding: 0;
+  }
+}
+
+.footer {
+  &--listing {
+    margin: 0 32px;
+    @include media-breakpoint-up(xl) {
+      max-width: 1024px;
+      margin: 60px auto 0 auto;
+    }
+  }
+}
+</style>
