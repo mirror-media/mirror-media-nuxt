@@ -81,6 +81,9 @@ module.exports = {
    ** Build configuration
    */
   build: {
+    babel: {
+      plugins: ['lodash'],
+    },
     /*
      ** You can extend webpack config here
      */
