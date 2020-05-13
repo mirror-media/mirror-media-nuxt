@@ -2,7 +2,7 @@
   <section class="section">
     <UIArticleList
       class="list"
-      :listTitle="'時事、生活'"
+      :listTitle="currentSectionTitle"
       :listTitleColor="'#30BACB'"
       :listData="listData"
     />
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import UIArticleList from '~/components/UIArticleList.vue'
 
 export default {
@@ -19,7 +20,7 @@ export default {
   },
   async fetch() {
     const response = await this.$axios.get(
-      'http://api.mirrormedia.mg/posts?where={"sections":{"$in":["57e1e0e5ee85930e00cad4e9"]}}&max_results=9&page=1&sort=-publishedDate'
+      `http://api.mirrormedia.mg/posts?where={"sections":{"$in":["${this.currentSectionId}"]}}&max_results=9&page=1&sort=-publishedDate`
     )
     let listData = response.data?._items ?? []
     listData = listData.map(this.mapDataToComponentProps)
@@ -30,6 +31,27 @@ export default {
       listData: [],
     }
   },
+  computed: {
+    ...mapState({
+      sections: (state) => state.sections.data.items ?? [],
+    }),
+    currentSectionName() {
+      return this.$route.params.name
+    },
+    currentSectionData() {
+      return (
+        this.sections.find(
+          (section) => section.name === this.currentSectionName
+        ) ?? {}
+      )
+    },
+    currentSectionId() {
+      return this.currentSectionData.id
+    },
+    currentSectionTitle() {
+      return this.currentSectionData.title
+    },
+  },
   methods: {
     stripHtmlTag(html = '') {
       return html.replace(/<\/?[^>]+(>|$)/g, '')
@@ -39,7 +61,7 @@ export default {
         id: item._id,
         href: item.slug ? `/story/${item.slug}` : '/',
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url ?? '',
-        imgText: '時事、生活',
+        imgText: this.currentSectionTitle,
         imgTextBackgroundColor: '#30BACB',
         infoTitle: item.title ?? '',
         infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
