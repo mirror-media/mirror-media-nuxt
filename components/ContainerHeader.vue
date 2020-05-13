@@ -38,11 +38,13 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-.header-nav
-  background-color: #f5f5f5
-  box-shadow: 0 2px 1px rgba(#000, 0.2)
-  z-index: 99
-  @include media-breakpoint-up(xl)
-    box-shadow: 0 0 5px #ccc
+<style lang="scss" scoped>
+.header-nav {
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 1px rgba(#000, 0.2);
+  z-index: 99;
+  @include media-breakpoint-up(xl) {
+    box-shadow: 0 0 5px #ccc;
+  }
+}
 </style>
