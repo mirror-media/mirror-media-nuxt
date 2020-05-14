@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <UIArticleList
-      class="list"
+      class="section__list"
       :listTitle="currentSectionTitle"
       :listTitleColor="'#30BACB'"
       :listData="listData"
@@ -83,11 +83,10 @@ export default {
     padding: 0;
     margin: auto;
   }
-}
-
-.list {
-  @include media-breakpoint-up(md) {
-    margin: 8px 0 0 0;
+  &__list {
+    @include media-breakpoint-up(md) {
+      margin: 8px 0 0 0;
+    }
   }
 }
 </style>
