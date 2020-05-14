@@ -8,9 +8,9 @@
     />
     <client-only>
       <infinite-loading @infinite="infiniteHandler">
+        <UILoadmoreLoadingIcon slot="spinner" />
         <!-- provide empty slot if we want to disable load messages locally -->
         <!-- see: https://peachscript.github.io/vue-infinite-loading/guide/configure-load-msg.html#via-slot-sepcial-attribute -->
-        <div slot="spinner" />
         <div slot="no-more" />
         <div slot="no-results" />
         <div slot="error" />
@@ -23,12 +23,14 @@
 import { mapState } from 'vuex'
 import InfiniteLoading from 'vue-infinite-loading'
 import UIArticleList from '~/components/UIArticleList.vue'
+import UILoadmoreLoadingIcon from '~/components/UILoadmoreLoadingIcon.vue'
 
 export default {
   name: 'Section',
   components: {
     InfiniteLoading,
     UIArticleList,
+    UILoadmoreLoadingIcon,
   },
   async fetch() {
     const baseUrl = process.browser
