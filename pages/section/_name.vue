@@ -20,7 +20,7 @@ export default {
   },
   async fetch() {
     const response = await this.$axios.get(
-      `http://api.mirrormedia.mg/posts?where={"sections":{"$in":["${this.currentSectionId}"]}}&max_results=9&page=1&sort=-publishedDate`
+      `/api/posts?where={"sections":{"$in":["${this.currentSectionId}"]}}&max_results=9&page=1&sort=-publishedDate`
     )
     let listData = response.data?._items ?? []
     listData = listData.map(this.mapDataToComponentProps)
