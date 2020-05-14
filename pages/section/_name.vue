@@ -19,8 +19,11 @@ export default {
     UIArticleList,
   },
   async fetch() {
+    const baseUrl = process.browser
+      ? `//${location.host}/`
+      : process.env._AXIOS_BASE_URL_
     const response = await this.$axios.get(
-      `/api/posts?where={"sections":{"$in":["${this.currentSectionId}"]}}&max_results=9&page=1&sort=-publishedDate`
+      `${baseUrl}api/posts?where={"sections":{"$in":["${this.currentSectionId}"]}}&max_results=9&page=1&sort=-publishedDate`
     )
     let listData = response.data?._items ?? []
     listData = listData.map(this.mapDataToComponentProps)
