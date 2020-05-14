@@ -18,7 +18,11 @@ const createWrapperHelper = function (defaultMountingOptions) {
   return function createWrapper(Component, overrideOptions) {
     return shallowMount(
       Component,
-      _.mergeWith(defaultMountingOptions, overrideOptions, customizer)
+      _.mergeWith(
+        _.cloneDeep(defaultMountingOptions),
+        overrideOptions,
+        customizer
+      )
     )
   }
 }

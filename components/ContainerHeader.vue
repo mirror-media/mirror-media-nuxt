@@ -1,6 +1,6 @@
 <template>
   <header>
-    <UISearchBar />
+    <ContainerSearchBar :sections="sections" />
     <nav class="header-nav">
       <UIHeaderNavSection
         :sections="sections"
@@ -15,14 +15,14 @@
 <script>
 import { mapState } from 'vuex'
 
-import UISearchBar from './UISearchBar.vue'
+import ContainerSearchBar from './ContainerSearchBar.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
 
 export default {
   name: 'ContainerHeader',
   components: {
-    UISearchBar,
+    ContainerSearchBar,
     UIHeaderNavSection,
     UIHeaderNavTopic,
   },

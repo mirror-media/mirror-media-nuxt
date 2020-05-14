@@ -1,0 +1,92 @@
+import UISearchBarSelect from '../UISearchBarSelect.vue'
+import createWrapperHelper from '~/test/helpers/createWrapperHelper'
+
+const createWrapper = createWrapperHelper({
+  propsData: {
+    options: [
+      { name: 'all', title: '全部類別' },
+      { name: 'culture', title: '文化' },
+    ],
+  },
+})
+
+describe('select feature', () => {
+  test('render the proper options', () => {
+    const wrapper = createWrapper(UISearchBarSelect, {
+      data() {
+        return {
+          isOptionField: true,
+        }
+      },
+    })
+    const optionField = wrapper.find('.option-filed')
+
+    expect(optionField.find('li:nth-child(1)').text()).toBe('全部類別')
+    expect(optionField.find('li:nth-child(2)').text()).toBe('文化')
+  })
+
+  test('select the first option in the beginning', () => {
+    const wrapper = createWrapper(UISearchBarSelect, {
+      data() {
+        return {
+          isOptionField: true,
+        }
+      },
+    })
+
+    expect(wrapper.find('.displayed-field').text()).toBe('全部類別')
+    expect(
+      wrapper.find('.option-filed li:first-child').classes('selected')
+    ).toBe(true)
+  })
+
+  test('toggle option field when user clicks displayed field', async () => {
+    const wrapper = createWrapper(UISearchBarSelect)
+    const displayedField = wrapper.find('.displayed-field')
+
+    displayedField.trigger('click')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('.option-filed').exists()).toBe(true)
+
+    displayedField.trigger('click')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('.option-filed').exists()).toBe(false)
+  })
+
+  test('behave correctly when user select the option', async () => {
+    const wrapper = createWrapper(UISearchBarSelect, {
+      data() {
+        return {
+          isOptionField: true,
+        }
+      },
+    })
+
+    wrapper.find('.option-filed li:nth-child(2)').trigger('click')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('.option-filed').exists()).toBe(false)
+
+    const displayedField = wrapper.find('.displayed-field')
+    expect(displayedField.text()).toBe('文化')
+
+    displayedField.trigger('click')
+    await wrapper.vm.$nextTick()
+    expect(
+      wrapper.find('.option-filed li:nth-child(2)').classes('selected')
+    ).toBe(true)
+  })
+
+  test('close option field when user clicks outside', async () => {
+    const wrapper = createWrapper(UISearchBarSelect, {
+      data() {
+        return {
+          isOptionField: true,
+        }
+      },
+    })
+
+    document.body.dispatchEvent(new Event('click'))
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('.option-filed').exists()).toBe(false)
+  })
+})

@@ -2,7 +2,7 @@
   <section class="search-bar">
     <button type="button" class="search" />
     <div class="field">
-      <UISearchBarSelect />
+      <UISearchBarSelect :options="options" />
       <UISearchBarInput class="search-bar-input" />
     </div>
   </section>
@@ -13,10 +13,29 @@ import UISearchBarSelect from './UISearchBarSelect.vue'
 import UISearchBarInput from './UISearchBarInput.vue'
 
 export default {
-  name: 'UISearchBar',
+  name: 'ContainerSearchBar',
   components: {
     UISearchBarSelect,
     UISearchBarInput,
+  },
+  props: {
+    sections: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      defaultOption: { title: '全部類別' },
+    }
+  },
+  computed: {
+    options() {
+      const sections = this.sections.filter(
+        (section) => section.name !== 'videohub'
+      )
+      return [this.defaultOption, ...sections]
+    },
   },
 }
 </script>

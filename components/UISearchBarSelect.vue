@@ -1,18 +1,17 @@
 <template>
-  <div class="search-bar-select">
-    <button type="button" class="title">全部類別</button>
-    <ul class="list">
-      <li class="selected">全部類別</li>
-      <li>時事</li>
-      <li>娛樂</li>
-      <li>娛樂</li>
-      <li>時事</li>
-      <li>娛樂</li>
-      <li>娛樂</li>
-      <li>時事</li>
-      <li>娛樂</li>
-      <li>娛樂</li>
-      <li>時事</li>
+  <div v-click-outside="closeOption" class="search-bar-select">
+    <button type="button" class="displayed-field" @click="toggleOptionField">
+      {{ selectedOption.title }}
+    </button>
+    <ul v-if="isOptionField" class="option-filed">
+      <li
+        v-for="({ title }, idx) in options"
+        :key="title"
+        :class="{ selected: selectedOptionIdx === idx }"
+        @click="handleClickOption(idx)"
+      >
+        {{ title }}
+      </li>
     </ul>
   </div>
 </template>
@@ -20,6 +19,38 @@
 <script>
 export default {
   name: 'UISearchBarSelect',
+  props: {
+    options: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      isOptionField: false,
+      selectedOptionIdx: 0,
+    }
+  },
+  computed: {
+    selectedOption() {
+      return this.options[this.selectedOptionIdx]
+    },
+  },
+  methods: {
+    handleClickOption(idx) {
+      this.selectOption(idx)
+      this.closeOption()
+    },
+    selectOption(idx) {
+      this.selectedOptionIdx = idx
+    },
+    toggleOptionField() {
+      this.isOptionField = !this.isOptionField
+    },
+    closeOption() {
+      this.isOptionField = false
+    },
+  },
 }
 </script>
 
@@ -29,7 +60,7 @@ export default {
   line-height: 1.15;
   position: relative;
 }
-.title {
+.displayed-field {
   padding: 8px 12px;
   height: 34px;
   cursor: pointer;
@@ -52,8 +83,8 @@ export default {
     border-width: 6px 5px 0 5px;
   }
 }
-.list {
-  display: none;
+.option-filed {
+  // display: none;
   color: #1b1b1b;
   position: absolute;
   top: 34px;
