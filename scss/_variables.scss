@@ -1,0 +1,32 @@
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  // lg: 992px, // removed since we dont't need it
+  xl: 1200px,
+  xxl: 1400px
+) !default;
+
+$sections-color: (
+  news: #30bac8,
+  entertainment: #bf3284,
+  businessmoney: #009045,
+  people: #efa256,
+  videohub: #969696,
+  international: #911f27,
+  foodtravel: #eac151,
+  mafalda: #662d8e,
+  culture: #009245,
+  carandwatch: #003153,
+  external: #ee5a24,
+);
+
+:export {
+  @each $key, $value in $sections-color {
+    sections-color-#{$key}: $value;
+  }
+}

@@ -6,7 +6,7 @@
         :href="links.subscribe.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleSendGA(links.subscribe.ga)"
+        @click="$ga.event(links.subscribe.ga)"
         v-text="links.subscribe.textContent"
       />
       <a
@@ -14,7 +14,7 @@
         :href="links.ad.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleSendGA(links.ad.ga)"
+        @click="$ga.event(links.ad.ga)"
         v-text="links.ad.textContent"
       />
       <a
@@ -22,7 +22,7 @@
         :href="links.activity.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleSendGA(links.activity.ga)"
+        @click="$ga.event(links.activity.ga)"
         v-text="links.activity.textContent"
       />
       <a
@@ -30,7 +30,7 @@
         :href="links.downloadApp.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleSendGA(links.downloadApp.ga)"
+        @click="$ga.event(links.downloadApp.ga)"
         v-text="links.downloadApp.textContent"
       />
       <a
@@ -38,7 +38,7 @@
         :href="links.auth.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleSendGA(links.auth.ga)"
+        @click="$ga.event(links.auth.ga)"
         v-text="links.auth.textContent"
       />
     </nav>
@@ -48,7 +48,7 @@
         :href="links.line.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleSendGA(links.line.ga)"
+        @click="$ga.event(links.line.ga)"
       >
         <img :src="links.line.imagePath" alt="line" />
       </a>
@@ -57,7 +57,7 @@
         :href="links.weibo.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleSendGA(links.weibo.ga)"
+        @click="$ga.event(links.weibo.ga)"
       >
         <img :src="links.weibo.imagePath" alt="weibo" />
       </a>
@@ -66,7 +66,7 @@
         :href="links.facebook.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleSendGA(links.facebook.ga)"
+        @click="$ga.event(links.facebook.ga)"
       >
         <img :src="links.facebook.imagePath" alt="facebook" />
       </a>
@@ -75,7 +75,7 @@
         :href="links.instagram.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleSendGA(links.instagram.ga)"
+        @click="$ga.event(links.instagram.ga)"
       >
         <img :src="links.instagram.imagePath" alt="instagram" />
       </a>
@@ -84,7 +84,7 @@
         :href="links.rssFeed.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleSendGA(links.rssFeed.ga)"
+        @click="$ga.event(links.rssFeed.ga)"
       >
         <img :src="links.rssFeed.imagePath" alt="rss-feed" />
       </a>
@@ -93,7 +93,7 @@
         :href="links.email.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="handleSendGA(links.email.ga)"
+        @click="$ga.event(links.email.ga)"
       >
         <img :src="links.email.imagePath" alt="email" />
       </a>
@@ -208,70 +208,73 @@ export default {
           },
         },
       },
-      gaError: 'please provide valid param in handleSendGA',
     }
-  },
-  methods: {
-    handleSendGA(param = {}) {
-      const paramValid =
-        Object.keys(param).length !== 0 &&
-        'eventCategory' in param &&
-        'eventAction' in param &&
-        'eventLabel' in param
-      if (!paramValid) {
-        throw new Error(this.gaError)
-      }
-
-      this.$ga.event(param)
-    },
   },
 }
 </script>
 
-<style lang="sass" scoped>
-.footer
-  box-shadow: 0 0 10px rgba(0, 0, 0, .2)
-  padding: 10px 20px
-  @include media-breakpoint-up(xl)
-    box-shadow: none
-    padding: 15px 15px 50px 15px
-    border-top: 2px solid #000
-    display: flex
-    align-items: center
-    justify-content: space-between
+<style lang="scss" scoped>
+.footer {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px 20px;
+  @include media-breakpoint-up(xl) {
+    box-shadow: none;
+    padding: 15px 15px 50px 15px;
+    border-top: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
 
-.footer-text-links
-  color: rgba(0, 0, 0, .4)
-  text-align: center
-  font-size: 19.2px
-  a:not(:first-child)
-    &::before
-      content: '-'
-      padding: 0 4px 0 0
-  .footer-download-app, .footer-auth
-    display: none
-  @include media-breakpoint-up(xl)
-    color: #34495e
-    text-align: left
-    font-size: 16px
-    font-weight: 700
-    a:not(:first-child)
-      &::before
-        display: none
-    .footer-download-app, .footer-auth
-      display: initial
-    a + a
-      margin: 0 0 0 26px
+.footer-text-links {
+  color: rgba(0, 0, 0, 0.4);
+  text-align: center;
+  font-size: 19.2px;
+  a:not(:first-child) {
+    &::before {
+      content: '-';
+      padding: 0 4px 0 0;
+    }
+  }
+  .footer-download-app,
+  .footer-auth {
+    display: none;
+  }
+  @include media-breakpoint-up(xl) {
+    color: #34495e;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 700;
+    a:not(:first-child) {
+      &::before {
+        display: none;
+      }
+    }
+    .footer-download-app,
+    .footer-auth {
+      display: initial;
+    }
+    a + a {
+      margin: 0 0 0 26px;
+    }
+  }
+}
 
-.footer-icon-links
-  display: none
-  @include media-breakpoint-up(xl)
-    display: flex
-    a
-      display: inline-block
-      height: 20px
-      img
-        height: 100%
-    a + a
-      margin: 0 0 0 26px
+.footer-icon-links {
+  display: none;
+  @include media-breakpoint-up(xl) {
+    display: flex;
+    a {
+      display: inline-block;
+      height: 20px;
+      img {
+        height: 100%;
+      }
+    }
+    a + a {
+      margin: 0 0 0 26px;
+    }
+  }
+}
 </style>

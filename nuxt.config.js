@@ -34,13 +34,31 @@ module.exports = {
   /*
    ** Nuxt.js Server Middleware
    */
-  serverMiddleware: ['~/api/headers.js'],
+  serverMiddleware: [
+    '~/api/headers.js',
+    { path: '/api', handler: '~/api/index.js' },
+  ],
   /*
    ** Nuxt.js dev-modules
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
+    '@nuxtjs/style-resources',
+    /*
+     ** googleAnalytics module configuration
+     ** https://github.com/nuxt-community/analytics-module
+     */
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: () => {
+          return document.domain.match(/^(www|nuxt).mirrormedia.mg/gs)
+            ? 'UA-83609754-1'
+            : 'UA-83609754-2'
+        },
+      },
+    ],
   ],
   /*
    ** Nuxt.js modules
@@ -48,36 +66,22 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/google-analytics',
-    '@nuxtjs/style-resources',
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
-  /*
-   ** googleAnalytics module configuration
-   ** https://github.com/nuxt-community/analytics-module
-   */
-  googleAnalytics: {
-    id: () => {
-      return document.domain.match(/^(www|nuxt).mirrormedia.mg/gs)
-        ? 'UA-83609754-1'
-        : 'UA-83609754-2'
-    },
-    debug: {
-      sendHitTask: process.env.NODE_ENV === 'production',
-    },
-  },
-
   styleResources: {
-    sass: '~/sass/*.sass',
+    scss: '~/scss/*.scss',
   },
   /*
    ** Build configuration
    */
   build: {
+    babel: {
+      plugins: ['lodash'],
+    },
     /*
      ** You can extend webpack config here
      */
