@@ -1,10 +1,10 @@
 <template>
   <header>
-    <ContainerSearchBar :sections="sections" />
+    <ContainerSearchBar :sections="displayedSections" />
     <nav class="header-nav">
       <UIHeaderNavSection
-        :sections="sections"
-        :partners="partners"
+        :sections="displayedSections"
+        :partners="displayedPartners"
         @sendGA="handleSendGA"
       />
       <UIHeaderNavTopic :topics="topics" @sendGA="handleSendGA" />
@@ -32,6 +32,12 @@ export default {
       topics: (state) => state.topics.data.items ?? [],
       partners: (state) => state.partners.data.items ?? [],
     }),
+    displayedSections() {
+      return this.sections.filter((section) => section.isFeatured)
+    },
+    displayedPartners() {
+      return this.partners.filter((partner) => partner.public)
+    },
   },
   methods: {
     handleSendGA(param = {}) {
