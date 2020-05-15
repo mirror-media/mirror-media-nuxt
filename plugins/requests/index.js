@@ -35,7 +35,7 @@ async function axiosGet(url) {
 }
 
 export function buildParams(params = {}) {
-  const isPureObject = _.isObject(params) && !_.isArray(params)
+  const isPureObject = _.isObject(params) && !Array.isArray(params)
   const firstTier = [
     'endpoint',
     'maxResults',
@@ -66,7 +66,7 @@ export function buildParams(params = {}) {
         _.set(queryParams, 'where.$or', params[param])
       } else if (param === 'id') {
         _.set(queryParams, 'where._id', params[param])
-      } else if (_.isArray(params[param])) {
+      } else if (Array.isArray(params[param])) {
         _.set(queryParams, `where.${snakeCase(param)}.$in`, params[param])
       } else {
         _.set(queryParams, `where.${snakeCase(param)}`, params[param])
