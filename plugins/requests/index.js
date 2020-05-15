@@ -4,7 +4,10 @@ import axios from 'axios'
 import qs from 'qs'
 
 function snakeCase(text) {
-  return text === 'isAudioSiteOnly' ? text : _.snakeCase(text)
+  if (text === 'isAudioSiteOnly') {
+    return text
+  }
+  return _.snakeCase(text)
 }
 
 async function axiosGet(url) {
