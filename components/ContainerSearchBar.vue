@@ -6,7 +6,11 @@
         :options="options"
         @selectedOption="selectedOption = $event"
       />
-      <UISearchBarInput class="search-bar-input" />
+      <UISearchBarInput
+        class="search-bar-input"
+        @inputText="keyword = $event"
+        @search="search"
+      />
     </div>
   </section>
 </template>
@@ -32,6 +36,7 @@ export default {
     return {
       defaultOption: { title: '全部類別' },
       selectedOption: {},
+      keyword: '',
     }
   },
   computed: {
@@ -41,6 +46,9 @@ export default {
       )
       return [this.defaultOption, ...sections]
     },
+  },
+  methods: {
+    search() {},
   },
 }
 </script>

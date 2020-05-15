@@ -1,12 +1,32 @@
 <template>
   <div class="search-bar-input">
-    <input type="text" placeholder="請輸入關鍵字" />
+    <input
+      v-model="text"
+      type="text"
+      placeholder="請輸入關鍵字"
+      @keyup.enter="search"
+    />
   </div>
 </template>
 
 <script>
 export default {
   name: 'UISearchBarInput',
+  data() {
+    return {
+      text: '',
+    }
+  },
+  watch: {
+    text(newText) {
+      this.$emit('inputText', newText)
+    },
+  },
+  methods: {
+    search() {
+      this.$emit('search')
+    },
+  },
 }
 </script>
 
