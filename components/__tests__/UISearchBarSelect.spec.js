@@ -3,10 +3,7 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
   propsData: {
-    options: [
-      { name: 'all', title: '全部類別' },
-      { name: 'culture', title: '文化' },
-    ],
+    options: [{ title: '全部類別' }, { title: '文化' }],
   },
 })
 
@@ -74,6 +71,21 @@ describe('select feature', () => {
     expect(
       wrapper.find('.option-filed li:nth-child(2)').classes('selected')
     ).toBe(true)
+  })
+
+  test('emit selectedOption when an option is selected', async () => {
+    const wrapper = createWrapper(UISearchBarSelect, {
+      data() {
+        return {
+          isOptionField: true,
+        }
+      },
+    })
+    expect(wrapper.emitted().selectedOption[0]).toEqual([{ title: '全部類別' }])
+
+    wrapper.find('.option-filed li:nth-child(2)').trigger('click')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.emitted().selectedOption[1]).toEqual([{ title: '文化' }])
   })
 
   test('close option field when user clicks outside', async () => {

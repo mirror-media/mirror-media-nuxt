@@ -36,6 +36,14 @@ export default {
       return this.options[this.selectedOptionIdx]
     },
   },
+  watch: {
+    selectedOption: {
+      handler() {
+        this.$emit('selectedOption', this.selectedOption)
+      },
+      immediate: true,
+    },
+  },
   methods: {
     handleClickOption(idx) {
       this.selectOption(idx)

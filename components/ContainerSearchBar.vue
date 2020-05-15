@@ -2,7 +2,10 @@
   <section class="search-bar">
     <button type="button" class="search" />
     <div class="field">
-      <UISearchBarSelect :options="options" />
+      <UISearchBarSelect
+        :options="options"
+        @selectedOption="selectedOption = $event"
+      />
       <UISearchBarInput class="search-bar-input" />
     </div>
   </section>
@@ -28,6 +31,7 @@ export default {
   data() {
     return {
       defaultOption: { title: '全部類別' },
+      selectedOption: {},
     }
   },
   computed: {
