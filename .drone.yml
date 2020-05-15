@@ -1,5 +1,5 @@
 workspace:
-  path: /drone/mirror-media-nuxt
+  path: /mirror-media-nuxt
 pipeline:
   startSlack:
     image: plugins/slack
@@ -12,6 +12,7 @@ pipeline:
       Someone gave *{{build.branch}}* a little push.
     when:
       event: [push]
+      branch: [dev, master]
   
   restoreCache:
     image: drillster/drone-volume-cache
@@ -93,6 +94,7 @@ pipeline:
     when:
       status: [success, failure]
       event: [push]
+      branch: [dev, master]
     template: >
       {{#success build.status}}
         *success* ${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER} was well served.
