@@ -1,6 +1,5 @@
 workspace:
-  base: /nuxt
-  path: src/github.com/g70245/mirror-media-nuxt
+  path: /drone/mirror-media-nuxt
 pipeline:
   startSlack:
     image: plugins/slack
