@@ -30,6 +30,7 @@ module.exports = {
   plugins: [
     '~/plugins/vuePluginsGlobal.js',
     '~/plugins/vueDirectivesGlobal.js',
+    '~/plugins/requests/index.js',
   ],
   /*
    ** Nuxt.js Server Middleware
