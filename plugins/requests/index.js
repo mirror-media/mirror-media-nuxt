@@ -63,8 +63,10 @@ export function buildParams(params = {}) {
       if (firstTier.some((key) => key === param)) {
         queryParams[snakeCase(param)] = params[param]
       } else if (param === '$or') {
+        // handle _.snakeCase filter $ character
         _.set(queryParams, 'where.$or', params[param])
       } else if (param === 'id') {
+        // handle id need convert to tr-project-rest format _id
         _.set(queryParams, 'where._id', params[param])
       } else if (Array.isArray(params[param])) {
         _.set(queryParams, `where.${snakeCase(param)}.$in`, params[param])
