@@ -18,6 +18,7 @@ const createWrapper = createWrapperHelper({
       },
     },
   },
+  stubs: ['client-only'],
 })
 
 describe('stripHtmlTag method', () => {
