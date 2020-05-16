@@ -3,7 +3,7 @@
     <UIArticleList
       class="section__list"
       :listTitle="currentSectionTitle"
-      :listTitleColor="'#30BACB'"
+      :listTitleColor="currentSectionThemeColor"
       :listData="listData"
     />
     <client-only>
@@ -24,6 +24,7 @@ import { mapState } from 'vuex'
 import InfiniteLoading from 'vue-infinite-loading'
 import UILoadmoreLoadingIcon from '~/components/UILoadmoreLoadingIcon.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
+import styleVariables from '~/scss/_variables.scss'
 
 export default {
   name: 'Section',
@@ -65,6 +66,10 @@ export default {
     currentSectionTitle() {
       return this.currentSectionData.title
     },
+    currentSectionThemeColor() {
+      const key = `sections-color-${this.currentSectionName}`
+      return styleVariables[key]
+    },
     listDataPageLimit() {
       if (this.listDataTotal === undefined) {
         return undefined
@@ -82,7 +87,7 @@ export default {
         href: item.slug ? `/story/${item.slug}` : '/',
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url ?? '',
         imgText: this.currentSectionTitle,
-        imgTextBackgroundColor: '#30BACB',
+        imgTextBackgroundColor: this.currentSectionThemeColor,
         infoTitle: item.title ?? '',
         infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
       }
