@@ -8,7 +8,7 @@
     />
     <client-only>
       <infinite-loading @infinite="infiniteHandler">
-        <UILoadmoreLoadingIcon slot="spinner" />
+        <UILoadmoreLoadingIcon slot="spinner" class="spinner" />
         <!-- provide empty slot if we want to disable load messages locally -->
         <!-- see: https://peachscript.github.io/vue-infinite-loading/guide/configure-load-msg.html#via-slot-sepcial-attribute -->
         <div slot="no-more" />
@@ -140,5 +140,9 @@ export default {
       margin: 8px 0 0 0;
     }
   }
+}
+
+.spinner {
+  margin: 20px 0 0 0;
 }
 </style>
