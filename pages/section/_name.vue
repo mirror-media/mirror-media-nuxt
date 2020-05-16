@@ -22,30 +22,27 @@
 <script>
 import { mapState } from 'vuex'
 import InfiniteLoading from 'vue-infinite-loading'
-import UIArticleList from '~/components/UIArticleList.vue'
 import UILoadmoreLoadingIcon from '~/components/UILoadmoreLoadingIcon.vue'
+import UIArticleList from '~/components/UIArticleList.vue'
 
 export default {
   name: 'Section',
   components: {
     InfiniteLoading,
-    UIArticleList,
     UILoadmoreLoadingIcon,
+    UIArticleList,
   },
   async fetch() {
-    const baseUrl = process.browser
-      ? `//${location.host}/`
-      : process.env._AXIOS_BASE_URL_
-    const response = await this.$axios.get(
-      `${baseUrl}api/posts?where={"sections":{"$in":["${this.currentSectionId}"]}}&max_results=9&page=1&sort=-publishedDate`
-    )
-    let listData = response.data?._items ?? []
-    listData = listData.map(this.mapDataToComponentProps)
-    this.listData = listData
+    const response = await this.fetchSections({ page: 1 })
+    this.setListData(response)
+    this.setListDataTotal(response)
   },
   data() {
     return {
       listData: [],
+      listDataPage: 1,
+      listDataMaxResults: 9,
+      listDataTotal: undefined,
     }
   },
   computed: {
@@ -68,6 +65,12 @@ export default {
     currentSectionTitle() {
       return this.currentSectionData.title
     },
+    listDataPageLimit() {
+      if (this.listDataTotal === undefined) {
+        return undefined
+      }
+      return Math.ceil(this.listDataTotal / this.listDataMaxResults)
+    },
   },
   methods: {
     stripHtmlTag(html = '') {
@@ -84,7 +87,38 @@ export default {
         infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
       }
     },
-    infiniteHandler() {},
+    async fetchSections({ page = 1 }) {
+      const baseUrl = process.browser
+        ? `//${location.host}/`
+        : process.env._AXIOS_BASE_URL_
+      const response = await this.$axios.get(
+        `${baseUrl}api/posts?where={"sections":{"$in":["${this.currentSectionId}"]}}&max_results=9&page=${page}&sort=-publishedDate`
+      )
+      return response
+    },
+    setListData(response = {}) {
+      let listData = response.data?._items ?? []
+      listData = listData.map(this.mapDataToComponentProps)
+      this.listData.push(...listData)
+    },
+    setListDataTotal(response = {}) {
+      this.listDataTotal = response.data?._meta?.total ?? 0
+    },
+    async infiniteHandler($state) {
+      this.listDataPage += 1
+      try {
+        const response = await this.fetchSections({ page: this.listDataPage })
+        this.setListData(response)
+
+        if (this.listDataPage >= this.listDataPageLimit) {
+          $state.complete()
+        } else {
+          $state.loaded()
+        }
+      } catch (e) {
+        $state.error()
+      }
+    },
   },
 }
 </script>
