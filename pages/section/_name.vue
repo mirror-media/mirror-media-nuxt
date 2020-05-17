@@ -37,11 +37,12 @@ export default {
     const response = await this.fetchSectionListing({ page: 1 })
     this.setListData(response)
     this.setListDataTotal(response)
+    this.listDataCurrentPage += 1
   },
   data() {
     return {
       listData: [],
-      listDataPage: 1,
+      listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
     }
@@ -110,14 +111,14 @@ export default {
       this.listDataTotal = response.meta?.total ?? 0
     },
     async infiniteHandler($state) {
-      this.listDataPage += 1
+      this.listDataCurrentPage += 1
       try {
         const response = await this.fetchSectionListing({
-          page: this.listDataPage,
+          page: this.listDataCurrentPage,
         })
         this.setListData(response)
 
-        if (this.listDataPage >= this.listDataPageLimit) {
+        if (this.listDataCurrentPage >= this.listDataPageLimit) {
           $state.complete()
         } else {
           $state.loaded()
