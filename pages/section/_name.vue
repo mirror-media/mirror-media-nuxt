@@ -93,21 +93,21 @@ export default {
       }
     },
     async fetchSections({ page = 1 }) {
-      const baseUrl = process.browser
-        ? `//${location.host}/`
-        : process.env._AXIOS_BASE_URL_
-      const response = await this.$axios.get(
-        `${baseUrl}api/posts?where={"sections":{"$in":["${this.currentSectionId}"]}}&max_results=9&page=${page}&sort=-publishedDate`
-      )
+      const response = await this.$fetchList({
+        maxResults: this.listDataMaxResults,
+        sort: '-publishedDate',
+        sections: [this.currentSectionId],
+        page,
+      })
       return response
     },
     setListData(response = {}) {
-      let listData = response.data?._items ?? []
+      let listData = response.items ?? []
       listData = listData.map(this.mapDataToComponentProps)
       this.listData.push(...listData)
     },
     setListDataTotal(response = {}) {
-      this.listDataTotal = response.data?._meta?.total ?? 0
+      this.listDataTotal = response.meta?.total ?? 0
     },
     async infiniteHandler($state) {
       this.listDataPage += 1
