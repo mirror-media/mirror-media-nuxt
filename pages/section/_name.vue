@@ -94,7 +94,7 @@ export default {
     },
     mapDataToComponentProps(item) {
       return {
-        id: item._id,
+        id: item.id,
         href: item.slug ? `/story/${item.slug}` : '/',
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url ?? '',
         imgText: this.currentSectionTitle,
