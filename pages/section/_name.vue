@@ -7,7 +7,10 @@
       :listData="listData"
     />
     <client-only>
-      <infinite-loading @infinite="infiniteHandler">
+      <infinite-loading
+        v-if="shouldMountInfiniteLoading"
+        @infinite="infiniteHandler"
+      >
         <UILoadmoreLoadingIcon slot="spinner" class="spinner" />
         <!-- provide empty slot if we want to disable load messages locally -->
         <!-- see: https://peachscript.github.io/vue-infinite-loading/guide/configure-load-msg.html#via-slot-sepcial-attribute -->
@@ -76,6 +79,13 @@ export default {
         return undefined
       }
       return Math.ceil(this.listDataTotal / this.listDataMaxResults)
+    },
+
+    // Constraint which prevent loadmore unexpectly
+    // if we navigating on client-side
+    // due to the list data of the first page has not been loaded.
+    shouldMountInfiniteLoading() {
+      return this.listDataCurrentPage >= 1
     },
   },
   methods: {
