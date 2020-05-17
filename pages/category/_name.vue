@@ -6,35 +6,24 @@
       :listTitleColor="currentSectionThemeColor"
       :listData="listData"
     />
-    <client-only>
-      <infinite-loading
-        v-if="shouldMountInfiniteLoading"
-        @infinite="infiniteHandler"
-      >
-        <UILoadmoreLoadingIcon slot="spinner" class="spinner" />
-        <!-- provide empty slot if we want to disable load messages locally -->
-        <!-- see: https://peachscript.github.io/vue-infinite-loading/guide/configure-load-msg.html#via-slot-sepcial-attribute -->
-        <div slot="no-more" />
-        <div slot="no-results" />
-        <div slot="error" />
-      </infinite-loading>
-    </client-only>
+    <UIInfiniteLoading
+      v-if="shouldMountInfiniteLoading"
+      @infinite="infiniteHandler"
+    />
   </section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import InfiniteLoading from 'vue-infinite-loading'
-import UILoadmoreLoadingIcon from '~/components/UILoadmoreLoadingIcon.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
+import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
 
 export default {
   name: 'Category',
   components: {
-    InfiniteLoading,
-    UILoadmoreLoadingIcon,
     UIArticleList,
+    UIInfiniteLoading,
   },
   async fetch() {
     const response = await this.fetchCategoryListing({ page: 1 })
@@ -182,9 +171,5 @@ export default {
       margin: 8px 0 0 0;
     }
   }
-}
-
-.spinner {
-  margin: 20px 0 0 0;
 }
 </style>
