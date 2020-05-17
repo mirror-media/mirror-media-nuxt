@@ -7,7 +7,10 @@
       :listData="listData"
     />
     <client-only>
-      <infinite-loading @infinite="infiniteHandler">
+      <infinite-loading
+        v-if="shouldMountInfiniteLoading"
+        @infinite="infiniteHandler"
+      >
         <UILoadmoreLoadingIcon slot="spinner" class="spinner" />
         <!-- provide empty slot if we want to disable load messages locally -->
         <!-- see: https://peachscript.github.io/vue-infinite-loading/guide/configure-load-msg.html#via-slot-sepcial-attribute -->
@@ -34,14 +37,15 @@ export default {
     UIArticleList,
   },
   async fetch() {
-    const response = await this.fetchSections({ page: 1 })
+    const response = await this.fetchSectionListing({ page: 1 })
     this.setListData(response)
     this.setListDataTotal(response)
+    this.listDataCurrentPage += 1
   },
   data() {
     return {
       listData: [],
-      listDataPage: 1,
+      listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
     }
@@ -76,6 +80,13 @@ export default {
       }
       return Math.ceil(this.listDataTotal / this.listDataMaxResults)
     },
+
+    // Constraint which prevent loadmore unexpectly
+    // if we navigating on client-side
+    // due to the list data of the first page has not been loaded.
+    shouldMountInfiniteLoading() {
+      return this.listDataCurrentPage >= 1
+    },
   },
   methods: {
     stripHtmlTag(html = '') {
@@ -92,30 +103,32 @@ export default {
         infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
       }
     },
-    async fetchSections({ page = 1 }) {
-      const baseUrl = process.browser
-        ? `//${location.host}/`
-        : process.env._AXIOS_BASE_URL_
-      const response = await this.$axios.get(
-        `${baseUrl}api/posts?where={"sections":{"$in":["${this.currentSectionId}"]}}&max_results=9&page=${page}&sort=-publishedDate`
-      )
+    async fetchSectionListing({ page = 1 }) {
+      const response = await this.$fetchList({
+        maxResults: this.listDataMaxResults,
+        sort: '-publishedDate',
+        sections: [this.currentSectionId],
+        page,
+      })
       return response
     },
     setListData(response = {}) {
-      let listData = response.data?._items ?? []
+      let listData = response.items ?? []
       listData = listData.map(this.mapDataToComponentProps)
       this.listData.push(...listData)
     },
     setListDataTotal(response = {}) {
-      this.listDataTotal = response.data?._meta?.total ?? 0
+      this.listDataTotal = response.meta?.total ?? 0
     },
     async infiniteHandler($state) {
-      this.listDataPage += 1
+      this.listDataCurrentPage += 1
       try {
-        const response = await this.fetchSections({ page: this.listDataPage })
+        const response = await this.fetchSectionListing({
+          page: this.listDataCurrentPage,
+        })
         this.setListData(response)
 
-        if (this.listDataPage >= this.listDataPageLimit) {
+        if (this.listDataCurrentPage >= this.listDataPageLimit) {
           $state.complete()
         } else {
           $state.loaded()
