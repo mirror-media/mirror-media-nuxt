@@ -1,4 +1,5 @@
 import page from '../section/_name.vue'
+import UIArticleList from '~/components/UIArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
@@ -64,8 +65,9 @@ describe('section data', () => {
         },
       },
     })
+    const list = wrapper.find(UIArticleList)
     expect(wrapper.vm.currentSectionId).toBe(sectionIdMock)
-    expect(wrapper.vm.currentSectionTitle).toBe(sectionTitleMock)
+    expect(list.props().listTitle).toBe(sectionTitleMock)
   })
 })
 
@@ -131,7 +133,8 @@ describe('component methods', () => {
     })
 
     wrapper.vm.setListData(responseMock)
-    expect(wrapper.vm.listData).toEqual([
+    const list = wrapper.find(UIArticleList)
+    expect(list.props().listData).toEqual([
       {
         id: idMock,
         href: `/story/${slugMock}`,
