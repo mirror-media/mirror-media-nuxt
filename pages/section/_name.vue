@@ -34,7 +34,7 @@ export default {
     UIArticleList,
   },
   async fetch() {
-    const response = await this.fetchSections({ page: 1 })
+    const response = await this.fetchSectionListing({ page: 1 })
     this.setListData(response)
     this.setListDataTotal(response)
   },
@@ -92,7 +92,7 @@ export default {
         infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
       }
     },
-    async fetchSections({ page = 1 }) {
+    async fetchSectionListing({ page = 1 }) {
       const response = await this.$fetchList({
         maxResults: this.listDataMaxResults,
         sort: '-publishedDate',
@@ -112,7 +112,9 @@ export default {
     async infiniteHandler($state) {
       this.listDataPage += 1
       try {
-        const response = await this.fetchSections({ page: this.listDataPage })
+        const response = await this.fetchSectionListing({
+          page: this.listDataPage,
+        })
         this.setListData(response)
 
         if (this.listDataPage >= this.listDataPageLimit) {
