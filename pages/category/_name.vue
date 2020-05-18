@@ -2,7 +2,7 @@
   <section class="section">
     <UIArticleList
       class="section__list"
-      :listTitle="currentSectionTitle"
+      :listTitle="currentCategoryTitle"
       :listTitleColor="currentSectionThemeColor"
       :listData="listData"
     />
@@ -20,13 +20,13 @@ import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
 
 export default {
-  name: 'Section',
+  name: 'Category',
   components: {
     UIArticleList,
     UIInfiniteLoading,
   },
   async fetch() {
-    const response = await this.fetchSectionListing({ page: 1 })
+    const response = await this.fetchCategoryListing({ page: 1 })
     this.setListData(response)
     this.setListDataTotal(response)
     this.listDataCurrentPage += 1
@@ -43,15 +43,25 @@ export default {
     ...mapState({
       sections: (state) => state.sections.data.items ?? [],
     }),
-    currentSectionName() {
-      return this.$route.params.name
+    categories() {
+      return this.sections.map((section) => section.categories).flat()
     },
+
     currentSectionData() {
       return (
-        this.sections.find(
-          (section) => section.name === this.currentSectionName
+        this.sections.find((section) =>
+          section.categories
+            .map((category) => category.name)
+            .find((name) => name === this.currentCategoryName)
         ) ?? {}
       )
+    },
+    currentSectionName() {
+      return this.currentSectionData.name
+    },
+    currentSectionThemeColor() {
+      const key = `sections-color-${this.currentSectionName}`
+      return styleVariables[key]
     },
     currentSectionId() {
       return this.currentSectionData.id
@@ -59,10 +69,24 @@ export default {
     currentSectionTitle() {
       return this.currentSectionData.title
     },
-    currentSectionThemeColor() {
-      const key = `sections-color-${this.currentSectionName}`
-      return styleVariables[key]
+
+    currentCategoryName() {
+      return this.$route.params.name
     },
+    currentCategoryData() {
+      return (
+        this.categories.find(
+          (category) => category.name === this.currentCategoryName
+        ) ?? {}
+      )
+    },
+    currentCategoryTitle() {
+      return this.currentCategoryData.title
+    },
+    currentCategoryId() {
+      return this.currentCategoryData.id
+    },
+
     listDataPageLimit() {
       if (this.listDataTotal === undefined) {
         return undefined
@@ -92,11 +116,11 @@ export default {
         infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
       }
     },
-    async fetchSectionListing({ page = 1 }) {
+    async fetchCategoryListing({ page = 1 }) {
       const response = await this.$fetchList({
         maxResults: this.listDataMaxResults,
         sort: '-publishedDate',
-        sections: [this.currentSectionId],
+        categories: [this.currentCategoryId],
         page,
       })
       return response
@@ -112,7 +136,7 @@ export default {
     async infiniteHandler($state) {
       this.listDataCurrentPage += 1
       try {
-        const response = await this.fetchSectionListing({
+        const response = await this.fetchCategoryListing({
           page: this.listDataCurrentPage,
         })
         this.setListData(response)

@@ -1,4 +1,4 @@
-import page from '../section/_name.vue'
+import page from '../category/_name.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -37,6 +37,7 @@ describe('stripHtmlTag method', () => {
 
 describe('section data', () => {
   test('should get proper section properties from store by route params', () => {
+    const categoryNameMock = 'test-category-name'
     const sectionNameMock = 'test-name'
     const sectionIdMock = 'test-id'
     const sectionTitleMock = 'test-title'
@@ -44,6 +45,11 @@ describe('section data', () => {
       data: {
         items: [
           {
+            categories: [
+              {
+                name: categoryNameMock,
+              },
+            ],
             name: sectionNameMock,
             id: sectionIdMock,
             title: sectionTitleMock,
@@ -55,7 +61,47 @@ describe('section data', () => {
       mocks: {
         $route: {
           params: {
-            name: sectionNameMock,
+            name: categoryNameMock,
+          },
+        },
+        $store: {
+          state: {
+            sections: sectionStoreMock,
+          },
+        },
+      },
+    })
+    expect(wrapper.vm.currentSectionName).toBe(sectionNameMock)
+    expect(wrapper.vm.currentSectionId).toBe(sectionIdMock)
+    expect(wrapper.vm.currentSectionTitle).toBe(sectionTitleMock)
+  })
+})
+
+describe('category data', () => {
+  test('should get proper categories properties from store by route params', () => {
+    const categoryNameMock = 'test-category-name'
+    const categoryIdMock = 'test-id'
+    const categoryTitleMock = 'test-title'
+    const sectionStoreMock = {
+      data: {
+        items: [
+          {
+            categories: [
+              {
+                name: categoryNameMock,
+                id: categoryIdMock,
+                title: categoryTitleMock,
+              },
+            ],
+          },
+        ],
+      },
+    }
+    const wrapper = createWrapper(page, {
+      mocks: {
+        $route: {
+          params: {
+            name: categoryNameMock,
           },
         },
         $store: {
@@ -66,13 +112,14 @@ describe('section data', () => {
       },
     })
     const list = wrapper.find(UIArticleList)
-    expect(wrapper.vm.currentSectionId).toBe(sectionIdMock)
-    expect(list.props().listTitle).toBe(sectionTitleMock)
+    expect(wrapper.vm.currentCategoryId).toBe(categoryIdMock)
+    expect(list.props().listTitle).toBe(categoryTitleMock)
   })
 })
 
 describe('component methods', () => {
   test('setListData', () => {
+    const categoryNameMock = 'test-category-name'
     const sectionNameMock = 'test-name'
     const sectionIdMock = 'test-id'
     const sectionTitleMock = 'test-title'
@@ -80,6 +127,11 @@ describe('component methods', () => {
       data: {
         items: [
           {
+            categories: [
+              {
+                name: categoryNameMock,
+              },
+            ],
             name: sectionNameMock,
             id: sectionIdMock,
             title: sectionTitleMock,
@@ -121,7 +173,7 @@ describe('component methods', () => {
       mocks: {
         $route: {
           params: {
-            name: sectionNameMock,
+            name: categoryNameMock,
           },
         },
         $store: {

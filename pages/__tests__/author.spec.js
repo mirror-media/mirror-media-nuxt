@@ -1,4 +1,4 @@
-import page from '../section/_name.vue'
+import page from '../author/_id.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -35,69 +35,18 @@ describe('stripHtmlTag method', () => {
   })
 })
 
-describe('section data', () => {
-  test('should get proper section properties from store by route params', () => {
-    const sectionNameMock = 'test-name'
-    const sectionIdMock = 'test-id'
-    const sectionTitleMock = 'test-title'
-    const sectionStoreMock = {
-      data: {
-        items: [
-          {
-            name: sectionNameMock,
-            id: sectionIdMock,
-            title: sectionTitleMock,
-          },
-        ],
-      },
-    }
-    const wrapper = createWrapper(page, {
-      mocks: {
-        $route: {
-          params: {
-            name: sectionNameMock,
-          },
-        },
-        $store: {
-          state: {
-            sections: sectionStoreMock,
-          },
-        },
-      },
-    })
-    const list = wrapper.find(UIArticleList)
-    expect(wrapper.vm.currentSectionId).toBe(sectionIdMock)
-    expect(list.props().listTitle).toBe(sectionTitleMock)
-  })
-})
-
 describe('component methods', () => {
   test('setListData', () => {
-    const sectionNameMock = 'test-name'
-    const sectionIdMock = 'test-id'
-    const sectionTitleMock = 'test-title'
-    const sectionStoreMock = {
-      data: {
-        items: [
-          {
-            name: sectionNameMock,
-            id: sectionIdMock,
-            title: sectionTitleMock,
-          },
-        ],
-      },
-    }
-
     const idMock = 'id'
     const slugMock = 'slug'
     const imageUrlMock = 'imageurl'
     const titleMock = 'title'
     const briefMock = 'brief'
     const briefHtmlMock = `<div>${briefMock}</div>`
+    const sectionTitleMock = 'section-title'
     const responseMock = {
       items: [
         {
-          name: sectionNameMock,
           id: idMock,
           slug: slugMock,
           heroImage: {
@@ -113,25 +62,16 @@ describe('component methods', () => {
           brief: {
             html: briefHtmlMock,
           },
+          sections: [
+            {
+              title: sectionTitleMock,
+            },
+          ],
         },
       ],
     }
 
-    const wrapper = createWrapper(page, {
-      mocks: {
-        $route: {
-          params: {
-            name: sectionNameMock,
-          },
-        },
-        $store: {
-          state: {
-            sections: sectionStoreMock,
-          },
-        },
-      },
-    })
-
+    const wrapper = createWrapper(page)
     wrapper.vm.setListData(responseMock)
     const list = wrapper.find(UIArticleList)
     expect(list.props().listData).toEqual([
@@ -159,5 +99,19 @@ describe('component methods', () => {
     expect(wrapper.vm.listDataPageLimit).toBe(
       Math.ceil(totalMock / wrapper.vm.listDataMaxResults)
     )
+  })
+  test('setAuthorName', () => {
+    const authorNameMock = 'name'
+    const responseMock = {
+      items: [
+        {
+          name: authorNameMock,
+        },
+      ],
+    }
+
+    const wrapper = createWrapper(page)
+    wrapper.vm.setAuthorName(responseMock)
+    expect(wrapper.vm.authorName).toBe(authorNameMock)
   })
 })

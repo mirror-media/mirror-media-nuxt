@@ -2,8 +2,8 @@
   <section class="section">
     <UIArticleList
       class="section__list"
-      :listTitle="currentSectionTitle"
-      :listTitleColor="currentSectionThemeColor"
+      :listTitle="authorName"
+      :listTitleColor="'#BCBCBC'"
       :listData="listData"
     />
     <UIInfiniteLoading
@@ -14,22 +14,24 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
 
 export default {
-  name: 'Section',
+  name: 'Author',
   components: {
     UIArticleList,
     UIInfiniteLoading,
   },
   async fetch() {
-    const response = await this.fetchSectionListing({ page: 1 })
+    const response = await this.fetchAuthorListing({ page: 1 })
     this.setListData(response)
     this.setListDataTotal(response)
     this.listDataCurrentPage += 1
+
+    const responseAuthor = await this.fetchAuthor()
+    this.setAuthorName(responseAuthor)
   },
   data() {
     return {
@@ -37,32 +39,14 @@ export default {
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
+      authorName: undefined,
     }
   },
   computed: {
-    ...mapState({
-      sections: (state) => state.sections.data.items ?? [],
-    }),
-    currentSectionName() {
-      return this.$route.params.name
+    currentAuthorId() {
+      return this.$route.params.id
     },
-    currentSectionData() {
-      return (
-        this.sections.find(
-          (section) => section.name === this.currentSectionName
-        ) ?? {}
-      )
-    },
-    currentSectionId() {
-      return this.currentSectionData.id
-    },
-    currentSectionTitle() {
-      return this.currentSectionData.title
-    },
-    currentSectionThemeColor() {
-      const key = `sections-color-${this.currentSectionName}`
-      return styleVariables[key]
-    },
+
     listDataPageLimit() {
       if (this.listDataTotal === undefined) {
         return undefined
@@ -82,21 +66,38 @@ export default {
       return html.replace(/<\/?[^>]+(>|$)/g, '')
     },
     mapDataToComponentProps(item) {
+      const section = (item.sections ?? [])[0]
       return {
         id: item.id,
         href: item.slug ? `/story/${item.slug}` : '/',
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url ?? '',
-        imgText: this.currentSectionTitle,
-        imgTextBackgroundColor: this.currentSectionThemeColor,
+        imgText: section.title ?? '',
+        imgTextBackgroundColor:
+          styleVariables[`sections-color-${section.name}`],
         infoTitle: item.title ?? '',
         infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
       }
     },
-    async fetchSectionListing({ page = 1 }) {
-      const response = await this.$fetchList({
+    async fetchAuthor() {
+      const response = await this.$fetchContacts({
+        id: this.currentAuthorId,
+      })
+      return response
+    },
+    setAuthorName(response = {}) {
+      this.authorName = (response.items ?? [])[0]?.name
+    },
+    async fetchAuthorListing({ page = 1 }) {
+      const response = await this.$fetchPosts({
         maxResults: this.listDataMaxResults,
         sort: '-publishedDate',
-        sections: [this.currentSectionId],
+        $or: [
+          { writers: this.currentAuthorId },
+          { photographers: this.currentAuthorId },
+          { camera_man: this.currentAuthorId },
+          { designers: this.currentAuthorId },
+          { engineers: this.currentAuthorId },
+        ],
         page,
       })
       return response
@@ -112,7 +113,7 @@ export default {
     async infiniteHandler($state) {
       this.listDataCurrentPage += 1
       try {
-        const response = await this.fetchSectionListing({
+        const response = await this.fetchAuthorListing({
           page: this.listDataCurrentPage,
         })
         this.setListData(response)
