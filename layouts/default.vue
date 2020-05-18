@@ -33,7 +33,12 @@ export default {
   },
   computed: {
     isListing() {
-      const listingRouteNames = ['section-name', 'category-name', 'author-id']
+      const listingRouteNames = [
+        'section-name',
+        'category-name',
+        'author-id',
+        'section-topic',
+      ]
       return listingRouteNames.includes(this.$route.name)
     },
   },

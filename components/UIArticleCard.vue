@@ -11,6 +11,7 @@
         <img :data-src="imgSrc" alt="article hero image" />
       </div>
       <span
+        v-if="showImgText"
         class="top-wrapper__text"
         :style="{
           backgroundColor: imgTextBackgroundColor,
@@ -76,6 +77,11 @@ export default {
         eventLabel: 'latest',
       },
     }
+  },
+  computed: {
+    showImgText() {
+      return this.imgText && this.imgText !== ''
+    },
   },
   methods: {
     handleClick() {
