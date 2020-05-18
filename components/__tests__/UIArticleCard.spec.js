@@ -103,6 +103,21 @@ describe('images wrapper', () => {
     const span = wrapper.find('span')
     expect(span.text()).toBe(imgText)
   })
+  test('should hide the span if props "imgText" is empty string', () => {
+    const imgText = ''
+    const wrapper = createWrapper(UIArticleCard, {
+      propsData: {
+        href: '',
+        imgSrc: '',
+        imgText,
+        imgTextBackgroundColor: '',
+        infoTitle: '',
+        infoDescription: '',
+      },
+    })
+    const span = wrapper.find('span')
+    expect(span.exists()).toBe(false)
+  })
   test('should render proper backgroundColor from props "imgTextBackgroundColor"', () => {
     const imgTextBackgroundColor = '#000000' // rgb(0, 0, 0)
     const wrapper = createWrapper(UIArticleCard, {
