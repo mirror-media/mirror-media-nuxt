@@ -19,7 +19,7 @@ export default {
   },
   watch: {
     text(newText) {
-      this.$emit('inputText', newText)
+      this.$emit('setText', newText)
     },
   },
   methods: {

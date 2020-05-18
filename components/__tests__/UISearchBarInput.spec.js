@@ -11,7 +11,7 @@ describe('input feature', () => {
 
     wrapper.find('input').setValue(keyword)
     await wrapper.vm.$nextTick()
-    expect(wrapper.emitted().inputText[0]).toEqual([keyword])
+    expect(wrapper.emitted().setText[0]).toEqual([keyword])
   })
 
   test('emit search when user releases the Enter key', async () => {

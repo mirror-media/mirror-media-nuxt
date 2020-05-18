@@ -1,9 +1,9 @@
 <template>
-  <div v-click-outside="closeOption" class="search-bar-select">
+  <div v-click-outside="hideOption" class="search-bar-select">
     <button type="button" class="displayed-field" @click="toggleOptionField">
       {{ selectedOption.title }}
     </button>
-    <ul v-if="isOptionField" class="option-filed">
+    <ul v-show="isOptionField" class="option-filed">
       <li
         v-for="({ title }, idx) in options"
         :key="title"
@@ -38,8 +38,8 @@ export default {
   },
   watch: {
     selectedOption: {
-      handler() {
-        this.$emit('selectedOption', this.selectedOption)
+      handler(newSelectedOption) {
+        this.$emit('setSelectedOption', newSelectedOption)
       },
       immediate: true,
     },
@@ -47,7 +47,7 @@ export default {
   methods: {
     handleClickOption(idx) {
       this.selectOption(idx)
-      this.closeOption()
+      this.hideOption()
     },
     selectOption(idx) {
       this.selectedOptionIdx = idx
@@ -55,7 +55,7 @@ export default {
     toggleOptionField() {
       this.isOptionField = !this.isOptionField
     },
-    closeOption() {
+    hideOption() {
       this.isOptionField = false
     },
   },

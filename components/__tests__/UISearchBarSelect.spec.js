@@ -9,13 +9,7 @@ const createWrapper = createWrapperHelper({
 
 describe('select feature', () => {
   test('render the proper options', () => {
-    const wrapper = createWrapper(UISearchBarSelect, {
-      data() {
-        return {
-          isOptionField: true,
-        }
-      },
-    })
+    const wrapper = createWrapper(UISearchBarSelect)
     const optionField = wrapper.find('.option-filed')
 
     expect(optionField.find('li:nth-child(1)').text()).toBe('全部類別')
@@ -43,11 +37,11 @@ describe('select feature', () => {
 
     displayedField.trigger('click')
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('.option-filed').exists()).toBe(true)
+    expect(wrapper.find('.option-filed').element.style.display).toBe('')
 
     displayedField.trigger('click')
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('.option-filed').exists()).toBe(false)
+    expect(wrapper.find('.option-filed').element.style.display).toBe('none')
   })
 
   test('behave correctly when user selects an option', async () => {
@@ -61,16 +55,14 @@ describe('select feature', () => {
 
     wrapper.find('.option-filed li:nth-child(2)').trigger('click')
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('.option-filed').exists()).toBe(false)
+    expect(
+      wrapper.find('.option-filed li:nth-child(2)').classes('selected')
+    ).toBe(true)
 
     const displayedField = wrapper.find('.displayed-field')
     expect(displayedField.text()).toBe('文化')
 
-    displayedField.trigger('click')
-    await wrapper.vm.$nextTick()
-    expect(
-      wrapper.find('.option-filed li:nth-child(2)').classes('selected')
-    ).toBe(true)
+    expect(wrapper.find('.option-filed').element.style.display).toBe('none')
   })
 
   test('emit the option when an option is selected', async () => {
@@ -81,14 +73,16 @@ describe('select feature', () => {
         }
       },
     })
-    expect(wrapper.emitted().selectedOption[0]).toEqual([{ title: '全部類別' }])
+    expect(wrapper.emitted().setSelectedOption[0]).toEqual([
+      { title: '全部類別' },
+    ])
 
     wrapper.find('.option-filed li:nth-child(2)').trigger('click')
     await wrapper.vm.$nextTick()
-    expect(wrapper.emitted().selectedOption[1]).toEqual([{ title: '文化' }])
+    expect(wrapper.emitted().setSelectedOption[1]).toEqual([{ title: '文化' }])
   })
 
-  test('close the option field when user clicks outside', async () => {
+  test('hide the option field when user clicks outside', async () => {
     const wrapper = createWrapper(UISearchBarSelect, {
       data() {
         return {
@@ -99,6 +93,6 @@ describe('select feature', () => {
 
     document.body.dispatchEvent(new Event('click'))
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('.option-filed').exists()).toBe(false)
+    expect(wrapper.find('.option-filed').element.style.display).toBe('none')
   })
 })
