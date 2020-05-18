@@ -4,7 +4,7 @@
       v-model="text"
       type="text"
       placeholder="請輸入關鍵字"
-      @keyup.enter="search"
+      @keydown.enter="search"
     />
   </div>
 </template>
@@ -23,7 +23,11 @@ export default {
     },
   },
   methods: {
-    search() {
+    search(evt) {
+      if (evt.isComposing) {
+        return
+      }
+
       this.$emit('search')
     },
   },
