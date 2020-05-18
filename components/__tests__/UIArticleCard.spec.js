@@ -124,7 +124,7 @@ describe('images wrapper', () => {
       propsData: {
         href: '',
         imgSrc: '',
-        imgText: '',
+        imgText: 'not empty string',
         imgTextBackgroundColor,
         infoTitle: '',
         infoDescription: '',
