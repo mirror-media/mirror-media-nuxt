@@ -36,6 +36,14 @@ export default {
     },
     handleClickSearchIcon() {
       this.emitSearch()
+      this.emitGA('search')
+    },
+    emitGA(eventLabel) {
+      this.$emit('sendGA', {
+        eventCategory: 'header',
+        eventAction: 'click',
+        eventLabel,
+      })
     },
   },
 }

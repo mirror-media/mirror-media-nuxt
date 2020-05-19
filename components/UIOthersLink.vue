@@ -1,6 +1,6 @@
 <template>
   <div v-click-outside="closeLinkList" class="others-link">
-    <button type="button" class="more-icon" @click="toggleLinkList" />
+    <button type="button" class="more-icon" @click="handleClickMoreIcon" />
     <div v-if="isLinkList" class="link-list">
       <a
         v-for="{ textContent, href, ga } in links"
@@ -35,6 +35,10 @@ export default {
     },
     closeLinkList() {
       this.isLinkList = false
+    },
+    handleClickMoreIcon() {
+      this.toggleLinkList()
+      this.emitGA('more open')
     },
     emitGA(eventLabel) {
       this.$emit('sendGA', {

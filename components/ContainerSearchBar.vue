@@ -11,12 +11,10 @@
       @setSelectedOption="selectedOption = $event"
       @setText="keyword = $event"
       @search="search"
+      @sendGA="handleSendGA"
     />
-    <ContainerOthersLink
-      v-slot="{ links, handleSendGA }"
-      class="others-link-wrapper"
-    >
-      <UIOthersLink :links="links" @sendGA="handleSendGA" />
+    <ContainerOthersLink v-slot="slotProps" class="others-link-wrapper">
+      <UIOthersLink :links="slotProps.links" @sendGA="slotProps.handleSendGA" />
     </ContainerOthersLink>
   </section>
 </template>
@@ -76,6 +74,9 @@ export default {
         .trim()
         .replace(/\s*,\s*/g, ',')
         .replace(/\s+/g, ',')
+    },
+    handleSendGA(param = {}) {
+      this.$ga.event(param)
     },
   },
 }

@@ -78,4 +78,18 @@ describe('emitGA method', () => {
       },
     ])
   })
+
+  test('with a proper argument when a user clicks the more icon', () => {
+    const wrapper = createWrapper(UIOthersLink)
+
+    const moreIcon = wrapper.find('.more-icon')
+    moreIcon.trigger('click')
+    expect(wrapper.emitted().sendGA[0]).toEqual([
+      {
+        eventCategory: 'header',
+        eventAction: 'click',
+        eventLabel: 'more open',
+      },
+    ])
+  })
 })

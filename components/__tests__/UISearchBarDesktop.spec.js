@@ -41,3 +41,19 @@ describe('custom events', () => {
     expect(wrapper.emitted().search).toBeTruthy()
   })
 })
+
+describe('emitGA method', () => {
+  test('with a proper argument when a user clicks the search icon', () => {
+    const wrapper = createWrapper(UISearchBarDesktop)
+
+    const searchIcon = wrapper.find('.search-icon')
+    searchIcon.trigger('click')
+    expect(wrapper.emitted().sendGA[0]).toEqual([
+      {
+        eventCategory: 'header',
+        eventAction: 'click',
+        eventLabel: 'search',
+      },
+    ])
+  })
+})
