@@ -19,7 +19,8 @@ async function axiosGet(url) {
     const data = camelizeKeys(res.data)
     const hasData =
       (data.items && data.items.length > 0) ||
-      (data.endpoints && Object.keys(data.endpoints).length > 0)
+      (data.endpoints && Object.keys(data.endpoints).length > 0) ||
+      (data.hits && data.hits.total > 0)
 
     if (hasData) {
       return data
