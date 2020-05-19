@@ -6,16 +6,24 @@
       @setText="keyword = $event"
       @search="search"
     />
+    <UISearchBarDesktop
+      :options="options"
+      @setSelectedOption="selectedOption = $event"
+      @setText="keyword = $event"
+      @search="search"
+    />
   </section>
 </template>
 
 <script>
 import UISearchBar from './UISearchBar.vue'
+import UISearchBarDesktop from './UISearchBarDesktop.vue'
 
 export default {
   name: 'ContainerSearchBar',
   components: {
     UISearchBar,
+    UISearchBarDesktop,
   },
   props: {
     sections: {

@@ -38,12 +38,12 @@ describe('search field', () => {
   test('toggle the field when user clicks the search icon', async () => {
     const wrapper = createWrapper(UISearchBar)
 
-    const search = wrapper.find('.search')
-    search.trigger('click')
+    const searchIcon = wrapper.find('.search-icon')
+    searchIcon.trigger('click')
     await wrapper.vm.$nextTick()
     expect(wrapper.find('.field').element.style.display).toBe('')
 
-    search.trigger('click')
+    searchIcon.trigger('click')
     await wrapper.vm.$nextTick()
     expect(wrapper.find('.field').element.style.display).toBe('none')
   })

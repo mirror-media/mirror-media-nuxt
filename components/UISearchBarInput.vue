@@ -38,11 +38,14 @@ export default {
 .search-bar-input {
   font-size: 16px;
   color: #1b1b1b;
-  line-height: 1.15;
+  height: 34px;
 }
 input {
-  padding: 8px 12px;
+  padding-left: 12px;
+  padding-right: 12px;
   width: 100%;
+  height: 100%;
+  line-height: 34px;
   display: block;
   &::placeholder {
     color: #888;

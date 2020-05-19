@@ -65,12 +65,14 @@ export default {
 <style lang="scss" scoped>
 .search-bar-select {
   font-size: 16px;
-  line-height: 1.15;
   position: relative;
+  height: 34px;
 }
 .displayed-field {
-  padding: 8px 12px;
-  height: 34px;
+  padding-left: 12px;
+  padding-right: 12px;
+  line-height: 34px;
+  height: 100%;
   cursor: pointer;
   user-select: none;
   display: block;
@@ -92,7 +94,6 @@ export default {
   }
 }
 .option-filed {
-  // display: none;
   color: #1b1b1b;
   position: absolute;
   top: 34px;
@@ -103,7 +104,10 @@ export default {
   background-color: #fff;
   box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.1);
   & li {
-    padding: 8px 12px;
+    padding-left: 12px;
+    padding-right: 12px;
+    height: 34px;
+    line-height: 34px;
     cursor: pointer;
     user-select: none;
     white-space: nowrap;

@@ -1,13 +1,13 @@
 <template>
   <div v-click-outside="hideField" class="search-bar">
-    <button type="button" class="search" @click="toggleField" />
+    <button type="button" class="search-icon" @click="toggleField" />
     <div v-show="isField" class="field">
       <UISearchBarSelect
         :options="options"
         @setSelectedOption="$emit('setSelectedOption', $event)"
       />
       <UISearchBarInput
-        class="search-bar-input"
+        class="search-bar__input"
         @setText="$emit('setText', $event)"
         @search="$emit('search')"
       />
@@ -54,8 +54,11 @@ export default {
   @include media-breakpoint-up(xl) {
     display: none;
   }
+  &__input {
+    margin-top: 20px;
+  }
 }
-.search {
+.search-icon {
   display: block;
   width: 18px;
   height: 18px;
@@ -82,8 +85,5 @@ export default {
     border-style: solid;
     border-width: 0 5.5px 12px 5.5px;
   }
-}
-.search-bar-input {
-  margin-top: 20px;
 }
 </style>
