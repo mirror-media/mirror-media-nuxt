@@ -20,6 +20,7 @@ async function axiosGet(url) {
     const hasData =
       (data.items && data.items.length > 0) ||
       (data.endpoints && Object.keys(data.endpoints).length > 0) ||
+      // properties responsed by /search api
       (data.hits && data.hits.total > 0)
 
     if (hasData) {
@@ -48,6 +49,8 @@ export function buildParams(params = {}) {
     'clean',
     'related',
     'keyword',
+
+    // queries used by /search api
     'keywords',
     'section',
   ]
