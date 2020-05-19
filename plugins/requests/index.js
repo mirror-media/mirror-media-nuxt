@@ -47,6 +47,8 @@ export function buildParams(params = {}) {
     'clean',
     'related',
     'keyword',
+    'keywords',
+    'section',
   ]
 
   if (isPureObject && Object.keys(params).length > 0) {
