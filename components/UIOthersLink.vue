@@ -1,0 +1,85 @@
+<template>
+  <div v-click-outside="closeLinkList" class="others-link">
+    <button type="button" class="more-icon" @click="toggleLinkList" />
+    <div v-if="isLinkList" class="link-list">
+      <a
+        v-for="{ textContent, href, ga } in links"
+        :key="textContent"
+        :href="href"
+        target="_blank"
+        @click="emitGA(ga.eventLabel)"
+      >
+        {{ textContent }}
+      </a>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'UIOthersLink',
+  props: {
+    links: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      isLinkList: false,
+    }
+  },
+  methods: {
+    toggleLinkList() {
+      this.isLinkList = !this.isLinkList
+    },
+    closeLinkList() {
+      this.isLinkList = false
+    },
+    emitGA(eventLabel) {
+      this.$emit('sendGA', {
+        eventCategory: 'header',
+        eventAction: 'click',
+        eventLabel,
+      })
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.others-link {
+  margin-left: 5px;
+  position: relative;
+}
+.more-icon {
+  display: block;
+  background-image: url(~assets/more_grey@2x.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 5px;
+  height: 20px;
+  background-size: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  box-sizing: content-box;
+  cursor: pointer;
+  user-select: none;
+}
+.link-list {
+  text-align: center;
+  position: absolute;
+  top: 28px;
+  left: 8px;
+  width: 130px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  color: #34495e;
+  line-height: 1.15;
+  font-size: 16px;
+  & a {
+    display: block;
+    padding: 8px 16px;
+  }
+}
+</style>

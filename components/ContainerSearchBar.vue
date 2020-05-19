@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="search-bar-container">
     <UISearchBar
       :options="options"
       @setSelectedOption="selectedOption = $event"
@@ -12,18 +12,28 @@
       @setText="keyword = $event"
       @search="search"
     />
+    <ContainerOthersLink
+      v-slot="{ links, handleSendGA }"
+      class="others-link-wrapper"
+    >
+      <UIOthersLink :links="links" @sendGA="handleSendGA" />
+    </ContainerOthersLink>
   </section>
 </template>
 
 <script>
 import UISearchBar from './UISearchBar.vue'
 import UISearchBarDesktop from './UISearchBarDesktop.vue'
+import ContainerOthersLink from './ContainerOthersLink.vue'
+import UIOthersLink from './UIOthersLink.vue'
 
 export default {
   name: 'ContainerSearchBar',
   components: {
     UISearchBar,
     UISearchBarDesktop,
+    ContainerOthersLink,
+    UIOthersLink,
   },
   props: {
     sections: {
@@ -70,3 +80,21 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.search-bar-container {
+  position: relative;
+  z-index: 199;
+  @include media-breakpoint-up(xl) {
+    display: flex;
+    align-items: center;
+  }
+}
+.others-link-wrapper {
+  display: none;
+  @include media-breakpoint-up(xl) {
+    display: flex;
+    align-items: center;
+  }
+}
+</style>

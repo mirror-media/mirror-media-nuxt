@@ -46,8 +46,6 @@ export default {
   display: none;
   @include media-breakpoint-up(xl) {
     display: flex;
-    position: relative;
-    z-index: 199;
   }
   &__input {
     font-size: 14px;

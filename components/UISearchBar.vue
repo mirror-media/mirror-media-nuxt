@@ -49,8 +49,6 @@ export default {
 
 <style lang="scss" scoped>
 .search-bar {
-  position: relative;
-  z-index: 199;
   @include media-breakpoint-up(xl) {
     display: none;
   }
@@ -64,6 +62,8 @@ export default {
   height: 18px;
   background-image: url(~assets/icon_search_mobile.png);
   background-size: 18px;
+  background-position: center;
+  background-repeat: no-repeat;
   cursor: pointer;
   user-select: none;
 }
