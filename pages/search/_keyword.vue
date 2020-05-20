@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <h1 v-text="currentKeyword" />
+    <h1 class="section__title" v-text="currentKeyword" />
     <UIArticleList class="section__list" :listData="listData" />
   </section>
 </template>
@@ -113,8 +113,30 @@ export default {
   }
   @include media-breakpoint-up(xl) {
     max-width: 1024px;
-    padding: 0;
     margin: auto;
+  }
+  &__title {
+    font-size: 48px;
+    color: #344951;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    @include media-breakpoint-up(md) {
+      padding: 0 10px;
+    }
+    &::after {
+      content: '';
+      margin: 0 0 0 10px;
+      display: inline-block;
+      flex: 1 1 auto;
+      height: 10px;
+      background: linear-gradient(
+        to right,
+        #bcbcbc 0%,
+        rgba(242, 242, 242, 1) 70%,
+        rgba(242, 242, 242, 1) 100%
+      );
+    }
   }
   &__list {
     @include media-breakpoint-up(md) {
