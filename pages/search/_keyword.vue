@@ -155,5 +155,20 @@ export default {
       margin: 8px 0 0 0;
     }
   }
+  &__loadmore-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100% - 16px - 16px);
+    height: 30px;
+    border: 1px solid #bcbcbc;
+    font-size: 16px;
+    color: black;
+    margin: 20px 16px;
+    @include media-breakpoint-up(md) {
+      width: 100%;
+      margin: 40px 0 0 0;
+    }
+  }
 }
 </style>
