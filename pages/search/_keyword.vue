@@ -118,13 +118,14 @@ export default {
 
 <style lang="scss" scoped>
 .section {
-  background-color: #f2f2f2;
+  background-color: white;
   padding: 36px 0;
   @include media-breakpoint-up(md) {
     padding: 36px 25px 72px 25px;
   }
   @include media-breakpoint-up(xl) {
     max-width: 1024px;
+    padding: 36px 0 0 0;
     margin: auto;
   }
   &__title {
