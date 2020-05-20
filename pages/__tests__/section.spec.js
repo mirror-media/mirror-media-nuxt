@@ -97,7 +97,6 @@ describe('component methods', () => {
     const responseMock = {
       items: [
         {
-          name: sectionNameMock,
           id: idMock,
           slug: slugMock,
           heroImage: {

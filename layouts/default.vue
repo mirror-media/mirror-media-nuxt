@@ -1,5 +1,7 @@
 <template>
-  <div :class="[{ listing: isListing }]">
+  <div
+    :class="[{ listing: isListing, 'listing--white-background': isSearchPage }]"
+  >
     <ContainerHeader />
     <nuxt />
     <UIFooter :class="[{ 'footer--listing': isListing }]" />
@@ -38,8 +40,12 @@ export default {
         'category-name',
         'author-id',
         'section-topic',
+        'search-keyword',
       ]
       return listingRouteNames.includes(this.$route.name)
+    },
+    isSearchPage() {
+      return this.$route.name === 'search-keyword'
     },
   },
   methods: {
@@ -67,6 +73,11 @@ export default {
   padding: 0 0 60px 0;
   @include media-breakpoint-up(xl) {
     padding: 0;
+  }
+
+  // most of the listing page's background-color is #f2f2f2, except search page
+  &--white-background {
+    background-color: white;
   }
 }
 
