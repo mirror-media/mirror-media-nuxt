@@ -2,6 +2,11 @@
   <section class="section">
     <h1 class="section__title" v-text="currentKeyword" />
     <UIArticleList class="section__list" :listData="listData" />
+    <button
+      v-if="showLoadmoreButton"
+      class="section__loadmore-button"
+      v-text="textContentLoadmore"
+    />
   </section>
 </template>
 
@@ -19,14 +24,15 @@ export default {
     const response = await this.fetchSearchListing({ page: 1 })
     this.setListData(response)
     this.setListDataTotal(response)
-    // this.listDataCurrentPage += 1
+    this.listDataCurrentPage += 1
   },
   data() {
     return {
       listData: [],
-      // listDataCurrentPage: 0,
+      listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
+      textContentLoadmore: '更多文章',
     }
   },
   computed: {
@@ -51,6 +57,12 @@ export default {
         return undefined
       }
       return Math.ceil(this.listDataTotal / this.listDataMaxResults)
+    },
+    showLoadmoreButton() {
+      return (
+        this.listDataPageLimit &&
+        this.listDataCurrentPage < this.listDataPageLimit
+      )
     },
     // // Constraint which prevent loadmore unexpectly
     // // if we navigating on client-side

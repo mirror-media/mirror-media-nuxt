@@ -251,3 +251,24 @@ describe('component methods', () => {
     )
   })
 })
+
+describe('loadmore button', () => {
+  test('hide loadmore button if listData is empty', () => {
+    const wrapper = createWrapper(page)
+    wrapper.setData({
+      listDataTotal: 0,
+    })
+    const button = wrapper.find('.section__loadmore-button')
+    expect(button.exists()).toBe(false)
+  })
+  test('hide loadmore button if listData reach its page limit', () => {
+    const wrapper = createWrapper(page)
+    wrapper.setData({
+      listDataMaxResults: 9,
+      listDataTotal: 9,
+      listDataCurrentPage: 1, // listDataPageLimit will be 1(calculate by lsitDataMaxResults and listDataTotal)
+    })
+    const button = wrapper.find('.section__loadmore-button')
+    expect(button.exists()).toBe(false)
+  })
+})
