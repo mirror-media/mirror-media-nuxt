@@ -236,4 +236,18 @@ describe('component methods', () => {
       },
     ])
   })
+  test('setListDataTotal and listDataPageLimit computed by total', () => {
+    const totalMock = 1234
+    const responseMock = {
+      hits: {
+        total: totalMock,
+      },
+    }
+    const wrapper = createWrapper(page)
+    wrapper.vm.setListDataTotal(responseMock)
+    expect(wrapper.vm.listDataTotal).toBe(totalMock)
+    expect(wrapper.vm.listDataPageLimit).toBe(
+      Math.ceil(totalMock / wrapper.vm.listDataMaxResults)
+    )
+  })
 })

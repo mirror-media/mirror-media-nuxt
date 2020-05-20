@@ -18,7 +18,7 @@ export default {
   async fetch() {
     const response = await this.fetchSearchListing({ page: 1 })
     this.setListData(response)
-    // this.setListDataTotal(response)
+    this.setListDataTotal(response)
     // this.listDataCurrentPage += 1
   },
   data() {
@@ -26,7 +26,7 @@ export default {
       listData: [],
       // listDataCurrentPage: 0,
       listDataMaxResults: 9,
-      // listDataTotal: undefined,
+      listDataTotal: undefined,
     }
   },
   computed: {
@@ -46,12 +46,12 @@ export default {
           ?.title ?? null
       )
     },
-    // listDataPageLimit() {
-    //   if (this.listDataTotal === undefined) {
-    //     return undefined
-    //   }
-    //   return Math.ceil(this.listDataTotal / this.listDataMaxResults)
-    // },
+    listDataPageLimit() {
+      if (this.listDataTotal === undefined) {
+        return undefined
+      }
+      return Math.ceil(this.listDataTotal / this.listDataMaxResults)
+    },
     // // Constraint which prevent loadmore unexpectly
     // // if we navigating on client-side
     // // due to the list data of the first page has not been loaded.
@@ -97,9 +97,9 @@ export default {
       listData = listData.map(this.mapDataToComponentProps)
       this.listData.push(...listData)
     },
-    // setListDataTotal(response = {}) {
-    //   this.listDataTotal = response.meta?.total ?? 0
-    // },
+    setListDataTotal(response = {}) {
+      this.listDataTotal = response.hits?.total ?? 0
+    },
   },
 }
 </script>
