@@ -38,6 +38,7 @@ export default {
         'category-name',
         'author-id',
         'section-topic',
+        'search-keyword',
       ]
       return listingRouteNames.includes(this.$route.name)
     },
