@@ -97,6 +97,9 @@ export default {
     height: auto;
     overflow: visible;
   }
+  a {
+    display: block;
+  }
   .container {
     // to hide scrollbar
     height: 48px;
@@ -118,18 +121,19 @@ export default {
   }
   .section {
     flex: 0 0 auto;
-    padding: 7px 11px 5px 11px;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: #808080;
     cursor: pointer;
     user-select: none;
     line-height: 1.15;
+    > a {
+      padding: 7px 11px 5px 11px;
+      @include media-breakpoint-up(xl) {
+        padding: 0;
+      }
+    }
     @include media-breakpoint-up(xl) {
       color: #fff;
-      padding: 0;
       line-height: 42px;
       min-width: calc(100% / 11);
       border-top-width: 3px;
@@ -193,7 +197,6 @@ export default {
       text-align: center;
       a {
         line-height: 1.3;
-        display: block;
         padding: 13px 10px;
       }
     }
