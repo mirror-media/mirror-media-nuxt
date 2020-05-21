@@ -15,7 +15,8 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchSectionsData() {
-    return this.$axios.get('https://api.mirrormedia.mg/combo?endpoint=sections')
+  async fetchSectionsData() {
+    const response = await this.$fetchCombo({ endpoint: 'sections' })
+    return response
   },
 }

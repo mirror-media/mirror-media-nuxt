@@ -15,9 +15,8 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchPartnersData() {
-    return this.$axios.get(
-      'https://api.mirrormedia.mg/partners?max_results=25&page=1'
-    )
+  async fetchPartnersData() {
+    const response = await this.$fetchPartners({ maxResults: 25, page: 1 })
+    return response
   },
 }
