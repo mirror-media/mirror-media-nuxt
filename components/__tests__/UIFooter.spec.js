@@ -19,7 +19,7 @@ describe('text link of subscribe', () => {
     })
     const link = wrapper.find('.footer-subscribe')
     link.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.subscribe.ga.eventCategory,
       eventAction: wrapper.vm.links.subscribe.ga.eventAction,
       eventLabel: wrapper.vm.links.subscribe.ga.eventLabel,
@@ -45,7 +45,7 @@ describe('text link of ad', () => {
     })
     const link = wrapper.find('.footer-ad')
     link.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.ad.ga.eventCategory,
       eventAction: wrapper.vm.links.ad.ga.eventAction,
       eventLabel: wrapper.vm.links.ad.ga.eventLabel,
@@ -71,7 +71,7 @@ describe('text link of activity', () => {
     })
     const link = wrapper.find('.footer-activity')
     link.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.activity.ga.eventCategory,
       eventAction: wrapper.vm.links.activity.ga.eventAction,
       eventLabel: wrapper.vm.links.activity.ga.eventLabel,
@@ -97,7 +97,7 @@ describe('text link of download-app', () => {
     })
     const link = wrapper.find('.footer-download-app')
     link.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.downloadApp.ga.eventCategory,
       eventAction: wrapper.vm.links.downloadApp.ga.eventAction,
       eventLabel: wrapper.vm.links.downloadApp.ga.eventLabel,
@@ -123,7 +123,7 @@ describe('text link of auth', () => {
     })
     const link = wrapper.find('.footer-auth')
     link.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.auth.ga.eventCategory,
       eventAction: wrapper.vm.links.auth.ga.eventAction,
       eventLabel: wrapper.vm.links.auth.ga.eventLabel,
@@ -148,7 +148,7 @@ describe('icon link of line', () => {
     })
     const link = wrapper.find('.footer-line')
     link.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.line.ga.eventCategory,
       eventAction: wrapper.vm.links.line.ga.eventAction,
       eventLabel: wrapper.vm.links.line.ga.eventLabel,
@@ -173,7 +173,7 @@ describe('icon link of weibo', () => {
     })
     const link = wrapper.find('.footer-weibo')
     link.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.weibo.ga.eventCategory,
       eventAction: wrapper.vm.links.weibo.ga.eventAction,
       eventLabel: wrapper.vm.links.weibo.ga.eventLabel,
@@ -198,7 +198,7 @@ describe('icon link of facebook', () => {
     })
     const link = wrapper.find('.footer-facebook')
     link.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.facebook.ga.eventCategory,
       eventAction: wrapper.vm.links.facebook.ga.eventAction,
       eventLabel: wrapper.vm.links.facebook.ga.eventLabel,
@@ -223,7 +223,7 @@ describe('icon link of instagram', () => {
     })
     const link = wrapper.find('.footer-instagram')
     link.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.instagram.ga.eventCategory,
       eventAction: wrapper.vm.links.instagram.ga.eventAction,
       eventLabel: wrapper.vm.links.instagram.ga.eventLabel,
@@ -248,7 +248,7 @@ describe('icon link of rss-feed', () => {
     })
     const link = wrapper.find('.footer-rss-feed')
     link.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.rssFeed.ga.eventCategory,
       eventAction: wrapper.vm.links.rssFeed.ga.eventAction,
       eventLabel: wrapper.vm.links.rssFeed.ga.eventLabel,
@@ -273,7 +273,7 @@ describe('icon link of email', () => {
     })
     const link = wrapper.find('.footer-email')
     link.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.email.ga.eventCategory,
       eventAction: wrapper.vm.links.email.ga.eventAction,
       eventLabel: wrapper.vm.links.email.ga.eventLabel,

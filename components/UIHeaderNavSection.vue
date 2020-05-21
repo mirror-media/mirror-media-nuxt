@@ -8,7 +8,7 @@
       </div>
 
       <div
-        v-for="section in displayedSections"
+        v-for="section in sections"
         :key="section.id"
         :class="`section section--${section.name}`"
       >
@@ -34,7 +34,7 @@
         <h2>健康醫療</h2>
         <div class="section__dropdown">
           <nuxt-link
-            v-for="partner in displayedPartner"
+            v-for="partner in partners"
             :key="partner.id"
             :to="`/externals/${partner.name}`"
             @click.native="emitGA(`external ${partner.name}`)"
@@ -59,16 +59,6 @@ export default {
       type: Array,
       required: true,
     },
-  },
-  computed: {
-    displayedSections() {
-      return this.sections.filter((section) => section.isFeatured)
-    },
-    displayedPartner() {
-      return this.partners.filter((partner) => partner.public)
-    },
-    // currentSectionName() {
-    // },
   },
   methods: {
     emitGA(eventLabel) {

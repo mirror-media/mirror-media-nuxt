@@ -1,108 +1,108 @@
-import { shallowMount } from '@vue/test-utils'
 import ContainerHeader from '../ContainerHeader.vue'
+import UISearchBarWrapper from '../UISearchBarWrapper.vue'
+import UIOthersList from '../UIOthersList.vue'
 import UIHeaderNavSection from '../UIHeaderNavSection.vue'
 import UIHeaderNavTopic from '../UIHeaderNavTopic.vue'
 
-describe('computed from Vuex state', () => {
+import createWrapperHelper from '~/test/helpers/createWrapperHelper'
+
+const createWrapper = createWrapperHelper({
+  computed: {
+    sections: () => [],
+    partners: () => [],
+    topics: () => [],
+  },
+})
+
+describe('options computed', () => {
   test('get the proper data', () => {
-    const wrapper = shallowMount(ContainerHeader, {
-      mocks: {
-        $store: {
-          state: {
-            sections: { data: { items: [{ name: 'news' }] } },
-            topics: { data: { items: [{ name: '網紅星勢力' }] } },
-            partners: { data: { items: [{ name: 'healthnews' }] } },
-          },
-        },
+    const wrapper = createWrapper(ContainerHeader, {
+      computed: {
+        sections: () => [{ title: '文化' }, { name: 'videohub' }],
       },
     })
 
-    expect(wrapper.vm.sections).toEqual([{ name: 'news' }])
-    expect(wrapper.vm.topics).toEqual([{ name: '網紅星勢力' }])
-    expect(wrapper.vm.partners).toEqual([{ name: 'healthnews' }])
-  })
-
-  test('get an empty array when the data is undefined', () => {
-    const wrapper = shallowMount(ContainerHeader, {
-      mocks: {
-        $store: {
-          state: {
-            sections: { data: {} },
-            topics: { data: {} },
-            partners: { data: {} },
-          },
-        },
-      },
-    })
-
-    expect(wrapper.vm.sections).toEqual([])
-    expect(wrapper.vm.topics).toEqual([])
-    expect(wrapper.vm.partners).toEqual([])
+    expect(wrapper.vm.options).toEqual([
+      { title: '全部類別' },
+      { title: '文化' },
+    ])
   })
 })
 
 describe('handleSendGA method', () => {
-  const $store = {
-    state: {
-      sections: { data: {} },
-      topics: { data: {} },
-      partners: { data: {} },
-    },
-  }
-
-  test('call $ga method when UIHeaderNavTopic.vue emits sendGA', () => {
+  test('call $ga method when UISearchBarWrapper.vue emits sendGA', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(ContainerHeader, {
+    const wrapper = createWrapper(ContainerHeader, {
       mocks: {
         $ga,
-        $store,
       },
     })
+
     const gaArgs = {
       eventCategory: 'header',
       eventAction: 'click',
-      eventLabel: 'topic 人造地獄',
+      eventLabel: 'search',
     }
-    wrapper.find(UIHeaderNavTopic).vm.$emit('sendGA', gaArgs)
-    expect($ga.event).toHaveBeenCalledWith(gaArgs)
+    wrapper.find(UISearchBarWrapper).vm.$emit('sendGA', gaArgs)
+    expect($ga.event).toBeCalledWith(gaArgs)
+  })
+
+  test('call $ga method when UIOthersList.vue emits sendGA', () => {
+    const $ga = {
+      event: jest.fn(),
+    }
+    const wrapper = createWrapper(ContainerHeader, {
+      mocks: {
+        $ga,
+      },
+    })
+
+    const gaArgs = {
+      eventCategory: 'header',
+      eventAction: 'click',
+      eventLabel: 'more subscribe',
+    }
+    wrapper.find(UIOthersList).vm.$emit('sendGA', gaArgs)
+    expect($ga.event).toBeCalledWith(gaArgs)
   })
 
   test('call $ga method when UIHeaderNavSection.vue emits sendGA', () => {
     const $ga = {
       event: jest.fn(),
     }
-    const wrapper = shallowMount(ContainerHeader, {
+    const wrapper = createWrapper(ContainerHeader, {
       mocks: {
         $ga,
-        $store,
       },
     })
+
     const gaArgs = {
       eventCategory: 'header',
       eventAction: 'click',
       eventLabel: 'section news',
     }
     wrapper.find(UIHeaderNavSection).vm.$emit('sendGA', gaArgs)
-    expect($ga.event).toHaveBeenCalledWith(gaArgs)
+    expect($ga.event).toBeCalledWith(gaArgs)
   })
-})
 
-describe('markup', () => {
-  test('render correctly', () => {
-    const wrapper = shallowMount(ContainerHeader, {
+  test('call $ga method when UIHeaderNavTopic.vue emits sendGA', () => {
+    const $ga = {
+      event: jest.fn(),
+    }
+    const wrapper = createWrapper(ContainerHeader, {
       mocks: {
-        $store: {
-          state: {
-            sections: { data: {} },
-            topics: { data: {} },
-            partners: { data: {} },
-          },
-        },
+        $ga,
       },
     })
 
-    expect(wrapper.element).toMatchSnapshot()
+    const gaArgs = {
+      eventCategory: 'header',
+      eventAction: 'click',
+      eventLabel: 'topic 人造地獄',
+    }
+    wrapper.find(UIHeaderNavTopic).vm.$emit('sendGA', gaArgs)
+    expect($ga.event).toBeCalledWith(gaArgs)
   })
 })

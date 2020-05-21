@@ -2,6 +2,12 @@ export const state = () => ({
   data: {},
 })
 
+export const getters = {
+  topics(state) {
+    return state.data.items ?? []
+  },
+}
+
 export const mutations = {
   setTopicsData(state, data) {
     state.data = data

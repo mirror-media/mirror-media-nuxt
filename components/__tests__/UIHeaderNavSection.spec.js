@@ -7,28 +7,17 @@ const sectionDisplayed = {
   isFeatured: true,
   categories: [{ name: 'bookreview', title: '書評' }],
 }
-const sectionNotDisplayed = {
-  name: 'people',
-  title: '人物',
-  isFeatured: false,
-  categories: [{ name: 'somebody', title: '一鏡到底' }],
-}
 
 const partnerDisplayed = {
   name: 'healthnews',
   display: '健康醫療網新聞',
   public: true,
 }
-const partnerNotDisplayed = {
-  name: 'nctudodo',
-  display: '交大喀報',
-  public: false,
-}
 
 describe('normal section nav', () => {
   const wrapper = shallowMount(UIHeaderNavSection, {
     propsData: {
-      sections: [sectionDisplayed, sectionNotDisplayed],
+      sections: [sectionDisplayed],
       partners: [],
     },
     stubs: ['nuxt-link'],
@@ -37,10 +26,6 @@ describe('normal section nav', () => {
   test('render the proper section link', () => {
     const link = wrapper.find(`[to="/section/${sectionDisplayed.name}"]`)
     expect(link.text()).toBe(sectionDisplayed.title)
-
-    expect(
-      wrapper.find(`[to="/section/${sectionNotDisplayed.name}"]`).exists()
-    ).toBe(false)
   })
 
   test('render the proper category link', () => {
@@ -54,7 +39,7 @@ describe('external section nav', () => {
   const wrapper = shallowMount(UIHeaderNavSection, {
     propsData: {
       sections: [],
-      partners: [partnerDisplayed, partnerNotDisplayed],
+      partners: [partnerDisplayed],
     },
     stubs: ['nuxt-link'],
   })
@@ -62,10 +47,6 @@ describe('external section nav', () => {
   test('render the proper partner link', () => {
     const link = wrapper.find(`[to="/externals/${partnerDisplayed.name}"]`)
     expect(link.text()).toBe(partnerDisplayed.display)
-
-    expect(
-      wrapper.find(`[to="/externals/${partnerNotDisplayed.name}"]`).exists()
-    ).toBe(false)
   })
 })
 
@@ -82,7 +63,7 @@ describe('emitGA method', () => {
     wrapper._emitted.sendGA = []
   })
 
-  test('with a proper argument when user clicks a section link', () => {
+  test('with a proper argument when users click a section link', () => {
     const linkNormal = wrapper.find(`[to="/section/${sectionDisplayed.name}"]`)
     linkNormal.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
@@ -104,7 +85,7 @@ describe('emitGA method', () => {
     ])
   })
 
-  test('with a proper argument when user clicks a category link', () => {
+  test('with a proper argument when users click a category link', () => {
     const [category] = sectionDisplayed.categories
     const link = wrapper.find(`[to="/category/${category.name}"]`)
     link.trigger('click')
@@ -117,7 +98,7 @@ describe('emitGA method', () => {
     ])
   })
 
-  test('with a proper argument when user clicks a partner link', () => {
+  test('with a proper argument when users click a partner link', () => {
     const link = wrapper.find(`[to="/externals/${partnerDisplayed.name}"]`)
     link.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
