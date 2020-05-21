@@ -64,7 +64,7 @@ describe('GA event', () => {
       },
     })
     wrapper.trigger('click')
-    expect($ga.event).toHaveBeenCalledWith({
+    expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.ga.eventCategory,
       eventAction: wrapper.vm.ga.eventAction,
       eventLabel: wrapper.vm.ga.eventLabel,

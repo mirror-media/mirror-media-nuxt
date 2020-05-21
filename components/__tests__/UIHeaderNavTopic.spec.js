@@ -32,7 +32,7 @@ describe('emitGA method', () => {
     wrapper._emitted.sendGA = []
   })
 
-  test('with a proper argument when user clicks a topic link', () => {
+  test('with a proper argument when users click a topic link', () => {
     const linkNormal = wrapper.find(`[to="/topic/${topic.id}"]`)
     linkNormal.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
@@ -54,7 +54,7 @@ describe('emitGA method', () => {
     ])
   })
 
-  test('with a proper argument when user clicks a sub-brand link', () => {
+  test('with a proper argument when users click a sub-brand link', () => {
     const voiceLink = wrapper.find('[href="https://voice.mirrorfiction.com/"]')
     voiceLink.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([

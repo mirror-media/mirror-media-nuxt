@@ -35,7 +35,7 @@ describe('custom events', () => {
 })
 
 describe('search field', () => {
-  test('toggle the field when user clicks the search icon', async () => {
+  test('toggle the field when users click the search icon', async () => {
     const wrapper = createWrapper(UISearchBar)
 
     const searchIcon = wrapper.find('.search-icon')
@@ -48,7 +48,7 @@ describe('search field', () => {
     expect(wrapper.find('.field').element.style.display).toBe('none')
   })
 
-  test('hide the field when user clicks outside', async () => {
+  test('hide the field when users click outside', async () => {
     const wrapper = createWrapper(UISearchBar, {
       data() {
         return {

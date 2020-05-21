@@ -31,7 +31,7 @@ describe('select feature', () => {
     ).toBe(true)
   })
 
-  test('toggle the option field when user clicks the displayed field', async () => {
+  test('toggle the option field when users click the displayed field', async () => {
     const wrapper = createWrapper(UISearchBarSelect)
     const displayedField = wrapper.find('.displayed-field')
 
@@ -44,7 +44,7 @@ describe('select feature', () => {
     expect(wrapper.find('.option-filed').element.style.display).toBe('none')
   })
 
-  test('behave correctly when user selects an option', async () => {
+  test('behave correctly when users select an option', async () => {
     const wrapper = createWrapper(UISearchBarSelect, {
       data() {
         return {
@@ -82,7 +82,7 @@ describe('select feature', () => {
     expect(wrapper.emitted().setSelectedOption[1]).toEqual([{ title: '文化' }])
   })
 
-  test('hide the option field when user clicks outside', async () => {
+  test('hide the option field when users click outside', async () => {
     const wrapper = createWrapper(UISearchBarSelect, {
       data() {
         return {

@@ -63,7 +63,7 @@ describe('emitGA method', () => {
     wrapper._emitted.sendGA = []
   })
 
-  test('with a proper argument when user clicks a section link', () => {
+  test('with a proper argument when users click a section link', () => {
     const linkNormal = wrapper.find(`[to="/section/${sectionDisplayed.name}"]`)
     linkNormal.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
@@ -85,7 +85,7 @@ describe('emitGA method', () => {
     ])
   })
 
-  test('with a proper argument when user clicks a category link', () => {
+  test('with a proper argument when users click a category link', () => {
     const [category] = sectionDisplayed.categories
     const link = wrapper.find(`[to="/category/${category.name}"]`)
     link.trigger('click')
@@ -98,7 +98,7 @@ describe('emitGA method', () => {
     ])
   })
 
-  test('with a proper argument when user clicks a partner link', () => {
+  test('with a proper argument when users click a partner link', () => {
     const link = wrapper.find(`[to="/externals/${partnerDisplayed.name}"]`)
     link.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([

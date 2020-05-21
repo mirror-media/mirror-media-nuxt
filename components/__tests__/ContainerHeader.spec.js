@@ -46,7 +46,7 @@ describe('handleSendGA method', () => {
       eventLabel: 'search',
     }
     wrapper.find(UISearchBarWrapper).vm.$emit('sendGA', gaArgs)
-    expect($ga.event).toHaveBeenCalledWith(gaArgs)
+    expect($ga.event).toBeCalledWith(gaArgs)
   })
 
   test('call $ga method when UIOthersList.vue emits sendGA', () => {
@@ -65,7 +65,7 @@ describe('handleSendGA method', () => {
       eventLabel: 'more subscribe',
     }
     wrapper.find(UIOthersList).vm.$emit('sendGA', gaArgs)
-    expect($ga.event).toHaveBeenCalledWith(gaArgs)
+    expect($ga.event).toBeCalledWith(gaArgs)
   })
 
   test('call $ga method when UIHeaderNavSection.vue emits sendGA', () => {
@@ -84,7 +84,7 @@ describe('handleSendGA method', () => {
       eventLabel: 'section news',
     }
     wrapper.find(UIHeaderNavSection).vm.$emit('sendGA', gaArgs)
-    expect($ga.event).toHaveBeenCalledWith(gaArgs)
+    expect($ga.event).toBeCalledWith(gaArgs)
   })
 
   test('call $ga method when UIHeaderNavTopic.vue emits sendGA', () => {
@@ -103,6 +103,6 @@ describe('handleSendGA method', () => {
       eventLabel: 'topic 人造地獄',
     }
     wrapper.find(UIHeaderNavTopic).vm.$emit('sendGA', gaArgs)
-    expect($ga.event).toHaveBeenCalledWith(gaArgs)
+    expect($ga.event).toBeCalledWith(gaArgs)
   })
 })

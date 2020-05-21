@@ -6,7 +6,7 @@ const createWrapper = createWrapperHelper()
 const keyword = '明星'
 
 describe('input feature', () => {
-  test('emit the text when user types', async () => {
+  test('emit the text when users type', async () => {
     const wrapper = createWrapper(UISearchBarInput)
 
     wrapper.find('input').setValue(keyword)
@@ -14,7 +14,7 @@ describe('input feature', () => {
     expect(wrapper.emitted().setText[0]).toEqual([keyword])
   })
 
-  test('emit search when user presses the Enter key', async () => {
+  test('emit search when users press the Enter key', async () => {
     const wrapper = createWrapper(UISearchBarInput)
     const input = wrapper.find('input')
 
