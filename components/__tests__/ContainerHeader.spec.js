@@ -1,4 +1,6 @@
 import ContainerHeader from '../ContainerHeader.vue'
+import UISearchBarWrapper from '../UISearchBarWrapper.vue'
+import UIOthersList from '../UIOthersList.vue'
 import UIHeaderNavSection from '../UIHeaderNavSection.vue'
 import UIHeaderNavTopic from '../UIHeaderNavTopic.vue'
 
@@ -28,7 +30,7 @@ describe('options computed', () => {
 })
 
 describe('handleSendGA method', () => {
-  test('call $ga method when UIHeaderNavTopic.vue emits sendGA', () => {
+  test('call $ga method when UISearchBarWrapper.vue emits sendGA', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -41,9 +43,28 @@ describe('handleSendGA method', () => {
     const gaArgs = {
       eventCategory: 'header',
       eventAction: 'click',
-      eventLabel: 'topic 人造地獄',
+      eventLabel: 'search',
     }
-    wrapper.find(UIHeaderNavTopic).vm.$emit('sendGA', gaArgs)
+    wrapper.find(UISearchBarWrapper).vm.$emit('sendGA', gaArgs)
+    expect($ga.event).toHaveBeenCalledWith(gaArgs)
+  })
+
+  test('call $ga method when UIOthersList.vue emits sendGA', () => {
+    const $ga = {
+      event: jest.fn(),
+    }
+    const wrapper = createWrapper(ContainerHeader, {
+      mocks: {
+        $ga,
+      },
+    })
+
+    const gaArgs = {
+      eventCategory: 'header',
+      eventAction: 'click',
+      eventLabel: 'more subscribe',
+    }
+    wrapper.find(UIOthersList).vm.$emit('sendGA', gaArgs)
     expect($ga.event).toHaveBeenCalledWith(gaArgs)
   })
 
@@ -63,6 +84,25 @@ describe('handleSendGA method', () => {
       eventLabel: 'section news',
     }
     wrapper.find(UIHeaderNavSection).vm.$emit('sendGA', gaArgs)
+    expect($ga.event).toHaveBeenCalledWith(gaArgs)
+  })
+
+  test('call $ga method when UIHeaderNavTopic.vue emits sendGA', () => {
+    const $ga = {
+      event: jest.fn(),
+    }
+    const wrapper = createWrapper(ContainerHeader, {
+      mocks: {
+        $ga,
+      },
+    })
+
+    const gaArgs = {
+      eventCategory: 'header',
+      eventAction: 'click',
+      eventLabel: 'topic 人造地獄',
+    }
+    wrapper.find(UIHeaderNavTopic).vm.$emit('sendGA', gaArgs)
     expect($ga.event).toHaveBeenCalledWith(gaArgs)
   })
 })

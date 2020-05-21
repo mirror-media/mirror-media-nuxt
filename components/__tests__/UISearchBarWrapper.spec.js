@@ -1,5 +1,6 @@
 import UISearchBarWrapper from '../UISearchBarWrapper.vue'
 import UISearchBar from '../UISearchBar.vue'
+import UISearchBarDesktop from '../UISearchBarDesktop.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -82,5 +83,19 @@ describe('search feature', () => {
     expect($router.push).toBeCalledWith(
       '/search/明星,媒體?section=57e1e11cee85930e00cad4ea'
     )
+  })
+})
+
+describe('emitGA method', () => {
+  test('emit sendGA when UISearchBarDesktop.vue emits sendGA', () => {
+    const wrapper = createWrapper(UISearchBarWrapper)
+
+    const gaArgs = {
+      eventCategory: 'header',
+      eventAction: 'click',
+      eventLabel: 'search',
+    }
+    wrapper.find(UISearchBarDesktop).vm.$emit('sendGA', gaArgs)
+    expect(wrapper.emitted().sendGA[0]).toEqual([gaArgs])
   })
 })

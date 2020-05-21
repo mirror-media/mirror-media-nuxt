@@ -1,5 +1,5 @@
 <template>
-  <section class="search-bar-wrapper">
+  <section>
     <UISearchBar
       :options="options"
       @setSelectedOption="selectedOption = $event"
@@ -13,30 +13,18 @@
       @search="search"
       @sendGA="emitGA"
     />
-    <UIOthersList
-      class="others-list"
-      :links="otherLinks"
-      eventCategory="header"
-      @sendGA="emitGA"
-    />
   </section>
 </template>
 
 <script>
-import _ from 'lodash'
-
 import UISearchBar from './UISearchBar.vue'
 import UISearchBarDesktop from './UISearchBarDesktop.vue'
-import UIOthersList from './UIOthersList.vue'
-
-import { OTHER_LINKS } from '~/constants/index'
 
 export default {
   name: 'UISearchBarWrapper',
   components: {
     UISearchBar,
     UISearchBarDesktop,
-    UIOthersList,
   },
   props: {
     options: {
@@ -48,32 +36,7 @@ export default {
     return {
       selectedOption: {},
       keyword: '',
-      otherLinksEventLabel: {
-        subscribe: {
-          eventLabel: 'more subscribe',
-        },
-        magazine: {
-          eventLabel: 'more magazine',
-        },
-        auth: {
-          eventLabel: 'more auth',
-        },
-        ad: {
-          eventLabel: 'more ad',
-        },
-        campaign: {
-          eventLabel: 'more campaign',
-        },
-        downloadApp: {
-          eventLabel: 'more download',
-        },
-      },
     }
-  },
-  computed: {
-    otherLinks() {
-      return _.merge(OTHER_LINKS, this.otherLinksEventLabel)
-    },
   },
   methods: {
     search() {
@@ -101,20 +64,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.search-bar-wrapper {
-  position: relative;
-  z-index: 199;
-  @include media-breakpoint-up(xl) {
-    display: flex;
-    align-items: center;
-  }
-}
-.others-list {
-  display: none;
-  @include media-breakpoint-up(xl) {
-    display: block;
-  }
-}
-</style>
