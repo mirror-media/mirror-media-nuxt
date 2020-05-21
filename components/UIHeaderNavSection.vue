@@ -54,12 +54,10 @@ export default {
     sections: {
       type: Array,
       required: true,
-      validator: (sections) => sections.every((section) => section.isFeatured),
     },
     partners: {
       type: Array,
       required: true,
-      validator: (partners) => partners.every((partner) => partner.public),
     },
   },
   methods: {

@@ -42,7 +42,6 @@ export default {
     sections: {
       type: Array,
       required: true,
-      validator: (sections) => sections.every((section) => section.isFeatured),
     },
   },
   data() {

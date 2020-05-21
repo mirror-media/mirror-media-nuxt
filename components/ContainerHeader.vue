@@ -1,10 +1,10 @@
 <template>
   <header>
-    <ContainerSearchBar :sections="displayedSections" />
+    <ContainerSearchBar :sections="sections" />
     <nav class="header-nav">
       <UIHeaderNavSection
-        :sections="displayedSections"
-        :partners="displayedPartners"
+        :sections="sections"
+        :partners="partners"
         @sendGA="handleSendGA"
       />
       <UIHeaderNavTopic :topics="topics" @sendGA="handleSendGA" />
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 import ContainerSearchBar from './ContainerSearchBar.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
@@ -27,17 +27,11 @@ export default {
     UIHeaderNavTopic,
   },
   computed: {
-    ...mapState({
-      sections: (state) => state.sections.data.items ?? [],
-      topics: (state) => state.topics.data.items ?? [],
-      partners: (state) => state.partners.data.items ?? [],
+    ...mapGetters({
+      sections: 'sections/displayedSections',
+      partners: 'partners/displayedPartners',
+      topics: 'topics/topics',
     }),
-    displayedSections() {
-      return this.sections.filter((section) => section.isFeatured)
-    },
-    displayedPartners() {
-      return this.partners.filter((partner) => partner.public)
-    },
   },
   methods: {
     handleSendGA(param = {}) {
