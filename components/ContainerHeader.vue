@@ -1,6 +1,6 @@
 <template>
   <header>
-    <ContainerSearchBar :sections="sections" />
+    <UISearchBarWrapper :options="options" @sendGA="handleSendGA" />
     <nav class="header-nav">
       <UIHeaderNavSection
         :sections="sections"
@@ -15,16 +15,21 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import ContainerSearchBar from './ContainerSearchBar.vue'
+import UISearchBarWrapper from './UISearchBarWrapper.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
 
 export default {
   name: 'ContainerHeader',
   components: {
-    ContainerSearchBar,
+    UISearchBarWrapper,
     UIHeaderNavSection,
     UIHeaderNavTopic,
+  },
+  data() {
+    return {
+      defaultOption: { title: '全部類別' },
+    }
   },
   computed: {
     ...mapGetters({
@@ -32,6 +37,12 @@ export default {
       partners: 'partners/displayedPartners',
       topics: 'topics/topics',
     }),
+    options() {
+      const sections = this.sections.filter(
+        (section) => section.name !== 'videohub'
+      )
+      return [this.defaultOption, ...sections]
+    },
   },
   methods: {
     handleSendGA(param = {}) {

@@ -1,30 +1,17 @@
-import ContainerSearchBar from '../ContainerSearchBar.vue'
+import UISearchBarWrapper from '../UISearchBarWrapper.vue'
 import UISearchBar from '../UISearchBar.vue'
+
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
   propsData: {
-    sections: [
-      { title: '文化', isFeatured: true },
-      { name: 'videohub', isFeatured: true },
-    ],
+    options: [],
   },
-})
-
-describe('options computed', () => {
-  test('get the proper data', () => {
-    const wrapper = createWrapper(ContainerSearchBar)
-
-    expect(wrapper.vm.options).toEqual([
-      { title: '全部類別' },
-      { title: '文化', isFeatured: true },
-    ])
-  })
 })
 
 describe('search feature', () => {
   test('set selectedOption when UISearchBar.vue emits setSelectedOption', () => {
-    const wrapper = createWrapper(ContainerSearchBar)
+    const wrapper = createWrapper(UISearchBarWrapper)
     const option = { title: '全部類別' }
 
     wrapper.find(UISearchBar).vm.$emit('setSelectedOption', option)
@@ -32,7 +19,7 @@ describe('search feature', () => {
   })
 
   test('set keyword when UISearchBar.vue emits setText', () => {
-    const wrapper = createWrapper(ContainerSearchBar)
+    const wrapper = createWrapper(UISearchBarWrapper)
     const keyword = '明星'
 
     wrapper.find(UISearchBar).vm.$emit('setText', keyword)
@@ -43,7 +30,7 @@ describe('search feature', () => {
     const $router = {
       push: jest.fn(),
     }
-    const wrapper = createWrapper(ContainerSearchBar, {
+    const wrapper = createWrapper(UISearchBarWrapper, {
       data() {
         return {
           selectedOption: { title: '全部類別' },

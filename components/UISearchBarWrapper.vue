@@ -1,5 +1,5 @@
 <template>
-  <section class="search-bar-container">
+  <section class="search-bar-wrapper">
     <UISearchBar
       :options="options"
       @setSelectedOption="selectedOption = $event"
@@ -11,13 +11,13 @@
       @setSelectedOption="selectedOption = $event"
       @setText="keyword = $event"
       @search="search"
-      @sendGA="handleSendGA"
+      @sendGA="emitGA"
     />
     <UIOthersList
       class="others-list"
       :links="otherLinks"
       eventCategory="header"
-      @sendGA="handleSendGA"
+      @sendGA="emitGA"
     />
   </section>
 </template>
@@ -32,21 +32,20 @@ import UIOthersList from './UIOthersList.vue'
 import { OTHER_LINKS } from '~/constants/index'
 
 export default {
-  name: 'ContainerSearchBar',
+  name: 'UISearchBarWrapper',
   components: {
     UISearchBar,
     UISearchBarDesktop,
     UIOthersList,
   },
   props: {
-    sections: {
+    options: {
       type: Array,
       required: true,
     },
   },
   data() {
     return {
-      defaultOption: { title: '全部類別' },
       selectedOption: {},
       keyword: '',
       otherLinksEventLabel: {
@@ -72,12 +71,6 @@ export default {
     }
   },
   computed: {
-    options() {
-      const sections = this.sections.filter(
-        (section) => section.name !== 'videohub'
-      )
-      return [this.defaultOption, ...sections]
-    },
     otherLinks() {
       return _.merge(OTHER_LINKS, this.otherLinksEventLabel)
     },
@@ -102,15 +95,15 @@ export default {
         .replace(/\s*,\s*/g, ',')
         .replace(/\s+/g, ',')
     },
-    handleSendGA(param = {}) {
-      this.$ga.event(param)
+    emitGA(param = {}) {
+      this.$emit('sendGA', param)
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.search-bar-container {
+.search-bar-wrapper {
   position: relative;
   z-index: 199;
   @include media-breakpoint-up(xl) {

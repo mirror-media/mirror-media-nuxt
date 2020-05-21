@@ -12,6 +12,21 @@ const createWrapper = createWrapperHelper({
   },
 })
 
+describe('options computed', () => {
+  test('get the proper data', () => {
+    const wrapper = createWrapper(ContainerHeader, {
+      computed: {
+        sections: () => [{ title: '文化' }, { name: 'videohub' }],
+      },
+    })
+
+    expect(wrapper.vm.options).toEqual([
+      { title: '全部類別' },
+      { title: '文化' },
+    ])
+  })
+})
+
 describe('handleSendGA method', () => {
   test('call $ga method when UIHeaderNavTopic.vue emits sendGA', () => {
     const $ga = {
@@ -49,13 +64,5 @@ describe('handleSendGA method', () => {
     }
     wrapper.find(UIHeaderNavSection).vm.$emit('sendGA', gaArgs)
     expect($ga.event).toHaveBeenCalledWith(gaArgs)
-  })
-})
-
-describe('markup', () => {
-  test('render correctly', () => {
-    const wrapper = createWrapper(ContainerHeader)
-
-    expect(wrapper.element).toMatchSnapshot()
   })
 })
