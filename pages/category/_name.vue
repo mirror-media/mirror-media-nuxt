@@ -109,7 +109,7 @@ export default {
       return {
         id: item.id,
         href: item.slug ? `/story/${item.slug}` : '/',
-        imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url ?? '',
+        imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: this.currentSectionTitle,
         imgTextBackgroundColor: this.currentSectionThemeColor,
         infoTitle: item.title ?? '',

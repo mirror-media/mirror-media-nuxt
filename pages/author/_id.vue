@@ -70,7 +70,7 @@ export default {
       return {
         id: item.id,
         href: item.slug ? `/story/${item.slug}` : '/',
-        imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url ?? '',
+        imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: section.title ?? '',
         imgTextBackgroundColor:
           styleVariables[`sections-color-${section.name}`],
