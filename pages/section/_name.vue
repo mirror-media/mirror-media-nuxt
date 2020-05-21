@@ -92,7 +92,7 @@ export default {
         infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
       }
     },
-    async fetchSectionListing({ page = 1 }) {
+    async fetchSectionListing({ page = 1 } = {}) {
       const response = await this.$fetchList({
         maxResults: this.listDataMaxResults,
         sort: '-publishedDate',

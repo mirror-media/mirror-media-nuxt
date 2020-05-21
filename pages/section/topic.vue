@@ -69,7 +69,7 @@ export default {
           : item.ogDescription,
       }
     },
-    async fetchTopicsListing({ page = 1 }) {
+    async fetchTopicsListing({ page = 1 } = {}) {
       const response = await this.$fetchTopics({
         maxResults: this.listDataMaxResults,
         page,

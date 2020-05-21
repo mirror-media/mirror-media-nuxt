@@ -87,7 +87,7 @@ export default {
     setAuthorName(response = {}) {
       this.authorName = (response.items ?? [])[0]?.name
     },
-    async fetchAuthorListing({ page = 1 }) {
+    async fetchAuthorListing({ page = 1 } = {}) {
       const response = await this.$fetchPosts({
         maxResults: this.listDataMaxResults,
         sort: '-publishedDate',
