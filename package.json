@@ -24,7 +24,7 @@
     }
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/axios": "^5.10.3",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "cross-env": "^7.0.2",
@@ -40,7 +40,7 @@
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
     "@nuxtjs/eslint-module": "^1.0.0",
-    "@nuxtjs/google-analytics": "^2.2.3",
+    "@nuxtjs/google-analytics": "^2.3.0",
     "@nuxtjs/style-resources": "^1.0.0",
     "@vue/test-utils": "^1.0.0-beta.33",
     "babel-eslint": "^10.0.1",
@@ -53,11 +53,11 @@
     "husky": "^4.0.0",
     "jest": "^25.3.0",
     "jest-transform-stub": "^2.0.0",
-    "lint-staged": "^10.0.0",
+    "lint-staged": "^10.2.4",
     "lodash-webpack-plugin": "^0.11.5",
-    "node-sass": "^4.13.1",
-    "nodemon": "^2.0.3",
-    "prettier": "^2.0.4",
+    "node-sass": "4.13.1",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5",
     "sass-loader": "^8.0.2",
     "vue-jest": "^4.0.0-0"
   }
