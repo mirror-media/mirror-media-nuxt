@@ -1,37 +1,41 @@
-import UIOthersLink from '../UIOthersLink.vue'
-import { SOCIAL_LINK } from '~/constants/index'
+import _ from 'lodash'
+import UIOthersList from '../UIOthersList.vue'
+import { OTHER_LINKS } from '~/constants/index'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
-const mockLink = {
-  textContent: '訂閱鏡週刊',
-  href: SOCIAL_LINK.SUBSCRIBE,
-  ga: {
+const otherLinksEventLabel = {
+  subscribe: {
     eventLabel: 'more subscribe',
   },
+  magazine: {
+    eventLabel: 'more magazine',
+  },
+  auth: {
+    eventLabel: 'more auth',
+  },
+  ad: {
+    eventLabel: 'more ad',
+  },
+  campaign: {
+    eventLabel: 'more campaign',
+  },
+  downloadApp: {
+    eventLabel: 'more download',
+  },
 }
+const eventCategory = 'header'
+const otherLinks = _.merge(OTHER_LINKS, otherLinksEventLabel)
 
 const createWrapper = createWrapperHelper({
   propsData: {
-    links: [mockLink],
+    links: otherLinks,
+    eventCategory,
   },
 })
 
 describe('link list', () => {
-  test('render the proper other link', () => {
-    const wrapper = createWrapper(UIOthersLink, {
-      data() {
-        return {
-          isLinkList: true,
-        }
-      },
-    })
-
-    const link = wrapper.find(`[href="${mockLink.href}"]`)
-    expect(link.text()).toBe(mockLink.textContent)
-  })
-
-  test('toggle the link list when a user clicks the more icon', async () => {
-    const wrapper = createWrapper(UIOthersLink)
+  test('toggle the link list when users click the more icon', async () => {
+    const wrapper = createWrapper(UIOthersList)
 
     const moreIcon = wrapper.find('.more-icon')
     moreIcon.trigger('click')
@@ -43,8 +47,8 @@ describe('link list', () => {
     expect(wrapper.find('.link-list').exists()).toBe(false)
   })
 
-  test('close the link list when a user clicks outside', async () => {
-    const wrapper = createWrapper(UIOthersLink, {
+  test('close the link list when users click outside', async () => {
+    const wrapper = createWrapper(UIOthersList, {
       data() {
         return {
           isLinkList: true,
@@ -59,34 +63,35 @@ describe('link list', () => {
 })
 
 describe('emitGA method', () => {
-  test('with a proper argument when user clicks a other link', () => {
-    const wrapper = createWrapper(UIOthersLink, {
+  test('with a proper argument when users click a other link', () => {
+    const wrapper = createWrapper(UIOthersList, {
       data() {
         return {
           isLinkList: true,
         }
       },
     })
+    const { href, eventLabel } = otherLinks.subscribe
 
-    const link = wrapper.find(`[href="${mockLink.href}"]`)
+    const link = wrapper.find(`[href="${href}"]`)
     link.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
       {
-        eventCategory: 'header',
+        eventCategory,
         eventAction: 'click',
-        eventLabel: mockLink.ga.eventLabel,
+        eventLabel,
       },
     ])
   })
 
-  test('with a proper argument when a user clicks the more icon', () => {
-    const wrapper = createWrapper(UIOthersLink)
+  test('with a proper argument when users click the more icon', () => {
+    const wrapper = createWrapper(UIOthersList)
 
     const moreIcon = wrapper.find('.more-icon')
     moreIcon.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
       {
-        eventCategory: 'header',
+        eventCategory,
         eventAction: 'click',
         eventLabel: 'more open',
       },

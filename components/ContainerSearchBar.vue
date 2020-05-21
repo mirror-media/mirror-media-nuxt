@@ -13,25 +13,30 @@
       @search="search"
       @sendGA="handleSendGA"
     />
-    <ContainerOthersLink v-slot="slotProps" class="others-link-wrapper">
-      <UIOthersLink :links="slotProps.links" @sendGA="slotProps.handleSendGA" />
-    </ContainerOthersLink>
+    <UIOthersList
+      class="others-list"
+      :links="otherLinks"
+      eventCategory="header"
+      @sendGA="handleSendGA"
+    />
   </section>
 </template>
 
 <script>
+import _ from 'lodash'
+
 import UISearchBar from './UISearchBar.vue'
 import UISearchBarDesktop from './UISearchBarDesktop.vue'
-import ContainerOthersLink from './ContainerOthersLink.vue'
-import UIOthersLink from './UIOthersLink.vue'
+import UIOthersList from './UIOthersList.vue'
+
+import { OTHER_LINKS } from '~/constants/index'
 
 export default {
   name: 'ContainerSearchBar',
   components: {
     UISearchBar,
     UISearchBarDesktop,
-    ContainerOthersLink,
-    UIOthersLink,
+    UIOthersList,
   },
   props: {
     sections: {
@@ -45,6 +50,26 @@ export default {
       defaultOption: { title: '全部類別' },
       selectedOption: {},
       keyword: '',
+      otherLinksEventLabel: {
+        subscribe: {
+          eventLabel: 'more subscribe',
+        },
+        magazine: {
+          eventLabel: 'more magazine',
+        },
+        auth: {
+          eventLabel: 'more auth',
+        },
+        ad: {
+          eventLabel: 'more ad',
+        },
+        campaign: {
+          eventLabel: 'more campaign',
+        },
+        downloadApp: {
+          eventLabel: 'more download',
+        },
+      },
     }
   },
   computed: {
@@ -53,6 +78,9 @@ export default {
         (section) => section.name !== 'videohub'
       )
       return [this.defaultOption, ...sections]
+    },
+    otherLinks() {
+      return _.merge(OTHER_LINKS, this.otherLinksEventLabel)
     },
   },
   methods: {
@@ -91,11 +119,10 @@ export default {
     align-items: center;
   }
 }
-.others-link-wrapper {
+.others-list {
   display: none;
   @include media-breakpoint-up(xl) {
-    display: flex;
-    align-items: center;
+    display: block;
   }
 }
 </style>
