@@ -41,12 +41,10 @@ describe('search field', () => {
     const wrapper = createWrapper(UISearchBar)
 
     const searchIcon = wrapper.find('.search-icon')
-    searchIcon.trigger('click')
-    await wrapper.vm.$nextTick()
+    await searchIcon.trigger('click')
     expect(wrapper.find('.field').element.style.display).toBe('')
 
-    searchIcon.trigger('click')
-    await wrapper.vm.$nextTick()
+    await searchIcon.trigger('click')
     expect(wrapper.find('.field').element.style.display).toBe('none')
   })
 
@@ -59,8 +57,7 @@ describe('search field', () => {
       },
     })
 
-    document.body.dispatchEvent(new Event('click'))
-    await wrapper.vm.$nextTick()
+    await document.body.dispatchEvent(new Event('click'))
     expect(wrapper.find('.field').element.style.display).toBe('none')
   })
 })

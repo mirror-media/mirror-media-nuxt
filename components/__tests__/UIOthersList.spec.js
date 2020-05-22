@@ -38,12 +38,10 @@ describe('link list', () => {
     const wrapper = createWrapper(UIOthersList)
 
     const moreIcon = wrapper.find('.more-icon')
-    moreIcon.trigger('click')
-    await wrapper.vm.$nextTick()
+    await moreIcon.trigger('click')
     expect(wrapper.find('.link-list').exists()).toBe(true)
 
-    moreIcon.trigger('click')
-    await wrapper.vm.$nextTick()
+    await moreIcon.trigger('click')
     expect(wrapper.find('.link-list').exists()).toBe(false)
   })
 
@@ -56,8 +54,7 @@ describe('link list', () => {
       },
     })
 
-    document.body.dispatchEvent(new Event('click'))
-    await wrapper.vm.$nextTick()
+    await document.body.dispatchEvent(new Event('click'))
     expect(wrapper.find('.link-list').exists()).toBe(false)
   })
 })

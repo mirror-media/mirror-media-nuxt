@@ -35,12 +35,10 @@ describe('select feature', () => {
     const wrapper = createWrapper(UISearchBarSelect)
     const displayedField = wrapper.find('.displayed-field')
 
-    displayedField.trigger('click')
-    await wrapper.vm.$nextTick()
+    await displayedField.trigger('click')
     expect(wrapper.find('.option-filed').element.style.display).toBe('')
 
-    displayedField.trigger('click')
-    await wrapper.vm.$nextTick()
+    await displayedField.trigger('click')
     expect(wrapper.find('.option-filed').element.style.display).toBe('none')
   })
 
@@ -53,8 +51,7 @@ describe('select feature', () => {
       },
     })
 
-    wrapper.find('.option-filed li:nth-child(2)').trigger('click')
-    await wrapper.vm.$nextTick()
+    await wrapper.find('.option-filed li:nth-child(2)').trigger('click')
     expect(
       wrapper.find('.option-filed li:nth-child(2)').classes('selected')
     ).toBe(true)
@@ -77,8 +74,7 @@ describe('select feature', () => {
       { title: '全部類別' },
     ])
 
-    wrapper.find('.option-filed li:nth-child(2)').trigger('click')
-    await wrapper.vm.$nextTick()
+    await wrapper.find('.option-filed li:nth-child(2)').trigger('click')
     expect(wrapper.emitted().setSelectedOption[1]).toEqual([{ title: '文化' }])
   })
 
@@ -91,8 +87,7 @@ describe('select feature', () => {
       },
     })
 
-    document.body.dispatchEvent(new Event('click'))
-    await wrapper.vm.$nextTick()
+    await document.body.dispatchEvent(new Event('click'))
     expect(wrapper.find('.option-filed').element.style.display).toBe('none')
   })
 })
