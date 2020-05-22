@@ -1,14 +1,16 @@
 export const actions = {
-  nuxtServerInit({ dispatch }) {
-    dispatch('fetchGlobalData')
+  async nuxtServerInit({ commit, dispatch }) {
+    const [sectionsResponse] = await dispatch('fetchGlobalData')
+
+    commitSectionsData(commit, sectionsResponse)
   },
 
-  async fetchGlobalData({ commit, dispatch }) {
+  async fetchGlobalData({ dispatch }) {
     const sectionsResponse = await dispatch('sections/fetchSectionsData')
-
-    commit(
-      'sections/setSectionsData',
-      sectionsResponse.endpoints.sections ?? {}
-    )
+    return [sectionsResponse]
   },
+}
+
+function commitSectionsData(commit, response) {
+  commit('sections/setSectionsData', response.endpoints.sections ?? {})
 }
