@@ -14,18 +14,18 @@ describe('input feature', () => {
     expect(wrapper.emitted().setText[0]).toEqual([keyword])
   })
 
-  test('emit search when users press the Enter key', async () => {
+  test('emit search when users press the Enter key', () => {
     const wrapper = createWrapper(UISearchBarInput)
     const input = wrapper.find('input')
 
     input.trigger('keydown.enter', {
       isComposing: true,
     })
-    await wrapper.vm.$nextTick()
+    // await wrapper.vm.$nextTick()
     expect(wrapper.emitted().search).toBeFalsy()
 
     input.trigger('keydown.enter')
-    await wrapper.vm.$nextTick()
+    // await wrapper.vm.$nextTick()
     expect(wrapper.emitted().search).toBeTruthy()
   })
 })

@@ -65,7 +65,7 @@ describe('section data', () => {
         },
       },
     })
-    const list = wrapper.find(UIArticleList)
+    const list = wrapper.findComponent(UIArticleList)
     expect(wrapper.vm.currentSectionId).toBe(sectionIdMock)
     expect(list.props().listTitle).toBe(sectionTitleMock)
   })
@@ -132,7 +132,7 @@ describe('component methods', () => {
     })
 
     wrapper.vm.setListData(responseMock)
-    const list = wrapper.find(UIArticleList)
+    const list = wrapper.findComponent(UIArticleList)
     expect(list.props().listData).toEqual([
       {
         id: idMock,
