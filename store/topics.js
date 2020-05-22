@@ -3,8 +3,10 @@ export const state = () => ({
 })
 
 export const getters = {
-  topics(state) {
-    return state.data.items ?? []
+  displayedTopics(state) {
+    return (
+      state.data.items?.filter((topic) => topic.isFeatured).slice(0, 7) ?? []
+    )
   },
 }
 

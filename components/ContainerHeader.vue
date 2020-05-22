@@ -68,7 +68,7 @@ export default {
     ...mapGetters({
       sections: 'sections/displayedSections',
       partners: 'partners/displayedPartners',
-      topics: 'topics/topics',
+      topics: 'topics/displayedTopics',
     }),
     options() {
       const sections = this.sections.filter(
