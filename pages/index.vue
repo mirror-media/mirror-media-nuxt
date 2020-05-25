@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div>
+      <GPTAD />
       <h1 class="title">
         mirror-media-nuxt
       </h1>
