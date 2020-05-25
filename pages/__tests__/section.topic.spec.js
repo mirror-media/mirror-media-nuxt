@@ -52,7 +52,7 @@ describe('component methods', () => {
     const wrapper = createWrapper(page)
 
     wrapper.vm.setListData(responseMock)
-    const list = wrapper.find(UIArticleList)
+    const list = wrapper.findComponent(UIArticleList)
     expect(list.props().listData).toEqual([
       {
         id: idMock,
@@ -94,7 +94,7 @@ describe('component methods', () => {
 
     const wrapper = createWrapper(page)
     wrapper.vm.setListData(responseMock)
-    const list = wrapper.find(UIArticleList)
+    const list = wrapper.findComponent(UIArticleList)
     expect(list.props().listData).toEqual([
       {
         id: idMock,

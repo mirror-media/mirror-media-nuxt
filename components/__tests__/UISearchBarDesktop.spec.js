@@ -14,14 +14,14 @@ describe('custom events', () => {
     const wrapper = createWrapper(UISearchBarDesktop)
     const keyword = '明星'
 
-    wrapper.find(UISearchBarInput).vm.$emit('setText', keyword)
+    wrapper.findComponent(UISearchBarInput).vm.$emit('setText', keyword)
     expect(wrapper.emitted().setText[0]).toEqual([keyword])
   })
 
   test('emit search when UISearchBarInput.vue emits search', () => {
     const wrapper = createWrapper(UISearchBarDesktop)
 
-    wrapper.find(UISearchBarInput).vm.$emit('search')
+    wrapper.findComponent(UISearchBarInput).vm.$emit('search')
     expect(wrapper.emitted().search).toBeTruthy()
   })
 
@@ -29,7 +29,9 @@ describe('custom events', () => {
     const wrapper = createWrapper(UISearchBarDesktop)
     const option = { title: '全部類別' }
 
-    wrapper.find(UISearchBarSelect).vm.$emit('setSelectedOption', option)
+    wrapper
+      .findComponent(UISearchBarSelect)
+      .vm.$emit('setSelectedOption', option)
     expect(wrapper.emitted().setSelectedOption[0]).toEqual([option])
   })
 

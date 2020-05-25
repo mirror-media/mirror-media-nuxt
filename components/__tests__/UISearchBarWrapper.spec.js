@@ -15,7 +15,7 @@ describe('search feature', () => {
     const wrapper = createWrapper(UISearchBarWrapper)
     const option = { title: '全部類別' }
 
-    wrapper.find(UISearchBar).vm.$emit('setSelectedOption', option)
+    wrapper.findComponent(UISearchBar).vm.$emit('setSelectedOption', option)
     expect(wrapper.vm.selectedOption).toEqual(option)
   })
 
@@ -23,7 +23,7 @@ describe('search feature', () => {
     const wrapper = createWrapper(UISearchBarWrapper)
     const keyword = '明星'
 
-    wrapper.find(UISearchBar).vm.$emit('setText', keyword)
+    wrapper.findComponent(UISearchBar).vm.$emit('setText', keyword)
     expect(wrapper.vm.keyword).toBe(keyword)
   })
 
@@ -42,7 +42,7 @@ describe('search feature', () => {
         $router,
       },
     })
-    const searchBarVM = wrapper.find(UISearchBar).vm
+    const searchBarVM = wrapper.findComponent(UISearchBar).vm
 
     searchBarVM.$emit('search')
     expect($router.push).toBeCalledWith('/search/明星')
@@ -95,7 +95,7 @@ describe('emitGA method', () => {
       eventAction: 'click',
       eventLabel: 'search',
     }
-    wrapper.find(UISearchBarDesktop).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UISearchBarDesktop).vm.$emit('sendGA', gaArgs)
     expect(wrapper.emitted().sendGA[0]).toEqual([gaArgs])
   })
 })

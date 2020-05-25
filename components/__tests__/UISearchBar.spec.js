@@ -14,7 +14,9 @@ describe('custom events', () => {
     const wrapper = createWrapper(UISearchBar)
     const option = { title: '全部類別' }
 
-    wrapper.find(UISearchBarSelect).vm.$emit('setSelectedOption', option)
+    wrapper
+      .findComponent(UISearchBarSelect)
+      .vm.$emit('setSelectedOption', option)
     expect(wrapper.emitted().setSelectedOption[0]).toEqual([option])
   })
 
@@ -22,14 +24,14 @@ describe('custom events', () => {
     const wrapper = createWrapper(UISearchBar)
     const keyword = '明星'
 
-    wrapper.find(UISearchBarInput).vm.$emit('setText', keyword)
+    wrapper.findComponent(UISearchBarInput).vm.$emit('setText', keyword)
     expect(wrapper.emitted().setText[0]).toEqual([keyword])
   })
 
   test('emit search when UISearchBarInput.vue emits search', () => {
     const wrapper = createWrapper(UISearchBar)
 
-    wrapper.find(UISearchBarInput).vm.$emit('search')
+    wrapper.findComponent(UISearchBarInput).vm.$emit('search')
     expect(wrapper.emitted().search).toBeTruthy()
   })
 })
@@ -39,12 +41,10 @@ describe('search field', () => {
     const wrapper = createWrapper(UISearchBar)
 
     const searchIcon = wrapper.find('.search-icon')
-    searchIcon.trigger('click')
-    await wrapper.vm.$nextTick()
+    await searchIcon.trigger('click')
     expect(wrapper.find('.field').element.style.display).toBe('')
 
-    searchIcon.trigger('click')
-    await wrapper.vm.$nextTick()
+    await searchIcon.trigger('click')
     expect(wrapper.find('.field').element.style.display).toBe('none')
   })
 
@@ -57,8 +57,7 @@ describe('search field', () => {
       },
     })
 
-    document.body.dispatchEvent(new Event('click'))
-    await wrapper.vm.$nextTick()
+    await document.body.dispatchEvent(new Event('click'))
     expect(wrapper.find('.field').element.style.display).toBe('none')
   })
 })

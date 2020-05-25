@@ -111,7 +111,7 @@ describe('category data', () => {
         },
       },
     })
-    const list = wrapper.find(UIArticleList)
+    const list = wrapper.findComponent(UIArticleList)
     expect(wrapper.vm.currentCategoryId).toBe(categoryIdMock)
     expect(list.props().listTitle).toBe(categoryTitleMock)
   })
@@ -185,7 +185,7 @@ describe('component methods', () => {
     })
 
     wrapper.vm.setListData(responseMock)
-    const list = wrapper.find(UIArticleList)
+    const list = wrapper.findComponent(UIArticleList)
     expect(list.props().listData).toEqual([
       {
         id: idMock,

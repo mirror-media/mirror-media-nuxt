@@ -47,7 +47,7 @@ describe('render list items', () => {
         listData,
       },
     })
-    const articles = wrapper.findAll(UIArticleCard)
+    const articles = wrapper.findAllComponents(UIArticleCard)
     expect(articles).toHaveLength(listData.length)
   })
   test('should deliver proper props to UIArticleCard that we provide from "listData" props', () => {
@@ -66,7 +66,7 @@ describe('render list items', () => {
         listData,
       },
     })
-    const article = wrapper.find(UIArticleCard)
+    const article = wrapper.findComponent(UIArticleCard)
     const listItemMock = listData[0]
     Object.entries(listItemMock).forEach((tuple) => {
       const key = tuple[0]

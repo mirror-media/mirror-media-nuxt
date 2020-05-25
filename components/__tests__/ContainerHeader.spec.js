@@ -45,7 +45,7 @@ describe('handleSendGA method', () => {
       eventAction: 'click',
       eventLabel: 'search',
     }
-    wrapper.find(UISearchBarWrapper).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UISearchBarWrapper).vm.$emit('sendGA', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
@@ -64,7 +64,7 @@ describe('handleSendGA method', () => {
       eventAction: 'click',
       eventLabel: 'more subscribe',
     }
-    wrapper.find(UIOthersList).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UIOthersList).vm.$emit('sendGA', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
@@ -83,7 +83,7 @@ describe('handleSendGA method', () => {
       eventAction: 'click',
       eventLabel: 'section news',
     }
-    wrapper.find(UIHeaderNavSection).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UIHeaderNavSection).vm.$emit('sendGA', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
@@ -102,7 +102,7 @@ describe('handleSendGA method', () => {
       eventAction: 'click',
       eventLabel: 'topic 人造地獄',
     }
-    wrapper.find(UIHeaderNavTopic).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UIHeaderNavTopic).vm.$emit('sendGA', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 })
