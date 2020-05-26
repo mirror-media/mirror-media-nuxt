@@ -28,6 +28,7 @@ async function start() {
 
   app.use(bodyParser.json())
   logger.error(new Error('error log test'))
+  logger.log({ level: 'error', message: new Error('error log test 3') })
   logger.error('error log test 2')
   logger.warn('warn log test')
   logger.info('info log test')

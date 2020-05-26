@@ -1,5 +1,5 @@
 const { createLogger, format, transports } = require('winston')
-const { combine, colorize, errors, timestamp, printf } = format
+const { combine, errors, timestamp, printf } = format
 
 const customTransports = [new transports.Console()]
 
@@ -10,8 +10,9 @@ const myFormat = printf((info) => {
 })
 
 const logger = createLogger({
-  level: 'info',
-  format: combine(timestamp(), colorize(), errors({ stack: true }), myFormat),
+  level: 'debug',
+  format: combine(timestamp(), errors({ stack: true }), myFormat),
+  // format: combine(timestamp(), colorize(), errors({ stack: true }), myFormat),
   transports: customTransports,
 })
 
