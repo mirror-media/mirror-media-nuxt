@@ -12,7 +12,7 @@ pipeline:
       Someone gave *{{build.branch}}* a little push.
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, master, log]
   
   restoreCache:
     image: drillster/drone-volume-cache
@@ -24,7 +24,7 @@ pipeline:
       - /tmp/cache:/cache
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, master, log]
   
   getDevConfig:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
@@ -34,7 +34,7 @@ pipeline:
     - cp ../configs/mirror-media/mirror-media-nuxt/dev/config.js ./configs/config.js
     when:
       event: [push]
-      branch: [dev]
+      branch: [dev, log]
   
   build:
     image: node:12.16.2-slim
@@ -44,7 +44,7 @@ pipeline:
     - yarn run build
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, master, log]
   
   publish:
     image: plugins/gcr
@@ -55,7 +55,7 @@ pipeline:
     secrets: [google_credentials]
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, master, log]
   
   deployDev:
     image: nytimes/drone-gke
@@ -72,7 +72,7 @@ pipeline:
       tier: frontend
     when:
       event: [push]
-      branch: [dev]
+      branch: [dev, log]
 
   rebuildCache:
     image: drillster/drone-volume-cache
@@ -83,7 +83,7 @@ pipeline:
     volumes:
       - /tmp/cache:/cache
     when:
-      branch: [dev, master]
+      branch: [dev, master, log]
   
   finishSlack:
     image: plugins/slack
@@ -94,7 +94,7 @@ pipeline:
     when:
       status: [success, failure]
       event: [push]
-      branch: [dev, master]
+      branch: [dev, master, log]
     template: >
       {{#success build.status}}
         *success* ${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER} was well served.
