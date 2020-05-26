@@ -8,6 +8,7 @@ const helmet = require('helmet')
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
+const logger = require('./logger/index')
 config.dev = process.env.NODE_ENV !== 'production'
 
 async function start() {
@@ -26,6 +27,10 @@ async function start() {
   app.use(helmet())
 
   app.use(bodyParser.json())
+  logger.error(new Error('error log test'))
+  logger.error('error log test 2')
+  logger.warn('warn log test')
+  logger.info('info log test')
 
   // Give nuxt middleware to express
   app.use(nuxt.render)
