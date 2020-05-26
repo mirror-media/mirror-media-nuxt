@@ -86,7 +86,7 @@ export default {
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: (item.sections ?? [])[0]?.title,
         imgTextBackgroundColor:
-          styleVariables[`sections-color-${this.getFirstSectionName(item)}`],
+          styleVariables[`section-color-${this.getFirstSectionName(item)}`],
         infoTitle: item.title ?? '',
         infoDescription: this.stripHtmlTag(item.brief ?? ''),
       }

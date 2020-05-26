@@ -60,7 +60,7 @@ export default {
       return this.currentSectionData.title
     },
     currentSectionThemeColor() {
-      const key = `sections-color-${this.currentSectionName}`
+      const key = `section-color-${this.currentSectionName}`
       return styleVariables[key]
     },
     listDataPageLimit() {

@@ -27,6 +27,6 @@ $sections-color: (
 
 :export {
   @each $key, $value in $sections-color {
-    sections-color-#{$key}: $value;
+    section-color-#{$key}: $value;
   }
 }

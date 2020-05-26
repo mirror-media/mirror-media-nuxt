@@ -72,8 +72,7 @@ export default {
         href: item.slug ? `/story/${item.slug}` : '/',
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: section.title ?? '',
-        imgTextBackgroundColor:
-          styleVariables[`sections-color-${section.name}`],
+        imgTextBackgroundColor: styleVariables[`section-color-${section.name}`],
         infoTitle: item.title ?? '',
         infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
       }
