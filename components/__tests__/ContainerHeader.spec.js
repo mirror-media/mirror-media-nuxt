@@ -1,4 +1,5 @@
 import ContainerHeader from '../ContainerHeader.vue'
+import UISidebar from '../UISidebar.vue'
 import UISearchBarWrapper from '../UISearchBarWrapper.vue'
 import UIOthersList from '../UIOthersList.vue'
 import UIHeaderNavSection from '../UIHeaderNavSection.vue'
@@ -26,6 +27,29 @@ describe('options computed', () => {
       { title: '全部類別' },
       { title: '文化' },
     ])
+  })
+})
+
+describe('sidebar', () => {
+  test('open sidebar if users click menu icon', async () => {
+    const wrapper = createWrapper(ContainerHeader)
+
+    await wrapper.find('.menu-icon').trigger('click')
+    expect(wrapper.findComponent(UISidebar).exists()).toBe(true)
+  })
+
+  test('close sidebar if UISidebar.vue emits close', async () => {
+    const wrapper = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          isSidebar: true,
+        }
+      },
+    })
+
+    wrapper.findComponent(UISidebar).vm.$emit('close')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.findComponent(UISidebar).exists()).toBe(false)
   })
 })
 

@@ -1,5 +1,14 @@
 <template>
   <header>
+    <button type="button" class="menu-icon" @click="openSidebar" />
+    <UISidebar
+      v-if="isSidebar"
+      :topics="topics"
+      :sections="sections"
+      :partners="partners"
+      @close="closeSidebar"
+    />
+
     <div class="header-search">
       <UISearchBarWrapper :options="options" @sendGA="handleSendGA" />
       <UIOthersList
@@ -9,6 +18,7 @@
         @sendGA="handleSendGA"
       />
     </div>
+
     <nav class="header-nav">
       <UIHeaderNavSection
         :sections="sections"
@@ -24,6 +34,7 @@
 import { mapGetters } from 'vuex'
 import _ from 'lodash'
 
+import UISidebar from './UISidebar.vue'
 import UISearchBarWrapper from './UISearchBarWrapper.vue'
 import UIOthersList from './UIOthersList.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
@@ -34,6 +45,7 @@ import { OTHER_LINKS } from '~/constants/index'
 export default {
   name: 'ContainerHeader',
   components: {
+    UISidebar,
     UISearchBarWrapper,
     UIOthersList,
     UIHeaderNavSection,
@@ -41,6 +53,7 @@ export default {
   },
   data() {
     return {
+      isSidebar: false,
       defaultOption: { title: '全部類別' },
       otherLinksEventLabel: {
         subscribe: {
@@ -81,6 +94,12 @@ export default {
     },
   },
   methods: {
+    openSidebar() {
+      this.isSidebar = true
+    },
+    closeSidebar() {
+      this.isSidebar = false
+    },
     handleSendGA(param = {}) {
       this.$ga.event(param)
     },
@@ -92,13 +111,15 @@ export default {
 header {
   background-color: #f5f5f5;
 }
-.header-nav {
-  box-shadow: 0 2px 1px rgba(#000, 0.2);
-  position: relative;
-  z-index: 99;
-  @include media-breakpoint-up(xl) {
-    box-shadow: 0 0 5px #ccc;
-  }
+.menu-icon {
+  width: 24px;
+  height: 40px;
+  background-image: url(~assets/hamburger@2x.png);
+  background-size: 24px;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  user-select: none;
 }
 .header-search {
   display: flex;
@@ -110,6 +131,14 @@ header {
   display: none;
   @include media-breakpoint-up(xl) {
     display: block;
+  }
+}
+.header-nav {
+  box-shadow: 0 2px 1px rgba(#000, 0.2);
+  position: relative;
+  z-index: 99;
+  @include media-breakpoint-up(xl) {
+    box-shadow: 0 0 5px #ccc;
   }
 }
 </style>
