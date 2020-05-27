@@ -131,7 +131,7 @@ export default {
 
 .img {
   padding-top: 66.66%;
-  positon: relative;
+  position: relative;
   img {
     position: absolute;
     left: 0;
