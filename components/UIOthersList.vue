@@ -7,7 +7,7 @@
         :key="link.title"
         :href="link.href"
         target="_blank"
-        @click="emitGA(link.eventLabel)"
+        @click="emitGA(link.name)"
       >
         {{ link.title }}
       </a>

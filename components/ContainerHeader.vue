@@ -7,6 +7,7 @@
       :sections="sections"
       :partners="partners"
       :others="otherLinks"
+      :socialMedia="mediaLinks"
       @close="closeSidebar"
     />
 
@@ -33,7 +34,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import _ from 'lodash'
 
 import UISidebar from './UISidebar.vue'
 import UISearchBarWrapper from './UISearchBarWrapper.vue'
@@ -41,7 +41,7 @@ import UIOthersList from './UIOthersList.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
 
-import { OTHER_LINKS } from '~/constants/index'
+import { MEDIA_LINKS, OTHER_LINKS } from '~/constants/index'
 
 export default {
   name: 'ContainerHeader',
@@ -56,14 +56,6 @@ export default {
     return {
       isSidebar: true,
       defaultOption: { title: '全部類別' },
-      otherLinksGA: [
-        { eventLabel: 'more subscribe' },
-        { eventLabel: 'more magazine' },
-        { eventLabel: 'more auth' },
-        { eventLabel: 'more ad' },
-        { eventLabel: 'more campaign' },
-        { eventLabel: 'more download' },
-      ],
     }
   },
   computed: {
@@ -79,7 +71,10 @@ export default {
       return [this.defaultOption, ...sections]
     },
     otherLinks() {
-      return _.merge(Object.values(OTHER_LINKS), this.otherLinksGA)
+      return Object.values(OTHER_LINKS)
+    },
+    mediaLinks() {
+      return Object.values(MEDIA_LINKS)
     },
   },
   methods: {

@@ -54,17 +54,17 @@
 
       <div class="section section--mirrorvoice">
         <nuxt-link to="https://voice.mirrorfiction.com/" class="section__title">
-          <h2>鏡好聽</h2>
+          鏡好聽
         </nuxt-link>
       </div>
       <div class="section section--mirrorfiction">
         <nuxt-link to="https://www.mirrorfiction.com/" class="section__title">
-          <h2>鏡文學</h2>
+          鏡文學
         </nuxt-link>
       </div>
       <div class="section section--readr">
         <nuxt-link to="https://www.readr.tw/" class="section__title">
-          <h2>READr 讀+</h2>
+          READr 讀+
         </nuxt-link>
       </div>
     </div>
@@ -72,7 +72,7 @@
     <div class="others">
       <a
         v-for="other in others"
-        :key="other.title"
+        :key="other.name"
         :href="other.href"
         target="_blank"
       >
@@ -80,7 +80,20 @@
       </a>
     </div>
 
-    <!-- <div class="social-media"></div> -->
+    <div class="social-media">
+      <a
+        v-for="media in socialMedia"
+        :key="media.name"
+        :href="media.href"
+        target="_blank"
+      >
+        <img
+          :class="media.name"
+          src="~/assets/transperent.png"
+          :alt="media.name"
+        />
+      </a>
+    </div>
   </section>
 </template>
 
@@ -101,6 +114,10 @@ export default {
       required: true,
     },
     others: {
+      type: Array,
+      required: true,
+    },
+    socialMedia: {
       type: Array,
       required: true,
     },
@@ -209,6 +226,7 @@ a {
   font-weight: 300;
   color: #969696;
   justify-content: space-between;
+  margin-bottom: 16px;
   a {
     width: calc(50% - 4px);
     border: 1px solid #969696;
@@ -216,6 +234,37 @@ a {
     margin-bottom: 8px;
     padding-top: 4px;
     padding-bottom: 4px;
+  }
+}
+.social-media {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  img {
+    width: 20px;
+    height: 20px;
+    background-image: url(~assets/social-media-white@2x.png);
+    display: block;
+    background-size: 126px 120px;
+    &.line {
+      background-position: -86px -80px;
+    }
+    &.weibo {
+      background-position: -66px -60px;
+    }
+    &.facebook {
+      background-position: -106px -100px;
+    }
+    &.instagram {
+      background-position: -46px -40px;
+    }
+    &.rss {
+      background-position: -26px -20px;
+    }
+    &.email {
+      width: 26px;
+      background-position: 0 0;
+    }
   }
 }
 </style>

@@ -10,10 +10,10 @@ const createWrapper = createWrapperHelper({
 })
 
 const mockLink = {
+  name: 'subscribe',
   title: '訂閱鏡週刊',
   href:
     'https://docs.google.com/forms/d/1es1wqWfhwJn2sxDLc-6NRVokGn_fU0_M2YffhKMlcyM/viewform',
-  eventLabel: 'more subscribe',
 }
 
 describe('link list', () => {
@@ -62,7 +62,7 @@ describe('link list', () => {
 describe('emitGA method', () => {
   const eventCategory = 'header'
 
-  test('with a proper argument when users click a other link', () => {
+  test('with a proper argument when users click an other link', () => {
     const wrapper = createWrapper(UIOthersList, {
       propsData: {
         links: [mockLink],
@@ -81,7 +81,7 @@ describe('emitGA method', () => {
       {
         eventCategory,
         eventAction: 'click',
-        eventLabel: mockLink.eventLabel,
+        eventLabel: mockLink.name,
       },
     ])
   })

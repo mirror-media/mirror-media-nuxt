@@ -8,6 +8,7 @@ const createWrapper = createWrapperHelper({
     sections: [],
     partners: [],
     others: [],
+    socialMedia: [],
   },
   stubs: ['nuxt-link'],
 })
@@ -80,10 +81,10 @@ describe('sections', () => {
 
 describe('others', () => {
   const mockOther = {
+    name: 'subscribe',
     title: '訂閱鏡週刊',
     href:
       'https://docs.google.com/forms/d/1es1wqWfhwJn2sxDLc-6NRVokGn_fU0_M2YffhKMlcyM/viewform',
-    eventLabel: 'more subscribe',
   }
 
   test('render the proper other link', () => {
@@ -95,6 +96,23 @@ describe('others', () => {
 
     const link = wrapper.get(`[href="${mockOther.href}"]`)
     expect(link.text()).toBe(mockOther.title)
+  })
+})
+
+describe('social media', () => {
+  const mockMedia = {
+    name: 'line',
+    href: 'https://line.me/R/ti/p/%40cuk1273e',
+  }
+
+  test('render the proper media link', () => {
+    const wrapper = createWrapper(UISidebar, {
+      propsData: {
+        socialMedia: [mockMedia],
+      },
+    })
+
+    expect(wrapper.find(`[href="${mockMedia.href}"]`).exists()).toBe(true)
   })
 })
 
