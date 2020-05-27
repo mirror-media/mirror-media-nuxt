@@ -6,6 +6,7 @@
       :topics="topics"
       :sections="sections"
       :partners="partners"
+      :subBrands="subBrandLinks"
       :others="otherLinks"
       :socialMedia="mediaLinks"
       @close="closeSidebar"
@@ -41,7 +42,7 @@ import UIOthersList from './UIOthersList.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
 
-import { MEDIA_LINKS, OTHER_LINKS } from '~/constants/index'
+import { SUB_BRAND_LINKS, MEDIA_LINKS, OTHER_LINKS } from '~/constants/index'
 
 export default {
   name: 'ContainerHeader',
@@ -54,7 +55,7 @@ export default {
   },
   data() {
     return {
-      isSidebar: true,
+      isSidebar: false,
       defaultOption: { title: '全部類別' },
     }
   },
@@ -71,10 +72,13 @@ export default {
       return [this.defaultOption, ...sections]
     },
     otherLinks() {
-      return Object.values(OTHER_LINKS)
+      return this.transformObjIntoArray(OTHER_LINKS)
     },
     mediaLinks() {
-      return Object.values(MEDIA_LINKS)
+      return this.transformObjIntoArray(MEDIA_LINKS)
+    },
+    subBrandLinks() {
+      return this.transformObjIntoArray(SUB_BRAND_LINKS)
     },
   },
   methods: {
@@ -86,6 +90,9 @@ export default {
     },
     handleSendGA(param = {}) {
       this.$ga.event(param)
+    },
+    transformObjIntoArray(obj) {
+      return Object.values(obj)
     },
   },
 }

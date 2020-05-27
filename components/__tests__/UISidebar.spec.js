@@ -7,6 +7,7 @@ const createWrapper = createWrapperHelper({
     topics: [],
     sections: [],
     partners: [],
+    subBrands: [],
     others: [],
     socialMedia: [],
   },
@@ -76,6 +77,22 @@ describe('sections', () => {
 
     const link = wrapper.get(`[to="/externals/${mockPartner.name}"]`)
     expect(link.text()).toBe(mockPartner.display)
+  })
+
+  const mockSubBrand = {
+    name: 'mirrorvoice',
+    title: '鏡好聽',
+    href: 'https://voice.mirrorfiction.com/',
+  }
+  test('render the proper sub-brand link', () => {
+    const wrapper = createWrapper(UISidebar, {
+      propsData: {
+        subBrands: [mockSubBrand],
+      },
+    })
+
+    const link = wrapper.get(`[href="${mockSubBrand.href}"]`)
+    expect(link.text()).toBe(mockSubBrand.title)
   })
 })
 

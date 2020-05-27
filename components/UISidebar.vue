@@ -52,20 +52,15 @@
         </div>
       </div>
 
-      <div class="section section--mirrorvoice">
-        <nuxt-link to="https://voice.mirrorfiction.com/" class="section__title">
-          鏡好聽
-        </nuxt-link>
-      </div>
-      <div class="section section--mirrorfiction">
-        <nuxt-link to="https://www.mirrorfiction.com/" class="section__title">
-          鏡文學
-        </nuxt-link>
-      </div>
-      <div class="section section--readr">
-        <nuxt-link to="https://www.readr.tw/" class="section__title">
-          READr 讀+
-        </nuxt-link>
+      <div
+        v-for="subBrand in subBrands"
+        :key="subBrand.name"
+        class="section"
+        :class="`section--${subBrand.name}`"
+      >
+        <a :href="subBrand.href" target="_blank" class="section__title">
+          {{ subBrand.title }}
+        </a>
       </div>
     </div>
 
@@ -110,6 +105,10 @@ export default {
       required: true,
     },
     partners: {
+      type: Array,
+      required: true,
+    },
+    subBrands: {
       type: Array,
       required: true,
     },

@@ -1,4 +1,4 @@
-const SOCIAL_URLS = {
+export const SOCIAL_URLS = {
   line: 'https://line.me/R/ti/p/%40cuk1273e',
   weibo: 'http://www.weibo.com/u/6030041924?is_all=1',
   facebook: 'https://www.facebook.com/mirrormediamg/',
@@ -76,5 +76,24 @@ export const OTHER_LINKS = {
     name: 'download',
     title: '下載APP',
     href: SOCIAL_URLS.downloadApp,
+  },
+}
+
+// their order is important, DON'T change it at will
+export const SUB_BRAND_LINKS = {
+  mirrorvoic: {
+    name: 'mirrorvoice',
+    title: '鏡好聽',
+    href: 'https://voice.mirrorfiction.com/',
+  },
+  mirrorfiction: {
+    name: 'mirrorfiction',
+    title: '鏡文學',
+    href: 'https://www.mirrorfiction.com/',
+  },
+  readr: {
+    name: 'readr',
+    title: 'READr 讀+',
+    href: 'https://www.readr.tw/',
   },
 }
