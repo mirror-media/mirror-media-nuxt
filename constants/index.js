@@ -16,29 +16,30 @@ export const SOCIAL_LINKS = {
   weibo: 'http://www.weibo.com/u/6030041924?is_all=1',
 }
 
+// order is important, DON'T change it at will
 export const OTHER_LINKS = {
   subscribe: {
-    textContent: '訂閱鏡週刊',
+    title: '訂閱鏡週刊',
     href: SOCIAL_LINKS.subscribe,
   },
   magazine: {
-    textContent: '訂閱電子雜誌',
+    title: '訂閱電子雜誌',
     href: SOCIAL_LINKS.magazine,
   },
   auth: {
-    textContent: '內容授權',
+    title: '內容授權',
     href: SOCIAL_LINKS.auth,
   },
   ad: {
-    textContent: '廣告合作',
+    title: '廣告合作',
     href: SOCIAL_LINKS.ad,
   },
   campaign: {
-    textContent: '活動專區',
+    title: '活動專區',
     href: SOCIAL_LINKS.campaign,
   },
   downloadApp: {
-    textContent: '下載APP',
+    title: '下載APP',
     href: SOCIAL_LINKS.downloadApp,
   },
 }

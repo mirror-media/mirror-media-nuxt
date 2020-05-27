@@ -7,18 +7,9 @@ const createWrapper = createWrapperHelper({
     topics: [],
     sections: [],
     partners: [],
+    others: [],
   },
   stubs: ['nuxt-link'],
-})
-
-describe('custom events', () => {
-  test('emit close when users click the close icon', async () => {
-    const wrapper = createWrapper(UISidebar)
-
-    const closeIcon = wrapper.get('.close-icon')
-    await closeIcon.trigger('click')
-    expect(wrapper.emitted().close).toBeTruthy()
-  })
 })
 
 describe('topics', () => {
@@ -84,5 +75,35 @@ describe('sections', () => {
 
     const link = wrapper.get(`[to="/externals/${mockPartner.name}"]`)
     expect(link.text()).toBe(mockPartner.display)
+  })
+})
+
+describe('others', () => {
+  const mockOther = {
+    title: '訂閱鏡週刊',
+    href:
+      'https://docs.google.com/forms/d/1es1wqWfhwJn2sxDLc-6NRVokGn_fU0_M2YffhKMlcyM/viewform',
+    eventLabel: 'more subscribe',
+  }
+
+  test('render the proper other link', () => {
+    const wrapper = createWrapper(UISidebar, {
+      propsData: {
+        others: [mockOther],
+      },
+    })
+
+    const link = wrapper.get(`[href="${mockOther.href}"]`)
+    expect(link.text()).toBe(mockOther.title)
+  })
+})
+
+describe('custom events', () => {
+  test('emit close when users click the close icon', async () => {
+    const wrapper = createWrapper(UISidebar)
+
+    const closeIcon = wrapper.get('.close-icon')
+    await closeIcon.trigger('click')
+    expect(wrapper.emitted().close).toBeTruthy()
   })
 })

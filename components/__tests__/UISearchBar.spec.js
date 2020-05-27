@@ -57,7 +57,8 @@ describe('search field', () => {
       },
     })
 
-    await document.body.dispatchEvent(new Event('click'))
+    document.body.dispatchEvent(new Event('click'))
+    await wrapper.vm.$nextTick()
     expect(wrapper.find('.field').element.style.display).toBe('none')
   })
 })

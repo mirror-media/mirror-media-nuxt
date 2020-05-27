@@ -3,46 +3,13 @@
     <button type="button" class="more-icon" @click="handleClickMoreIcon" />
     <div v-if="isLinkList" class="link-list">
       <a
-        :href="links.subscribe.href"
+        v-for="link in links"
+        :key="link.title"
+        :href="link.href"
         target="_blank"
-        @click="emitGA(links.subscribe.eventLabel)"
+        @click="emitGA(link.eventLabel)"
       >
-        {{ links.subscribe.textContent }}
-      </a>
-      <a
-        :href="links.magazine.href"
-        target="_blank"
-        @click="emitGA(links.magazine.eventLabel)"
-      >
-        {{ links.magazine.textContent }}
-      </a>
-      <a
-        :href="links.auth.href"
-        target="_blank"
-        @click="emitGA(links.auth.eventLabel)"
-      >
-        {{ links.auth.textContent }}
-      </a>
-      <a
-        :href="links.ad.href"
-        target="_blank"
-        @click="emitGA(links.ad.eventLabel)"
-      >
-        {{ links.ad.textContent }}
-      </a>
-      <a
-        :href="links.campaign.href"
-        target="_blank"
-        @click="emitGA(links.campaign.eventLabel)"
-      >
-        {{ links.campaign.textContent }}
-      </a>
-      <a
-        :href="links.downloadApp.href"
-        target="_blank"
-        @click="emitGA(links.downloadApp.eventLabel)"
-      >
-        {{ links.downloadApp.textContent }}
+        {{ link.title }}
       </a>
     </div>
   </div>
@@ -53,14 +20,8 @@ export default {
   name: 'UIOthersList',
   props: {
     links: {
-      type: Object,
+      type: Array,
       required: true,
-      validator: (links) =>
-        ['textContent', 'href', 'eventLabel'].every((prop) =>
-          Object.values(links).every(function hasProp(link) {
-            return Object.prototype.hasOwnProperty.call(link, prop)
-          })
-        ),
     },
     eventCategory: {
       type: String,

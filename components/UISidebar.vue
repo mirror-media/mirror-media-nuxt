@@ -69,9 +69,18 @@
       </div>
     </div>
 
-    <!-- <div class="others"></div>
+    <div class="others">
+      <a
+        v-for="other in others"
+        :key="other.title"
+        :href="other.href"
+        target="_blank"
+      >
+        {{ other.title }}
+      </a>
+    </div>
 
-    <div class="social-media"></div> -->
+    <!-- <div class="social-media"></div> -->
   </section>
 </template>
 
@@ -88,6 +97,10 @@ export default {
       required: true,
     },
     partners: {
+      type: Array,
+      required: true,
+    },
+    others: {
       type: Array,
       required: true,
     },
@@ -187,6 +200,22 @@ a {
         margin-right: 18px;
       }
     }
+  }
+}
+.others {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  font-weight: 300;
+  color: #969696;
+  justify-content: space-between;
+  a {
+    width: calc(50% - 4px);
+    border: 1px solid #969696;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
   }
 }
 </style>

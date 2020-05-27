@@ -6,6 +6,7 @@
       :topics="topics"
       :sections="sections"
       :partners="partners"
+      :others="otherLinks"
       @close="closeSidebar"
     />
 
@@ -53,28 +54,16 @@ export default {
   },
   data() {
     return {
-      isSidebar: false,
+      isSidebar: true,
       defaultOption: { title: '全部類別' },
-      otherLinksEventLabel: {
-        subscribe: {
-          eventLabel: 'more subscribe',
-        },
-        magazine: {
-          eventLabel: 'more magazine',
-        },
-        auth: {
-          eventLabel: 'more auth',
-        },
-        ad: {
-          eventLabel: 'more ad',
-        },
-        campaign: {
-          eventLabel: 'more campaign',
-        },
-        downloadApp: {
-          eventLabel: 'more download',
-        },
-      },
+      otherLinksGA: [
+        { eventLabel: 'more subscribe' },
+        { eventLabel: 'more magazine' },
+        { eventLabel: 'more auth' },
+        { eventLabel: 'more ad' },
+        { eventLabel: 'more campaign' },
+        { eventLabel: 'more download' },
+      ],
     }
   },
   computed: {
@@ -90,7 +79,7 @@ export default {
       return [this.defaultOption, ...sections]
     },
     otherLinks() {
-      return _.merge(OTHER_LINKS, this.otherLinksEventLabel)
+      return _.merge(Object.values(OTHER_LINKS), this.otherLinksGA)
     },
   },
   methods: {
