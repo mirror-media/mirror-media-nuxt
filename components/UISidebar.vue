@@ -2,7 +2,7 @@
   <section class="sidebar">
     <button class="close-icon" @click="$emit('close')" />
 
-    <div class="topics">
+    <div v-if="shouldOpenTopics" class="topics">
       <nuxt-link
         v-for="topic in topics"
         :key="topic.id"
@@ -36,7 +36,10 @@
           <h2>{{ section.title }}</h2>
         </nuxt-link>
 
-        <div class="section__categories">
+        <div
+          v-if="shouldOpenCategories(section.categories)"
+          class="section__categories"
+        >
           <nuxt-link
             v-for="category in section.categories"
             :key="category.id"
@@ -48,7 +51,7 @@
         </div>
       </div>
 
-      <div class="section section--external">
+      <div v-if="shouldOpenSectionExternal" class="section section--external">
         <div class="section__title">
           <h2>健康醫療</h2>
         </div>
@@ -119,29 +122,46 @@ export default {
     topics: {
       type: Array,
       required: true,
+      default: () => [],
     },
     sections: {
       type: Array,
       required: true,
+      default: () => [],
     },
     partners: {
       type: Array,
       required: true,
+      default: () => [],
     },
     subBrands: {
       type: Array,
       required: true,
+      default: () => [],
     },
     others: {
       type: Array,
       required: true,
+      default: () => [],
     },
     socialMedia: {
       type: Array,
       required: true,
+      default: () => [],
+    },
+  },
+  computed: {
+    shouldOpenTopics() {
+      return this.topics.length > 0
+    },
+    shouldOpenSectionExternal() {
+      return this.partners.length > 0
     },
   },
   methods: {
+    shouldOpenCategories(categories = []) {
+      return categories.length > 0
+    },
     emitGA(eventLabel) {
       this.$emit('sendGA', {
         eventCategory: 'sidebar',
@@ -171,7 +191,7 @@ export default {
   }
 }
 a {
-  display: block;
+  display: inline-block;
   cursor: pointer;
   user-select: none;
 }

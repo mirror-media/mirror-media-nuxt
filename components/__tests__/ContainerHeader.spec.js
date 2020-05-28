@@ -58,6 +58,23 @@ describe('sidebar', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.findComponent(UISidebar).exists()).toBe(false)
   })
+
+  test('close sidebar when URL changes', async () => {
+    const wrapper = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          isSidebar: true,
+        }
+      },
+      mocks: {
+        $route: { fullPath: '/' },
+      },
+    })
+
+    wrapper.vm.$route.fullPath = '/section/news'
+    await wrapper.vm.$nextTick()
+    expect(wrapper.findComponent(UISidebar).exists()).toBe(false)
+  })
 })
 
 describe('GA event', () => {

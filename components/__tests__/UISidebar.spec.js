@@ -56,6 +56,16 @@ describe('topics', () => {
     const link = wrapper.get(`[to="/topic/${mockTopic.id}"]`)
     expect(link.text()).toBe(mockTopic.name)
   })
+
+  test('close the topics if the topics prop is an empty array', () => {
+    const wrapper = createWrapper(UISidebar, {
+      propsData: {
+        topics: [],
+      },
+    })
+
+    expect(wrapper.find('.topics').exists()).toBe(false)
+  })
 })
 
 describe('sections', () => {
@@ -82,6 +92,16 @@ describe('sections', () => {
     expect(link.text()).toBe(mockCategory.title)
   })
 
+  test('close the categories if the section.categories has no data', () => {
+    const wrapper = createWrapper(UISidebar, {
+      propsData: {
+        sections: [{ categories: [] }],
+      },
+    })
+
+    expect(wrapper.find('.section__categories').exists()).toBe(false)
+  })
+
   test('render the proper partner link', () => {
     const wrapper = createWrapper(UISidebar, {
       propsData: {
@@ -91,6 +111,16 @@ describe('sections', () => {
 
     const link = wrapper.get(`[to="/externals/${mockPartner.name}"]`)
     expect(link.text()).toBe(mockPartner.display)
+  })
+
+  test('close the external section if the partners prop is an empty array', () => {
+    const wrapper = createWrapper(UISidebar, {
+      propsData: {
+        partners: [],
+      },
+    })
+
+    expect(wrapper.find('.section--external').exists()).toBe(false)
   })
 
   test('render the proper sub-brand link', () => {

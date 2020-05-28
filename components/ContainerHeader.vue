@@ -88,6 +88,11 @@ export default {
       return this.transformObjIntoArray(SUB_BRAND_LINKS)
     },
   },
+  watch: {
+    '$route.fullPath'() {
+      this.isSidebar = false
+    },
+  },
   methods: {
     handleClickMenuIcon() {
       this.openSidebar()
