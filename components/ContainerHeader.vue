@@ -31,7 +31,11 @@
         :partners="partners"
         @sendGA="handleSendGA"
       />
-      <UIHeaderNavTopic :topics="topics" @sendGA="handleSendGA" />
+      <UIHeaderNavTopic
+        :topics="topics"
+        :subBrands="subBrandLinks"
+        @sendGA="handleSendGA"
+      />
     </nav>
   </header>
 </template>
