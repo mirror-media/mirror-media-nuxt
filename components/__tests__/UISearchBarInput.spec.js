@@ -9,13 +9,13 @@ describe('input feature', () => {
   test('emit the text when users type', async () => {
     const wrapper = createWrapper(UISearchBarInput)
 
-    await wrapper.find('input').setValue(keyword)
+    await wrapper.get('input').setValue(keyword)
     expect(wrapper.emitted().setText[0]).toEqual([keyword])
   })
 
   test('emit search when users press the Enter key', () => {
     const wrapper = createWrapper(UISearchBarInput)
-    const input = wrapper.find('input')
+    const input = wrapper.get('input')
 
     input.trigger('keydown.enter', {
       isComposing: true,

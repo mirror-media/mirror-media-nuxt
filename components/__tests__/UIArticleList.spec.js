@@ -11,7 +11,7 @@ describe('list title', () => {
         listData: [],
       },
     })
-    const h1 = wrapper.find('h1')
+    const h1 = wrapper.get('h1')
     expect(h1.text()).toBe(listTitle)
   })
   test('should render proper color from props "listTitleColor"', () => {
@@ -23,7 +23,7 @@ describe('list title', () => {
         listData: [],
       },
     })
-    const h1 = wrapper.find('h1')
+    const h1 = wrapper.get('h1')
     expect(h1.element.style.color).toBe('rgb(0, 0, 0)')
   })
   test('do not render title if "listTitle" props is empty string', () => {

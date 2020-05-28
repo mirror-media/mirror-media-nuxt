@@ -4,7 +4,7 @@ import UIFooter from '../UIFooter.vue'
 describe('text link of subscribe', () => {
   test('should render proper href and textContent', () => {
     const wrapper = shallowMount(UIFooter)
-    const link = wrapper.find('.footer-subscribe')
+    const link = wrapper.get('.footer-subscribe')
     expect(link.text()).toBe(wrapper.vm.links.subscribe.textContent)
     expect(link.attributes().href).toBe(wrapper.vm.links.subscribe.href)
   })
@@ -17,7 +17,7 @@ describe('text link of subscribe', () => {
         $ga,
       },
     })
-    const link = wrapper.find('.footer-subscribe')
+    const link = wrapper.get('.footer-subscribe')
     link.trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.subscribe.ga.eventCategory,
@@ -30,7 +30,7 @@ describe('text link of subscribe', () => {
 describe('text link of ad', () => {
   test('should render proper href and textContent', () => {
     const wrapper = shallowMount(UIFooter)
-    const link = wrapper.find('.footer-ad')
+    const link = wrapper.get('.footer-ad')
     expect(link.text()).toBe(wrapper.vm.links.ad.textContent)
     expect(link.attributes().href).toBe(wrapper.vm.links.ad.href)
   })
@@ -43,7 +43,7 @@ describe('text link of ad', () => {
         $ga,
       },
     })
-    const link = wrapper.find('.footer-ad')
+    const link = wrapper.get('.footer-ad')
     link.trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.ad.ga.eventCategory,
@@ -56,7 +56,7 @@ describe('text link of ad', () => {
 describe('text link of activity', () => {
   test('should render proper href and textContent', () => {
     const wrapper = shallowMount(UIFooter)
-    const link = wrapper.find('.footer-activity')
+    const link = wrapper.get('.footer-activity')
     expect(link.text()).toBe(wrapper.vm.links.activity.textContent)
     expect(link.attributes().href).toBe(wrapper.vm.links.activity.href)
   })
@@ -69,7 +69,7 @@ describe('text link of activity', () => {
         $ga,
       },
     })
-    const link = wrapper.find('.footer-activity')
+    const link = wrapper.get('.footer-activity')
     link.trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.activity.ga.eventCategory,
@@ -82,7 +82,7 @@ describe('text link of activity', () => {
 describe('text link of download-app', () => {
   test('should render proper href and textContent', () => {
     const wrapper = shallowMount(UIFooter)
-    const link = wrapper.find('.footer-download-app')
+    const link = wrapper.get('.footer-download-app')
     expect(link.text()).toBe(wrapper.vm.links.downloadApp.textContent)
     expect(link.attributes().href).toBe(wrapper.vm.links.downloadApp.href)
   })
@@ -95,7 +95,7 @@ describe('text link of download-app', () => {
         $ga,
       },
     })
-    const link = wrapper.find('.footer-download-app')
+    const link = wrapper.get('.footer-download-app')
     link.trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.downloadApp.ga.eventCategory,
@@ -108,7 +108,7 @@ describe('text link of download-app', () => {
 describe('text link of auth', () => {
   test('should render proper href and textContent', () => {
     const wrapper = shallowMount(UIFooter)
-    const link = wrapper.find('.footer-auth')
+    const link = wrapper.get('.footer-auth')
     expect(link.text()).toBe(wrapper.vm.links.auth.textContent)
     expect(link.attributes().href).toBe(wrapper.vm.links.auth.href)
   })
@@ -121,7 +121,7 @@ describe('text link of auth', () => {
         $ga,
       },
     })
-    const link = wrapper.find('.footer-auth')
+    const link = wrapper.get('.footer-auth')
     link.trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.auth.ga.eventCategory,
@@ -134,7 +134,7 @@ describe('text link of auth', () => {
 describe('icon link of line', () => {
   test('should render proper href', () => {
     const wrapper = shallowMount(UIFooter)
-    const link = wrapper.find('.footer-line')
+    const link = wrapper.get('.footer-line')
     expect(link.attributes().href).toBe(wrapper.vm.links.line.href)
   })
   test('should call $ga method with properties ', () => {
@@ -146,7 +146,7 @@ describe('icon link of line', () => {
         $ga,
       },
     })
-    const link = wrapper.find('.footer-line')
+    const link = wrapper.get('.footer-line')
     link.trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.line.ga.eventCategory,
@@ -159,7 +159,7 @@ describe('icon link of line', () => {
 describe('icon link of weibo', () => {
   test('should render proper href', () => {
     const wrapper = shallowMount(UIFooter)
-    const link = wrapper.find('.footer-weibo')
+    const link = wrapper.get('.footer-weibo')
     expect(link.attributes().href).toBe(wrapper.vm.links.weibo.href)
   })
   test('should call $ga method with properties ', () => {
@@ -171,7 +171,7 @@ describe('icon link of weibo', () => {
         $ga,
       },
     })
-    const link = wrapper.find('.footer-weibo')
+    const link = wrapper.get('.footer-weibo')
     link.trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.weibo.ga.eventCategory,
@@ -184,7 +184,7 @@ describe('icon link of weibo', () => {
 describe('icon link of facebook', () => {
   test('should render proper href', () => {
     const wrapper = shallowMount(UIFooter)
-    const link = wrapper.find('.footer-facebook')
+    const link = wrapper.get('.footer-facebook')
     expect(link.attributes().href).toBe(wrapper.vm.links.facebook.href)
   })
   test('should call $ga method with properties ', () => {
@@ -196,7 +196,7 @@ describe('icon link of facebook', () => {
         $ga,
       },
     })
-    const link = wrapper.find('.footer-facebook')
+    const link = wrapper.get('.footer-facebook')
     link.trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.facebook.ga.eventCategory,
@@ -209,7 +209,7 @@ describe('icon link of facebook', () => {
 describe('icon link of instagram', () => {
   test('should render proper href', () => {
     const wrapper = shallowMount(UIFooter)
-    const link = wrapper.find('.footer-instagram')
+    const link = wrapper.get('.footer-instagram')
     expect(link.attributes().href).toBe(wrapper.vm.links.instagram.href)
   })
   test('should call $ga method with properties ', () => {
@@ -221,7 +221,7 @@ describe('icon link of instagram', () => {
         $ga,
       },
     })
-    const link = wrapper.find('.footer-instagram')
+    const link = wrapper.get('.footer-instagram')
     link.trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.instagram.ga.eventCategory,
@@ -234,7 +234,7 @@ describe('icon link of instagram', () => {
 describe('icon link of rss-feed', () => {
   test('should render proper href', () => {
     const wrapper = shallowMount(UIFooter)
-    const link = wrapper.find('.footer-rss-feed')
+    const link = wrapper.get('.footer-rss-feed')
     expect(link.attributes().href).toBe(wrapper.vm.links.rssFeed.href)
   })
   test('should call $ga method with properties ', () => {
@@ -246,7 +246,7 @@ describe('icon link of rss-feed', () => {
         $ga,
       },
     })
-    const link = wrapper.find('.footer-rss-feed')
+    const link = wrapper.get('.footer-rss-feed')
     link.trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.rssFeed.ga.eventCategory,
@@ -259,7 +259,7 @@ describe('icon link of rss-feed', () => {
 describe('icon link of email', () => {
   test('should render proper href', () => {
     const wrapper = shallowMount(UIFooter)
-    const link = wrapper.find('.footer-email')
+    const link = wrapper.get('.footer-email')
     expect(link.attributes().href).toBe(wrapper.vm.links.email.href)
   })
   test('should call $ga method with properties ', () => {
@@ -271,7 +271,7 @@ describe('icon link of email', () => {
         $ga,
       },
     })
-    const link = wrapper.find('.footer-email')
+    const link = wrapper.get('.footer-email')
     link.trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: wrapper.vm.links.email.ga.eventCategory,
