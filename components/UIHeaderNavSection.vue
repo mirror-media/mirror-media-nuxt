@@ -54,10 +54,12 @@ export default {
     sections: {
       type: Array,
       required: true,
+      default: () => [],
     },
     partners: {
       type: Array,
       required: true,
+      default: () => [],
     },
   },
   methods: {

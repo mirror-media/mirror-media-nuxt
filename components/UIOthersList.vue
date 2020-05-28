@@ -22,6 +22,7 @@ export default {
     links: {
       type: Array,
       required: true,
+      default: () => [],
     },
     eventCategory: {
       type: String,
