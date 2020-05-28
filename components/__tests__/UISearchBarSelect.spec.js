@@ -20,7 +20,7 @@ describe('select feature', () => {
     const wrapper = createWrapper(UISearchBarSelect, {
       data() {
         return {
-          isOptionField: true,
+          shouldShowOptionField: true,
         }
       },
     })
@@ -46,7 +46,7 @@ describe('select feature', () => {
     const wrapper = createWrapper(UISearchBarSelect, {
       data() {
         return {
-          isOptionField: true,
+          shouldShowOptionField: true,
         }
       },
     })
@@ -66,7 +66,7 @@ describe('select feature', () => {
     const wrapper = createWrapper(UISearchBarSelect, {
       data() {
         return {
-          isOptionField: true,
+          shouldShowOptionField: true,
         }
       },
     })
@@ -82,7 +82,7 @@ describe('select feature', () => {
     const wrapper = createWrapper(UISearchBarSelect, {
       data() {
         return {
-          isOptionField: true,
+          shouldShowOptionField: true,
         }
       },
     })

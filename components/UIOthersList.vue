@@ -1,7 +1,7 @@
 <template>
   <div v-click-outside="closeLinkList" class="others-list">
     <button type="button" class="more-icon" @click="handleClickMoreIcon" />
-    <div v-if="isLinkList" class="link-list">
+    <div v-if="shouldOpenLinkList" class="link-list">
       <a
         v-for="link in links"
         :key="link.title"
@@ -30,15 +30,15 @@ export default {
   },
   data() {
     return {
-      isLinkList: false,
+      shouldOpenLinkList: false,
     }
   },
   methods: {
     toggleLinkList() {
-      this.isLinkList = !this.isLinkList
+      this.shouldOpenLinkList = !this.shouldOpenLinkList
     },
     closeLinkList() {
-      this.isLinkList = false
+      this.shouldOpenLinkList = false
     },
     handleClickMoreIcon() {
       this.toggleLinkList()

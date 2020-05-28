@@ -1,7 +1,7 @@
 <template>
   <div v-click-outside="hideField" class="search-bar">
     <button type="button" class="search-icon" @click="toggleField" />
-    <div v-show="isField" class="field">
+    <div v-show="shouldShowField" class="field">
       <UISearchBarSelect
         :options="options"
         @setSelectedOption="$emit('setSelectedOption', $event)"
@@ -33,15 +33,15 @@ export default {
   },
   data() {
     return {
-      isField: false,
+      shouldShowField: false,
     }
   },
   methods: {
     toggleField() {
-      this.isField = !this.isField
+      this.shouldShowField = !this.shouldShowField
     },
     hideField() {
-      this.isField = false
+      this.shouldShowField = false
     },
   },
 }

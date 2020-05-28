@@ -3,7 +3,7 @@
     <button type="button" class="menu-icon" @click="handleClickMenuIcon" />
     <transition name="slide">
       <UISidebar
-        v-if="isSidebar"
+        v-if="shouldOpenSidebar"
         :topics="topics"
         :sections="sections"
         :partners="partners"
@@ -62,7 +62,7 @@ export default {
   },
   data() {
     return {
-      isSidebar: false,
+      shouldOpenSidebar: false,
       defaultOption: { title: '全部類別' },
     }
   },
@@ -90,7 +90,7 @@ export default {
   },
   watch: {
     '$route.fullPath'() {
-      this.isSidebar = false
+      this.shouldOpenSidebar = false
     },
   },
   methods: {
@@ -103,10 +103,10 @@ export default {
       this.sendHeaderGA('menu close')
     },
     openSidebar() {
-      this.isSidebar = true
+      this.shouldOpenSidebar = true
     },
     closeSidebar() {
-      this.isSidebar = false
+      this.shouldOpenSidebar = false
     },
     sendHeaderGA(eventLabel, eventAction = 'click') {
       this.$ga.event({
