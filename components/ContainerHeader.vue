@@ -1,5 +1,20 @@
 <template>
   <header>
+    <button type="button" class="menu-icon" @click="handleClickMenuIcon" />
+    <transition name="slide">
+      <UISidebar
+        v-if="isSidebar"
+        :topics="topics"
+        :sections="sections"
+        :partners="partners"
+        :subBrands="subBrandLinks"
+        :others="otherLinks"
+        :socialMedia="socialMediaLinks"
+        @close="handleSidebarClose"
+        @sendGA="handleSendGA"
+      />
+    </transition>
+
     <div class="header-search">
       <UISearchBarWrapper :options="options" @sendGA="handleSendGA" />
       <UIOthersList
@@ -9,6 +24,7 @@
         @sendGA="handleSendGA"
       />
     </div>
+
     <nav class="header-nav">
       <UIHeaderNavSection
         :sections="sections"
@@ -22,18 +38,23 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import _ from 'lodash'
 
+import UISidebar from './UISidebar.vue'
 import UISearchBarWrapper from './UISearchBarWrapper.vue'
 import UIOthersList from './UIOthersList.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
 
-import { OTHER_LINKS } from '~/constants/index'
+import {
+  SUB_BRAND_LINKS,
+  SOCIAL_MEDIA_LINKS,
+  OTHER_LINKS,
+} from '~/constants/index'
 
 export default {
   name: 'ContainerHeader',
   components: {
+    UISidebar,
     UISearchBarWrapper,
     UIOthersList,
     UIHeaderNavSection,
@@ -41,27 +62,8 @@ export default {
   },
   data() {
     return {
+      isSidebar: false,
       defaultOption: { title: '全部類別' },
-      otherLinksEventLabel: {
-        subscribe: {
-          eventLabel: 'more subscribe',
-        },
-        magazine: {
-          eventLabel: 'more magazine',
-        },
-        auth: {
-          eventLabel: 'more auth',
-        },
-        ad: {
-          eventLabel: 'more ad',
-        },
-        campaign: {
-          eventLabel: 'more campaign',
-        },
-        downloadApp: {
-          eventLabel: 'more download',
-        },
-      },
     }
   },
   computed: {
@@ -77,12 +79,47 @@ export default {
       return [this.defaultOption, ...sections]
     },
     otherLinks() {
-      return _.merge(OTHER_LINKS, this.otherLinksEventLabel)
+      return this.transformObjIntoArray(OTHER_LINKS)
+    },
+    socialMediaLinks() {
+      return this.transformObjIntoArray(SOCIAL_MEDIA_LINKS)
+    },
+    subBrandLinks() {
+      return this.transformObjIntoArray(SUB_BRAND_LINKS)
+    },
+  },
+  watch: {
+    '$route.fullPath'() {
+      this.isSidebar = false
     },
   },
   methods: {
+    handleClickMenuIcon() {
+      this.openSidebar()
+      this.sendHeaderGA('menu open')
+    },
+    handleSidebarClose() {
+      this.closeSidebar()
+      this.sendHeaderGA('menu close')
+    },
+    openSidebar() {
+      this.isSidebar = true
+    },
+    closeSidebar() {
+      this.isSidebar = false
+    },
+    sendHeaderGA(eventLabel, eventAction = 'click') {
+      this.$ga.event({
+        eventCategory: 'header',
+        eventAction,
+        eventLabel,
+      })
+    },
     handleSendGA(param = {}) {
       this.$ga.event(param)
+    },
+    transformObjIntoArray(obj) {
+      return Object.values(obj)
     },
   },
 }
@@ -92,12 +129,17 @@ export default {
 header {
   background-color: #f5f5f5;
 }
-.header-nav {
-  box-shadow: 0 2px 1px rgba(#000, 0.2);
-  position: relative;
-  z-index: 99;
+.menu-icon {
+  width: 24px;
+  height: 40px;
+  background-image: url(~assets/hamburger@2x.png);
+  background-size: 24px;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  user-select: none;
   @include media-breakpoint-up(xl) {
-    box-shadow: 0 0 5px #ccc;
+    display: none;
   }
 }
 .header-search {
@@ -111,5 +153,21 @@ header {
   @include media-breakpoint-up(xl) {
     display: block;
   }
+}
+.header-nav {
+  box-shadow: 0 2px 1px rgba(#000, 0.2);
+  position: relative;
+  z-index: 99;
+  @include media-breakpoint-up(xl) {
+    box-shadow: 0 0 5px #ccc;
+  }
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.45s;
+}
+.slide-enter,
+.slide-leave-to {
+  transform: translateX(-100%);
 }
 </style>

@@ -1,4 +1,5 @@
 import ContainerHeader from '../ContainerHeader.vue'
+import UISidebar from '../UISidebar.vue'
 import UISearchBarWrapper from '../UISearchBarWrapper.vue'
 import UIOthersList from '../UIOthersList.vue'
 import UIHeaderNavSection from '../UIHeaderNavSection.vue'
@@ -29,7 +30,123 @@ describe('options computed', () => {
   })
 })
 
+describe('sidebar', () => {
+  test('open sidebar when users click menu icon', async () => {
+    const wrapper = createWrapper(ContainerHeader, {
+      mocks: {
+        $ga: { event: jest.fn() },
+      },
+    })
+
+    await wrapper.get('.menu-icon').trigger('click')
+    expect(wrapper.findComponent(UISidebar).exists()).toBe(true)
+  })
+
+  test('close sidebar when UISidebar.vue emits close', async () => {
+    const wrapper = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          isSidebar: true,
+        }
+      },
+      mocks: {
+        $ga: { event: jest.fn() },
+      },
+    })
+
+    wrapper.findComponent(UISidebar).vm.$emit('close')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.findComponent(UISidebar).exists()).toBe(false)
+  })
+
+  test('close sidebar when URL changes', async () => {
+    const wrapper = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          isSidebar: true,
+        }
+      },
+      mocks: {
+        $route: { fullPath: '/' },
+      },
+    })
+
+    wrapper.vm.$route.fullPath = '/section/news'
+    await wrapper.vm.$nextTick()
+    expect(wrapper.findComponent(UISidebar).exists()).toBe(false)
+  })
+})
+
+describe('GA event', () => {
+  test('call $ga method when users click menu icon', () => {
+    const $ga = {
+      event: jest.fn(),
+    }
+    const wrapper = createWrapper(ContainerHeader, {
+      mocks: {
+        $ga,
+      },
+    })
+
+    const gaArgs = {
+      eventCategory: 'header',
+      eventAction: 'click',
+      eventLabel: 'menu open',
+    }
+    wrapper.get('.menu-icon').trigger('click')
+    expect($ga.event).toBeCalledWith(gaArgs)
+  })
+
+  test('call $ga method when UISidebar.vue emits close', () => {
+    const $ga = {
+      event: jest.fn(),
+    }
+    const wrapper = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          isSidebar: true,
+        }
+      },
+      mocks: {
+        $ga,
+      },
+    })
+
+    const gaArgs = {
+      eventCategory: 'header',
+      eventAction: 'click',
+      eventLabel: 'menu close',
+    }
+    wrapper.findComponent(UISidebar).vm.$emit('close')
+    expect($ga.event).toBeCalledWith(gaArgs)
+  })
+})
+
 describe('handleSendGA method', () => {
+  test('call $ga method when UISidebar.vue emits sendGA', () => {
+    const $ga = {
+      event: jest.fn(),
+    }
+    const wrapper = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          isSidebar: true,
+        }
+      },
+      mocks: {
+        $ga,
+      },
+    })
+
+    const gaArgs = {
+      eventCategory: 'sidebar',
+      eventAction: 'click',
+      eventLabel: 'section new',
+    }
+    wrapper.findComponent(UISidebar).vm.$emit('sendGA', gaArgs)
+    expect($ga.event).toBeCalledWith(gaArgs)
+  })
+
   test('call $ga method when UISearchBarWrapper.vue emits sendGA', () => {
     const $ga = {
       event: jest.fn(),

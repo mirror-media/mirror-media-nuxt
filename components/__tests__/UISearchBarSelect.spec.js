@@ -87,7 +87,8 @@ describe('select feature', () => {
       },
     })
 
-    await document.body.dispatchEvent(new Event('click'))
+    document.body.dispatchEvent(new Event('click'))
+    await wrapper.vm.$nextTick()
     expect(wrapper.find('.option-filed').element.style.display).toBe('none')
   })
 })
