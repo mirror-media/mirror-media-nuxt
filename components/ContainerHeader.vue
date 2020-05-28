@@ -1,16 +1,18 @@
 <template>
   <header>
     <button type="button" class="menu-icon" @click="openSidebar" />
-    <UISidebar
-      v-if="isSidebar"
-      :topics="topics"
-      :sections="sections"
-      :partners="partners"
-      :subBrands="subBrandLinks"
-      :others="otherLinks"
-      :socialMedia="mediaLinks"
-      @close="closeSidebar"
-    />
+    <transition name="slide">
+      <UISidebar
+        v-if="isSidebar"
+        :topics="topics"
+        :sections="sections"
+        :partners="partners"
+        :subBrands="subBrandLinks"
+        :others="otherLinks"
+        :socialMedia="mediaLinks"
+        @close="closeSidebar"
+      />
+    </transition>
 
     <div class="header-search">
       <UISearchBarWrapper :options="options" @sendGA="handleSendGA" />
@@ -111,6 +113,9 @@ header {
   background-repeat: no-repeat;
   cursor: pointer;
   user-select: none;
+  @include media-breakpoint-up(xl) {
+    display: none;
+  }
 }
 .header-search {
   display: flex;
@@ -131,5 +136,13 @@ header {
   @include media-breakpoint-up(xl) {
     box-shadow: 0 0 5px #ccc;
   }
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.45s;
+}
+.slide-enter,
+.slide-leave-to {
+  transform: translateX(-100%);
 }
 </style>

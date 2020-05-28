@@ -135,7 +135,7 @@ export default {
   z-index: 999;
   overflow-y: auto;
   color: #fff;
-  padding: 44px 16px 16px 16px;
+  padding: calc(36px + 2.5%) 5% 5% 5%;
   line-height: 1.15;
   @include media-breakpoint-up(xl) {
     display: none;
