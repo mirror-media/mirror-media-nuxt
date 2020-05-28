@@ -46,7 +46,7 @@ describe('sidebar', () => {
     const wrapper = createWrapper(ContainerHeader, {
       data() {
         return {
-          isSidebar: true,
+          shouldOpenSidebar: true,
         }
       },
       mocks: {
@@ -63,7 +63,7 @@ describe('sidebar', () => {
     const wrapper = createWrapper(ContainerHeader, {
       data() {
         return {
-          isSidebar: true,
+          shouldOpenSidebar: true,
         }
       },
       mocks: {
@@ -104,7 +104,7 @@ describe('GA event', () => {
     const wrapper = createWrapper(ContainerHeader, {
       data() {
         return {
-          isSidebar: true,
+          shouldOpenSidebar: true,
         }
       },
       mocks: {
@@ -130,7 +130,7 @@ describe('handleSendGA method', () => {
     const wrapper = createWrapper(ContainerHeader, {
       data() {
         return {
-          isSidebar: true,
+          shouldOpenSidebar: true,
         }
       },
       mocks: {

@@ -24,7 +24,7 @@ describe('link list', () => {
       },
       data() {
         return {
-          isLinkList: true,
+          shouldOpenLinkList: true,
         }
       },
     })
@@ -48,7 +48,7 @@ describe('link list', () => {
     const wrapper = createWrapper(UIOthersList, {
       data() {
         return {
-          isLinkList: true,
+          shouldOpenLinkList: true,
         }
       },
     })
@@ -70,7 +70,7 @@ describe('emitGA method', () => {
       },
       data() {
         return {
-          isLinkList: true,
+          shouldOpenLinkList: true,
         }
       },
     })

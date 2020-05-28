@@ -3,7 +3,7 @@
     <button type="button" class="displayed-field" @click="toggleOptionField">
       {{ selectedOption.title }}
     </button>
-    <ul v-show="isOptionField" class="option-filed">
+    <ul v-show="shouldShowOptionField" class="option-filed">
       <li
         v-for="({ title }, idx) in options"
         :key="title"
@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      isOptionField: false,
+      shouldShowOptionField: false,
       selectedOptionIdx: 0,
     }
   },
@@ -53,10 +53,10 @@ export default {
       this.selectedOptionIdx = idx
     },
     toggleOptionField() {
-      this.isOptionField = !this.isOptionField
+      this.shouldShowOptionField = !this.shouldShowOptionField
     },
     hideOption() {
-      this.isOptionField = false
+      this.shouldShowOptionField = false
     },
   },
 }

@@ -52,7 +52,7 @@ describe('search field', () => {
     const wrapper = createWrapper(UISearchBar, {
       data() {
         return {
-          isField: true,
+          shouldShowField: true,
         }
       },
     })
