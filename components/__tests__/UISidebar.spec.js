@@ -57,7 +57,7 @@ describe('topics', () => {
     expect(link.text()).toBe(mockTopic.name)
   })
 
-  test('close the topics if the topics prop is an empty array', () => {
+  test('close the topics if the prop "topics" is an empty array', () => {
     const wrapper = createWrapper(UISidebar, {
       propsData: {
         topics: [],
@@ -113,7 +113,7 @@ describe('sections', () => {
     expect(link.text()).toBe(mockPartner.display)
   })
 
-  test('close the external section if the partners prop is an empty array', () => {
+  test('close the external section if the prop "partners" is an empty array', () => {
     const wrapper = createWrapper(UISidebar, {
       propsData: {
         partners: [],
