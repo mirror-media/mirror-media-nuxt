@@ -8,11 +8,16 @@
         :key="topic.id"
         :to="`/topic/${topic.id}`"
         class="topics__title"
+        @click.native="emitGA(`topic ${topic.name}`)"
       >
         <h2>{{ topic.name }}</h2>
       </nuxt-link>
 
-      <nuxt-link to="/section/topic" class="topics__title">
+      <nuxt-link
+        to="/section/topic"
+        class="topics__title"
+        @click.native="emitGA('topic 更多')"
+      >
         <h2>更多</h2>
       </nuxt-link>
     </div>
@@ -23,14 +28,20 @@
         :key="section.id"
         :class="`section section--${section.name}`"
       >
-        <nuxt-link :to="`/section/${section.name}`" class="section__title">
+        <nuxt-link
+          :to="`/section/${section.name}`"
+          class="section__title"
+          @click.native="emitGA(`section ${section.name}`)"
+        >
           <h2>{{ section.title }}</h2>
         </nuxt-link>
+
         <div class="section__categories">
           <nuxt-link
             v-for="category in section.categories"
             :key="category.id"
             :to="`/category/${category.name}`"
+            @click.native="emitGA(`category ${category.name}`)"
           >
             <h3>{{ category.title }}</h3>
           </nuxt-link>
@@ -41,11 +52,13 @@
         <div class="section__title">
           <h2>健康醫療</h2>
         </div>
+
         <div class="section__categories">
           <nuxt-link
             v-for="partner in partners"
             :key="partner.id"
             :to="`/externals/${partner.name}`"
+            @click.native="emitGA(`external ${partner.name}`)"
           >
             <h3>{{ partner.display }}</h3>
           </nuxt-link>
@@ -58,7 +71,12 @@
         class="section"
         :class="`section--${subBrand.name}`"
       >
-        <a :href="subBrand.href" target="_blank" class="section__title">
+        <a
+          :href="subBrand.href"
+          target="_blank"
+          class="section__title"
+          @click="emitGA(`section ${subBrand.name}`)"
+        >
           {{ subBrand.title }}
         </a>
       </div>
@@ -70,6 +88,7 @@
         :key="other.name"
         :href="other.href"
         target="_blank"
+        @click="emitGA(`more ${other.name}`)"
       >
         {{ other.title }}
       </a>
@@ -77,15 +96,16 @@
 
     <div class="social-media">
       <a
-        v-for="media in socialMedia"
-        :key="media.name"
-        :href="media.href"
+        v-for="medium in socialMedia"
+        :key="medium.name"
+        :href="medium.href"
         target="_blank"
+        @click="emitGA(`social ${medium.name}`)"
       >
         <img
-          :class="media.name"
+          :class="medium.name"
           src="~/assets/transperent.png"
-          :alt="media.name"
+          :alt="medium.name"
         />
       </a>
     </div>
@@ -121,6 +141,15 @@ export default {
       required: true,
     },
   },
+  methods: {
+    emitGA(eventLabel) {
+      this.$emit('sendGA', {
+        eventCategory: 'sidebar',
+        eventAction: 'click',
+        eventLabel,
+      })
+    },
+  },
 }
 </script>
 
@@ -143,6 +172,8 @@ export default {
 }
 a {
   display: block;
+  cursor: pointer;
+  user-select: none;
 }
 .close-icon {
   position: absolute;

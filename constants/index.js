@@ -18,7 +18,7 @@ export const SOCIAL_URLS = {
 }
 
 // their order is important, DON'T change it at will
-export const MEDIA_LINKS = {
+export const SOCIAL_MEDIA_LINKS = {
   line: {
     name: 'line',
     href: SOCIAL_URLS.line,

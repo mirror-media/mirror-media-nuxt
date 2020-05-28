@@ -81,7 +81,7 @@ describe('emitGA method', () => {
       {
         eventCategory,
         eventAction: 'click',
-        eventLabel: mockLink.name,
+        eventLabel: `more ${mockLink.name}`,
       },
     ])
   })

@@ -1,6 +1,6 @@
 <template>
   <header>
-    <button type="button" class="menu-icon" @click="openSidebar" />
+    <button type="button" class="menu-icon" @click="handleClickMenuIcon" />
     <transition name="slide">
       <UISidebar
         v-if="isSidebar"
@@ -9,8 +9,9 @@
         :partners="partners"
         :subBrands="subBrandLinks"
         :others="otherLinks"
-        :socialMedia="mediaLinks"
-        @close="closeSidebar"
+        :socialMedia="socialMediaLinks"
+        @close="handleSidebarClose"
+        @sendGA="handleSendGA"
       />
     </transition>
 
@@ -44,7 +45,11 @@ import UIOthersList from './UIOthersList.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
 
-import { SUB_BRAND_LINKS, MEDIA_LINKS, OTHER_LINKS } from '~/constants/index'
+import {
+  SUB_BRAND_LINKS,
+  SOCIAL_MEDIA_LINKS,
+  OTHER_LINKS,
+} from '~/constants/index'
 
 export default {
   name: 'ContainerHeader',
@@ -76,19 +81,34 @@ export default {
     otherLinks() {
       return this.transformObjIntoArray(OTHER_LINKS)
     },
-    mediaLinks() {
-      return this.transformObjIntoArray(MEDIA_LINKS)
+    socialMediaLinks() {
+      return this.transformObjIntoArray(SOCIAL_MEDIA_LINKS)
     },
     subBrandLinks() {
       return this.transformObjIntoArray(SUB_BRAND_LINKS)
     },
   },
   methods: {
+    handleClickMenuIcon() {
+      this.openSidebar()
+      this.sendHeaderGA('menu open')
+    },
+    handleSidebarClose() {
+      this.closeSidebar()
+      this.sendHeaderGA('menu close')
+    },
     openSidebar() {
       this.isSidebar = true
     },
     closeSidebar() {
       this.isSidebar = false
+    },
+    sendHeaderGA(eventLabel, eventAction = 'click') {
+      this.$ga.event({
+        eventCategory: 'header',
+        eventAction,
+        eventLabel,
+      })
     },
     handleSendGA(param = {}) {
       this.$ga.event(param)
