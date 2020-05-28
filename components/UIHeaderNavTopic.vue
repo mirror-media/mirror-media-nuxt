@@ -23,25 +23,16 @@
 
       <div class="sub-brand-container">
         <a
-          href="https://voice.mirrorfiction.com/"
+          v-for="subBrand in subBrands"
+          :key="subBrand.name"
+          :href="subBrand.href"
           target="_blank"
-          @click="emitGA('section mirrorvoice')"
+          @click="emitGA(`section ${subBrand.name}`)"
         >
-          <img src="~/assets/mirrorvoice.png" alt="鏡好聽" />
-        </a>
-        <a
-          href="https://www.mirrorfiction.com/"
-          target="_blank"
-          @click="emitGA('section mirrorfiction')"
-        >
-          <img src="~/assets/mirrorfiction.png" alt="鏡文學" />
-        </a>
-        <a
-          href="https://www.readr.tw/"
-          target="_blank"
-          @click="emitGA('section readr')"
-        >
-          <img src="~/assets/readrlogo-gary.png" alt="READr 讀+" />
+          <img
+            :src="require(`~/assets/${subBrand.name}.png`)"
+            :alt="subBrand.title"
+          />
         </a>
       </div>
     </div>
@@ -53,6 +44,11 @@ export default {
   name: 'UIHeaderNavTopic',
   props: {
     topics: {
+      type: Array,
+      required: true,
+      default: () => [],
+    },
+    subBrands: {
       type: Array,
       required: true,
       default: () => [],
