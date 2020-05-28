@@ -55,6 +55,7 @@ export default {
     topics: {
       type: Array,
       required: true,
+      default: () => [],
     },
   },
   methods: {

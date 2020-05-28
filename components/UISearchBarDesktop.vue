@@ -28,6 +28,7 @@ export default {
     options: {
       type: Array,
       required: true,
+      default: () => [],
     },
   },
   methods: {
