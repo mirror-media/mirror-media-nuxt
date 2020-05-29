@@ -12,7 +12,7 @@ export const insertGPTScript = function insertGPTScript() {
 export const getAdSizeType = function getAdSizeType(adSize = []) {
   /*
    ** see: https://developers.google.com/doubleclick-gpt/guides/ad-sizes
-   ** Ad size should be just ONE of there cases
+   ** Ad size should be just ONE of these cases
    */
   const sizes = {
     fixed() {
