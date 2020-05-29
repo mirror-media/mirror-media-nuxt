@@ -2,13 +2,14 @@
   <div
     :id="adOptDiv"
     :style="{
-      width: `${adSize[0]}px`,
-      height: `${adSize[1]}px`,
+      width: width,
     }"
   />
 </template>
 
 <script>
+import { getAdSizeType } from './util'
+
 export default {
   props: {
     adNetwork: {
@@ -22,6 +23,9 @@ export default {
     adSize: {
       type: Array,
       required: true,
+      validator(adSize) {
+        return getAdSizeType(adSize) !== undefined
+      },
     },
   },
   data() {
@@ -44,6 +48,27 @@ export default {
     },
     adOptDiv() {
       return this.adUnitPath
+    },
+    adSizeType() {
+      return getAdSizeType(this.adSize)
+    },
+    width() {
+      switch (this.adSizeType) {
+        case 'fixed': {
+          const x = this.adSize[0]
+          return `${x}px`
+        }
+        case 'multi': {
+          const xMax = this.adSize.reduce(
+            (acc, curr) => Math.max(curr[0], acc),
+            0
+          )
+          return `${xMax}px`
+        }
+        case 'fluid':
+        default:
+          return '100%'
+      }
     },
   },
   beforeMount() {

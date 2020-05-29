@@ -207,3 +207,84 @@ describe('GPTAD component computeds', () => {
     expect(ad.vm.adOptDiv).toBe(`/${adNetworkMock}/${adUnitMock}`)
   })
 })
+
+describe('different ad sizes', () => {
+  test('fixed-size ads', () => {
+    const localVue = createLocalVue()
+    localVue.use(plugin, {
+      adNetwork: 'adNetwork',
+    })
+
+    const widthMock = 123
+    const TestWrapperComponent = {
+      template: `
+        <div>
+          <GPTAD
+            class="ad"
+            :adUnit="'adUnit'"
+            :adSize="[${widthMock}, 456]"
+          />
+        </div>
+      `,
+    }
+    const wrapper = mount(TestWrapperComponent, {
+      localVue,
+    })
+    const ad = wrapper.find('.ad')
+    expect(ad.vm.adSizeType).toBe('fixed')
+    expect(ad.element.style.width).toBe(`${widthMock}px`)
+  })
+  test('mluti-size ads', () => {
+    const localVue = createLocalVue()
+    localVue.use(plugin, {
+      adNetwork: 'adNetwork',
+    })
+
+    const maxWidthMock = 999
+    const TestWrapperComponent = {
+      template: `
+        <div>
+          <GPTAD
+            class="ad"
+            :adUnit="'adUnit'"
+            :adSize="[
+              [123, 456],
+              [456, 789],
+              [${maxWidthMock}, 123]
+            ]"
+          />
+        </div>
+      `,
+    }
+    const wrapper = mount(TestWrapperComponent, {
+      localVue,
+    })
+    const ad = wrapper.find('.ad')
+    expect(ad.vm.adSizeType).toBe('multi')
+    expect(ad.element.style.width).toBe(`${maxWidthMock}px`)
+  })
+  test('fluid ads', () => {
+    const localVue = createLocalVue()
+    localVue.use(plugin, {
+      adNetwork: 'adNetwork',
+    })
+
+    const TestWrapperComponent = {
+      template: `
+        <div>
+          <GPTAD
+            class="ad"
+            :adUnit="'adUnit'"
+            :adSize="['fluid']"
+          />
+        </div>
+      `,
+    }
+    const wrapper = mount(TestWrapperComponent, {
+      localVue,
+    })
+    const ad = wrapper.find('.ad')
+    expect(ad.vm.adSizeType).toBe('fluid')
+    expect(ad.element.style.width).toBe('100%')
+  })
+})
