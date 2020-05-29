@@ -26,7 +26,7 @@ describe('href behaviour', () => {
         infoDescription: '',
       },
     })
-    let link = wrapper.find('a')
+    let link = wrapper.get('a')
     expect(link.attributes().href).toBe(hrefPropsMockPathAbsolute)
 
     const hrefPropsMockPathRelative = '/story/test-slug'
@@ -40,7 +40,7 @@ describe('href behaviour', () => {
         infoDescription: '',
       },
     })
-    link = wrapper.find('a')
+    link = wrapper.get('a')
     expect(link.attributes().href).toBe(hrefPropsMockPathRelative)
   })
 })
@@ -85,7 +85,7 @@ describe('images wrapper', () => {
         infoDescription: '',
       },
     })
-    const img = wrapper.find('img')
+    const img = wrapper.get('img')
     expect(img.attributes()['data-src']).toBe(imgSrc)
   })
   test('should render proper textContent from props "imgText"', () => {
@@ -100,7 +100,7 @@ describe('images wrapper', () => {
         infoDescription: '',
       },
     })
-    const span = wrapper.find('span')
+    const span = wrapper.get('span')
     expect(span.text()).toBe(imgText)
   })
   test('should hide the span if props "imgText" is empty string', () => {
@@ -130,7 +130,7 @@ describe('images wrapper', () => {
         infoDescription: '',
       },
     })
-    const span = wrapper.find('span')
+    const span = wrapper.get('span')
     expect(span.element.style['background-color']).toBe('rgb(0, 0, 0)')
   })
 })
@@ -148,7 +148,7 @@ describe('info wrapper', () => {
         infoDescription: '',
       },
     })
-    const h1 = wrapper.find('h1')
+    const h1 = wrapper.get('h1')
     expect(h1.text()).toBe(infoTitle)
   })
   test('should render proper textContent from props "description"', () => {
@@ -163,7 +163,7 @@ describe('info wrapper', () => {
         infoDescription,
       },
     })
-    const p = wrapper.find('p')
+    const p = wrapper.get('p')
     expect(p.text()).toBe(infoDescription)
   })
   test('should render proper backgroundColor from props "infoBackgroundColor"', () => {
@@ -179,7 +179,7 @@ describe('info wrapper', () => {
         infoBackgroundColor,
       },
     })
-    const infoWrapper = wrapper.find('.bottom-wrapper')
+    const infoWrapper = wrapper.get('.bottom-wrapper')
     expect(infoWrapper.element.style['background-color']).toBe('rgb(0, 0, 0)')
   })
 })

@@ -47,7 +47,7 @@ describe('page title', () => {
         },
       },
     })
-    const title = wrapper.find('h1')
+    const title = wrapper.get('h1')
     expect(title.text()).toBe(keywordMock)
   })
 })

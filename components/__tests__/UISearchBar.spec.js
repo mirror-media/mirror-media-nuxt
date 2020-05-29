@@ -40,12 +40,12 @@ describe('search field', () => {
   test('toggle the field when users click the search icon', async () => {
     const wrapper = createWrapper(UISearchBar)
 
-    const searchIcon = wrapper.find('.search-icon')
+    const searchIcon = wrapper.get('.search-icon')
     await searchIcon.trigger('click')
-    expect(wrapper.find('.field').element.style.display).toBe('')
+    expect(wrapper.get('.field').element.style.display).toBe('')
 
     await searchIcon.trigger('click')
-    expect(wrapper.find('.field').element.style.display).toBe('none')
+    expect(wrapper.get('.field').element.style.display).toBe('none')
   })
 
   test('hide the field when users click outside', async () => {
@@ -59,6 +59,6 @@ describe('search field', () => {
 
     document.body.dispatchEvent(new Event('click'))
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('.field').element.style.display).toBe('none')
+    expect(wrapper.get('.field').element.style.display).toBe('none')
   })
 })
