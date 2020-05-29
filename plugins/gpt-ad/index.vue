@@ -56,19 +56,23 @@ export default {
     }
   },
   mounted() {
-    window.googletag.cmd.push(() => {
-      this.adSlot = window.googletag
-        .defineSlot(this.adUnitPath, this.adSize, this.adOptDiv)
-        .addService(window.googletag.pubads())
-    })
-    window.googletag.cmd.push(() => {
-      window.googletag.display(this.adOptDiv)
-    })
-  },
-  beforeDestroy() {
-    window.googletag.cmd.push(() => {
-      window.googletag.destroySlots([this.adSlot])
-    })
+    const adSlot = this.$getGPTAdSlotsDefined(this.adOptDiv)
+    if (!adSlot) {
+      window.googletag.cmd.push(() => {
+        this.adSlot = window.googletag
+          .defineSlot(this.adUnitPath, this.adSize, this.adOptDiv)
+          .addService(window.googletag.pubads())
+
+        this.$setGPTAdSlotsDefined(this.adOptDiv, this.adSlot)
+      })
+      window.googletag.cmd.push(() => {
+        window.googletag.display(this.adOptDiv)
+      })
+    } else {
+      window.googletag.cmd.push(() => {
+        window.googletag.pubads().refresh([adSlot])
+      })
+    }
   },
 }
 </script>

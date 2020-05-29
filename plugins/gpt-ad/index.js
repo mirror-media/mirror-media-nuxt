@@ -2,19 +2,26 @@ import GPTAD from './index.vue'
 import { insertGPTScript } from './util'
 
 let isGPTScriptInserted = false
+const GPTAdSlotsDefined = {}
 
 export default {
   install(Vue, options = {}) {
+    Vue.prototype.$setGPTAdSlotsDefined = function (key, value) {
+      GPTAdSlotsDefined[key] = value
+    }
+    Vue.prototype.$getGPTAdSlotsDefined = function (key) {
+      return GPTAdSlotsDefined[key]
+    }
+
     let Component = Vue.extend(GPTAD)
     Component = Component.extend({
       beforeMount() {
         if (!isGPTScriptInserted) {
           insertGPTScript()
           isGPTScriptInserted = true
+          window.googletag = window.googletag || {}
+          window.googletag.cmd = window.googletag.cmd || []
         }
-
-        window.googletag = window.googletag || {}
-        window.googletag.cmd = window.googletag.cmd || []
 
         window.googletag.cmd.push(() => {
           /*
