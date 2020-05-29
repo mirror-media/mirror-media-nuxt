@@ -139,3 +139,32 @@ describe('GPT script', () => {
     expect(scripts).toHaveLength(1)
   })
 })
+
+describe('GPTAD component computeds', () => {
+  test('adUnitPath and adOptDiv', () => {
+    const adNetworkMock = 'adNetwork'
+    const adUnitMock = 'adUnit'
+    const localVue = createLocalVue()
+    localVue.use(plugin, {
+      adNetwork: adNetworkMock,
+    })
+
+    const TestWrapperComponent = {
+      template: `
+        <div>
+          <GPTAD
+            class="ad"
+            :adUnit="'${adUnitMock}'"
+            :adSize="[0, 0]"
+          />
+        </div>
+      `,
+    }
+    const wrapper = mount(TestWrapperComponent, {
+      localVue,
+    })
+    const ad = wrapper.find('.ad')
+    expect(ad.vm.adUnitPath).toBe(`/${adNetworkMock}/${adUnitMock}`)
+    expect(ad.vm.adOptDiv).toBe(`/${adNetworkMock}/${adUnitMock}`)
+  })
+})
