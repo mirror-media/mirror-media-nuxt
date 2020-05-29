@@ -196,7 +196,7 @@ a {
   user-select: none;
 }
 .close-icon {
-  position: absolute;
+  position: fixed;
   top: 16px;
   right: 16px;
   width: 20px;
