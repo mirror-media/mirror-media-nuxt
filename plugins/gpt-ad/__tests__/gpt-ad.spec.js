@@ -105,6 +105,45 @@ describe('adNetwork settings', () => {
   })
 })
 
+describe('mode setting', () => {
+  test('should insert "test_" in front of adUnit if mode is "dev"', () => {
+    const pluginMode = 'dev'
+    const adNetworkMock = 'adNetwork'
+    const adUnitMock = 'adUnit'
+    const adSizeMock = [123, 456]
+    const localVue = createLocalVue()
+    localVue.use(plugin, {
+      adNetwork: adNetworkMock,
+      mode: pluginMode,
+    })
+
+    const TestWrapperComponent = {
+      template: `
+        <div>
+          <!-- adNetwork is missing in component props -->
+          <GPTAD
+            class="ad"
+            :adNetwork="undefined"
+            :adUnit="adUnit"
+            :adSize="adSize"
+          />
+        </div>
+      `,
+      data() {
+        return {
+          adUnit: adUnitMock,
+          adSize: adSizeMock,
+        }
+      },
+    }
+    const wrapper = mount(TestWrapperComponent, {
+      localVue,
+    })
+    const ad = wrapper.find('.ad')
+    expect(ad.vm.$adUnit).toBe(`test_${adUnitMock}`)
+  })
+})
+
 describe('GPT script', () => {
   test('should insert only one script if multiple GPTAD component mounted', () => {
     const adNetworkMock = 'adNetwork'

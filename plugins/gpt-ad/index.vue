@@ -9,8 +9,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
-
 export default {
   props: {
     adNetwork: {
@@ -24,12 +22,6 @@ export default {
     adSize: {
       type: Array,
       required: true,
-      validator(value) {
-        return (
-          value.length === 2 &&
-          value.reduce((acc, curr) => acc && _.isFinite(curr), true)
-        )
-      },
     },
   },
   data() {
@@ -41,8 +33,14 @@ export default {
     $adNetwork() {
       return this.adNetwork || this.adNetworkDefault
     },
+    $adUnit() {
+      if (this.mode === 'dev') {
+        return `test_${this.adUnit}`
+      }
+      return this.adUnit
+    },
     adUnitPath() {
-      return `/${this.$adNetwork}/${this.adUnit}`
+      return `/${this.$adNetwork}/${this.$adUnit}`
     },
     adOptDiv() {
       return this.adUnitPath

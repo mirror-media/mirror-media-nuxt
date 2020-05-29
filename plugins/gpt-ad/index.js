@@ -59,6 +59,15 @@ export default {
       })
     }
 
+    const mode = options?.mode ?? 'prod'
+    Component = Component.extend({
+      data() {
+        return {
+          mode,
+        }
+      },
+    })
+
     Vue.component('GPTAD', Component)
   },
 }
