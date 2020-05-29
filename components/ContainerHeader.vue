@@ -86,7 +86,7 @@ export default {
       return this.transformObjIntoArray(OTHER_LINKS)
     },
     socialMediaLinks() {
-      return this.transformObjIntoArray(SOCIAL_MEDIA_LINKS)
+      return SOCIAL_MEDIA_LINKS
     },
     subBrandLinks() {
       return this.transformObjIntoArray(SUB_BRAND_LINKS)

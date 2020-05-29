@@ -1,11 +1,4 @@
 export const SOCIAL_URLS = {
-  line: 'https://line.me/R/ti/p/%40cuk1273e',
-  weibo: 'http://www.weibo.com/u/6030041924?is_all=1',
-  facebook: 'https://www.facebook.com/mirrormediamg/',
-  instagram: 'https://www.instagram.com/mirror_media/',
-  rss: 'https://www.mirrormedia.mg/rss/rss.xml',
-  email: 'mailto:mirror885@mirrormedia.mg',
-
   subscribe:
     'https://docs.google.com/forms/d/1es1wqWfhwJn2sxDLc-6NRVokGn_fU0_M2YffhKMlcyM/viewform',
   magazine: 'https://mybook.taiwanmobile.com/contentGroup/MIR0100100001',
@@ -17,33 +10,39 @@ export const SOCIAL_URLS = {
   facebookFoodtravel: 'https://www.facebook.com/MirrorMediaFoodTravel/',
 }
 
-// their order is important, DON'T change it at will
-export const SOCIAL_MEDIA_LINKS = {
-  line: {
-    name: 'line',
-    href: SOCIAL_URLS.line,
-  },
-  weibo: {
-    name: 'weibo',
-    href: SOCIAL_URLS.weibo,
-  },
-  facebook: {
-    name: 'facebook',
-    href: SOCIAL_URLS.facebook,
-  },
-  instagram: {
-    name: 'instagram',
-    href: SOCIAL_URLS.instagram,
-  },
-  rss: {
-    name: 'rss',
-    href: SOCIAL_URLS.rss,
-  },
-  email: {
-    name: 'email',
-    href: SOCIAL_URLS.email,
-  },
+const LINE_LINK = {
+  name: 'line',
+  href: 'https://line.me/R/ti/p/%40cuk1273e',
 }
+const WEIBO_LINK = {
+  name: 'weibo',
+  href: 'http://www.weibo.com/u/6030041924?is_all=1',
+}
+const FACEBOOK_LINK = {
+  name: 'facebook',
+  href: 'https://www.facebook.com/mirrormediamg/',
+}
+const INSTAGRAM_LINK = {
+  name: 'instagram',
+  href: 'https://www.instagram.com/mirror_media/',
+}
+const RSS_LINK = {
+  name: 'rss',
+  href: 'https://www.mirrormedia.mg/rss/rss.xml',
+}
+const EMAIL_LINK = {
+  name: 'email',
+  href: 'mailto:mirror885@mirrormedia.mg',
+}
+
+export const SOCIAL_MEDIA_LINKS = [
+  LINE_LINK,
+  WEIBO_LINK,
+  FACEBOOK_LINK,
+  INSTAGRAM_LINK,
+  RSS_LINK,
+  EMAIL_LINK,
+]
 
 // their order is important, DON'T change it at will
 export const OTHER_LINKS = {
