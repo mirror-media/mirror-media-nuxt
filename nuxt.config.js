@@ -35,6 +35,7 @@ module.exports = {
    */
   plugins: [
     '~/plugins/vuePluginsGlobal.js',
+    '~/plugins/vuePluginsGlobal.client.js',
     '~/plugins/vueDirectivesGlobal.js',
     '~/plugins/requests/index.js',
   ],
