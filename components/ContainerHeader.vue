@@ -83,13 +83,13 @@ export default {
       return [this.defaultOption, ...sections]
     },
     otherLinks() {
-      return this.transformObjIntoArray(OTHER_LINKS)
+      return OTHER_LINKS
     },
     socialMediaLinks() {
       return SOCIAL_MEDIA_LINKS
     },
     subBrandLinks() {
-      return this.transformObjIntoArray(SUB_BRAND_LINKS)
+      return SUB_BRAND_LINKS
     },
   },
   watch: {
@@ -121,9 +121,6 @@ export default {
     },
     handleSendGA(param = {}) {
       this.$ga.event(param)
-    },
-    transformObjIntoArray(obj) {
-      return Object.values(obj)
     },
   },
 }

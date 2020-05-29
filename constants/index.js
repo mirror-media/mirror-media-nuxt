@@ -1,15 +1,3 @@
-export const SOCIAL_URLS = {
-  subscribe:
-    'https://docs.google.com/forms/d/1es1wqWfhwJn2sxDLc-6NRVokGn_fU0_M2YffhKMlcyM/viewform',
-  magazine: 'https://mybook.taiwanmobile.com/contentGroup/MIR0100100001',
-  auth: 'https://www.mirrormedia.mg/story/webauthorize/',
-  ad: 'https://www.mirrormedia.mg/story/ad1018001/index.html',
-  campaign: 'https://www.mirrormedia.mg/category/campaign',
-  downloadApp: 'https://www.mirrormedia.mg/story/20161228corpmkt001/',
-
-  facebookFoodtravel: 'https://www.facebook.com/MirrorMediaFoodTravel/',
-}
-
 const LINE_LINK = {
   name: 'line',
   href: 'https://line.me/R/ti/p/%40cuk1273e',
@@ -44,55 +32,65 @@ export const SOCIAL_MEDIA_LINKS = [
   EMAIL_LINK,
 ]
 
-// their order is important, DON'T change it at will
-export const OTHER_LINKS = {
-  subscribe: {
-    name: 'subscribe',
-    title: '訂閱鏡週刊',
-    href: SOCIAL_URLS.subscribe,
-  },
-  magazine: {
-    name: 'magazine',
-    title: '訂閱電子雜誌',
-    href: SOCIAL_URLS.magazine,
-  },
-  auth: {
-    name: 'auth',
-    title: '內容授權',
-    href: SOCIAL_URLS.auth,
-  },
-  ad: {
-    name: 'ad',
-    title: '廣告合作',
-    href: SOCIAL_URLS.ad,
-  },
-  campaign: {
-    name: 'campaign',
-    title: '活動專區',
-    href: SOCIAL_URLS.campaign,
-  },
-  downloadApp: {
-    name: 'download',
-    title: '下載APP',
-    href: SOCIAL_URLS.downloadApp,
-  },
+const SUBSCRIBE_LINK = {
+  name: 'subscribe',
+  title: '訂閱鏡週刊',
+  href:
+    'https://docs.google.com/forms/d/1es1wqWfhwJn2sxDLc-6NRVokGn_fU0_M2YffhKMlcyM/viewform',
+}
+const MAGAZINE_LINK = {
+  name: 'magazine',
+  title: '訂閱電子雜誌',
+  href: 'https://mybook.taiwanmobile.com/contentGroup/MIR0100100001',
+}
+const AUTH_LINK = {
+  name: 'auth',
+  title: '內容授權',
+  href: 'https://www.mirrormedia.mg/story/webauthorize/',
+}
+const AD_LINK = {
+  name: 'ad',
+  title: '廣告合作',
+  href: 'https://www.mirrormedia.mg/story/ad1018001/index.html',
+}
+const CAMPAIGN_LINK = {
+  name: 'campaign',
+  title: '活動專區',
+  href: 'https://www.mirrormedia.mg/category/campaign',
+}
+const DOWNLOAD_APP_LINK = {
+  name: 'download',
+  title: '下載APP',
+  href: 'https://www.mirrormedia.mg/story/20161228corpmkt001/',
 }
 
-// their order is important, DON'T change it at will
-export const SUB_BRAND_LINKS = {
-  mirrorvoic: {
-    name: 'mirrorvoice',
-    title: '鏡好聽',
-    href: 'https://voice.mirrorfiction.com/',
-  },
-  mirrorfiction: {
-    name: 'mirrorfiction',
-    title: '鏡文學',
-    href: 'https://www.mirrorfiction.com/',
-  },
-  readr: {
-    name: 'readr',
-    title: 'READr 讀+',
-    href: 'https://www.readr.tw/',
-  },
+export const OTHER_LINKS = [
+  SUBSCRIBE_LINK,
+  MAGAZINE_LINK,
+  AUTH_LINK,
+  AD_LINK,
+  CAMPAIGN_LINK,
+  DOWNLOAD_APP_LINK,
+]
+
+const MIRRORVOICE_LINK = {
+  name: 'mirrorvoice',
+  title: '鏡好聽',
+  href: 'https://voice.mirrorfiction.com/',
 }
+const MIRRORFICTION_LINK = {
+  name: 'mirrorfiction',
+  title: '鏡文學',
+  href: 'https://www.mirrorfiction.com/',
+}
+const READR_LINK = {
+  name: 'readr',
+  title: 'READr 讀+',
+  href: 'https://www.readr.tw/',
+}
+
+export const SUB_BRAND_LINKS = [
+  MIRRORVOICE_LINK,
+  MIRRORFICTION_LINK,
+  READR_LINK,
+]
