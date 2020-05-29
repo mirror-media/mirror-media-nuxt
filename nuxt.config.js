@@ -15,12 +15,6 @@ module.exports = {
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
-    script: [
-      {
-        src: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
-        async: true,
-      },
-    ],
   },
   /*
    ** Customize the progress-bar color
