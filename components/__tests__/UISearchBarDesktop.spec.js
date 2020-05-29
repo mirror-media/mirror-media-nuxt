@@ -38,7 +38,7 @@ describe('custom events', () => {
   test('emit search when users click the search icon', () => {
     const wrapper = createWrapper(UISearchBarDesktop)
 
-    const searchIcon = wrapper.find('.search-icon')
+    const searchIcon = wrapper.get('.search-icon')
     searchIcon.trigger('click')
     expect(wrapper.emitted().search).toBeTruthy()
   })
@@ -48,7 +48,7 @@ describe('emitGA method', () => {
   test('with a proper argument when users click the search icon', () => {
     const wrapper = createWrapper(UISearchBarDesktop)
 
-    const searchIcon = wrapper.find('.search-icon')
+    const searchIcon = wrapper.get('.search-icon')
     searchIcon.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
       {
