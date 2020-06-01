@@ -55,15 +55,15 @@ export default {
     width() {
       switch (this.adSizeType) {
         case 'fixed': {
-          const x = this.adSize[0]
-          return `${x}px`
+          const width = this.adSize[0]
+          return `${width}px`
         }
         case 'multi': {
-          const xMax = this.adSize.reduce(
+          const widthMax = this.adSize.reduce(
             (acc, curr) => Math.max(curr[0], acc),
             0
           )
-          return `${xMax}px`
+          return `${widthMax}px`
         }
         case 'fluid':
         default:
