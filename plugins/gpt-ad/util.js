@@ -27,7 +27,7 @@ export function getAdSizeType(adSize = []) {
   // output 'fixed', 'multi, 'fluid' or undefined
   return sizeValidators.find(function findTruth(validator) {
     return validator()
-  }).name
+  })?.name
 
   function checkFixedSize(array = []) {
     return (
