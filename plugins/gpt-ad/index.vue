@@ -92,6 +92,25 @@ export default {
       window.googletag.cmd.push(() => {
         window.googletag.display(this.adOptDiv)
       })
+
+      // see: https://developers.google.com/doubleclick-gpt/reference#googletag.service-addeventlistenereventtype,-listener
+      window.googletag.cmd.push(() => {
+        const pubads = window.googletag.pubads()
+        const events = [
+          'slotRequested',
+          'slotRenderEnded',
+          'impressionViewable',
+          'slotOnload',
+          'slotVisibilityChanged',
+        ]
+        events.forEach((event) => {
+          pubads.addEventListener(event, (e) => {
+            if (e.slot === this.adSlot) {
+              this.$emit(event, e)
+            }
+          })
+        })
+      })
     } else {
       window.googletag.cmd.push(() => {
         this.adSlot = adSlot
