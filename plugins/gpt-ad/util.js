@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export const insertGPTScript = function insertGPTScript() {
+export function insertGPTScript() {
   const GPTScript = document.createElement('script')
   GPTScript.type = 'text/javascript'
   GPTScript.async = true
@@ -9,7 +9,7 @@ export const insertGPTScript = function insertGPTScript() {
   head.appendChild(GPTScript)
 }
 
-export const getAdSizeType = function getAdSizeType(adSize = []) {
+export function getAdSizeType(adSize = []) {
   /*
    ** see: https://developers.google.com/doubleclick-gpt/guides/ad-sizes
    ** Ad size should be just ONE of these cases
