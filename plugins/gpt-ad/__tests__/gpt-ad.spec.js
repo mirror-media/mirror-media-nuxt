@@ -67,7 +67,7 @@ describe('adNetwork settings', () => {
     const wrapper = mount(TestWrapperComponent, {
       localVue,
     })
-    const ad = wrapper.find('.ad')
+    const ad = wrapper.get('.ad')
     expect(ad.vm.$adNetwork).toBe(adNetworkMock)
   })
 
@@ -99,7 +99,7 @@ describe('adNetwork settings', () => {
     const wrapper = mount(TestWrapperComponent, {
       localVue,
     })
-    const ad = wrapper.find('.ad')
+    const ad = wrapper.get('.ad')
     expect(ad.vm.$adNetwork).not.toBe(adNetworkMockPluginOption)
     expect(ad.vm.$adNetwork).toBe(adNetworkMockComponentProps)
   })
@@ -139,7 +139,7 @@ describe('mode setting', () => {
     const wrapper = mount(TestWrapperComponent, {
       localVue,
     })
-    const ad = wrapper.find('.ad')
+    const ad = wrapper.get('.ad')
     expect(ad.vm.$adUnit).toBe(`test_${adUnitMock}`)
   })
 })
@@ -202,7 +202,7 @@ describe('GPTAD component computeds', () => {
     const wrapper = mount(TestWrapperComponent, {
       localVue,
     })
-    const ad = wrapper.find('.ad')
+    const ad = wrapper.get('.ad')
     expect(ad.vm.adUnitPath).toBe(`/${adNetworkMock}/${adUnitMock}`)
     expect(ad.vm.adOptDiv).toBe(`/${adNetworkMock}/${adUnitMock}`)
   })
@@ -230,7 +230,7 @@ describe('different ad sizes', () => {
     const wrapper = mount(TestWrapperComponent, {
       localVue,
     })
-    const ad = wrapper.find('.ad')
+    const ad = wrapper.get('.ad')
     expect(ad.vm.adSizeType).toBe('fixed')
     expect(ad.element.style.width).toBe(`${widthMock}px`)
   })
@@ -259,7 +259,7 @@ describe('different ad sizes', () => {
     const wrapper = mount(TestWrapperComponent, {
       localVue,
     })
-    const ad = wrapper.find('.ad')
+    const ad = wrapper.get('.ad')
     expect(ad.vm.adSizeType).toBe('multi')
     expect(ad.element.style.width).toBe(`${maxWidthMock}px`)
   })
@@ -283,7 +283,7 @@ describe('different ad sizes', () => {
     const wrapper = mount(TestWrapperComponent, {
       localVue,
     })
-    const ad = wrapper.find('.ad')
+    const ad = wrapper.get('.ad')
     expect(ad.vm.adSizeType).toBe('fluid')
     expect(ad.element.style.width).toBe('100%')
   })
