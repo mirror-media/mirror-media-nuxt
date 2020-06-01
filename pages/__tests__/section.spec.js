@@ -132,8 +132,7 @@ describe('component methods', () => {
     })
 
     wrapper.vm.setListData(responseMock)
-    const list = wrapper.findComponent(UIArticleList)
-    expect(list.props().listData).toEqual([
+    expect(wrapper.vm.listData).toEqual([
       {
         id: idMock,
         href: `/story/${slugMock}`,
