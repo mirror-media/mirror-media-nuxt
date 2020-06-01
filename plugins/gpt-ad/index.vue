@@ -94,6 +94,7 @@ export default {
       })
     } else {
       window.googletag.cmd.push(() => {
+        this.adSlot = adSlot
         window.googletag.pubads().refresh([adSlot])
       })
     }
