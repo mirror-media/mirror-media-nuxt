@@ -32,6 +32,10 @@ export function getAdSizeType(adSize = []) {
   })
 
   function checkFixedSize(array = []) {
-    return array.length === 2 && _.isFinite(array[0]) && _.isFinite(array[1])
+    return (
+      array.length === 2 &&
+      Number.isFinite(array[0]) &&
+      Number.isFinite(array[1])
+    )
   }
 }
