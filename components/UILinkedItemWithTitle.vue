@@ -1,5 +1,5 @@
 <template>
-  <div :class="`align-${textPositionInXLViewport}`" class="linked-item">
+  <div :class="`align-${textPositionInMdViewport}`" class="linked-item">
     <a
       :href="href"
       class="linked-item__image"
@@ -36,7 +36,7 @@ export default {
       default: '',
       required: true,
     },
-    textPositionInXLViewport: {
+    textPositionInMdViewport: {
       type: String,
       default: 'bottom',
       validator: (value) => ['right', 'bottom'].includes(value),
@@ -46,10 +46,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .linked-item {
-  @include media-breakpoint-up(xl) {
+  @include media-breakpoint-up(md) {
     &.align-right {
       display: flex;
-      align-items: flex-start;
       .linked-item__image {
         width: 150px;
         padding-top: calc(150px * 0.5625);
@@ -81,7 +80,7 @@ export default {
     color: #4a4a4a;
     font-size: 14px;
     margin-top: 5px;
-    @include media-breakpoint-up(xl) {
+    @include media-breakpoint-up(md) {
       text-align: justify;
     }
   }

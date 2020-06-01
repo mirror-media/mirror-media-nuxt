@@ -58,7 +58,7 @@ describe('title', () => {
   })
 })
 
-describe('classname for style in xl viewport', () => {
+describe('classname for style in md viewport', () => {
   test('render the proper default classname', () => {
     const createWrapper = createWrapperHelper({
       propsData: {
@@ -73,13 +73,13 @@ describe('classname for style in xl viewport', () => {
   })
 
   test('render the proper specific classname', () => {
-    const textPositionInXLViewport = 'right'
+    const textPositionInMdViewport = 'right'
     const createWrapper = createWrapperHelper({
       propsData: {
         imgSrc: '',
         href: '',
         title: '',
-        textPositionInXLViewport,
+        textPositionInMdViewport,
       },
     })
     const wrapper = createWrapper(UILinkedItemWithTitle)
