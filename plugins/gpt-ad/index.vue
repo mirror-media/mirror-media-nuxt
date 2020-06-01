@@ -2,7 +2,7 @@
   <div
     :id="adOptDiv"
     :style="{
-      width: width,
+      width: adWidth,
     }"
   />
 </template>
@@ -52,7 +52,7 @@ export default {
     adSizeType() {
       return getAdSizeType(this.adSize)
     },
-    width() {
+    adWidth() {
       switch (this.adSizeType) {
         case 'fixed': {
           const width = this.adSize[0]
