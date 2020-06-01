@@ -22,7 +22,6 @@ const EMAIL_LINK = {
   name: 'email',
   href: 'mailto:mirror885@mirrormedia.mg',
 }
-
 export const SOCIAL_MEDIA_LINKS = [
   LINE_LINK,
   WEIBO_LINK,
@@ -63,7 +62,6 @@ const DOWNLOAD_APP_LINK = {
   title: '下載APP',
   href: 'https://www.mirrormedia.mg/story/20161228corpmkt001/',
 }
-
 export const OTHER_LINKS = [
   SUBSCRIBE_LINK,
   MAGAZINE_LINK,
@@ -88,7 +86,6 @@ const READR_LINK = {
   title: 'READr 讀+',
   href: 'https://www.readr.tw/',
 }
-
 export const SUB_BRAND_LINKS = [
   MIRRORVOICE_LINK,
   MIRRORFICTION_LINK,
