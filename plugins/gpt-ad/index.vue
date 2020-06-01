@@ -88,6 +88,7 @@ export default {
 
         this.$setGPTAdSlotsDefined(this.adOptDiv, this.adSlot)
       })
+
       window.googletag.cmd.push(() => {
         window.googletag.display(this.adOptDiv)
       })
