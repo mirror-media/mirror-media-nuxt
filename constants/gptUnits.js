@@ -3751,6 +3751,43 @@ function transformLegacyGPTUnit({ aduid = '', dimensions } = {}) {
   }
 }
 
+/**
+ * Example input:
+ * {
+ *   sectionId: {
+ *     AMP: {
+ *       AMP_ADUNIT: {
+ *         aduid: 'ad'
+ *         dimensions: '1x1,970x280,300x250',
+ *         'cont-class': ['ad-container', 'pop_item', 'margin-top-0'],
+ *         'cont-style': ['background-color: #f4f1e9']
+ *       }
+ *     }
+ *     ADUNIT: {
+ *       aduid: 'ad'
+ *       dimensions: '1x1,970x280,300x250',
+ *       'cont-class': ['ad-container', 'pop_item', 'margin-top-0'],
+         'cont-style': ['background-color: #f4f1e9']
+ *     }
+ *   }
+ * }
+ *
+ * Example output:
+ * {
+ *   sectionId: {
+ *     AMP: {
+ *       AMP_ADUNIT: {
+ *         adUnitCode: 'ad'
+ *         adSize: [[1, 1], [970, 250], [300, 250]],
+ *       }
+ *     }
+ *     ADUNIT: {
+ *       adUnitCode: 'ad'
+ *       adSize: [[1, 1], [970, 250], [300, 250]],
+ *     }
+ *   }
+ * }
+ */
 export default _.mapValues(gptUnits, function (units) {
   return _.mapValues(units, function (value, key) {
     if (key === 'AMP') {
