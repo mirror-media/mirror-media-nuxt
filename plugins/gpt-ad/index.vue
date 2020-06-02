@@ -1,6 +1,7 @@
 <template>
   <div
     :id="adOptDiv"
+    class="ad-wrapper"
     :style="{
       width: adWidth,
     }"
@@ -120,3 +121,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.ad-wrapper {
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+}
+</style>
