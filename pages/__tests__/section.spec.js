@@ -18,6 +18,11 @@ const createWrapper = createWrapperHelper({
         },
       },
     },
+    $ua: {
+      isFromPc() {
+        return true
+      },
+    },
   },
   stubs: ['client-only'],
 })
