@@ -109,11 +109,18 @@ export default {
       return this.listDataLoadmorePage.length > 0
     },
 
+    adDevice() {
+      return this.$ua.isFromPc() ? 'PC' : 'MB'
+    },
     adTop() {
-      return gptUnits[this.currentSectionId]?.LPCHD ?? {}
+      return (
+        (gptUnits[this.currentSectionId] ?? {})[`L${this.adDevice}HD`] ?? {}
+      )
     },
     adBottom() {
-      return gptUnits[this.currentSectionId]?.LPCFT ?? {}
+      return (
+        (gptUnits[this.currentSectionId] ?? {})[`L${this.adDevice}FT`] ?? {}
+      )
     },
   },
   methods: {
