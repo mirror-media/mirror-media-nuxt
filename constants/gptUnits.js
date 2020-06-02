@@ -3767,7 +3767,7 @@ function transformLegacyGPTUnit({ aduid = '', dimensions } = {}) {
  *       aduid: 'ad'
  *       dimensions: '1x1,970x280,300x250',
  *       'cont-class': ['ad-container', 'pop_item', 'margin-top-0'],
-         'cont-style': ['background-color: #f4f1e9']
+ *       'cont-style': ['background-color: #f4f1e9']
  *     }
  *   }
  * }
