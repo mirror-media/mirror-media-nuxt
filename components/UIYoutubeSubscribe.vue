@@ -1,10 +1,12 @@
 <template>
-  <div
-    :data-channelid="channelId"
-    class="g-ytsubscribe"
-    data-layout="full"
-    data-count="hidden"
-  />
+  <div>
+    <div
+      :data-channelid="channelId"
+      class="g-ytsubscribe"
+      data-layout="full"
+      data-count="hidden"
+    />
+  </div>
 </template>
 <script>
 // Document: https://developers.google.com/youtube/youtube_subscribe_button
