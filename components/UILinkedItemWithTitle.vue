@@ -10,6 +10,8 @@
     </a>
     <a
       :href="href"
+      :class="{ 'limit-lines': limitLines }"
+      :style="limitLinesStyle"
       class="linked-item__title"
       target="_blank"
       rel="noopener noreferrer"
@@ -40,6 +42,19 @@ export default {
       type: String,
       default: 'bottom',
       validator: (value) => ['right', 'bottom'].includes(value),
+    },
+    limitLines: {
+      type: [Boolean, Number],
+      default: false,
+    },
+  },
+  computed: {
+    limitLinesStyle() {
+      const isValid = this.limitLines > 0 && Number.isInteger(this.limitLines)
+      if (isValid) {
+        return { '-webkit-line-clamp': this.limitLines }
+      }
+      return undefined
     },
   },
 }
@@ -79,9 +94,16 @@ export default {
     display: block;
     color: #4a4a4a;
     font-size: 14px;
+    line-height: 1.5;
     margin-top: 5px;
     @include media-breakpoint-up(md) {
       text-align: justify;
+    }
+    &.limit-lines {
+      display: -webkit-box !important;
+      -moz-orient: vertical;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
   }
 }

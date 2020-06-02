@@ -87,3 +87,20 @@ describe('classname for style in md viewport', () => {
     expect(item.classes()).toContain('align-right')
   })
 })
+
+describe('limit title lines', () => {
+  const limitLines = 3
+  const createWrapper = createWrapperHelper({
+    propsData: {
+      imgSrc: '',
+      href: '',
+      title: '',
+      limitLines,
+    },
+  })
+  const wrapper = createWrapper(UILinkedItemWithTitle)
+  const title = wrapper.find('.linked-item__title')
+  test('render the specific classname ', () => {
+    expect(title.classes()).toContain('limit-lines')
+  })
+})
