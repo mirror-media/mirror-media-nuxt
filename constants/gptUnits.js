@@ -3751,14 +3751,14 @@ function transformLegacyGPTUnit({ aduid = '', dimensions } = {}) {
   }
 }
 
-/**
+/*
  * Example input:
  * {
  *   sectionId: {
  *     AMP: {
  *       AMP_ADUNIT: {
  *         aduid: 'ad'
- *         dimensions: '1x1,970x280,300x250',
+ *         dimensions: { width: 336, height: 280 },
  *         'cont-class': ['ad-container', 'pop_item', 'margin-top-0'],
  *         'cont-style': ['background-color: #f4f1e9']
  *       }
@@ -3778,7 +3778,7 @@ function transformLegacyGPTUnit({ aduid = '', dimensions } = {}) {
  *     AMP: {
  *       AMP_ADUNIT: {
  *         adUnitCode: 'ad'
- *         adSize: [[1, 1], [970, 250], [300, 250]],
+ *         adSize: [336, 280],
  *       }
  *     }
  *     ADUNIT: {
