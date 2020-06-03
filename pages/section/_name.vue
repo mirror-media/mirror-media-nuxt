@@ -113,14 +113,10 @@ export default {
       return this.$ua.isFromPc() ? 'PC' : 'MB'
     },
     adTop() {
-      return (
-        (gptUnits[this.currentSectionId] ?? {})[`L${this.adDevice}HD`] ?? {}
-      )
+      return gptUnits?.[this.currentSectionId]?.[`L${this.adDevice}HD`] ?? {}
     },
     adBottom() {
-      return (
-        (gptUnits[this.currentSectionId] ?? {})[`L${this.adDevice}FT`] ?? {}
-      )
+      return gptUnits?.[this.currentSectionId]?.[`L${this.adDevice}FT`] ?? {}
     },
   },
   methods: {
