@@ -1,13 +1,13 @@
 <template>
   <section v-if="hasItmes" class="video-latest">
-    <div class="video-latest__latest">
-      <UIYoutubeIframe :videoId="theLatestVideo.videoId" />
+    <div class="video-latest__first">
+      <UIYoutubeIframe :videoId="theFirstItem.videoId" />
       <a
-        class="video-latest__latest-title"
+        class="video-latest__first-title"
         href="http://"
         target="_blank"
         rel="noopener noreferrer"
-        v-text="theLatestVideo.title"
+        v-text="theFirstItem.title"
       />
     </div>
     <h1 class="video-latest__heading">最新影片</h1>
@@ -35,20 +35,20 @@ export default {
     UIYoutubeIframe,
   },
   props: {
-    latest: {
+    items: {
       type: Array,
       required: true,
     },
   },
   computed: {
     hasItmes() {
-      return this.latest.length > 0
+      return this.items.length > 0
     },
     remainingItems() {
-      return this.latest.slice(1, 5)
+      return this.items.slice(1, 5)
     },
-    theLatestVideo() {
-      return this.latest[0]
+    theFirstItem() {
+      return this.items[0]
     },
   },
 }
@@ -62,7 +62,7 @@ export default {
     margin: 0 auto;
     padding: 0 0 53px 0;
   }
-  &__latest {
+  &__first {
     @include media-breakpoint-up(xl) {
       order: 1;
       width: 580px;

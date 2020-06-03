@@ -7,7 +7,7 @@ describe('heading', () => {
   test('should have proper heading', () => {
     const wrapper = shallowMount(UIVideoLatest, {
       propsData: {
-        latest: [{ videoId: 'test' }],
+        items: [{ videoId: 'test' }],
       },
     })
     expect(wrapper.get('.video-latest__heading').text()).toBe('最新影片')
@@ -18,7 +18,7 @@ describe('youtube iframe', () => {
   test('should have youtube iframe', () => {
     const wrapper = shallowMount(UIVideoLatest, {
       propsData: {
-        latest: [{ videoId: 'test' }],
+        items: [{ videoId: 'test' }],
       },
     })
     expect(wrapper.findComponent(UIYoutubeIframe).exists()).toBe(true)
@@ -29,7 +29,7 @@ describe('props is empty array', () => {
   test('should not render UIVideoLatest if "latest" props is empty array', () => {
     const wrapper = shallowMount(UIVideoLatest, {
       propsData: {
-        latest: [],
+        items: [],
       },
     })
     expect(wrapper.find('.video-latest').exists()).toBe(false)
@@ -38,21 +38,21 @@ describe('props is empty array', () => {
 
 describe('latest items exclude the first item', () => {
   test('should render proper number of UILinkedItemWithTitle', () => {
-    const latest = [
+    const items = [
       { videoId: 'test1' },
       { videoId: 'test2' },
       { videoId: 'test3' },
     ]
     const wrapper = shallowMount(UIVideoLatest, {
       propsData: {
-        latest,
+        items,
       },
     })
-    const items = wrapper.findAllComponents(UILinkedItemWithTitle)
-    expect(items).toHaveLength(latest.length - 1)
+    const linkedItems = wrapper.findAllComponents(UILinkedItemWithTitle)
+    expect(linkedItems).toHaveLength(items.length - 1)
   })
   test('should render proper number of UILinkedItemWithTitle no more than 4', () => {
-    const latest = [
+    const items = [
       { videoId: 'test1' },
       { videoId: 'test2' },
       { videoId: 'test3' },
@@ -62,10 +62,10 @@ describe('latest items exclude the first item', () => {
     ]
     const wrapper = shallowMount(UIVideoLatest, {
       propsData: {
-        latest,
+        items,
       },
     })
-    const items = wrapper.findAllComponents(UILinkedItemWithTitle)
-    expect(items).toHaveLength(4)
+    const linkedItems = wrapper.findAllComponents(UILinkedItemWithTitle)
+    expect(linkedItems).toHaveLength(4)
   })
 })
