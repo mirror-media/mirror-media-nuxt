@@ -3,6 +3,8 @@ import _ from 'lodash'
 import axios from 'axios'
 import qs from 'qs'
 
+import { API_TIMEOUT, DOMAIN_NAME } from '~/configs/config'
+
 function snakeCase(text) {
   if (text === 'isAudioSiteOnly') {
     return text
@@ -10,7 +12,7 @@ function snakeCase(text) {
   return _.snakeCase(text)
 }
 
-async function axiosGet(url) {
+async function fetchAPIData(url) {
   try {
     const baseUrl = process.browser
       ? `//${location.host}/`
@@ -27,15 +29,11 @@ async function axiosGet(url) {
       return data
     }
 
-    const e = new Error()
-    e.massage = 'Not Found'
-    e.code = '404'
-    throw e
-  } catch (error) {
-    const e = new Error()
-    e.massage = error.massage || error
-    e.code = error.code || '500'
-    throw e
+    throw new FetchError('Not Found', 404)
+  } catch (err) {
+    const massage = err.massage || err
+    const code = err.code || 500
+    throw new FetchError(massage, code)
   }
 }
 
@@ -92,44 +90,78 @@ export function buildParams(params = {}) {
   return ''
 }
 
-export default ({ app }, inject) => {
+async function fetchGCSData(filename) {
+  try {
+    const url = `https://${DOMAIN_NAME}/json/${filename}.json`
+    const { data } = await axios.get(url, { timeout: API_TIMEOUT })
+    return camelizeKeys(data)
+  } catch (err) {
+    const message = err.response?.statusText ?? 'Not Found'
+    const code = err.response?.status ?? 404
+    throw new FetchError(message, code)
+  }
+}
+
+class FetchError extends Error {
+  constructor(message = 'Not Found', code = 404) {
+    super(message)
+    this.name = this.constructor.name
+    this.code = code
+  }
+}
+
+export default (context, inject) => {
   inject('fetchActivities', (params) =>
-    axiosGet(`/activities${buildParams(params)}`)
+    fetchAPIData(`/activities${buildParams(params)}`)
   )
 
-  inject('fetchCombo', (params) => axiosGet(`/combo${buildParams(params)}`))
+  inject('fetchCombo', (params) => fetchAPIData(`/combo${buildParams(params)}`))
 
   inject('fetchContacts', (params) =>
-    axiosGet(`/contacts${buildParams(params)}`)
+    fetchAPIData(`/contacts${buildParams(params)}`)
   )
 
-  inject('fetchEvent', (params) => axiosGet(`/event${buildParams(params)}`))
+  inject('fetchEvent', (params) => fetchAPIData(`/event${buildParams(params)}`))
 
   inject('fetchExternals', (params) =>
-    axiosGet(`/externals${buildParams(params)}`)
+    fetchAPIData(`/externals${buildParams(params)}`)
   )
 
-  inject('fetchImages', (params) => axiosGet(`/images${buildParams(params)}`))
+  inject('fetchImages', (params) =>
+    fetchAPIData(`/images${buildParams(params)}`)
+  )
 
-  inject('fetchList', (params) => axiosGet(`/getlist${buildParams(params)}`))
+  inject('fetchList', (params) =>
+    fetchAPIData(`/getlist${buildParams(params)}`)
+  )
 
-  inject('fetchNodes', (params) => axiosGet(`/nodes${buildParams(params)}`))
+  inject('fetchNodes', (params) => fetchAPIData(`/nodes${buildParams(params)}`))
 
   inject('fetchPartners', (params) =>
-    axiosGet(`/partners${buildParams(params)}`)
+    fetchAPIData(`/partners${buildParams(params)}`)
   )
 
-  inject('fetchPoplist', () => axiosGet(`/poplist`))
+  inject('fetchPosts', (params) =>
+    fetchAPIData(`/getposts${buildParams(params)}`)
+  )
 
-  inject('fetchPosts', (params) => axiosGet(`/getposts${buildParams(params)}`))
+  inject('fetchSearch', (params) =>
+    fetchAPIData(`/search${buildParams(params)}`)
+  )
 
-  inject('fetchSearch', (params) => axiosGet(`/search${buildParams(params)}`))
+  inject('fetchTag', (id) => fetchAPIData(`/tags/${id}`))
 
-  inject('fetchTag', (id) => axiosGet(`/tags/${id}`))
+  inject('fetchTimeline', (id) => fetchAPIData(`/timeline/${id}`))
 
-  inject('fetchTimeline', (id) => axiosGet(`/timeline/${id}`))
+  inject('fetchTopics', (params) =>
+    fetchAPIData(`/topics${buildParams(params)}`)
+  )
 
-  inject('fetchTopics', (params) => axiosGet(`/topics${buildParams(params)}`))
+  inject('fetchWatches', (params) =>
+    fetchAPIData(`/watches${buildParams(params)}`)
+  )
 
-  inject('fetchWatches', (params) => axiosGet(`/watches${buildParams(params)}`))
+  inject('fetchGrouped', () => fetchGCSData('groupe'))
+
+  inject('fetchPopularlist', () => fetchGCSData('popularlist'))
 }
