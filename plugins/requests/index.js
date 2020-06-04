@@ -161,7 +161,7 @@ export default (context, inject) => {
     fetchAPIData(`/watches${buildParams(params)}`)
   )
 
-  inject('fetchGrouped', () => fetchGCSData('groupe'))
+  inject('fetchGrouped', () => fetchGCSData('grouped'))
 
   inject('fetchPopularlist', () => fetchGCSData('popularlist'))
 }
