@@ -76,9 +76,10 @@ export default {
   font-size: 19.2px;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   a {
     display: flex;
-    &:not(:first-child)::before {
+    &:not(.footer-campaign)::after {
       content: '-';
       padding-right: 4px;
       padding-left: 4px;
@@ -94,7 +95,7 @@ export default {
     font-size: 16px;
     font-weight: 700;
     a {
-      &:not(:first-child)::before {
+      &:not(.footer-campaign)::after {
         content: none;
       }
       + a {
