@@ -163,5 +163,5 @@ export default (context, inject) => {
 
   inject('fetchGrouped', () => fetchGCSData('grouped'))
 
-  inject('fetchPopularlist', () => fetchGCSData('popularlist'))
+  inject('fetchPopular', () => fetchGCSData('popularlist'))
 }
