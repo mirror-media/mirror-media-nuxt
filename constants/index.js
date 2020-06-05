@@ -1,3 +1,5 @@
+export const READR_URL = 'https://www.readr.tw'
+
 const LINE_LINK = {
   name: 'line',
   href: 'https://line.me/R/ti/p/%40cuk1273e',
@@ -84,7 +86,7 @@ const MIRRORFICTION_LINK = {
 const READR_LINK = {
   name: 'readr',
   title: 'READr 讀+',
-  href: 'https://www.readr.tw/',
+  href: READR_URL,
 }
 export const SUB_BRAND_LINKS = [
   MIRRORVOICE_LINK,
