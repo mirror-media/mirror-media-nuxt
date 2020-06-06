@@ -47,15 +47,14 @@ export default {
     limitLines: {
       type: [Boolean, Number],
       default: false,
+      validator: (value) =>
+        (typeof value === 'boolean' && !value) ||
+        (value > 0 && Number.isInteger(value)),
     },
   },
   computed: {
     limitedLinesStyle() {
-      const isValid = this.limitLines > 0 && Number.isInteger(this.limitLines)
-      if (isValid) {
-        return { '-webkit-line-clamp': this.limitLines }
-      }
-      return undefined
+      return { '-webkit-line-clamp': this.limitLines }
     },
   },
 }

@@ -109,10 +109,12 @@ export default {
   },
   computed: {
     ...mapState({
-      sections: (state) => state.sections.data.items ?? [],
+      section(state) {
+        return state.sections.data.items.find(this.isThisSection) ?? {}
+      },
     }),
     categories() {
-      return this.sections.find(this.isThisSection).categories ?? []
+      return this.section.categories ?? []
     },
     // temporary usage
     latest() {
