@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- "g-ytsubscribe" is a required class setting by youtube, do not remove. -->
     <div
       :data-channelid="channelId"
       class="g-ytsubscribe"
