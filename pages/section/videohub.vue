@@ -179,7 +179,7 @@ export default {
     }
   }
   &__category {
-    & + .section__category {
+    + .section__category {
       border-top: 1px solid #979797;
       @include media-breakpoint-up(xl) {
         margin-top: 30px;

@@ -67,7 +67,7 @@ export default {
         padding: 0;
       }
     }
-    & + .video-subscriptions__channel {
+    + .video-subscriptions__channel {
       margin: 0 0 0 30px;
       @include media-breakpoint-up(xl) {
         margin: 0 0 0 55px;

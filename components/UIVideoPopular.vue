@@ -86,7 +86,7 @@ export default {
         padding: 0;
       }
     }
-    & + .video-popular__item {
+    + .video-popular__item {
       margin: 0 0 0 30px;
       @include media-breakpoint-up(xl) {
         margin: 21px 0 0;

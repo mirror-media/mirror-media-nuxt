@@ -67,7 +67,7 @@ export default {
       width: 580px;
       margin-top: 20px;
     }
-    & + * {
+    + * {
       margin-top: 20px;
     }
     &-title {
@@ -103,7 +103,7 @@ export default {
     @include media-breakpoint-up(xl) {
       order: 0;
     }
-    & + * {
+    + * {
       margin-top: 10px;
     }
   }
@@ -120,7 +120,7 @@ export default {
   }
 
   &__item {
-    & + .video-latest__item {
+    + .video-latest__item {
       margin-top: 20px;
     }
     &.align-right {

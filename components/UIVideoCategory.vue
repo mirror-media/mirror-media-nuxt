@@ -93,7 +93,7 @@ export default {
     @include media-breakpoint-up(md) {
       width: 100%;
     }
-    & + * {
+    + * {
       margin-top: 5px;
     }
   }
@@ -104,7 +104,7 @@ export default {
       margin-top: 10px;
       background-color: #000;
     }
-    & + * {
+    + * {
       margin-top: 20px;
     }
     &::v-deep {
@@ -155,7 +155,7 @@ export default {
     }
   }
   &__remaining-item {
-    & + .video-category__remaining-item {
+    + .video-category__remaining-item {
       margin-top: 20px;
       @include media-breakpoint-up(md) {
         margin-top: 10px;
