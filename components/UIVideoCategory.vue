@@ -29,6 +29,7 @@
     </div>
   </section>
 </template>
+
 <script>
 import UILinkedItemWithTitle from './UILinkedItemWithTitle.vue'
 
@@ -60,6 +61,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
 .video-category {
   position: relative;

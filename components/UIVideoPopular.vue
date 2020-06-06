@@ -14,6 +14,7 @@
     </div>
   </section>
 </template>
+
 <script>
 import UILinkedItemWithTitle from './UILinkedItemWithTitle.vue'
 
@@ -35,6 +36,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
 .video-popular {
   padding: 30px 0 32px 0;

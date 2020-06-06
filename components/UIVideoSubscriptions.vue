@@ -10,6 +10,7 @@
     </div>
   </section>
 </template>
+
 <script>
 import UIYoutubeSubscribe from './UIYoutubeSubscribe.vue'
 
@@ -33,6 +34,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
 .video-subscriptions {
   padding: 20px 0 0;

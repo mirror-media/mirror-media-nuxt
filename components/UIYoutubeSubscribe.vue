@@ -8,6 +8,7 @@
     />
   </div>
 </template>
+
 <script>
 // Document: https://developers.google.com/youtube/youtube_subscribe_button
 

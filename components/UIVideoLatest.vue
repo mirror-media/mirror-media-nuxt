@@ -24,6 +24,7 @@
     </div>
   </section>
 </template>
+
 <script>
 import UILinkedItemWithTitle from './UILinkedItemWithTitle.vue'
 import UIYoutubeIframe from './UIYoutubeIframe.vue'
@@ -53,6 +54,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
 .video-latest {
   @include media-breakpoint-up(xl) {

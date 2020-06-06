@@ -16,6 +16,7 @@
     </div>
   </section>
 </template>
+
 <script>
 import { mapState } from 'vuex'
 import UIVideoCategory from '~/components/UIVideoCategory.vue'
@@ -130,6 +131,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
 .section {
   > * {

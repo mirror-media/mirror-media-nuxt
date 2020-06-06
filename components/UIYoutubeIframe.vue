@@ -11,6 +11,7 @@
     />
   </lazy-component>
 </template>
+
 <script>
 export default {
   name: 'UIYoutubeIframe',
@@ -22,6 +23,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
 .iframe-wrapper {
   position: relative;

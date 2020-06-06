@@ -19,6 +19,7 @@
     />
   </div>
 </template>
+
 <script>
 export default {
   name: 'UILinkedItemWithTitle',
@@ -59,6 +60,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
 .linked-item {
   @include media-breakpoint-up(md) {
