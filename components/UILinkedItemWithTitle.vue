@@ -11,7 +11,7 @@
     <a
       :href="href"
       :class="{ 'limit-lines': limitLines }"
-      :style="limitLinesStyle"
+      :style="limitedLinesStyle"
       class="linked-item__title"
       target="_blank"
       rel="noopener noreferrer"
@@ -49,7 +49,7 @@ export default {
     },
   },
   computed: {
-    limitLinesStyle() {
+    limitedLinesStyle() {
       const isValid = this.limitLines > 0 && Number.isInteger(this.limitLines)
       if (isValid) {
         return { '-webkit-line-clamp': this.limitLines }
