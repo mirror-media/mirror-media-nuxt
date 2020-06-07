@@ -1,11 +1,14 @@
-import { shallowMount } from '@vue/test-utils'
 import UILinkedItemWithTitle from '../UILinkedItemWithTitle.vue'
 import UIVideoCategory from '../UIVideoCategory.vue'
+
+import createWrapperHelper from '~/test/helpers/createWrapperHelper'
+
+const createWrapper = createWrapperHelper()
 
 describe('heading', () => {
   test('should have proper heading', () => {
     const heading = 'test'
-    const wrapper = shallowMount(UIVideoCategory, {
+    const wrapper = createWrapper(UIVideoCategory, {
       propsData: {
         category: {
           title: heading,
@@ -26,7 +29,7 @@ describe('heading', () => {
 describe('link to category page', () => {
   test('should have proper href', () => {
     const name = 'test'
-    const wrapper = shallowMount(UIVideoCategory, {
+    const wrapper = createWrapper(UIVideoCategory, {
       propsData: {
         category: {
           name,
@@ -46,7 +49,7 @@ describe('link to category page', () => {
 
 describe('"items" props is empty array', () => {
   test('should not render UIVideoCategory if "items" props is empty array', () => {
-    const wrapper = shallowMount(UIVideoCategory, {
+    const wrapper = createWrapper(UIVideoCategory, {
       propsData: {
         category: {},
         items: [],
@@ -58,7 +61,7 @@ describe('"items" props is empty array', () => {
 
 describe('"items" props is not empty array', () => {
   test('UILinkedItemWithTitle should exist', () => {
-    const wrapper = shallowMount(UIVideoCategory, {
+    const wrapper = createWrapper(UIVideoCategory, {
       propsData: {
         category: {},
         items: [

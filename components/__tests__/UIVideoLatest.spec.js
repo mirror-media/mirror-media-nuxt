@@ -1,22 +1,25 @@
-import { shallowMount } from '@vue/test-utils'
 import UILinkedItemWithTitle from '../UILinkedItemWithTitle.vue'
 import UIVideoLatest from '../UIVideoLatest.vue'
 import UIYoutubeIframe from '../UIYoutubeIframe.vue'
 
+import createWrapperHelper from '~/test/helpers/createWrapperHelper'
+
+const createWrapper = createWrapperHelper()
+
 describe('heading', () => {
   test('should have proper heading', () => {
-    const wrapper = shallowMount(UIVideoLatest, {
+    const wrapper = createWrapper(UIVideoLatest, {
       propsData: {
         items: [{ videoId: 'test' }],
       },
     })
-    expect(wrapper.get('.video-latest__heading').text()).toBe('最新影片')
+    expect(wrapper.text()).toContain('最新影片')
   })
 })
 
 describe('youtube iframe', () => {
   test('should have youtube iframe', () => {
-    const wrapper = shallowMount(UIVideoLatest, {
+    const wrapper = createWrapper(UIVideoLatest, {
       propsData: {
         items: [{ videoId: 'test' }],
       },
@@ -27,7 +30,7 @@ describe('youtube iframe', () => {
 
 describe('props is empty array', () => {
   test('should not render UIVideoLatest if "latest" props is empty array', () => {
-    const wrapper = shallowMount(UIVideoLatest, {
+    const wrapper = createWrapper(UIVideoLatest, {
       propsData: {
         items: [],
       },
@@ -43,7 +46,7 @@ describe('latest items exclude the first item', () => {
       { videoId: 'test2' },
       { videoId: 'test3' },
     ]
-    const wrapper = shallowMount(UIVideoLatest, {
+    const wrapper = createWrapper(UIVideoLatest, {
       propsData: {
         items,
       },
@@ -60,7 +63,7 @@ describe('latest items exclude the first item', () => {
       { videoId: 'test5' },
       { videoId: 'test6' },
     ]
-    const wrapper = shallowMount(UIVideoLatest, {
+    const wrapper = createWrapper(UIVideoLatest, {
       propsData: {
         items,
       },

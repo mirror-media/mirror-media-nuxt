@@ -11,7 +11,7 @@ const createWrapper = createWrapperHelper({
 describe('iframe', () => {
   test('should render correct iframe src', () => {
     const wrapper = createWrapper(UIYoutubeIframe)
-    const iframe = wrapper.find('.iframe-wrapper__iframe')
+    const iframe = wrapper.get('iframe')
     expect(iframe.attributes().src).toBe(
       `https://www.youtube.com/embed/${videoId}`
     )
