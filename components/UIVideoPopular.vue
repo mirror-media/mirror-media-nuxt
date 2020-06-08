@@ -8,7 +8,7 @@
         :title="item.title"
         :href="`/video/${item.videoId}`"
         :imgSrc="item.thumbnails"
-        :limitLines="2"
+        :limitedLines="2"
         class="video-popular__item"
       />
     </div>

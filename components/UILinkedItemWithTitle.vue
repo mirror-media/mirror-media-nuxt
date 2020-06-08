@@ -10,7 +10,7 @@
     </a>
     <a
       :href="href"
-      :class="{ 'limit-lines': limitLines }"
+      :class="{ 'limit-lines': limitedLines }"
       :style="limitedLinesStyle"
       class="linked-item__title"
       target="_blank"
@@ -44,17 +44,15 @@ export default {
       default: 'bottom',
       validator: (value) => ['right', 'bottom'].includes(value),
     },
-    limitLines: {
-      type: [Boolean, Number],
-      default: false,
-      validator: (value) =>
-        (typeof value === 'boolean' && !value) ||
-        (value > 0 && Number.isInteger(value)),
+    limitedLines: {
+      type: [Number],
+      default: undefined,
+      validator: (value) => value > 0 && Number.isInteger(value),
     },
   },
   computed: {
     limitedLinesStyle() {
-      return { '-webkit-line-clamp': this.limitLines }
+      return { '-webkit-line-clamp': this.limitedLines }
     },
   },
 }

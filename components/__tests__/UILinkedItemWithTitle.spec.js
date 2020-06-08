@@ -86,13 +86,13 @@ describe('classname for style in md viewport', () => {
 
 describe('limit title lines', () => {
   test('render the specific classname', () => {
-    const limitLines = 3
+    const limitedLines = 3
     const wrapper = createWrapper(UILinkedItemWithTitle, {
       propsData: {
         imgSrc: '',
         href: '',
         title: '',
-        limitLines,
+        limitedLines,
       },
     })
     const title = wrapper.get('.linked-item__title')
