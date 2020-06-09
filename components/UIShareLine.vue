@@ -15,6 +15,7 @@
     </picture>
   </a>
 </template>
+
 <script>
 export default {
   name: 'UIShareLine',
@@ -39,6 +40,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
 picture {
   display: block;
