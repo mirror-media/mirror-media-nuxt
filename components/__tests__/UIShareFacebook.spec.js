@@ -1,6 +1,8 @@
 import UIShareFacebook from '../UIShareFacebook.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
+const createWrapper = createWrapperHelper()
+
 describe('href', () => {
   test('render the proper href', async () => {
     global.window = Object.create(window)
@@ -11,10 +13,9 @@ describe('href', () => {
       },
     })
 
-    const createWrapper = createWrapperHelper()
     const wrapper = createWrapper(UIShareFacebook)
     await wrapper.vm.$nextTick()
-    const link = wrapper.get(`a`)
+    const link = wrapper.get('a')
     expect(link.attributes().href).toBe(
       `https://www.facebook.com/share.php?u=${url}`
     )
@@ -22,13 +23,12 @@ describe('href', () => {
 
   test('render the proper href from props', () => {
     const url = 'https://www.mirrormedia.mg/'
-    const createWrapper = createWrapperHelper({
+    const wrapper = createWrapper(UIShareFacebook, {
       propsData: {
         url,
       },
     })
-    const wrapper = createWrapper(UIShareFacebook)
-    const link = wrapper.get(`a`)
+    const link = wrapper.get('a')
     expect(link.attributes().href).toBe(
       `https://www.facebook.com/share.php?u=${url}`
     )
@@ -37,7 +37,6 @@ describe('href', () => {
 
 describe('facebook logo', () => {
   test('use proper png image', () => {
-    const createWrapper = createWrapperHelper()
     const wrapper = createWrapper(UIShareFacebook)
     const image = wrapper.get(`picture > img`)
 
@@ -45,7 +44,6 @@ describe('facebook logo', () => {
     expect(image.attributes().src).toBe(logoUrlPng)
   })
   test('use proper webp image', () => {
-    const createWrapper = createWrapperHelper()
     const wrapper = createWrapper(UIShareFacebook)
     const image = wrapper.get(`picture > source[type="image/webp"]`)
 
@@ -56,9 +54,8 @@ describe('facebook logo', () => {
 
 describe('click event', () => {
   test('should emit click event', () => {
-    const createWrapper = createWrapperHelper()
     const wrapper = createWrapper(UIShareFacebook)
-    const link = wrapper.get(`a`)
+    const link = wrapper.get('a')
     link.trigger('click')
     expect(link.emitted().click).toBeTruthy()
   })
