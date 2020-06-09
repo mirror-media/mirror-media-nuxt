@@ -27,16 +27,16 @@ export default {
   },
   data() {
     return {
-      shareUrl: this.url ?? '',
+      isMounted: false,
     }
   },
-  mounted() {
-    this.setShareUrl()
-  },
-  methods: {
-    setShareUrl() {
-      this.shareUrl = this.url ?? location.href
+  computed: {
+    shareUrl() {
+      return this.url || (this.isMounted && location.href)
     },
+  },
+  mounted() {
+    this.isMounted = true
   },
 }
 </script>
