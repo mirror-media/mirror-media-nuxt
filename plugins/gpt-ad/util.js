@@ -17,7 +17,7 @@ export function getAdSizeType(adSize = []) {
       return checkFixedSize(adSize)
     },
     function multi() {
-      return adSize.every(checkFixedSize)
+      return adSize.length > 0 && adSize.every(checkFixedSize)
     },
     function fluid() {
       return adSize.length === 1 && adSize[0] === 'fluid'

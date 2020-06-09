@@ -105,6 +105,56 @@ describe('adNetwork settings', () => {
   })
 })
 
+describe('error handling', () => {
+  test('should throw error when adUnit props is falsy', () => {
+    const localVue = createLocalVue()
+    localVue.use(plugin, {
+      adNetwork: 'adNetwork',
+    })
+
+    const TestWrapperComponent = {
+      template: `
+        <div>
+          <GPTAD
+            :adUnit="undefined"
+            :adSize="[0, 0]"
+          />
+        </div>
+      `,
+    }
+    expect(() => {
+      mount(TestWrapperComponent, {
+        localVue,
+      })
+    }).toThrowError('adUnit props not found in GPTAD component')
+  })
+
+  test('should throw error when adSize props cannot specify', () => {
+    const localVue = createLocalVue()
+    localVue.use(plugin, {
+      adNetwork: 'adNetwork',
+    })
+
+    const TestWrapperComponent = {
+      template: `
+        <div>
+          <GPTAD
+            :adUnit="'adUnit'"
+            :adSize="[]"
+          />
+        </div>
+      `,
+    }
+    expect(() => {
+      mount(TestWrapperComponent, {
+        localVue,
+      })
+    }).toThrowError(
+      'GPT Ad size type cannot be specify, see https://developers.google.com/doubleclick-gpt/guides/ad-sizes'
+    )
+  })
+})
+
 describe('mode setting', () => {
   test('should insert "test_" in front of adUnit if mode is "dev"', () => {
     const pluginMode = 'dev'
