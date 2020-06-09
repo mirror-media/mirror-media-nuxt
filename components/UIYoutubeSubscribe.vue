@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <lazy-component @show="init">
     <!-- "g-ytsubscribe" is a required class setting by youtube, do not remove. -->
     <div
       :data-channelid="channelId"
@@ -7,7 +7,7 @@
       data-layout="full"
       data-count="hidden"
     />
-  </div>
+  </lazy-component>
 </template>
 
 <script>
@@ -21,12 +21,6 @@ export default {
       required: true,
     },
   },
-  mounted() {
-    window.addEventListener('load', this.init)
-  },
-  beforeDestroy() {
-    window.removeEventListener('load', this.init)
-  },
   methods: {
     init() {
       const hasInjectedSDK =
@@ -34,6 +28,7 @@ export default {
       if (!hasInjectedSDK) {
         const youtubePlatformScript = document.createElement('script')
         youtubePlatformScript.setAttribute('id', 'js-yt-platform')
+        youtubePlatformScript.setAttribute('defer', 'true')
         youtubePlatformScript.setAttribute(
           'src',
           'https://apis.google.com/js/platform.js'
