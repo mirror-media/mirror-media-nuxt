@@ -2,7 +2,6 @@
   <section class="section">
     <client-only>
       <GPTAD
-        v-if="adTop.adUnitCode"
         class="section__ad"
         :adUnit="adTop.adUnitCode"
         :adSize="adTop.adSize"
@@ -16,7 +15,6 @@
     />
     <client-only>
       <GPTAD
-        v-if="adBottom.adUnitCode"
         class="section__ad"
         :adUnit="adBottom.adUnitCode"
         :adSize="adBottom.adSize"
