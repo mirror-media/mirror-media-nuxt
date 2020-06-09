@@ -96,6 +96,6 @@ describe('limit title lines', () => {
       },
     })
     const title = wrapper.get('.linked-item__title')
-    expect(title.classes()).toContain('limit-lines')
+    expect(title.classes()).toContain('limited-lines')
   })
 })

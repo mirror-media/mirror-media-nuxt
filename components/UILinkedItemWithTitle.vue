@@ -10,7 +10,7 @@
     </a>
     <a
       :href="href"
-      :class="{ 'limit-lines': limitedLines }"
+      :class="{ 'limited-lines': limitedLines }"
       :style="limitedLinesStyle"
       class="linked-item__title"
       target="_blank"
@@ -45,7 +45,7 @@ export default {
       validator: (value) => ['right', 'bottom'].includes(value),
     },
     limitedLines: {
-      type: [Number],
+      type: Number,
       default: undefined,
       validator: (value) => value > 0 && Number.isInteger(value),
     },
@@ -98,7 +98,7 @@ export default {
     @include media-breakpoint-up(md) {
       text-align: justify;
     }
-    &.limit-lines {
+    &.limited-lines {
       display: -webkit-box !important;
       -moz-orient: vertical;
       -webkit-box-orient: vertical;
