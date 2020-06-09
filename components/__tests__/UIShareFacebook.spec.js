@@ -5,13 +5,12 @@ const createWrapper = createWrapperHelper()
 
 describe('href', () => {
   test('render the proper href', async () => {
-    global.window = Object.create(window)
     const url = 'https://www.mirrormedia.mg/'
-    Object.defineProperty(window, 'location', {
-      value: {
-        href: url,
-      },
-    })
+    const windowSpy = jest.spyOn(window, 'location', 'get')
+
+    windowSpy.mockImplementation(() => ({
+      href: url,
+    }))
 
     const wrapper = createWrapper(UIShareFacebook)
     await wrapper.vm.$nextTick()
