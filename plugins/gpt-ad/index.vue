@@ -1,7 +1,7 @@
 <template>
   <div
     :id="adOptDiv"
-    class="ad-wrapper"
+    class="gpt-ad-wrapper"
     :style="{
       width: adWidth,
     }"
@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ad-wrapper {
+.gpt-ad-wrapper {
   display: flex;
   justify-content: center;
   max-width: 100%;
