@@ -1,4 +1,4 @@
-import { buildParams } from '../index'
+import { buildParams, buildYoutubeParams } from '../index'
 
 describe('buildParams function', () => {
   test('should return empty string', () => {
@@ -58,6 +58,35 @@ describe('buildParams function', () => {
     expect(buildParams({ endpoint: 'sections' })).toBe('?endpoint=sections')
     expect(buildParams({ endpoint: ['sections', 'topics'] })).toBe(
       '?endpoint=sections&endpoint=topics'
+    )
+  })
+})
+
+describe('buildYoutubeParams function', () => {
+  test('should return empty string', () => {
+    expect(buildYoutubeParams()).toBe('')
+    expect(buildYoutubeParams([])).toBe('')
+    expect(buildYoutubeParams({})).toBe('')
+    expect(buildYoutubeParams(1234)).toBe('')
+    expect(buildYoutubeParams('string')).toBe('')
+    expect(buildYoutubeParams(null)).toBe('')
+    expect(buildYoutubeParams(undefined)).toBe('')
+  })
+
+  test('should return correct string', () => {
+    const data = {
+      maxResults: 10,
+      order: 'date',
+      part: 'snippet',
+      id: 'TEST',
+      channelId: 'ABC',
+      safeSearch: 'none',
+    }
+
+    expect(buildYoutubeParams({ id: data.id })).toBe(`?id=${data.id}`)
+
+    expect(buildYoutubeParams(data)).toBe(
+      `?maxResults=${data.maxResults}&order=${data.order}&part=${data.part}&id=${data.id}&channelId=${data.channelId}&safeSearch=${data.safeSearch}`
     )
   })
 })

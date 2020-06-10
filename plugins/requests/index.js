@@ -5,6 +5,10 @@ import qs from 'qs'
 
 import { API_TIMEOUT, DOMAIN_NAME } from '~/configs/config'
 
+function isPureObject(params) {
+  return _.isObject(params) && !Array.isArray(params)
+}
+
 function snakeCase(text) {
   if (text === 'isAudioSiteOnly') {
     return text
@@ -38,7 +42,6 @@ async function fetchAPIData(url) {
 }
 
 export function buildParams(params = {}) {
-  const isPureObject = _.isObject(params) && !Array.isArray(params)
   const firstTier = [
     'endpoint',
     'maxResults',
@@ -53,7 +56,7 @@ export function buildParams(params = {}) {
     'section',
   ]
 
-  if (isPureObject && Object.keys(params).length > 0) {
+  if (isPureObject(params) && Object.keys(params).length > 0) {
     const paramsKey = Object.keys(params)
 
     if (paramsKey.includes('endpoint')) {
@@ -86,6 +89,16 @@ export function buildParams(params = {}) {
       queryParams.where = JSON.stringify(queryParams.where)
     }
     return `?${qs.stringify(queryParams)}`
+  }
+  return ''
+}
+
+export function buildYoutubeParams(params = {}) {
+  if (isPureObject(params) && Object.keys(params).length > 0) {
+    const queryParams = Object.keys(params)
+      .map((key) => `${key}=${params[key]}`)
+      .join('&')
+    return `?${queryParams}`
   }
   return ''
 }
@@ -159,6 +172,18 @@ export default (context, inject) => {
 
   inject('fetchWatches', (params) =>
     fetchAPIData(`/watches${buildParams(params)}`)
+  )
+
+  inject('fetchYoutubePlaylistItems', (params) =>
+    fetchAPIData(`/youtube/playlistItems${buildYoutubeParams(params)}`)
+  )
+
+  inject('fetchYoutubeSearch', (params) =>
+    fetchAPIData(`/youtube/search${buildYoutubeParams(params)}`)
+  )
+
+  inject('fetchYoutubeVideos', (params) =>
+    fetchAPIData(`/youtube/videos${buildYoutubeParams(params)}`)
   )
 
   inject('fetchGrouped', () => fetchGCSData('grouped'))
