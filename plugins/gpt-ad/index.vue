@@ -1,6 +1,7 @@
 <template>
   <div
     :id="adOptDiv"
+    class="gpt-ad-wrapper"
     :style="{
       width: adWidth,
     }"
@@ -77,6 +78,14 @@ export default {
         "GPT Ad network-code not found. Please provide network-code via plugin option or component's adNetwork props, see https://developers.google.com/doubleclick-gpt/guides/get-started"
       )
     }
+    if (!this.adUnit || this.adUnit === '') {
+      throw new Error('adUnit props not found in GPTAD component')
+    }
+    if (getAdSizeType(this.adSize) === undefined) {
+      throw new Error(
+        'GPT Ad size type cannot be specify, see https://developers.google.com/doubleclick-gpt/guides/ad-sizes'
+      )
+    }
   },
   mounted() {
     const adSlot = this.$getGPTAdSlotsDefined(this.adOptDiv)
@@ -120,3 +129,14 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.gpt-ad-wrapper {
+  /* not using align-items: center; to prevent gpt layout issue */
+  ::v-deep iframe {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  max-width: 100%;
+}
+</style>

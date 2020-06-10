@@ -18,8 +18,13 @@ const createWrapper = createWrapperHelper({
         },
       },
     },
+    $ua: {
+      isFromPc() {
+        return true
+      },
+    },
   },
-  stubs: ['client-only'],
+  stubs: ['client-only', 'GPTAD'],
 })
 
 describe('stripHtmlTag method', () => {
@@ -185,8 +190,7 @@ describe('component methods', () => {
     })
 
     wrapper.vm.setListData(responseMock)
-    const list = wrapper.findComponent(UIArticleList)
-    expect(list.props().listData).toEqual([
+    expect(wrapper.vm.listData).toEqual([
       {
         id: idMock,
         href: `/story/${slugMock}`,

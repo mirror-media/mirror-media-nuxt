@@ -1,10 +1,29 @@
 <template>
   <section class="section">
+    <client-only>
+      <GPTAD
+        class="section__ad"
+        :adUnit="adTop.adUnitCode"
+        :adSize="adTop.adSize"
+      />
+    </client-only>
     <UIArticleList
       class="section__list"
       :listTitle="currentSectionTitle"
       :listTitleColor="currentSectionThemeColor"
-      :listData="listData"
+      :listData="listDataFirstPage"
+    />
+    <client-only>
+      <GPTAD
+        class="section__ad"
+        :adUnit="adBottom.adUnitCode"
+        :adSize="adBottom.adSize"
+      />
+    </client-only>
+    <UIArticleList
+      v-show="showListDataLoadmorePage"
+      class="section__list"
+      :listData="listDataLoadmorePage"
     />
     <UIInfiniteLoading
       v-if="shouldMountInfiniteLoading"
@@ -18,6 +37,7 @@ import { mapState } from 'vuex'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
+import gptUnits from '~/constants/gptUnits'
 
 export default {
   name: 'Section',
@@ -35,7 +55,7 @@ export default {
     return {
       listData: [],
       listDataCurrentPage: 0,
-      listDataMaxResults: 9,
+      listDataMaxResults: 12,
       listDataTotal: undefined,
     }
   },
@@ -75,6 +95,26 @@ export default {
     // due to the list data of the first page has not been loaded.
     shouldMountInfiniteLoading() {
       return this.listDataCurrentPage >= 1
+    },
+
+    listDataFirstPage() {
+      return this.listData.slice(0, this.listDataMaxResults)
+    },
+    listDataLoadmorePage() {
+      return this.listData.slice(this.listDataMaxResults, Infinity)
+    },
+    showListDataLoadmorePage() {
+      return this.listDataLoadmorePage.length > 0
+    },
+
+    adDevice() {
+      return this.$ua.isFromPc() ? 'PC' : 'MB'
+    },
+    adTop() {
+      return gptUnits?.[this.currentSectionId]?.[`L${this.adDevice}HD`] ?? {}
+    },
+    adBottom() {
+      return gptUnits?.[this.currentSectionId]?.[`L${this.adDevice}FT`] ?? {}
     },
   },
   methods: {
@@ -141,6 +181,9 @@ export default {
     max-width: 1024px;
     padding: 0;
     margin: auto;
+  }
+  &__ad {
+    margin: 20px auto;
   }
   &__list {
     @include media-breakpoint-up(md) {
