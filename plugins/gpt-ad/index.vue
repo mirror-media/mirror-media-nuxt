@@ -78,7 +78,7 @@ export default {
         "GPT Ad network-code not found. Please provide network-code via plugin option or component's adNetwork props, see https://developers.google.com/doubleclick-gpt/guides/get-started"
       )
     }
-    if (!this.adUnit) {
+    if (this.adUnit === '') {
       throw new Error('adUnit props not found in GPTAD component')
     }
     if (getAdSizeType(this.adSize) === undefined) {

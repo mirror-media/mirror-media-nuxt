@@ -106,7 +106,7 @@ describe('adNetwork settings', () => {
 })
 
 describe('error handling', () => {
-  test('should throw error when adUnit props is falsy', () => {
+  test('should throw error when adUnit props is empty string', () => {
     const localVue = createLocalVue()
     localVue.use(plugin, {
       adNetwork: 'adNetwork',
@@ -116,7 +116,7 @@ describe('error handling', () => {
       template: `
         <div>
           <GPTAD
-            :adUnit="undefined"
+            :adUnit="''"
             :adSize="[0, 0]"
           />
         </div>
