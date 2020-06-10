@@ -3,19 +3,15 @@ import UIArticleList from '~/components/UIArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
+  computed: {
+    sectionByCategoryName: () => () => ({
+      categories: [],
+    }),
+  },
   mocks: {
     $route: {
       params: {
         name: '',
-      },
-    },
-    $store: {
-      state: {
-        sections: {
-          data: {
-            items: [],
-          },
-        },
       },
     },
     $ua: {
@@ -33,6 +29,7 @@ describe('stripHtmlTag method', () => {
     const html = '<div><script></script><p>foo</p><p>bar</p><p>123</p></div>'
     expect(wrapper.vm.stripHtmlTag(html)).toBe('foobar123')
   })
+
   test('should return the same result if there is not html tags', () => {
     const wrapper = createWrapper(page)
     const html = 'foobar123'
@@ -46,39 +43,32 @@ describe('section data', () => {
     const sectionNameMock = 'test-name'
     const sectionIdMock = 'test-id'
     const sectionTitleMock = 'test-title'
-    const sectionStoreMock = {
-      data: {
-        items: [
-          {
-            categories: [
-              {
-                name: categoryNameMock,
-              },
-            ],
-            name: sectionNameMock,
-            id: sectionIdMock,
-            title: sectionTitleMock,
-          },
-        ],
-      },
+    const sectionDataMock = {
+      categories: [
+        {
+          name: categoryNameMock,
+        },
+      ],
+      id: sectionIdMock,
+      name: sectionNameMock,
+      title: sectionTitleMock,
     }
     const wrapper = createWrapper(page, {
+      computed: {
+        sectionByCategoryName: () => () => sectionDataMock,
+      },
       mocks: {
         $route: {
           params: {
             name: categoryNameMock,
           },
         },
-        $store: {
-          state: {
-            sections: sectionStoreMock,
-          },
-        },
       },
     })
-    expect(wrapper.vm.currentSectionName).toBe(sectionNameMock)
-    expect(wrapper.vm.currentSectionId).toBe(sectionIdMock)
-    expect(wrapper.vm.currentSectionTitle).toBe(sectionTitleMock)
+
+    expect(wrapper.vm.sectionName).toBe(sectionNameMock)
+    expect(wrapper.vm.sectionId).toBe(sectionIdMock)
+    expect(wrapper.vm.sectionTitle).toBe(sectionTitleMock)
   })
 })
 
@@ -87,37 +77,30 @@ describe('category data', () => {
     const categoryNameMock = 'test-category-name'
     const categoryIdMock = 'test-id'
     const categoryTitleMock = 'test-title'
-    const sectionStoreMock = {
-      data: {
-        items: [
-          {
-            categories: [
-              {
-                name: categoryNameMock,
-                id: categoryIdMock,
-                title: categoryTitleMock,
-              },
-            ],
-          },
-        ],
-      },
+    const sectionDataMock = {
+      categories: [
+        {
+          name: categoryNameMock,
+          id: categoryIdMock,
+          title: categoryTitleMock,
+        },
+      ],
     }
     const wrapper = createWrapper(page, {
+      computed: {
+        sectionByCategoryName: () => () => sectionDataMock,
+      },
       mocks: {
         $route: {
           params: {
             name: categoryNameMock,
           },
         },
-        $store: {
-          state: {
-            sections: sectionStoreMock,
-          },
-        },
       },
     })
+
     const list = wrapper.findComponent(UIArticleList)
-    expect(wrapper.vm.currentCategoryId).toBe(categoryIdMock)
+    expect(wrapper.vm.categoryId).toBe(categoryIdMock)
     expect(list.props().listTitle).toBe(categoryTitleMock)
   })
 })
@@ -128,21 +111,15 @@ describe('component methods', () => {
     const sectionNameMock = 'test-name'
     const sectionIdMock = 'test-id'
     const sectionTitleMock = 'test-title'
-    const sectionStoreMock = {
-      data: {
-        items: [
-          {
-            categories: [
-              {
-                name: categoryNameMock,
-              },
-            ],
-            name: sectionNameMock,
-            id: sectionIdMock,
-            title: sectionTitleMock,
-          },
-        ],
-      },
+    const sectionDataMock = {
+      categories: [
+        {
+          name: categoryNameMock,
+        },
+      ],
+      id: sectionIdMock,
+      name: sectionNameMock,
+      title: sectionTitleMock,
     }
 
     const idMock = 'id'
@@ -175,15 +152,13 @@ describe('component methods', () => {
     }
 
     const wrapper = createWrapper(page, {
+      computed: {
+        sectionByCategoryName: () => () => sectionDataMock,
+      },
       mocks: {
         $route: {
           params: {
             name: categoryNameMock,
-          },
-        },
-        $store: {
-          state: {
-            sections: sectionStoreMock,
           },
         },
       },
@@ -202,6 +177,7 @@ describe('component methods', () => {
       },
     ])
   })
+
   test('setListDataTotal and listDataPageLimit computed by total', () => {
     const totalMock = 1234
     const responseMock = {
