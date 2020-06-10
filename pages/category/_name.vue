@@ -9,8 +9,8 @@
     </client-only>
     <UIArticleList
       class="section__list"
-      :listTitle="currentCategoryTitle"
-      :listTitleColor="currentSectionThemeColor"
+      :listTitle="categoryTitle"
+      :listTitleColor="sectionThemeColor"
       :listData="listDataFirstPage"
     />
     <client-only>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
@@ -60,51 +60,42 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      sections: (state) => state.sections.data.items ?? [],
+    ...mapGetters({
+      sectionByCategoryName: 'sections/sectionByCategoryName',
     }),
-    categories() {
-      return this.sections.map((section) => section.categories).flat()
-    },
 
-    currentSectionData() {
-      return (
-        this.sections.find((section) =>
-          section.categories
-            .map((category) => category.name)
-            .find((name) => name === this.currentCategoryName)
-        ) ?? {}
-      )
+    sectionData() {
+      return this.sectionByCategoryName(this.categoryName)
     },
-    currentSectionName() {
-      return this.currentSectionData.name
+    sectionName() {
+      return this.sectionData.name
     },
-    currentSectionThemeColor() {
-      const key = `section-color-${this.currentSectionName}`
+    sectionThemeColor() {
+      const key = `section-color-${this.sectionName}`
       return styleVariables[key]
     },
-    currentSectionId() {
-      return this.currentSectionData.id
+    sectionId() {
+      return this.sectionData.id
     },
-    currentSectionTitle() {
-      return this.currentSectionData.title
+    sectionTitle() {
+      return this.sectionData.title
     },
 
-    currentCategoryName() {
+    categoryName() {
       return this.$route.params.name
     },
-    currentCategoryData() {
+    categoryData() {
       return (
-        this.categories.find(
-          (category) => category.name === this.currentCategoryName
-        ) ?? {}
+        this.sectionData.categories.find((category) => {
+          return this.categoryName === category.name
+        }) ?? {}
       )
     },
-    currentCategoryTitle() {
-      return this.currentCategoryData.title
+    categoryTitle() {
+      return this.categoryData.title
     },
-    currentCategoryId() {
-      return this.currentCategoryData.id
+    categoryId() {
+      return this.categoryData.id
     },
 
     listDataPageLimit() {
@@ -135,10 +126,10 @@ export default {
       return this.$ua.isFromPc() ? 'PC' : 'MB'
     },
     adTop() {
-      return gptUnits?.[this.currentSectionId]?.[`L${this.adDevice}HD`] ?? {}
+      return gptUnits?.[this.sectionId]?.[`L${this.adDevice}HD`] ?? {}
     },
     adBottom() {
-      return gptUnits?.[this.currentSectionId]?.[`L${this.adDevice}FT`] ?? {}
+      return gptUnits?.[this.sectionId]?.[`L${this.adDevice}FT`] ?? {}
     },
   },
   methods: {
@@ -150,8 +141,8 @@ export default {
         id: item.id,
         href: item.slug ? `/story/${item.slug}` : '/',
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
-        imgText: this.currentSectionTitle,
-        imgTextBackgroundColor: this.currentSectionThemeColor,
+        imgText: this.sectionTitle,
+        imgTextBackgroundColor: this.sectionThemeColor,
         infoTitle: item.title ?? '',
         infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
       }
@@ -160,7 +151,7 @@ export default {
       const response = await this.$fetchList({
         maxResults: this.listDataMaxResults,
         sort: '-publishedDate',
-        categories: [this.currentCategoryId],
+        categories: [this.categoryId],
         page,
       })
       return response
