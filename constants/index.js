@@ -93,3 +93,5 @@ export const SUB_BRAND_LINKS = [
   MIRRORFICTION_LINK,
   READR_LINK,
 ]
+
+export const SITE_TITLE = '鏡週刊 Mirror Media'

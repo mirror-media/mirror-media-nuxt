@@ -1,18 +1,46 @@
 import ContainerHeader from '../ContainerHeader.vue'
-import UISidebar from '../UISidebar.vue'
+import UIEventLogo from '../UIEventLogo.vue'
 import UISearchBarWrapper from '../UISearchBarWrapper.vue'
 import UIOthersList from '../UIOthersList.vue'
 import UIHeaderNavSection from '../UIHeaderNavSection.vue'
 import UIHeaderNavTopic from '../UIHeaderNavTopic.vue'
+import UISidebar from '../UISidebar.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
   computed: {
+    eventLogo: () => ({}),
     sections: () => [],
     partners: () => [],
     topics: () => [],
   },
+  stubs: ['nuxt-link'],
+})
+
+describe('event logo', () => {
+  test('toggle event logo according to the time interval', async () => {
+    const wrapper = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          current: new Date('Tue Jun 09 2020 18:30:00 GMT+0800'),
+        }
+      },
+      computed: {
+        eventLogo: () => ({
+          startDate: 'Tue, 09 Jun 2020 10:00:00 GMT',
+          endDate: 'Sun, 14 Jun 2020 10:00:00 GMT',
+        }),
+      },
+    })
+
+    expect(wrapper.findComponent(UIEventLogo).exists()).toBe(true)
+
+    await wrapper.setData({
+      current: new Date('Tue Jun 09 2020 16:00:00 GMT+0800'),
+    })
+    expect(wrapper.findComponent(UIEventLogo).exists()).toBe(false)
+  })
 })
 
 describe('options computed', () => {
@@ -88,13 +116,12 @@ describe('GA event', () => {
       },
     })
 
-    const gaArgs = {
+    wrapper.get('.menu-icon').trigger('click')
+    expect($ga.event).toBeCalledWith({
       eventCategory: 'header',
       eventAction: 'click',
       eventLabel: 'menu open',
-    }
-    wrapper.get('.menu-icon').trigger('click')
-    expect($ga.event).toBeCalledWith(gaArgs)
+    })
   })
 
   test('call $ga method when UISidebar.vue emits close', () => {
@@ -112,26 +139,41 @@ describe('GA event', () => {
       },
     })
 
-    const gaArgs = {
+    wrapper.findComponent(UISidebar).vm.$emit('close')
+    expect($ga.event).toBeCalledWith({
       eventCategory: 'header',
       eventAction: 'click',
       eventLabel: 'menu close',
-    }
-    wrapper.findComponent(UISidebar).vm.$emit('close')
-    expect($ga.event).toBeCalledWith(gaArgs)
+    })
   })
-})
 
-describe('handleSendGA method', () => {
-  test('call $ga method when UISidebar.vue emits sendGA', () => {
+  test('call $ga method when users click the logo', () => {
     const $ga = {
       event: jest.fn(),
     }
     const wrapper = createWrapper(ContainerHeader, {
-      data() {
-        return {
-          shouldOpenSidebar: true,
-        }
+      mocks: {
+        $ga,
+      },
+    })
+
+    wrapper.get('[to="/"]').trigger('click')
+    expect($ga.event).toBeCalledWith({
+      eventCategory: 'header',
+      eventAction: 'click',
+      eventLabel: 'logo',
+    })
+  })
+})
+
+describe('handleSendGA method', () => {
+  test('call $ga method when UIEventLogo.vue emits sendGA', () => {
+    const $ga = {
+      event: jest.fn(),
+    }
+    const wrapper = createWrapper(ContainerHeader, {
+      computed: {
+        shouldOpenEventLogo: () => true,
       },
       mocks: {
         $ga,
@@ -139,11 +181,11 @@ describe('handleSendGA method', () => {
     })
 
     const gaArgs = {
-      eventCategory: 'sidebar',
+      eventCategory: 'header',
       eventAction: 'click',
-      eventLabel: 'section new',
+      eventLabel: 'logo event',
     }
-    wrapper.findComponent(UISidebar).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UIEventLogo).vm.$emit('sendGA', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
@@ -220,6 +262,30 @@ describe('handleSendGA method', () => {
       eventLabel: 'topic 人造地獄',
     }
     wrapper.findComponent(UIHeaderNavTopic).vm.$emit('sendGA', gaArgs)
+    expect($ga.event).toBeCalledWith(gaArgs)
+  })
+
+  test('call $ga method when UISidebar.vue emits sendGA', () => {
+    const $ga = {
+      event: jest.fn(),
+    }
+    const wrapper = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          shouldOpenSidebar: true,
+        }
+      },
+      mocks: {
+        $ga,
+      },
+    })
+
+    const gaArgs = {
+      eventCategory: 'sidebar',
+      eventAction: 'click',
+      eventLabel: 'section new',
+    }
+    wrapper.findComponent(UISidebar).vm.$emit('sendGA', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 })
