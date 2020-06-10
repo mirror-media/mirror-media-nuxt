@@ -24,7 +24,7 @@ const createWrapper = createWrapperHelper({
       },
     },
   },
-  stubs: ['client-only'],
+  stubs: ['client-only', 'GPTAD'],
 })
 
 describe('stripHtmlTag method', () => {
