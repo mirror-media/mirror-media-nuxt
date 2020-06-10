@@ -73,15 +73,16 @@ export default {
   width: 100%;
   padding: 22px 29px;
   position: absolute;
-  top: 50px;
+  top: 90px;
   left: 0;
   &::before {
     content: '';
     display: block;
     position: absolute;
     top: -12px;
-    // (18 - 11) / 2
-    left: 3.5px;
+    // 5% = (100% - 90%) / 2
+    // 3.5 = (18 - 11) / 2
+    right: calc(5% + 3.5px);
     border-color: transparent transparent #064f77;
     border-style: solid;
     border-width: 0 5.5px 12px 5.5px;

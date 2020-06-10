@@ -10,7 +10,9 @@ function isPureObject(params) {
 }
 
 function snakeCase(text) {
-  if (text === 'isAudioSiteOnly') {
+  const doNotTransform = ['isAudioSiteOnly', 'isFeatured', 'eventType']
+
+  if (doNotTransform.includes(text)) {
     return text
   }
   return _.snakeCase(text)

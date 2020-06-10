@@ -1,28 +1,30 @@
 <template>
   <header>
-    <button type="button" class="menu-icon" @click="handleClickMenuIcon" />
-    <transition name="slide">
-      <UISidebar
-        v-if="shouldOpenSidebar"
-        :topics="topics"
-        :sections="sections"
-        :partners="partners"
-        :subBrands="subBrandLinks"
-        :others="otherLinks"
-        :socialMedia="socialMediaLinks"
-        @close="handleSidebarClose"
-        @sendGA="handleSendGA"
-      />
-    </transition>
+    <div class="header-top-layer">
+      <button type="button" class="menu-icon" @click="handleClickMenuIcon" />
 
-    <div class="header-search">
-      <UISearchBarWrapper :options="options" @sendGA="handleSendGA" />
-      <UIOthersList
-        class="others-list"
-        :links="otherLinks"
-        eventCategory="header"
-        @sendGA="handleSendGA"
-      />
+      <div class="logo-wrapper">
+        <nuxt-link to="/" class="logo" @click.native="sendHeaderGA('logo')">
+          <img src="~/assets/logo.svg" :alt="SITE_TITLE" />
+        </nuxt-link>
+
+        <UIEventLogo
+          v-if="shouldOpenEventLogo"
+          class="logo"
+          :eventLogo="eventLogo"
+          @sendGA="handleSendGA"
+        />
+      </div>
+
+      <div class="header-search">
+        <UISearchBarWrapper :options="options" @sendGA="handleSendGA" />
+        <UIOthersList
+          class="others-list"
+          :links="otherLinks"
+          eventCategory="header"
+          @sendGA="handleSendGA"
+        />
+      </div>
     </div>
 
     <nav class="header-nav">
@@ -37,45 +39,71 @@
         @sendGA="handleSendGA"
       />
     </nav>
+
+    <transition name="slide">
+      <UISidebar
+        v-if="shouldOpenSidebar"
+        :topics="topics"
+        :sections="sections"
+        :partners="partners"
+        :subBrands="subBrandLinks"
+        :others="otherLinks"
+        :socialMedia="socialMediaLinks"
+        @close="handleSidebarClose"
+        @sendGA="handleSendGA"
+      />
+    </transition>
   </header>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 
-import UISidebar from './UISidebar.vue'
+import UIEventLogo from './UIEventLogo.vue'
 import UISearchBarWrapper from './UISearchBarWrapper.vue'
 import UIOthersList from './UIOthersList.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
+import UISidebar from './UISidebar.vue'
 
 import {
   SUB_BRAND_LINKS,
   SOCIAL_MEDIA_LINKS,
   OTHER_LINKS,
+  SITE_TITLE,
 } from '~/constants/index'
 
 export default {
   name: 'ContainerHeader',
   components: {
-    UISidebar,
+    UIEventLogo,
     UISearchBarWrapper,
     UIOthersList,
     UIHeaderNavSection,
     UIHeaderNavTopic,
+    UISidebar,
   },
   data() {
     return {
+      current: new Date(),
       shouldOpenSidebar: false,
       defaultOption: { title: '全部類別' },
+      SITE_TITLE,
     }
   },
   computed: {
     ...mapGetters({
+      eventLogo: 'eventLogo/eventLogoItem',
       sections: 'sections/displayedSections',
       partners: 'partners/displayedPartners',
       topics: 'topics/displayedTopics',
     }),
+    shouldOpenEventLogo() {
+      const startTime = new Date(this.eventLogo.startDate)
+      const endTime = new Date(this.eventLogo.endDate)
+
+      return this.inTheTimeInterval(startTime, endTime, this.current)
+    },
     options() {
       const sections = this.sections.filter(
         (section) => section.name !== 'videohub'
@@ -98,6 +126,9 @@ export default {
     },
   },
   methods: {
+    inTheTimeInterval(startTime, endTime, targetTime) {
+      return targetTime >= startTime && targetTime < endTime
+    },
     handleClickMenuIcon() {
       this.openSidebar()
       this.sendHeaderGA('menu open')
@@ -130,7 +161,21 @@ export default {
 header {
   background-color: #f5f5f5;
 }
+.header-top-layer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 1024px;
+  height: 90px;
+  margin-left: auto;
+  margin-right: auto;
+  @include media-breakpoint-up(xl) {
+    height: 70px;
+  }
+}
 .menu-icon {
+  flex: 0 0 auto;
   width: 24px;
   height: 40px;
   background-image: url(~assets/hamburger@2x.png);
@@ -143,11 +188,37 @@ header {
     display: none;
   }
 }
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 1 auto;
+  // 58 = (24 + 18) + (8 * 2)
+  width: calc(100% - 58px);
+  @include media-breakpoint-up(xl) {
+    justify-content: flex-start;
+    width: auto;
+  }
+}
+.logo {
+  cursor: pointer;
+  user-select: none;
+  img {
+    width: 95px;
+    @include media-breakpoint-up(xl) {
+      width: auto;
+      height: 50px;
+    }
+  }
+  + .logo {
+    margin-left: 5px;
+  }
+}
 .header-search {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   z-index: 149;
-  position: relative;
 }
 .others-list {
   display: none;
