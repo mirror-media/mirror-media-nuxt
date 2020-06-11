@@ -100,10 +100,17 @@ export default {
       topics: 'topics/displayedTopics',
     }),
     shouldOpenEventLogo() {
+      if (!this.hasEventLogo) {
+        return false
+      }
+
       const startTime = new Date(this.eventLogo.startDate)
       const endTime = new Date(this.eventLogo.endDate)
 
       return this.duringThePeriodBetween(startTime, endTime)
+    },
+    hasEventLogo() {
+      return Object.keys(this.eventLogo).length > 0
     },
     options() {
       const sections = this.sections.filter(
