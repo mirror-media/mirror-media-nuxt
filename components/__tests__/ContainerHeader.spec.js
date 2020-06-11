@@ -26,7 +26,7 @@ describe('event logo', () => {
     const wrapper = createWrapper(ContainerHeader, {
       data() {
         return {
-          current: new Date('Tue Jun 09 2020 18:30:00 GMT+0800'),
+          now: new Date('Tue Jun 09 2020 18:30:00 GMT+0800'),
         }
       },
       mocks: {
@@ -41,11 +41,11 @@ describe('event logo', () => {
     expect(wrapper.vm.eventLogo).toEqual(mockEventLogo)
   })
 
-  test('toggle event logo according to the time interval', async () => {
+  test('open the logo if now during the period', async () => {
     const wrapper = createWrapper(ContainerHeader, {
       data() {
         return {
-          current: new Date('Tue Jun 09 2020 18:30:00 GMT+0800'),
+          now: new Date('Tue Jun 09 2020 18:30:00 GMT+0800'),
         }
       },
       mocks: {
@@ -65,7 +65,7 @@ describe('event logo', () => {
     expect(wrapper.findComponent(UIEventLogo).exists()).toBe(true)
 
     await wrapper.setData({
-      current: new Date('Tue Jun 09 2020 16:00:00 GMT+0800'),
+      now: new Date('Tue Jun 09 2020 16:00:00 GMT+0800'),
     })
     expect(wrapper.findComponent(UIEventLogo).exists()).toBe(false)
   })

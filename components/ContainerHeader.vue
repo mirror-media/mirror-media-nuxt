@@ -86,7 +86,8 @@ export default {
   data() {
     return {
       eventLogo: {},
-      current: new Date(),
+      now: new Date(),
+      intervalIdOfUpdateNow: undefined,
       shouldOpenSidebar: false,
       defaultOption: { title: '全部類別' },
       SITE_TITLE,
@@ -102,7 +103,7 @@ export default {
       const startTime = new Date(this.eventLogo.startDate)
       const endTime = new Date(this.eventLogo.endDate)
 
-      return this.inTheTimeInterval(startTime, endTime, this.current)
+      return this.duringThePeriodBetween(startTime, endTime)
     },
     options() {
       const sections = this.sections.filter(
@@ -127,6 +128,11 @@ export default {
   },
   beforeMount() {
     this.fetchOnClient()
+
+    this.intervalIdOfUpdateNow = setInterval(this.updateNow, 1000)
+  },
+  beforeDestroy() {
+    clearInterval(this.intervalIdOfUpdateNow)
   },
   methods: {
     fetchOnClient() {
@@ -140,8 +146,11 @@ export default {
       })
       this.eventLogo = eventLogoResponse.items?.[0] ?? {}
     },
-    inTheTimeInterval(startTime, endTime, targetTime) {
-      return targetTime >= startTime && targetTime < endTime
+    duringThePeriodBetween(startTime, endTime) {
+      return this.now >= startTime && this.now < endTime
+    },
+    updateNow() {
+      this.now = new Date()
     },
     handleClickMenuIcon() {
       this.openSidebar()
