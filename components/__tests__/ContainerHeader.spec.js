@@ -10,15 +10,37 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
   computed: {
-    eventLogo: () => ({}),
     sections: () => [],
     partners: () => [],
     topics: () => [],
+  },
+  mocks: {
+    $fetchEvent: () => Promise.resolve({}),
   },
   stubs: ['nuxt-link'],
 })
 
 describe('event logo', () => {
+  test('get the correct value from the $fetchEvent method', async () => {
+    const mockEventLogo = { name: '泰山油LOGO' }
+    const wrapper = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          current: new Date('Tue Jun 09 2020 18:30:00 GMT+0800'),
+        }
+      },
+      mocks: {
+        $fetchEvent: () =>
+          Promise.resolve({
+            items: [mockEventLogo],
+          }),
+      },
+    })
+
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.eventLogo).toEqual(mockEventLogo)
+  })
+
   test('toggle event logo according to the time interval', async () => {
     const wrapper = createWrapper(ContainerHeader, {
       data() {
@@ -26,14 +48,20 @@ describe('event logo', () => {
           current: new Date('Tue Jun 09 2020 18:30:00 GMT+0800'),
         }
       },
-      computed: {
-        eventLogo: () => ({
-          startDate: 'Tue, 09 Jun 2020 10:00:00 GMT',
-          endDate: 'Sun, 14 Jun 2020 10:00:00 GMT',
-        }),
+      mocks: {
+        $fetchEvent: () =>
+          Promise.resolve({
+            items: [
+              {
+                startDate: 'Tue, 09 Jun 2020 10:00:00 GMT',
+                endDate: 'Sun, 14 Jun 2020 10:00:00 GMT',
+              },
+            ],
+          }),
       },
     })
 
+    await wrapper.vm.$nextTick()
     expect(wrapper.findComponent(UIEventLogo).exists()).toBe(true)
 
     await wrapper.setData({

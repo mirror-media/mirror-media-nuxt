@@ -85,6 +85,7 @@ export default {
   },
   data() {
     return {
+      eventLogo: {},
       current: new Date(),
       shouldOpenSidebar: false,
       defaultOption: { title: '全部類別' },
@@ -93,7 +94,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      eventLogo: 'eventLogo/eventLogoItem',
       sections: 'sections/displayedSections',
       partners: 'partners/displayedPartners',
       topics: 'topics/displayedTopics',
@@ -125,7 +125,21 @@ export default {
       this.shouldOpenSidebar = false
     },
   },
+  beforeMount() {
+    this.fetchOnClient()
+  },
   methods: {
+    fetchOnClient() {
+      this.fetchEventLogo()
+    },
+    async fetchEventLogo() {
+      const eventLogoResponse = await this.$fetchEvent({
+        isFeatured: true,
+        eventType: 'logo',
+        maxResults: 1,
+      })
+      this.eventLogo = eventLogoResponse.items?.[0] ?? {}
+    },
     inTheTimeInterval(startTime, endTime, targetTime) {
       return targetTime >= startTime && targetTime < endTime
     },
