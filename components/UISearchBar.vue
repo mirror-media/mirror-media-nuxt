@@ -80,8 +80,10 @@ export default {
     display: block;
     position: absolute;
     top: -12px;
-    // 5% = (100% - 90%) / 2
-    // 3.5 = (18 - 11) / 2
+    /*
+      5% = (100% - 90%) / 2
+      3.5 = (18 - 11) / 2
+    */
     right: calc(5% + 3.5px);
     border-color: transparent transparent #064f77;
     border-style: solid;
