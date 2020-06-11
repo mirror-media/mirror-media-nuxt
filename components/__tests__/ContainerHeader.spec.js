@@ -41,6 +41,13 @@ describe('event logo', () => {
     expect(wrapper.vm.eventLogo).toEqual(mockEventLogo)
   })
 
+  test('close the logo if it has no data', async () => {
+    const wrapper = createWrapper(ContainerHeader)
+
+    await wrapper.vm.$nextTick()
+    expect(wrapper.findComponent(UIEventLogo).exists()).toBe(false)
+  })
+
   test('open the logo if now during the period', async () => {
     const wrapper = createWrapper(ContainerHeader, {
       data() {
