@@ -46,16 +46,7 @@ export default {
       return this.$route.name === 'search-keyword'
     },
   },
-  beforeMount() {
-    this.fetchOnClient()
-  },
   methods: {
-    async fetchOnClient() {
-      const eventLogoResponse = await this.$store.dispatch(
-        'eventLogo/fetchEventLogoData'
-      )
-      this.commitEventLogoData(eventLogoResponse)
-    },
     commitPartnersData(response) {
       this.$store.commit('partners/setPartnersData', response)
     },
@@ -64,9 +55,6 @@ export default {
         'topics/setTopicsData',
         response.endpoints.topics ?? {}
       )
-    },
-    commitEventLogoData(response) {
-      this.$store.commit('eventLogo/setEventLogoData', response ?? {})
     },
   },
 }
