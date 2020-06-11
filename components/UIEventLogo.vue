@@ -1,5 +1,10 @@
 <template>
-  <a :href="eventLogoLink" target="_blank" @click="emitGA">
+  <a
+    :href="eventLogoLink"
+    target="_blank"
+    rel="noopener noreferrer"
+    @click="emitGA"
+  >
     <img :src="eventLogoImage" :alt="eventLogo.name" />
   </a>
 </template>
