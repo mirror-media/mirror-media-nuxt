@@ -11,11 +11,20 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 const createWrapper = createWrapperHelper({
   computed: {
     sections: () => [],
+    sectionByCategoryName: () => () => ({
+      name: undefined,
+    }),
     partners: () => [],
     topics: () => [],
   },
   mocks: {
     $fetchEvent: () => Promise.resolve({}),
+    $store: {
+      state: {
+        sectionName: undefined,
+      },
+      commit: jest.fn(),
+    },
   },
   stubs: ['nuxt-link'],
 })
@@ -137,6 +146,102 @@ describe('sidebar', () => {
     wrapper.vm.$route.fullPath = '/section/news'
     await wrapper.vm.$nextTick()
     expect(wrapper.findComponent(UISidebar).exists()).toBe(false)
+  })
+})
+
+describe('setSectionName', () => {
+  test('commit with a "home" argument when users stay on the home page', () => {
+    const $store = {
+      commit: jest.fn(),
+    }
+    createWrapper(ContainerHeader, {
+      mocks: {
+        $route: { path: '/' },
+        $store,
+      },
+    })
+
+    expect($store.commit).toBeCalledWith('setSectionName', 'home')
+  })
+
+  test('commit with a proper argument when users stay on the section page', () => {
+    const $store = {
+      commit: jest.fn(),
+    }
+    const mockSectionName = 'entertainment'
+    createWrapper(ContainerHeader, {
+      mocks: {
+        $route: { path: `/section/${mockSectionName}` },
+        $store,
+      },
+    })
+
+    expect($store.commit).toBeCalledWith('setSectionName', mockSectionName)
+  })
+
+  test('commit with a proper argument when users stay on the category page', () => {
+    const $store = {
+      commit: jest.fn(),
+    }
+    const mockSectionName = 'people'
+    createWrapper(ContainerHeader, {
+      computed: {
+        sectionByCategoryName: () => () => ({
+          name: mockSectionName,
+        }),
+      },
+      mocks: {
+        $route: { path: '/category/somebody' },
+        $store,
+      },
+    })
+
+    expect($store.commit).toBeCalledWith('setSectionName', mockSectionName)
+  })
+
+  test('do not commit when users stay on the story page', () => {
+    const $store = {
+      commit: jest.fn(),
+    }
+    createWrapper(ContainerHeader, {
+      mocks: {
+        $route: { path: '/story/20200602pol001' },
+        $store,
+      },
+    })
+
+    expect($store.commit).not.toBeCalled()
+  })
+
+  test('do not commit when users stay on the section of topic page', () => {
+    const $store = {
+      commit: jest.fn(),
+    }
+    createWrapper(ContainerHeader, {
+      mocks: {
+        $route: { path: '/section/topic' },
+        $store,
+      },
+    })
+
+    expect($store.commit).not.toBeCalled()
+  })
+
+  test('commit with a proper argument when users go to other pages', async () => {
+    const $store = {
+      commit: jest.fn(),
+    }
+    const wrapper = createWrapper(ContainerHeader, {
+      mocks: {
+        $route: { path: '/' },
+        $store,
+      },
+    })
+
+    const mockSectionName = 'news'
+    wrapper.vm.$route.path = `/section/${mockSectionName}`
+    await wrapper.vm.$nextTick()
+    expect($store.commit).toBeCalledWith('setSectionName', mockSectionName)
   })
 })
 

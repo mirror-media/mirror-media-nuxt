@@ -8,7 +8,7 @@ exports[`markup render correctly 1`] = `
     class="container"
   >
     <div
-      class="section section--home active"
+      class="section section--home"
     >
       <nuxt-link-stub
         to="/"

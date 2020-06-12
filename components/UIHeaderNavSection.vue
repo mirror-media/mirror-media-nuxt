@@ -1,7 +1,10 @@
 <template>
   <section class="header-nav-section">
     <div class="container">
-      <div class="section section--home active">
+      <div
+        class="section section--home"
+        :class="{ active: isCurrentSection('home') }"
+      >
         <nuxt-link to="/" @click.native="emitGA('section home')">
           <h2>首頁</h2>
         </nuxt-link>
@@ -10,7 +13,11 @@
       <div
         v-for="section in sections"
         :key="section.id"
-        :class="`section section--${section.name}`"
+        class="section"
+        :class="[
+          `section--${section.name}`,
+          { active: isCurrentSection(section.name) },
+        ]"
       >
         <nuxt-link
           :to="`/section/${section.name}`"
@@ -56,6 +63,10 @@ export default {
       required: true,
       default: () => [],
     },
+    currentSectionName: {
+      type: String,
+      default: undefined,
+    },
     partners: {
       type: Array,
       required: true,
@@ -63,6 +74,9 @@ export default {
     },
   },
   methods: {
+    isCurrentSection(sectionName) {
+      return sectionName === this.currentSectionName
+    },
     emitGA(eventLabel) {
       this.$emit('sendGA', {
         eventCategory: 'header',
