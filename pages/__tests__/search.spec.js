@@ -153,7 +153,7 @@ describe('fetchSearchListing query object', () => {
 
     wrapper.vm.fetchSearchListing()
     expect($fetchSearch).toBeCalledWith({
-      maxResults: 9,
+      maxResults: 12,
       keywords: keywordMock,
       section: sectionTitleMock, // this property should exist
       page: 1,
@@ -176,7 +176,7 @@ describe('fetchSearchListing query object', () => {
 
     wrapper.vm.fetchSearchListing()
     expect($fetchSearch).toBeCalledWith({
-      maxResults: 9,
+      maxResults: 12,
       keywords: keywordMock,
       page: 1,
     })

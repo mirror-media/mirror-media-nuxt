@@ -57,7 +57,7 @@ export default {
     return {
       listData: [],
       listDataCurrentPage: 0,
-      listDataMaxResults: 9,
+      listDataMaxResults: 12,
       listDataTotal: undefined,
       authorName: undefined,
     }
