@@ -39,6 +39,7 @@ export default {
         'section-topic',
         'search-keyword',
         'topic-id',
+        'tag-id',
       ]
       return listingRouteNames.includes(this.$route.name)
     },
