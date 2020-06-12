@@ -36,6 +36,17 @@ describe('normal section nav', () => {
     const link = wrapper.get(`[to="/category/${category.name}"]`)
     expect(link.text()).toBe(category.title)
   })
+
+  test('active the section if its name matches currentSectionName', () => {
+    const wrapper = createWrapper(UIHeaderNavSection, {
+      propsData: {
+        currentSectionName: 'culture',
+      },
+    })
+
+    const link = wrapper.get(`.section--${mockSection.name}`)
+    expect(link.classes('active')).toBe(true)
+  })
 })
 
 describe('external section nav', () => {

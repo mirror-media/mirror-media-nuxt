@@ -30,6 +30,7 @@
     <nav class="header-nav">
       <UIHeaderNavSection
         :sections="sections"
+        :currentSectionName="sectionName"
         :partners="partners"
         @sendGA="handleSendGA"
       />
@@ -57,7 +58,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 
 import UIEventLogo from './UIEventLogo.vue'
 import UISearchBarWrapper from './UISearchBarWrapper.vue'
@@ -94,8 +95,10 @@ export default {
     }
   },
   computed: {
+    ...mapState(['sectionName']),
     ...mapGetters({
       sections: 'sections/displayedSections',
+      sectionByCategoryName: 'sections/sectionByCategoryName',
       partners: 'partners/displayedPartners',
       topics: 'topics/displayedTopics',
     }),
@@ -132,6 +135,10 @@ export default {
     '$route.fullPath'() {
       this.shouldOpenSidebar = false
     },
+    '$route.path': {
+      handler: 'activeTheNavSection',
+      immediate: true,
+    },
   },
   beforeMount() {
     this.fetchOnClient()
@@ -142,6 +149,7 @@ export default {
     clearInterval(this.intervalIdOfUpdateNow)
   },
   methods: {
+    ...mapMutations(['setSectionName']),
     fetchOnClient() {
       this.fetchEventLogo()
     },
@@ -182,6 +190,40 @@ export default {
     },
     handleSendGA(param = {}) {
       this.$ga.event(param)
+    },
+    activeTheNavSection(path) {
+      const prefixOfStory = this.regexOfPrefix('/story/')
+      // 文章頁也需要設定 sectionName，但不是在這邊做，而需移到 story page，故 return
+      if (this.hasPrefix(path, prefixOfStory)) {
+        return
+      }
+
+      const prefixOfSection = this.regexOfPrefix('/section/')
+      const prefixOfCategory = this.regexOfPrefix('/category/')
+      let sectionName
+
+      if (path === '/') {
+        sectionName = 'home'
+      } else if (this.hasPrefix(path, prefixOfSection)) {
+        sectionName = this.removePrefix(path, prefixOfSection)
+        if (sectionName === 'topic') {
+          return
+        }
+      } else if (this.hasPrefix(path, prefixOfCategory)) {
+        const categoryName = this.removePrefix(path, prefixOfCategory)
+        sectionName = this.sectionByCategoryName(categoryName).name
+      }
+
+      this.setSectionName(sectionName)
+    },
+    regexOfPrefix(string) {
+      return new RegExp(`^${string}`, 'i')
+    },
+    hasPrefix(string, prefix) {
+      return prefix.test(string)
+    },
+    removePrefix(string, prefix) {
+      return string.split(prefix)[1]
     },
   },
 }

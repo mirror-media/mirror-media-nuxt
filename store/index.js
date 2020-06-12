@@ -1,3 +1,13 @@
+export const state = () => ({
+  sectionName: undefined,
+})
+
+export const mutations = {
+  setSectionName(state, name) {
+    state.sectionName = name
+  },
+}
+
 export const actions = {
   async nuxtServerInit({ commit, dispatch }) {
     const [sectionsResponse] = await dispatch('fetchGlobalData')
