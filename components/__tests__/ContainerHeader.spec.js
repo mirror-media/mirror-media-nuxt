@@ -48,7 +48,7 @@ describe('event logo', () => {
     expect(wrapper.findComponent(UIEventLogo).exists()).toBe(false)
   })
 
-  test('open the logo if now during the period', async () => {
+  test('open the logo if now during a specific period of time', async () => {
     const wrapper = createWrapper(ContainerHeader, {
       data() {
         return {
@@ -94,7 +94,7 @@ describe('options computed', () => {
 })
 
 describe('sidebar', () => {
-  test('open sidebar when users click menu icon', async () => {
+  test('open it when users click the menu icon', async () => {
     const wrapper = createWrapper(ContainerHeader, {
       mocks: {
         $ga: { event: jest.fn() },
@@ -105,7 +105,7 @@ describe('sidebar', () => {
     expect(wrapper.findComponent(UISidebar).exists()).toBe(true)
   })
 
-  test('close sidebar when UISidebar.vue emits close', async () => {
+  test('close it when the UISidebar.vue emits a "close"', async () => {
     const wrapper = createWrapper(ContainerHeader, {
       data() {
         return {
@@ -122,7 +122,7 @@ describe('sidebar', () => {
     expect(wrapper.findComponent(UISidebar).exists()).toBe(false)
   })
 
-  test('close sidebar when URL changes', async () => {
+  test('close it when the URL changes', async () => {
     const wrapper = createWrapper(ContainerHeader, {
       data() {
         return {
@@ -141,7 +141,7 @@ describe('sidebar', () => {
 })
 
 describe('GA event', () => {
-  test('call $ga method when users click menu icon', () => {
+  test('call the $ga method when users click the menu icon', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -159,7 +159,7 @@ describe('GA event', () => {
     })
   })
 
-  test('call $ga method when UISidebar.vue emits close', () => {
+  test('call the $ga method when the UISidebar.vue emits a "close"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -182,7 +182,7 @@ describe('GA event', () => {
     })
   })
 
-  test('call $ga method when users click the logo', () => {
+  test('call the $ga method when users click the logo', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -202,7 +202,7 @@ describe('GA event', () => {
 })
 
 describe('handleSendGA method', () => {
-  test('call $ga method when UIEventLogo.vue emits sendGA', () => {
+  test('call the $ga method when the UIEventLogo.vue emits a "sendGA"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -224,7 +224,7 @@ describe('handleSendGA method', () => {
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
-  test('call $ga method when UISearchBarWrapper.vue emits sendGA', () => {
+  test('call the $ga method when the UISearchBarWrapper.vue emits a "sendGA"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -243,7 +243,7 @@ describe('handleSendGA method', () => {
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
-  test('call $ga method when UIOthersList.vue emits sendGA', () => {
+  test('call the $ga method when the UIOthersList.vue emits a "sendGA"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -262,7 +262,7 @@ describe('handleSendGA method', () => {
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
-  test('call $ga method when UIHeaderNavSection.vue emits sendGA', () => {
+  test('call the $ga method when the UIHeaderNavSection.vue emits a "sendGA"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -281,7 +281,7 @@ describe('handleSendGA method', () => {
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
-  test('call $ga method when UIHeaderNavTopic.vue emits sendGA', () => {
+  test('call the $ga method when the UIHeaderNavTopic.vue emits a "sendGA"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -300,7 +300,7 @@ describe('handleSendGA method', () => {
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
-  test('call $ga method when UISidebar.vue emits sendGA', () => {
+  test('call the $ga method when the UISidebar.vue emits a "sendGA"', () => {
     const $ga = {
       event: jest.fn(),
     }
