@@ -96,7 +96,7 @@ export default {
   methods: {
     async fetchAndSetCategoriesPlaylistData() {
       const response = await Promise.allSettled(
-        this.playlistIds.forEach(this.fetchYoutubePlaylistItems)
+        this.playlistIds.map(this.fetchYoutubePlaylistItems)
       )
       response.forEach(this.mapDataToCategoriesPlaylist)
     },
@@ -135,8 +135,10 @@ export default {
     mapDataToCategoriesPlaylist(data, index) {
       if (data.status === 'fulfilled') {
         const categoryName = INVERTED_PLAYLIST_MAPPING[this.playlistIds[index]]
-        this.categoriesPlaylistData[categoryName] = this.processItems(
-          data.value
+        this.$set(
+          this.categoriesPlaylistData,
+          categoryName,
+          this.processItems(data.value)
         )
       }
     },
