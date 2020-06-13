@@ -65,7 +65,7 @@ export default {
       type: 'video',
       channelId: 'UCYkldEK001GxR884OZMFnRw',
     })
-    this.latestData = this.restructureAndFilterItems(response).slice(0, 5)
+    this.latestData = this.processItems(response).slice(0, 5)
   },
   data() {
     return {
@@ -108,7 +108,7 @@ export default {
         type: 'video',
         channelId: 'UCYkldEK001GxR884OZMFnRw',
       })
-      this.popularData = this.restructureAndFilterItems(response)
+      this.popularData = this.processItems(response)
     },
     fetchYoutubePlaylistItems(playlistId) {
       return this.$fetchYoutubePlaylistItems({
@@ -135,12 +135,12 @@ export default {
     mapDataToCategoriesPlaylist(data, index) {
       if (data.status === 'fulfilled') {
         const categoryName = INVERTED_PLAYLIST_MAPPING[this.playlistIds[index]]
-        this.categoriesPlaylistData[
-          categoryName
-        ] = this.restructureAndFilterItems(data.value)
+        this.categoriesPlaylistData[categoryName] = this.processItems(
+          data.value
+        )
       }
     },
-    restructureAndFilterItems(response = {}) {
+    processItems(response = {}) {
       const items = response.items ?? []
       return items.map(this.restructureItem).filter(this.isValidYoutubeVideo)
     },
