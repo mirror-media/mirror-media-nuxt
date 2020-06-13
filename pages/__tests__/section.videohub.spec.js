@@ -76,7 +76,7 @@ describe('restructureItem method', () => {
         },
       },
     }
-    expect(wrapper.vm.restructureItem(origin)).toMatchObject({
+    expect(wrapper.vm.restructureItem(origin)).toEqual({
       videoId: videoIdMock,
       title: titleMock,
       thumbnails: thumbnailsUrlMock,
@@ -96,7 +96,7 @@ describe('restructureItem method', () => {
         },
       },
     }
-    expect(wrapper.vm.restructureItem(origin)).toMatchObject({
+    expect(wrapper.vm.restructureItem(origin)).toEqual({
       videoId: videoIdMock,
       title: titleMock,
       thumbnails: thumbnailsUrlMock,
