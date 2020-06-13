@@ -96,9 +96,9 @@ export default {
   methods: {
     async fetchAndSetCategoriesPlaylistData() {
       const response = await Promise.allSettled(
-        this.playlistIds.map(this.fetchYoutubePlaylistItems)
+        this.playlistIds.forEach(this.fetchYoutubePlaylistItems)
       )
-      response.map(this.mapDataToCategoriesPlaylist)
+      response.forEach(this.mapDataToCategoriesPlaylist)
     },
     async fetchAndSetPopularData() {
       const response = await this.$fetchYoutubeSearch({
@@ -126,7 +126,8 @@ export default {
     },
     isValidYoutubeVideo(item) {
       // for specific title from Youtube response data
-      return item.title !== 'Deleted video' && item.title !== 'Private video'
+      const invalidTitles = ['Deleted video', 'Private video']
+      return !invalidTitles.includes(item.title)
     },
     mapCategoryToPlatlistId(category) {
       return PLAYLIST_MAPPING[category.name]
