@@ -111,6 +111,7 @@ export default {
       .linked-item__title {
         @include media-breakpoint-up(md) {
           padding: 5px 18px 5px 19px;
+          margin-bottom: 50px;
           color: #fff;
           line-height: 1.6;
         }
