@@ -1,9 +1,15 @@
 import page from '../section/topic.vue'
-import UIArticleList from '~/components/UIArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
-  stubs: ['client-only'],
+  mocks: {
+    $ua: {
+      isFromPc() {
+        return true
+      },
+    },
+  },
+  stubs: ['client-only', 'GPTAD'],
 })
 
 describe('stripHtmlTag method', () => {
@@ -52,8 +58,7 @@ describe('component methods', () => {
     const wrapper = createWrapper(page)
 
     wrapper.vm.setListData(responseMock)
-    const list = wrapper.findComponent(UIArticleList)
-    expect(list.props().listData).toEqual([
+    expect(wrapper.vm.listData).toEqual([
       {
         id: idMock,
         href: `/topic/${idMock}`,
@@ -94,8 +99,8 @@ describe('component methods', () => {
 
     const wrapper = createWrapper(page)
     wrapper.vm.setListData(responseMock)
-    const list = wrapper.findComponent(UIArticleList)
-    expect(list.props().listData).toEqual([
+
+    expect(wrapper.vm.listData).toEqual([
       {
         id: idMock,
         href: `/topic/${idMock}`,
