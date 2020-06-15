@@ -58,13 +58,7 @@ export default {
     UIVideoSubscriptions,
   },
   async fetch() {
-    const response = await this.$fetchYoutubeSearch({
-      maxResults: 10,
-      order: 'date',
-      part: 'snippet',
-      type: 'video',
-      channelId: 'UCYkldEK001GxR884OZMFnRw',
-    })
+    const response = await this.fetchChannelData({ order: 'date' })
     this.latestData = this.processItems(response).slice(0, 5)
   },
   data() {
@@ -101,14 +95,17 @@ export default {
       response.forEach(this.mapDataToCategoriesPlaylist)
     },
     async fetchAndSetPopularData() {
-      const response = await this.$fetchYoutubeSearch({
+      const response = await this.fetchChannelData({ order: 'viewCount' })
+      this.popularData = this.processItems(response)
+    },
+    fetchChannelData({ order = 'date' } = {}) {
+      return this.$fetchYoutubeSearch({
+        channelId: 'UCYkldEK001GxR884OZMFnRw',
         maxResults: 10,
-        order: 'viewCount',
+        order,
         part: 'snippet',
         type: 'video',
-        channelId: 'UCYkldEK001GxR884OZMFnRw',
       })
-      this.popularData = this.processItems(response)
     },
     fetchYoutubePlaylistItems(playlistId) {
       return this.$fetchYoutubePlaylistItems({
