@@ -39,7 +39,7 @@ export default {
       maxResults: 1,
       id: this.videoId,
     })
-    this.videoData = response.items?.[0]?.snippet
+    this.videoData = response.items?.[0]?.snippet ?? {}
   },
   data() {
     return {
@@ -49,22 +49,22 @@ export default {
   },
   computed: {
     channelId() {
-      return this.videoData?.channelId
+      return this.videoData.channelId
     },
     datetime() {
-      return this.$dayjs(this.videoData?.publishedAt).format(
+      return this.$dayjs(this.videoData.publishedAt).format(
         'YYYY/MM/DD HH:mm:ss'
       )
     },
     descriptionParsed() {
-      const description = this.videoData?.description ?? ''
+      const description = this.videoData.description ?? ''
       return description.replace(/↵|\n/g, '<br>').split('-----')[0]
     },
     hasLatestItems() {
       return this.listDataLatest.length > 0
     },
     title() {
-      return this.videoData?.title
+      return this.videoData.title
     },
     videoId() {
       return this.$route.params.id
