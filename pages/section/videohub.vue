@@ -84,17 +84,17 @@ export default {
     },
   },
   beforeMount() {
-    this.fetchAndSetPopularData()
-    this.fetchAndSetCategoriesPlaylistData()
+    this.fetchPopularData()
+    this.fetchCategoriesPlaylistData()
   },
   methods: {
-    async fetchAndSetCategoriesPlaylistData() {
+    async fetchCategoriesPlaylistData() {
       const response = await Promise.allSettled(
         this.playlistIds.map(this.fetchYoutubePlaylistItems)
       )
       response.forEach(this.mapDataToCategoriesPlaylist)
     },
-    async fetchAndSetPopularData() {
+    async fetchPopularData() {
       const response = await this.fetchChannelData({ order: 'viewCount' })
       this.popularData = this.processItems(response)
     },
