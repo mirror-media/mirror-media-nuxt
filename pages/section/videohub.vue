@@ -30,21 +30,23 @@ const PLAYLIST_MAPPING = {
   // 鏡封面
   video_coverstory: 'PLftq_bkhPR3ZtDGBhyqVGObQXazG_O3M3',
   // 鏡娛樂
-  video_ent_headline: 'PLftq_bkhPR3ZHVK8_764az4C3eE2dABtf',
+  video_entertainment: 'PLftq_bkhPR3aj8UaqBvel6wia54AM5wlh',
   // 鏡社會
-  video_society: 'PLftq_bkhPR3YGhYcRZ-AHewlabCrXGwRX',
+  video_society: 'PLftq_bkhPR3bLVBh5khl2pLxgFoPwrbfl',
   // 鏡調查
-  video_investigation: 'PLftq_bkhPR3Y022jEP9hma-1RTcd5K5bO',
-  // 財經理財
-  video_finance: 'PLftq_bkhPR3ZSuBsj7HYS91uZ4ivFRYZv',
+  video_investigation: 'PLftq_bkhPR3YOrSnIpcqSkY3hPE2TjXfW',
+  // 鏡財經
+  video_finance: 'PLftq_bkhPR3afBv0Wg_oUqjd_pkWIJm2h',
   // 鏡人物
-  video_people: 'PLftq_bkhPR3ZrjMn1hahyZB40QCEHLWhx',
+  video_people: 'PLftq_bkhPR3YkNjH8VQZ__8nXZ9INIjAu',
   // 鏡食旅
   video_foodtravel: 'PLftq_bkhPR3baCfd6RU_1hbkY8ynXssun',
   // 娛樂透視
   video_ent_perspective: 'PLftq_bkhPR3YxUNEIHIMA2fsM-DqxCHMb',
-  // 汽車鐘錶
-  // video_carandwatch: '',
+  // 鏡錶誌
+  // video_watch: '',
+  // 鏡車誌
+  // video_car: '',
 }
 
 const INVERTED_PLAYLIST_MAPPING = _.invert(PLAYLIST_MAPPING)
