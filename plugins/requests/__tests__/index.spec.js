@@ -81,12 +81,17 @@ describe('buildYoutubeParams function', () => {
       id: 'TEST',
       channelId: 'ABC',
       safeSearch: 'none',
+      ids: ['abc', 'efg'],
     }
 
     expect(buildYoutubeParams({ id: data.id })).toBe(`?id=${data.id}`)
 
+    expect(buildYoutubeParams({ ids: data.ids })).toBe(
+      `?ids=${data.ids[0]}&ids=${data.ids[1]}`
+    )
+
     expect(buildYoutubeParams(data)).toBe(
-      `?maxResults=${data.maxResults}&order=${data.order}&part=${data.part}&id=${data.id}&channelId=${data.channelId}&safeSearch=${data.safeSearch}`
+      `?maxResults=${data.maxResults}&order=${data.order}&part=${data.part}&id=${data.id}&channelId=${data.channelId}&safeSearch=${data.safeSearch}&ids=${data.ids[0]}&ids=${data.ids[1]}`
     )
   })
 })
