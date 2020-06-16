@@ -6,17 +6,6 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper()
 
-describe('heading', () => {
-  test('should have proper heading', () => {
-    const wrapper = createWrapper(UIVideoLatest, {
-      propsData: {
-        items: [{ videoId: 'test' }],
-      },
-    })
-    expect(wrapper.text()).toContain('最新影片')
-  })
-})
-
 describe('the first item link', () => {
   test('should have proper link href', () => {
     const videoId = 'test'
