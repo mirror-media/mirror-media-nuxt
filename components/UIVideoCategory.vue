@@ -183,7 +183,7 @@ export default {
     }
   }
   // 鏡娛樂
-  &.video_ent_headline {
+  &.video_entertainment {
     .video-category__heading {
       &::before {
         background-color: #bf3385;
@@ -230,7 +230,7 @@ export default {
       }
     }
   }
-  // 財經理財
+  // 鏡財經
   &.video_finance {
     .video-category__heading {
       &::before {
@@ -294,19 +294,35 @@ export default {
       }
     }
   }
-  // 汽車鐘錶
-  &.video_carandwatch {
+  // 鏡錶誌
+  &.video_watch {
     .video-category__heading {
       &::before {
-        background-color: #969696;
+        background-color: #003366;
       }
     }
     @include media-breakpoint-up(md) {
       .video-category__heading {
-        color: #969696;
+        color: #003366;
       }
       .video-category__first {
-        background-color: #969696;
+        background-color: #003366;
+      }
+    }
+  }
+  // 鏡車誌
+  &.video_car {
+    .video-category__heading {
+      &::before {
+        background-color: #4a4a4a;
+      }
+    }
+    @include media-breakpoint-up(md) {
+      .video-category__heading {
+        color: #4a4a4a;
+      }
+      .video-category__first {
+        background-color: #4a4a4a;
       }
     }
   }
