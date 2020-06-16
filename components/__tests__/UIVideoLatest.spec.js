@@ -17,6 +17,19 @@ describe('heading', () => {
   })
 })
 
+describe('the first item link', () => {
+  test('should have proper link href', () => {
+    const videoId = 'test'
+    const wrapper = createWrapper(UIVideoLatest, {
+      propsData: {
+        items: [{ videoId }],
+      },
+    })
+    const link = wrapper.get('a')
+    expect(link.attributes().href).toBe(`/video/${videoId}`)
+  })
+})
+
 describe('youtube iframe', () => {
   test('should have youtube iframe', () => {
     const wrapper = createWrapper(UIVideoLatest, {
