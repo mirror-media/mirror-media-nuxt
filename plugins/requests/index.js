@@ -63,7 +63,7 @@ export function buildParams(params = {}) {
     const paramsKey = Object.keys(params)
 
     if (paramsKey.includes('endpoint')) {
-      return _.isArray(params.endpoint)
+      return Array.isArray(params.endpoint)
         ? `?${params.endpoint
             .map((endpoint) => `endpoint=${endpoint}`)
             .join('&')}`
@@ -99,7 +99,12 @@ export function buildParams(params = {}) {
 export function buildYoutubeParams(params = {}) {
   if (isPureObject(params) && Object.keys(params).length > 0) {
     const queryParams = Object.keys(params)
-      .map((key) => `${key}=${params[key]}`)
+      .map((key) => {
+        if (Array.isArray(params[key])) {
+          return params[key].map((value) => `${key}=${value}`).join('&')
+        }
+        return `${key}=${params[key]}`
+      })
       .join('&')
     return `?${queryParams}`
   }
@@ -175,6 +180,10 @@ export default (context, inject) => {
 
   inject('fetchWatches', (params) =>
     fetchAPIData(`/watches${buildParams(params)}`)
+  )
+
+  inject('fetchYoutubeChannels', (params) =>
+    fetchAPIData(`/youtube/channels${buildYoutubeParams(params)}`)
   )
 
   inject('fetchYoutubePlaylistItems', (params) =>
