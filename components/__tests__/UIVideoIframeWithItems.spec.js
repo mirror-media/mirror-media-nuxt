@@ -1,5 +1,5 @@
 import UILinkedItemWithTitle from '../UILinkedItemWithTitle.vue'
-import UIVideoLatest from '../UIVideoLatest.vue'
+import UIVideoIframeWithItems from '../UIVideoIframeWithItems.vue'
 import UIYoutubeIframe from '../UIYoutubeIframe.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
@@ -9,7 +9,7 @@ const createWrapper = createWrapperHelper()
 describe('the first item link', () => {
   test('should have proper link href', () => {
     const videoId = 'test'
-    const wrapper = createWrapper(UIVideoLatest, {
+    const wrapper = createWrapper(UIVideoIframeWithItems, {
       propsData: {
         items: [{ videoId }],
       },
@@ -21,7 +21,7 @@ describe('the first item link', () => {
 
 describe('youtube iframe', () => {
   test('should have youtube iframe', () => {
-    const wrapper = createWrapper(UIVideoLatest, {
+    const wrapper = createWrapper(UIVideoIframeWithItems, {
       propsData: {
         items: [{ videoId: 'test' }],
       },
@@ -31,24 +31,24 @@ describe('youtube iframe', () => {
 })
 
 describe('props is empty array', () => {
-  test('should not render UIVideoLatest if "latest" props is empty array', () => {
-    const wrapper = createWrapper(UIVideoLatest, {
+  test('should not render UIVideoIframeWithItems if "items" props is empty array', () => {
+    const wrapper = createWrapper(UIVideoIframeWithItems, {
       propsData: {
         items: [],
       },
     })
-    expect(wrapper.find('.video-latest').exists()).toBe(false)
+    expect(wrapper.find('.video-iframe-items').exists()).toBe(false)
   })
 })
 
-describe('latest items exclude the first item', () => {
+describe('items exclude the first item', () => {
   test('should render proper number of UILinkedItemWithTitle', () => {
     const items = [
       { videoId: 'test1' },
       { videoId: 'test2' },
       { videoId: 'test3' },
     ]
-    const wrapper = createWrapper(UIVideoLatest, {
+    const wrapper = createWrapper(UIVideoIframeWithItems, {
       propsData: {
         items,
       },
@@ -65,7 +65,7 @@ describe('latest items exclude the first item', () => {
       { videoId: 'test5' },
       { videoId: 'test6' },
     ]
-    const wrapper = createWrapper(UIVideoLatest, {
+    const wrapper = createWrapper(UIVideoIframeWithItems, {
       propsData: {
         items,
       },
