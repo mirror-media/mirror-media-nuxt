@@ -1,10 +1,10 @@
 <template>
   <section class="section">
-    <UIVideoLatest :items="latestData" class="section__latest">
+    <UIVideoIframeWithItems :items="latestData" class="section__latest">
       <template v-slot:heading>
         <h1>最新影片</h1>
       </template>
-    </UIVideoLatest>
+    </UIVideoIframeWithItems>
     <div class="section__bottom-wrapper">
       <UIVideoPopular :items="popularData" class="section__popular" />
       <UIVideoSubscriptions class="section__subscriptions" />
@@ -25,7 +25,7 @@
 import { mapState } from 'vuex'
 import _ from 'lodash'
 import UIVideoCategory from '~/components/UIVideoCategory.vue'
-import UIVideoLatest from '~/components/UIVideoLatest.vue'
+import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import UIVideoPopular from '~/components/UIVideoPopular.vue'
 import UIVideoSubscriptions from '~/components/UIVideoSubscriptions.vue'
 
@@ -59,7 +59,7 @@ export default {
   name: 'SectionVideohub',
   components: {
     UIVideoCategory,
-    UIVideoLatest,
+    UIVideoIframeWithItems,
     UIVideoPopular,
     UIVideoSubscriptions,
   },

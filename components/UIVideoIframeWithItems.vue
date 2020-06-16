@@ -1,9 +1,9 @@
 <template>
-  <section v-if="hasItmes" class="video-latest">
-    <div class="video-latest__first">
+  <section v-if="hasItmes" class="video-iframe-items">
+    <div class="video-iframe-items__first">
       <UIYoutubeIframe :videoId="theFirstItem.videoId" />
       <a
-        class="video-latest__first-title"
+        class="video-iframe-items__first-title"
         :href="`/video/${theFirstItem.videoId}`"
         target="_blank"
         rel="noopener noreferrer"
@@ -11,15 +11,15 @@
       />
     </div>
     <slot name="heading" />
-    <div class="video-latest__remaining">
+    <div class="video-iframe-items__remaining">
       <UILinkedItemWithTitle
         v-for="item in remainingItems"
-        :key="`latest-${item.videoId}`"
+        :key="`item-${item.videoId}`"
         :title="item.title"
         :href="`/video/${item.videoId}`"
         :imgSrc="item.thumbnails"
         textPositionInMdViewport="right"
-        class="video-latest__item"
+        class="video-iframe-items__item"
       />
     </div>
   </section>
@@ -30,7 +30,7 @@ import UILinkedItemWithTitle from './UILinkedItemWithTitle.vue'
 import UIYoutubeIframe from './UIYoutubeIframe.vue'
 
 export default {
-  name: 'UIVideoLatest',
+  name: 'UIVideoIframeWithItems',
   components: {
     UILinkedItemWithTitle,
     UIYoutubeIframe,
@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.video-latest {
+.video-iframe-items {
   @include media-breakpoint-up(xl) {
     display: flex;
     flex-wrap: wrap;
@@ -123,7 +123,7 @@ export default {
   }
 
   &__item {
-    + .video-latest__item {
+    + .video-iframe-items__item {
       margin-top: 20px;
     }
     &.align-right {
