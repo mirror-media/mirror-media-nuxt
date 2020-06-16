@@ -156,15 +156,11 @@ export default {
 
 <style lang="scss" scoped>
 .section {
-  > * {
+  &__latest {
     @include media-breakpoint-up(xl) {
       width: 1024px;
       margin-left: auto;
       margin-right: auto;
-    }
-  }
-  &__latest {
-    @include media-breakpoint-up(xl) {
       padding: 0 0 53px 0;
     }
   }
@@ -181,23 +177,29 @@ export default {
     }
   }
   &__popular {
+    padding: 30px 0 32px 0;
     @include media-breakpoint-up(xl) {
       order: 1;
+      position: relative;
+      left: calc((100% - 1024px) / 2);
+      width: 239px;
+      padding: 0;
     }
   }
   &__subscriptions {
     @include media-breakpoint-up(xl) {
       order: 0;
-      width: 100vw;
-      margin: 0 calc((-100vw + 1024px) / 2);
+      width: 100%;
     }
   }
   &__categories-wrapper {
     padding: 0 0 29px;
     @include media-breakpoint-up(xl) {
       order: 2;
-      flex: 1;
-      padding: 0 0 0 39px;
+      width: calc(1024px - 239px - 39px);
+      margin-left: calc((100% - 1024px) / 2 + 39px);
+      margin-right: auto;
+      padding: 0;
     }
   }
   &__category {

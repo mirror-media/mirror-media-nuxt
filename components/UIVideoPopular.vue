@@ -39,11 +39,8 @@ export default {
 
 <style lang="scss" scoped>
 .video-popular {
-  padding: 30px 0 32px 0;
   border-top: 1px solid #979797;
   @include media-breakpoint-up(xl) {
-    width: 239px;
-    padding: 0 39px 0 0;
     border-top: none;
     border-right: 1px solid #979797;
   }

@@ -4,7 +4,7 @@
       <UIYoutubeIframe :videoId="theFirstItem.videoId" />
       <a
         class="video-latest__first-title"
-        href="http://"
+        :href="`/video/${theFirstItem.videoId}`"
         target="_blank"
         rel="noopener noreferrer"
         v-text="theFirstItem.title"
