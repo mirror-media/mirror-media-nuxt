@@ -10,7 +10,7 @@
         v-text="theFirstItem.title"
       />
     </div>
-    <h1 class="video-latest__heading">最新影片</h1>
+    <slot name="heading" />
     <div class="video-latest__remaining">
       <UILinkedItemWithTitle
         v-for="item in remainingItems"
@@ -61,6 +61,34 @@ export default {
     display: flex;
     flex-wrap: wrap;
   }
+
+  > h1,
+  &__remaining {
+    width: calc(100% - 40px);
+    margin-left: auto;
+    margin-right: auto;
+    @include media-breakpoint-up(md) {
+      width: 60%;
+    }
+    @include media-breakpoint-up(xl) {
+      width: 100%;
+    }
+  }
+
+  > h1 {
+    color: #4a4a4a;
+    font-size: 20px;
+    font-weight: 600;
+    @include media-breakpoint-up(xl) {
+      order: 0;
+    }
+    + * {
+      margin-top: 10px;
+      @include media-breakpoint-up(xl) {
+        margin-top: 20px;
+      }
+    }
+  }
   &__first {
     @include media-breakpoint-up(xl) {
       order: 1;
@@ -80,31 +108,6 @@ export default {
         font-weight: 500;
         line-height: 1.6;
       }
-    }
-  }
-
-  &__heading,
-  &__remaining {
-    width: calc(100% - 40px);
-    margin-left: auto;
-    margin-right: auto;
-    @include media-breakpoint-up(md) {
-      width: 60%;
-    }
-    @include media-breakpoint-up(xl) {
-      width: 100%;
-    }
-  }
-
-  &__heading {
-    color: #4a4a4a;
-    font-size: 20px;
-    font-weight: 600;
-    @include media-breakpoint-up(xl) {
-      order: 0;
-    }
-    + * {
-      margin-top: 10px;
     }
   }
 

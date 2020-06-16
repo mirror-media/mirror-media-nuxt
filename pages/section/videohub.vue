@@ -1,6 +1,10 @@
 <template>
   <section class="section">
-    <UIVideoLatest :items="latestData" class="section__latest" />
+    <UIVideoLatest :items="latestData" class="section__latest">
+      <template v-slot:heading>
+        <h1>最新影片</h1>
+      </template>
+    </UIVideoLatest>
     <div class="section__bottom-wrapper">
       <UIVideoPopular :items="popularData" class="section__popular" />
       <UIVideoSubscriptions class="section__subscriptions" />
