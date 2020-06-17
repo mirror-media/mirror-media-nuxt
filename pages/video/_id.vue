@@ -12,6 +12,10 @@
       <h1 class="video__title" v-text="title" />
       <div class="video__data-share">
         <p class="video__datetime" v-text="datetime" />
+        <div class="video__share">
+          <UIShareFacebook />
+          <UIShareLine />
+        </div>
       </div>
       <p class="video__description" v-html="descriptionParsed" />
     </article>
@@ -55,6 +59,8 @@
 
 <script>
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
+import UIShareFacebook from '~/components/UIShareFacebook.vue'
+import UIShareLine from '~/components/UIShareLine.vue'
 import UIYoutubeIframe from '~/components/UIYoutubeIframe.vue'
 import gptUnits from '~/constants/gptUnits'
 
@@ -62,6 +68,8 @@ export default {
   name: 'Video',
   components: {
     UILinkedItemWithTitle,
+    UIShareFacebook,
+    UIShareLine,
     UIYoutubeIframe,
   },
   async fetch() {
@@ -209,6 +217,8 @@ export default {
     }
   }
   &__data-share {
+    display: flex;
+    justify-content: space-between;
     + * {
       margin-top: 0.5em;
     }
@@ -217,6 +227,18 @@ export default {
     color: #a0a0a0;
     font-size: 12px;
     line-height: 1.88;
+  }
+  &__share {
+    display: flex;
+    > a + a {
+      margin-left: 10px;
+    }
+    &::v-deep {
+      img {
+        width: 35px;
+        height: 35px;
+      }
+    }
   }
   &__description {
     color: #34495e;
