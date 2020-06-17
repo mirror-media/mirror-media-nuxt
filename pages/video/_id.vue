@@ -150,6 +150,7 @@ export default {
   padding: 0 0 20px;
   @include media-breakpoint-up(xl) {
     display: flex;
+    flex-wrap: wrap;
     max-width: 1160px;
     margin: 0 auto;
     padding: 20px 0;
