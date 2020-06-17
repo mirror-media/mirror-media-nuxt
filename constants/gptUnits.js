@@ -2071,55 +2071,7 @@ export default {
   },
 
   // videohub
-  '5975ab2de531830d00e32b2f': {
-    APPHD: {
-      adUnitCode: 'mirror_APP_oth_300x250_HD',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [336, 280],
-      ],
-    },
-    APPAT1: {
-      adUnitCode: 'mirror_APP_oth_300x250_AT1',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [336, 280],
-      ],
-    },
-    APPAT2: {
-      adUnitCode: 'mirror_APP_oth_300x250_AT2',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [336, 280],
-      ],
-    },
-    APPE1: {
-      adUnitCode: 'mirror_APP_oth_300x250_E1',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [336, 280],
-      ],
-    },
-    APPFT: {
-      adUnitCode: 'mirror_APP_oth_300x250_FT',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [336, 280],
-      ],
-    },
-    APPST: {
-      adUnitCode: 'mirror_APP_ros_320x100_ST',
-      adSize: [
-        [1, 1],
-        [320, 50],
-        [320, 100],
-      ],
-    },
+  videohub: {
     MBHD: {
       adUnitCode: 'mirror_m_video_300x250_HD',
       adSize: [
@@ -2129,27 +2081,12 @@ export default {
         [336, 280],
       ],
     },
-    MBAR1: {
-      adUnitCode: 'mirror_m_oth_300x250_AT1',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [336, 280],
-      ],
-    },
-    MBAR2: {
-      adUnitCode: 'mirror_m_oth_300x250_AT2',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [336, 280],
-      ],
-    },
     MBE1: {
       adUnitCode: 'mirror_m_video_300x250_E1',
       adSize: [
         [1, 1],
         [300, 250],
+        [320, 100],
         [336, 280],
       ],
     },
@@ -2197,59 +2134,6 @@ export default {
         [320, 100],
       ],
     },
-    LMBHD: {
-      adUnitCode: 'mirror_m_video_300x250_HD',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [320, 100],
-        [336, 280],
-      ],
-    },
-    LMBL1: {
-      adUnitCode: 'mirror_m_oth_300x250_L1',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [336, 280],
-      ],
-    },
-    LMBFT: {
-      adUnitCode: 'mirror_m_video_300x250_FT',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [320, 100],
-        [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     PCHD: {
       adUnitCode: 'mirror_pc_video_970x250_HD',
       adSize: [
@@ -2266,46 +2150,6 @@ export default {
         [300, 600],
       ],
     },
-    PCR2: {
-      adUnitCode: 'mirror_pc_oth_300x600_R2',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [300, 600],
-      ],
-    },
-    PCR2B: {
-      adUnitCode: 'mirror_pc_ros_300x600_R2',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [300, 600],
-      ],
-    },
-    PCAR: {
-      adUnitCode: 'mirror_pc_oth_640x390_AT1',
-      adSize: [
-        [1, 1],
-        [468, 60],
-        [640, 390],
-      ],
-    },
-    PCE1: {
-      adUnitCode: 'mirror_pc_oth_300x250_E1',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [336, 280],
-      ],
-    },
-    PCE2: {
-      adUnitCode: 'mirror_pc_oth_300x250_E2',
-      adSize: [
-        [1, 1],
-        [300, 250],
-        [336, 280],
-      ],
-    },
     PCFT: {
       adUnitCode: 'mirror_pc_video_970x250_FT',
       adSize: [
@@ -2313,46 +2157,6 @@ export default {
         [970, 90],
         [970, 250],
       ],
-    },
-    PCPOP3: {
-      adUnitCode: 'mirror_RWD_oth_fluid_NA3_ap',
-      adSize: ['fluid'],
-    },
-    PCPOP5: {
-      adUnitCode: 'mirror_RWD_oth_fluid_NA5_ap',
-      adSize: ['fluid'],
-    },
-    PCPOP7: {
-      adUnitCode: 'mirror_RWD_oth_fluid_NA7_ap',
-      adSize: ['fluid'],
-    },
-    LPCHD: {
-      adUnitCode: 'mirror_pc_video_970x250_HD',
-      adSize: [
-        [1, 1],
-        [970, 250],
-        [970, 90],
-      ],
-    },
-    LPCFT: {
-      adUnitCode: 'mirror_pc_video_970x250_FT',
-      adSize: [
-        [1, 1],
-        [970, 90],
-        [970, 250],
-      ],
-    },
-    LPCNA3: {
-      adUnitCode: 'mirror_RWD_oth_fluid_NA3',
-      adSize: ['fluid'],
-    },
-    LPCNA5: {
-      adUnitCode: 'mirror_RWD_oth_fluid_NA5',
-      adSize: ['fluid'],
-    },
-    LPCNA9: {
-      adUnitCode: 'mirror_RWD_oth_fluid_NA9',
-      adSize: ['fluid'],
     },
     LOGO: {
       adUnitCode: 'mirror_RWD_ros_110x50_logo',

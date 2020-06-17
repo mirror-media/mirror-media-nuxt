@@ -8,6 +8,13 @@
     <div class="section__bottom-wrapper">
       <UIVideoPopular :items="popularData" class="section__popular" />
       <UIVideoSubscriptions class="section__subscriptions" />
+      <client-only>
+        <GPTAD
+          class="section__ad"
+          :adUnit="adBottom.adUnitCode"
+          :adSize="adBottom.adSize"
+        />
+      </client-only>
       <div class="section__categories-wrapper">
         <UIVideoCategory
           v-for="category in categories"
@@ -28,6 +35,7 @@ import UIVideoCategory from '~/components/UIVideoCategory.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import UIVideoPopular from '~/components/UIVideoPopular.vue'
 import UIVideoSubscriptions from '~/components/UIVideoSubscriptions.vue'
+import gptUnits from '~/constants/gptUnits'
 
 // temporary
 const PLAYLIST_MAPPING = {
@@ -72,6 +80,7 @@ export default {
       latestData: [],
       popularData: [],
       categoriesPlaylistData: {},
+      videoAdUnits: gptUnits.videohub ?? {},
     }
   },
   computed: {
@@ -80,6 +89,12 @@ export default {
         return state.sections.data.items.find(this.isThisSection) ?? {}
       },
     }),
+    adBottom() {
+      return this.videoAdUnits[`${this.adDevice}FT`] ?? {}
+    },
+    adDevice() {
+      return this.$ua.isFromPc() ? 'PC' : 'MB'
+    },
     categories() {
       return this.section.categories ?? []
     },
@@ -215,6 +230,11 @@ export default {
         margin-top: 30px;
         border-top: none;
       }
+    }
+  }
+  &__ad {
+    @include media-breakpoint-up(xl) {
+      order: 3;
     }
   }
 }
