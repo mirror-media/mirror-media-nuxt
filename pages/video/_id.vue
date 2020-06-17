@@ -2,30 +2,61 @@
   <section class="video">
     <article class="video__content-wrapper">
       <UIYoutubeIframe :videoId="videoId" class="video__iframe" />
+      <client-only>
+        <GPTAD
+          class="section__ad"
+          :adUnit="getAdUnit('HD').adUnitCode"
+          :adSize="getAdUnit('HD').adSize"
+        />
+      </client-only>
       <h1 class="video__title" v-text="title" />
       <div class="video__data-share">
         <p class="video__datetime" v-text="datetime" />
       </div>
       <p class="video__description" v-html="descriptionParsed" />
     </article>
-    <div v-if="hasLatestItems" class="video__latest-wrapper">
-      <h2 class="video__heading">最新影音</h2>
-      <UILinkedItemWithTitle
-        v-for="item in listDataLatest"
-        :key="item.videoId"
-        :title="item.title"
-        :href="`/video/${item.videoId}`"
-        :imgSrc="item.thumbnails"
-        textPositionInMdViewport="right"
-        class="video__latest"
+    <client-only v-if="isMobile">
+      <GPTAD
+        class="section__ad"
+        :adUnit="getAdUnit('E1').adUnitCode"
+        :adSize="getAdUnit('E1').adSize"
       />
+    </client-only>
+    <div class="video__latest-wrapper">
+      <client-only v-if="!isMobile">
+        <GPTAD
+          class="section__ad"
+          :adUnit="getAdUnit('R1').adUnitCode"
+          :adSize="getAdUnit('R1').adSize"
+        />
+      </client-only>
+      <template v-if="hasLatestItems">
+        <h2 class="video__heading">最新影音</h2>
+        <UILinkedItemWithTitle
+          v-for="item in listDataLatest"
+          :key="item.videoId"
+          :title="item.title"
+          :href="`/video/${item.videoId}`"
+          :imgSrc="item.thumbnails"
+          textPositionInMdViewport="right"
+          class="video__latest"
+        />
+      </template>
     </div>
+    <client-only>
+      <GPTAD
+        class="section__ad"
+        :adUnit="getAdUnit('FT').adUnitCode"
+        :adSize="getAdUnit('FT').adSize"
+      />
+    </client-only>
   </section>
 </template>
 
 <script>
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIYoutubeIframe from '~/components/UIYoutubeIframe.vue'
+import gptUnits from '~/constants/gptUnits'
 
 export default {
   name: 'Video',
@@ -43,11 +74,15 @@ export default {
   },
   data() {
     return {
+      videoAdUnits: gptUnits.videohub ?? {},
       videoData: {},
       listDataLatest: [],
     }
   },
   computed: {
+    adDevice() {
+      return this.$ua.isFromPc() ? 'PC' : 'MB'
+    },
     channelId() {
       return this.videoData.channelId
     },
@@ -62,6 +97,9 @@ export default {
     },
     hasLatestItems() {
       return this.listDataLatest.length > 0
+    },
+    isMobile() {
+      return this.adDevice === 'MB'
     },
     title() {
       return this.videoData.title
@@ -84,6 +122,9 @@ export default {
         channelId,
       })
       this.listDataLatest = this.restructureAndFilterItems(response)
+    },
+    getAdUnit(position) {
+      return this.videoAdUnits[`${this.adDevice}${position}`] ?? {}
     },
     isValidYoutubeVideo(item) {
       // for specific title from Youtube response data

@@ -10,6 +10,13 @@
         v-text="theFirstItem.title"
       />
     </div>
+    <client-only>
+      <GPTAD
+        class="video-iframe-items__ad"
+        :adUnit="ad.adUnitCode"
+        :adSize="ad.adSize"
+      />
+    </client-only>
     <slot name="heading" />
     <div class="video-iframe-items__remaining">
       <UILinkedItemWithTitle
@@ -28,6 +35,7 @@
 <script>
 import UILinkedItemWithTitle from './UILinkedItemWithTitle.vue'
 import UIYoutubeIframe from './UIYoutubeIframe.vue'
+import gptUnits from '~/constants/gptUnits'
 
 export default {
   name: 'UIVideoIframeWithItems',
@@ -41,7 +49,18 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      videoAdUnits: gptUnits.videohub ?? {},
+    }
+  },
   computed: {
+    ad() {
+      return this.videoAdUnits[`${this.adDevice}HD`] ?? {}
+    },
+    adDevice() {
+      return this.$ua.isFromPc() ? 'PC' : 'MB'
+    },
     hasItmes() {
       return this.items.length > 0
     },
@@ -132,6 +151,12 @@ export default {
           margin-left: 20px;
         }
       }
+    }
+  }
+
+  &__ad {
+    @include media-breakpoint-up(xl) {
+      order: 0;
     }
   }
 }

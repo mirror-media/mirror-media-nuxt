@@ -14,7 +14,13 @@ const createWrapper = createWrapperHelper({
     $dayjs: jest.fn(() => ({
       format: jest.fn(),
     })),
+    $ua: {
+      isFromPc() {
+        return true
+      },
+    },
   },
+  stubs: ['client-only', 'GPTAD'],
 })
 
 describe('video id', () => {
