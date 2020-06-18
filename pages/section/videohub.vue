@@ -1,6 +1,10 @@
 <template>
   <section class="section">
-    <UIVideoIframeWithItems :items="latestData" class="section__latest">
+    <UIVideoIframeWithItems
+      :items="latestData"
+      textPositionInMdViewport="right"
+      class="section__latest"
+    >
       <template v-slot:heading>
         <h1>最新影片</h1>
       </template>

@@ -25,7 +25,7 @@
         :title="item.title"
         :href="`/video/${item.videoId}`"
         :imgSrc="item.thumbnails"
-        textPositionInMdViewport="right"
+        :textPositionInMdViewport="textPositionInMdViewport"
         class="video-iframe-items__item"
       />
     </div>
@@ -47,6 +47,10 @@ export default {
     items: {
       type: Array,
       required: true,
+    },
+    textPositionInMdViewport: {
+      type: String,
+      default: 'bottom',
     },
   },
   data() {
