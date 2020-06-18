@@ -101,9 +101,9 @@ export default {
         this.nextPageToken = response.nextPageToken
 
         if (this.nextPageToken) {
-          $state.complete()
-        } else {
           $state.loaded()
+        } else {
+          $state.complete()
         }
       } catch {
         $state.error()
