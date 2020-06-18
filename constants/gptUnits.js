@@ -1,4 +1,37 @@
 export default {
+  global: {
+    LOGO: {
+      adUnitCode: 'mirror_RWD_ros_110x50_logo',
+      adSize: [[95, 50]],
+    },
+    MB_FULL_SCREEN_FIRST: {
+      adUnitCode: 'mirror_m_ros_320x480_FS',
+      adSize: [
+        [1, 1],
+        [320, 480],
+        [320, 100],
+        [320, 50],
+      ],
+    },
+    MB_FULL_SCREEN_SECOND: {
+      adUnitCode: 'mirror_m_ros_320x480_AD2',
+      adSize: [
+        [1, 1],
+        [320, 480],
+        [320, 100],
+        [320, 50],
+      ],
+    },
+    MB_FULL_SCREEN_THIRD: {
+      adUnitCode: 'mirror_m_ros_320x480_innity',
+      adSize: [
+        [1, 1],
+        [320, 480],
+        [320, 100],
+        [320, 50],
+      ],
+    },
+  },
   default: {
     APPHD: {
       adUnitCode: 'mirror_APP_oth_300x250_HD',
@@ -98,33 +131,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_oth_320x100_ST',
       adSize: [
@@ -165,33 +171,6 @@ export default {
         [300, 250],
         [320, 100],
         [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
       ],
     },
     PCHD: {
@@ -310,39 +289,8 @@ export default {
       adUnitCode: 'mm_mobile_hp_fluid_NA9',
       adSize: ['fluid'],
     },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
-    },
   },
   home: {
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     LMBHD: {
       adUnitCode: 'mirror_m_hp_300x250_HD',
       adSize: [
@@ -407,10 +355,6 @@ export default {
     LPCNA9: {
       adUnitCode: 'mirror_pc_hp_fluid_NA9',
       adSize: ['fluid'],
-    },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
     },
   },
   other: {
@@ -554,33 +498,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_oth_320x100_ST',
       adSize: [
@@ -613,33 +530,6 @@ export default {
         [300, 250],
         [320, 100],
         [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
       ],
     },
     PCHD: {
@@ -745,10 +635,6 @@ export default {
     LPCNA9: {
       adUnitCode: 'mirror_RWD_oth_fluid_NA9',
       adSize: ['fluid'],
-    },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
     },
     AMP: {
       AMPHD: {
@@ -874,33 +760,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_news_320x100_ST',
       adSize: [
@@ -933,33 +792,6 @@ export default {
         [300, 250],
         [320, 100],
         [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
       ],
     },
     PCHD: {
@@ -1065,10 +897,6 @@ export default {
     LPCNA9: {
       adUnitCode: 'mirror_RWD_news_fluid_NA9',
       adSize: ['fluid'],
-    },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
     },
     AMP: {
       AMPHD: {
@@ -1198,33 +1026,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_fin_320x100_ST',
       adSize: [
@@ -1257,33 +1058,6 @@ export default {
         [300, 250],
         [320, 100],
         [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
       ],
     },
     PCHD: {
@@ -1389,10 +1163,6 @@ export default {
     LPCNA9: {
       adUnitCode: 'mirror_RWD_fin_fluid_NA9',
       adSize: ['fluid'],
-    },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
     },
     AMP: {
       AMPHD: {
@@ -1522,33 +1292,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_cul_320x100_ST',
       adSize: [
@@ -1581,33 +1324,6 @@ export default {
         [300, 250],
         [320, 100],
         [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
       ],
     },
     PCHD: {
@@ -1713,10 +1429,6 @@ export default {
     LPCNA9: {
       adUnitCode: 'mirror_RWD_cul_fluid_NA9',
       adSize: ['fluid'],
-    },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
     },
     AMP: {
       AMPHD: {
@@ -1846,33 +1558,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_mafa_320x100_ST',
       adSize: [
@@ -1905,33 +1590,6 @@ export default {
         [300, 250],
         [320, 100],
         [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
       ],
     },
     PCHD: {
@@ -2038,10 +1696,6 @@ export default {
       adUnitCode: 'mirror_RWD_mafa_fluid_NA9',
       adSize: ['fluid'],
     },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
-    },
     AMP: {
       AMPHD: {
         adUnitCode: 'mirror_AMP_mafa_300x250_HD',
@@ -2099,33 +1753,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_video_320x100_ST',
       adSize: [
@@ -2157,10 +1784,6 @@ export default {
         [970, 90],
         [970, 250],
       ],
-    },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
     },
   },
 
@@ -2264,33 +1887,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_int_320x100_ST',
       adSize: [
@@ -2323,33 +1919,6 @@ export default {
         [300, 250],
         [320, 100],
         [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
       ],
     },
     PCHD: {
@@ -2455,10 +2024,6 @@ export default {
     LPCNA9: {
       adUnitCode: 'mirror_RWD_int_fluid_NA9',
       adSize: ['fluid'],
-    },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
     },
     AMP: {
       AMPHD: {
@@ -2588,33 +2153,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_peo_320x100_ST',
       adSize: [
@@ -2647,33 +2185,6 @@ export default {
         [300, 250],
         [320, 100],
         [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
       ],
     },
     PCHD: {
@@ -2786,10 +2297,6 @@ export default {
     LPCNA9: {
       adUnitCode: 'mirror_RWD_peo_fluid_NA9',
       adSize: ['fluid'],
-    },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
     },
     AMP: {
       AMPHD: {
@@ -2919,33 +2426,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_ent_320x100_ST',
       adSize: [
@@ -2978,33 +2458,6 @@ export default {
         [300, 250],
         [320, 100],
         [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
       ],
     },
     PCHD: {
@@ -3110,10 +2563,6 @@ export default {
     LPCNA9: {
       adUnitCode: 'mirror_RWD_ent_fluid_NA9',
       adSize: ['fluid'],
-    },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
     },
     AMP: {
       AMPHD: {
@@ -3243,33 +2692,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_tra_320x100_ST',
       adSize: [
@@ -3319,33 +2741,6 @@ export default {
         [300, 250],
         [320, 100],
         [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
       ],
     },
     PCHD: {
@@ -3467,10 +2862,6 @@ export default {
     LPCNA9: {
       adUnitCode: 'mirror_RWD_tra_fluid_NA9',
       adSize: ['fluid'],
-    },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
     },
     AMP: {
       AMPHD: {
@@ -3690,33 +3081,6 @@ export default {
         [336, 280],
       ],
     },
-    MBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    MBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
     MBST: {
       adUnitCode: 'mirror_m_wat_320x100_ST',
       adSize: [
@@ -3765,33 +3129,6 @@ export default {
         [300, 250],
         [320, 100],
         [336, 280],
-      ],
-    },
-    LMBCVR: {
-      adUnitCode: 'mirror_m_ros_320x480_FS',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR2: {
-      adUnitCode: 'mirror_m_ros_320x480_AD2',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
-      ],
-    },
-    LMBCVR3: {
-      adUnitCode: 'mirror_m_ros_320x480_innity',
-      adSize: [
-        [1, 1],
-        [320, 480],
-        [320, 100],
-        [320, 50],
       ],
     },
     PCHD: {
@@ -3936,10 +3273,6 @@ export default {
     LPCNA9: {
       adUnitCode: 'mirror_RWD_wat_fluid_NA9',
       adSize: ['fluid'],
-    },
-    LOGO: {
-      adUnitCode: 'mirror_RWD_ros_110x50_logo',
-      adSize: [[95, 50]],
     },
     AMP: {
       AMPHD: {
