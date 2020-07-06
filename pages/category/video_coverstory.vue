@@ -89,7 +89,7 @@ export default {
         playlistId: PLAYLIST_MAPPING[this.categoryName],
         part: 'snippet',
         maxResults: 15,
-        nextPageToken,
+        pageToken: nextPageToken,
       })
     },
     async infiniteHandler($state) {
