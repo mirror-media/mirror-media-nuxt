@@ -7,7 +7,29 @@
     </UIVideoIframeWithItems>
     <div class="section__remaining">
       <UILinkedItemWithTitle
-        v-for="item in remainingItems"
+        :key="remainingItemsBeforeMobileAd.videoId"
+        :imgSrc="remainingItemsBeforeMobileAd.thumbnails"
+        :href="`/video/${remainingItemsBeforeMobileAd.videoId}`"
+        :title="remainingItemsBeforeMobileAd.title"
+        class="section__remaining-item"
+      />
+      <client-only>
+        <div class="section__ad">
+          <GPTAD :adUnit="adBottom.adUnitCode" :adSize="adBottom.adSize" />
+        </div>
+      </client-only>
+      <UILinkedItemWithTitle
+        v-for="item in remainingItemsAfterMobileAdBeforeDesktopAd"
+        :key="item.videoId"
+        :imgSrc="item.thumbnails"
+        :href="`/video/${item.videoId}`"
+        :title="item.title"
+        class="section__remaining-item"
+      />
+    </div>
+    <div v-if="hasLoadedMore" class="section__remaining">
+      <UILinkedItemWithTitle
+        v-for="item in remainingItemsAfterDesktopAd"
         :key="item.videoId"
         :imgSrc="item.thumbnails"
         :href="`/video/${item.videoId}`"
@@ -26,6 +48,7 @@
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
+import gptUnits from '~/constants/gptUnits'
 
 // temporary
 const PLAYLIST_MAPPING = {
@@ -67,17 +90,33 @@ export default {
     return {
       nextPageToken: '',
       playlistItems: [],
+      videoAdUnits: gptUnits.videohub ?? {},
     }
   },
   computed: {
+    adBottom() {
+      return this.videoAdUnits[`${this.adDevice}FT`] ?? {}
+    },
+    adDevice() {
+      return this.$ua.isFromPc() ? 'PC' : 'MB'
+    },
     categoryName() {
       return this.$route.path.split('/category/')[1]
     },
     firstFiveItems() {
       return this.playlistItems.slice(0, 5)
     },
-    remainingItems() {
-      return this.playlistItems.slice(5)
+    hasLoadedMore() {
+      return this.remainingItemsAfterDesktopAd.length > 0
+    },
+    remainingItemsBeforeMobileAd() {
+      return this.playlistItems.slice(5, 6)[0]
+    },
+    remainingItemsAfterMobileAdBeforeDesktopAd() {
+      return this.playlistItems.slice(6, 30)
+    },
+    remainingItemsAfterDesktopAd() {
+      return this.playlistItems.slice(30)
     },
     shouldMountInfiniteLoading() {
       return this.nextPageToken
@@ -88,7 +127,7 @@ export default {
       return this.$fetchYoutubePlaylistItems({
         playlistId: PLAYLIST_MAPPING[this.categoryName],
         part: 'snippet',
-        maxResults: 15,
+        maxResults: 30,
         pageToken: nextPageToken,
       })
     },
@@ -159,8 +198,14 @@ export default {
           border-bottom: 2px solid #979797;
         }
       }
-      .video-iframe-items__remaining {
+      .video-iframe-items__ad {
         order: 2;
+        @include media-breakpoint-up(xl) {
+          order: 0;
+        }
+      }
+      .video-iframe-items__remaining {
+        order: 3;
         margin-top: 20px;
         @include media-breakpoint-up(md) {
           display: flex;
@@ -204,10 +249,18 @@ export default {
   &__remaining {
     width: calc(100% - 40px);
     margin: 0 auto;
+    + .section__remaining {
+      margin-top: 0;
+    }
     @include media-breakpoint-up(md) {
       display: flex;
       flex-wrap: wrap;
       width: 80%;
+      &::v-deep {
+        .section__ad {
+          order: 999;
+        }
+      }
     }
     @include media-breakpoint-up(xl) {
       width: auto;
@@ -221,6 +274,21 @@ export default {
     }
     @include media-breakpoint-up(xl) {
       width: calc((100% - 75px) / 5);
+    }
+    + .section__remaining-item,
+    + .section__ad {
+      margin-top: 20px;
+    }
+    + .section__ad {
+      @include media-breakpoint-up(md) {
+        margin-top: 0;
+      }
+    }
+  }
+  &__ad {
+    @include media-breakpoint-up(md) {
+      width: 80%;
+      margin: 0 auto;
     }
     + .section__remaining-item {
       margin-top: 20px;

@@ -1,7 +1,16 @@
 import page from '../category/video_coverstory.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
-const createWrapper = createWrapperHelper()
+const createWrapper = createWrapperHelper({
+  mocks: {
+    $ua: {
+      isFromPc() {
+        return true
+      },
+    },
+  },
+  stubs: ['client-only', 'GPTAD'],
+})
 
 const sectionNameMock = 'video_coverstory'
 const playlistItemsMock = [
@@ -43,7 +52,10 @@ describe('computed data', () => {
     expect(wrapper.vm.firstFiveItems).toEqual(playlistItemsMock.slice(0, 5))
   })
   test('should return proper remainingItems', () => {
-    expect(wrapper.vm.remainingItems.length).toBe(playlistItemsMock.length - 5)
-    expect(wrapper.vm.remainingItems).toEqual(playlistItemsMock.slice(5))
+    expect(wrapper.vm.remainingItemsBeforeMobileAd.videoId).toEqual(
+      playlistItemsMock[5].videoId
+    )
+    expect(wrapper.vm.remainingItemsAfterMobileAdBeforeDesktopAd.length).toBe(0)
+    expect(wrapper.vm.remainingItemsAfterDesktopAd.length).toBe(0)
   })
 })
