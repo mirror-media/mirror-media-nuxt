@@ -236,9 +236,17 @@ export default {
       }
     }
   }
+
+  * + .section__ad {
+    margin-top: 20px;
+  }
+
   &__ad {
+    margin-left: auto;
+    margin-right: auto;
     @include media-breakpoint-up(xl) {
       order: 3;
+      margin-bottom: 20px;
     }
   }
 }

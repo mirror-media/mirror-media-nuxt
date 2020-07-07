@@ -14,7 +14,7 @@
         class="section__remaining-item"
       />
       <client-only>
-        <div class="section__ad">
+        <div class="section__ad dfp-ft">
           <GPTAD :adUnit="adBottom.adUnitCode" :adSize="adBottom.adSize" />
         </div>
       </client-only>
@@ -200,8 +200,12 @@ export default {
       }
       .video-iframe-items__ad {
         order: 2;
+        @include media-breakpoint-up(md) {
+          margin-bottom: 0;
+        }
         @include media-breakpoint-up(xl) {
           order: 0;
+          margin: 0 auto 20px;
         }
       }
       .video-iframe-items__remaining {
@@ -211,6 +215,7 @@ export default {
           display: flex;
           flex-wrap: wrap;
           width: 80%;
+          margin-top: 0;
           padding: 0;
         }
         @include media-breakpoint-up(xl) {
@@ -292,6 +297,19 @@ export default {
     }
     + .section__remaining-item {
       margin-top: 20px;
+    }
+    &.dfp-ft {
+      width: calc(100% + 40px);
+      margin-left: -20px;
+      @include media-breakpoint-up(md) {
+        margin: 20px auto;
+      }
+      @include media-breakpoint-up(xl) {
+        margin-bottom: 0;
+      }
+      > div {
+        margin: 0 auto;
+      }
     }
   }
 }

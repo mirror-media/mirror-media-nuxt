@@ -159,6 +159,7 @@ export default {
   }
 
   &__ad {
+    margin: 20px auto;
     @include media-breakpoint-up(xl) {
       order: 0;
     }
