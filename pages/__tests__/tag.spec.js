@@ -1,5 +1,4 @@
 import page from '../tag/_id.vue'
-import UIArticleList from '~/components/UIArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
@@ -18,8 +17,13 @@ const createWrapper = createWrapperHelper({
         },
       },
     },
+    $ua: {
+      isFromPc() {
+        return true
+      },
+    },
   },
-  stubs: ['client-only'],
+  stubs: ['client-only', 'GPTAD'],
 })
 
 describe('stripHtmlTag method', () => {
@@ -73,8 +77,7 @@ describe('component methods', () => {
 
     const wrapper = createWrapper(page)
     wrapper.vm.setListData(responseMock)
-    const list = wrapper.findComponent(UIArticleList)
-    expect(list.props().listData).toEqual([
+    expect(wrapper.vm.listData).toEqual([
       {
         id: idMock,
         href: `/story/${slugMock}`,
