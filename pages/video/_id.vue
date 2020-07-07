@@ -1,10 +1,17 @@
 <template>
   <section class="video">
+    <client-only v-if="!isMobile">
+      <GPTAD
+        class="video__ad"
+        :adUnit="getAdUnit('HD').adUnitCode"
+        :adSize="getAdUnit('HD').adSize"
+      />
+    </client-only>
     <article class="video__content-wrapper">
       <UIYoutubeIframe :videoId="videoId" class="video__iframe" />
-      <client-only>
+      <client-only v-if="isMobile">
         <GPTAD
-          class="section__ad"
+          class="video__ad"
           :adUnit="getAdUnit('HD').adUnitCode"
           :adSize="getAdUnit('HD').adSize"
         />
@@ -21,7 +28,7 @@
     </article>
     <client-only v-if="isMobile">
       <GPTAD
-        class="section__ad"
+        class="video__ad"
         :adUnit="getAdUnit('E1').adUnitCode"
         :adSize="getAdUnit('E1').adSize"
       />
@@ -29,7 +36,7 @@
     <div class="video__latest-wrapper">
       <client-only v-if="!isMobile">
         <GPTAD
-          class="section__ad"
+          class="video__ad"
           :adUnit="getAdUnit('R1').adUnitCode"
           :adSize="getAdUnit('R1').adSize"
         />
@@ -49,7 +56,7 @@
     </div>
     <client-only>
       <GPTAD
-        class="section__ad"
+        class="video__ad"
         :adUnit="getAdUnit('FT').adUnitCode"
         :adSize="getAdUnit('FT').adSize"
       />
@@ -165,6 +172,8 @@ export default {
   }
   &__content-wrapper {
     @include media-breakpoint-up(xl) {
+      display: flex;
+      flex-direction: column;
       width: 66.67%;
     }
     + * {
@@ -183,7 +192,7 @@ export default {
       width: calc(33.33% - 50px);
       min-width: 300px;
       padding: 0;
-      margin: 0 0 0 50px;
+      margin: 20px 0 0 50px;
     }
   }
 
@@ -278,6 +287,20 @@ export default {
           }
         }
       }
+    }
+  }
+
+  * + .video__ad {
+    margin-top: 20px;
+  }
+  &__ad {
+    margin-left: auto;
+    margin-right: auto;
+    &.dfp-hd {
+      order: -1;
+    }
+    + * {
+      margin-top: 20px;
     }
   }
 }
