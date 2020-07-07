@@ -1,10 +1,29 @@
 <template>
   <section class="section">
+    <client-only>
+      <GPTAD
+        class="section__ad"
+        :adUnit="adTop.adUnitCode"
+        :adSize="adTop.adSize"
+      />
+    </client-only>
     <UIArticleList
       class="section__list"
       :listTitle="tagName"
       :listTitleColor="'#BCBCBC'"
-      :listData="listData"
+      :listData="listDataFirstPage"
+    />
+    <client-only>
+      <GPTAD
+        class="section__ad"
+        :adUnit="adBottom.adUnitCode"
+        :adSize="adBottom.adSize"
+      />
+    </client-only>
+    <UIArticleList
+      v-show="showListDataLoadmorePage"
+      class="section__list"
+      :listData="listDataLoadmorePage"
     />
     <UIInfiniteLoading
       v-if="shouldMountInfiniteLoading"
@@ -17,6 +36,7 @@
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
+import gptUnits from '~/constants/gptUnits'
 
 export default {
   name: 'Tag',
@@ -59,6 +79,26 @@ export default {
     // due to the list data of the first page has not been loaded.
     shouldMountInfiniteLoading() {
       return this.listDataCurrentPage >= 1
+    },
+
+    listDataFirstPage() {
+      return this.listData.slice(0, this.listDataMaxResults)
+    },
+    listDataLoadmorePage() {
+      return this.listData.slice(this.listDataMaxResults, Infinity)
+    },
+    showListDataLoadmorePage() {
+      return this.listDataLoadmorePage.length > 0
+    },
+
+    adDevice() {
+      return this.$ua.isFromPc() ? 'PC' : 'MB'
+    },
+    adTop() {
+      return gptUnits.other[`L${this.adDevice}HD`]
+    },
+    adBottom() {
+      return gptUnits.other[`L${this.adDevice}FT`]
     },
   },
   methods: {
@@ -129,6 +169,9 @@ export default {
     max-width: 1024px;
     padding: 0;
     margin: auto;
+  }
+  &__ad {
+    margin: 20px auto;
   }
   &__list {
     @include media-breakpoint-up(md) {
