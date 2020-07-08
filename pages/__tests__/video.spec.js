@@ -103,3 +103,33 @@ describe('share components', () => {
     expect(wrapper.findComponent(UIShareLine).exists()).toBe(true)
   })
 })
+
+describe('handleClick method', () => {
+  const $ga = {
+    event: jest.fn(),
+  }
+  const wrapper = createWrapper(page, {
+    mocks: {
+      $ga,
+    },
+    data() {
+      return {
+        listDataLatest: [
+          {
+            thumbnails: '',
+            title: '',
+            videoId: '',
+          },
+        ],
+      }
+    },
+  })
+  test('call $ga.event when UILinkedItemWithTitle emits sendGA', () => {
+    wrapper.findComponent(UILinkedItemWithTitle).vm.$emit('click')
+    expect($ga.event).toBeCalledWith({
+      eventCategory: 'listing',
+      eventAction: 'click',
+      eventLabel: 'latest_video',
+    })
+  })
+})

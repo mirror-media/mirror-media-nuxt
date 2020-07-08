@@ -7,6 +7,7 @@
         :href="`/video/${theFirstItem.videoId}`"
         target="_blank"
         rel="noopener noreferrer"
+        @click="handleClick"
         v-text="theFirstItem.title"
       />
     </div>
@@ -27,6 +28,7 @@
         :imgSrc="item.thumbnails"
         :textPositionInMdViewport="textPositionInMdViewport"
         class="video-iframe-items__item"
+        @click="handleClick"
       />
     </div>
   </section>
@@ -73,6 +75,15 @@ export default {
     },
     theFirstItem() {
       return this.items[0]
+    },
+  },
+  methods: {
+    handleClick() {
+      this.$emit('sendGA', {
+        eventCategory: 'listing',
+        eventAction: 'click',
+        eventLabel: 'latest_video',
+      })
     },
   },
 }

@@ -1,6 +1,10 @@
 <template>
   <section class="section">
-    <UIVideoIframeWithItems :items="playlistItems" class="section__highlight">
+    <UIVideoIframeWithItems
+      :items="playlistItems"
+      class="section__highlight"
+      @sendGA="handleSendGA"
+    >
       <template v-slot:heading>
         <h1 :class="categoryName" class="section__heading">鏡封面</h1>
       </template>
@@ -12,6 +16,7 @@
         :href="`/video/${remainingItemsBeforeMobileAd.videoId}`"
         :title="remainingItemsBeforeMobileAd.title"
         class="section__remaining-item"
+        @click="handleClick"
       />
       <client-only>
         <div class="section__ad dfp-ft">
@@ -25,6 +30,7 @@
         :href="`/video/${item.videoId}`"
         :title="item.title"
         class="section__remaining-item"
+        @click="handleClick"
       />
     </div>
     <div v-if="hasLoadedMore" class="section__remaining">
@@ -35,6 +41,7 @@
         :href="`/video/${item.videoId}`"
         :title="item.title"
         class="section__remaining-item"
+        @click="handleClick"
       />
     </div>
     <UIInfiniteLoading
@@ -130,6 +137,16 @@ export default {
         maxResults: 30,
         pageToken: nextPageToken,
       })
+    },
+    handleClick() {
+      this.$ga.event({
+        eventCategory: 'listing',
+        eventAction: 'click',
+        eventLabel: 'latest_video',
+      })
+    },
+    handleSendGA(param = {}) {
+      this.$ga.event(param)
     },
     async infiniteHandler($state) {
       try {

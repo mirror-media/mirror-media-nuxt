@@ -77,3 +77,54 @@ describe('"items" props is not empty array', () => {
     expect(items.exists()).toBe(true)
   })
 })
+
+describe('emit sendGA event', () => {
+  const mockPropsData = {
+    category: {},
+    items: [
+      {
+        thumbnails: '',
+        title: '',
+        videoId: '',
+      },
+    ],
+  }
+
+  test('emits sendGA when first UILinkedItemWithTitle emits click', () => {
+    const wrapper = createWrapper(UIVideoCategory, {
+      propsData: mockPropsData,
+    })
+    wrapper.findComponent(UILinkedItemWithTitle).vm.$emit('click')
+    expect(wrapper.emitted('sendGA')).toHaveLength(1)
+  })
+
+  test('emits sendGA when first item link is clicked', () => {
+    const wrapper = createWrapper(UIVideoCategory, {
+      propsData: mockPropsData,
+    })
+    wrapper.get('.video-category__category-link').trigger('click')
+    expect(wrapper.emitted('sendGA')).toHaveLength(1)
+  })
+
+  test('emits sendGA when remaining UILinkedItemWithTitle emits click', () => {
+    const wrapper = createWrapper(UIVideoCategory, {
+      propsData: {
+        category: {},
+        items: [
+          {
+            thumbnails: '',
+            title: '',
+            videoId: '',
+          },
+          {
+            thumbnails: '',
+            title: '',
+            videoId: '',
+          },
+        ],
+      },
+    })
+    wrapper.findAllComponents(UILinkedItemWithTitle).at(1).vm.$emit('click')
+    expect(wrapper.emitted('sendGA')).toHaveLength(1)
+  })
+})
