@@ -1,5 +1,11 @@
 import page from '../category/video_coverstory.vue'
+import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
+import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
+
+const $ga = {
+  event: jest.fn(),
+}
 
 const createWrapper = createWrapperHelper({
   mocks: {
@@ -8,6 +14,7 @@ const createWrapper = createWrapperHelper({
         return true
       },
     },
+    $ga,
   },
   stubs: ['client-only', 'GPTAD'],
 })
@@ -57,5 +64,28 @@ describe('computed data', () => {
     )
     expect(wrapper.vm.remainingItemsAfterMobileAdBeforeDesktopAd.length).toBe(0)
     expect(wrapper.vm.remainingItemsAfterDesktopAd.length).toBe(0)
+  })
+})
+
+describe('handleSendGA method', () => {
+  const gaArgs = {
+    eventCategory: 'listing',
+    eventAction: 'click',
+    eventLabel: 'test',
+  }
+  test('call $ga.event when UIVideoIframeWithItems emits sendGA', () => {
+    wrapper.findComponent(UIVideoIframeWithItems).vm.$emit('sendGA', gaArgs)
+    expect($ga.event).toBeCalledWith(gaArgs)
+  })
+})
+
+describe('handleClick method', () => {
+  test('call $ga.event when UIVideoIframeWithItems emits sendGA', () => {
+    wrapper.findComponent(UILinkedItemWithTitle).vm.$emit('click')
+    expect($ga.event).toBeCalledWith({
+      eventCategory: 'listing',
+      eventAction: 'click',
+      eventLabel: 'latest_video',
+    })
   })
 })

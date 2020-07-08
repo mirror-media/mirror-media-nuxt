@@ -51,6 +51,7 @@
           :imgSrc="item.thumbnails"
           textPositionInMdViewport="right"
           class="video__latest"
+          @click="handleClick"
         />
       </template>
     </div>
@@ -140,6 +141,13 @@ export default {
     },
     getAdUnit(position) {
       return this.videoAdUnits[`${this.adDevice}${position}`] ?? {}
+    },
+    handleClick() {
+      this.$ga.event({
+        eventCategory: 'listing',
+        eventAction: 'click',
+        eventLabel: 'latest_video',
+      })
     },
     isValidYoutubeVideo(item) {
       // for specific title from Youtube response data

@@ -5,6 +5,7 @@
       class="linked-item__image"
       target="_blank"
       rel="noopener noreferrer"
+      @click="handleClick"
     >
       <img v-lazy="imgSrc" :alt="title" />
     </a>
@@ -15,6 +16,7 @@
       class="linked-item__title"
       target="_blank"
       rel="noopener noreferrer"
+      @click="handleClick"
       v-text="title"
     />
   </div>
@@ -53,6 +55,11 @@ export default {
   computed: {
     limitedLinesStyle() {
       return { '-webkit-line-clamp': this.limitedLines }
+    },
+  },
+  methods: {
+    handleClick() {
+      this.$emit('click')
     },
   },
 }

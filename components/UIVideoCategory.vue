@@ -6,12 +6,14 @@
         :title="theFirstItem.title"
         :href="`/video/${theFirstItem.videoId}`"
         :imgSrc="theFirstItem.thumbnails"
+        @click="handleClick"
       />
       <a
         :href="`/category/${category.name}`"
         class="video-category__category-link"
         target="_blank"
         rel="noopener noreferrer"
+        @click="handleClick('more')"
       >
         看更多
       </a>
@@ -25,6 +27,7 @@
         :imgSrc="item.thumbnails"
         textPositionInMdViewport="right"
         class="video-category__remaining-item"
+        @click="handleClick"
       />
     </div>
   </section>
@@ -57,6 +60,15 @@ export default {
     },
     theFirstItem() {
       return this.items[0]
+    },
+  },
+  methods: {
+    handleClick(eventLabel = 'category_video') {
+      this.$emit('sendGA', {
+        eventCategory: 'listing',
+        eventAction: 'click',
+        eventLabel,
+      })
     },
   },
 }

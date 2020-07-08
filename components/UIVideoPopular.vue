@@ -10,6 +10,7 @@
         :imgSrc="item.thumbnails"
         :limitedLines="2"
         class="video-popular__item"
+        @click="handleClick"
       />
     </div>
   </section>
@@ -32,6 +33,15 @@ export default {
   computed: {
     hasItmes() {
       return this.items.length > 0
+    },
+  },
+  methods: {
+    handleClick() {
+      this.$emit('sendGA', {
+        eventCategory: 'listing',
+        eventAction: 'click',
+        eventLabel: 'popular_video',
+      })
     },
   },
 }

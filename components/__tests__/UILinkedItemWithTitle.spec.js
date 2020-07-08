@@ -99,3 +99,26 @@ describe('limit title lines', () => {
     expect(title.classes()).toContain('limited-lines')
   })
 })
+
+describe('emit click event', () => {
+  const mockPropsData = {
+    imgSrc: '',
+    href: '',
+    title: '',
+  }
+
+  test('emits click event when image is clicked', () => {
+    const wrapper = createWrapper(UILinkedItemWithTitle, {
+      propsData: mockPropsData,
+    })
+    wrapper.get('.linked-item__image').trigger('click')
+    expect(wrapper.emitted('click')).toHaveLength(1)
+  })
+  test('emits click event when title is clicked', () => {
+    const wrapper = createWrapper(UILinkedItemWithTitle, {
+      propsData: mockPropsData,
+    })
+    wrapper.get('.linked-item__title').trigger('click')
+    expect(wrapper.emitted('click')).toHaveLength(1)
+  })
+})

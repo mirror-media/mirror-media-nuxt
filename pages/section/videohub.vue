@@ -4,13 +4,18 @@
       :items="latestData"
       textPositionInMdViewport="right"
       class="section__latest"
+      @sendGA="handleSendGA"
     >
       <template v-slot:heading>
         <h1>最新影片</h1>
       </template>
     </UIVideoIframeWithItems>
     <div class="section__bottom-wrapper">
-      <UIVideoPopular :items="popularData" class="section__popular" />
+      <UIVideoPopular
+        :items="popularData"
+        class="section__popular"
+        @sendGA="handleSendGA"
+      />
       <UIVideoSubscriptions class="section__subscriptions" />
       <client-only>
         <GPTAD
@@ -26,6 +31,7 @@
           :category="category"
           :items="getCategoryItems(category)"
           class="section__category"
+          @sendGA="handleSendGA"
         />
       </div>
     </div>
@@ -141,6 +147,9 @@ export default {
     },
     getCategoryItems(category) {
       return this.categoriesPlaylistData[category.name] ?? []
+    },
+    handleSendGA(param = {}) {
+      this.$ga.event(param)
     },
     isThisSection(section) {
       const currentSectionName = this.$route.path.split('/section/')[1]
