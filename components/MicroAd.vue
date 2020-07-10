@@ -27,10 +27,7 @@ export default {
       microAdScript.src =
         (document.location.protocol === 'https:' ? 'https://' : 'http://') +
         `nt.compass-fit.jp/lift_widget.js?adspot_id=${this.unitId}`
-      const lastScriptInMeta = document.querySelector(
-        'head script:last-of-type'
-      )
-      lastScriptInMeta.parentNode.insertBefore(microAdScript, lastScriptInMeta)
+      document.head.appendChild(microAdScript)
     },
     removeScript() {
       const microAdScript = document.querySelector(
