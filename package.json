@@ -33,7 +33,7 @@
     "helmet": "^3.22.0",
     "humps": "^2.0.1",
     "lodash": "^4.17.15",
-    "nuxt": "^2.12.2",
+    "nuxt": "^2.13.3",
     "nuxt-user-agent": "^1.2.2",
     "qs": "^6.9.4",
     "vue-infinite-loading": "^2.4.5",
