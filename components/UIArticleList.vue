@@ -9,22 +9,34 @@
       v-text="listTitle"
     />
     <ol v-if="showList" class="list-wrapper__list list">
-      <li v-for="item in listData" :key="item.id" class="list__list-item">
-        <UIArticleCard
-          :href="item.href"
-          :imgSrc="item.imgSrc"
-          :imgText="item.imgText"
-          :imgTextBackgroundColor="item.imgTextBackgroundColor"
-          :infoTitle="item.infoTitle"
-          :infoDescription="item.infoDescription"
-        />
-      </li>
+      <template v-for="(item, index) in listData">
+        <li :key="item.id" class="list__list-item">
+          <UIArticleCard
+            :href="item.href"
+            :imgSrc="item.imgSrc"
+            :imgText="item.imgText"
+            :imgTextBackgroundColor="item.imgTextBackgroundColor"
+            :infoTitle="item.infoTitle"
+            :infoDescription="item.infoDescription"
+          />
+        </li>
+        <li
+          v-if="needInsertMicroAd(index)"
+          :key="`microAd${index}`"
+          class="list__list-item"
+        >
+          <slot :name="getMicroAdSlotName(index)" />
+        </li>
+      </template>
     </ol>
   </section>
 </template>
 
 <script>
 import UIArticleCard from './UIArticleCard.vue'
+import microAdUnits from '~/constants/microAdUnits'
+
+const microAdUnitsKey = Object.keys(microAdUnits.LISTING)
 
 export default {
   components: {
@@ -45,12 +57,29 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      indexToMicroAdKey: {
+        1: microAdUnitsKey[0],
+        2: microAdUnitsKey[1],
+        5: microAdUnitsKey[2],
+      },
+    }
+  },
   computed: {
     showTitle() {
       return this.listTitle !== ''
     },
     showList() {
       return this.listData.length > 0
+    },
+  },
+  methods: {
+    needInsertMicroAd(index) {
+      return index === 1 || index === 2 || index === 5
+    },
+    getMicroAdSlotName(index) {
+      return this.indexToMicroAdKey[index]
     },
   },
 }
