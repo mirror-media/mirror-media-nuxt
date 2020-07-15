@@ -120,4 +120,9 @@ module.exports = {
       config.plugins.push(new LodashModuleReplacementPlugin({ paths: true }))
     },
   },
+  /*
+   ** Nuxt Telemetry configuration
+   ** Doc: https://github.com/nuxt/telemetry#opting-out
+   */
+  telemetry: false,
 }
