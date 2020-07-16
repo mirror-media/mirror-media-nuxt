@@ -294,11 +294,13 @@ header {
 .logo {
   cursor: pointer;
   user-select: none;
-  img {
-    width: 95px;
-    @include media-breakpoint-up(xl) {
-      width: auto;
-      height: 50px;
+  &::v-deep {
+    img {
+      width: 95px;
+      @include media-breakpoint-up(xl) {
+        width: auto;
+        height: 50px;
+      }
     }
   }
   + .logo {
