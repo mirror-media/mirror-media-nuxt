@@ -26,7 +26,7 @@ const createWrapper = createWrapperHelper({
       commit: jest.fn(),
     },
   },
-  stubs: ['nuxt-link'],
+  stubs: ['nuxt-link', 'client-only', 'GPTAD'],
 })
 
 describe('event logo', () => {
