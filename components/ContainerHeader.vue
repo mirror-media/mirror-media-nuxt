@@ -14,6 +14,14 @@
           :eventLogo="eventLogo"
           @sendGA="handleSendGA"
         />
+        <client-only>
+          <GPTAD
+            :adUnit="logoAdUnit.adUnitCode"
+            :adSize="logoAdUnit.adSize"
+            class="logo"
+            @slotOnload="handleAdOnload"
+          />
+        </client-only>
       </div>
 
       <div class="header-search">
@@ -66,6 +74,7 @@ import UIOthersList from './UIOthersList.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
 import UISidebar from './UISidebar.vue'
+import gptUnits from '~/constants/gptUnits'
 
 import {
   SUB_BRAND_LINKS,
@@ -92,6 +101,8 @@ export default {
       shouldOpenSidebar: false,
       defaultOption: { title: '全部類別' },
       SITE_TITLE,
+      logoAdUnit: gptUnits.global.LOGO,
+      hasGptLogo: false,
     }
   },
   computed: {
@@ -103,7 +114,8 @@ export default {
       topics: 'topics/displayedTopics',
     }),
     shouldOpenEventLogo() {
-      if (!this.hasEventLogo) {
+      // 當有 GPT Logo 時不應該出現 Event Logo
+      if (!this.hasEventLogo || this.hasGptLogo) {
         return false
       }
 
@@ -166,6 +178,9 @@ export default {
     },
     updateNow() {
       this.now = new Date()
+    },
+    handleAdOnload() {
+      this.hasGptLogo = true
     },
     handleClickMenuIcon() {
       this.openSidebar()
