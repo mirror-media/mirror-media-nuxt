@@ -12,7 +12,11 @@
       :listTitle="authorName"
       :listTitleColor="'#BCBCBC'"
       :listData="listDataFirstPage"
-    />
+    >
+      <template v-for="(unitId, key) in microAdUnits" v-slot:[key]>
+        <MicroAd :key="unitId" :unitId="unitId" />
+      </template>
+    </UIArticleList>
     <client-only>
       <GPTAD
         class="section__ad"
@@ -33,14 +37,17 @@
 </template>
 
 <script>
+import MicroAd from '~/components/MicroAd.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
 import gptUnits from '~/constants/gptUnits'
+import microAdUnits from '~/constants/microAdUnits'
 
 export default {
   name: 'Author',
   components: {
+    MicroAd,
     UIArticleList,
     UIInfiniteLoading,
   },
@@ -60,6 +67,7 @@ export default {
       listDataMaxResults: 12,
       listDataTotal: undefined,
       authorName: undefined,
+      microAdUnits: microAdUnits.LISTING,
     }
   },
   computed: {
@@ -188,6 +196,29 @@ export default {
   &__list {
     @include media-breakpoint-up(md) {
       margin: 8px 0 0 0;
+    }
+  }
+}
+
+.micro-ad {
+  height: 100%;
+  background-color: #f4f1e9;
+  box-shadow: 5px 5px 5px #bcbcbc;
+  @include media-breakpoint-up(xl) {
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      transform: translateY(-20px);
+      box-shadow: 5px 15px 5px #bcbcbc;
+    }
+  }
+  &::v-deep {
+    #compass-fit-widget {
+      height: 100%;
+    }
+    #compass-fit-widget-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
   }
 }
