@@ -29,7 +29,7 @@
           <a
             v-for="category in section.categories"
             :key="category.id"
-            :href="`/category/${category.name}`"
+            :href="getCategoryHref(section.name, category.name)"
             @click="emitGA(`category ${category.name}`)"
           >
             <h3>{{ category.title }}</h3>
@@ -76,6 +76,12 @@ export default {
   methods: {
     isCurrentSection(sectionName) {
       return sectionName === this.currentSectionName
+    },
+    getCategoryHref(sectionName, categoryName) {
+      if (sectionName === 'videohub') {
+        return `/video_category/${categoryName}`
+      }
+      return `/category/${categoryName}`
     },
     emitGA(eventLabel) {
       this.$emit('sendGA', {
