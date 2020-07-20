@@ -242,22 +242,6 @@ export default {
       }
     }
   }
-  // 鏡財經
-  &.video_finance {
-    .video-category__heading {
-      &::before {
-        background-color: #8b222c;
-      }
-    }
-    @include media-breakpoint-up(md) {
-      .video-category__heading {
-        color: #8b222c;
-      }
-      .video-category__first {
-        background-color: #8b222c;
-      }
-    }
-  }
   // 鏡人物
   &.video_people {
     .video-category__heading {
@@ -271,6 +255,22 @@ export default {
       }
       .video-category__first {
         background-color: #4a90e2;
+      }
+    }
+  }
+  // 鏡財經
+  &.video_finance {
+    .video-category__heading {
+      &::before {
+        background-color: #8b222c;
+      }
+    }
+    @include media-breakpoint-up(md) {
+      .video-category__heading {
+        color: #8b222c;
+      }
+      .video-category__first {
+        background-color: #8b222c;
       }
     }
   }
@@ -307,34 +307,18 @@ export default {
     }
   }
   // 鏡錶誌
-  &.video_watch {
+  &.video_carandwatch {
     .video-category__heading {
       &::before {
-        background-color: #003366;
+        background-color: #969696;
       }
     }
     @include media-breakpoint-up(md) {
       .video-category__heading {
-        color: #003366;
+        color: #969696;
       }
       .video-category__first {
-        background-color: #003366;
-      }
-    }
-  }
-  // 鏡車誌
-  &.video_car {
-    .video-category__heading {
-      &::before {
-        background-color: #4a4a4a;
-      }
-    }
-    @include media-breakpoint-up(md) {
-      .video-category__heading {
-        color: #4a4a4a;
-      }
-      .video-category__first {
-        background-color: #4a4a4a;
+        background-color: #969696;
       }
     }
   }

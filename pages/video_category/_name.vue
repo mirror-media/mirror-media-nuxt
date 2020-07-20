@@ -5,8 +5,12 @@
       class="section__highlight"
       @sendGA="handleSendGA"
     >
-      <template v-slot:heading>
-        <h1 :class="categoryName" class="section__heading">鏡封面</h1>
+      <template v-if="categoryTitle" v-slot:heading>
+        <h1
+          :class="categoryName"
+          class="section__heading"
+          v-text="categoryTitle"
+        />
       </template>
     </UIVideoIframeWithItems>
     <div class="section__remaining">
@@ -52,12 +56,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import gptUnits from '~/constants/gptUnits'
 
-// temporary
 const PLAYLIST_MAPPING = {
   // 鏡封面
   video_coverstory: 'PLftq_bkhPR3ZtDGBhyqVGObQXazG_O3M3',
@@ -67,22 +71,22 @@ const PLAYLIST_MAPPING = {
   video_society: 'PLftq_bkhPR3bLVBh5khl2pLxgFoPwrbfl',
   // 鏡調查
   video_investigation: 'PLftq_bkhPR3YOrSnIpcqSkY3hPE2TjXfW',
-  // 鏡財經
-  video_finance: 'PLftq_bkhPR3afBv0Wg_oUqjd_pkWIJm2h',
   // 鏡人物
   video_people: 'PLftq_bkhPR3YkNjH8VQZ__8nXZ9INIjAu',
+  // 鏡財經
+  video_finance: 'PLftq_bkhPR3afBv0Wg_oUqjd_pkWIJm2h',
   // 鏡食旅
   video_foodtravel: 'PLftq_bkhPR3baCfd6RU_1hbkY8ynXssun',
   // 娛樂透視
   video_ent_perspective: 'PLftq_bkhPR3YxUNEIHIMA2fsM-DqxCHMb',
-  // 鏡錶誌
-  // video_watch: '',
-  // 鏡車誌
-  // video_car: '',
+  // 汽車鐘錶
+  video_carandwatch: 'PLgvIJQ8OtT8LOdwVF4P9hdQiuf6uAiwb6',
 }
 
+const VIDEO_CATEGORIES_NAME = Object.keys(PLAYLIST_MAPPING)
+
 export default {
-  name: 'CategoryVideo',
+  name: 'VideoCategory',
   components: {
     UIInfiniteLoading,
     UILinkedItemWithTitle,
@@ -95,12 +99,18 @@ export default {
   },
   data() {
     return {
+      VIDEO_CATEGORIES_NAME,
       nextPageToken: '',
       playlistItems: [],
       videoAdUnits: gptUnits.videohub ?? {},
     }
   },
   computed: {
+    ...mapState({
+      categories: (state) =>
+        state.sections.data.items.find((section) => section.name === 'videohub')
+          ?.categories ?? [],
+    }),
     adBottom() {
       return this.videoAdUnits[`${this.adDevice}FT`] ?? {}
     },
@@ -108,7 +118,12 @@ export default {
       return this.$ua.isFromPc() ? 'PC' : 'MB'
     },
     categoryName() {
-      return this.$route.path.split('/category/')[1]
+      return this.$route.path.split('/video_category/')[1]
+    },
+    categoryTitle() {
+      return this.categories.find(
+        (category) => category.name === this.categoryName
+      )?.title
     },
     firstFiveItems() {
       return this.playlistItems.slice(0, 5)
@@ -335,6 +350,46 @@ export default {
   &.video_coverstory {
     &::before {
       background-color: #30bac8;
+    }
+  }
+  &.video_entertainment {
+    &::before {
+      background-color: #bf3385;
+    }
+  }
+  &.video_society {
+    &::before {
+      background-color: #8b572a;
+    }
+  }
+  &.video_investigation {
+    &::before {
+      background-color: #417505;
+    }
+  }
+  &.video_people {
+    &::before {
+      background-color: #4a90e2;
+    }
+  }
+  &.video_finance {
+    &::before {
+      background-color: #8b222c;
+    }
+  }
+  &.video_foodtravel {
+    &::before {
+      background-color: #f1a356;
+    }
+  }
+  &.video_ent_perspective {
+    &::before {
+      background-color: #30bac8;
+    }
+  }
+  &.video_carandwatch {
+    &::before {
+      background-color: #969696;
     }
   }
 }
