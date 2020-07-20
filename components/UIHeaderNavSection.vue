@@ -5,9 +5,9 @@
         class="section section--home"
         :class="{ active: isCurrentSection('home') }"
       >
-        <nuxt-link to="/" @click.native="emitGA('section home')">
+        <a href="/" @click="emitGA('section home')">
           <h2>首頁</h2>
-        </nuxt-link>
+        </a>
       </div>
 
       <div
@@ -19,35 +19,35 @@
           { active: isCurrentSection(section.name) },
         ]"
       >
-        <nuxt-link
-          :to="`/section/${section.name}`"
-          @click.native="emitGA(`section ${section.name}`)"
+        <a
+          :href="`/section/${section.name}`"
+          @click="emitGA(`section ${section.name}`)"
         >
           <h2>{{ section.title }}</h2>
-        </nuxt-link>
+        </a>
         <div class="section__dropdown">
-          <nuxt-link
+          <a
             v-for="category in section.categories"
             :key="category.id"
-            :to="`/category/${category.name}`"
-            @click.native="emitGA(`category ${category.name}`)"
+            :href="getCategoryHref(section.name, category.name)"
+            @click="emitGA(`category ${category.name}`)"
           >
             <h3>{{ category.title }}</h3>
-          </nuxt-link>
+          </a>
         </div>
       </div>
 
       <div class="section section--external">
         <h2>健康醫療</h2>
         <div class="section__dropdown">
-          <nuxt-link
+          <a
             v-for="partner in partners"
             :key="partner.id"
-            :to="`/externals/${partner.name}`"
-            @click.native="emitGA(`external ${partner.name}`)"
+            :href="`/externals/${partner.name}`"
+            @click="emitGA(`external ${partner.name}`)"
           >
             <h3>{{ partner.display }}</h3>
-          </nuxt-link>
+          </a>
         </div>
       </div>
     </div>
@@ -76,6 +76,12 @@ export default {
   methods: {
     isCurrentSection(sectionName) {
       return sectionName === this.currentSectionName
+    },
+    getCategoryHref(sectionName, categoryName) {
+      if (sectionName === 'videohub') {
+        return `/video_category/${categoryName}`
+      }
+      return `/category/${categoryName}`
     },
     emitGA(eventLabel) {
       this.$emit('sendGA', {

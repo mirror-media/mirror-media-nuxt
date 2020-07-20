@@ -4,9 +4,9 @@
       <button type="button" class="menu-icon" @click="handleClickMenuIcon" />
 
       <div class="logo-wrapper">
-        <nuxt-link to="/" class="logo" @click.native="sendHeaderGA('logo')">
+        <a href="/" class="logo" @click="sendHeaderGA('logo')">
           <img src="~/assets/logo.svg" :alt="SITE_TITLE" />
-        </nuxt-link>
+        </a>
 
         <UIEventLogo
           v-if="shouldOpenEventLogo"

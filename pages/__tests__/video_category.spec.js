@@ -1,4 +1,4 @@
-import page from '../category/video_coverstory.vue'
+import page from '../video_category/_name.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
@@ -9,6 +9,15 @@ const $ga = {
 
 const createWrapper = createWrapperHelper({
   mocks: {
+    $store: {
+      state: {
+        sections: {
+          data: {
+            items: [],
+          },
+        },
+      },
+    },
     $ua: {
       isFromPc() {
         return true
@@ -32,7 +41,7 @@ const playlistItemsMock = [
 const wrapper = createWrapper(page, {
   mocks: {
     $route: {
-      path: `/category/${sectionNameMock}`,
+      path: `/video_category/${sectionNameMock}`,
     },
   },
   data() {

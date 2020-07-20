@@ -29,7 +29,7 @@ describe('topic nav', () => {
       },
     })
 
-    const linkNormal = wrapper.get(`[to="/topic/${mockTopic.id}"]`)
+    const linkNormal = wrapper.get(`[href="/topic/${mockTopic.id}"]`)
     expect(linkNormal.text()).toBe(mockTopic.name)
   })
 })
@@ -56,7 +56,7 @@ describe('emitGA method', () => {
       },
     })
 
-    const linkNormal = wrapper.get(`[to="/topic/${mockTopic.id}"]`)
+    const linkNormal = wrapper.get(`[href="/topic/${mockTopic.id}"]`)
     linkNormal.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
       {
@@ -66,7 +66,7 @@ describe('emitGA method', () => {
       },
     ])
 
-    const linkMore = wrapper.get(`[to="/section/topic"]`)
+    const linkMore = wrapper.get(`[href="/section/topic"]`)
     linkMore.trigger('click')
     expect(wrapper.emitted().sendGA[1]).toEqual([
       {
