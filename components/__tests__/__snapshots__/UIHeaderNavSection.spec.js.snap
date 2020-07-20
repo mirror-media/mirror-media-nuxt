@@ -10,36 +10,36 @@ exports[`markup render correctly 1`] = `
     <div
       class="section section--home"
     >
-      <nuxt-link-stub
-        to="/"
+      <a
+        href="/"
       >
         <h2>
           首頁
         </h2>
-      </nuxt-link-stub>
+      </a>
     </div>
      
     <div
       class="section section--culture"
     >
-      <nuxt-link-stub
-        to="/section/culture"
+      <a
+        href="/section/culture"
       >
         <h2>
           文化
         </h2>
-      </nuxt-link-stub>
+      </a>
        
       <div
         class="section__dropdown"
       >
-        <nuxt-link-stub
-          to="/category/bookreview"
+        <a
+          href="/category/bookreview"
         >
           <h3>
             書評
           </h3>
-        </nuxt-link-stub>
+        </a>
       </div>
     </div>
      
@@ -53,13 +53,13 @@ exports[`markup render correctly 1`] = `
       <div
         class="section__dropdown"
       >
-        <nuxt-link-stub
-          to="/externals/healthnews"
+        <a
+          href="/externals/healthnews"
         >
           <h3>
             健康醫療網新聞
           </h3>
-        </nuxt-link-stub>
+        </a>
       </div>
     </div>
   </div>

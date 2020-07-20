@@ -297,7 +297,7 @@ describe('GA event', () => {
       },
     })
 
-    wrapper.get('[to="/"]').trigger('click')
+    wrapper.get('[href="/"]').trigger('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: 'header',
       eventAction: 'click',

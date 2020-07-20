@@ -53,7 +53,7 @@ describe('topics', () => {
       },
     })
 
-    const link = wrapper.get(`[to="/topic/${mockTopic.id}"]`)
+    const link = wrapper.get(`[href="/topic/${mockTopic.id}"]`)
     expect(link.text()).toBe(mockTopic.name)
   })
 
@@ -76,7 +76,7 @@ describe('sections', () => {
       },
     })
 
-    const link = wrapper.get(`[to="/section/${mockSection.name}"]`)
+    const link = wrapper.get(`[href="/section/${mockSection.name}"]`)
     expect(link.text()).toBe(mockSection.title)
   })
 
@@ -88,7 +88,7 @@ describe('sections', () => {
     })
 
     const [mockCategory] = mockSection.categories
-    const link = wrapper.get(`[to="/category/${mockCategory.name}"]`)
+    const link = wrapper.get(`[href="/category/${mockCategory.name}"]`)
     expect(link.text()).toBe(mockCategory.title)
   })
 
@@ -109,7 +109,7 @@ describe('sections', () => {
       },
     })
 
-    const link = wrapper.get(`[to="/externals/${mockPartner.name}"]`)
+    const link = wrapper.get(`[href="/externals/${mockPartner.name}"]`)
     expect(link.text()).toBe(mockPartner.display)
   })
 
@@ -178,7 +178,7 @@ describe('emitGA method', () => {
       },
     })
 
-    const topicLink = wrapper.get(`[to="/topic/${mockTopic.id}"]`)
+    const topicLink = wrapper.get(`[href="/topic/${mockTopic.id}"]`)
     topicLink.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
       {
@@ -188,7 +188,7 @@ describe('emitGA method', () => {
       },
     ])
 
-    const topicMoreLink = wrapper.get('[to="/section/topic"]')
+    const topicMoreLink = wrapper.get('[href="/section/topic"]')
     topicMoreLink.trigger('click')
     expect(wrapper.emitted().sendGA[1]).toEqual([
       {
@@ -206,7 +206,7 @@ describe('emitGA method', () => {
       },
     })
 
-    const sectionLink = wrapper.get(`[to="/section/${mockSection.name}"]`)
+    const sectionLink = wrapper.get(`[href="/section/${mockSection.name}"]`)
     sectionLink.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
       {
@@ -225,7 +225,7 @@ describe('emitGA method', () => {
     })
 
     const [mockCategory] = mockSection.categories
-    const categoryLink = wrapper.get(`[to="/category/${mockCategory.name}"]`)
+    const categoryLink = wrapper.get(`[href="/category/${mockCategory.name}"]`)
     categoryLink.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
       {
@@ -243,7 +243,7 @@ describe('emitGA method', () => {
       },
     })
 
-    const partnerLink = wrapper.get(`[to="/externals/${mockPartner.name}"]`)
+    const partnerLink = wrapper.get(`[href="/externals/${mockPartner.name}"]`)
     partnerLink.trigger('click')
     expect(wrapper.emitted().sendGA[0]).toEqual([
       {

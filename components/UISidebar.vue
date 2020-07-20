@@ -3,23 +3,23 @@
     <button class="close-icon" @click="$emit('close')" />
 
     <div v-if="shouldOpenTopics" class="topics">
-      <nuxt-link
+      <a
         v-for="topic in topics"
         :key="topic.id"
-        :to="`/topic/${topic.id}`"
+        :href="`/topic/${topic.id}`"
         class="topics__title"
-        @click.native="emitGA(`topic ${topic.name}`)"
+        @click="emitGA(`topic ${topic.name}`)"
       >
         <h2>{{ topic.name }}</h2>
-      </nuxt-link>
+      </a>
 
-      <nuxt-link
-        to="/section/topic"
+      <a
+        href="/section/topic"
         class="topics__title"
-        @click.native="emitGA('topic 更多')"
+        @click="emitGA('topic 更多')"
       >
         <h2>更多</h2>
-      </nuxt-link>
+      </a>
     </div>
 
     <div class="sections">
@@ -28,26 +28,26 @@
         :key="section.id"
         :class="`section section--${section.name}`"
       >
-        <nuxt-link
-          :to="`/section/${section.name}`"
+        <a
+          :href="`/section/${section.name}`"
           class="section__title"
-          @click.native="emitGA(`section ${section.name}`)"
+          @click="emitGA(`section ${section.name}`)"
         >
           <h2>{{ section.title }}</h2>
-        </nuxt-link>
+        </a>
 
         <div
           v-if="shouldOpenCategories(section.categories)"
           class="section__categories"
         >
-          <nuxt-link
+          <a
             v-for="category in section.categories"
             :key="category.id"
-            :to="`/category/${category.name}`"
-            @click.native="emitGA(`category ${category.name}`)"
+            :href="`/category/${category.name}`"
+            @click="emitGA(`category ${category.name}`)"
           >
             <h3>{{ category.title }}</h3>
-          </nuxt-link>
+          </a>
         </div>
       </div>
 
@@ -57,14 +57,14 @@
         </div>
 
         <div class="section__categories">
-          <nuxt-link
+          <a
             v-for="partner in partners"
             :key="partner.id"
-            :to="`/externals/${partner.name}`"
-            @click.native="emitGA(`external ${partner.name}`)"
+            :href="`/externals/${partner.name}`"
+            @click="emitGA(`external ${partner.name}`)"
           >
             <h3>{{ partner.display }}</h3>
-          </nuxt-link>
+          </a>
         </div>
       </div>
 

@@ -2,24 +2,20 @@
   <section class="header-nav-topic">
     <div class="container">
       <div class="topic-container">
-        <nuxt-link
+        <a
           v-for="topic in topics"
           :key="topic.id"
           class="topic topic--normal"
-          :to="`/topic/${topic.id}`"
-          @click.native="emitGA(`topic ${topic.name}`)"
+          :href="`/topic/${topic.id}`"
+          @click="emitGA(`topic ${topic.name}`)"
         >
           <h2>{{ topic.name }}</h2>
-        </nuxt-link>
+        </a>
       </div>
 
-      <nuxt-link
-        to="/section/topic"
-        class="topic"
-        @click.native="emitGA('topic 更多')"
-      >
+      <a href="/section/topic" class="topic" @click="emitGA('topic 更多')">
         <h2>更多</h2>
-      </nuxt-link>
+      </a>
 
       <div class="sub-brand-container">
         <a
