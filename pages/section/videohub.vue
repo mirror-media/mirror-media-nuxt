@@ -35,12 +35,14 @@
         />
       </div>
     </div>
+    <FullScreenAds />
   </section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import _ from 'lodash'
+import FullScreenAds from '~/components/FullScreenAds.vue'
 import UIVideoCategory from '~/components/UIVideoCategory.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import UIVideoPopular from '~/components/UIVideoPopular.vue'
@@ -76,6 +78,7 @@ const INVERTED_PLAYLIST_MAPPING = _.invert(PLAYLIST_MAPPING)
 export default {
   name: 'SectionVideohub',
   components: {
+    FullScreenAds,
     UIVideoCategory,
     UIVideoIframeWithItems,
     UIVideoPopular,
@@ -119,6 +122,9 @@ export default {
     this.fetchCategoriesPlaylistData()
   },
   methods: {
+    handleConsole(text) {
+      console.log(text)
+    },
     async fetchCategoriesPlaylistData() {
       const response = await Promise.allSettled(
         this.playlistIds.map(this.fetchYoutubePlaylistItems)
@@ -258,5 +264,12 @@ export default {
       margin-bottom: 20px;
     }
   }
+}
+
+.test {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
