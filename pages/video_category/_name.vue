@@ -52,11 +52,27 @@
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
+    <client-only>
+      <FullScreenAd>
+        <GPTAD
+          :adUnit="'mirror_m_ros_320x480_AD2'"
+          :adSize="[
+            [1, 1],
+            [320, 480],
+            [320, 100],
+            [320, 50],
+          ]"
+          @slotRequested="handleAdRequested"
+          @slotRenderEnded="handleAdRenderEnded"
+        />
+      </FullScreenAd>
+    </client-only>
   </section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import FullScreenAd from '~/components/FullScreenAd.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
@@ -88,6 +104,7 @@ const VIDEO_CATEGORIES_NAME = Object.keys(PLAYLIST_MAPPING)
 export default {
   name: 'VideoCategory',
   components: {
+    FullScreenAd,
     UIInfiniteLoading,
     UILinkedItemWithTitle,
     UIVideoIframeWithItems,
@@ -144,7 +161,21 @@ export default {
       return this.nextPageToken
     },
   },
+  mounted() {
+    window.addEventListener('noad2', (e) => {
+      console.log('!! noad2', e)
+    })
+    window.parent.addEventListener('noad2', (e) => {
+      console.log('!! parent noad2', e)
+    })
+  },
   methods: {
+    handleAdRequested(event) {
+      console.log('handleAdRequested', event)
+    },
+    handleAdRenderEnded(event) {
+      console.log('handleAdRenderEnded', event)
+    },
     fetchYoutubePlaylistItems(nextPageToken = '') {
       return this.$fetchYoutubePlaylistItems({
         playlistId: PLAYLIST_MAPPING[this.categoryName],

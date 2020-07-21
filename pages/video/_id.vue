@@ -12,7 +12,7 @@
       <client-only v-if="isMobile">
         <GPTAD
           class="video__ad"
-          :adUnit="'mirror_APP_fin_300x250_AT1'"
+          :adUnit="'mirror_m_fin_300x250_AT1'"
           :adSize="[
             [1, 1],
             [300, 250],
