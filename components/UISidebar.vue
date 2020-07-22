@@ -53,7 +53,7 @@
 
       <div v-if="shouldOpenSectionExternal" class="section section--external">
         <div class="section__title">
-          <h2>健康醫療</h2>
+          <h2>合作媒體</h2>
         </div>
 
         <div class="section__categories">

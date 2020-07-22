@@ -38,7 +38,7 @@
       </div>
 
       <div class="section section--external">
-        <h2>健康醫療</h2>
+        <h2>合作媒體</h2>
         <div class="section__dropdown">
           <a
             v-for="partner in partners"
