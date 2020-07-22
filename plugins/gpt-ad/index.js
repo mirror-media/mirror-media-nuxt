@@ -34,15 +34,18 @@ export default {
            */
           // window.googletag.pubads().enableSingleRequest()
 
-          window.googletag.pubads().enableLazyLoad({
-            // Fetch slots within 1.5 viewports.
-            fetchMarginPercent: 150,
-            // Render slots within 1 viewports.
-            renderMarginPercent: 100,
-            // Double the above values on mobile, where viewports are smaller
-            // and users tend to scroll faster.
-            mobileScaling: 2.0,
-          })
+          if (this.enableLazyLoad) {
+            window.googletag.pubads().enableLazyLoad({
+              // Fetch slots within 1.5 viewports.
+              fetchMarginPercent: 150,
+              // Render slots within 1 viewports.
+              renderMarginPercent: 100,
+              // Double the above values on mobile, where viewports are smaller
+              // and users tend to scroll faster.
+              mobileScaling: 2.0,
+            })
+          }
+
           window.googletag.pubads().collapseEmptyDivs()
           window.googletag.enableServices()
         })

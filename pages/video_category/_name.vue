@@ -62,6 +62,7 @@
             [320, 100],
             [320, 50],
           ]"
+          :enableLazyLoad="false"
           @slotRequested="handleAdRequested"
           @slotRenderEnded="handleAdRenderEnded"
         />

@@ -28,6 +28,10 @@ export default {
         return getAdSizeType(adSize) !== undefined
       },
     },
+    enableLazyLoad: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -54,6 +58,7 @@ export default {
       return getAdSizeType(this.adSize)
     },
     adWidth() {
+      console.log('$adUnit', this.$adUnit, 'adSizeType', this.adSizeType)
       switch (this.adSizeType) {
         case 'fixed': {
           const width = this.adSize[0]
