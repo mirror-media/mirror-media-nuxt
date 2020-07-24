@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="showFullScreenAd"
-    :class="{ default: needDefaultStyle }"
+    :class="{ default: needDefaultStyle, fix: needFixStyle }"
     class="full-screen-ad ad-cover"
   >
     <div class="full-screen-ad__wrapper">
@@ -23,6 +23,10 @@ export default {
   name: 'FullScreenAd',
   props: {
     needDefaultStyle: {
+      type: Boolean,
+      default: false,
+    },
+    needFixStyle: {
       type: Boolean,
       default: false,
     },
@@ -66,6 +70,12 @@ export default {
       width: 320px;
       height: 480px;
     }
+  }
+  &.fix {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
   }
   &__btn {
     position: absolute;

@@ -53,7 +53,7 @@
       @infinite="infiniteHandler"
     />
     <client-only>
-      <FullScreenAd>
+      <FullScreenAd :needFixStyle="needFixStyle">
         <GPTAD
           :adUnit="'mirror_m_ros_320x480_AD2'"
           :adSize="[
@@ -62,8 +62,6 @@
             [320, 100],
             [320, 50],
           ]"
-          :enableLazyLoad="false"
-          @slotRequested="handleAdRequested"
           @slotRenderEnded="handleAdRenderEnded"
         />
       </FullScreenAd>
@@ -118,6 +116,7 @@ export default {
   data() {
     return {
       VIDEO_CATEGORIES_NAME,
+      needFixStyle: true,
       nextPageToken: '',
       playlistItems: [],
       videoAdUnits: gptUnits.videohub ?? {},
@@ -162,20 +161,9 @@ export default {
       return this.nextPageToken
     },
   },
-  mounted() {
-    window.addEventListener('noad2', (e) => {
-      console.log('!! noad2', e)
-    })
-    window.parent.addEventListener('noad2', (e) => {
-      console.log('!! parent noad2', e)
-    })
-  },
   methods: {
-    handleAdRequested(event) {
-      console.log('handleAdRequested', event)
-    },
     handleAdRenderEnded(event) {
-      console.log('handleAdRenderEnded', event)
+      this.needFixStyle = false
     },
     fetchYoutubePlaylistItems(nextPageToken = '') {
       return this.$fetchYoutubePlaylistItems({

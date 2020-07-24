@@ -58,7 +58,6 @@ export default {
       return getAdSizeType(this.adSize)
     },
     adWidth() {
-      console.log('$adUnit', this.$adUnit, 'adSizeType', this.adSizeType)
       switch (this.adSizeType) {
         case 'fixed': {
           const width = this.adSize[0]
@@ -130,6 +129,11 @@ export default {
           }
         })
       })
+    })
+  },
+  beforeDestroy() {
+    window.googletag.cmd.push(() => {
+      window.googletag.destroySlots([this.adSlot])
     })
   },
 }

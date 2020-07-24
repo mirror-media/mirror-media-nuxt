@@ -3,26 +3,29 @@
     <div v-if="hasFullScreenAd" class="full-screen-ads">
       <FullScreenAd
         v-if="hasAdFirst"
+        v-show="showAdFirst"
         :needDefaultStyle="true"
         :showCloseBtn="showAdFirstCloseBtn"
       >
         <GPTAD
+          key="ad-first"
           :adUnit="globalAdUnits.MB_FULL_SCREEN_FIRST.adUnitCode"
           :adSize="globalAdUnits.MB_FULL_SCREEN_FIRST.adSize"
           @slotRequested="handleAdRequestedFirst"
           @slotRenderEnded="handleAdRenderEndedFirst"
         />
       </FullScreenAd>
-      <FullScreenAd v-if="hasAdSecondOrThird">
+      <FullScreenAd v-if="hasAdSecondOrThird" :needFixStyle="needFixStyle">
         <GPTAD
           v-if="hasAdSecond"
+          key="ad-second"
           :adUnit="globalAdUnits.MB_FULL_SCREEN_SECOND.adUnitCode"
           :adSize="globalAdUnits.MB_FULL_SCREEN_SECOND.adSize"
-          @slotRequested="handleAdRequestedSecond"
           @slotRenderEnded="handleAdRenderEndedSecond"
         />
         <GPTAD
           v-if="hasAdThird"
+          key="ad-third"
           :adUnit="globalAdUnits.MB_FULL_SCREEN_THIRD.adUnitCode"
           :adSize="globalAdUnits.MB_FULL_SCREEN_THIRD.adSize"
           @slotRenderEnded="handleAdRenderEndedThird"
@@ -46,6 +49,8 @@ export default {
       hasAdFirst: true,
       hasAdSecond: false,
       hasAdThird: false,
+      needFixStyle: true,
+      showAdFirst: false,
       showAdFirstCloseBtn: false,
       globalAdUnits: gptUnits.global,
     }
@@ -72,21 +77,23 @@ export default {
         this.showAdFirstCloseBtn = true
       }, 3000)
     },
-    handleAdRequestedSecond(event) {
-      console.log('handleAdRequestedSecond', event)
-    },
     handleAdRenderEndedFirst(event) {
       console.log('handleAdRenderEndedFirst', event)
+      this.showAdFirst = true
       this.hasAdFirst = !event.isEmpty
       this.hasAdSecond = event.isEmpty
     },
     handleAdRenderEndedSecond(event) {
       console.log('handleAdRenderEndedSecond', event)
+      if (!event.isEmpty) {
+        this.needFixStyle = false
+      }
       this.hasAdSecond = !event.isEmpty
       this.hasAdThird = event.isEmpty
     },
     handleAdRenderEndedThird(event) {
       this.hasAdThird = !event.isEmpty
+      this.needFixStyle = false
     },
   },
 }
