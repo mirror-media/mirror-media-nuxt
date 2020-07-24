@@ -43,7 +43,6 @@ export default {
             // and users tend to scroll faster.
             mobileScaling: 2.0,
           })
-
           window.googletag.pubads().collapseEmptyDivs()
           window.googletag.enableServices()
         })

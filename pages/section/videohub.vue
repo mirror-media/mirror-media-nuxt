@@ -122,9 +122,6 @@ export default {
     this.fetchCategoriesPlaylistData()
   },
   methods: {
-    handleConsole(text) {
-      console.log(text)
-    },
     async fetchCategoriesPlaylistData() {
       const response = await Promise.allSettled(
         this.playlistIds.map(this.fetchYoutubePlaylistItems)
@@ -264,12 +261,5 @@ export default {
       margin-bottom: 20px;
     }
   }
-}
-
-.test {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 </style>

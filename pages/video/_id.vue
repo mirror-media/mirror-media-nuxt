@@ -12,12 +12,8 @@
       <client-only v-if="isMobile">
         <GPTAD
           class="video__ad"
-          :adUnit="'mirror_APP_fin_300x250_AT1'"
-          :adSize="[
-            [1, 1],
-            [300, 250],
-            [336, 280],
-          ]"
+          :adUnit="getAdUnit('HD').adUnitCode"
+          :adSize="getAdUnit('HD').adSize"
         />
       </client-only>
       <h1 class="video__title" v-text="title" />
