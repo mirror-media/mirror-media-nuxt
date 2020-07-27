@@ -5,7 +5,7 @@
         v-if="hasAdFirst"
         v-show="isAdFirstVisible"
         :hasDefaultStyle="true"
-        :isCloseBtnVisible="isAdFirstCloseBtnVisible"
+        :isClosedBtnVisible="isAdFirstClosedBtnVisible"
       >
         <GPTAD
           key="ad-first"
@@ -54,7 +54,7 @@ export default {
       hasAdThird: false,
       hasModifiedStyle: true,
       isAdFirstVisible: false,
-      isAdFirstCloseBtnVisible: false,
+      isAdFirstClosedBtnVisible: false,
       globalAdUnits: gptUnits.global,
     }
   },
@@ -78,7 +78,7 @@ export default {
   methods: {
     handleAdRequestedFirst(event) {
       setTimeout(() => {
-        this.isAdFirstCloseBtnVisible = true
+        this.isAdFirstClosedBtnVisible = true
       }, 3000)
     },
     handleAdRenderEndedFirst(event) {

@@ -8,7 +8,7 @@
       <slot />
       <button
         v-if="hasDefaultStyle"
-        v-show="isCloseBtnVisible"
+        v-show="isClosedBtnVisible"
         class="full-screen-ad__btn"
         @click="closeFullScreenAd"
       >
@@ -30,7 +30,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    isCloseBtnVisible: {
+    isClosedBtnVisible: {
       type: Boolean,
       default: false,
     },
