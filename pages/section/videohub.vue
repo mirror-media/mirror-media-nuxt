@@ -35,14 +35,14 @@
         />
       </div>
     </div>
-    <FullScreenAds />
+    <ContainerFullScreenAds />
   </section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import _ from 'lodash'
-import FullScreenAds from '~/components/FullScreenAds.vue'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIVideoCategory from '~/components/UIVideoCategory.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import UIVideoPopular from '~/components/UIVideoPopular.vue'
@@ -78,7 +78,7 @@ const INVERTED_PLAYLIST_MAPPING = _.invert(PLAYLIST_MAPPING)
 export default {
   name: 'SectionVideohub',
   components: {
-    FullScreenAds,
+    ContainerFullScreenAds,
     UIVideoCategory,
     UIVideoIframeWithItems,
     UIVideoPopular,

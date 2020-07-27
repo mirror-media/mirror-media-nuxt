@@ -62,12 +62,12 @@
         :adSize="getAdUnit('FT').adSize"
       />
     </client-only>
-    <FullScreenAds />
+    <ContainerFullScreenAds />
   </section>
 </template>
 
 <script>
-import FullScreenAds from '~/components/FullScreenAds.vue'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIShareFacebook from '~/components/UIShareFacebook.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
@@ -77,7 +77,7 @@ import gptUnits from '~/constants/gptUnits'
 export default {
   name: 'Video',
   components: {
-    FullScreenAds,
+    ContainerFullScreenAds,
     UILinkedItemWithTitle,
     UIShareFacebook,
     UIShareLine,

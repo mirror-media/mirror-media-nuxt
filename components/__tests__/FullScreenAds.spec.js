@@ -1,4 +1,4 @@
-import FullScreenAds from '../FullScreenAds.vue'
+import ContainerFullScreenAds from '../ContainerFullScreenAds.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -8,7 +8,7 @@ const createWrapper = createWrapperHelper({
 
 describe('computed', () => {
   test('should has proper hasFullScreenAd computed value', () => {
-    const wrapper = createWrapper(FullScreenAds, {
+    const wrapper = createWrapper(ContainerFullScreenAds, {
       data() {
         return {
           hasAdFirst: true,
@@ -18,7 +18,7 @@ describe('computed', () => {
     expect(wrapper.vm.hasFullScreenAd).toBe(true)
   })
   test('should has proper hasAdSecondOrThird computed value', () => {
-    const wrapper = createWrapper(FullScreenAds, {
+    const wrapper = createWrapper(ContainerFullScreenAds, {
       data() {
         return {
           hasAdSecond: true,

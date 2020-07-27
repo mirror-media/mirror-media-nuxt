@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: 'FullScreenAd',
+  name: 'UIFullScreenAd',
   props: {
     hasDefaultStyle: {
       type: Boolean,

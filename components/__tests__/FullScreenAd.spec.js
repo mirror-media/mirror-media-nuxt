@@ -1,4 +1,4 @@
-import FullScreenAd from '../FullScreenAd.vue'
+import UIFullScreenAd from '../UIFullScreenAd.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -6,7 +6,7 @@ const createWrapper = createWrapperHelper()
 
 describe('props', () => {
   test('should has proper class name and close button when props hasDefaultStyle is true', () => {
-    const wrapper = createWrapper(FullScreenAd, {
+    const wrapper = createWrapper(UIFullScreenAd, {
       propsData: {
         hasDefaultStyle: true,
       },
@@ -18,7 +18,7 @@ describe('props', () => {
     expect(closeBtn.exists()).toBe(true)
   })
   test('should has proper class name and close button when props hasModifiedStyle is true', () => {
-    const wrapper = createWrapper(FullScreenAd, {
+    const wrapper = createWrapper(UIFullScreenAd, {
       propsData: {
         hasModifiedStyle: true,
       },
@@ -30,7 +30,7 @@ describe('props', () => {
 
 describe('data', () => {
   test('should not exist when isEnabled is false', () => {
-    const wrapper = createWrapper(FullScreenAd, {
+    const wrapper = createWrapper(UIFullScreenAd, {
       data() {
         return {
           isEnabled: false,
@@ -43,7 +43,7 @@ describe('data', () => {
 
 describe('methods', () => {
   test('should not exist when click close button', async () => {
-    const wrapper = createWrapper(FullScreenAd, {
+    const wrapper = createWrapper(UIFullScreenAd, {
       propsData: {
         hasDefaultStyle: true,
       },
