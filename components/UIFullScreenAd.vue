@@ -71,8 +71,7 @@ export default {
       height: 480px;
     }
   }
-  // This style is for triggering full-screen ad without default style
-  // due to GPT lazy loading setting
+  // 因為 GPT Lazy loading 需要知道何時載入的位置，所以預設此樣式來觸發廣告載入
   &.modified {
     position: fixed;
     right: 0;
