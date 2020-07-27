@@ -2,8 +2,8 @@
   <div :class="`align-${textPositionInMdViewport}`" class="linked-item">
     <a
       :href="href"
+      :target="target"
       class="linked-item__image"
-      target="_blank"
       rel="noopener noreferrer"
       @click="handleClick"
     >
@@ -13,8 +13,8 @@
       :href="href"
       :class="{ 'limited-lines': limitedLines }"
       :style="limitedLinesStyle"
+      :target="target"
       class="linked-item__title"
-      target="_blank"
       rel="noopener noreferrer"
       @click="handleClick"
       v-text="title"
@@ -40,6 +40,10 @@ export default {
       type: String,
       default: '',
       required: true,
+    },
+    target: {
+      type: String,
+      default: '_blank',
     },
     textPositionInMdViewport: {
       type: String,

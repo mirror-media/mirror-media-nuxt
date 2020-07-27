@@ -12,6 +12,7 @@ const createWrapper = createWrapperHelper({
       params: {
         id: idMock,
       },
+      query: {},
     },
     $dayjs: jest.fn(() => ({
       format: jest.fn(),

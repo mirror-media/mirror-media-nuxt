@@ -56,6 +56,24 @@ describe('image src', () => {
   })
 })
 
+describe('target attribute', () => {
+  test('render the proper target attribute', async () => {
+    const target = '_self'
+    const wrapper = await createWrapper(UILinkedItemWithTitle, {
+      propsData: {
+        imgSrc: '',
+        href: '',
+        title: '',
+        target,
+      },
+    })
+    const links = wrapper.findAll('a')
+    links.wrappers.forEach((link) => {
+      expect(link.attributes().target).toBe(target)
+    })
+  })
+})
+
 describe('classname for style in md viewport', () => {
   test('render the proper default classname', () => {
     const wrapper = createWrapper(UILinkedItemWithTitle, {
