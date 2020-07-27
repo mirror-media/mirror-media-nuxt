@@ -76,6 +76,7 @@ export default {
       isAdFirstVisible: false,
       isAdFirstClosedBtnVisible: false,
       globalAdUnits: gptUnits.global,
+      timerClosedBtn: null,
     }
   },
   computed: {
@@ -96,11 +97,14 @@ export default {
   },
   methods: {
     setTimerForClosedBtn() {
-      setTimeout(() => {
+      this.timerClosedBtn = setTimeout(() => {
         this.isAdFirstClosedBtnVisible = true
       }, 3000)
     },
     handleAdRenderEndedFirst(event) {
+      if (event.isEmpty) {
+        clearTimeout(this.timerClosedBtn)
+      }
       this.isAdFirstVisible = true
       this.hasAdFirst = !event.isEmpty
       this.hasAdSecond = event.isEmpty
