@@ -11,7 +11,7 @@
           key="ad-first"
           :adUnit="globalAdUnits.MB_FULL_SCREEN_FIRST.adUnitCode"
           :adSize="globalAdUnits.MB_FULL_SCREEN_FIRST.adSize"
-          @slotRequested="handleAdRequestedFirst"
+          @slotRequested="setTimerForClosedBtn"
           @slotRenderEnded="handleAdRenderEndedFirst"
         />
       </FullScreenAd>
@@ -24,14 +24,14 @@
           key="ad-second"
           :adUnit="globalAdUnits.MB_FULL_SCREEN_SECOND.adUnitCode"
           :adSize="globalAdUnits.MB_FULL_SCREEN_SECOND.adSize"
-          @slotRenderEnded="handleAdRenderEndedSecond"
+          @slotRenderEnded="disableModifiedStyle"
         />
         <GPTAD
           v-if="hasAdThird"
           key="ad-third"
           :adUnit="globalAdUnits.MB_FULL_SCREEN_THIRD.adUnitCode"
           :adSize="globalAdUnits.MB_FULL_SCREEN_THIRD.adSize"
-          @slotRenderEnded="handleAdRenderEndedThird"
+          @slotRenderEnded="disableModifiedStyle"
         />
       </FullScreenAd>
     </div>
@@ -69,14 +69,14 @@ export default {
   mounted() {
     // Custom event listener for AD2 Slot
     // It will be triggered when AD2 is empty
-    window.addEventListener('noad2', () => {
+    window.addEventListener('noad2', function enableInnityAd() {
       this.hasModifiedStyle = true
       this.hasAdSecond = false
       this.hasAdThird = true
     })
   },
   methods: {
-    handleAdRequestedFirst() {
+    setTimerForClosedBtn() {
       setTimeout(() => {
         this.isAdFirstClosedBtnVisible = true
       }, 3000)
@@ -86,10 +86,7 @@ export default {
       this.hasAdFirst = !event.isEmpty
       this.hasAdSecond = event.isEmpty
     },
-    handleAdRenderEndedSecond() {
-      this.hasModifiedStyle = false
-    },
-    handleAdRenderEndedThird() {
+    disableModifiedStyle() {
       this.hasModifiedStyle = false
     },
   },
