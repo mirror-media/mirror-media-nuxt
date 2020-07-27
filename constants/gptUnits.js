@@ -1726,6 +1726,41 @@ export default {
 
   // videohub
   videohub: {
+    APPHD: {
+      adUnitCode: 'mirror_APP_video_300x250_HD',
+      adSize: [
+        [1, 1],
+        [300, 250],
+        [320, 100],
+        [336, 280],
+      ],
+    },
+    APPE1: {
+      adUnitCode: 'mirror_APP_video_300x250_E1',
+      adSize: [
+        [1, 1],
+        [300, 250],
+        [320, 100],
+        [336, 280],
+      ],
+    },
+    APPFT: {
+      adUnitCode: 'mirror_APP_video_300x250_FT',
+      adSize: [
+        [1, 1],
+        [300, 250],
+        [320, 100],
+        [336, 280],
+      ],
+    },
+    APPST: {
+      adUnitCode: 'mirror_APP_video_320x100_ST',
+      adSize: [
+        [1, 1],
+        [320, 50],
+        [320, 100],
+      ],
+    },
     MBHD: {
       adUnitCode: 'mirror_m_video_300x250_HD',
       adSize: [

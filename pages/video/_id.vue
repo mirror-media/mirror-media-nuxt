@@ -47,8 +47,9 @@
           v-for="item in listDataLatest"
           :key="item.videoId"
           :title="item.title"
-          :href="`/video/${item.videoId}`"
+          :href="getHref(item.videoId)"
           :imgSrc="item.thumbnails"
+          :target="linkedTarget"
           textPositionInMdViewport="right"
           class="video__latest"
           @click="handleClick"
@@ -74,6 +75,9 @@ import gptUnits from '~/constants/gptUnits'
 
 export default {
   name: 'Video',
+  layout(context) {
+    return context.route.query.layout
+  },
   components: {
     UILinkedItemWithTitle,
     UIShareFacebook,
@@ -97,6 +101,9 @@ export default {
   },
   computed: {
     adDevice() {
+      if (this.isApp) {
+        return 'APP'
+      }
       return this.$ua.isFromPc() ? 'PC' : 'MB'
     },
     channelId() {
@@ -114,8 +121,17 @@ export default {
     hasLatestItems() {
       return this.listDataLatest.length > 0
     },
+    isApp() {
+      return this.$route.query.layout === 'app'
+    },
     isMobile() {
-      return this.adDevice === 'MB'
+      return this.adDevice === 'MB' || this.adDevice === 'APP'
+    },
+    linkedTarget() {
+      if (this.isApp) {
+        return '_self'
+      }
+      return '_blank'
     },
     title() {
       return this.videoData.title
@@ -141,6 +157,12 @@ export default {
     },
     getAdUnit(position) {
       return this.videoAdUnits[`${this.adDevice}${position}`] ?? {}
+    },
+    getHref(videoId) {
+      if (this.isApp) {
+        return `/video/${videoId}?layout=app`
+      }
+      return `/video/${videoId}`
     },
     handleClick() {
       this.$ga.event({
