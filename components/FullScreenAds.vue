@@ -69,14 +69,14 @@ export default {
   mounted() {
     // Custom event listener for AD2 Slot
     // It will be triggered when AD2 is empty
-    window.addEventListener('noad2', (e) => {
+    window.addEventListener('noad2', () => {
       this.hasModifiedStyle = true
       this.hasAdSecond = false
       this.hasAdThird = true
     })
   },
   methods: {
-    handleAdRequestedFirst(event) {
+    handleAdRequestedFirst() {
       setTimeout(() => {
         this.isAdFirstClosedBtnVisible = true
       }, 3000)
@@ -86,10 +86,10 @@ export default {
       this.hasAdFirst = !event.isEmpty
       this.hasAdSecond = event.isEmpty
     },
-    handleAdRenderEndedSecond(event) {
+    handleAdRenderEndedSecond() {
       this.hasModifiedStyle = false
     },
-    handleAdRenderEndedThird(event) {
+    handleAdRenderEndedThird() {
       this.hasModifiedStyle = false
     },
   },
