@@ -67,8 +67,8 @@
     <UIStickyAd>
       <client-only>
         <GPTAD
-          :adUnit="videoAdUnits.MBST.adUnitCode"
-          :adSize="videoAdUnits.MBST.adSize"
+          :adUnit="getAdUnit('ST').adUnitCode"
+          :adSize="getAdUnit('ST').adSize"
         />
       </client-only>
     </UIStickyAd>
