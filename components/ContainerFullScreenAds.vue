@@ -94,7 +94,8 @@ export default {
   },
   mounted() {
     // AD2 無法透過 GPT 的事件來確認是否有廣告，需要透過此事件來確認
-    window.addEventListener('noad2', function enableInnityAd() {
+    // 因為 this 綁定對象關係，使用 =>
+    window.addEventListener('noad2', () => {
       this.hasModifiedStyle = true
       this.hasAdSecond = false
       this.hasAdThird = true
