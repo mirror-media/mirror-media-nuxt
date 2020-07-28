@@ -15,6 +15,7 @@
     </UIVideoIframeWithItems>
     <div class="section__remaining">
       <UILinkedItemWithTitle
+        v-if="remainingItemsBeforeMobileAd"
         :key="remainingItemsBeforeMobileAd.videoId"
         :imgSrc="remainingItemsBeforeMobileAd.thumbnails"
         :href="`/video/${remainingItemsBeforeMobileAd.videoId}`"

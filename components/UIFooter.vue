@@ -63,7 +63,9 @@ export default {
   padding: 10px 20px;
   @include media-breakpoint-up(xl) {
     box-shadow: none;
+    max-width: 1024px;
     padding: 15px 15px 50px 15px;
+    margin: 0 auto;
     border-top: 2px solid #000;
     display: flex;
     align-items: center;
