@@ -84,7 +84,9 @@ export default {
   computed: {
     hasFullScreenAd() {
       const isNotApp = this.$route.query.layout !== 'app'
-      return isNotApp || this.hasAdFirst || this.hasAdSecond || this.hasAdThird
+      return (
+        isNotApp && (this.hasAdFirst || this.hasAdSecond || this.hasAdThird)
+      )
     },
     hasAdSecondOrThird() {
       return this.hasAdSecond || this.hasAdThird
