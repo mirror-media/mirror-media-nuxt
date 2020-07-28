@@ -63,10 +63,12 @@
         :adSize="getAdUnit('FT').adSize"
       />
     </client-only>
+    <ContainerFullScreenAds />
   </section>
 </template>
 
 <script>
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIShareFacebook from '~/components/UIShareFacebook.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
@@ -79,6 +81,7 @@ export default {
     return context.route.query.layout
   },
   components: {
+    ContainerFullScreenAds,
     UILinkedItemWithTitle,
     UIShareFacebook,
     UIShareLine,

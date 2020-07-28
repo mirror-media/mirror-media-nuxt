@@ -127,6 +127,11 @@ export default {
       })
     })
   },
+  beforeDestroy() {
+    window.googletag.cmd.push(() => {
+      window.googletag.destroySlots([this.adSlot])
+    })
+  },
 }
 </script>
 

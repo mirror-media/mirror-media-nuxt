@@ -52,11 +52,13 @@
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
+    <ContainerFullScreenAds />
   </section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
@@ -88,6 +90,7 @@ const VIDEO_CATEGORIES_NAME = Object.keys(PLAYLIST_MAPPING)
 export default {
   name: 'VideoCategory',
   components: {
+    ContainerFullScreenAds,
     UIInfiniteLoading,
     UILinkedItemWithTitle,
     UIVideoIframeWithItems,
