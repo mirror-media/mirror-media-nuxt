@@ -9,7 +9,7 @@
         @click="handleClick"
       />
       <a
-        :href="`/category/${category.name}`"
+        :href="`/video_category/${category.name}`"
         class="video-category__category-link"
         target="_blank"
         rel="noopener noreferrer"

@@ -43,7 +43,7 @@ describe('link to category page', () => {
         ],
       },
     })
-    expect(wrapper.get('a').attributes().href).toBe(`/category/${name}`)
+    expect(wrapper.get('a').attributes().href).toBe(`/video_category/${name}`)
   })
 })
 
