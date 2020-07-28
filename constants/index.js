@@ -95,3 +95,6 @@ export const SUB_BRAND_LINKS = [
 ]
 
 export const SITE_TITLE = '鏡週刊 Mirror Media'
+export const SITE_URL = 'https://www.mirrormedia.mg'
+export const SITE_OG_IMAGE =
+  'https://www.mirrormedia.mg/assets/mirrormedia/notImage.png'
