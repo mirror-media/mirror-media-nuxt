@@ -50,6 +50,7 @@
 <script>
 import { mapState } from 'vuex'
 import _ from 'lodash'
+import { SITE_TITLE, SITE_URL } from '~/constants/index'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import UIVideoCategory from '~/components/UIVideoCategory.vue'
@@ -194,6 +195,22 @@ export default {
         thumbnails: item.snippet?.thumbnails?.high?.url,
       }
     },
+  },
+  head() {
+    const title = `影音 - ${SITE_TITLE}`
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', property: 'og:title', content: title },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${SITE_URL}${this.$route.path}`,
+        },
+        { hid: 'twitter:title', name: 'twitter:title', content: title },
+        { name: 'section-name', content: 'videohub' },
+      ],
+    }
   },
 }
 </script>

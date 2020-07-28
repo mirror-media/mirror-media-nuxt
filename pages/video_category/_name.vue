@@ -67,6 +67,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { SITE_TITLE, SITE_URL } from '~/constants/index'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
@@ -216,6 +217,22 @@ export default {
         ...this.processItems(reponse),
       ]
     },
+  },
+  head() {
+    const title = `${this.categoryTitle} - ${SITE_TITLE}`
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', property: 'og:title', content: title },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${SITE_URL}${this.$route.path}`,
+        },
+        { hid: 'twitter:title', name: 'twitter:title', content: title },
+        { name: 'section-name', content: 'videohub' },
+      ],
+    }
   },
 }
 </script>

@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import { SITE_OG_IMAGE, SITE_URL } from '~/constants/index'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
@@ -199,6 +200,42 @@ export default {
         thumbnails: item.snippet?.thumbnails?.high?.url,
       }
     },
+  },
+  head() {
+    const image =
+      this.videoData?.thumbnails?.maxres?.url ||
+      this.videoData?.thumbnails?.standard?.url ||
+      SITE_OG_IMAGE
+    return {
+      title: this.title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.descriptionParsed,
+        },
+        { hid: 'og:title', property: 'og:title', content: this.title },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: this.descriptionParsed,
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${SITE_URL}${this.$route.path}`,
+        },
+        { hid: 'og:image', property: 'og:image', content: image },
+        { hid: 'twitter:title', name: 'twitter:title', content: this.title },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: this.descriptionParsed,
+        },
+        { hid: 'twitter:image', name: 'twitter:image', content: image },
+        { name: 'section-name', content: 'videohub' },
+      ],
+    }
   },
 }
 </script>
