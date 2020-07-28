@@ -3,6 +3,11 @@ import ContainerFullScreenAds from '../ContainerFullScreenAds.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
+  mocks: {
+    $route: {
+      query: {},
+    },
+  },
   stubs: ['client-only', 'GPTAD'],
 })
 
