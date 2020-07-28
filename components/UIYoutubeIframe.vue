@@ -3,7 +3,7 @@
     <iframe
       :src="`https://www.youtube.com/embed/${videoId}`"
       class="iframe-wrapper__iframe"
-      width="560"
+      width="100%"
       height="315"
       frameborder="0"
       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -37,7 +37,6 @@ export default {
     bottom: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
     object-position: center;
   }
 }
