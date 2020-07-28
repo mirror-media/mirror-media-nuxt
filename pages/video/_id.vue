@@ -64,11 +64,20 @@
       />
     </client-only>
     <ContainerFullScreenAds />
+    <UIStickyAd>
+      <client-only>
+        <GPTAD
+          :adUnit="videoAdUnits.MBST.adUnitCode"
+          :adSize="videoAdUnits.MBST.adSize"
+        />
+      </client-only>
+    </UIStickyAd>
   </section>
 </template>
 
 <script>
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+import UIStickyAd from '~/components/UIStickyAd.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIShareFacebook from '~/components/UIShareFacebook.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
@@ -82,6 +91,7 @@ export default {
   },
   components: {
     ContainerFullScreenAds,
+    UIStickyAd,
     UILinkedItemWithTitle,
     UIShareFacebook,
     UIShareLine,

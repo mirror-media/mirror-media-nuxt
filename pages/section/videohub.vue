@@ -36,6 +36,14 @@
       </div>
     </div>
     <ContainerFullScreenAds />
+    <UIStickyAd>
+      <client-only>
+        <GPTAD
+          :adUnit="videoAdUnits.MBST.adUnitCode"
+          :adSize="videoAdUnits.MBST.adSize"
+        />
+      </client-only>
+    </UIStickyAd>
   </section>
 </template>
 
@@ -43,6 +51,7 @@
 import { mapState } from 'vuex'
 import _ from 'lodash'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+import UIStickyAd from '~/components/UIStickyAd.vue'
 import UIVideoCategory from '~/components/UIVideoCategory.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import UIVideoPopular from '~/components/UIVideoPopular.vue'
@@ -76,6 +85,7 @@ export default {
   name: 'SectionVideohub',
   components: {
     ContainerFullScreenAds,
+    UIStickyAd,
     UIVideoCategory,
     UIVideoIframeWithItems,
     UIVideoPopular,

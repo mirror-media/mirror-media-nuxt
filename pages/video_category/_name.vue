@@ -54,12 +54,21 @@
       @infinite="infiniteHandler"
     />
     <ContainerFullScreenAds />
+    <UIStickyAd>
+      <client-only>
+        <GPTAD
+          :adUnit="videoAdUnits.MBST.adUnitCode"
+          :adSize="videoAdUnits.MBST.adSize"
+        />
+      </client-only>
+    </UIStickyAd>
   </section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+import UIStickyAd from '~/components/UIStickyAd.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
@@ -92,6 +101,7 @@ export default {
   name: 'VideoCategory',
   components: {
     ContainerFullScreenAds,
+    UIStickyAd,
     UIInfiniteLoading,
     UILinkedItemWithTitle,
     UIVideoIframeWithItems,
