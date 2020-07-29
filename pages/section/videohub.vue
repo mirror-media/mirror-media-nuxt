@@ -55,7 +55,7 @@ import {
   SITE_URL,
   VIDEOHUB_CATEGORIES_PLAYLIST_MAPPING as PLAYLIST_MAPPING,
 } from '~/constants/index'
-import { processResponseItems as processItems } from '~/utils/youtube'
+import { processResponseItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import UIVideoCategory from '~/components/UIVideoCategory.vue'
@@ -78,7 +78,7 @@ export default {
   },
   async fetch() {
     const response = await this.fetchChannelData({ order: 'date' })
-    this.latestData = processItems(response).slice(0, 5)
+    this.latestData = processResponseItems(response).slice(0, 5)
   },
   data() {
     return {
@@ -122,7 +122,7 @@ export default {
     },
     async fetchPopularData() {
       const response = await this.fetchChannelData({ order: 'viewCount' })
-      this.popularData = processItems(response)
+      this.popularData = processResponseItems(response)
     },
     fetchChannelData({ order = 'date' } = {}) {
       return this.$fetchYoutubeSearch({
@@ -159,7 +159,7 @@ export default {
         this.$set(
           this.categoriesPlaylistData,
           categoryName,
-          processItems(data.value)
+          processResponseItems(data.value)
         )
       }
     },

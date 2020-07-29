@@ -72,7 +72,7 @@ import {
   SITE_URL,
   VIDEOHUB_CATEGORIES_PLAYLIST_MAPPING as PLAYLIST_MAPPING,
 } from '~/constants/index'
-import { processResponseItems as processItems } from '~/utils/youtube'
+import { processResponseItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
@@ -180,7 +180,10 @@ export default {
       }
     },
     setPlaylistItems(reponse) {
-      this.playlistItems = [...this.playlistItems, ...processItems(reponse)]
+      this.playlistItems = [
+        ...this.playlistItems,
+        ...processResponseItems(reponse),
+      ]
     },
   },
   head() {

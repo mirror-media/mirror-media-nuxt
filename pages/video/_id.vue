@@ -77,7 +77,7 @@
 
 <script>
 import { SITE_OG_IMAGE, SITE_URL } from '~/constants/index'
-import { processResponseItems as restructureAndFilterItems } from '~/utils/youtube'
+import { processResponseItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
@@ -168,7 +168,7 @@ export default {
         part: 'snippet',
         channelId,
       })
-      this.listDataLatest = restructureAndFilterItems(response)
+      this.listDataLatest = processResponseItems(response)
     },
     getAdUnit(position) {
       return this.videoAdUnits[`${this.adDevice}${position}`] ?? {}
