@@ -14,20 +14,26 @@ export function getAdSizeType(adSize = []) {
    */
   const sizeValidators = [
     function fixed() {
-      return checkFixedSize(adSize)
+      return checkFixedSize(adSize) ? 'fixed' : undefined
     },
     function multi() {
       return adSize.length > 0 && adSize.every(checkFixedSize)
+        ? 'multi'
+        : undefined
     },
     function fluid() {
-      return adSize.length === 1 && adSize[0] === 'fluid'
+      return adSize.length === 1 && adSize[0] === 'fluid' ? 'fluid' : undefined
     },
   ]
-
   // output 'fixed', 'multi, 'fluid' or undefined
-  return sizeValidators.find(function findTruth(validator) {
+  const sizeValidator = sizeValidators.find(function findTruth(validator) {
     return validator()
-  })?.name
+  })
+
+  if (typeof sizeValidator === 'function') {
+    return sizeValidator()
+  }
+  return undefined
 
   function checkFixedSize(array = []) {
     return (
