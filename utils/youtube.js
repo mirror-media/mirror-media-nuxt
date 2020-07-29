@@ -1,7 +1,7 @@
 function isValidYoutubeVideo(item) {
   // for specific title from Youtube response data
   const invalidTitles = ['Deleted video', 'Private video']
-  return !invalidTitles.includes(item.title)
+  return !invalidTitles.includes(item.snippet?.title)
 }
 
 function restructureItem(item) {
@@ -14,5 +14,5 @@ function restructureItem(item) {
 
 export function processResponseItems(response = {}) {
   const items = response.items ?? []
-  return items.map(restructureItem).filter(isValidYoutubeVideo)
+  return items.filter(isValidYoutubeVideo).map(restructureItem)
 }
