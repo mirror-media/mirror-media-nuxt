@@ -18,7 +18,7 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('scroll', this.makeAdVisible)
+    window.addEventListener('scroll', this.makeAdVisible, { passive: true })
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.makeAdVisible)
