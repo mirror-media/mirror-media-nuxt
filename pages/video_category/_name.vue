@@ -67,34 +67,18 @@
 
 <script>
 import { mapState } from 'vuex'
-import { SITE_TITLE, SITE_URL } from '~/constants/index'
+import {
+  SITE_TITLE,
+  SITE_URL,
+  VIDEOHUB_CATEGORIES_PLAYLIST_MAPPING as PLAYLIST_MAPPING,
+} from '~/constants/index'
+import { processResponseItems as processItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import gptUnits from '~/constants/gptUnits'
-
-const PLAYLIST_MAPPING = {
-  // 鏡封面
-  video_coverstory: 'PLftq_bkhPR3ZtDGBhyqVGObQXazG_O3M3',
-  // 鏡娛樂
-  video_entertainment: 'PLftq_bkhPR3aj8UaqBvel6wia54AM5wlh',
-  // 鏡社會
-  video_society: 'PLftq_bkhPR3bLVBh5khl2pLxgFoPwrbfl',
-  // 鏡調查
-  video_investigation: 'PLftq_bkhPR3YOrSnIpcqSkY3hPE2TjXfW',
-  // 鏡人物
-  video_people: 'PLftq_bkhPR3YkNjH8VQZ__8nXZ9INIjAu',
-  // 鏡財經
-  video_finance: 'PLftq_bkhPR3afBv0Wg_oUqjd_pkWIJm2h',
-  // 鏡食旅
-  video_foodtravel: 'PLftq_bkhPR3baCfd6RU_1hbkY8ynXssun',
-  // 娛樂透視
-  video_ent_perspective: 'PLftq_bkhPR3YxUNEIHIMA2fsM-DqxCHMb',
-  // 汽車鐘錶
-  video_carandwatch: 'PLgvIJQ8OtT8LOdwVF4P9hdQiuf6uAiwb6',
-}
 
 const VIDEO_CATEGORIES_NAME = Object.keys(PLAYLIST_MAPPING)
 
@@ -195,27 +179,8 @@ export default {
         $state.error()
       }
     },
-    isValidYoutubeVideo(item) {
-      // for specific title from Youtube response data
-      const invalidTitles = ['Deleted video', 'Private video']
-      return !invalidTitles.includes(item.title)
-    },
-    processItems(response = {}) {
-      const items = response.items ?? []
-      return items.map(this.restructureItem).filter(this.isValidYoutubeVideo)
-    },
-    restructureItem(item) {
-      return {
-        videoId: item.id?.videoId || item.snippet?.resourceId?.videoId,
-        title: item.snippet?.title,
-        thumbnails: item.snippet?.thumbnails?.high?.url,
-      }
-    },
     setPlaylistItems(reponse) {
-      this.playlistItems = [
-        ...this.playlistItems,
-        ...this.processItems(reponse),
-      ]
+      this.playlistItems = [...this.playlistItems, ...processItems(reponse)]
     },
   },
   head() {

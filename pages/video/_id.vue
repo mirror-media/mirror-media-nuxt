@@ -77,6 +77,7 @@
 
 <script>
 import { SITE_OG_IMAGE, SITE_URL } from '~/constants/index'
+import { processResponseItems as restructureAndFilterItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
@@ -167,7 +168,7 @@ export default {
         part: 'snippet',
         channelId,
       })
-      this.listDataLatest = this.restructureAndFilterItems(response)
+      this.listDataLatest = restructureAndFilterItems(response)
     },
     getAdUnit(position) {
       return this.videoAdUnits[`${this.adDevice}${position}`] ?? {}
@@ -184,21 +185,6 @@ export default {
         eventAction: 'click',
         eventLabel: 'latest_video',
       })
-    },
-    isValidYoutubeVideo(item) {
-      // for specific title from Youtube response data
-      return item.title !== 'Deleted video' && item.title !== 'Private video'
-    },
-    restructureAndFilterItems(response = {}) {
-      const items = response.items ?? []
-      return items.map(this.restructureItem).filter(this.isValidYoutubeVideo)
-    },
-    restructureItem(item) {
-      return {
-        videoId: item.id?.videoId || item.snippet?.resourceId?.videoId,
-        title: item.snippet?.title,
-        thumbnails: item.snippet?.thumbnails?.high?.url,
-      }
     },
   },
   head() {

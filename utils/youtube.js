@@ -1,0 +1,18 @@
+function isValidYoutubeVideo(item) {
+  // for specific title from Youtube response data
+  const invalidTitles = ['Deleted video', 'Private video']
+  return !invalidTitles.includes(item.title)
+}
+
+function restructureItem(item) {
+  return {
+    videoId: item.id?.videoId || item.snippet?.resourceId?.videoId,
+    title: item.snippet?.title,
+    thumbnails: item.snippet?.thumbnails?.high?.url,
+  }
+}
+
+export function processResponseItems(response = {}) {
+  const items = response.items ?? []
+  return items.map(restructureItem).filter(isValidYoutubeVideo)
+}
