@@ -10,12 +10,12 @@ module.exports = function (req, res, next) {
   if (hostname.match(/mirrormedia.mg/gs)) {
     if (
       req.url.match(
-        /^\/$|^\/(section|category|topic|externals|search|author|tag)\//gs
+        /^\/$|^\/(section|category|video_category|topic|externals|search|author|tag)\//gs
       )
     ) {
       res.set(NO_CACHE_HEADERS)
     }
-    if (req.url.match(/^\/(api|story|app)\//gs)) {
+    if (req.url.match(/^\/(api|story|video|app)\//gs)) {
       res.set('cache-control', 'public, max-age=600')
     }
     return next()
