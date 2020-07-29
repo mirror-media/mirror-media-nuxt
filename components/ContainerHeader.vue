@@ -16,10 +16,11 @@
         />
         <client-only>
           <GPTAD
+            v-show="hasGptLogo"
             :adUnit="logoAdUnit.adUnitCode"
             :adSize="logoAdUnit.adSize"
             class="logo"
-            @slotOnload="handleAdOnload"
+            @slotRenderEnded="handleLogoAdRenderEnded"
           />
         </client-only>
       </div>
@@ -179,8 +180,8 @@ export default {
     updateNow() {
       this.now = new Date()
     },
-    handleAdOnload() {
-      this.hasGptLogo = true
+    handleLogoAdRenderEnded(event) {
+      this.hasGptLogo = !event.isEmpty
     },
     handleClickMenuIcon() {
       this.openSidebar()
