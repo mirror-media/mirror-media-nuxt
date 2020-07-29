@@ -3,6 +3,7 @@
     <iframe
       :src="`https://www.youtube.com/embed/${videoId}`"
       class="iframe-wrapper__iframe"
+      loading="lazy"
       width="100%"
       height="315"
       frameborder="0"
