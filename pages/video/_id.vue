@@ -287,6 +287,9 @@ export default {
     @include media-breakpoint-up(md) {
       font-size: 22px;
     }
+    @include media-breakpoint-up(xl) {
+      margin-left: 0;
+    }
     + * {
       margin-top: 15px;
     }
@@ -294,6 +297,9 @@ export default {
   &__data-share {
     display: flex;
     justify-content: space-between;
+    @include media-breakpoint-up(xl) {
+      width: 100%;
+    }
     + * {
       margin-top: 0.5em;
     }
@@ -302,6 +308,9 @@ export default {
     color: #a0a0a0;
     font-size: 12px;
     line-height: 1.88;
+    @include media-breakpoint-up(xl) {
+      font-size: 14px;
+    }
   }
   &__share {
     display: flex;
