@@ -181,6 +181,7 @@ export default {
       this.now = new Date()
     },
     handleLogoAdRenderEnded(event) {
+      console.log('!! handleLogoAdRenderEnded', event)
       this.hasGptLogo = !event.isEmpty
     },
     handleClickMenuIcon() {

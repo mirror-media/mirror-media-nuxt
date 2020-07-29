@@ -54,6 +54,14 @@ export default {
       return getAdSizeType(this.adSize)
     },
     adWidth() {
+      console.log(
+        '!!',
+        this.adUnitPath,
+        ', adSizeType:',
+        this.adSizeType,
+        ', adSize:',
+        this.adSize
+      )
       switch (this.adSizeType) {
         case 'fixed': {
           const width = this.adSize[0]
