@@ -106,9 +106,13 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: `${SITE_URL}${this.$route.path}`,
+          content: `${SITE_URL}/section/${this.$route.params.name}`,
         },
-        { name: 'section-name', content: this.currentSectionName },
+        {
+          hid: 'section-name',
+          name: 'section-name',
+          content: this.currentSectionName,
+        },
       ],
     }
   },
