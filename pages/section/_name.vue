@@ -44,6 +44,7 @@ import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
 import gptUnits from '~/constants/gptUnits'
 import microAdUnits from '~/constants/microAdUnits'
+import { SITE_TITLE, SITE_URL } from '~/constants'
 
 export default {
   name: 'Section',
@@ -65,6 +66,56 @@ export default {
       listDataMaxResults: 12,
       listDataTotal: undefined,
       microAdUnits: microAdUnits.LISTING,
+    }
+  },
+  head() {
+    const descriptions = {
+      news:
+        '鏡傳媒的新聞與人物網站，提供最深入的獨家調查報導、爆料偷怕、財經專題、人物專訪、國際新聞、文學創作與名家影音講堂。',
+      entertainment:
+        '鏡傳媒的娛樂網站提供最新最勁爆的娛樂頭條新聞、人物專訪、直播、影劇專欄與影展專區。',
+      defaultSectionDescription:
+        '鏡傳媒以台灣為基地，是一跨平台綜合媒體，包含《鏡週刊》以及下設五大分眾內容的《鏡傳媒》網站，刊載時事、財經、人物、國際、文化、娛樂、美食旅遊、精品鐘錶等深入報導及影音內容。我們以「鏡」為名，務求反映事實、時代與人性。',
+    }
+    const title = `${this.currentSectionTitle} - ${SITE_TITLE}`
+    const description =
+      descriptions[this.currentSectionName] ??
+      descriptions.defaultSectionDescription
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: title,
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: title,
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: description,
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: description,
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: description,
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${SITE_URL}${this.$route.path}`,
+        },
+        { name: 'section-name', content: this.currentSectionName },
+      ],
     }
   },
   computed: {
