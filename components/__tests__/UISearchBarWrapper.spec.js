@@ -44,43 +44,56 @@ describe('search feature', () => {
     })
     const searchBarVM = wrapper.findComponent(UISearchBar).vm
 
+    delete window.location
+    window.location = {
+      assign: jest.fn(),
+    }
+
     searchBarVM.$emit('search')
-    expect($router.push).toBeCalledWith('/search/明星')
+    // expect($router.push).toBeCalledWith('/search/明星')
+    expect(window.location.assign).toBeCalledWith('/search/明星')
 
     jest.clearAllMocks()
     wrapper.setData({
       keyword: '',
     })
     searchBarVM.$emit('search')
-    expect($router.push).not.toBeCalled()
+    // expect($router.push).not.toBeCalled()
+    expect(window.location.assign).not.toBeCalled()
 
     jest.clearAllMocks()
     wrapper.setData({
       keyword: '明星 媒體',
     })
     searchBarVM.$emit('search')
-    expect($router.push).toBeCalledWith('/search/明星,媒體')
+    // expect($router.push).toBeCalledWith('/search/明星,媒體')
+    expect(window.location.assign).toBeCalledWith('/search/明星,媒體')
 
     jest.clearAllMocks()
     wrapper.setData({
       keyword: ' 明星  媒體   ',
     })
     searchBarVM.$emit('search')
-    expect($router.push).toBeCalledWith('/search/明星,媒體')
+    // expect($router.push).toBeCalledWith('/search/明星,媒體')
+    expect(window.location.assign).toBeCalledWith('/search/明星,媒體')
 
     jest.clearAllMocks()
     wrapper.setData({
       keyword: '明星, 媒體',
     })
     searchBarVM.$emit('search')
-    expect($router.push).toBeCalledWith('/search/明星,媒體')
+    // expect($router.push).toBeCalledWith('/search/明星,媒體')
+    expect(window.location.assign).toBeCalledWith('/search/明星,媒體')
 
     jest.clearAllMocks()
     wrapper.setData({
       selectedOption: { title: '娛樂', id: '57e1e11cee85930e00cad4ea' },
     })
     searchBarVM.$emit('search')
-    expect($router.push).toBeCalledWith(
+    // expect($router.push).toBeCalledWith(
+    //   '/search/明星,媒體?section=57e1e11cee85930e00cad4ea'
+    // )
+    expect(window.location.assign).toBeCalledWith(
       '/search/明星,媒體?section=57e1e11cee85930e00cad4ea'
     )
   })
