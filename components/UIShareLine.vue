@@ -1,6 +1,6 @@
 <template>
   <a
-    :href="`https://social-plugins.line.me/lineit/share?url={encodeURIComponent(${shareUrl})}`"
+    :href="`https://social-plugins.line.me/lineit/share?url=${shareUrl}`"
     target="_blank"
     rel="noopener noreferrer"
     @click="$emit('click')"
@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     shareUrl() {
-      return this.url || (this.isMounted && location.href)
+      return encodeURIComponent(this.url || (this.isMounted && location.href))
     },
   },
   mounted() {

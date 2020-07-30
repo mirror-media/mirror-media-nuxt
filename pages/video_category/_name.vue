@@ -81,6 +81,7 @@ import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import gptUnits from '~/constants/gptUnits'
 
 const VIDEO_CATEGORIES_NAME = Object.keys(PLAYLIST_MAPPING)
+const MAX_RESULTS = 29
 
 export default {
   name: 'VideoCategory',
@@ -134,10 +135,10 @@ export default {
       return this.playlistItems.slice(5, 6)[0]
     },
     remainingItemsAfterMobileAdBeforeDesktopAd() {
-      return this.playlistItems.slice(6, 30)
+      return this.playlistItems.slice(6, MAX_RESULTS)
     },
     remainingItemsAfterDesktopAd() {
-      return this.playlistItems.slice(30)
+      return this.playlistItems.slice(MAX_RESULTS)
     },
     shouldMountInfiniteLoading() {
       return this.nextPageToken
@@ -148,7 +149,7 @@ export default {
       return this.$fetchYoutubePlaylistItems({
         playlistId: PLAYLIST_MAPPING[this.categoryName],
         part: 'snippet',
-        maxResults: 30,
+        maxResults: MAX_RESULTS,
         pageToken: nextPageToken,
       })
     },
@@ -307,9 +308,6 @@ export default {
     @include media-breakpoint-up(md) {
       width: calc((100% - 60px) / 4);
       margin: 20px 7.5px 0;
-    }
-    @include media-breakpoint-up(xl) {
-      width: calc((100% - 75px) / 5);
     }
     + .section__remaining-item,
     + .section__ad {

@@ -16,7 +16,9 @@ describe('href', () => {
     await wrapper.vm.$nextTick()
     const link = wrapper.get('a')
     expect(link.attributes().href).toBe(
-      `https://social-plugins.line.me/lineit/share?url={encodeURIComponent(${url})}`
+      `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
+        url
+      )}`
     )
   })
 
@@ -29,7 +31,9 @@ describe('href', () => {
     })
     const link = wrapper.get('a')
     expect(link.attributes().href).toBe(
-      `https://social-plugins.line.me/lineit/share?url={encodeURIComponent(${url})}`
+      `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
+        url
+      )}`
     )
   })
 })
