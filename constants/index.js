@@ -111,7 +111,7 @@ export const VIDEOHUB_CATEGORIES_PLAYLIST_MAPPING = {
   video_foodtravel: 'PLftq_bkhPR3baCfd6RU_1hbkY8ynXssun',
   // 娛樂透視
   video_ent_perspective: 'PLftq_bkhPR3YxUNEIHIMA2fsM-DqxCHMb',
-  // 汽車鐘錶
+  // 鏡錶誌
   video_carandwatch: 'PLgvIJQ8OtT8LOdwVF4P9hdQiuf6uAiwb6',
 }
 

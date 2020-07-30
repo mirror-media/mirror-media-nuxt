@@ -137,7 +137,7 @@ export default {
       return this.$fetchYoutubePlaylistItems({
         playlistId,
         part: 'snippet',
-        maxResults: 5,
+        maxResults: 15,
       })
     },
     getCategoryItems(category) {
@@ -159,7 +159,7 @@ export default {
         this.$set(
           this.categoriesPlaylistData,
           categoryName,
-          processResponseItems(data.value)
+          processResponseItems(data.value).slice(0, 5)
         )
       }
     },

@@ -1,6 +1,12 @@
 <template>
   <section v-if="hasItems" :class="category.name" class="video-category">
-    <h1 class="video-category__heading" v-text="category.title" />
+    <h1 class="video-category__heading">
+      <a
+        :href="`/video_category/${category.name}`"
+        target="_blank"
+        v-text="category.title"
+      />
+    </h1>
     <div class="video-category__first">
       <UILinkedItemWithTitle
         :title="theFirstItem.title"
@@ -87,6 +93,7 @@ export default {
     padding: 0;
   }
   &__heading {
+    display: inline;
     color: #4a4a4a;
     font-size: 24px;
     font-weight: 600;
