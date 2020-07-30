@@ -48,7 +48,8 @@ export default {
       const keyword = this.handleWhitespace(this.keyword)
       const { id } = this.selectedOption
       const query = id ? `?section=${id}` : ''
-      this.$router.push(`/search/${keyword}${query}`)
+      // this.$router.push(`/search/${keyword}${query}`)
+      location.assign(`/search/${keyword}${query}`)
     },
     handleWhitespace(str) {
       // 1. remove whitespace from both sides of a string
