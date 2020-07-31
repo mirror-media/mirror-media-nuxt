@@ -20,6 +20,7 @@ const CHANNELS = [
   'UCSGNZVECzarsXTxPsNS9Zow', // 鏡娛樂
   'UC4LjkybVKXCDlneVXlKAbmw', // 鏡電視
   'UCbeskkrp36Virbj6lcxWxJA', // Mirror Watch TV鏡錶誌
+  'UCglE1_DI0TDSY70WfeoPSOQ', // 美食旅遊
 ]
 
 export default {
