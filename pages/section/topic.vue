@@ -36,6 +36,7 @@
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import gptUnits from '~/constants/gptUnits'
+import { SITE_TITLE, SITE_URL } from '~/constants'
 
 export default {
   name: 'SectionTopic',
@@ -141,6 +142,34 @@ export default {
         $state.error()
       }
     },
+  },
+  head() {
+    const title = `Topic - ${SITE_TITLE}`
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: title,
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: title,
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${SITE_URL}/section/topic`,
+        },
+        {
+          hid: 'section-name',
+          name: 'section-name',
+          content: 'other',
+        },
+      ],
+    }
   },
 }
 </script>
