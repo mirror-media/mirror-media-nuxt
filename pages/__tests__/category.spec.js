@@ -1,6 +1,7 @@
 import page from '../category/_name.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
+import { SITE_TITLE } from '~/constants'
 
 const createWrapper = createWrapperHelper({
   computed: {
@@ -190,6 +191,62 @@ describe('component methods', () => {
     expect(wrapper.vm.listDataTotal).toBe(totalMock)
     expect(wrapper.vm.listDataPageLimit).toBe(
       Math.ceil(totalMock / wrapper.vm.listDataMaxResults)
+    )
+  })
+})
+
+describe('meta', function () {
+  test('head() method in vm option should work correctly', function () {
+    const categoryNameMock = 'test-category-name'
+    const categoryTitleMock = 'test-title-name'
+    const sectionNameMock = 'test-name'
+    const sectionIdMock = 'test-id'
+    const sectionTitleMock = 'test-title'
+    const sectionDataMock = {
+      categories: [
+        {
+          name: categoryNameMock,
+          title: categoryTitleMock,
+        },
+      ],
+      id: sectionIdMock,
+      name: sectionNameMock,
+      title: sectionTitleMock,
+    }
+
+    const wrapper = createWrapper(page, {
+      computed: {
+        sectionByCategoryName: () => () => sectionDataMock,
+      },
+      mocks: {
+        $route: {
+          params: {
+            name: categoryNameMock,
+          },
+        },
+      },
+    })
+
+    const head = wrapper.vm.$options.head.bind(wrapper.vm)
+    const metaResults = head()
+
+    // titles
+    const titleMetas = ['og:title', 'twitter:title']
+    const titleExpected = `${categoryTitleMock} - ${SITE_TITLE}`
+    expect(metaResults.title).toBe(titleExpected)
+    titleMetas.forEach(function assertion(metaName) {
+      const metaObject = metaResults.meta.find((d) => d.hid === metaName)
+      expect(metaObject.content).toBe(titleExpected)
+    })
+
+    // og:url
+    expect(metaResults.meta.find((d) => d.hid === 'og:url').content).toBe(
+      `https://www.mirrormedia.mg/category/${categoryNameMock}`
+    )
+
+    // section-name
+    expect(metaResults.meta.find((d) => d.hid === 'section-name').content).toBe(
+      sectionNameMock
     )
   })
 })
