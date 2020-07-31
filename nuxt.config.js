@@ -193,6 +193,9 @@ module.exports = {
   build: {
     babel: {
       plugins: ['lodash'],
+      presets({ isServer }, [preset, options]) {
+        options.corejs = { version: 3, proposals: true }
+      },
     },
     /*
      ** You can extend webpack config here
