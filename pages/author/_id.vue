@@ -43,6 +43,7 @@ import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
 import gptUnits from '~/constants/gptUnits'
 import microAdUnits from '~/constants/microAdUnits'
+import { SITE_TITLE, SITE_URL } from '~/constants'
 
 export default {
   name: 'Author',
@@ -174,6 +175,29 @@ export default {
         $state.error()
       }
     },
+  },
+  head() {
+    const title = `${this.authorName} - ${SITE_TITLE}`
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: title,
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: title,
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${SITE_URL}/author/${this.$route.params.id}`,
+        },
+      ],
+    }
   },
 }
 </script>
