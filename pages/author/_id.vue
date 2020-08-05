@@ -33,6 +33,7 @@
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
+    <ContainerFullScreenAds />
   </section>
 </template>
 
@@ -40,6 +41,7 @@
 import MicroAd from '~/components/MicroAd.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import styleVariables from '~/scss/_variables.scss'
 import gptUnits from '~/constants/gptUnits'
 import microAdUnits from '~/constants/microAdUnits'
@@ -51,6 +53,7 @@ export default {
     MicroAd,
     UIArticleList,
     UIInfiniteLoading,
+    ContainerFullScreenAds,
   },
   async fetch() {
     const response = await this.fetchAuthorListing({ page: 1 })
