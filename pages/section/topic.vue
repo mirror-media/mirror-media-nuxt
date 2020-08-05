@@ -29,12 +29,14 @@
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
+    <ContainerFullScreenAds />
   </section>
 </template>
 
 <script>
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import gptUnits from '~/constants/gptUnits'
 import { SITE_TITLE, SITE_URL } from '~/constants'
 
@@ -43,6 +45,7 @@ export default {
   components: {
     UIArticleList,
     UIInfiniteLoading,
+    ContainerFullScreenAds,
   },
   async fetch() {
     const response = await this.fetchTopicsListing({ page: 1 })
