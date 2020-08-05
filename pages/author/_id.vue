@@ -33,6 +33,14 @@
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
+    <div v-if="adDevice === 'MB'" class="ad-fixed-bottom-mobile-wrapper">
+      <client-only>
+        <GPTAD
+          :adUnit="adFixedBottomMobile.adUnitCode"
+          :adSize="adFixedBottomMobile.adSize"
+        />
+      </client-only>
+    </div>
     <ContainerFullScreenAds />
   </section>
 </template>
@@ -111,6 +119,9 @@ export default {
     },
     adBottom() {
       return gptUnits.other[`L${this.adDevice}FT`]
+    },
+    adFixedBottomMobile() {
+      return gptUnits.other.MBST ?? {}
     },
   },
   methods: {
@@ -224,6 +235,19 @@ export default {
     @include media-breakpoint-up(md) {
       margin: 8px 0 0 0;
     }
+  }
+}
+
+.ad-fixed-bottom-mobile-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include media-breakpoint-up(xl) {
+    display: none;
   }
 }
 
