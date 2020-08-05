@@ -1,0 +1,233 @@
+<template>
+  <section :class="{ active: isIndexActive }" class="index">
+    <div class="index__btn open" @click="$emit('openIndex')">
+      <img v-lazy="require('~/assets/hamburger.svg')" alt="開啟" />
+    </div>
+    <div class="index__curtain">
+      <div class="index-container">
+        <button class="index__btn close" @click="$emit('closeIndex')">
+          <img v-lazy="require('~/assets/close.svg')" alt="關閉" />
+        </button>
+        <div v-if="hasItems" class="index-list">
+          <ul>
+            <li
+              v-for="(item, index) in items"
+              :key="item.id"
+              :class="{ active: currentIndex === index + 1 }"
+            >
+              <a
+                :href="`#header-${item.id}`"
+                data-scroll
+                @click="$emit('closeIndex')"
+                v-html="item.content"
+              />
+            </li>
+          </ul>
+        </div>
+        <div v-show="shareUrl" class="share">
+          <p>分享到：</p>
+          <a
+            :href="`https://www.facebook.com/share.php?u=${shareUrl}`"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              v-lazy="require('~/assets/facebook_logo_official_72.png')"
+              alt="分享到 facebook"
+            />
+          </a>
+          <a
+            :href="`https://line.me/R/msg/text/?${shareUrl}`"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              v-lazy="require('~/assets/line_logo_official_90.png')"
+              alt="分享到 line"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script>
+export default {
+  name: 'UICulturePostIndex',
+  props: {
+    currentIndex: {
+      type: Number,
+      required: true,
+    },
+    isIndexActive: {
+      type: Boolean,
+      default: false,
+    },
+    items: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      shareUrl: undefined,
+      smoothScroll: undefined,
+    }
+  },
+  computed: {
+    hasItems() {
+      return this.items.length > 0
+    },
+  },
+  mounted() {
+    this.shareUrl = location.href
+    this.enableSmoothScroll()
+  },
+  beforeDestroy() {
+    this.disableSmoothScroll()
+  },
+  methods: {
+    async enableSmoothScroll() {
+      document.querySelector('html').style['scroll-behavior'] = 'smooth'
+      if (!('scrollBehavior' in document.documentElement.style)) {
+        const smoothScrollModule = await import('smooth-scroll')
+        const SmoothScroll = smoothScrollModule.default
+        this.smoothScroll = new SmoothScroll('a[href*="#"]')
+      }
+    },
+    disableSmoothScroll() {
+      document.querySelector('html').style['scroll-behavior'] = 'auto'
+      if (!('scrollBehavior' in document.documentElement.style)) {
+        this.smoothScroll && this.smoothScroll.destroy()
+      }
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.index {
+  @include media-breakpoint-up(xl) {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+  &.active {
+    .index__curtain {
+      display: block;
+    }
+  }
+  &__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 10px;
+    right: 10px;
+    width: 44px;
+    height: 44px;
+    background-color: #191919;
+    border-radius: 50%;
+    cursor: pointer;
+    &.open {
+      position: fixed;
+      z-index: 500;
+    }
+    &.close {
+      position: absolute;
+    }
+    @include media-breakpoint-up(xl) {
+      display: none;
+    }
+  }
+  &__curtain {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 510;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    @include media-breakpoint-up(xl) {
+      display: inline-block;
+      top: 50%;
+      left: calc((100% - 634px) / 4);
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%);
+      background-color: transparent;
+      width: auto;
+      height: auto;
+    }
+  }
+  &-container {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: auto;
+    height: 100%;
+    padding: 0 12px;
+    background-color: #fff;
+    @include media-breakpoint-up(xl) {
+      position: static;
+      padding: 0;
+      background-color: transparent;
+    }
+  }
+}
+.index-list {
+  display: inline-block;
+  + * {
+    margin-top: 48px;
+  }
+  ul {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 190px;
+    margin: 0;
+    padding: 0;
+    @include media-breakpoint-up(xl) {
+      width: 240px;
+    }
+    li {
+      display: inline;
+      font-size: 18px;
+      font-weight: 900;
+      font-family: source-han-serif-tc, Songti, 'Microsoft YaHei', serif;
+      cursor: pointer;
+      &.active {
+        a {
+          border-bottom: solid 2px #dec5a2;
+        }
+      }
+      & + li {
+        margin-top: 19px;
+      }
+    }
+  }
+}
+
+.share {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  p + a {
+    margin-left: 18px;
+  }
+  a {
+    width: 36px;
+    + a {
+      margin-left: 17px;
+    }
+  }
+  img {
+    display: block;
+  }
+}
+</style>
