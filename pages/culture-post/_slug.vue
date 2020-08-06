@@ -1,8 +1,8 @@
 <template>
   <section class="culture-post">
     <a
+      :href="SITE_URL"
       class="culture-post__logo"
-      href="https://www.mirrormedia.mg/"
       target="_blank"
       rel="noopener noreferrer"
     >
@@ -54,10 +54,10 @@ export default {
   data() {
     return {
       SITE_TITLE,
+      SITE_URL,
       currentIndex: 0,
       isIndexActive: false,
       post: {},
-      test: {},
     }
   },
   computed: {

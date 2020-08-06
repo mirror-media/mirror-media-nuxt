@@ -24,28 +24,10 @@
             </li>
           </ul>
         </div>
-        <div v-show="shareUrl" class="share">
+        <div class="share">
           <p>分享到：</p>
-          <a
-            :href="`https://www.facebook.com/share.php?u=${shareUrl}`"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              v-lazy="require('~/assets/facebook_logo_official_72.png')"
-              alt="分享到 facebook"
-            />
-          </a>
-          <a
-            :href="`https://line.me/R/msg/text/?${shareUrl}`"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              v-lazy="require('~/assets/line_logo_official_90.png')"
-              alt="分享到 line"
-            />
-          </a>
+          <UIShareFacebook />
+          <UIShareLine />
         </div>
       </div>
     </div>
@@ -53,8 +35,15 @@
 </template>
 
 <script>
+import UIShareFacebook from '~/components/UIShareFacebook.vue'
+import UIShareLine from '~/components/UIShareLine.vue'
+
 export default {
   name: 'UICulturePostIndex',
+  components: {
+    UIShareFacebook,
+    UIShareLine,
+  },
   props: {
     currentIndex: {
       type: Number,
@@ -71,7 +60,6 @@ export default {
   },
   data() {
     return {
-      shareUrl: undefined,
       smoothScroll: undefined,
     }
   },
@@ -81,7 +69,6 @@ export default {
     },
   },
   mounted() {
-    this.shareUrl = location.href
     this.enableSmoothScroll()
   },
   beforeDestroy() {
@@ -225,9 +212,6 @@ export default {
     + a {
       margin-left: 17px;
     }
-  }
-  img {
-    display: block;
   }
 }
 </style>

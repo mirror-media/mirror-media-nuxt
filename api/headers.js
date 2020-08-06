@@ -15,7 +15,7 @@ module.exports = function (req, res, next) {
     ) {
       res.set(NO_CACHE_HEADERS)
     }
-    if (req.url.match(/^\/(api|story|video|app)\//gs)) {
+    if (req.url.match(/^\/(api|story|culture-post|video|app)\//gs)) {
       res.set('cache-control', 'public, max-age=600')
     }
     return next()
