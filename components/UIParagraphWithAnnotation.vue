@@ -31,12 +31,15 @@ export default {
       return this.item.content?.[0]
     },
     splitContent() {
+      // 需改善 regex
       const data = this.content.split(/<!--__ANNOTATION__=/gm)
-
       const split = data.map((item) => {
         if (item.match(/<!--(.*)-->/)) {
-          const qqq = item.split(/<!--(.*)-->/)
-          return [qqq[0].replace(/-->/, ''), qqq[2]]
+          const annotationWithFollowingText = item.split(/<!--(.*)-->/)
+          return [
+            annotationWithFollowingText[0].replace(/-->/, ''),
+            annotationWithFollowingText[2],
+          ]
         }
         return item
       })
@@ -52,5 +55,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped></style>
