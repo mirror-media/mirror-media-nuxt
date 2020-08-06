@@ -27,11 +27,14 @@
 <script>
 import _ from 'lodash'
 import { clearAllBodyScrollLocks, disableBodyScroll } from 'body-scroll-lock'
+import { PREVIEW_QUERY } from '~/configs/config'
 import { SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '~/constants/index'
 import UICulturePostContent from '~/components/UICulturePostContent.vue'
 import UICulturePostIndex from '~/components/UICulturePostIndex.vue'
 import UICulturePostIntro from '~/components/UICulturePostIntro.vue'
 import UICulturePostRelateds from '~/components/UICulturePostRelateds.vue'
+
+const regexIsPreview = new RegExp(`${PREVIEW_QUERY}`, 'gs')
 
 export default {
   name: 'CulturePost',
@@ -44,11 +47,15 @@ export default {
   },
   async fetch() {
     const slug = this.$route.params.slug
-    const response = await this.$fetchCulturePosts({
-      slug,
-      maxResults: 1,
-      related: 'cultureposts',
-    })
+    const isPreview = regexIsPreview.test(this.$route.fullPath)
+    const response = await this.$fetchCulturePosts(
+      {
+        slug,
+        maxResults: 1,
+        related: 'cultureposts',
+      },
+      isPreview
+    )
     this.post = this.restructurePost(response.items?.[0])
   },
   data() {
