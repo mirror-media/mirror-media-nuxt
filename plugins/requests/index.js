@@ -78,6 +78,9 @@ export function buildParams(params = {}) {
       } else if (param === '$or') {
         // handle _.snakeCase filter $ character
         _.set(queryParams, 'where.$or', params[param])
+      } else if (param === 'id' && Array.isArray(params[param])) {
+        // handle id with array type need convert to tr-project-rest format _id.$in
+        _.set(queryParams, 'where._id.$in', params[param])
       } else if (param === 'id') {
         // handle id need convert to tr-project-rest format _id
         _.set(queryParams, 'where._id', params[param])

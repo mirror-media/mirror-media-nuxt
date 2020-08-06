@@ -37,6 +37,14 @@ describe('buildParams function', () => {
       '?page=1&where=%7B%22categories%22%3A%7B%22%24in%22%3A%5B%225979ac0de531830d00e330a7%22%2C%225979ac33e531830d00e330a9%22%5D%7D%2C%22isAudioSiteOnly%22%3Afalse%7D&max_results=10'
     )
 
+    expect(
+      buildParams({
+        id: ['abc', 'efg'],
+      })
+    ).toBe(
+      '?where=%7B%22_id%22%3A%7B%22%24in%22%3A%5B%22abc%22%2C%22efg%22%5D%7D%7D'
+    )
+
     expect(buildParams({ id: '584fb40ab854000d002d23cb' })).toBe(
       '?where=%7B%22_id%22%3A%22584fb40ab854000d002d23cb%22%7D'
     )
