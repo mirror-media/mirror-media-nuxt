@@ -4,7 +4,7 @@
     <div class="relateds__items">
       <div v-for="item in items" :key="item.slug" class="related">
         <a
-          :href="`/story/${item.slug}`"
+          :href="`/culture-post/${item.slug}`"
           class="related__image"
           target="_blank"
           rel="noopener noreferrer"
@@ -12,7 +12,7 @@
           <img v-lazy="getImageUrl(item)" :alt="item.title" />
         </a>
         <a
-          :href="`/story/${item.slug}`"
+          :href="`/culture-post/${item.slug}`"
           class="related__title"
           target="_blank"
           rel="noopener noreferrer"
