@@ -77,7 +77,7 @@ export default {
     UIVideoSubscriptions,
   },
   async fetch() {
-    const response = await this.fetchChannelData({ order: 'date' })
+    const response = await this.fetchChannelData()
     this.latestData = processResponseItems(response).slice(0, 5)
   },
   data() {
@@ -121,14 +121,26 @@ export default {
       response.forEach(this.mapDataToCategoriesPlaylist)
     },
     async fetchPopularData() {
-      const response = await this.fetchChannelData({ order: 'viewCount' })
-      this.popularData = processResponseItems(response)
+      const { items: latest = [] } = await this.fetchChannelData({
+        maxResults: 50,
+      })
+      const ids = latest.map((item) => item.id.videoId).join(',')
+      const { items: videos = [] } = await this.$fetchYoutubeVideos({
+        part: 'snippet, statistics',
+        id: ids,
+      })
+      const popular = videos
+        .sort((a, b) => b.statistics?.viewCount - a.statistics?.viewCount)
+        .slice(0, 10)
+      this.popularData = processResponseItems({
+        items: popular,
+      })
     },
-    fetchChannelData({ order = 'date' } = {}) {
+    fetchChannelData({ maxResults = 10 } = {}) {
       return this.$fetchYoutubeSearch({
         channelId: 'UCYkldEK001GxR884OZMFnRw',
-        maxResults: 10,
-        order,
+        maxResults,
+        order: 'date',
         part: 'snippet',
         type: 'video',
       })
