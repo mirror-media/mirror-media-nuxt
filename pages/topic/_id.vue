@@ -29,7 +29,7 @@ export default {
     return {
       listData: [],
       listDataCurrentPage: 0,
-      listDataMaxResults: 12,
+      listDataMaxResults: 9,
       listDataTotal: undefined,
     }
   },
