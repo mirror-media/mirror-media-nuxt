@@ -33,14 +33,14 @@
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
-    <div v-if="adDevice === 'MB'" class="ad-fixed-bottom-mobile-wrapper">
+    <UIStickyAd v-if="adDevice === 'MB'">
       <client-only>
         <GPTAD
           :adUnit="adFixedBottomMobile.adUnitCode"
           :adSize="adFixedBottomMobile.adSize"
         />
       </client-only>
-    </div>
+    </UIStickyAd>
     <ContainerFullScreenAds />
   </section>
 </template>
@@ -51,6 +51,7 @@ import MicroAd from '~/components/MicroAd.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+import UIStickyAd from '~/components/UIStickyAd.vue'
 import styleVariables from '~/scss/_variables.scss'
 import gptUnits from '~/constants/gptUnits'
 import microAdUnits from '~/constants/microAdUnits'
@@ -63,6 +64,7 @@ export default {
     UIArticleList,
     UIInfiniteLoading,
     ContainerFullScreenAds,
+    UIStickyAd,
   },
   async fetch() {
     const response = await this.fetchCategoryListing({ page: 1 })
@@ -255,19 +257,6 @@ export default {
     @include media-breakpoint-up(md) {
       margin: 8px 0 0 0;
     }
-  }
-}
-
-.ad-fixed-bottom-mobile-wrapper {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  @include media-breakpoint-up(xl) {
-    display: none;
   }
 }
 
