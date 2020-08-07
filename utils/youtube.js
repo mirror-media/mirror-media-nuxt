@@ -6,7 +6,7 @@ function isValidYoutubeVideo(item) {
 
 function restructureItem(item) {
   return {
-    videoId: item.id?.videoId || item.snippet?.resourceId?.videoId,
+    videoId: item.id?.videoId || item.snippet?.resourceId?.videoId || item.id,
     title: item.snippet?.title,
     thumbnails: item.snippet?.thumbnails?.high?.url,
   }
