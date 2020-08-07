@@ -121,6 +121,20 @@ module.exports = {
       },
       { rel: 'manifest', href: '/site.webmanifest' },
       { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#5bbad5' },
+
+      // https://developers.google.com/doubleclick-gpt/guides/general-best-practices#use_preload_when_appropriate
+      {
+        rel: 'preload',
+        href: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
+        as: 'script',
+      },
+    ],
+    script: [
+      // https://developers.google.com/doubleclick-gpt/guides/general-best-practices#load_statically
+      {
+        src: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
+        async: true,
+      },
     ],
   },
   /*
