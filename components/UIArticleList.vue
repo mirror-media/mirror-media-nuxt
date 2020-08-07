@@ -21,9 +21,12 @@
           />
         </li>
         <li
-          v-if="needInsertMicroAdAfter(index)"
+          v-if="
+            isSlotForMicroAd(getMicroAdSlotNameAfter(index)) &&
+            needInsertMicroAdAfter(index)
+          "
           :key="`microAd${index}`"
-          class="list__list-item"
+          class="list__list-item list__list-item--ad"
         >
           <slot :name="getMicroAdSlotNameAfter(index)" />
         </li>
@@ -80,6 +83,9 @@ export default {
     },
     getMicroAdSlotNameAfter(index) {
       return this.indexToMicroAdKey[index]
+    },
+    isSlotForMicroAd(unit) {
+      return Object.keys(this.$slots).includes(unit)
     },
   },
 }
