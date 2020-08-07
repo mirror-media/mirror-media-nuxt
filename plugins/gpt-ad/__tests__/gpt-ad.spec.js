@@ -194,41 +194,6 @@ describe('mode setting', () => {
   })
 })
 
-describe('GPT script', () => {
-  test('should insert only one script if multiple GPTAD component mounted', () => {
-    const adNetworkMock = 'adNetwork'
-    const localVue = createLocalVue()
-    localVue.use(plugin, {
-      adNetwork: adNetworkMock,
-    })
-
-    const TestWrapperComponent = {
-      template: `
-        <div>
-          <!-- We mount two GPTAD components here -->
-          <GPTAD
-            class="ad"
-            :adUnit="'adUnitMock1'"
-            :adSize="[0, 0]"
-          />
-          <GPTAD
-            class="ad"
-            :adUnit="'adUnitMock2'"
-            :adSize="[0, 0]"
-          />
-        </div>
-      `,
-    }
-    mount(TestWrapperComponent, {
-      localVue,
-    })
-    const scripts = document.querySelectorAll(
-      "script[src='https://securepubads.g.doubleclick.net/tag/js/gpt.js']"
-    )
-    expect(scripts).toHaveLength(1)
-  })
-})
-
 describe('GPTAD component computeds', () => {
   test('adUnitPath and adOptDiv', () => {
     const adNetworkMock = 'adNetwork'
