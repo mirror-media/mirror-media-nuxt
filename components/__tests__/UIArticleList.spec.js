@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
+import _ from 'lodash'
 import UIArticleList from '../UIArticleList.vue'
 import UIArticleCard from '../UIArticleCard.vue'
 
@@ -83,5 +84,69 @@ describe('render list items', () => {
     })
     const list = wrapper.find('ol')
     expect(list.exists()).toBe(false)
+  })
+})
+
+describe('MicroAd slot', function () {
+  test('Should not render list item of MicroAd if there are non of any slots exist', function () {
+    const listData = _.fill(Array(9), [
+      {
+        href: '/',
+        imgSrc: 'test imgSrc',
+        imgText: 'test imgText',
+        imgTextBackgroundColor: 'test imgTextBackgroundColor',
+        infoTitle: 'test infoTitle',
+        infoDescription: 'test infoDescription',
+      },
+    ])
+    const wrapper = shallowMount(UIArticleList, {
+      propsData: {
+        listData,
+      },
+      slots: {
+        RANDOM_SLOT_NAME_NO_MATCH_ANY_MICROAD: { template: '<div></div>' },
+      },
+    })
+    const listItemAds = wrapper.findAll('.list__list-item--ad')
+    expect(listItemAds).toHaveLength(0)
+  })
+  test('Should render list item of MicroAd if we use UIArticleList with MicroAd slot', function () {
+    const listData = _.fill(Array(9), [
+      {
+        href: '/',
+        imgSrc: 'test imgSrc',
+        imgText: 'test imgText',
+        imgTextBackgroundColor: 'test imgTextBackgroundColor',
+        infoTitle: 'test infoTitle',
+        infoDescription: 'test infoDescription',
+      },
+    ])
+    const MicroAdMock = {
+      template: `
+        <div></div>
+      `,
+    }
+    const wrapper = shallowMount(UIArticleList, {
+      propsData: {
+        listData,
+      },
+      slots: {
+        NA1_RWD_SP: MicroAdMock,
+        NA2_RWD_SP: MicroAdMock,
+        NA3_RWD_SP: MicroAdMock,
+      },
+    })
+
+    const listItems = wrapper.findAll('.list__list-item')
+    expect(listItems).toHaveLength(9 + 3)
+    expect(listItems.at(2).classes()).toContain('list__list-item--ad')
+    expect(listItems.at(2).find(MicroAdMock).exists()).toBe(true)
+    expect(listItems.at(4).classes()).toContain('list__list-item--ad')
+    expect(listItems.at(4).find(MicroAdMock).exists()).toBe(true)
+    expect(listItems.at(8).classes()).toContain('list__list-item--ad')
+    expect(listItems.at(8).find(MicroAdMock).exists()).toBe(true)
+
+    const listItemAds = wrapper.findAll('.list__list-item--ad')
+    expect(listItemAds).toHaveLength(3)
   })
 })
