@@ -130,8 +130,6 @@ describe('MicroAd slot', function () {
       propsData: {
         listData,
       },
-
-      // This is intent to be an empty object
       slots: {
         NA1_RWD_SP: MicroAdMock,
         NA2_RWD_SP: MicroAdMock,
