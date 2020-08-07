@@ -275,7 +275,7 @@ export default {
       width: 60%;
     }
     @include media-breakpoint-up(xl) {
-      width: auto;
+      width: 100%;
     }
   }
   &__title {
