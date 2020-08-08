@@ -13,7 +13,7 @@ pipeline:
     when:
       event: [push]
       branch: [dev, master]
-
+  
   restoreCache:
     image: drillster/drone-volume-cache
     restore: true
@@ -25,27 +25,27 @@ pipeline:
     when:
       event: [push]
       branch: [dev, master]
-
+  
   getDevConfig:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
     secrets: [google_credentials]
     commands:
-      - gcloud source repos clone configs ../configs
-      - cp ../configs/mirror-media/mirror-media-nuxt/dev/config.js ./configs/config.js
+    - gcloud source repos clone configs ../configs
+    - cp ../configs/mirror-media/mirror-media-nuxt/dev/config.js ./configs/config.js
     when:
       event: [push]
       branch: [dev]
-
+  
   build:
     image: node:12.16.2-slim
     commands:
-      - apt-get update && apt-get install -y node-gyp
-      - yarn install
-      - yarn run build
+    - apt-get update && apt-get install -y node-gyp
+    - yarn install
+    - yarn run build
     when:
       event: [push]
       branch: [dev, master]
-
+  
   publish:
     image: plugins/gcr
     repo: mirrormedia-1470651750304/${DRONE_REPO_NAME}
@@ -56,28 +56,11 @@ pipeline:
     when:
       event: [push]
       branch: [dev, master]
-
+  
   deployDev:
     image: nytimes/drone-gke
     zone: asia-east1-a
     cluster: dev
-    namespace: default
-    verbose: true
-    secrets:
-      - source: google_credentials
-        target: token
-    vars:
-      image: gcr.io/mirrormedia-1470651750304/${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}
-      app: ${DRONE_REPO_NAME}
-      tier: frontend
-    when:
-      event: [push]
-      branch: [dev]
-
-  deployTVDev:
-    image: nytimes/drone-gke
-    zone: asia-east1-c
-    cluster: tv-dev
     namespace: default
     verbose: true
     secrets:
@@ -101,7 +84,7 @@ pipeline:
       - /tmp/cache:/cache
     when:
       branch: [dev, master]
-
+  
   finishSlack:
     image: plugins/slack
     channel: jenkins
@@ -119,3 +102,4 @@ pipeline:
       {{else}}
         Houston, we have a problem. Build <${DRONE_BUILD_LINK}|#{{build.number}}> failed.
       {{/success}}
+  
