@@ -1,2 +1,5 @@
 2020/08/05
   - initial the RELEASE file
+2020/08/10
+  - release version: master_hsuehyungtan_567 1.0.7
+  - features: video pages (section, category and single video pages) and listing pages (section, category, author, topic and tag pages)
