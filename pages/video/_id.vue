@@ -229,6 +229,7 @@ export default {
 <style lang="scss" scoped>
 .video {
   padding: 0 0 20px;
+  overflow: hidden;
   @include media-breakpoint-up(xl) {
     display: flex;
     flex-wrap: wrap;

@@ -81,7 +81,7 @@ import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import gptUnits from '~/constants/gptUnits'
 
 const VIDEO_CATEGORIES_NAME = Object.keys(PLAYLIST_MAPPING)
-const MAX_RESULTS = 29
+const MAX_RESULTS = 25
 
 export default {
   name: 'VideoCategory',
@@ -209,6 +209,7 @@ export default {
 <style lang="scss" scoped>
 .section {
   padding: 30px 0 43px;
+  overflow: hidden;
   @include media-breakpoint-up(xl) {
     width: calc(1024px + 15px);
     margin: 0 auto;
