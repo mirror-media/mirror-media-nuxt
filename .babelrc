@@ -1,3 +1,8 @@
+/*
+ ** for test ONLY
+ ** to customize Babel configuration for development or production, please use build.babel in nuxt.config.js
+ ** https://nuxtjs.org/api/configuration-build/#babel
+ */
 {
   "env": {
     "test": {

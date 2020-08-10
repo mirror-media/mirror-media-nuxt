@@ -1,55 +1,87 @@
 <template>
-  <div>
+  <div
+    :class="[{ listing: isListing, 'listing--white-background': isSearchPage }]"
+  >
+    <ContainerHeader />
     <nuxt />
+    <UIFooter :class="[{ 'footer--listing': isListing }]" />
   </div>
 </template>
 
-<style>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
+<script>
+import ContainerHeader from '~/components/ContainerHeader.vue'
+import UIFooter from '~/components/UIFooter.vue'
+
+export default {
+  components: {
+    ContainerHeader,
+    UIFooter,
+  },
+  async fetch() {
+    const [partnersResponse, topicsResponse] = await Promise.allSettled([
+      this.$store.dispatch('partners/fetchPartnersData'),
+      this.$store.dispatch('topics/fetchTopicsData'),
+    ])
+
+    if (partnersResponse.status === 'fulfilled') {
+      this.commitPartnersData(partnersResponse.value)
+    }
+    if (topicsResponse.status === 'fulfilled') {
+      this.commitTopicsData(topicsResponse.value)
+    }
+  },
+  computed: {
+    isListing() {
+      const listingRouteNames = [
+        'section-name',
+        'category-name',
+        'author-id',
+        'section-topic',
+        'search-keyword',
+        'topic-id',
+        'tag-id',
+      ]
+      return listingRouteNames.includes(this.$route.name)
+    },
+    isSearchPage() {
+      return this.$route.name === 'search-keyword'
+    },
+  },
+  methods: {
+    commitPartnersData(response) {
+      this.$store.commit('partners/setPartnersData', response)
+    },
+    commitTopicsData(response) {
+      this.$store.commit(
+        'topics/setTopicsData',
+        response.endpoints.topics ?? {}
+      )
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.listing {
+  background-color: #f2f2f2;
+  padding: 0 0 60px 0;
+  @include media-breakpoint-up(xl) {
+    padding: 0;
+  }
+
+  // most of the listing page's background-color is #f2f2f2, except search page
+  &--white-background {
+    background-color: white;
+  }
 }
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+.footer {
+  &--listing {
+    margin: 0 32px;
+    @include media-breakpoint-up(xl) {
+      max-width: 1024px;
+      margin: 60px auto 0 auto;
+    }
+  }
 }
 </style>

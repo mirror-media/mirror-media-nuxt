@@ -1,68 +1,81 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        mirror-media-nuxt
-      </h1>
-      <h2 class="subtitle">
-        My gnarly Nuxt.js project
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
-  </div>
+  <main>
+    <aside>
+      <section>
+        <UIColumnHeader title="焦點新聞" class="home__column-header" />
+        <div class="article-list-focus-container">
+          <UIArticleListFocus
+            v-for="article in articlesFocus"
+            :key="article.slug"
+            :articleMain="article"
+            :articlesRelated="articlesRelatedFocus(article)"
+            class="home__article-list-focus"
+          />
+        </div>
+      </section>
+    </aside>
+  </main>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import UIColumnHeader from '~/components/UIColumnHeader.vue'
+import UIArticleListFocus from '~/components/UIArticleListFocus.vue'
 
 export default {
+  name: 'Home',
   components: {
-    Logo
-  }
+    UIColumnHeader,
+    UIArticleListFocus,
+  },
+  async fetch() {
+    this.articleGrouped = await this.$fetchGrouped()
+  },
+  data() {
+    return {
+      articleGrouped: {},
+    }
+  },
+  computed: {
+    articlesFocus() {
+      return this.articleGrouped.grouped ?? []
+    },
+  },
+  methods: {
+    articlesRelated(articleData) {
+      return articleData.relateds ?? []
+    },
+    articlesRelatedFocus(articleData) {
+      return this.articlesRelated(articleData).slice(0, 3)
+    },
+  },
 }
 </script>
 
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+<style lang="scss" scoped>
+aside {
+  @include media-breakpoint-up(xl) {
+    width: 25%;
+  }
 }
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+.home {
+  &__column-header {
+    margin-bottom: 10px;
+  }
+  &__article-list-focus {
+    + .home__article-list-focus {
+      margin-top: 25px;
+      @include media-breakpoint-up(xl) {
+        margin-top: 30px;
+      }
+    }
+  }
 }
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+.article-list-focus-container {
+  border: 2px solid #224f73;
+  padding: 14px 18px;
+  @include media-breakpoint-up(xl) {
+    border: none;
+    padding: 0;
+  }
 }
 </style>

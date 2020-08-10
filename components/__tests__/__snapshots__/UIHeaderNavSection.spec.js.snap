@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`markup render correctly 1`] = `
+<section
+  class="header-nav-section"
+>
+  <div
+    class="container"
+  >
+    <div
+      class="section section--home"
+    >
+      <a
+        href="/"
+      >
+        <h2>
+          首頁
+        </h2>
+      </a>
+    </div>
+     
+    <div
+      class="section section--culture"
+    >
+      <a
+        href="/section/culture"
+      >
+        <h2>
+          文化
+        </h2>
+      </a>
+       
+      <div
+        class="section__dropdown"
+      >
+        <a
+          href="/category/bookreview"
+        >
+          <h3>
+            書評
+          </h3>
+        </a>
+      </div>
+    </div>
+     
+    <div
+      class="section section--external"
+    >
+      <h2>
+        合作媒體
+      </h2>
+       
+      <div
+        class="section__dropdown"
+      >
+        <a
+          href="/externals/healthnews"
+        >
+          <h3>
+            健康醫療網新聞
+          </h3>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+`;

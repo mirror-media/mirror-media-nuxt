@@ -1,7 +1,10 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
+
+const helmet = require('helmet')
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
@@ -20,6 +23,10 @@ async function start() {
     await builder.build()
   }
 
+  app.use(helmet())
+
+  app.use(bodyParser.json())
+
   // Give nuxt middleware to express
   app.use(nuxt.render)
 
@@ -27,7 +34,7 @@ async function start() {
   app.listen(port, host)
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
-    badge: true
+    badge: true,
   })
 }
 start()
