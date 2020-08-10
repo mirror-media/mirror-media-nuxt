@@ -197,6 +197,7 @@ export default {
 
 <style lang="scss" scoped>
 .section {
+  overflow: hidden;
   &__latest {
     @include media-breakpoint-up(xl) {
       width: 1024px;
