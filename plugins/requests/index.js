@@ -40,7 +40,7 @@ async function fetchAPIData(url) {
   } catch (err) {
     const massage = err.massage || err
     const code = err.code || 500
-    throw new FetchError(massage, code)
+    throw new FetchError(massage, code, url)
   }
 }
 
@@ -127,8 +127,9 @@ async function fetchGCSData(filename) {
 }
 
 class FetchError extends Error {
-  constructor(message = 'Not Found', code = 404) {
-    super(message)
+  constructor(message = 'Not Found', code = 404, url) {
+    const errorMessage = `${message}, url: ${url}`
+    super(errorMessage)
     this.name = this.constructor.name
     this.code = code
   }
