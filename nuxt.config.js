@@ -192,7 +192,33 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/dayjs',
     'nuxt-user-agent',
+    'nuxt-ssr-cache',
   ],
+  cache: {
+    pages: ['/section/news'],
+    key(route) {
+      return `mirror-media-nuxt:${route}`
+    },
+    store: {
+      type: 'multi',
+      stores: [
+        {
+          type: 'redis',
+          host: require('./configs/config').REDIS_WRITE_HOST,
+          port: require('./configs/config').REDIS_WRITE_PORT,
+          auth_pass: require('./configs/config').REDIS_AUTH,
+          ttl: 60 * 5,
+        },
+        {
+          type: 'redis',
+          host: require('./configs/config').REDIS_READ_HOST,
+          port: require('./configs/config').REDIS_READ_PORT,
+          auth_pass: require('./configs/config').REDIS_AUTH,
+          ttl: 60 * 5,
+        },
+      ],
+    },
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
