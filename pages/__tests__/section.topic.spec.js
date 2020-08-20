@@ -1,6 +1,6 @@
 import page from '../section/topic.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
-import { SITE_TITLE } from '@/constants'
+import { SITE_TITLE } from '~/constants'
 
 const createWrapper = createWrapperHelper({
   mocks: {
