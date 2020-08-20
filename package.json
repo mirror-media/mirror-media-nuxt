@@ -36,7 +36,6 @@
     "intersection-observer": "^0.11.0",
     "lodash": "^4.17.19",
     "nuxt": "^2.14.1",
-    "nuxt-ssr-cache": "^1.5.2",
     "nuxt-user-agent": "^1.2.2",
     "qs": "^6.9.4",
     "smooth-scroll": "^16.1.3",
