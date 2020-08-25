@@ -38,6 +38,7 @@
         @click="handleClick"
       />
     </div>
+    <UIYoutubePolicies class="section__policies" />
     <div v-if="hasLoadedMore" class="section__remaining">
       <UILinkedItemWithTitle
         v-for="item in remainingItemsAfterDesktopAd"
@@ -78,6 +79,7 @@ import UIStickyAd from '~/components/UIStickyAd.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
+import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
 import gptUnits from '~/constants/gptUnits'
 
 const VIDEO_CATEGORIES_NAME = Object.keys(PLAYLIST_MAPPING)
@@ -91,6 +93,7 @@ export default {
     UIInfiniteLoading,
     UILinkedItemWithTitle,
     UIVideoIframeWithItems,
+    UIYoutubePolicies,
   },
   async fetch() {
     const response = await this.fetchYoutubePlaylistItems()
@@ -283,6 +286,10 @@ export default {
       background-color: #000;
       transform: translateY(4px);
     }
+  }
+  &__policies {
+    margin: 0 auto;
+    padding: 5px 20px;
   }
   &__remaining {
     width: calc(100% - 40px);

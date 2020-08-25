@@ -34,6 +34,7 @@
           @sendGA="handleSendGA"
         />
       </div>
+      <UIYoutubePolicies class="section__policies" />
     </div>
     <ContainerFullScreenAds />
     <UIStickyAd>
@@ -62,6 +63,7 @@ import UIVideoCategory from '~/components/UIVideoCategory.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import UIVideoPopular from '~/components/UIVideoPopular.vue'
 import UIVideoSubscriptions from '~/components/UIVideoSubscriptions.vue'
+import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
 import gptUnits from '~/constants/gptUnits'
 
 const INVERTED_PLAYLIST_MAPPING = _.invert(PLAYLIST_MAPPING)
@@ -75,6 +77,7 @@ export default {
     UIVideoIframeWithItems,
     UIVideoPopular,
     UIVideoSubscriptions,
+    UIYoutubePolicies,
   },
   async fetch() {
     const response = await this.fetchChannelData()
@@ -251,6 +254,18 @@ export default {
         margin-top: 30px;
         border-top: none;
       }
+    }
+  }
+
+  &__policies {
+    margin: 0 auto;
+    padding: 5px 20px;
+    @include media-breakpoint-up(md) {
+      padding: 10px 20px;
+    }
+    @include media-breakpoint-up(xl) {
+      order: 3;
+      width: 100%;
     }
   }
 

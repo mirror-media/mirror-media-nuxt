@@ -56,6 +56,7 @@
         />
       </template>
     </div>
+    <UIYoutubePolicies class="video__policies" />
     <client-only>
       <GPTAD
         class="video__ad"
@@ -84,6 +85,7 @@ import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIShareFacebook from '~/components/UIShareFacebook.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 import UIYoutubeIframe from '~/components/UIYoutubeIframe.vue'
+import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
 import gptUnits from '~/constants/gptUnits'
 
 export default {
@@ -98,6 +100,7 @@ export default {
     UIShareFacebook,
     UIShareLine,
     UIYoutubeIframe,
+    UIYoutubePolicies,
   },
   async fetch() {
     const response = await this.$fetchYoutubeVideos({
@@ -368,6 +371,11 @@ export default {
 
   * + .video__ad {
     margin-top: 20px;
+  }
+
+  &__policies {
+    margin: 0 auto;
+    padding: 5px 20px;
   }
   &__ad {
     margin-left: auto;
