@@ -6,3 +6,6 @@
 2020/08/12
   - release version: master_kwhsiung_575 1.0.9
   - features: refine request error message with url
+2020/08/25
+  - release version: master_hsuehyungtan_581 1.0.10
+  - features: add youtube policies component 
