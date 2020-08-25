@@ -24,7 +24,6 @@
     }
   },
   "dependencies": {
-    "@mirror-media/nuxt-ssr-cache": "^1.6.1",
     "@nuxtjs/axios": "^5.12.1",
     "@nuxtjs/dayjs": "^1.1.9",
     "axios": "^0.19.2",
