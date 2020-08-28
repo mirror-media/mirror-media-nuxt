@@ -27,6 +27,9 @@ module.exports = function (req, res, next) {
     if (url.match(/^\/(api|story|culture-post|video|app)\//gs)) {
       res.set('cache-control', 'public, max-age=600')
     }
+    if (url.match(/^\/$|^\/(section|category|topic|search|author|tag)\//gs)) {
+      res.set('cache-control', `public, max-age=${60 * 5}`)
+    }
     return next()
   }
   next()
