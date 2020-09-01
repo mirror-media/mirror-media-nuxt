@@ -3,6 +3,9 @@ module.exports = {
     collect: {
       url: ['http://localhost:3000/'],
       startServerCommand: 'npm run start',
+      settings: {
+        chromeFlags: '--no-sandbox',
+      },
     },
     upload: {
       target: 'temporary-public-storage',
