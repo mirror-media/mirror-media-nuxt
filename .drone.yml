@@ -68,6 +68,9 @@ pipeline:
 
   lighouseCI:
     image: node:12.16.2-slim
+    environment:
+      LHCI_GITHUB_APP_TOKEN:
+        from_secret: lhci_github_app_token
     commands:
       - echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google.list
       - apt-get update && apt-get install -y gnupg2
