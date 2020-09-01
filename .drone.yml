@@ -44,7 +44,7 @@ pipeline:
     - cp ../configs/mirror-media/mirror-media-nuxt/prod/config.js ./configs/config.js
     when:
       event: [push]
-      branch: [master, ci/lhci]
+      branch: [master]
 
   build:
     image: node:12.16.2-slim
