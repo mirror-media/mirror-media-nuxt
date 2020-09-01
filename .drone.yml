@@ -59,6 +59,9 @@ pipeline:
   lighouseCI:
     image: node:12.16.2-slim
     commands:
+      - apt-get install -y google-chrome-stable
+      - export CHROME_PATH=$(which google-chrome-stable)
+      - export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
       - npm install -g @lhci/cli@0.4.x
       - lhci autorun
     when:
