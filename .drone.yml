@@ -60,10 +60,9 @@ pipeline:
     image: node:12.16.2-slim
     commands:
       - echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google.list
-      - apt-get install -y wget
+      - apt-get update && apt-get install -y wget
       - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
-      - apt-get update
-      - apt-get install -y google-chrome-stable
+      - apt-get update && apt-get install -y google-chrome-stable
       - export CHROME_PATH=$(which google-chrome-stable)
       - export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
       - npm install -g @lhci/cli@0.4.x
