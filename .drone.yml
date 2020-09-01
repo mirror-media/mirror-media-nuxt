@@ -56,6 +56,15 @@ pipeline:
       event: [push]
       branch: [dev, master, ci/lhci]
 
+  lighouseCI:
+    image: node:12.16.2-slim
+    commands:
+      - npm install -g @lhci/cli@0.4.x
+      - lhci autorun
+    when:
+      event: [push]
+      branch: [ci/lhci]
+
   publish:
     image: plugins/gcr
     repo: mirrormedia-1470651750304/${DRONE_REPO_NAME}
