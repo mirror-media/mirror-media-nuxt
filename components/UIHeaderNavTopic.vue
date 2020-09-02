@@ -23,6 +23,7 @@
           :key="subBrand.name"
           :href="subBrand.href"
           target="_blank"
+          rel="noopener noreferrer"
           @click="emitGA(`section ${subBrand.name}`)"
         >
           <img

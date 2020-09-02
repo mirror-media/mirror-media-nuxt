@@ -6,7 +6,7 @@
           <a
             :href="$getHref(articleMain)"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             @click="emitGA"
           >
             <img v-lazy="$getImage(articleMain, 'mobile')" alt="" />
@@ -20,7 +20,7 @@
           <a
             :href="$getHref(related)"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             @click="emitGA"
           >
             <h1>{{ related.title }}</h1>
