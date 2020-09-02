@@ -30,7 +30,8 @@ pipeline:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
     secrets: [google_credentials]
     commands:
-    - rm -rf ./configs/*
+    - rm -rf ../configs
+    - rm -rf ./configs
     - gcloud source repos clone configs ../configs
     - cp ../configs/mirror-media/mirror-media-nuxt/ci/config.js ./configs/config.js
     when:
@@ -69,7 +70,8 @@ pipeline:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
     secrets: [google_credentials]
     commands:
-    - rm -rf ./configs/*
+    - rm -rf ../configs
+    - rm -rf ./configs
     - gcloud source repos clone configs ../configs
     - cp ../configs/mirror-media/mirror-media-nuxt/dev/config.js ./configs/config.js
     when:
@@ -80,7 +82,8 @@ pipeline:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
     secrets: [google_credentials]
     commands:
-    - rm -rf ./configs/*
+    - rm -rf ../configs
+    - rm -rf ./configs
     - gcloud source repos clone configs ../configs
     - cp ../configs/mirror-media/mirror-media-nuxt/prod/config.js ./configs/config.js
     when:
