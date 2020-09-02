@@ -2,6 +2,7 @@ workspace:
   path: /mirror-media-nuxt
 pipeline:
   test:
+    image: node:12.16.2-slim
     when:
       event: [pull_request]
 
