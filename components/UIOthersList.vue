@@ -7,6 +7,7 @@
         :key="link.title"
         :href="link.href"
         target="_blank"
+        rel="noopener noreferrer"
         @click="emitGA(`more ${link.name}`)"
       >
         {{ link.title }}

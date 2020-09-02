@@ -14,6 +14,9 @@ module.exports = {
    ** Headers of the page
    */
   head: {
+    htmlAttrs: {
+      lang: 'zh-Hant',
+    },
     title: SITE_TITLE,
     meta: [
       { charset: 'utf-8' },
@@ -160,6 +163,10 @@ module.exports = {
    */
   serverMiddleware: [
     '~/api/headers.js',
+    {
+      path: '/api/combo',
+      handler: '~/api/combo.js',
+    },
     { path: '/api', handler: '~/api/index.js' },
   ],
   /*
@@ -192,7 +199,42 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/dayjs',
     'nuxt-user-agent',
+    '@mirror-media/nuxt-ssr-cache',
   ],
+  // config for @mirror-media/nuxt-ssr-cache
+  cache: {
+    /*
+     ** Workaround, pages array must exist and not empty,
+     ** see: https://github.com/arash16/nuxt-ssr-cache/blob/master/src/middleware.js#L34
+     */
+    pages: ['/'],
+
+    key(route) {
+      // We should configure cache pages path right here.
+      const cachePages = ['/']
+
+      const shouldCacheCurrentRoute = cachePages.some((pat) =>
+        pat instanceof RegExp ? pat.test(route) : route.startsWith(pat)
+      )
+      if (shouldCacheCurrentRoute) {
+        const prefixForGrep = 'mirror-media-nuxt:'
+        return `${prefixForGrep}${route}`
+      }
+    },
+    store: {
+      type: 'redis',
+      /*
+       ** readHost and writeHost working in @mirror-media/nuxt-ssr-cache only,
+       ** for redis write/read master-slave replication
+       ** Not working in the original nuxt-ssr-cache package
+       */
+      readHost: require('./configs/config').REDIS_READ_HOST,
+      writeHost: require('./configs/config').REDIS_WRITE_HOST,
+      port: require('./configs/config').REDIS_PORT,
+      auth_pass: require('./configs/config').REDIS_AUTH,
+      ttl: 60 * 5,
+    },
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options

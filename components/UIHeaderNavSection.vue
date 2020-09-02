@@ -147,7 +147,7 @@ export default {
     @include media-breakpoint-up(xl) {
       color: #fff;
       line-height: 42px;
-      min-width: calc(100% / 11);
+      min-width: calc(100% / 10);
       border-top-width: 3px;
       border-top-style: solid;
       @each $name, $color in $sections-color {
