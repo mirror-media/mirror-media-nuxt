@@ -163,6 +163,10 @@ module.exports = {
    */
   serverMiddleware: [
     '~/api/headers.js',
+    {
+      path: '/api/combo',
+      handler: '~/api/combo.js',
+    },
     { path: '/api', handler: '~/api/index.js' },
   ],
   /*
