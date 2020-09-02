@@ -78,6 +78,7 @@
           :href="subBrand.href"
           target="_blank"
           class="section__title"
+          rel="noopener noreferrer"
           @click="emitGA(`section ${subBrand.name}`)"
         >
           {{ subBrand.title }}
@@ -91,6 +92,7 @@
         :key="other.name"
         :href="other.href"
         target="_blank"
+        rel="noopener noreferrer"
         @click="emitGA(`more ${other.name}`)"
       >
         {{ other.title }}
@@ -103,6 +105,7 @@
         :key="medium.name"
         :href="medium.href"
         target="_blank"
+        rel="noopener noreferrer"
         @click="emitGA(`social ${medium.name}`)"
       >
         <img

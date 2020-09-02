@@ -4,6 +4,7 @@
       <a
         :href="`/video_category/${category.name}`"
         target="_blank"
+        rel="noopener noreferrer"
         v-text="category.title"
       />
     </h1>
