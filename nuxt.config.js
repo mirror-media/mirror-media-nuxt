@@ -14,6 +14,9 @@ module.exports = {
    ** Headers of the page
    */
   head: {
+    htmlAttrs: {
+      lang: 'zh-Hant',
+    },
     title: SITE_TITLE,
     meta: [
       { charset: 'utf-8' },
