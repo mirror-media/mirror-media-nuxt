@@ -1,6 +1,11 @@
 <template>
   <div v-click-outside="hideField" class="search-bar">
-    <button type="button" class="search-icon" @click="toggleField" />
+    <button
+      type="button"
+      class="search-icon"
+      aria-label="search-icon"
+      @click="toggleField"
+    />
     <div v-show="shouldShowField" class="field">
       <UISearchBarSelect
         :options="options"
