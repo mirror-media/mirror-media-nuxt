@@ -31,7 +31,7 @@ pipeline:
     secrets: [google_credentials]
     commands:
     - gcloud source repos clone configs ../configs
-    - rm -rf ./configs
+    - rm -rf ./configs/*
     - cp ../configs/mirror-media/mirror-media-nuxt/ci/config.js ./configs/config.js
     when:
       event: [push, pull_request]
@@ -70,7 +70,7 @@ pipeline:
     secrets: [google_credentials]
     commands:
     - gcloud source repos clone configs ../configs
-    - rm -rf ./configs
+    - rm -rf ./configs/*
     - cp ../configs/mirror-media/mirror-media-nuxt/dev/config.js ./configs/config.js
     when:
       event: [push]
@@ -81,7 +81,7 @@ pipeline:
     secrets: [google_credentials]
     commands:
     - gcloud source repos clone configs ../configs
-    - rm -rf ./configs
+    - rm -rf ./configs/*
     - cp ../configs/mirror-media/mirror-media-nuxt/prod/config.js ./configs/config.js
     when:
       event: [push]
