@@ -7,7 +7,11 @@ export const getters = {
     return state.data.items ?? []
   },
   displayedSections(state, getters) {
-    return getters.sections.filter((section) => section.isFeatured) ?? []
+    return (
+      getters.sections.filter(
+        (section) => section.isFeatured && section.name !== 'videohub'
+      ) ?? []
+    )
   },
   sectionByCategoryName: (state, getters) => (categoryName) => {
     return (
