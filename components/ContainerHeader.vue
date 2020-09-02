@@ -1,7 +1,12 @@
 <template>
   <header>
     <div class="header-top-layer">
-      <button type="button" class="menu-icon" @click="handleClickMenuIcon" />
+      <button
+        type="button"
+        class="menu-icon"
+        aria-label="menu-icon"
+        @click="handleClickMenuIcon"
+      />
 
       <div class="logo-wrapper">
         <a href="/" class="logo" @click="sendHeaderGA('logo')">
