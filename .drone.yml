@@ -1,6 +1,10 @@
 workspace:
   path: /mirror-media-nuxt
 pipeline:
+  test:
+    when:
+      event: [pull_request]
+
   startSlack:
     image: plugins/slack
     channel: lhci
