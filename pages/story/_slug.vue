@@ -1,15 +1,40 @@
 <template>
-  <div>
-    this is a story page, WIP
-    <br />
-    <nuxt-link to="/section/test">back to section page</nuxt-link>
+  <div class="story-container">
+    <UIStoryBody :story="story" />
   </div>
 </template>
 
 <script>
+import UIStoryBody from '~/components/UIStoryBody.vue'
+
 export default {
   name: 'Story',
+  components: {
+    UIStoryBody,
+  },
+  async fetch() {
+    const response = await this.$fetchPosts({
+      slug: this.$route.params.slug,
+      isAudioSiteOnly: false,
+      clean: 'content',
+    })
+    this.story = response.items[0] ?? {}
+  },
+  data() {
+    return {
+      story: {},
+    }
+  },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.story-container {
+  max-width: 1160px;
+  @include media-breakpoint-up(lg) {
+    margin: 0 auto;
+    padding: 30px 50px;
+    background-color: #fff;
+  }
+}
+</style>

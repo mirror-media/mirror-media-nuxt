@@ -1,6 +1,12 @@
 <template>
   <div
-    :class="[{ listing: isListing, 'listing--white-background': isSearchPage }]"
+    :class="[
+      {
+        listing: isListing,
+        'listing--white-background': isSearchPage,
+        'story-page': isStory,
+      },
+    ]"
   >
     <ContainerHeader />
     <nuxt />
@@ -46,6 +52,9 @@ export default {
     isSearchPage() {
       return this.$route.name === 'search-keyword'
     },
+    isStory() {
+      return this.$route.path.match(/\/story\//)
+    },
   },
   methods: {
     commitPartnersData(response) {
@@ -72,6 +81,12 @@ export default {
   // most of the listing page's background-color is #f2f2f2, except search page
   &--white-background {
     background-color: white;
+  }
+}
+
+.story-page {
+  @include media-breakpoint-up(lg) {
+    background-color: #414141;
   }
 }
 
