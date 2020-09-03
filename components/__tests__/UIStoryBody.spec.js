@@ -48,4 +48,38 @@ describe('render the proper content from props "story"', () => {
     const categoryTitle = wrapper.get('.story__category')
     expect(categoryTitle.text()).toBe(categoryTitleMock)
   })
+
+  test('hero image', async () => {
+    const heroImageMock = 'https://image.jpg'
+    const wrapper = await createWrapper(UIStoryBody, {
+      propsData: {
+        story: {
+          heroImage: {
+            image: {
+              resizedTargets: {
+                mobile: {
+                  url: heroImageMock,
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+    const image = wrapper.get('.story__hero-img img')
+    expect(image.attributes()['data-src']).toBe(heroImageMock)
+  })
+
+  test('hero caption', () => {
+    const herocaptionMock = 'hero caption'
+    const wrapper = createWrapper(UIStoryBody, {
+      propsData: {
+        story: {
+          heroCaption: herocaptionMock,
+        },
+      },
+    })
+    const categoryTitle = wrapper.get('.story__hero-img figcaption')
+    expect(categoryTitle.text()).toBe(herocaptionMock)
+  })
 })
