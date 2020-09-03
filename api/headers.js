@@ -16,7 +16,7 @@ module.exports = function (req, res, next) {
     return next()
   }
 
-  if (hostname.match(/mirrormedia.mg/gs)) {
+  if (hostname.match(/nuxt.mirrormedia.mg|www.mirrormedia.mg/gs)) {
     if (url.match(/^\/$|^\/(video_category|externals)\//gs)) {
       res.set(NO_CACHE_HEADERS)
     }
