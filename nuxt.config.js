@@ -199,7 +199,9 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/dayjs',
     'nuxt-user-agent',
-    '@mirror-media/nuxt-ssr-cache',
+    ...(process.env.NODE_ENV === 'prod'
+      ? ['@mirror-media/nuxt-ssr-cache']
+      : []),
   ],
   // config for @mirror-media/nuxt-ssr-cache
   cache: {
