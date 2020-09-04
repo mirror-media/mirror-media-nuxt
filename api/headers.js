@@ -16,18 +16,21 @@ module.exports = function (req, res, next) {
     return next()
   }
 
-  if (url.match(/^\/$|^\/(video_category|externals)\//gs)) {
-    res.set(NO_CACHE_HEADERS)
-  }
-  if (url.match(/^\/(api|story|culture-post|video|app)\//gs)) {
-    res.set('cache-control', 'public, max-age=600')
-  }
+  if (hostname.match(/mirrormedia.mg/gs)) {
+    if (url.match(/^\/$|^\/(video_category|externals)\//gs)) {
+      res.set(NO_CACHE_HEADERS)
+    }
+    if (url.match(/^\/(api|story|culture-post|video|app)\//gs)) {
+      res.set('cache-control', 'public, max-age=600')
+    }
 
-  const isDefaultListingPages = url.match(
-    /^\/$|^\/(section|category|topic|search|author|tag)\//gs
-  )
-  if (isDefaultListingPages) {
-    res.set('cache-control', `public, max-age=${60 * 5}`)
+    const isDefaultListingPages = url.match(
+      /^\/$|^\/(section|category|topic|search|author|tag)\//gs
+    )
+    if (isDefaultListingPages) {
+      res.set('cache-control', `public, max-age=${60 * 5}`)
+    }
+    return next()
   }
-  return next()
+  next()
 }
