@@ -217,8 +217,10 @@ module.exports = {
         pat instanceof RegExp ? pat.test(route) : route.startsWith(pat)
       )
       if (shouldCacheCurrentRoute) {
-        const prefixForGrep = 'mirror-media-nuxt:'
-        return `${prefixForGrep}${route}`
+        const prefixForGrep = 'mirror-media-nuxt'
+        const version = require('./package.json').version
+        const prefix = `${prefixForGrep}@${version}:`
+        return `${prefix}${route}`
       }
     },
     store: {
