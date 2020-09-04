@@ -5,6 +5,9 @@
       <p class="story__published-date" v-text="publishedDate" />
     </div>
     <h1 class="story__title" v-text="story.title" />
+    <picture class="story__hero-img">
+      <figcaption v-text="story.heroCaption" />
+    </picture>
   </article>
 </template>
 
@@ -19,13 +22,13 @@ export default {
   },
   computed: {
     category() {
-      return this.story?.categories?.[0] ?? {}
+      return this.story.categories?.[0] ?? {}
     },
     publishedDate() {
       return this.$dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm')
     },
     section() {
-      return this.story?.sections?.[0] ?? {}
+      return this.story.sections?.[0] ?? {}
     },
   },
 }
@@ -44,6 +47,10 @@ export default {
     max-width: 645px;
     margin-left: auto;
     margin-right: auto;
+    @include media-breakpoint-up(lg) {
+      width: 100%;
+      max-width: none;
+    }
   }
   &__section-datetime {
     display: flex;
@@ -93,6 +100,26 @@ export default {
     @include media-breakpoint-up(md) {
       margin-top: 25px;
       font-size: 32px;
+    }
+  }
+  &__hero-img {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin-top: 20px;
+    figcaption {
+      max-width: 645px;
+      margin: 5px 0 0;
+      padding: 0 25px;
+      color: #34495e;
+      line-height: 1.3;
+      @include media-breakpoint-up(md) {
+        padding: 0;
+        margin: 5px auto 0;
+      }
+      @include media-breakpoint-up(lg) {
+        max-width: none;
+      }
     }
   }
 }

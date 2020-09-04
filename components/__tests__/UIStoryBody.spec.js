@@ -48,4 +48,17 @@ describe('render the proper content from props "story"', () => {
     const categoryTitle = wrapper.get('.story__category')
     expect(categoryTitle.text()).toBe(categoryTitleMock)
   })
+
+  test('hero caption', () => {
+    const herocaptionMock = 'hero caption'
+    const wrapper = createWrapper(UIStoryBody, {
+      propsData: {
+        story: {
+          heroCaption: herocaptionMock,
+        },
+      },
+    })
+    const categoryTitle = wrapper.get('.story__hero-img figcaption')
+    expect(categoryTitle.text()).toBe(herocaptionMock)
+  })
 })
