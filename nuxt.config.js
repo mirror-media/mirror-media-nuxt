@@ -267,11 +267,6 @@ module.exports = {
       const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
       config.plugins.push(new LodashModuleReplacementPlugin({ paths: true }))
     },
-    optimization: {
-      splitChunks: {
-        maxSize: 15 * 1024, // 15kb
-      },
-    },
   },
   /*
    ** Nuxt Telemetry configuration
