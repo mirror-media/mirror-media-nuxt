@@ -8,12 +8,20 @@
     <picture class="story__hero-img">
       <figcaption v-text="story.heroCaption" />
     </picture>
+    <template v-for="paragraph in content">
+      <UIStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
+    </template>
   </article>
 </template>
 
 <script>
+import UIStoryContentHandler from './UIStoryContentHandler.vue'
+
 export default {
   name: 'UIStoryBody',
+  components: {
+    UIStoryContentHandler,
+  },
   props: {
     story: {
       type: Object,
@@ -23,6 +31,9 @@ export default {
   computed: {
     category() {
       return this.story.categories?.[0] ?? {}
+    },
+    content() {
+      return this.story.content?.apiData ?? []
     },
     publishedDate() {
       return this.$dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm')
@@ -35,6 +46,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h1,
+h2 {
+  color: #000;
+  font-size: 24px; // 1.5rem
+  text-align: left;
+}
+
+p {
+  color: #171717;
+  font-size: 18px;
+  line-height: 36px;
+  text-align: justify;
+}
+
 .story {
   color: #000;
   line-height: 1.15;
@@ -50,6 +75,24 @@ export default {
     @include media-breakpoint-up(lg) {
       width: 100%;
       max-width: none;
+    }
+    + h2 {
+      margin-top: 40px;
+    }
+    + p {
+      margin-top: 1.5em;
+    }
+  }
+  &::v-deep {
+    a {
+      &:link,
+      &:visited,
+      &:hover,
+      &:active {
+        padding-bottom: 5px;
+        color: #3195b3;
+        border-bottom: 1px solid #3195b3;
+      }
     }
   }
   &__section-datetime {
