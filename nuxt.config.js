@@ -266,6 +266,11 @@ module.exports = {
       // lodash-webpack-plugin
       const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
       config.plugins.push(new LodashModuleReplacementPlugin({ paths: true }))
+
+      // Extend only webpack config for client-bundle
+      if (ctx.isClient) {
+        config.devtool = 'source-map'
+      }
     },
   },
   /*
