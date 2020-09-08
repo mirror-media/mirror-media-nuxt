@@ -199,7 +199,7 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/dayjs',
     'nuxt-user-agent',
-    ...(process.env.NODE_ENV === 'prod'
+    ...(process.env.NODE_ENV === 'production'
       ? ['@mirror-media/nuxt-ssr-cache']
       : []),
   ],
