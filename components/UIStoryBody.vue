@@ -60,6 +60,24 @@ p {
   text-align: justify;
 }
 
+ol {
+  padding: 0 0 0 40px;
+  color: rgba(0, 0, 0, 0.702);
+  line-height: 2.2;
+  letter-spacing: 0.3px;
+  list-style: none;
+  counter-reset: li;
+  li {
+    text-align: left;
+    counter-increment: li;
+    &::before {
+      content: counter(li) '. ';
+      color: #004ea2;
+      margin-right: 10px;
+    }
+  }
+}
+
 .story {
   color: #000;
   line-height: 1.15;
@@ -81,6 +99,9 @@ p {
     }
     + p {
       margin-top: 1.5em;
+    }
+    + ol {
+      margin-top: 20px;
     }
   }
   &::v-deep {

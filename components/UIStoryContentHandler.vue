@@ -25,6 +25,14 @@ export default {
             )}
           />
         )
+      case 'ordered-list-item':
+        return (
+          <ol>
+            {paragraph.content[0].map((item) => (
+              <li domPropsInnerHTML={item} />
+            ))}
+          </ol>
+        )
       case 'unstyled':
         return <p domPropsInnerHTML={paragraph.content[0]} />
       default:
