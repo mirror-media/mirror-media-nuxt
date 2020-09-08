@@ -38,47 +38,47 @@ module.exports = {
       },
       {
         hid: 'og:title',
-        name: 'og:title',
+        property: 'og:title',
         content: SITE_TITLE,
       },
       {
         hid: 'og:description',
-        name: 'og:description',
+        property: 'og:description',
         content: SITE_DESCRIPTION,
       },
       {
         hid: 'og:image',
-        name: 'og:image',
+        property: 'og:image',
         content: SITE_OG_IMAGE,
       },
       {
         hid: 'og:url',
-        name: 'og:url',
+        property: 'og:url',
         content: SITE_URL,
       },
       {
         hid: 'og:site_name',
-        name: 'og:site_name',
+        property: 'og:site_name',
         content: SITE_TITLE,
       },
       {
         hid: 'og:locale',
-        name: 'og:locale',
+        property: 'og:locale',
         content: 'zh_TW',
       },
       {
         hid: 'og:type',
-        name: 'og:type',
+        property: 'og:type',
         content: 'article',
       },
       {
         hid: 'fb:app_id',
-        name: 'fb:app_id',
+        property: 'fb:app_id',
         content: FB_APP_ID,
       },
       {
         hid: 'fb:pages',
-        name: 'fb:pages',
+        property: 'fb:pages',
         content: FB_PAGE_ID,
       },
       {
