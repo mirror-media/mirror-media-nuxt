@@ -60,15 +60,35 @@ p {
   text-align: justify;
 }
 
+ul,
 ol {
+  list-style: none;
   padding: 0 0 0 40px;
   color: rgba(0, 0, 0, 0.702);
   line-height: 2.2;
   letter-spacing: 0.3px;
-  list-style: none;
-  counter-reset: li;
   li {
     text-align: left;
+  }
+}
+
+ul {
+  li {
+    &::before {
+      content: '•';
+      display: inline-block;
+      width: 26px;
+      color: #2d5b7b;
+      font-size: 30px;
+      line-height: 1;
+      vertical-align: top;
+    }
+  }
+}
+
+ol {
+  counter-reset: li;
+  li {
     counter-increment: li;
     &::before {
       content: counter(li) '. ';
@@ -100,7 +120,8 @@ ol {
     + p {
       margin-top: 1.5em;
     }
-    + ol {
+    + ol,
+    + ul {
       margin-top: 20px;
     }
   }

@@ -25,14 +25,17 @@ export default {
             )}
           />
         )
-      case 'ordered-list-item':
+      case 'unordered-list-item':
+      case 'ordered-list-item': {
+        const customTag = paragraph.type === 'ordered-list-item' ? 'ol' : 'ul'
         return (
-          <ol>
+          <customTag>
             {paragraph.content[0].map((item) => (
               <li domPropsInnerHTML={item} />
             ))}
-          </ol>
+          </customTag>
         )
+      }
       case 'unstyled':
         return <p domPropsInnerHTML={paragraph.content[0]} />
       default:
