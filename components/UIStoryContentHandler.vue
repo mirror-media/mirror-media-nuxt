@@ -15,6 +15,16 @@ export default {
         return <h1 domPropsInnerHTML={paragraph.content[0]} />
       case 'header-two':
         return <h2 domPropsInnerHTML={paragraph.content[0]} />
+      case 'quoteby':
+        return (
+          <div
+            class="quoteby"
+            domPropsInnerHTML={paragraph.content[0]?.quote.replace(
+              /\n/g,
+              '<br>'
+            )}
+          />
+        )
       case 'unstyled':
         return <p domPropsInnerHTML={paragraph.content[0]} />
       default:

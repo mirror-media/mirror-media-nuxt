@@ -91,7 +91,6 @@ p {
       &:active {
         padding-bottom: 5px;
         color: #3195b3;
-        border-bottom: 1px solid #3195b3;
       }
     }
   }
@@ -163,6 +162,41 @@ p {
       @include media-breakpoint-up(lg) {
         max-width: none;
       }
+    }
+  }
+  .quoteby {
+    position: relative;
+    padding: 20px 0 0 30px;
+    margin-top: 70px;
+    color: #3a759e;
+    font-size: 24px;
+    line-height: 44px;
+    border-top: 3px solid #255577;
+    border-left: 3px solid #255577;
+    @include media-breakpoint-up(md) {
+      width: 575px;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: 60px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 50px 0 0 70px;
+      border-color: transparent transparent transparent #255577;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      top: -44px;
+      left: 63px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 44px 0 0 62px;
+      border-color: transparent transparent transparent #fff;
     }
   }
 }
