@@ -91,6 +91,10 @@ p {
       &:active {
         padding-bottom: 5px;
         color: #3195b3;
+        border-bottom: 1px solid #3195b3;
+      }
+      * {
+        text-decoration: none;
       }
     }
   }
