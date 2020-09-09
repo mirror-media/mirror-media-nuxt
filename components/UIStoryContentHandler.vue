@@ -1,7 +1,12 @@
 <script>
+import UIInfobox from './UIInfobox.vue'
+
 export default {
   name: 'UIStoryContentHandler',
   functional: true,
+  components: {
+    UIInfobox,
+  },
   props: {
     paragraph: {
       type: Object,
@@ -36,6 +41,8 @@ export default {
           </customTag>
         )
       }
+      case 'infobox':
+        return <UIInfobox content={paragraph.content[0]} />
       case 'unstyled':
         return <p domPropsInnerHTML={paragraph.content[0]} />
       default:

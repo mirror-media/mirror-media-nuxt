@@ -46,42 +46,44 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h1,
-h2 {
-  color: #000;
-  font-size: 24px; // 1.5rem
-  text-align: left;
-}
-
-p {
-  color: #171717;
-  font-size: 18px;
-  line-height: 36px;
-  text-align: justify;
-}
-
-ul,
-ol {
-  list-style: none;
-  padding: 0 0 0 40px;
-  color: rgba(0, 0, 0, 0.702);
-  line-height: 2.2;
-  letter-spacing: 0.3px;
-  li {
+::v-deep {
+  h1,
+  h2 {
+    color: #000;
+    font-size: 24px; // 1.5rem
     text-align: left;
   }
-}
 
-ul {
-  li {
-    &::before {
-      content: '•';
-      display: inline-block;
-      width: 26px;
-      color: #2d5b7b;
-      font-size: 30px;
-      line-height: 1;
-      vertical-align: top;
+  p {
+    color: #171717;
+    font-size: 18px;
+    line-height: 36px;
+    text-align: justify;
+  }
+
+  ul,
+  ol {
+    list-style: none;
+    padding: 0 0 0 40px;
+    color: rgba(0, 0, 0, 0.702);
+    line-height: 2.2;
+    letter-spacing: 0.3px;
+    li {
+      text-align: left;
+    }
+  }
+
+  ul {
+    li {
+      &::before {
+        content: '•';
+        display: inline-block;
+        width: 26px;
+        color: #2d5b7b;
+        font-size: 30px;
+        line-height: 1;
+        vertical-align: top;
+      }
     }
   }
 }
@@ -102,6 +104,7 @@ ol {
   color: #000;
   line-height: 1.15;
   text-align: justify;
+  word-break: break-word;
   @include media-breakpoint-up(lg) {
     width: 695px;
   }
