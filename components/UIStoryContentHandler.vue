@@ -1,6 +1,13 @@
 <script>
 import UIInfobox from './UIInfobox.vue'
 
+function addTitleAndLazyloadToIframe(content = {}) {
+  return content?.embeddedCode.replace(
+    '<iframe',
+    `<iframe title="${content.caption}" loading="lazy"`
+  )
+}
+
 export default {
   name: 'UIStoryContentHandler',
   functional: true,
@@ -52,6 +59,15 @@ export default {
       }
       case 'infobox':
         return <UIInfobox content={paragraph.content[0]} />
+      case 'embeddedcode':
+        return (
+          <lazy-component
+            class="embeddedcode"
+            domPropsInnerHTML={addTitleAndLazyloadToIframe(
+              paragraph.content[0]
+            )}
+          />
+        )
       case 'unstyled':
         return <p domPropsInnerHTML={paragraph.content[0]} />
       default:

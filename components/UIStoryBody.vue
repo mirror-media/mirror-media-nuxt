@@ -140,7 +140,8 @@ picture {
       margin-top: 1.5em;
     }
     + ol,
-    + ul {
+    + ul,
+    + .embeddedcode {
       margin-top: 20px;
     }
   }
@@ -270,6 +271,14 @@ picture {
       border-style: solid;
       border-width: 44px 0 0 62px;
       border-color: transparent transparent transparent #fff;
+    }
+  }
+  .embeddedcode {
+    ::v-deep {
+      iframe {
+        max-width: 100%;
+        margin: auto;
+      }
     }
   }
 }
