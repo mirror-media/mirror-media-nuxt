@@ -20,6 +20,15 @@ export default {
         return <h1 domPropsInnerHTML={paragraph.content[0]} />
       case 'header-two':
         return <h2 domPropsInnerHTML={paragraph.content[0]} />
+      case 'image': {
+        const description = paragraph.content[0].description
+        return (
+          <picture>
+            <img v-lazy={paragraph.content[0]?.mobile?.url} alt={description} />
+            <figcaption>{description}</figcaption>
+          </picture>
+        )
+      }
       case 'quoteby':
         return (
           <div
