@@ -12,11 +12,22 @@
     <template v-for="paragraph in content">
       <UIStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
     </template>
+    <p class="smaller">
+      更多內容，歡迎<a
+        :href="SUBSCRIBE_LINK.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        v-text="SUBSCRIBE_LINK.title"
+      />、<a :href="AUTH_LINK.href" target="_blank" rel="noopener noreferrer"
+        >了解內容授權資訊</a
+      >。
+    </p>
   </article>
 </template>
 
 <script>
 import UIStoryContentHandler from './UIStoryContentHandler.vue'
+import { AUTH_LINK, SUBSCRIBE_LINK } from '~/constants/index'
 
 export default {
   name: 'UIStoryBody',
@@ -28,6 +39,12 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      AUTH_LINK,
+      SUBSCRIBE_LINK,
+    }
   },
   computed: {
     category() {
@@ -66,6 +83,10 @@ export default {
     font-size: 18px;
     line-height: 36px;
     text-align: justify;
+    &.smaller {
+      font-size: 16px;
+      line-height: 1.5;
+    }
   }
 
   ul,
@@ -117,6 +138,7 @@ picture {
 }
 
 .story {
+  padding: 0 0 20px;
   color: #000;
   line-height: 1.15;
   text-align: justify;
