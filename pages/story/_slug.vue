@@ -70,7 +70,7 @@ export default {
       title,
       meta: [
         { hid: 'robots', name: 'robots', content: robots },
-        { hid: 'description', name: 'description', description },
+        { hid: 'description', name: 'description', content: description },
         { hid: 'og:title', property: 'og:title', content: metaTitle },
         {
           hid: 'og:description',
