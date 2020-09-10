@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { DOMAIN_NAME, SITE_PROTOCOL } from '~/configs/config'
 import { SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '~/constants/index'
 import UIStoryBody from '~/components/UIStoryBody.vue'
 
@@ -54,7 +55,9 @@ export default {
       ogImage.image?.resizedTargets?.mobile?.url ||
       heroImage.image?.resizedTargets?.mobile?.url ||
       SITE_OG_IMAGE
-    const pageUrl = `${SITE_URL}${this.$route.path}`
+    const pageUrl = `${SITE_PROTOCOL ?? 'https'}://${DOMAIN_NAME}${
+      this.$route.path
+    }`
     const publishedTime = publishedDate
       ? new Date(publishedDate).toISOString()
       : ''
