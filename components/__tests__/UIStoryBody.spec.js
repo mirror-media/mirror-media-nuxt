@@ -67,7 +67,7 @@ describe('render the proper content from props "story"', () => {
       },
     })
     const image = wrapper.get('.story__hero-img img')
-    expect(image.attributes()['data-src']).toBe(heroImageMock)
+    expect(image.attributes().src).toBe(heroImageMock)
   })
 
   test('hero caption', () => {

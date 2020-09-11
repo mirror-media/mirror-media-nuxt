@@ -6,7 +6,7 @@
     </div>
     <h1 class="story__title" v-text="story.title" />
     <picture class="story__hero-img">
-      <img v-lazy="heroImage" :alt="story.heroCaption" />
+      <img :src="heroImage" :alt="story.heroCaption" />
       <figcaption v-text="story.heroCaption" />
     </picture>
     <template v-for="paragraph in content">
