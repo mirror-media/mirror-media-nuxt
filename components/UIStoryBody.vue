@@ -6,7 +6,6 @@
     </div>
     <h1 class="story__title" v-text="story.title" />
     <picture class="story__hero-img">
-      <img :src="heroImage" :alt="story.heroCaption" />
       <figcaption v-text="story.heroCaption" />
     </picture>
     <template v-for="paragraph in content">
@@ -52,12 +51,6 @@ export default {
     },
     content() {
       return this.story.content?.apiData ?? []
-    },
-    heroImage() {
-      return (
-        this.story.heroImage?.image?.resizedTargets?.mobile?.url ??
-        require('~/assets/notImage.png')
-      )
     },
     publishedDate() {
       return this.$dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm')
@@ -114,26 +107,17 @@ export default {
       }
     }
   }
-  ol {
-    counter-reset: li;
-    li {
-      counter-increment: li;
-      &::before {
-        content: counter(li) '. ';
-        color: #004ea2;
-        margin-right: 10px;
-      }
-    }
-  }
 }
 
-picture {
-  display: block;
-  figcaption {
-    margin-top: 10px;
-    color: rgba(0, 0, 0, 0.498);
-    font-size: 15px;
-    line-height: 1.7;
+ol {
+  counter-reset: li;
+  li {
+    counter-increment: li;
+    &::before {
+      content: counter(li) '. ';
+      color: #004ea2;
+      margin-right: 10px;
+    }
   }
 }
 
@@ -237,19 +221,11 @@ picture {
     width: 100%;
     max-width: none;
     margin-top: 20px;
-    img {
-      width: 100%;
-    }
-    img[lazy='loading'] {
-      height: 250px;
-      object-fit: contain;
-    }
     figcaption {
       max-width: 645px;
       margin: 5px 0 0;
       padding: 0 25px;
       color: #34495e;
-      font-size: 16px;
       line-height: 1.3;
       @include media-breakpoint-up(md) {
         padding: 0;

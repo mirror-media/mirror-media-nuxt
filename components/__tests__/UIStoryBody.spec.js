@@ -49,27 +49,6 @@ describe('render the proper content from props "story"', () => {
     expect(categoryTitle.text()).toBe(categoryTitleMock)
   })
 
-  test('hero image', async () => {
-    const heroImageMock = 'https://image.jpg'
-    const wrapper = await createWrapper(UIStoryBody, {
-      propsData: {
-        story: {
-          heroImage: {
-            image: {
-              resizedTargets: {
-                mobile: {
-                  url: heroImageMock,
-                },
-              },
-            },
-          },
-        },
-      },
-    })
-    const image = wrapper.get('.story__hero-img img')
-    expect(image.attributes().src).toBe(heroImageMock)
-  })
-
   test('hero caption', () => {
     const herocaptionMock = 'hero caption'
     const wrapper = createWrapper(UIStoryBody, {
