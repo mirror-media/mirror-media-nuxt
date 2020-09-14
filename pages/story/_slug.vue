@@ -1,17 +1,20 @@
 <template>
   <div class="story-container">
     <UIStoryBody :story="story" />
+    <UIAdultContentWarning v-if="story.isAdult" />
   </div>
 </template>
 
 <script>
 import { DOMAIN_NAME, SITE_PROTOCOL } from '~/configs/config'
 import { SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '~/constants/index'
+import UIAdultContentWarning from '~/components/UIAdultContentWarning.vue'
 import UIStoryBody from '~/components/UIStoryBody.vue'
 
 export default {
   name: 'Story',
   components: {
+    UIAdultContentWarning,
     UIStoryBody,
   },
   async fetch() {
