@@ -12,7 +12,7 @@
     <template v-for="paragraph in content">
       <UIStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
     </template>
-    <p class="smaller">
+    <p class="story-paragraph smaller">
       更多內容，歡迎<a
         :href="SUBSCRIBE_LINK.href"
         target="_blank"
@@ -70,73 +70,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep {
-  h1,
-  h2 {
-    color: #000;
-    font-size: 24px; // 1.5rem
-    text-align: left;
-  }
-
-  p {
-    color: #171717;
-    font-size: 18px;
-    line-height: 36px;
-    text-align: justify;
-    &.smaller {
-      font-size: 16px;
-      line-height: 1.5;
-    }
-  }
-
-  ul,
-  ol {
-    list-style: none;
-    padding: 0 0 0 40px;
-    color: rgba(0, 0, 0, 0.702);
-    line-height: 2.2;
-    letter-spacing: 0.3px;
-    li {
-      text-align: left;
-    }
-  }
-
-  ul {
-    li {
-      &::before {
-        content: '•';
-        display: inline-block;
-        width: 26px;
-        color: #2d5b7b;
-        font-size: 30px;
-        line-height: 1;
-        vertical-align: top;
-      }
-    }
-  }
-  ol {
-    counter-reset: li;
-    li {
-      counter-increment: li;
-      &::before {
-        content: counter(li) '. ';
-        color: #004ea2;
-        margin-right: 10px;
-      }
-    }
-  }
-}
-
-picture {
-  display: block;
-  figcaption {
-    margin-top: 10px;
-    color: rgba(0, 0, 0, 0.498);
-    font-size: 15px;
-    line-height: 1.7;
-  }
-}
-
 .story {
   padding: 0 0 20px;
   color: #000;
@@ -155,33 +88,19 @@ picture {
       width: 100%;
       max-width: none;
     }
-    + h2 {
+    + .story-heading {
       margin-top: 40px;
     }
-    + p {
+    + .story-paragraph {
       margin-top: 1.5em;
     }
-    + ol,
-    + ul,
-    + .embeddedcode {
+    + .story-picture,
+    + .story-list,
+    + .story-embedded-code {
       margin-top: 20px;
     }
   }
-  &::v-deep {
-    a {
-      &:link,
-      &:visited,
-      &:hover,
-      &:active {
-        padding-bottom: 5px;
-        color: #3195b3;
-        border-bottom: 1px solid #3195b3;
-      }
-      * {
-        text-decoration: none;
-      }
-    }
-  }
+
   &__section-datetime {
     display: flex;
     align-items: flex-end;
@@ -260,15 +179,52 @@ picture {
       }
     }
   }
-  .quoteby {
+}
+</style>
+
+<style lang="scss">
+@function border($width, $color) {
+  @return $width solid $color;
+}
+
+$link-color: #3195b3;
+$quote-by-color: #255577;
+$quote-by-border: border(3px, $quote-by-color);
+
+.story {
+  &-heading {
+    color: #000;
+    font-size: 24px; // 1.5rem
+    text-align: left;
+  }
+  &-paragraph {
+    color: #171717;
+    font-size: 18px;
+    line-height: 36px;
+    text-align: justify;
+    &.smaller {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+  }
+  &-picture {
+    display: block;
+    figcaption {
+      margin-top: 10px;
+      color: rgba(0, 0, 0, 0.498);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+  }
+  &-quote-by {
     position: relative;
     padding: 20px 0 0 30px;
     margin-top: 70px;
-    color: #3a759e;
+    color: $quote-by-color;
     font-size: 24px;
     line-height: 44px;
-    border-top: 3px solid #255577;
-    border-left: 3px solid #255577;
+    border-top: $quote-by-border;
+    border-left: $quote-by-border;
     @include media-breakpoint-up(md) {
       width: 575px;
     }
@@ -281,7 +237,7 @@ picture {
       height: 0;
       border-style: solid;
       border-width: 50px 0 0 70px;
-      border-color: transparent transparent transparent #255577;
+      border-color: transparent transparent transparent $quote-by-color;
     }
     &::after {
       content: '';
@@ -295,12 +251,67 @@ picture {
       border-color: transparent transparent transparent #fff;
     }
   }
-  .embeddedcode {
-    ::v-deep {
-      iframe {
-        max-width: 100%;
-        margin: auto;
-      }
+  &-embedded-code {
+    iframe {
+      max-width: 100%;
+      margin: auto;
+    }
+  }
+}
+
+.story-paragraph,
+.story-quote-by,
+ul.story-list,
+ol.story-list {
+  a {
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+      padding-bottom: 5px;
+      color: $link-color;
+      border-bottom: border(1px, $link-color);
+    }
+    * {
+      text-decoration: none;
+    }
+  }
+}
+
+ul.story-list,
+ol.story-list {
+  list-style: none;
+  padding: 0 0 0 40px;
+  color: rgba(0, 0, 0, 0.702);
+  line-height: 2.2;
+  letter-spacing: 0.3px;
+  li {
+    text-align: left;
+  }
+}
+
+ul.story-list {
+  li {
+    &::before {
+      content: '•';
+      display: inline-block;
+      width: 26px;
+      color: #2d5b7b;
+      font-size: 30px;
+      line-height: 1;
+      vertical-align: top;
+    }
+  }
+}
+
+ol.story-list {
+  counter-reset: li;
+  li {
+    counter-increment: li;
+    &::before {
+      content: counter(li) '. ';
+      color: #004ea2;
+      margin-right: 10px;
     }
   }
 }

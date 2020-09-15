@@ -24,13 +24,17 @@ export default {
     const paragraph = props.paragraph
     switch (paragraph.type) {
       case 'header-one':
-        return <h1 domPropsInnerHTML={paragraph.content[0]} />
+        return (
+          <h1 class="story-heading" domPropsInnerHTML={paragraph.content[0]} />
+        )
       case 'header-two':
-        return <h2 domPropsInnerHTML={paragraph.content[0]} />
+        return (
+          <h2 class="story-heading" domPropsInnerHTML={paragraph.content[0]} />
+        )
       case 'image': {
         const description = paragraph.content[0].description
         return (
-          <picture>
+          <picture class="story-picture">
             <img v-lazy={paragraph.content[0]?.mobile?.url} alt={description} />
             <figcaption>{description}</figcaption>
           </picture>
@@ -39,7 +43,7 @@ export default {
       case 'quoteby':
         return (
           <div
-            class="quoteby"
+            class="story-quote-by"
             domPropsInnerHTML={paragraph.content[0]?.quote.replace(
               /\n/g,
               '<br>'
@@ -50,7 +54,7 @@ export default {
       case 'ordered-list-item': {
         const customTag = paragraph.type === 'ordered-list-item' ? 'ol' : 'ul'
         return (
-          <customTag>
+          <customTag class="story-list">
             {paragraph.content[0].map((item) => (
               <li domPropsInnerHTML={item} />
             ))}
@@ -62,14 +66,16 @@ export default {
       case 'embeddedcode':
         return (
           <lazy-component
-            class="embeddedcode"
+            class="story-embedded-code"
             domPropsInnerHTML={addTitleAndLazyloadToIframe(
               paragraph.content[0]
             )}
           />
         )
       case 'unstyled':
-        return <p domPropsInnerHTML={paragraph.content[0]} />
+        return (
+          <p class="story-paragraph" domPropsInnerHTML={paragraph.content[0]} />
+        )
       default:
         return undefined
     }
