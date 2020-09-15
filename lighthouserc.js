@@ -5,6 +5,9 @@ module.exports = {
       startServerCommand: 'npm run start',
       settings: {
         chromeFlags: '--no-sandbox',
+        throttling: {
+          cpuSlowdownMultiplier: 1,
+        },
       },
     },
     upload: {
