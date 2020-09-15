@@ -5,13 +5,14 @@
       <p class="story__published-date" v-text="publishedDate" />
     </div>
     <h1 class="story__title" v-text="story.title" />
-    <picture class="story__hero-img">
+    <picture class="story__hero-img story-picture">
       <img :src="heroImage" :alt="story.heroCaption" />
       <figcaption v-text="story.heroCaption" />
     </picture>
     <template v-for="paragraph in content">
       <UIStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
     </template>
+    <slot name="story-relateds" />
     <p class="story-paragraph smaller">
       更多內容，歡迎<a
         :href="SUBSCRIBE_LINK.href"
@@ -152,17 +153,9 @@ export default {
     }
   }
   &__hero-img {
-    display: block;
     width: 100%;
     max-width: none;
     margin-top: 20px;
-    img {
-      width: 100%;
-    }
-    img[lazy='loading'] {
-      height: 250px;
-      object-fit: contain;
-    }
     figcaption {
       max-width: 645px;
       margin: 5px 0 0;
@@ -209,6 +202,13 @@ $quote-by-border: border(3px, $quote-by-color);
   }
   &-picture {
     display: block;
+    img {
+      width: 100%;
+    }
+    img[lazy='loading'] {
+      height: 250px;
+      object-fit: contain;
+    }
     figcaption {
       margin-top: 10px;
       color: rgba(0, 0, 0, 0.498);

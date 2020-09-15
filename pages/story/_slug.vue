@@ -1,6 +1,14 @@
 <template>
   <div class="story-container">
-    <UIStoryBody :story="story" />
+    <UIStoryBody :story="story">
+      <template v-slot:story-relateds>
+        <UIStoryListWithArrow
+          :categoryTitle="categoryTitle"
+          :items="relateds"
+          :sectionName="sectionName"
+        />
+      </template>
+    </UIStoryBody>
     <UIAdultContentWarning v-if="story.isAdult" />
   </div>
 </template>
@@ -10,12 +18,14 @@ import { DOMAIN_NAME, SITE_PROTOCOL } from '~/configs/config'
 import { SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '~/constants/index'
 import UIAdultContentWarning from '~/components/UIAdultContentWarning.vue'
 import UIStoryBody from '~/components/UIStoryBody.vue'
+import UIStoryListWithArrow from '~/components/UIStoryListWithArrow.vue'
 
 export default {
   name: 'Story',
   components: {
     UIAdultContentWarning,
     UIStoryBody,
+    UIStoryListWithArrow,
   },
   async fetch() {
     const response = await this.$fetchPosts({
@@ -29,6 +39,17 @@ export default {
     return {
       story: {},
     }
+  },
+  computed: {
+    categoryTitle() {
+      return this.story.categories?.[0]?.title
+    },
+    relateds() {
+      return (this.story.relateds ?? []).filter((item) => item.slug)
+    },
+    sectionName() {
+      return this.story.sections?.[0]?.name
+    },
   },
   head() {
     const {
