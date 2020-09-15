@@ -12,7 +12,7 @@
     <template v-for="paragraph in content">
       <UIStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
     </template>
-    <p class="story--paragraph smaller">
+    <p class="story-paragraph smaller">
       更多內容，歡迎<a
         :href="SUBSCRIBE_LINK.href"
         target="_blank"
@@ -88,15 +88,15 @@ export default {
       width: 100%;
       max-width: none;
     }
-    + .story--heading {
+    + .story-heading {
       margin-top: 40px;
     }
-    + .story--paragraph {
+    + .story-paragraph {
       margin-top: 1.5em;
     }
-    + .story--picture,
-    + .story--list,
-    + .story--embedded-code {
+    + .story-picture,
+    + .story-list,
+    + .story-embedded-code {
       margin-top: 20px;
     }
   }
@@ -192,12 +192,12 @@ $quote-by-color: #255577;
 $quote-by-border: border(3px, $quote-by-color);
 
 .story {
-  &--heading {
+  &-heading {
     color: #000;
     font-size: 24px; // 1.5rem
     text-align: left;
   }
-  &--paragraph {
+  &-paragraph {
     color: #171717;
     font-size: 18px;
     line-height: 36px;
@@ -207,7 +207,7 @@ $quote-by-border: border(3px, $quote-by-color);
       line-height: 1.5;
     }
   }
-  &--picture {
+  &-picture {
     display: block;
     figcaption {
       margin-top: 10px;
@@ -216,7 +216,7 @@ $quote-by-border: border(3px, $quote-by-color);
       line-height: 1.7;
     }
   }
-  &--quote-by {
+  &-quote-by {
     position: relative;
     padding: 20px 0 0 30px;
     margin-top: 70px;
@@ -251,7 +251,7 @@ $quote-by-border: border(3px, $quote-by-color);
       border-color: transparent transparent transparent #fff;
     }
   }
-  &--embedded-code {
+  &-embedded-code {
     iframe {
       max-width: 100%;
       margin: auto;
@@ -259,10 +259,10 @@ $quote-by-border: border(3px, $quote-by-color);
   }
 }
 
-.story--paragraph,
-.story--quote-by,
-ul.story--list,
-ol.story--list {
+.story-paragraph,
+.story-quote-by,
+ul.story-list,
+ol.story-list {
   a {
     &:link,
     &:visited,
@@ -278,8 +278,8 @@ ol.story--list {
   }
 }
 
-ul.story--list,
-ol.story--list {
+ul.story-list,
+ol.story-list {
   list-style: none;
   padding: 0 0 0 40px;
   color: rgba(0, 0, 0, 0.702);
@@ -290,7 +290,7 @@ ol.story--list {
   }
 }
 
-ul.story--list {
+ul.story-list {
   li {
     &::before {
       content: '•';
@@ -304,7 +304,7 @@ ul.story--list {
   }
 }
 
-ol.story--list {
+ol.story-list {
   counter-reset: li;
   li {
     counter-increment: li;
