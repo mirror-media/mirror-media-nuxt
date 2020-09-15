@@ -9,7 +9,6 @@ const FB_APP_ID = '175313259598308'
 const FB_PAGE_ID = '1855418728011324'
 
 module.exports = {
-  mode: 'universal',
   /*
    ** Headers of the page
    */

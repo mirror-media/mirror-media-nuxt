@@ -36,7 +36,7 @@
     "humps": "^2.0.1",
     "intersection-observer": "^0.11.0",
     "lodash": "^4.17.20",
-    "nuxt": "^2.14.1",
+    "nuxt": "^2.14.5",
     "nuxt-user-agent": "^1.2.2",
     "qs": "^6.9.4",
     "smooth-scroll": "^16.1.3",
