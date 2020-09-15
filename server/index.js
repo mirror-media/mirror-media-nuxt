@@ -23,7 +23,11 @@ async function start() {
     await builder.build()
   }
 
-  app.use(helmet())
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+    })
+  )
 
   app.use(bodyParser.json())
 
