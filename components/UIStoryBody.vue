@@ -1,7 +1,11 @@
 <template>
   <article class="story">
     <div class="story__section-datetime">
-      <p :class="['story__category', section.name]" v-text="category.title" />
+      <p
+        v-if="!isAdvertised"
+        :class="['story__category', section.name]"
+        v-text="category.title"
+      />
       <p class="story__published-date" v-text="publishedDate" />
     </div>
     <h1 class="story__title" v-text="story.title" />
@@ -59,6 +63,9 @@ export default {
         this.story.heroImage?.image?.resizedTargets?.mobile?.url ??
         require('~/assets/notImage.png')
       )
+    },
+    isAdvertised() {
+      return this.story.isAdvertised
     },
     publishedDate() {
       return this.$dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm')
@@ -134,6 +141,7 @@ export default {
     }
   }
   &__published-date {
+    margin: 0 0 0 auto;
     color: #a1a1a1;
     font-size: 16px; // 1rem
     font-style: italic;
