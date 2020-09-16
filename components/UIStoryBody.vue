@@ -1,5 +1,5 @@
 <template>
-  <article class="story">
+  <article :class="['story', section.name]">
     <div class="story__section-datetime">
       <p
         v-if="!isAdvertised"
@@ -13,6 +13,13 @@
       <img :src="heroImage" :alt="story.heroCaption" />
       <figcaption v-text="story.heroCaption" />
     </picture>
+    <div class="story__brief">
+      <UIStoryContentHandler
+        v-for="paragraph in brief"
+        :key="paragraph.id"
+        :paragraph="paragraph"
+      />
+    </div>
     <template v-for="paragraph in content">
       <UIStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
     </template>
@@ -55,6 +62,10 @@ export default {
     }
   },
   computed: {
+    brief() {
+      const data = this.story.brief?.apiData ?? []
+      return data.filter((paragraph) => paragraph.type === 'unstyled')
+    },
     category() {
       return this.story.categories?.[0] ?? {}
     },
@@ -121,6 +132,9 @@ export default {
     + .story-embedded-code {
       margin-top: 20px;
     }
+    + .story__brief {
+      margin-top: 30px;
+    }
   }
 
   &__section-datetime {
@@ -146,13 +160,6 @@ export default {
       vertical-align: text-top;
       background-color: #000;
     }
-    @each $name, $color in $sections-color {
-      &.#{$name} {
-        &::before {
-          background-color: $color;
-        }
-      }
-    }
   }
   &__published-date {
     margin: 0 0 0 auto;
@@ -172,6 +179,26 @@ export default {
     @include media-breakpoint-up(md) {
       margin-top: 25px;
       font-size: 32px;
+    }
+  }
+  &__brief {
+    padding: 1em 2em;
+    font-weight: 700;
+    background-color: #000;
+    .story-paragraph {
+      color: #fff;
+      font-size: 19.2px; // 1.2rem
+      &::v-deep {
+        a {
+          &:link,
+          &:visited,
+          &:hover,
+          &:active {
+            color: #fff;
+            border-color: #fff;
+          }
+        }
+      }
     }
   }
   &__hero-img {
@@ -199,6 +226,14 @@ export default {
     text-align: left;
     span {
       color: #61a4cd;
+    }
+  }
+  @each $name, $color in $sections-color {
+    &.#{$name} {
+      .story__category::before,
+      .story__brief {
+        background-color: $color;
+      }
     }
   }
 }
