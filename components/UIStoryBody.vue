@@ -16,6 +16,9 @@
     <template v-for="paragraph in content">
       <UIStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
     </template>
+    <p v-if="isUpdatedAtVisible" class="story__updated-at">
+      更新時間｜<span v-text="updatedAt" />
+    </p>
     <slot name="story-relateds" />
     <p class="story-paragraph smaller">
       更多內容，歡迎<a
@@ -67,11 +70,21 @@ export default {
     isAdvertised() {
       return this.story.isAdvertised
     },
+    isUpdatedAtVisible() {
+      return (
+        this.story.updatedAt &&
+        this.story.updatedAt !== this.story.publishedDate &&
+        this.updatedAt !== 'Invalid Date'
+      )
+    },
     publishedDate() {
       return this.$dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm')
     },
     section() {
       return this.story.sections?.[0] ?? {}
+    },
+    updatedAt() {
+      return this.$dayjs(this.story.updatedAt).format('YYYY.MM.DD HH:mm')
     },
   },
 }
@@ -99,7 +112,8 @@ export default {
     + .story-heading {
       margin-top: 40px;
     }
-    + .story-paragraph {
+    + .story-paragraph,
+    + p {
       margin-top: 1.5em;
     }
     + .story-picture,
@@ -178,6 +192,13 @@ export default {
       @include media-breakpoint-up(lg) {
         max-width: none;
       }
+    }
+  }
+  &__updated-at {
+    color: #064f77;
+    text-align: left;
+    span {
+      color: #61a4cd;
     }
   }
 }
