@@ -6,16 +6,6 @@ const createWrapper = createWrapperHelper({
 })
 
 describe('props', () => {
-  test('should render proper category title', () => {
-    const categoryTitle = 'test'
-    const wrapper = createWrapper(UIStoryListWithArrow, {
-      propsData: {
-        categoryTitle,
-        items: [{ slug: '' }],
-      },
-    })
-    expect(wrapper.get('.item__category').text()).toBe(categoryTitle)
-  })
   test('should has proper section class', () => {
     const sectionName = 'test'
     const wrapper = createWrapper(UIStoryListWithArrow, {

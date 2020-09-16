@@ -1,5 +1,8 @@
 <template>
-  <div v-if="hasItems" :class="[sectionName, 'story-list']">
+  <div
+    v-if="hasItems"
+    :class="[{ single: isSingle }, sectionName, 'story-list']"
+  >
     <nuxt-link
       v-for="item in itemsSliced"
       :key="item.slug"
@@ -8,11 +11,6 @@
     >
       <div class="item__arrow" />
       <div class="item__info">
-        <div
-          v-if="categoryTitle"
-          class="item__category"
-          v-text="categoryTitle"
-        />
         <span v-text="item.title" />
       </div>
     </nuxt-link>
@@ -40,6 +38,9 @@ export default {
     hasItems() {
       return this.items.length > 0
     },
+    isSingle() {
+      return this.items.length === 1
+    },
     itemsSliced() {
       return this.items.slice(0, 2)
     },
@@ -51,10 +52,25 @@ export default {
 .story-list {
   display: flex;
   justify-content: space-between;
+  &:not(.single) {
+    .item:last-child {
+      .item__arrow {
+        order: 1;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        &:before {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
   .item {
     flex: 1;
     display: flex;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+    @include media-breakpoint-up(md) {
+      max-width: 50%;
+    }
     &:hover,
     &:active {
       .item__info {
@@ -66,16 +82,6 @@ export default {
       .item__arrow {
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
-      }
-    }
-    &:last-child {
-      .item__arrow {
-        order: 1;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
-        &:before {
-          transform: rotate(180deg);
-        }
       }
     }
     + .item {
@@ -117,18 +123,6 @@ export default {
         overflow: hidden;
       }
     }
-    &__category {
-      flex: 0 0 auto;
-      display: none;
-      padding: 2px 7px;
-      color: #fff;
-      @include media-breakpoint-up(lg) {
-        display: inline-block;
-        + * {
-          margin-left: 12px;
-        }
-      }
-    }
   }
   @each $name, $color in $sections-color {
     &.#{$name} {
@@ -140,8 +134,7 @@ export default {
           }
         }
       }
-      .item__arrow,
-      .item__category {
+      .item__arrow {
         background-color: $color;
       }
     }
