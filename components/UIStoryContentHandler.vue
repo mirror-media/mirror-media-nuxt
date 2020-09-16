@@ -1,5 +1,6 @@
 <script>
 import UIInfobox from './UIInfobox.vue'
+import ContainerAudioPlayer from './audio-player/ContainerAudioPlayer.vue'
 
 function addTitleAndLazyloadToIframe(content = {}) {
   return content?.embeddedCode.replace(
@@ -13,6 +14,7 @@ export default {
   functional: true,
   components: {
     UIInfobox,
+    ContainerAudioPlayer,
   },
   props: {
     paragraph: {
@@ -72,6 +74,12 @@ export default {
             )}
           />
         )
+      case 'audio':
+        return (
+          <ClientOnly>
+            <ContainerAudioPlayer content={paragraph.content[0]} />
+          </ClientOnly>
+        )
       case 'unstyled':
         return (
           <p class="story-paragraph" domPropsInnerHTML={paragraph.content[0]} />
@@ -82,3 +90,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.audio-player {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+</style>
