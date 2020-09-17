@@ -63,6 +63,40 @@ describe('render the proper content from props "story"', () => {
     expect(categoryTitle.text()).toBe(categoryTitleMock)
   })
 
+  test('credit', () => {
+    const wrapper = createWrapper(UIStoryBody, {
+      propsData: {
+        story: {
+          writers: [{ id: '123', name: 'Tom' }],
+          photographers: [{ id: '456', name: 'Mary' }],
+          designers: [{ id: '789', name: 'Tony' }],
+          engineers: [{ id: '987', name: 'Andy' }],
+          cameraMan: [{ id: '654', name: 'Allen' }],
+          extendByline: '聲音｜黃宗潔',
+        },
+      },
+    })
+
+    expect(wrapper.get('.story__credit').element).toMatchSnapshot()
+  })
+
+  test('not render credit when no authors', () => {
+    const wrapper = createWrapper(UIStoryBody, {
+      propsData: {
+        story: {
+          writers: [],
+          photographers: [],
+          designers: [],
+          engineers: [],
+          cameraMan: [],
+          extendByline: '',
+        },
+      },
+    })
+
+    expect(wrapper.find('.story__credit').exists()).toBe(false)
+  })
+
   test('hero image', async () => {
     const heroImageMock = 'https://image.jpg'
     const wrapper = await createWrapper(UIStoryBody, {

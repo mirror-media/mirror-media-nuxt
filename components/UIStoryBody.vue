@@ -9,6 +9,9 @@
       <p class="story__published-date" v-text="publishedDate" />
     </div>
     <h1 class="story__title" v-text="story.title" />
+
+    <div v-if="credit" class="story__credit" v-html="credit"></div>
+
     <picture class="g-story-picture story__hero-img">
       <img :src="heroImage" :alt="story.heroCaption" />
       <figcaption v-text="story.heroCaption" />
@@ -69,6 +72,30 @@ export default {
     category() {
       return this.story.categories?.[0] ?? {}
     },
+    credit() {
+      const {
+        writers = [],
+        photographers = [],
+        designers = [],
+        engineers = [],
+        cameraMan = [],
+        extendByline = '',
+      } = this.story
+      const data = [
+        [writers, '文'],
+        [photographers, '攝影'],
+        [designers, '設計'],
+        [engineers, '工程'],
+        [cameraMan, '影音'],
+        [extendByline, ''],
+      ]
+      const creditHtml = data
+        .filter(hasAnyAuthors)
+        .map(constructCreditHtml)
+        .join('&nbsp;&nbsp;&nbsp;&nbsp;')
+
+      return creditHtml
+    },
     content() {
       return this.story.content?.apiData ?? []
     },
@@ -98,6 +125,22 @@ export default {
       return this.$dayjs(this.story.updatedAt).format('YYYY.MM.DD HH:mm')
     },
   },
+}
+
+function hasAnyAuthors([authors]) {
+  return authors.length
+}
+
+function constructCreditHtml([authors, role]) {
+  if (role === '') {
+    return authors
+  }
+
+  return `${role}｜${authors.map(constructLink).join('&nbsp;')}`
+}
+
+function constructLink(author) {
+  return `<a href="/author/${author.id}" target="_blank">${author.name}</a>`
 }
 </script>
 
@@ -208,6 +251,19 @@ export default {
       }
     }
   }
+
+  &__credit {
+    color: #34495e;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    text-align: left;
+
+    &::v-deep a {
+      color: #0b4fa2;
+    }
+  }
+
   &__hero-img {
     width: 100%;
     max-width: none;
