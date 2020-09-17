@@ -268,6 +268,7 @@ export default {
         background-color: $color;
       }
     }
+  }
 
   &__embedded-code::v-deep iframe {
     max-width: 100%;
