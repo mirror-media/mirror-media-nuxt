@@ -91,7 +91,10 @@ export default {
       case 'audio':
         return (
           <ClientOnly>
-            <ContainerAudioPlayer content={paragraph.content[0]} />
+            <ContainerAudioPlayer
+              class="story__audio-player"
+              content={paragraph.content[0]}
+            />
           </ClientOnly>
         )
       case 'blockquote':
@@ -121,10 +124,10 @@ export default {
     margin-top: 48px;
     margin-bottom: 48px;
   }
-}
 
-.audio-player {
-  margin-top: 16px;
-  margin-bottom: 16px;
+  &__audio-player {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
 }
 </style>
