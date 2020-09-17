@@ -132,6 +132,9 @@ export default {
     + .story-embedded-code {
       margin-top: 20px;
     }
+    + .story-blockquote {
+      margin-top: 3em;
+    }
     + .story__brief {
       margin-top: 30px;
     }
@@ -226,6 +229,32 @@ export default {
     text-align: left;
     span {
       color: #61a4cd;
+    }
+  }
+  &-blockquote {
+    display: flex;
+    align-items: center;
+    color: #3a759e;
+    font-size: 1.2rem;
+    line-height: 2.2rem;
+    text-align: left;
+    &::before {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      margin: 0 20px 0 0;
+      background-image: url(~assets/blockquote.png);
+      background-size: contain;
+      background-position: center center;
+      background-repeat: no-repeat;
+      content: '';
+      @include media-breakpoint-up(lg) {
+        width: 45px;
+        height: 45px;
+      }
+    }
+    + * {
+      margin-top: 3em !important;
     }
   }
   @each $name, $color in $sections-color {

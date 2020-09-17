@@ -80,6 +80,13 @@ export default {
             <ContainerAudioPlayer content={paragraph.content[0]} />
           </ClientOnly>
         )
+      case 'blockquote':
+        return (
+          <blockquote
+            class="story-blockquote"
+            domPropsInnerHTML={paragraph.content[0]}
+          />
+        )
       case 'unstyled':
         return (
           <p class="story-paragraph" domPropsInnerHTML={paragraph.content[0]} />
