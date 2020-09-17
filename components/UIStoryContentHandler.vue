@@ -27,16 +27,22 @@ export default {
     switch (paragraph.type) {
       case 'header-one':
         return (
-          <h1 class="story-heading" domPropsInnerHTML={paragraph.content[0]} />
+          <h1
+            class="g-story-heading story__heading"
+            domPropsInnerHTML={paragraph.content[0]}
+          />
         )
       case 'header-two':
         return (
-          <h2 class="story-heading" domPropsInnerHTML={paragraph.content[0]} />
+          <h2
+            class="g-story-heading story__heading"
+            domPropsInnerHTML={paragraph.content[0]}
+          />
         )
       case 'image': {
         const description = paragraph.content[0].description
         return (
-          <picture class="story-picture">
+          <picture class="g-story-picture">
             <img v-lazy={paragraph.content[0]?.mobile?.url} alt={description} />
             <figcaption>{description}</figcaption>
           </picture>
@@ -45,7 +51,7 @@ export default {
       case 'quoteby':
         return (
           <div
-            class="story-quote-by"
+            class="g-story-quote-by"
             domPropsInnerHTML={paragraph.content[0]?.quote.replace(
               /\n/g,
               '<br>'
@@ -54,13 +60,19 @@ export default {
         )
       case 'unordered-list-item':
       case 'ordered-list-item': {
-        const customTag = paragraph.type === 'ordered-list-item' ? 'ol' : 'ul'
+        const isOrderedListType = paragraph.type === 'ordered-list-item'
+        const listTag = isOrderedListType ? 'ol' : 'ul'
+
         return (
-          <customTag class="story-list">
+          <listTag
+            class={`g-story-${
+              isOrderedListType ? 'ordered' : 'unordered'
+            }-list`}
+          >
             {paragraph.content[0].map((item) => (
               <li domPropsInnerHTML={item} />
             ))}
-          </customTag>
+          </listTag>
         )
       }
       case 'infobox':
@@ -68,7 +80,7 @@ export default {
       case 'embeddedcode':
         return (
           <lazy-component
-            class="story-embedded-code"
+            class="story__embedded-code"
             domPropsInnerHTML={addTitleAndLazyloadToIframe(
               paragraph.content[0]
             )}
@@ -89,7 +101,10 @@ export default {
         )
       case 'unstyled':
         return (
-          <p class="story-paragraph" domPropsInnerHTML={paragraph.content[0]} />
+          <p
+            class="g-story-paragraph"
+            domPropsInnerHTML={paragraph.content[0]}
+          />
         )
       default:
         return undefined
