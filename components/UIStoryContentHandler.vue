@@ -76,7 +76,9 @@ export default {
         )
       }
       case 'infobox':
-        return <UIInfobox content={paragraph.content[0]} />
+        return (
+          <UIInfobox class="story__infobox" content={paragraph.content[0]} />
+        )
       case 'embeddedcode':
         return (
           <lazy-component
@@ -114,6 +116,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.story {
+  &__infobox {
+    margin-top: 48px;
+    margin-bottom: 48px;
+  }
+}
+
 .audio-player {
   margin-top: 16px;
   margin-bottom: 16px;

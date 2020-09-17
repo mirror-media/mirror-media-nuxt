@@ -2,7 +2,7 @@
   <div class="infobox">
     <div class="wrapper">
       <p v-if="content.title" class="title">{{ content.title }}</p>
-      <div class="body" v-html="content.body"></div>
+      <div class="g-story body" v-html="content.body"></div>
     </div>
   </div>
 </template>
@@ -24,8 +24,6 @@ export default {
 .infobox {
   padding-left: 18px;
   padding-right: 18px;
-  margin-top: 48px;
-  margin-bottom: 48px;
   position: relative;
   text-align: left;
 
