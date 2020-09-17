@@ -6,6 +6,14 @@ const GPTAdSlotsDefined = {}
 
 export default {
   install(Vue, options = {}) {
+    if (options.isAdDisable) {
+      return Vue.component('GPTAD', {
+        render() {
+          return ''
+        },
+      })
+    }
+
     Vue.prototype.$setGPTAdSlotsDefined = function (key, value) {
       GPTAdSlotsDefined[key] = value
     }
