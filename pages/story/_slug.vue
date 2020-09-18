@@ -76,8 +76,8 @@ export default {
         ?.content?.[0]?.replace(/<\/?[^>]+(>|$)/gm, '') ||
       ''
     const image =
-      ogImage.image?.resizedTargets?.mobile?.url ||
-      heroImage.image?.resizedTargets?.mobile?.url ||
+      ogImage?.image?.resizedTargets?.mobile?.url ||
+      heroImage?.image?.resizedTargets?.mobile?.url ||
       SITE_OG_IMAGE
     const pageUrl = `${SITE_PROTOCOL ?? 'https'}://${DOMAIN_NAME}${
       this.$route.path
