@@ -12,6 +12,11 @@
 
     <div v-if="credit" class="story__credit" v-html="credit"></div>
 
+    <div class="story__share">
+      <UIShareFacebook />
+      <UIShareLine />
+    </div>
+
     <picture class="g-story-picture story__hero-img">
       <img :src="heroImage" :alt="story.heroCaption" />
       <figcaption v-text="story.heroCaption" />
@@ -59,12 +64,16 @@
 
 <script>
 import UIStoryContentHandler from './UIStoryContentHandler.vue'
+import UIShareFacebook from '~/components/UIShareFacebook.vue'
+import UIShareLine from '~/components/UIShareLine.vue'
 import { AUTH_LINK, SUBSCRIBE_LINK } from '~/constants/index'
 
 export default {
   name: 'UIStoryBody',
   components: {
     UIStoryContentHandler,
+    UIShareFacebook,
+    UIShareLine,
   },
   props: {
     story: {
@@ -290,6 +299,20 @@ function constructLink(author) {
 
     &::v-deep a {
       color: #0b4fa2;
+    }
+  }
+
+  &__share {
+    display: flex;
+    margin-top: 25px;
+    margin-bottom: 25px;
+
+    a {
+      width: 35px;
+
+      + a {
+        margin-left: 10px;
+      }
     }
   }
 
