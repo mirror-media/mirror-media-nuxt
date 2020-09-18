@@ -1,5 +1,6 @@
 <script>
 import UIInfobox from './UIInfobox.vue'
+import UIStoryVideo from './UIStoryVideo.vue'
 import ContainerAudioPlayer from './audio-player/ContainerAudioPlayer.vue'
 
 function addTitleAndLazyloadToIframe(content = {}) {
@@ -108,6 +109,8 @@ export default {
             />
           </ClientOnly>
         )
+      case 'video':
+        return <UIStoryVideo video={paragraph.content[0]} />
       case 'blockquote':
         return (
           <blockquote

@@ -2,9 +2,9 @@
   <article :class="['story', section.name]">
     <div class="story__section-datetime">
       <p
-        v-if="!isAdvertised"
+        v-if="!isAdvertised && categoryTitle"
         :class="['story__category', section.name]"
-        v-text="category.title"
+        v-text="categoryTitle"
       />
       <p class="story__published-date" v-text="publishedDate" />
     </div>
@@ -83,8 +83,8 @@ export default {
       const data = this.story.brief?.apiData ?? []
       return data.filter((paragraph) => paragraph.type === 'unstyled')
     },
-    category() {
-      return this.story.categories?.[0] ?? {}
+    categoryTitle() {
+      return this.story.categories?.[0]?.title
     },
     credit() {
       const {

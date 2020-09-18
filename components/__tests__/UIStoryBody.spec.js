@@ -42,6 +42,7 @@ describe('render the proper content from props "story"', () => {
     const wrapper = createWrapper(UIStoryBody, {
       propsData: {
         story: {
+          categories: [{ title: 'category' }],
           sections: [{ name: sectionNameMock }],
         },
       },
