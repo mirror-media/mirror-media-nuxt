@@ -176,7 +176,8 @@ function constructLink(author) {
     + picture,
     + ul,
     + ol,
-    + .story__embedded-code {
+    + .story__embedded-code,
+    + .story-list {
       margin-top: 20px;
     }
     + .story-blockquote {
@@ -233,9 +234,10 @@ function constructLink(author) {
   }
   &__brief {
     padding: 1em 2em;
+    color: #fff;
     font-weight: 700;
     background-color: #000;
-    .story-paragraph {
+    .g-story-paragraph {
       color: #fff;
       font-size: 19.2px; // 1.2rem
       &::v-deep {
@@ -248,6 +250,9 @@ function constructLink(author) {
             border-color: #fff;
           }
         }
+      }
+      + .g-story-paragraph {
+        margin-top: 1.5em;
       }
     }
   }
@@ -299,6 +304,7 @@ function constructLink(author) {
     line-height: 2.2rem;
     text-align: left;
     &::before {
+      flex: 0 0 40px;
       display: inline-block;
       width: 40px;
       height: 40px;
@@ -309,6 +315,7 @@ function constructLink(author) {
       background-repeat: no-repeat;
       content: '';
       @include media-breakpoint-up(lg) {
+        flex: 0 0 45px;
         width: 45px;
         height: 45px;
       }

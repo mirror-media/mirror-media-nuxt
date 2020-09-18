@@ -9,6 +9,17 @@ function addTitleAndLazyloadToIframe(content = {}) {
   )
 }
 
+function processListItmes(content = []) {
+  if (
+    Array.isArray(content) &&
+    content.length > 0 &&
+    typeof content[0] === 'string'
+  ) {
+    return content
+  }
+  return content[0] ?? []
+}
+
 export default {
   name: 'UIStoryContentHandler',
   functional: true,
@@ -69,7 +80,7 @@ export default {
               isOrderedListType ? 'ordered' : 'unordered'
             }-list`}
           >
-            {paragraph.content[0].map((item) => (
+            {processListItmes(paragraph.content).map((item) => (
               <li domPropsInnerHTML={item} />
             ))}
           </listTag>
