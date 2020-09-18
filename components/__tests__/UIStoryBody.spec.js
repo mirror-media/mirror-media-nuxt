@@ -157,4 +157,35 @@ describe('render the proper content from props "story"', () => {
     })
     expect(wrapper.find('.story__updated-at').exists()).toBe(false)
   })
+
+  test('tags', () => {
+    const mockTag1 = { id: '59cc4c64436a250d00312173', name: '市議員' }
+    const mockTag2 = { id: '586207f43c1f950d00ce24da', name: '台北市長' }
+    const wrapper = createWrapper(UIStoryBody, {
+      propsData: {
+        story: {
+          tags: [mockTag1, mockTag2],
+        },
+      },
+    })
+
+    expect(wrapper.get(`[href="/tag/${mockTag1.id}/"]`).text()).toBe(
+      mockTag1.name
+    )
+    expect(wrapper.get(`[href="/tag/${mockTag2.id}/"]`).text()).toBe(
+      mockTag2.name
+    )
+  })
+
+  test('not render tags when no tags', () => {
+    const wrapper = createWrapper(UIStoryBody, {
+      propsData: {
+        story: {
+          tags: [],
+        },
+      },
+    })
+
+    expect(wrapper.find('.story__tags').exists()).toBe(false)
+  })
 })

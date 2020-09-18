@@ -40,6 +40,20 @@
         >了解內容授權資訊</a
       >。
     </p>
+
+    <lazy-component v-if="shouldOpenTags" class="story__tags">
+      <p class="title">相關關鍵字：</p>
+      <div class="wrapper">
+        <a
+          v-for="tag in tags"
+          :key="tag.id"
+          :href="`/tag/${tag.id}/`"
+          target="_blank"
+        >
+          {{ tag.name }}
+        </a>
+      </div>
+    </lazy-component>
   </article>
 </template>
 
@@ -127,6 +141,12 @@ export default {
     },
     updatedAt() {
       return this.$dayjs(this.story.updatedAt).format('YYYY.MM.DD HH:mm')
+    },
+    tags() {
+      return this.story.tags || []
+    },
+    shouldOpenTags() {
+      return this.tags.length > 0
     },
   },
 }
@@ -300,6 +320,41 @@ function constructLink(author) {
       color: #61a4cd;
     }
   }
+
+  &__tags {
+    margin-top: 1.5em;
+    // 0.9 = 1.5 - 0.6
+    margin-bottom: 0.9em;
+
+    .title {
+      color: #a0a0a0;
+      margin-bottom: 0.5em;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      line-height: 1.6;
+
+      @include media-breakpoint-up(sm) {
+        font-size: 18px;
+        line-height: inherit;
+      }
+    }
+
+    a {
+      background-color: #c8c8c8;
+      color: #fff;
+      padding: 0.2em 0.4em;
+      margin-right: 0.5em;
+      margin-bottom: 0.6em;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
   &-blockquote {
     display: flex;
     align-items: center;
