@@ -1,7 +1,9 @@
 <template>
-  <div v-show="isVisible" class="sticky-ad">
-    <slot />
-  </div>
+  <client-only>
+    <div v-if="isMobile" v-show="isVisible" class="sticky-ad">
+      <slot />
+    </div>
+  </client-only>
 </template>
 
 <script>
@@ -11,6 +13,11 @@ export default {
     return {
       isVisible: false,
     }
+  },
+  computed: {
+    isMobile() {
+      return !this.$ua.isFromPc()
+    },
   },
   mounted() {
     window.addEventListener('scroll', this.makeAdVisible, { passive: true })
@@ -37,9 +44,6 @@ export default {
   > div {
     margin-left: auto;
     margin-right: auto;
-  }
-  @include media-breakpoint-up(xl) {
-    display: none;
   }
 }
 </style>
