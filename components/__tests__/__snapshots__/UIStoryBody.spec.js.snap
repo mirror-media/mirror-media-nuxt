@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render the proper content from props "story" credit 1`] = `
+<div
+  class="story__credit"
+>
+  文｜
+  <a
+    href="/author/123"
+    target="_blank"
+  >
+    Tom
+  </a>
+      攝影｜
+  <a
+    href="/author/456"
+    target="_blank"
+  >
+    Mary
+  </a>
+      設計｜
+  <a
+    href="/author/789"
+    target="_blank"
+  >
+    Tony
+  </a>
+      工程｜
+  <a
+    href="/author/987"
+    target="_blank"
+  >
+    Andy
+  </a>
+      影音｜
+  <a
+    href="/author/654"
+    target="_blank"
+  >
+    Allen
+  </a>
+      聲音｜黃宗潔
+</div>
+`;

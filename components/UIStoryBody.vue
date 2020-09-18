@@ -9,7 +9,10 @@
       <p class="story__published-date" v-text="publishedDate" />
     </div>
     <h1 class="story__title" v-text="story.title" />
-    <picture class="story__hero-img story-picture">
+
+    <div v-if="credit" class="story__credit" v-html="credit"></div>
+
+    <picture class="g-story-picture story__hero-img">
       <img :src="heroImage" :alt="story.heroCaption" />
       <figcaption v-text="story.heroCaption" />
     </picture>
@@ -27,7 +30,7 @@
       更新時間｜<span v-text="updatedAt" />
     </p>
     <slot name="story-relateds" />
-    <p class="story-paragraph smaller">
+    <p class="g-story-paragraph smaller">
       更多內容，歡迎<a
         :href="SUBSCRIBE_LINK.href"
         target="_blank"
@@ -69,6 +72,30 @@ export default {
     category() {
       return this.story.categories?.[0] ?? {}
     },
+    credit() {
+      const {
+        writers = [],
+        photographers = [],
+        designers = [],
+        engineers = [],
+        cameraMan = [],
+        extendByline = '',
+      } = this.story
+      const data = [
+        [writers, '文'],
+        [photographers, '攝影'],
+        [designers, '設計'],
+        [engineers, '工程'],
+        [cameraMan, '影音'],
+        [extendByline, ''],
+      ]
+      const creditHtml = data
+        .filter(hasAnyAuthors)
+        .map(constructCreditHtml)
+        .join('&nbsp;&nbsp;&nbsp;&nbsp;')
+
+      return creditHtml
+    },
     content() {
       return this.story.content?.apiData ?? []
     },
@@ -99,6 +126,22 @@ export default {
     },
   },
 }
+
+function hasAnyAuthors([authors]) {
+  return authors.length
+}
+
+function constructCreditHtml([authors, role]) {
+  if (role === '') {
+    return authors
+  }
+
+  return `${role}｜${authors.map(constructLink).join('&nbsp;')}`
+}
+
+function constructLink(author) {
+  return `<a href="/author/${author.id}" target="_blank">${author.name}</a>`
+}
 </script>
 
 <style lang="scss" scoped>
@@ -111,6 +154,7 @@ export default {
   @include media-breakpoint-up(lg) {
     width: 695px;
   }
+
   > * {
     width: calc(100% - 50px);
     max-width: 645px;
@@ -120,16 +164,19 @@ export default {
       width: 100%;
       max-width: none;
     }
-    + .story-heading {
+
+    + .story__heading {
       margin-top: 40px;
     }
-    + .story-paragraph,
+
     + p {
       margin-top: 1.5em;
     }
-    + .story-picture,
-    + .story-list,
-    + .story-embedded-code {
+
+    + picture,
+    + ul,
+    + ol,
+    + .story__embedded-code {
       margin-top: 20px;
     }
     + .story-blockquote {
@@ -204,6 +251,19 @@ export default {
       }
     }
   }
+
+  &__credit {
+    color: #34495e;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    text-align: left;
+
+    &::v-deep a {
+      color: #0b4fa2;
+    }
+  }
+
   &__hero-img {
     width: 100%;
     max-width: none;
@@ -265,6 +325,11 @@ export default {
       }
     }
   }
+
+  &__embedded-code::v-deep iframe {
+    max-width: 100%;
+    margin: auto;
+  }
 }
 </style>
 
@@ -273,27 +338,34 @@ export default {
   @return $width solid $color;
 }
 
-$link-color: #3195b3;
 $quote-by-color: #255577;
 $quote-by-border: border(3px, $quote-by-color);
+$link-color: #3195b3;
 
-.story {
-  &-heading {
+.g-story {
+  &-heading,
+  h1,
+  h2 {
     color: #000;
     font-size: 24px; // 1.5rem
     text-align: left;
   }
-  &-paragraph {
+
+  &-paragraph,
+  p {
     color: #171717;
     font-size: 18px;
     line-height: 36px;
     text-align: justify;
+
     &.smaller {
       font-size: 16px;
       line-height: 1.5;
     }
   }
-  &-picture {
+
+  &-picture,
+  picture {
     display: block;
     img {
       width: 100%;
@@ -309,6 +381,7 @@ $quote-by-border: border(3px, $quote-by-color);
       line-height: 1.7;
     }
   }
+
   &-quote-by {
     position: relative;
     padding: 20px 0 0 30px;
@@ -321,71 +394,64 @@ $quote-by-border: border(3px, $quote-by-color);
     @include media-breakpoint-up(md) {
       width: 575px;
     }
-    &::before {
-      content: '';
-      position: absolute;
-      top: -50px;
-      left: 60px;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 50px 0 0 70px;
-      border-color: transparent transparent transparent $quote-by-color;
-    }
+
+    &::before,
     &::after {
       content: '';
       position: absolute;
-      top: -44px;
-      left: 63px;
       width: 0;
       height: 0;
       border-style: solid;
+    }
+
+    &::before {
+      top: -50px;
+      left: 60px;
+      border-width: 50px 0 0 70px;
+      border-color: transparent transparent transparent $quote-by-color;
+    }
+
+    &::after {
+      top: -44px;
+      left: 63px;
       border-width: 44px 0 0 62px;
       border-color: transparent transparent transparent #fff;
     }
   }
-  &-embedded-code {
-    iframe {
-      max-width: 100%;
-      margin: auto;
+
+  &-ordered-list,
+  &-unordered-list,
+  ol,
+  ul {
+    list-style: none;
+    padding: 0 0 0 40px;
+    color: rgba(0, 0, 0, 0.702);
+    line-height: 2.2;
+    letter-spacing: 0.3px;
+
+    li {
+      text-align: left;
     }
   }
-}
 
-.story-paragraph,
-.story-quote-by,
-ul.story-list,
-ol.story-list {
-  a {
-    &:link,
-    &:visited,
-    &:hover,
-    &:active {
-      padding-bottom: 5px;
-      color: $link-color;
-      border-bottom: border(1px, $link-color);
-    }
-    * {
-      text-decoration: none;
+  &-ordered-list,
+  ol {
+    counter-reset: li;
+
+    li {
+      counter-increment: li;
+
+      &::before {
+        content: counter(li) '. ';
+        color: #004ea2;
+        margin-right: 10px;
+      }
     }
   }
-}
 
-ul.story-list,
-ol.story-list {
-  list-style: none;
-  padding: 0 0 0 40px;
-  color: rgba(0, 0, 0, 0.702);
-  line-height: 2.2;
-  letter-spacing: 0.3px;
-  li {
-    text-align: left;
-  }
-}
-
-ul.story-list {
-  li {
-    &::before {
+  &-unordered-list,
+  ul {
+    li::before {
       content: '•';
       display: inline-block;
       width: 26px;
@@ -395,16 +461,27 @@ ul.story-list {
       vertical-align: top;
     }
   }
-}
 
-ol.story-list {
-  counter-reset: li;
-  li {
-    counter-increment: li;
-    &::before {
-      content: counter(li) '. ';
-      color: #004ea2;
-      margin-right: 10px;
+  &-paragraph,
+  &-ordered-list,
+  &-unordered-list,
+  &-quote-by,
+  p,
+  ol,
+  ul {
+    a {
+      &:link,
+      &:visited,
+      &:hover,
+      &:active {
+        padding-bottom: 5px;
+        color: $link-color;
+        border-bottom: border(1px, $link-color);
+      }
+
+      * {
+        text-decoration: none;
+      }
     }
   }
 }
