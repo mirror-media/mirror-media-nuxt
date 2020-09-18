@@ -16,7 +16,7 @@
       <img :src="heroImage" :alt="story.heroCaption" />
       <figcaption v-text="story.heroCaption" />
     </picture>
-    <div class="story__brief">
+    <div v-if="hasBrief" class="story__brief">
       <UIStoryContentHandler
         v-for="paragraph in brief"
         :key="paragraph.id"
@@ -98,6 +98,10 @@ export default {
     },
     content() {
       return this.story.content?.apiData ?? []
+    },
+    hasBrief() {
+      const rawBrief = this.story.brief
+      return Array.isArray(rawBrief) && rawBrief.length > 0
     },
     heroImage() {
       return (
