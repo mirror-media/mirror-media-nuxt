@@ -2,6 +2,7 @@ import UIShareFacebook from '../UIShareFacebook.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper()
+const fbSharedUrl = 'https://www.facebook.com/share.php?u='
 
 describe('href', () => {
   test('render the proper href', async () => {
@@ -15,22 +16,25 @@ describe('href', () => {
     const wrapper = createWrapper(UIShareFacebook)
     await wrapper.vm.$nextTick()
     const link = wrapper.get('a')
-    expect(link.attributes().href).toBe(
-      `https://www.facebook.com/share.php?u=${url}`
-    )
+    expect(link.attributes().href).toBe(`${fbSharedUrl}${url}`)
   })
 
-  test('render the proper href from props', () => {
-    const url = 'https://www.mirrormedia.mg/'
+  test('render the proper href from the prop "url"', async () => {
+    const mockUrl1 = 'https://www.mirrormedia.mg/'
+    const mockUrl2 = 'https://www.mirrormedia.mg/story/20200921ent009/'
     const wrapper = createWrapper(UIShareFacebook, {
       propsData: {
-        url,
+        url: mockUrl1,
       },
     })
+
     const link = wrapper.get('a')
-    expect(link.attributes().href).toBe(
-      `https://www.facebook.com/share.php?u=${url}`
-    )
+
+    expect(link.attributes().href).toBe(`${fbSharedUrl}${mockUrl1}`)
+
+    await wrapper.setProps({ url: mockUrl2 })
+
+    expect(link.attributes().href).toBe(`${fbSharedUrl}${mockUrl2}`)
   })
 })
 

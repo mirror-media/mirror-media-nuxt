@@ -1,6 +1,6 @@
 <template>
   <a
-    :href="`https://social-plugins.line.me/lineit/share?url=${shareUrl}`"
+    :href="sharedLineUrl"
     target="_blank"
     rel="noopener noreferrer"
     @click="$emit('click')"
@@ -17,26 +17,25 @@
 </template>
 
 <script>
+import { toRef } from '@nuxtjs/composition-api'
+import { useShareLine } from '~/composition/share.js'
+
 export default {
   name: 'UIShareLine',
+  setup(props) {
+    const sharedLineUrl = useShareLine(
+      props.url === undefined ? undefined : toRef(props, 'url')
+    )
+
+    return {
+      sharedLineUrl,
+    }
+  },
   props: {
     url: {
       type: String,
       default: undefined,
     },
-  },
-  data() {
-    return {
-      isMounted: false,
-    }
-  },
-  computed: {
-    shareUrl() {
-      return encodeURIComponent(this.url || (this.isMounted && location.href))
-    },
-  },
-  mounted() {
-    this.isMounted = true
   },
 }
 </script>
