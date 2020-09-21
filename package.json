@@ -26,6 +26,7 @@
   "dependencies": {
     "@mirror-media/nuxt-ssr-cache": "^1.6.1",
     "@nuxtjs/axios": "^5.12.2",
+    "@nuxtjs/composition-api": "^0.12.4",
     "@nuxtjs/dayjs": "^1.1.9",
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",

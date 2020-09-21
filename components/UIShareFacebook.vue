@@ -1,6 +1,6 @@
 <template>
   <a
-    :href="`https://www.facebook.com/share.php?u=${shareUrl}`"
+    :href="sharedFbUrl"
     target="_blank"
     rel="noopener noreferrer"
     @click="$emit('click')"
@@ -20,26 +20,25 @@
 </template>
 
 <script>
+import { toRef } from '@nuxtjs/composition-api'
+import { useShareFb } from '~/composition/share.js'
+
 export default {
   name: 'UIShareFacebook',
+  setup(props) {
+    const sharedFbUrl = useShareFb(
+      props.url === undefined ? undefined : toRef(props, 'url')
+    )
+
+    return {
+      sharedFbUrl,
+    }
+  },
   props: {
     url: {
       type: String,
       default: undefined,
     },
-  },
-  data() {
-    return {
-      isMounted: false,
-    }
-  },
-  computed: {
-    shareUrl() {
-      return this.url || (this.isMounted && location.href)
-    },
-  },
-  mounted() {
-    this.isMounted = true
   },
 }
 </script>

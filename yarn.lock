@@ -2324,6 +2324,15 @@
     consola "^2.15.0"
     defu "^3.1.0"
 
+"@nuxtjs/composition-api@^0.12.4":
+  version "0.12.4"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/composition-api/-/composition-api-0.12.4.tgz#332989de1ddd28dca8815103bee6afdd2b22864b"
+  integrity sha512-mgwfq3sHXWcWIyQrE3IqpUB26E77Jp2ON90YTlBy1i4leslJXqebX5i5vlaQAYq21WoUYxId4G/wxjTGEyHLVQ==
+  dependencies:
+    "@vue/composition-api" "1.0.0-beta.13"
+    defu "^3.1.0"
+    normalize-path "^3.0.0"
+
 "@nuxtjs/dayjs@^1.1.9":
   version "1.1.9"
   resolved "https://registry.yarnpkg.com/@nuxtjs/dayjs/-/dayjs-1.1.9.tgz#f957a3831aa41262fb31d18bf685d79ccc3233cf"
@@ -2699,6 +2708,13 @@
     vue-template-es2015-compiler "^1.9.0"
   optionalDependencies:
     prettier "^1.18.2"
+
+"@vue/composition-api@1.0.0-beta.13":
+  version "1.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-beta.13.tgz#441ffde5edfc0be90ae1fc96bebab70467762b51"
+  integrity sha512-5wHG9kfnTLST1rXFE5pHNL1VMl7Ojmr4WS1pIUmdkcPstBxr3/4fyRbYyeE4YUOJOnV7FkrSrPX69mIvApZeMA==
+  dependencies:
+    tslib "^2.0.1"
 
 "@vue/test-utils@^1.1.0":
   version "1.1.0"
@@ -12239,6 +12255,11 @@ tslib@^1.8.1, tslib@^1.9.0:
   version "1.11.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.11.1.tgz#eb15d128827fbee2841549e171f45ed338ac7e35"
   integrity sha512-aZW88SY8kQbU7gpV19lN24LtXh/yD4ZZg6qieAJDDg+YBsJcSmLGK9QpnUjAKVG/xefmvJGd1WUmfpT/g6AJGA==
+
+tslib@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
+  integrity sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==
 
 tsutils@^3.17.1:
   version "3.17.1"
