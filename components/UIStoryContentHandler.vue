@@ -3,6 +3,13 @@ import UIInfobox from './UIInfobox.vue'
 import UIStoryVideo from './UIStoryVideo.vue'
 import ContainerAudioPlayer from './audio-player/ContainerAudioPlayer.vue'
 
+function addExternalLinkRel(content = '') {
+  return content.replace(
+    'target="_blank"',
+    'target="_blank" rel="noopener noreferrer"'
+  )
+}
+
 function addTitleAndLazyloadToIframe(content = {}) {
   return content?.embeddedCode.replace(
     '<iframe',
@@ -131,7 +138,7 @@ export default {
         return (
           <p
             class="g-story-paragraph"
-            domPropsInnerHTML={paragraph.content[0]}
+            domPropsInnerHTML={addExternalLinkRel(paragraph.content[0])}
           />
         )
       default:
