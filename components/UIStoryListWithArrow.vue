@@ -1,5 +1,5 @@
 <template>
-  <div
+  <lazy-component
     v-if="hasItems"
     :class="[{ single: isSingle }, sectionName, 'story-list']"
   >
@@ -14,7 +14,7 @@
         <span v-text="item.title" />
       </div>
     </nuxt-link>
-  </div>
+  </lazy-component>
 </template>
 
 <script>

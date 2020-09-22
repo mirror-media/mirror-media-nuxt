@@ -7,6 +7,11 @@
           :items="relateds"
           :sectionName="sectionName"
         />
+        <UIStoryListRelated
+          :items="relatedsWithoutFirstTwo"
+          :images="relatedImages"
+          @show="fetchRelatedImages"
+        />
       </template>
     </UIStoryBody>
     <UIAdultContentWarning v-if="story.isAdult" />
@@ -18,6 +23,7 @@ import { DOMAIN_NAME, SITE_PROTOCOL } from '~/configs/config'
 import { SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '~/constants/index'
 import UIAdultContentWarning from '~/components/UIAdultContentWarning.vue'
 import UIStoryBody from '~/components/UIStoryBody.vue'
+import UIStoryListRelated from '~/components/UIStoryListRelated.vue'
 import UIStoryListWithArrow from '~/components/UIStoryListWithArrow.vue'
 
 export default {
@@ -25,6 +31,7 @@ export default {
   components: {
     UIAdultContentWarning,
     UIStoryBody,
+    UIStoryListRelated,
     UIStoryListWithArrow,
   },
   async fetch() {
@@ -38,6 +45,7 @@ export default {
   data() {
     return {
       story: {},
+      relatedImages: [],
     }
   },
   computed: {
@@ -47,8 +55,20 @@ export default {
     relateds() {
       return (this.story.relateds ?? []).filter((item) => item.slug)
     },
+    relatedsWithoutFirstTwo() {
+      return this.relateds.slice(2)
+    },
     sectionName() {
       return this.story.sections?.[0]?.name
+    },
+  },
+  methods: {
+    async fetchRelatedImages() {
+      const imageIds = this.relatedsWithoutFirstTwo.map(
+        (item) => item.heroImage
+      )
+      const { items = [] } = await this.$fetchImages({ id: imageIds })
+      this.relatedImages = items
     },
   },
   head() {

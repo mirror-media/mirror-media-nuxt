@@ -187,37 +187,38 @@ function constructLink(author) {
   @include media-breakpoint-up(lg) {
     width: 695px;
   }
+  &::v-deep {
+    > * {
+      width: calc(100% - 50px);
+      max-width: 645px;
+      margin-left: auto;
+      margin-right: auto;
+      @include media-breakpoint-up(lg) {
+        width: 100%;
+        max-width: none;
+      }
 
-  > * {
-    width: calc(100% - 50px);
-    max-width: 645px;
-    margin-left: auto;
-    margin-right: auto;
-    @include media-breakpoint-up(lg) {
-      width: 100%;
-      max-width: none;
-    }
+      + .story__heading {
+        margin-top: 40px;
+      }
 
-    + .story__heading {
-      margin-top: 40px;
-    }
+      + p {
+        margin-top: 1.5em;
+      }
 
-    + p {
-      margin-top: 1.5em;
-    }
-
-    + picture,
-    + ul,
-    + ol,
-    + .story__embedded-code,
-    + .story-list {
-      margin-top: 20px;
-    }
-    + .story-blockquote {
-      margin-top: 3em;
-    }
-    + .story__brief {
-      margin-top: 30px;
+      + picture,
+      + ul,
+      + ol,
+      + .story__embedded-code,
+      + .story-list {
+        margin-top: 20px;
+      }
+      + .story-blockquote {
+        margin-top: 3em;
+      }
+      + .story__brief {
+        margin-top: 30px;
+      }
     }
   }
 
