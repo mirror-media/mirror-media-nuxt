@@ -123,7 +123,7 @@ export default {
       return this.story.content?.apiData ?? []
     },
     hasBrief() {
-      const rawBrief = this.story.brief
+      const rawBrief = this.brief
       return Array.isArray(rawBrief) && rawBrief.length > 0
     },
     heroImage() {
@@ -271,10 +271,10 @@ function constructLink(author) {
     color: #fff;
     font-weight: 700;
     background-color: #000;
-    .g-story-paragraph {
-      color: #fff;
-      font-size: 19.2px; // 1.2rem
-      &::v-deep {
+    &::v-deep {
+      .g-story-paragraph {
+        color: #fff;
+        font-size: 19.2px; // 1.2rem
         a {
           &:link,
           &:visited,
@@ -284,9 +284,9 @@ function constructLink(author) {
             border-color: #fff;
           }
         }
-      }
-      + .g-story-paragraph {
-        margin-top: 1.5em;
+        + .g-story-paragraph {
+          margin-top: 1.5em;
+        }
       }
     }
   }
@@ -420,6 +420,17 @@ function constructLink(author) {
     max-width: 100%;
     margin: auto;
   }
+  .g-story-quote-by {
+    @include media-breakpoint-up(md) {
+      max-width: 575px;
+    }
+    @include media-breakpoint-up(lg) {
+      max-width: 625px;
+    }
+    + * {
+      margin-top: 70px;
+    }
+  }
 }
 </style>
 
@@ -479,6 +490,7 @@ $link-color: #3195b3;
     color: $quote-by-color;
     font-size: 24px;
     line-height: 44px;
+    text-align: right;
     border-top: $quote-by-border;
     border-left: $quote-by-border;
     @include media-breakpoint-up(md) {
@@ -506,6 +518,17 @@ $link-color: #3195b3;
       left: 63px;
       border-width: 44px 0 0 62px;
       border-color: transparent transparent transparent #fff;
+    }
+    &__quote {
+      text-align: left;
+    }
+    &__quote-by {
+      font-size: 18px;
+      line-height: 1.15;
+      &::before {
+        content: '──';
+        margin-right: 5px;
+      }
     }
   }
 

@@ -60,16 +60,25 @@ export default {
           </picture>
         )
       }
-      case 'quoteby':
+      case 'quoteby': {
+        const quoteBy = paragraph.content[0]?.quoteBy
         return (
-          <div
-            class="g-story-quote-by"
-            domPropsInnerHTML={paragraph.content[0]?.quote.replace(
-              /\n/g,
-              '<br>'
+          <div class="g-story-quote-by">
+            <div
+              class="g-story-quote-by__quote"
+              domPropsInnerHTML={paragraph.content[0]?.quote.replace(
+                /\n/g,
+                '<br>'
+              )}
+            />
+            {quoteBy ? (
+              <span class="g-story-quote-by__quote-by">{quoteBy}</span>
+            ) : (
+              ''
             )}
-          />
+          </div>
         )
+      }
       case 'unordered-list-item':
       case 'ordered-list-item': {
         const isOrderedListType = paragraph.type === 'ordered-list-item'
