@@ -7,7 +7,6 @@ import {
   API_TIMEOUT,
   DOMAIN_NAME,
   GCS_DATA_DOMAIN_NAME,
-  SITE_PROTOCOL,
 } from '~/configs/config'
 
 function isPureObject(params) {
@@ -121,7 +120,7 @@ export function buildYoutubeParams(params = {}) {
 
 async function fetchGCSData(filename) {
   try {
-    const url = `${SITE_PROTOCOL || 'https'}://${
+    const url = `https://${
       GCS_DATA_DOMAIN_NAME || DOMAIN_NAME
     }/json/${filename}.json`
     const { data } = await axios.get(url, { timeout: API_TIMEOUT })
