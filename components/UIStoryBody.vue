@@ -185,7 +185,8 @@ function constructLink(author) {
   text-align: justify;
   word-break: break-word;
   @include media-breakpoint-up(lg) {
-    width: 695px;
+    width: calc(100% - 300px - 20px);
+    max-width: 695px;
   }
   &::v-deep {
     > * {
@@ -227,7 +228,7 @@ function constructLink(author) {
     align-items: flex-end;
     justify-content: space-between;
     margin-top: 20px;
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       margin-top: 0;
     }
   }

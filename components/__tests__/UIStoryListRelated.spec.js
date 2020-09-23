@@ -1,9 +1,7 @@
 import UIStoryListRelated from '../UIStoryListRelated.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
-const createWrapper = createWrapperHelper({
-  stubs: ['nuxt-link'],
-})
+const createWrapper = createWrapperHelper()
 
 describe('props', () => {
   test('should has proper item title and href', () => {
@@ -14,12 +12,10 @@ describe('props', () => {
         items: [{ slug: slugMock, title: titleMock }],
       },
     })
-    expect(wrapper.get('.item .item__title nuxt-link-stub').text()).toBe(
-      titleMock
+    expect(wrapper.get('.item .item__title a').text()).toBe(titleMock)
+    expect(wrapper.get('.item .item__title a').attributes().href).toBe(
+      `/story/${slugMock}`
     )
-    expect(
-      wrapper.get('.item .item__title nuxt-link-stub').attributes().to
-    ).toBe(`/story/${slugMock}`)
   })
   test('should has proper item image', () => {
     const heroImageId = '5f68169eee60acd1e1848f70'
@@ -48,7 +44,7 @@ describe('props', () => {
         ],
       },
     })
-    expect(wrapper.get('.item .item__image').attributes().to).toBe(
+    expect(wrapper.get('.item .item__image').attributes().href).toBe(
       `/story/${slugMock}`
     )
     expect(wrapper.get('.item .item__image img').attributes().src).toBe(

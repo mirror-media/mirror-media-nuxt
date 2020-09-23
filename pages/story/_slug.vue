@@ -14,6 +14,9 @@
         />
       </template>
     </UIStoryBody>
+    <aside class="aside">
+      <UIStoryListWithHeading :items="popularStories" heading="熱門文章" />
+    </aside>
     <UIAdultContentWarning v-if="story.isAdult" />
   </div>
 </template>
@@ -25,6 +28,7 @@ import UIAdultContentWarning from '~/components/UIAdultContentWarning.vue'
 import UIStoryBody from '~/components/UIStoryBody.vue'
 import UIStoryListRelated from '~/components/UIStoryListRelated.vue'
 import UIStoryListWithArrow from '~/components/UIStoryListWithArrow.vue'
+import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
 
 export default {
   name: 'Story',
@@ -33,6 +37,7 @@ export default {
     UIStoryBody,
     UIStoryListRelated,
     UIStoryListWithArrow,
+    UIStoryListWithHeading,
   },
   async fetch() {
     const response = await this.$fetchPosts({
@@ -44,6 +49,7 @@ export default {
   },
   data() {
     return {
+      popularStories: [],
       story: {},
       relatedImages: [],
     }
@@ -62,6 +68,9 @@ export default {
       return this.story.sections?.[0]?.name
     },
   },
+  mounted() {
+    this.fetchPopularStories()
+  },
   methods: {
     async fetchRelatedImages() {
       const imageIds = this.relatedsWithoutFirstTwo.map(
@@ -69,6 +78,10 @@ export default {
       )
       const { items = [] } = await this.$fetchImages({ id: imageIds })
       this.relatedImages = items
+    },
+    async fetchPopularStories() {
+      const { report: items = [] } = await this.$fetchPopular()
+      this.popularStories = items.slice(0, 9)
     },
   },
   head() {
@@ -156,9 +169,22 @@ export default {
 .story-container {
   max-width: 1160px;
   @include media-breakpoint-up(lg) {
+    position: relative;
     margin: 0 auto;
     padding: 30px 50px;
     background-color: #fff;
+  }
+  .aside {
+    width: calc(100% - 50px);
+    max-width: 645px;
+    padding: 0 0 40px;
+    margin: auto;
+    @include media-breakpoint-up(lg) {
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      width: 300px;
+    }
   }
 }
 </style>

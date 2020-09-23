@@ -2,19 +2,26 @@
   <lazy-component v-if="hasItems" class="story-list" @show="$emit('show')">
     <div v-for="item in items" :key="item.slug" class="item">
       <div class="item__title">
-        <nuxt-link :to="`/story/${item.slug}`" v-text="item.title" />
+        <a
+          :href="`/story/${item.slug}`"
+          target="_blank"
+          rel="noopener noreferrer"
+          v-text="item.title"
+        />
       </div>
-      <nuxt-link
+      <a
         v-if="showImage"
-        :to="`/story/${item.slug}`"
+        :href="`/story/${item.slug}`"
         class="item__image"
+        target="_blank"
+        rel="noopener noreferrer"
       >
         <img
           :src="getImageSrc(item.heroImage)"
           :alt="item.title"
           loading="lazy"
         />
-      </nuxt-link>
+      </a>
     </div>
   </lazy-component>
 </template>
