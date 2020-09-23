@@ -112,7 +112,7 @@ export default {
       ogImage?.image?.resizedTargets?.mobile?.url ||
       heroImage?.image?.resizedTargets?.mobile?.url ||
       SITE_OG_IMAGE
-    const pageUrl = `${SITE_PROTOCOL ?? 'https'}://${DOMAIN_NAME}${
+    const pageUrl = `${SITE_PROTOCOL || 'https'}://${DOMAIN_NAME}${
       this.$route.path
     }`
     const publishedTime = publishedDate
