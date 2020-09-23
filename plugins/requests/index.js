@@ -3,7 +3,12 @@ import _ from 'lodash'
 import axios from 'axios'
 import qs from 'qs'
 
-import { API_TIMEOUT, DOMAIN_NAME, SITE_PROTOCOL } from '~/configs/config'
+import {
+  API_TIMEOUT,
+  DOMAIN_NAME,
+  GCS_DATA_DOMAIN_NAME,
+  SITE_PROTOCOL,
+} from '~/configs/config'
 
 function isPureObject(params) {
   return _.isObject(params) && !Array.isArray(params)
@@ -116,9 +121,9 @@ export function buildYoutubeParams(params = {}) {
 
 async function fetchGCSData(filename) {
   try {
-    const url = `${
-      SITE_PROTOCOL || 'https'
-    }://${DOMAIN_NAME}/json/${filename}.json`
+    const url = `${SITE_PROTOCOL || 'https'}://${
+      GCS_DATA_DOMAIN_NAME || DOMAIN_NAME
+    }/json/${filename}.json`
     const { data } = await axios.get(url, { timeout: API_TIMEOUT })
     return camelizeKeys(data)
   } catch (err) {
