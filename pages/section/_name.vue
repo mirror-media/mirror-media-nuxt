@@ -81,54 +81,6 @@ export default {
       microAdUnits: microAdUnits.LISTING,
     }
   },
-  head() {
-    const defaultSectionDescription =
-      '鏡傳媒以台灣為基地，是一跨平台綜合媒體，包含《鏡週刊》以及下設五大分眾內容的《鏡傳媒》網站，刊載時事、財經、人物、國際、文化、娛樂、美食旅遊、精品鐘錶等深入報導及影音內容。我們以「鏡」為名，務求反映事實、時代與人性。'
-    const title = `${this.currentSectionTitle} - ${SITE_TITLE}`
-    const description =
-      this.currentSectionData?.description || defaultSectionDescription
-
-    return {
-      title,
-      meta: [
-        {
-          hid: 'og:title',
-          name: 'og:title',
-          content: title,
-        },
-        {
-          hid: 'twitter:title',
-          name: 'twitter:title',
-          content: title,
-        },
-        {
-          hid: 'description',
-          name: 'description',
-          content: description,
-        },
-        {
-          hid: 'og:description',
-          name: 'og:description',
-          content: description,
-        },
-        {
-          hid: 'twitter:description',
-          name: 'twitter:description',
-          content: description,
-        },
-        {
-          hid: 'og:url',
-          property: 'og:url',
-          content: `${SITE_URL}/section/${this.$route.params.name}`,
-        },
-        {
-          hid: 'section-name',
-          name: 'section-name',
-          content: this.currentSectionName,
-        },
-      ],
-    }
-  },
   computed: {
     ...mapState({
       sections: (state) => state.sections.data.items ?? [],
@@ -239,6 +191,54 @@ export default {
         $state.error()
       }
     },
+  },
+  head() {
+    const defaultSectionDescription =
+      '鏡傳媒以台灣為基地，是一跨平台綜合媒體，包含《鏡週刊》以及下設五大分眾內容的《鏡傳媒》網站，刊載時事、財經、人物、國際、文化、娛樂、美食旅遊、精品鐘錶等深入報導及影音內容。我們以「鏡」為名，務求反映事實、時代與人性。'
+    const title = `${this.currentSectionTitle} - ${SITE_TITLE}`
+    const description =
+      this.currentSectionData?.description || defaultSectionDescription
+
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: title,
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: title,
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: description,
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: description,
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: description,
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${SITE_URL}/section/${this.$route.params.name}`,
+        },
+        {
+          hid: 'section-name',
+          name: 'section-name',
+          content: this.currentSectionName,
+        },
+      ],
+    }
   },
 }
 </script>

@@ -81,34 +81,6 @@ export default {
       microAdUnits: microAdUnits.LISTING,
     }
   },
-  head() {
-    const title = `${this.categoryTitle} - ${SITE_TITLE}`
-    return {
-      title,
-      meta: [
-        {
-          hid: 'og:title',
-          name: 'og:title',
-          content: title,
-        },
-        {
-          hid: 'twitter:title',
-          name: 'twitter:title',
-          content: title,
-        },
-        {
-          hid: 'og:url',
-          property: 'og:url',
-          content: `${SITE_URL}/category/${this.$route.params.name}`,
-        },
-        {
-          hid: 'section-name',
-          name: 'section-name',
-          content: this.sectionName,
-        },
-      ],
-    }
-  },
   computed: {
     ...mapGetters({
       sectionByCategoryName: 'sections/sectionByCategoryName',
@@ -234,6 +206,34 @@ export default {
         $state.error()
       }
     },
+  },
+  head() {
+    const title = `${this.categoryTitle} - ${SITE_TITLE}`
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: title,
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: title,
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${SITE_URL}/category/${this.$route.params.name}`,
+        },
+        {
+          hid: 'section-name',
+          name: 'section-name',
+          content: this.sectionName,
+        },
+      ],
+    }
   },
 }
 </script>
