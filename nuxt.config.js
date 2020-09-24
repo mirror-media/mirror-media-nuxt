@@ -166,6 +166,10 @@ module.exports = {
       path: '/api/combo',
       handler: '~/api/combo.js',
     },
+    {
+      path: '/api/tracking',
+      handler: '~/api/tracking.js',
+    },
     { path: '/api', handler: '~/api/index.js' },
   ],
   /*
