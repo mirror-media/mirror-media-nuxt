@@ -18,9 +18,11 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
     '<rootDir>/pages/**/*.vue',
+    '<rootDir>/plugins/**/*.js',
   ],
   setupFiles: [
     '<rootDir>/plugins/vueDirectivesGlobal.js',
     '<rootDir>/plugins/vuePluginsGlobal.js',
+    'jest-useragent-mock',
   ],
 }
