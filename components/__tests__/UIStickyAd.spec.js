@@ -10,6 +10,7 @@ const createWrapper = createWrapperHelper({
       },
     },
   },
+  stubs: ['client-only'],
 })
 
 describe('visible', () => {

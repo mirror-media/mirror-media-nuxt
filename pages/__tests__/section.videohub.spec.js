@@ -6,7 +6,8 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
   mocks: {
-    $fetchYoutubeSearch: jest.fn(),
+    $fetchYoutubeSearch: jest.fn(() => Promise.resolve({ items: [] })),
+    $fetchYoutubeVideos: jest.fn(() => Promise.resolve({ items: [] })),
     $store: {
       state: {
         sections: {
