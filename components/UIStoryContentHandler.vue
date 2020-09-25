@@ -61,10 +61,10 @@ export default {
       case 'image': {
         const description = paragraph.content[0].description
         return (
-          <picture class="g-story-picture">
+          <figure class="g-story-figure">
             <img v-lazy={paragraph.content[0]?.mobile?.url} alt={description} />
             <figcaption>{description}</figcaption>
-          </picture>
+          </figure>
         )
       }
       case 'quoteby': {
