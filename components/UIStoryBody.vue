@@ -17,10 +17,10 @@
       <UIShareLine />
     </div>
 
-    <picture class="g-story-picture story__hero-img">
+    <figure class="g-story-figure story__hero-img">
       <img :src="heroImage" :alt="story.heroCaption" />
       <figcaption v-text="story.heroCaption" />
-    </picture>
+    </figure>
     <div v-if="hasBrief" class="story__brief">
       <UIStoryContentHandler
         v-for="paragraph in brief"
@@ -207,7 +207,7 @@ function constructLink(author) {
         margin-top: 1.5em;
       }
 
-      + picture,
+      + figure,
       + ul,
       + ol,
       + .story__embedded-code,
@@ -466,9 +466,8 @@ $link-color: #3195b3;
     }
   }
 
-  &-picture,
-  picture {
-    display: block;
+  &-figure,
+  figure {
     img {
       width: 100%;
     }
