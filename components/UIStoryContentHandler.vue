@@ -1,7 +1,11 @@
 <script>
+import UISlideshow from './UISlideshow.vue'
 import UIInfobox from './UIInfobox.vue'
 import UIStoryVideo from './UIStoryVideo.vue'
 import ContainerAudioPlayer from './audio-player/ContainerAudioPlayer.vue'
+
+import SvgArrowPrev from '~/assets/arrow-prev-slideshow.svg?inline'
+import SvgArrowNext from '~/assets/arrow-next-slideshow.svg?inline'
 
 function addExternalLinkRel(content = '') {
   return content.replace(
@@ -31,10 +35,6 @@ function processListItmes(content = []) {
 export default {
   name: 'UIStoryContentHandler',
   functional: true,
-  components: {
-    UIInfobox,
-    ContainerAudioPlayer,
-  },
   props: {
     paragraph: {
       type: Object,
@@ -103,6 +103,37 @@ export default {
           </listTag>
         )
       }
+      case 'slideshow': {
+        const Slides = paragraph.content.map(function slide(item) {
+          return (
+            <figure key={item.id} class="swiper-slide g-story-figure">
+              <img src={item.mobile.url} />
+              <figcaption>{item.description}</figcaption>
+            </figure>
+          )
+        })
+
+        return (
+          <UISlideshow
+            class="story__slideshow"
+            options={{
+              navigation: {
+                nextEl: '.btn-next',
+                prevEl: '.btn-prev',
+              },
+            }}
+          >
+            <template slot="default">{Slides}</template>
+
+            <div slot="btnPrev" class="btn-prev">
+              <SvgArrowPrev class="arrow" />
+            </div>
+            <div slot="btnNext" class="btn-next">
+              <SvgArrowNext class="arrow" />
+            </div>
+          </UISlideshow>
+        )
+      }
       case 'infobox':
         return (
           <UIInfobox class="story__infobox" content={paragraph.content[0]} />
@@ -150,14 +181,116 @@ export default {
 
 <style lang="scss" scoped>
 .story {
+  &__slideshow {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    text-align: center;
+
+    .swiper-slide {
+      img,
+      figcaption {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      img {
+        width: calc(100% - 104px);
+        max-height: 450px;
+        object-fit: contain;
+        @include media-breakpoint-up(md) {
+          width: calc(100% - 120px);
+        }
+        @include media-breakpoint-up(lg) {
+          width: calc(100% - 152px);
+        }
+      }
+
+      figcaption {
+        width: 70%;
+        // 1em * 1.7 (line-height) * 2 (行數)
+        min-height: 3.4em;
+
+        @include media-breakpoint-up(lg) {
+          // 1em * 1.7 (line-height)
+          min-height: 1.7em;
+        }
+      }
+    }
+
+    .btn-prev,
+    .btn-next {
+      width: 30px;
+      height: 40px;
+      background-color: rgba(245, 245, 245, 0.25);
+      border-radius: 4px;
+      position: absolute;
+      z-index: 10;
+      top: 50%;
+      transform: translateY(-50%);
+      // 為了盡可能垂直置中，減去 figcaption 最小高度的一半
+      // 3.4em / 2
+      margin-top: -1.7em;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      outline: none;
+      @include media-breakpoint-up(lg) {
+        width: 60px;
+        height: 80px;
+        // 為了盡可能垂直置中，減去 figcaption 最小高度的一半
+        // 1.7em / 2
+        margin-top: -0.85em;
+      }
+
+      &:hover {
+        background-color: #084f77;
+
+        .arrow {
+          fill: #fff;
+        }
+      }
+    }
+
+    .btn-prev {
+      left: 5px;
+      @include media-breakpoint-up(lg) {
+        left: 0;
+      }
+
+      .arrow {
+        transform: translateX(-1px);
+      }
+    }
+
+    .btn-next {
+      right: 5px;
+      @include media-breakpoint-up(lg) {
+        right: 0;
+      }
+
+      .arrow {
+        transform: translateX(1px);
+      }
+    }
+
+    .arrow {
+      width: 15px;
+      height: auto;
+      @include media-breakpoint-up(lg) {
+        width: 28px;
+      }
+    }
+  }
+
   &__infobox {
-    margin-top: 48px;
-    margin-bottom: 48px;
+    margin-top: 3em;
+    margin-bottom: 3em;
   }
 
   &__audio-player {
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: 1em;
+    margin-bottom: 1em;
   }
 }
 </style>

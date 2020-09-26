@@ -146,7 +146,7 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['~/css/base.css'],
+  css: ['~/css/base.css', 'swiper/css/swiper.css'],
   /*
    ** Plugins to load before mounting the App
    */
@@ -194,6 +194,7 @@ module.exports = {
         },
       },
     ],
+    '@nuxtjs/svg',
   ],
   /*
    ** Nuxt.js modules
