@@ -14,9 +14,21 @@
         />
       </template>
     </UIStoryBody>
-    <aside class="aside">
-      <UIStoryListWithHeading :items="popularStories" heading="熱門文章" />
+
+    <aside>
+      <ClientOnly>
+        <lazy-component class="story__fb-page">
+          <FbPage />
+        </lazy-component>
+      </ClientOnly>
+
+      <UIStoryListWithHeading
+        class="story__popular-list"
+        :items="popularStories"
+        heading="熱門文章"
+      />
     </aside>
+
     <UIAdultContentWarning v-if="story.isAdult" />
   </div>
 </template>
@@ -28,6 +40,7 @@ import UIAdultContentWarning from '~/components/UIAdultContentWarning.vue'
 import UIStoryBody from '~/components/UIStoryBody.vue'
 import UIStoryListRelated from '~/components/UIStoryListRelated.vue'
 import UIStoryListWithArrow from '~/components/UIStoryListWithArrow.vue'
+import FbPage from '~/components/FbPage.vue'
 import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
 
 export default {
@@ -37,6 +50,7 @@ export default {
     UIStoryBody,
     UIStoryListRelated,
     UIStoryListWithArrow,
+    FbPage,
     UIStoryListWithHeading,
   },
   async fetch() {
@@ -176,17 +190,39 @@ export default {
     padding: 30px 50px;
     background-color: #fff;
   }
-  .aside {
-    width: calc(100% - 50px);
-    max-width: 645px;
-    padding: 0 0 40px;
-    margin: auto;
+}
+
+.story {
+  &__fb-page {
+    margin-bottom: 20px;
     @include media-breakpoint-up(lg) {
-      position: absolute;
-      top: 30px;
-      right: 50px;
-      width: 300px;
+      order: 2;
+      margin-bottom: 0;
     }
+  }
+
+  &__popular-list {
+    @include media-breakpoint-up(lg) {
+      order: 1;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+aside {
+  width: calc(100% - 50px);
+  max-width: 645px;
+  margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  @include media-breakpoint-up(lg) {
+    position: absolute;
+    top: 30px;
+    right: 50px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
   }
 }
 </style>

@@ -348,8 +348,7 @@ function constructLink(author) {
 
   &__tags {
     margin-top: 1.5em;
-    // 0.9 = 1.5 - 0.6
-    margin-bottom: 0.9em;
+    margin-bottom: -0.6em;
 
     .title {
       color: #a0a0a0;
