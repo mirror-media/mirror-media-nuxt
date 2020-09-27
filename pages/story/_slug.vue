@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import { DOMAIN_NAME, ENV, SITE_PROTOCOL } from '~/configs/config'
-import { SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '~/constants/index'
+import { useFbQuotePlugin } from '~/composition/fb-plugins.js'
+
 import UIAdultContentWarning from '~/components/UIAdultContentWarning.vue'
 import UIStoryBody from '~/components/UIStoryBody.vue'
 import UIStoryListRelated from '~/components/UIStoryListRelated.vue'
@@ -43,8 +43,14 @@ import UIStoryListWithArrow from '~/components/UIStoryListWithArrow.vue'
 import FbPage from '~/components/FbPage.vue'
 import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
 
+import { DOMAIN_NAME, ENV, SITE_PROTOCOL } from '~/configs/config'
+import { SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '~/constants/index'
+
 export default {
   name: 'Story',
+  setup() {
+    useFbQuotePlugin()
+  },
   components: {
     UIAdultContentWarning,
     UIStoryBody,

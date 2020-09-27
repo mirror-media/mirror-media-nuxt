@@ -2,24 +2,36 @@
 
 import { onMounted } from '@nuxtjs/composition-api'
 
-export { useFbPagePlugin }
+export { useFbPagePlugin, useFbQuotePlugin }
 
 let isFbSdkLoading = false
 let hasFbSdkLoaded = false
 
 function useFbPagePlugin() {
   onMounted(() => {
-    insertFbRootDiv()
-
-    const theFirstTime = loadFbSdk()
-
-    if (!theFirstTime && hasFbSdkLoaded) {
-      FB.XFBML.parse()
-    }
+    insertRootDiv()
+    initPlugin()
   })
 }
 
-function loadFbSdk() {
+function useFbQuotePlugin() {
+  onMounted(() => {
+    insertRootDiv()
+    insertQuoteDiv()
+    initPlugin(document.getElementById('fb-quote-wrapper'))
+  })
+}
+
+function initPlugin(parsedDom = document.body) {
+  const theFirstTime = loadSdk()
+
+  if (!theFirstTime && hasFbSdkLoaded) {
+    // Docs: https://developers.facebook.com/docs/reference/javascript/FB.XFBML.parse
+    FB.XFBML.parse(parsedDom)
+  }
+}
+
+function loadSdk() {
   if (isFbSdkLoading || hasFbSdkLoaded) {
     return false
   }
@@ -52,7 +64,7 @@ function loadFbSdk() {
   }
 }
 
-function insertFbRootDiv() {
+function insertRootDiv() {
   if (document.getElementById('fb-root')) {
     return
   }
@@ -60,4 +72,15 @@ function insertFbRootDiv() {
   const fbRoot = document.createElement('div')
   fbRoot.id = 'fb-root'
   document.body.appendChild(fbRoot)
+}
+
+function insertQuoteDiv() {
+  if (document.getElementById('fb-quote-wrapper')) {
+    return
+  }
+
+  const fbQuoteWrapper = document.createElement('div')
+  fbQuoteWrapper.id = 'fb-quote-wrapper'
+  fbQuoteWrapper.innerHTML = '<div class="fb-quote"></div>'
+  document.body.appendChild(fbQuoteWrapper)
 }
