@@ -318,13 +318,12 @@ export default {
   }
   &__share {
     display: flex;
-    > a + a {
-      margin-left: 10px;
-    }
-    &::v-deep {
-      img {
-        width: 35px;
-        height: 35px;
+
+    a {
+      width: 35px;
+
+      + a {
+        margin-left: 10px;
       }
     }
   }

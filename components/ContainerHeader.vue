@@ -10,7 +10,7 @@
 
       <div class="logo-wrapper">
         <a href="/" class="logo" @click="sendHeaderGA('logo')">
-          <img src="~/assets/logo.svg" :alt="SITE_TITLE" />
+          <img src="~/assets/logo.png" :alt="SITE_TITLE" />
         </a>
 
         <UIEventLogo

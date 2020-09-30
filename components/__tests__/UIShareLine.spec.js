@@ -44,23 +44,6 @@ describe('href', () => {
   })
 })
 
-describe('facebook logo', () => {
-  test('use proper png image', () => {
-    const wrapper = createWrapper(UIShareLine)
-    const image = wrapper.get(`picture > img`)
-
-    const logoUrlPng = '~/assets/line_logo_official_90.png'
-    expect(image.attributes().src).toBe(logoUrlPng)
-  })
-  test('use proper webp image', () => {
-    const wrapper = createWrapper(UIShareLine)
-    const image = wrapper.get(`picture > source[type="image/webp"]`)
-
-    const logoUrlWebp = '~/assets/line_logo_official_90.webp'
-    expect(image.attributes().srcset).toBe(logoUrlWebp)
-  })
-})
-
 describe('click event', () => {
   test('should emit click event', () => {
     const wrapper = createWrapper(UIShareLine)

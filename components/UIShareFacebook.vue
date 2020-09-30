@@ -5,23 +5,15 @@
     rel="noopener noreferrer"
     @click="$emit('click')"
   >
-    <picture>
-      <source
-        srcset="~/assets/facebook_logo_official_72.webp"
-        type="image/webp"
-      />
-      <img
-        src="~/assets/facebook_logo_official_72.png"
-        alt="分享至 Facebook"
-        loading="lazy"
-      />
-    </picture>
+    <SvgFbLogo />
   </a>
 </template>
 
 <script>
 import { toRef } from '@nuxtjs/composition-api'
 import { useShareFb } from '~/composition/share.js'
+
+import SvgFbLogo from '~/assets/fb-logo.svg?inline'
 
 export default {
   name: 'UIShareFacebook',
@@ -34,6 +26,9 @@ export default {
       sharedFbUrl,
     }
   },
+  components: {
+    SvgFbLogo,
+  },
   props: {
     url: {
       type: String,
@@ -44,7 +39,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-picture {
-  display: block;
+svg {
+  width: 100%;
+  height: auto;
 }
 </style>
