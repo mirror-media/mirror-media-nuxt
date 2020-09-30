@@ -16,7 +16,7 @@ import { useShareFb } from '~/composition/share.js'
 import SvgFbLogo from '~/assets/fb-logo.svg?inline'
 
 export default {
-  name: 'UIShareFacebook',
+  name: 'UIShareFb',
   setup(props) {
     const sharedFbUrl = useShareFb(
       props.url === undefined ? undefined : toRef(props, 'url')

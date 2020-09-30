@@ -20,7 +20,7 @@
       <div class="video__data-share">
         <p class="video__datetime" v-text="datetime" />
         <div class="video__share">
-          <UIShareFacebook />
+          <UIShareFb />
           <UIShareLine />
         </div>
       </div>
@@ -82,7 +82,7 @@ import { processResponseItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
-import UIShareFacebook from '~/components/UIShareFacebook.vue'
+import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 import UIYoutubeIframe from '~/components/UIYoutubeIframe.vue'
 import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
@@ -97,7 +97,7 @@ export default {
     ContainerFullScreenAds,
     UIStickyAd,
     UILinkedItemWithTitle,
-    UIShareFacebook,
+    UIShareFb,
     UIShareLine,
     UIYoutubeIframe,
     UIYoutubePolicies,

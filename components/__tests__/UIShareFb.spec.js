@@ -1,4 +1,4 @@
-import UIShareFacebook from '../UIShareFacebook.vue'
+import UIShareFb from '../UIShareFb.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper()
@@ -13,7 +13,7 @@ describe('href', () => {
       href: url,
     }))
 
-    const wrapper = createWrapper(UIShareFacebook)
+    const wrapper = createWrapper(UIShareFb)
     await wrapper.vm.$nextTick()
     const link = wrapper.get('a')
     expect(link.attributes().href).toBe(`${fbSharedUrl}${url}`)
@@ -22,7 +22,7 @@ describe('href', () => {
   test('render the proper href from the prop "url"', async () => {
     const mockUrl1 = 'https://www.mirrormedia.mg/'
     const mockUrl2 = 'https://www.mirrormedia.mg/story/20200921ent009/'
-    const wrapper = createWrapper(UIShareFacebook, {
+    const wrapper = createWrapper(UIShareFb, {
       propsData: {
         url: mockUrl1,
       },
@@ -40,7 +40,7 @@ describe('href', () => {
 
 describe('click event', () => {
   test('should emit click event', () => {
-    const wrapper = createWrapper(UIShareFacebook)
+    const wrapper = createWrapper(UIShareFb)
     const link = wrapper.get('a')
     link.trigger('click')
     expect(link.emitted().click).toBeTruthy()

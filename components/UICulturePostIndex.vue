@@ -26,7 +26,7 @@
         </div>
         <div class="share">
           <p>分享到：</p>
-          <UIShareFacebook />
+          <UIShareFb />
           <UIShareLine />
         </div>
       </div>
@@ -35,13 +35,13 @@
 </template>
 
 <script>
-import UIShareFacebook from '~/components/UIShareFacebook.vue'
+import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 
 export default {
   name: 'UICulturePostIndex',
   components: {
-    UIShareFacebook,
+    UIShareFb,
     UIShareLine,
   },
   props: {

@@ -13,7 +13,7 @@
     <div v-if="credit" class="story__credit" v-html="credit"></div>
 
     <div class="story__share">
-      <UIShareFacebook />
+      <UIShareFb />
       <UIShareLine />
     </div>
 
@@ -64,7 +64,7 @@
 
 <script>
 import UIStoryContentHandler from './UIStoryContentHandler.vue'
-import UIShareFacebook from '~/components/UIShareFacebook.vue'
+import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 import { AUTH_LINK, SUBSCRIBE_LINK } from '~/constants/index'
 
@@ -72,7 +72,7 @@ export default {
   name: 'UIStoryBody',
   components: {
     UIStoryContentHandler,
-    UIShareFacebook,
+    UIShareFb,
     UIShareLine,
   },
   props: {
