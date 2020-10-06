@@ -29,4 +29,8 @@ $sections-color: (
   @each $key, $value in $sections-color {
     section-color-#{$key}: $value;
   }
+
+  @each $key, $value in $grid-breakpoints {
+    breakpoint-#{$key}: $value;
+  }
 }

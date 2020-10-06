@@ -15,6 +15,15 @@
 </template>
 
 <script>
+import {
+  reactive,
+  watch,
+  onBeforeMount,
+  onBeforeUnmount,
+  useContext,
+} from '@nuxtjs/composition-api'
+import { rafWithDebounce } from '~/utils/animation.js'
+
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import UIFooter from '~/components/UIFooter.vue'
 
@@ -22,6 +31,13 @@ export default {
   components: {
     ContainerHeader,
     UIFooter,
+  },
+  setup() {
+    const { store } = useContext()
+
+    watch(useViewport(), function setViewport(newViewport) {
+      store.commit('viewport/setViewport', newViewport)
+    })
   },
   async fetch() {
     const [partnersResponse, topicsResponse] = await Promise.allSettled([
@@ -67,6 +83,36 @@ export default {
       )
     },
   },
+}
+
+function useViewport() {
+  const viewport = reactive({
+    width: 0,
+    height: 0,
+  })
+
+  onBeforeMount(() => {
+    updateViewport()
+
+    window.addEventListener('resize', updateViewport)
+    window.addEventListener('orientationChange', updateViewport)
+  })
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', updateViewport)
+    window.removeEventListener('orientationChange', updateViewport)
+  })
+
+  return viewport
+
+  function updateViewport() {
+    rafWithDebounce(() => {
+      ;({
+        clientWidth: viewport.width,
+        clientHeight: viewport.height,
+      } = document.documentElement)
+    })
+  }
 }
 </script>
 

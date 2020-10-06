@@ -1,12 +1,23 @@
 import dayjs from 'dayjs'
 
 import UIStoryBody from '../UIStoryBody.vue'
+import UIShareSidebox from '../UIShareSidebox.vue'
+
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
+  propsData: {
+    story: {},
+  },
   mocks: {
     $dayjs: dayjs,
+    $nuxt: {
+      context: {
+        store: { getters: {} },
+      },
+    },
   },
+  stubs: ['ClientOnly'],
 })
 
 describe('render the proper content from props "story"', () => {
@@ -188,5 +199,98 @@ describe('render the proper content from props "story"', () => {
     })
 
     expect(wrapper.find('.story__tags').exists()).toBe(false)
+  })
+})
+
+describe('UIShareSidebox.vue', () => {
+  test('open when viewport >= md and users have scrolled', async () => {
+    const wrapper = createWrapper(UIStoryBody, {
+      mocks: {
+        $nuxt: {
+          context: {
+            store: {
+              getters: {
+                'viewport/isViewportWidthUpMd': true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    window.dispatchEvent(new Event('scroll'))
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.findComponent(UIShareSidebox).exists()).toBe(true)
+  })
+
+  test('close when viewport < md', async () => {
+    const wrapper = createWrapper(UIStoryBody, {
+      mocks: {
+        $nuxt: {
+          context: {
+            store: {
+              getters: {
+                'viewport/isViewportWidthUpMd': false,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    expect(wrapper.findComponent(UIShareSidebox).exists()).toBe(false)
+
+    window.dispatchEvent(new Event('scroll'))
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.findComponent(UIShareSidebox).exists()).toBe(false)
+  })
+
+  test("close when users haven't scrolled", () => {
+    const wrapper = createWrapper(UIStoryBody, {
+      mocks: {
+        $nuxt: {
+          context: {
+            store: {
+              getters: {
+                'viewport/isViewportWidthUpMd': true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    expect(wrapper.findComponent(UIShareSidebox).exists()).toBe(false)
+  })
+})
+
+describe('handleSendGa', () => {
+  test('call the $ga method when the UIShareSidebox.vue emits a "sendGa"', () => {
+    const $ga = {
+      event: jest.fn(),
+    }
+    const wrapper = createWrapper(UIStoryBody, {
+      data() {
+        return {
+          shouldOpenShareSidebox: true,
+        }
+      },
+      mocks: {
+        $nuxt: {
+          context: { $ga },
+        },
+      },
+    })
+    const gaArg = {
+      eventCategory: 'article',
+      eventAction: 'click',
+      eventLabel: 'share line side',
+    }
+
+    wrapper.findComponent(UIShareSidebox).vm.$emit('sendGa', gaArg)
+
+    expect($ga.event).toBeCalledWith(gaArg)
   })
 })

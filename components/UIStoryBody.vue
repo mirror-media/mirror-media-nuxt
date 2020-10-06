@@ -59,21 +59,48 @@
         </a>
       </div>
     </lazy-component>
+
+    <transition name="fade">
+      <ClientOnly v-if="shouldOpenShareSidebox">
+        <UIShareSidebox class="story__share-sidebox" @sendGa="handleSendGa" />
+      </ClientOnly>
+    </transition>
   </article>
 </template>
 
 <script>
+import { ref, computed, onMounted, useContext } from '@nuxtjs/composition-api'
+
 import UIStoryContentHandler from './UIStoryContentHandler.vue'
 import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
+import UIShareSidebox from '~/components/UIShareSidebox.vue'
 import { AUTH_LINK, SUBSCRIBE_LINK } from '~/constants/index'
 
 export default {
   name: 'UIStoryBody',
+  setup(props, { emit }) {
+    const { store, $ga } = useContext()
+    const isViewportWidthUpMd = computed(
+      () => store.getters['viewport/isViewportWidthUpMd']
+    )
+    const shouldOpenShareSidebox = useToggleShareSidebox(isViewportWidthUpMd)
+
+    function handleSendGa(param) {
+      $ga.event(param)
+    }
+
+    return {
+      shouldOpenShareSidebox,
+
+      handleSendGa,
+    }
+  },
   components: {
     UIStoryContentHandler,
     UIShareFb,
     UIShareLine,
+    UIShareSidebox,
   },
   props: {
     story: {
@@ -174,6 +201,25 @@ function constructCreditHtml([authors, role]) {
 
 function constructLink(author) {
   return `<a href="/author/${author.id}" target="_blank">${author.name}</a>`
+}
+
+function useToggleShareSidebox(isViewportWidthUpMd) {
+  const hasScrolled = ref(false)
+  const shouldOpenShareSidebox = computed(
+    () => isViewportWidthUpMd.value && hasScrolled.value
+  )
+
+  onMounted(() => {
+    window.addEventListener(
+      'scroll',
+      function setHasScrolled() {
+        hasScrolled.value = true
+      },
+      { once: true }
+    )
+  })
+
+  return shouldOpenShareSidebox
 }
 </script>
 
@@ -430,6 +476,21 @@ function constructLink(author) {
     + * {
       margin-top: 70px;
     }
+  }
+
+  &__share-sidebox {
+    width: 30px;
+    position: fixed;
+  }
+}
+
+.fade {
+  &-enter-active {
+    transition: opacity 0.3s;
+  }
+
+  &-enter {
+    opacity: 0;
   }
 }
 </style>
