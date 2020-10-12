@@ -1,20 +1,25 @@
 import UIStoryListWithHeading from '../UIStoryListWithHeading.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
-const createWrapper = createWrapperHelper()
+const createWrapper = createWrapperHelper({
+  propsData: {
+    heading: '',
+    items: [{}],
+  },
+})
 
 describe('props', () => {
-  test('should render proper heading', () => {
+  test('render proper heading', () => {
     const headingMock = 'test heading'
     const wrapper = createWrapper(UIStoryListWithHeading, {
       propsData: {
         heading: headingMock,
-        items: [{}],
       },
     })
     expect(wrapper.get('.story-list__heading').text()).toBe(headingMock)
   })
-  test('should render proper item', () => {
+
+  test('render proper item', () => {
     const slugMock = '/story/test-slug/'
     const titleMock = 'test title'
     const mobileImageUrlMock = 'https://www.mm.tw/mobile.jpg'
@@ -65,5 +70,30 @@ describe('props', () => {
     )
     expect(wrapper.get('.item__title').attributes().href).toBe(slugMock)
     expect(wrapper.get('.item__title').text()).toBe(titleMock)
+  })
+
+  test('render proper title', async () => {
+    const mockSectionTitle = '娛樂'
+    const mockCategoryTitle = '鏡大咖'
+    const wrapper = createWrapper(UIStoryListWithHeading, {
+      propsData: {
+        items: [
+          {
+            sections: [{ title: mockSectionTitle }],
+            categories: [{ title: mockCategoryTitle }],
+          },
+        ],
+      },
+    })
+    const imgSection = wrapper.get('.item__image .item__section')
+    const titleSection = wrapper.get('.item__section-title .item__section')
+
+    expect(imgSection.text()).toBe(mockSectionTitle)
+    expect(titleSection.text()).toBe(mockSectionTitle)
+
+    await wrapper.setProps({ extractTitle: (item) => item.categories[0].title })
+
+    expect(imgSection.text()).toBe(mockCategoryTitle)
+    expect(titleSection.text()).toBe(mockCategoryTitle)
   })
 })

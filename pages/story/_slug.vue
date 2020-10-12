@@ -20,13 +20,32 @@
         <lazy-component class="story__fb-page">
           <FbPage />
         </lazy-component>
-      </ClientOnly>
 
-      <UIStoryListWithHeading
-        class="story__popular-list"
-        :items="popularStories"
-        heading="熱門文章"
-      />
+        <lazy-component
+          v-if="isDesktopWidth"
+          class="story__list story__list--latest"
+          :style="{ height: hasLatestStories ? undefined : '100vh' }"
+          @show="fetchLatestStories"
+        >
+          <UIStoryListWithHeading
+            v-if="hasLatestStories"
+            heading="最新文章"
+            :items="latestStories"
+            :extractTitle="sectionCategory"
+          />
+        </lazy-component>
+
+        <lazy-component
+          class="story__list story__list--popular"
+          @show="fetchPopularStories"
+        >
+          <UIStoryListWithHeading
+            v-if="hasPopularStories"
+            heading="熱門文章"
+            :items="popularStories"
+          />
+        </lazy-component>
+      </ClientOnly>
     </aside>
 
     <UIAdultContentWarning v-if="story.isAdult" />
@@ -34,6 +53,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import { useFbQuotePlugin } from '~/composition/fb-plugins.js'
 
 import UIAdultContentWarning from '~/components/UIAdultContentWarning.vue'
@@ -61,20 +82,27 @@ export default {
   },
   async fetch() {
     const response = await this.$fetchPosts({
-      slug: this.$route.params.slug,
+      slug: this.storySlug,
       isAudioSiteOnly: false,
       clean: 'content',
     })
     this.story = response.items[0] ?? {}
   },
+
   data() {
     return {
+      latestStories: [],
+
       popularStories: [],
       story: {},
       relatedImages: [],
     }
   },
+
   computed: {
+    ...mapGetters({
+      isDesktopWidth: 'viewport/isViewportWidthUpLg',
+    }),
     categoryTitle() {
       return this.story.categories?.[0]?.title
     },
@@ -84,15 +112,29 @@ export default {
     relatedsWithoutFirstTwo() {
       return this.relateds.slice(2)
     },
+    section() {
+      return this.story.sections?.[0] || {}
+    },
+    sectionId() {
+      return this.section.id ?? 'other'
+    },
+    storySlug() {
+      return this.$route.params.slug
+    },
     sectionName() {
-      return this.story.sections?.[0]?.name
+      return this.section.name ?? ''
+    },
+    sectionTitle() {
+      return this.section.title ?? ''
+    },
+    hasLatestStories() {
+      return this.latestStories.length > 0
+    },
+    hasPopularStories() {
+      return this.popularStories.length > 0
     },
   },
-  mounted() {
-    if (ENV !== 'lighthouse') {
-      this.fetchPopularStories()
-    }
-  },
+
   methods: {
     async fetchRelatedImages() {
       const imageIds = this.relatedsWithoutFirstTwo.map(
@@ -101,9 +143,29 @@ export default {
       const { items = [] } = await this.$fetchImages({ id: imageIds })
       this.relatedImages = items
     },
+    async fetchLatestStories() {
+      const { items = [] } = await this.$fetchList({
+        sort: '-publishedDate',
+        sections: this.sectionId,
+      })
+
+      this.latestStories = items
+        .filter(this.doesNotHaveCurrentStorySlug)
+        .slice(0, 6)
+    },
     async fetchPopularStories() {
+      if (ENV === 'lighthouse') {
+        return
+      }
+
       const { report: items = [] } = await this.$fetchPopular()
       this.popularStories = items.slice(0, 9)
+    },
+    sectionCategory(item = {}) {
+      return item.categories?.[0]?.title || '新聞'
+    },
+    doesNotHaveCurrentStorySlug(item) {
+      return item.slug !== this.storySlug
     },
   },
   head() {
@@ -116,8 +178,6 @@ export default {
       ogImage = {},
       ogTitle = '',
       publishedDate = '',
-      sections = [],
-      slug = '',
       title = '',
       topics = {},
       writers = [],
@@ -140,7 +200,6 @@ export default {
     const publishedTime = publishedDate
       ? new Date(publishedDate).toISOString()
       : ''
-    const section = sections[0] ?? {}
     const category = categories[0] ?? {}
     const topicId = topics._id ?? ''
     const writer = writers[0]?.name ?? ''
@@ -162,7 +221,7 @@ export default {
           property: 'og:url',
           content: pageUrl,
         },
-        { name: 'section-name', content: section.name ?? '' },
+        { name: 'section-name', content: this.sectionName },
         { name: 'category-name', content: category.name ?? '' },
         { name: 'topic-id', content: topicId },
         { hid: 'twitter:title', name: 'twitter:title', content: metaTitle },
@@ -172,15 +231,15 @@ export default {
           content: description,
         },
         { hid: 'twitter:image', name: 'twitter:image', content: image },
-        { property: 'dable:item_id', content: slug },
+        { property: 'dable:item_id', content: this.storySlug },
         { property: 'dable:author', content: writer },
-        { property: 'article:section', content: section.title ?? '' },
+        { property: 'article:section', content: this.sectionTitle },
         { property: 'article:section2', content: category.title ?? '' },
         { property: 'article:published_time', content: publishedTime },
       ],
       link: [
         { rel: 'canonical', href: pageUrl },
-        { rel: 'amphtml', href: `${SITE_URL}/story/amp/${slug}/` },
+        { rel: 'amphtml', href: `${SITE_URL}/story/amp/${this.storySlug}/` },
       ],
     }
   },
@@ -199,18 +258,21 @@ export default {
 }
 
 .story {
+  &__list {
+    margin-bottom: 20px;
+
+    &--popular {
+      @include media-breakpoint-up(lg) {
+        order: 1;
+      }
+    }
+  }
+
   &__fb-page {
     margin-bottom: 20px;
     @include media-breakpoint-up(lg) {
       order: 2;
       margin-bottom: 0;
-    }
-  }
-
-  &__popular-list {
-    @include media-breakpoint-up(lg) {
-      order: 1;
-      margin-bottom: 20px;
     }
   }
 }
@@ -221,6 +283,7 @@ aside {
   margin-bottom: 40px;
   margin-left: auto;
   margin-right: auto;
+  overflow: hidden;
   @include media-breakpoint-up(lg) {
     position: absolute;
     top: 30px;

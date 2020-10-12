@@ -107,10 +107,10 @@ function useViewport() {
 
   function updateViewport() {
     rafWithDebounce(() => {
-      ;({
-        clientWidth: viewport.width,
-        clientHeight: viewport.height,
-      } = document.documentElement)
+      /**
+       * 不用 document.documentElement.clientWidth 和 .clientHeight 的原因：為了與 CSS media queries 判斷寬高的方式相同
+       */
+      ;({ innerWidth: viewport.width, innerHeight: viewport.height } = window)
     })
   }
 }

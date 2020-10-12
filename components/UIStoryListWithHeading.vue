@@ -1,5 +1,5 @@
 <template>
-  <lazy-component v-if="hasItems" class="story-list">
+  <div class="story-list">
     <div class="story-list__heading" v-text="heading" />
     <div class="story-list__list">
       <div
@@ -18,10 +18,10 @@
             :srcset="getImageSrcset(item)"
             :alt="item.title"
           />
-          <div class="item__section" v-text="getSectionTitle(item)" />
+          <div class="item__section">{{ extractTitle(item) }}</div>
         </a>
         <div class="item__section-title">
-          <div class="item__section" v-text="getSectionTitle(item)" />
+          <div class="item__section">{{ extractTitle(item) }}</div>
           <a
             :href="item.slug"
             class="item__title"
@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-  </lazy-component>
+  </div>
 </template>
 
 <script>
@@ -41,18 +41,22 @@ export default {
   props: {
     heading: {
       type: String,
+      required: true,
       default: '',
     },
     items: {
       type: Array,
+      required: true,
       default: () => [],
     },
-  },
-  computed: {
-    hasItems() {
-      return this.items.length > 0
+    extractTitle: {
+      type: Function,
+      default(...args) {
+        return this.sectionTitle(...args)
+      },
     },
   },
+
   methods: {
     getImageSrc(item) {
       return (
@@ -72,8 +76,8 @@ export default {
     getSectionName(item) {
       return item?.sections?.[0]?.name
     },
-    getSectionTitle(item) {
-      return item?.sections?.[0]?.title
+    sectionTitle(item = {}) {
+      return item.sections?.[0]?.title || '新聞'
     },
   },
 }
@@ -84,6 +88,7 @@ export default {
   color: #34495e;
   &__heading {
     font-size: 24px;
+    font-weight: 700;
     @include media-breakpoint-up(lg) {
       padding: 6px 18px;
       color: #fff;
@@ -104,7 +109,9 @@ export default {
     align-content: flex-start;
     @include media-breakpoint-up(lg) {
       padding: 18px;
-      border: 1px solid #dedede;
+      border-bottom: 1px solid #dedede;
+      border-right: 1px solid #dedede;
+      border-left: 1px solid #dedede;
     }
   }
   .item {
