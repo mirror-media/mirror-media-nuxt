@@ -5,7 +5,7 @@
       <div
         v-for="item in items"
         :key="item.slug"
-        :class="[getSectionName(item), 'item']"
+        :class="[sectionName(item), 'item']"
       >
         <a
           :href="href(item)"
@@ -14,8 +14,8 @@
           rel="noopener noreferrer"
         >
           <img
-            :src="getImageSrc(item)"
-            :srcset="getImageSrcset(item)"
+            :src="imgSrc(item)"
+            :srcset="imgSrcset(item)"
             :alt="item.title"
           />
           <div class="item__section">{{ extractTitle(item) }}</div>
@@ -58,13 +58,13 @@ export default {
   },
 
   methods: {
-    getImageSrc(item) {
+    imgSrc(item) {
       return (
         item?.heroImage?.image?.resizedTargets?.tiny?.url ||
         require('~/assets/notImage.png')
       )
     },
-    getImageSrcset(item) {
+    imgSrcset(item) {
       const tiny =
         item?.heroImage?.image?.resizedTargets?.tiny?.url ||
         require('~/assets/notImage.png')
@@ -73,7 +73,7 @@ export default {
         require('~/assets/notImage.png')
       return `${tiny} 1x, ${mobile} 2x`
     },
-    getSectionName(item) {
+    sectionName(item) {
       return item?.sections?.[0]?.name
     },
     sectionTitle(item = {}) {
