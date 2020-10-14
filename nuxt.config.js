@@ -2,8 +2,7 @@ const SITE_TITLE = '鏡週刊 Mirror Media'
 const SITE_DESCRIPTION =
   '鏡傳媒以台灣為基地，是一跨平台綜合媒體，包含《鏡週刊》以及下設五大分眾內容的《鏡傳媒》網站，刊載時事、財經、人物、國際、文化、娛樂、美食旅遊、精品鐘錶等深入報導及影音內容。我們以「鏡」為名，務求反映事實、時代與人性。'
 const SITE_KEYWORDS = '鏡週刊,mirror media,新聞人物,娛樂焦點,美食旅遊,瑪法達'
-const SITE_OG_IMAGE =
-  'https://www.mirrormedia.mg/assets/mirrormedia/notImage.png'
+const SITE_OG_IMG = '/default-og-img.png'
 const SITE_URL = 'https://www.mirrormedia.mg'
 const FB_APP_ID = '175313259598308'
 const FB_PAGE_ID = '1855418728011324'
@@ -48,7 +47,7 @@ module.exports = {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: SITE_OG_IMAGE,
+        content: SITE_OG_IMG,
       },
       {
         hid: 'og:url',
@@ -98,7 +97,7 @@ module.exports = {
       {
         hid: 'twitter:image',
         name: 'twitter:image',
-        content: SITE_OG_IMAGE,
+        content: SITE_OG_IMG,
       },
       { name: 'theme-color', content: '#ffffff' },
     ],

@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { SITE_OG_IMAGE, SITE_URL } from '~/constants/index'
+import { SITE_OG_IMG, SITE_URL } from '~/constants/index'
 import { processResponseItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
@@ -194,7 +194,7 @@ export default {
     const image =
       this.videoData?.thumbnails?.maxres?.url ||
       this.videoData?.thumbnails?.standard?.url ||
-      SITE_OG_IMAGE
+      SITE_OG_IMG
     return {
       title: this.title,
       meta: [

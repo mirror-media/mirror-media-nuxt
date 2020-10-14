@@ -75,7 +75,7 @@ import UIStoryContentHandler from './UIStoryContentHandler.vue'
 import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 import UIShareSidebox from '~/components/UIShareSidebox.vue'
-import { AUTH_LINK, SUBSCRIBE_LINK } from '~/constants/index'
+import { AUTH_LINK, SUBSCRIBE_LINK, SITE_OG_IMG } from '~/constants/index.js'
 
 export default {
   name: 'UIStoryBody',
@@ -155,8 +155,7 @@ export default {
     },
     heroImage() {
       return (
-        this.story.heroImage?.image?.resizedTargets?.mobile?.url ??
-        require('~/assets/notImage.png')
+        this.story.heroImage?.image?.resizedTargets?.mobile?.url ?? SITE_OG_IMG
       )
     },
     isAdvertised() {

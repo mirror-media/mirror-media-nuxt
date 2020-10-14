@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import { SITE_OG_IMG } from '~/constants/index.js'
+
 export default {
   props: {
     href: {
@@ -41,7 +43,7 @@ export default {
     },
     imgSrc: {
       type: String,
-      default: require('~/assets/notImage.png'),
+      default: SITE_OG_IMG,
       required: true,
     },
     imgText: {

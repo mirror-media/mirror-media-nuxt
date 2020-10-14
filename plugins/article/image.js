@@ -1,4 +1,4 @@
-import defaultImage from '~/assets/notImage.png'
+import { SITE_OG_IMG } from '~/constants/index.js'
 
 export function getImage(articleData = {}, sizeType = 'desktop') {
   let image = {}
@@ -17,5 +17,5 @@ export function getImage(articleData = {}, sizeType = 'desktop') {
     image = heroImage.image.resizedTargets
   }
 
-  return image[sizeType]?.url ?? defaultImage
+  return image[sizeType]?.url ?? SITE_OG_IMG
 }

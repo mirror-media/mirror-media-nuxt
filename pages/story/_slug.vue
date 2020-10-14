@@ -67,7 +67,7 @@ import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
 
 import { DOMAIN_NAME, ENV } from '~/configs/config'
 import {
-  SITE_OG_IMAGE,
+  SITE_OG_IMG,
   SITE_TITLE,
   SITE_DESCRIPTION,
   SITE_URL,
@@ -208,7 +208,7 @@ export default {
     const imgUrl =
       ogImage?.image?.resizedTargets?.tablet?.url ||
       heroImage?.image?.resizedTargets?.tablet?.url ||
-      SITE_OG_IMAGE
+      SITE_OG_IMG
     const pageUrl = `https://${DOMAIN_NAME}${this.$route.path}`
     const publishedDateIso = new Date(publishedDate).toISOString()
     const topicId = topics._id ?? ''

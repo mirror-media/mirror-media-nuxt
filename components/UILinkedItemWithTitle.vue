@@ -23,12 +23,14 @@
 </template>
 
 <script>
+import { SITE_OG_IMG } from '~/constants/index.js'
+
 export default {
   name: 'UILinkedItemWithTitle',
   props: {
     imgSrc: {
       type: String,
-      default: require('~/assets/notImage.png'),
+      default: SITE_OG_IMG,
       required: true,
     },
     href: {

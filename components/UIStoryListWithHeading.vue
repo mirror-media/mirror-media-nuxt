@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { SITE_OG_IMG } from '~/constants/index.js'
+
 export default {
   name: 'UIStoryListWithHeading',
   props: {
@@ -59,18 +61,13 @@ export default {
 
   methods: {
     imgSrc(item) {
-      return (
-        item?.heroImage?.image?.resizedTargets?.tiny?.url ||
-        require('~/assets/notImage.png')
-      )
+      return item?.heroImage?.image?.resizedTargets?.tiny?.url || SITE_OG_IMG
     },
     imgSrcset(item) {
       const tiny =
-        item?.heroImage?.image?.resizedTargets?.tiny?.url ||
-        require('~/assets/notImage.png')
+        item?.heroImage?.image?.resizedTargets?.tiny?.url || SITE_OG_IMG
       const mobile =
-        item?.heroImage?.image?.resizedTargets?.mobile?.url ||
-        require('~/assets/notImage.png')
+        item?.heroImage?.image?.resizedTargets?.mobile?.url || SITE_OG_IMG
       return `${tiny} 1x, ${mobile} 2x`
     },
     sectionName(item) {
