@@ -112,6 +112,8 @@ const VIDEOHUB_CATEGORIES_PLAYLIST_MAPPING = {
 }
 
 const SITE_TITLE = '鏡週刊 Mirror Media'
+const SITE_DESCRIPTION =
+  '鏡傳媒以台灣為基地，是一跨平台綜合媒體，包含《鏡週刊》以及下設五大分眾內容的《鏡傳媒》網站，刊載時事、財經、人物、國際、文化、娛樂、美食旅遊、精品鐘錶等深入報導及影音內容。我們以「鏡」為名，務求反映事實、時代與人性。'
 const SITE_URL = 'https://www.mirrormedia.mg'
 const SITE_OG_IMAGE =
   'https://www.mirrormedia.mg/assets/mirrormedia/notImage.png'
@@ -125,6 +127,7 @@ export {
   SUB_BRAND_LINKS,
   VIDEOHUB_CATEGORIES_PLAYLIST_MAPPING,
   SITE_TITLE,
+  SITE_DESCRIPTION,
   SITE_URL,
   SITE_OG_IMAGE,
 }

@@ -2,6 +2,7 @@ import Story from '../story/_slug.vue'
 import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '~/constants/index'
 
 const createWrapper = createWrapperHelper({
   computed: {
@@ -95,4 +96,183 @@ describe('latest list', () => {
 
     expect(latestList.element.style.height).toBe('')
   })
+})
+
+describe('JSON-LD', () => {
+  const storyMockRequired = {
+    publishedDate: 'Tue, 13 Oct 2020 08:59:35 GMT',
+    updatedAt: 'Tue, 13 Oct 2020 08:59:36 GMT',
+  }
+  const routeMock = {
+    path: '/story/20201013edi033/',
+    params: { slug: '20201013edi033' },
+  }
+
+  test('render the proper content in most cases', () => {
+    const storyMock = {
+      title: '蔡英文視察樂山雷達站',
+      ogDescription: '近期共軍頻繁擾台',
+      ogImage: {
+        image: {
+          resizedTargets: {
+            mobile: {
+              url:
+                'https://www.mirrormedia.com.tw/assets/images/20201013164229-0272e9dd58d7935dfa1d4aa1cb9dcf4a-mobile.jpg',
+            },
+          },
+        },
+      },
+      writers: [{ name: '謝文哲', id: '5cf77f941b66ac1100159d2b' }],
+      sections: [{ title: '時事、生活', name: 'news' }],
+      ...storyMockRequired,
+    }
+
+    const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyMock,
+        }
+      },
+      mocks: {
+        $route: routeMock,
+      },
+    })
+
+    const {
+      title,
+      ogDescription,
+      ogImage,
+      publishedDate,
+      updatedAt,
+      writers,
+      sections,
+    } = storyMock
+    const pageUrl = `${SITE_URL}${routeMock.path}`
+    const imgUrl = ogImage.image.resizedTargets.mobile.url
+    const logoUrl = `${SITE_URL}/logo.png`
+    const { name: writerName, id: writerId } = writers[0]
+    const { title: sectionTitle, name: sectionName } = sections[0]
+
+    const { script } = wrapper.vm.$options.head.call(wrapper.vm)
+
+    expect(findJsonLdByType(script, 'NewsArticle')).toEqual({
+      type: 'application/ld+json',
+      json: {
+        '@context': 'https://schema.org/',
+        '@type': 'NewsArticle',
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': pageUrl,
+        },
+        headline: title,
+        image: imgUrl,
+        datePublished: new Date(publishedDate).toISOString(),
+        dateModified: new Date(updatedAt).toISOString(),
+        author: {
+          '@type': 'Person',
+          name: writerName,
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: SITE_TITLE,
+          logo: {
+            '@type': 'ImageObject',
+            url: logoUrl,
+          },
+        },
+        description: ogDescription,
+        url: pageUrl,
+        thumbnailUrl: imgUrl,
+        articleSection: sectionTitle,
+      },
+    })
+
+    expect(findJsonLdByType(script, 'Person')).toEqual({
+      type: 'application/ld+json',
+      json: {
+        '@context': 'http://schema.org/',
+        '@type': 'Person',
+        name: writerName,
+        url: `${SITE_URL}/author/${writerId}/`,
+        brand: {
+          '@type': 'Brand',
+          name: SITE_TITLE,
+          url: SITE_URL,
+          image: logoUrl,
+          logo: logoUrl,
+          description: SITE_DESCRIPTION,
+        },
+      },
+    })
+
+    expect(findJsonLdByType(script, 'BreadcrumbList')).toEqual({
+      type: 'application/ld+json',
+      json: {
+        '@context': 'http://schema.org/',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: SITE_TITLE,
+            item: SITE_URL,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: sectionTitle,
+            item: `${SITE_URL}/section/${sectionName}`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: title,
+            item: pageUrl,
+          },
+        ],
+      },
+    })
+  })
+
+  test('change the @type NewsArticle author when the story does not has a writer', () => {
+    applyTestWithMinimalSetting((script) => {
+      expect(findJsonLdByType(script, 'NewsArticle').json.author).toEqual({
+        '@type': 'Organization',
+        name: '鏡週刊',
+      })
+    })
+  })
+
+  test('@type NewsArticle articleSection is undefined when the story does not has a section title', () => {
+    applyTestWithMinimalSetting((script) => {
+      expect(
+        findJsonLdByType(script, 'NewsArticle').json.articleSection
+      ).toBeUndefined()
+    })
+  })
+
+  test('@type Person is omitted when the story does not has a writer', () => {
+    applyTestWithMinimalSetting((script) => {
+      expect(findJsonLdByType(script, 'Person')).toBeUndefined()
+    })
+  })
+
+  function applyTestWithMinimalSetting(expectFn) {
+    const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyMockRequired,
+        }
+      },
+      mocks: {
+        $route: routeMock,
+      },
+    })
+
+    expectFn(wrapper.vm.$options.head.call(wrapper.vm).script)
+  }
+
+  function findJsonLdByType(scripts = [], type) {
+    return scripts.find((script) => script.json?.['@type'] === type)
+  }
 })
