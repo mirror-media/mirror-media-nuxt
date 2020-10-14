@@ -116,7 +116,7 @@ describe('JSON-LD', () => {
       ogImage: {
         image: {
           resizedTargets: {
-            mobile: {
+            tablet: {
               url:
                 'https://www.mirrormedia.com.tw/assets/images/20201013164229-0272e9dd58d7935dfa1d4aa1cb9dcf4a-mobile.jpg',
             },
@@ -149,7 +149,7 @@ describe('JSON-LD', () => {
       sections,
     } = storyMock
     const pageUrl = `https://${DOMAIN_NAME}${routeMock.path}`
-    const imgUrl = ogImage.image.resizedTargets.mobile.url
+    const imgUrl = ogImage.image.resizedTargets.tablet.url
     const logoUrl = `${SITE_URL}/logo.png`
     const { name: writerName, id: writerId } = writers[0]
     const { title: sectionTitle, name: sectionName } = sections[0]

@@ -206,8 +206,8 @@ export default {
         ?.content?.[0]?.replace(/<\/?[^>]+(>|$)/gm, '') ||
       ''
     const imgUrl =
-      ogImage?.image?.resizedTargets?.mobile?.url ||
-      heroImage?.image?.resizedTargets?.mobile?.url ||
+      ogImage?.image?.resizedTargets?.tablet?.url ||
+      heroImage?.image?.resizedTargets?.tablet?.url ||
       SITE_OG_IMAGE
     const pageUrl = `https://${DOMAIN_NAME}${this.$route.path}`
     const publishedDateIso = new Date(publishedDate).toISOString()
