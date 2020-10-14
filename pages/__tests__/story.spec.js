@@ -2,6 +2,7 @@ import Story from '../story/_slug.vue'
 import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
+import { DOMAIN_NAME } from '~/configs/config.js'
 import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '~/constants/index'
 
 const createWrapper = createWrapperHelper({
@@ -147,7 +148,7 @@ describe('JSON-LD', () => {
       writers,
       sections,
     } = storyMock
-    const pageUrl = `${SITE_URL}${routeMock.path}`
+    const pageUrl = `https://${DOMAIN_NAME}${routeMock.path}`
     const imgUrl = ogImage.image.resizedTargets.mobile.url
     const logoUrl = `${SITE_URL}/logo.png`
     const { name: writerName, id: writerId } = writers[0]

@@ -65,7 +65,7 @@ import UIStoryListWithArrow from '~/components/UIStoryListWithArrow.vue'
 import FbPage from '~/components/FbPage.vue'
 import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
 
-import { ENV } from '~/configs/config'
+import { DOMAIN_NAME, ENV } from '~/configs/config'
 import {
   SITE_OG_IMAGE,
   SITE_TITLE,
@@ -209,7 +209,7 @@ export default {
       ogImage?.image?.resizedTargets?.mobile?.url ||
       heroImage?.image?.resizedTargets?.mobile?.url ||
       SITE_OG_IMAGE
-    const pageUrl = `${SITE_URL}${this.$route.path}`
+    const pageUrl = `https://${DOMAIN_NAME}${this.$route.path}`
     const publishedDateIso = new Date(publishedDate).toISOString()
     const topicId = topics._id ?? ''
     const { name: writerName, id: writerId } = writers[0] || {}
