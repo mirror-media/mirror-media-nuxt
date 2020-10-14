@@ -61,20 +61,28 @@ export default {
 
   methods: {
     imgSrc(item) {
-      return item?.heroImage?.image?.resizedTargets?.tiny?.url || SITE_OG_IMG
+      return this.heroImgTiny(item)
     },
     imgSrcset(item) {
-      const tiny =
-        item?.heroImage?.image?.resizedTargets?.tiny?.url || SITE_OG_IMG
-      const mobile =
-        item?.heroImage?.image?.resizedTargets?.mobile?.url || SITE_OG_IMG
-      return `${tiny} 1x, ${mobile} 2x`
+      const tinyUrl = this.heroImgTiny(item)
+      const mobileUrl = this.heroImg(item).mobile?.url || SITE_OG_IMG
+
+      return `${tinyUrl} 1x, ${mobileUrl} 2x`
+    },
+    heroImg({ heroImage = {} }) {
+      return heroImage.image?.resizedTargets || {}
+    },
+    heroImgTiny(item) {
+      return this.heroImg(item).tiny?.url || SITE_OG_IMG
+    },
+    section({ sections = [] }) {
+      return sections[0] || {}
     },
     sectionName(item) {
-      return item?.sections?.[0]?.name
+      return this.section(item).name
     },
     sectionTitle(item = {}) {
-      return item.sections?.[0]?.title || '新聞'
+      return this.section(item).title || '新聞'
     },
     href({ slug }) {
       return `/story/${slug}/`
