@@ -20,7 +20,7 @@ describe('props', () => {
   })
 
   test('render proper item', () => {
-    const slugMock = '/story/test-slug/'
+    const slugMock = 'test-slug'
     const titleMock = 'test title'
     const mobileImageUrlMock = 'https://www.mm.tw/mobile.jpg'
     const tinyImageUrlMock = 'https://www.mm.tw/tiny.jpg'
@@ -54,8 +54,10 @@ describe('props', () => {
         ],
       },
     })
+    const hrefExpected = `/story/${slugMock}/`
+
     expect(wrapper.get('.item').classes()).toContain(sectionNameMock)
-    expect(wrapper.get('.item__image').attributes().href).toBe(slugMock)
+    expect(wrapper.get('.item__image').attributes().href).toBe(hrefExpected)
     expect(wrapper.get('.item__image img').attributes().src).toBe(
       tinyImageUrlMock
     )
@@ -68,7 +70,7 @@ describe('props', () => {
     expect(wrapper.get('.item__section-title .item__section').text()).toBe(
       sectionTitleMock
     )
-    expect(wrapper.get('.item__title').attributes().href).toBe(slugMock)
+    expect(wrapper.get('.item__title').attributes().href).toBe(hrefExpected)
     expect(wrapper.get('.item__title').text()).toBe(titleMock)
   })
 

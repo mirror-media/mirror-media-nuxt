@@ -8,7 +8,7 @@
         :class="[getSectionName(item), 'item']"
       >
         <a
-          :href="item.slug"
+          :href="href(item)"
           class="item__image"
           target="_blank"
           rel="noopener noreferrer"
@@ -23,7 +23,7 @@
         <div class="item__section-title">
           <div class="item__section">{{ extractTitle(item) }}</div>
           <a
-            :href="item.slug"
+            :href="href(item)"
             class="item__title"
             target="_blank"
             rel="noopener noreferrer"
@@ -78,6 +78,9 @@ export default {
     },
     sectionTitle(item = {}) {
       return item.sections?.[0]?.title || '新聞'
+    },
+    href({ slug }) {
+      return `/story/${slug}/`
     },
   },
 }
