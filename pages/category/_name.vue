@@ -3,7 +3,7 @@
     <client-only>
       <GPTAD
         class="section__ad"
-        :adUnit="adTop.adUnitCode"
+        :adUnit="adTop.adUnit"
         :adSize="adTop.adSize"
       />
     </client-only>
@@ -20,7 +20,7 @@
     <client-only>
       <GPTAD
         class="section__ad"
-        :adUnit="adBottom.adUnitCode"
+        :adUnit="adBottom.adUnit"
         :adSize="adBottom.adSize"
       />
     </client-only>
@@ -36,7 +36,7 @@
     <UIStickyAd v-if="adDevice === 'MB'">
       <client-only>
         <GPTAD
-          :adUnit="adFixedBottomMobile.adUnitCode"
+          :adUnit="adFixedBottomMobile.adUnit"
           :adSize="adFixedBottomMobile.adSize"
         />
       </client-only>
@@ -53,7 +53,7 @@ import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import styleVariables from '~/scss/_variables.scss'
-import gptUnits from '~/constants/gptUnits'
+import gptUnits from '~/constants/gpt-units.js'
 import microAdUnits from '~/constants/microAdUnits'
 import { SITE_TITLE, SITE_URL } from '~/constants'
 
@@ -148,13 +148,13 @@ export default {
       return this.$ua.isFromPc() ? 'PC' : 'MB'
     },
     adTop() {
-      return gptUnits?.[this.sectionId]?.[`L${this.adDevice}HD`] ?? {}
+      return gptUnits?.[this.sectionId]?.[`${this.adDevice}_HD`] ?? {}
     },
     adBottom() {
-      return gptUnits?.[this.sectionId]?.[`L${this.adDevice}FT`] ?? {}
+      return gptUnits?.[this.sectionId]?.[`${this.adDevice}_FT`] ?? {}
     },
     adFixedBottomMobile() {
-      return gptUnits?.[this.sectionId]?.['MBST'] ?? {}
+      return gptUnits?.[this.sectionId]?.['MB_ST'] ?? {}
     },
   },
   methods: {

@@ -3,7 +3,7 @@
     <client-only v-if="!isMobile">
       <GPTAD
         class="video__ad"
-        :adUnit="getAdUnit('HD').adUnitCode"
+        :adUnit="getAdUnit('HD').adUnit"
         :adSize="getAdUnit('HD').adSize"
       />
     </client-only>
@@ -12,7 +12,7 @@
       <client-only v-if="isMobile">
         <GPTAD
           class="video__ad"
-          :adUnit="getAdUnit('HD').adUnitCode"
+          :adUnit="getAdUnit('HD').adUnit"
           :adSize="getAdUnit('HD').adSize"
         />
       </client-only>
@@ -29,7 +29,7 @@
     <client-only v-if="isMobile">
       <GPTAD
         class="video__ad"
-        :adUnit="getAdUnit('E1').adUnitCode"
+        :adUnit="getAdUnit('E1').adUnit"
         :adSize="getAdUnit('E1').adSize"
       />
     </client-only>
@@ -37,7 +37,7 @@
       <client-only v-if="!isMobile">
         <GPTAD
           class="video__ad"
-          :adUnit="getAdUnit('R1').adUnitCode"
+          :adUnit="getAdUnit('R1').adUnit"
           :adSize="getAdUnit('R1').adSize"
         />
       </client-only>
@@ -60,7 +60,7 @@
     <client-only>
       <GPTAD
         class="video__ad"
-        :adUnit="getAdUnit('FT').adUnitCode"
+        :adUnit="getAdUnit('FT').adUnit"
         :adSize="getAdUnit('FT').adSize"
       />
     </client-only>
@@ -68,7 +68,7 @@
     <UIStickyAd>
       <client-only>
         <GPTAD
-          :adUnit="getAdUnit('ST').adUnitCode"
+          :adUnit="getAdUnit('ST').adUnit"
           :adSize="getAdUnit('ST').adSize"
         />
       </client-only>
@@ -86,7 +86,7 @@ import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 import UIYoutubeIframe from '~/components/UIYoutubeIframe.vue'
 import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
-import gptUnits from '~/constants/gptUnits'
+import gptUnits from '~/constants/gpt-units.js'
 
 export default {
   name: 'Video',
@@ -174,7 +174,7 @@ export default {
       this.listDataLatest = processResponseItems(response)
     },
     getAdUnit(position) {
-      return this.videoAdUnits[`${this.adDevice}${position}`] ?? {}
+      return this.videoAdUnits[`${this.adDevice}_${position}`] ?? {}
     },
     getHref(videoId) {
       if (this.isApp) {
