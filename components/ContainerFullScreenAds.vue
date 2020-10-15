@@ -9,8 +9,8 @@
       >
         <GPTAD
           key="ad-first"
-          :adUnit="globalAdUnits.MB_FULL_SCREEN_FIRST.adUnitCode"
-          :adSize="globalAdUnits.MB_FULL_SCREEN_FIRST.adSize"
+          :adUnit="globalAdUnits.MB_FS.adUnit"
+          :adSize="globalAdUnits.MB_FS.adSize"
           @slotRequested="setTimerForClosedBtn"
           @slotRenderEnded="handleAdRenderEndedFirst"
         />
@@ -22,15 +22,15 @@
         <GPTAD
           v-if="hasAdSecond"
           key="ad-second"
-          :adUnit="globalAdUnits.MB_FULL_SCREEN_SECOND.adUnitCode"
-          :adSize="globalAdUnits.MB_FULL_SCREEN_SECOND.adSize"
+          :adUnit="globalAdUnits.MB_AD2.adUnit"
+          :adSize="globalAdUnits.MB_AD2.adSize"
           @slotRenderEnded="disableModifiedStyle"
         />
         <GPTAD
           v-if="hasAdThird"
           key="ad-third"
-          :adUnit="globalAdUnits.MB_FULL_SCREEN_THIRD.adUnitCode"
-          :adSize="globalAdUnits.MB_FULL_SCREEN_THIRD.adSize"
+          :adUnit="globalAdUnits.MB_INNITY.adUnit"
+          :adSize="globalAdUnits.MB_INNITY.adSize"
           @slotRenderEnded="disableModifiedStyle"
         />
       </UIFullScreenAd>
@@ -40,7 +40,7 @@
 
 <script>
 import UIFullScreenAd from '~/components/UIFullScreenAd.vue'
-import gptUnits from '~/constants/gptUnits'
+import gptUnits from '~/constants/gpt-units.js'
 
 /*
   蓋板廣告有三層，分別為：第一層 FS、第二層 AD2、第三層 Innity

@@ -14,7 +14,7 @@
     <client-only>
       <GPTAD
         class="video-iframe-items__ad"
-        :adUnit="ad.adUnitCode"
+        :adUnit="ad.adUnit"
         :adSize="ad.adSize"
       />
     </client-only>
@@ -37,7 +37,7 @@
 <script>
 import UILinkedItemWithTitle from './UILinkedItemWithTitle.vue'
 import UIYoutubeIframe from './UIYoutubeIframe.vue'
-import gptUnits from '~/constants/gptUnits'
+import gptUnits from '~/constants/gpt-units.js'
 
 export default {
   name: 'UIVideoIframeWithItems',
@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     ad() {
-      return this.videoAdUnits[`${this.adDevice}HD`] ?? {}
+      return this.videoAdUnits[`${this.adDevice}_HD`] ?? {}
     },
     adDevice() {
       return this.$ua.isFromPc() ? 'PC' : 'MB'
