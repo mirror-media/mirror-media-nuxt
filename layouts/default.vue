@@ -17,7 +17,6 @@
 <script>
 import {
   reactive,
-  watch,
   onBeforeMount,
   onBeforeUnmount,
   useContext,
@@ -35,8 +34,8 @@ export default {
   setup() {
     const { store } = useContext()
 
-    watch(useViewport(), function setViewport(newViewport) {
-      store.commit('viewport/setViewport', newViewport)
+    useViewport((viewport) => {
+      store.commit('viewport/setViewport', viewport)
     })
   },
   async fetch() {
@@ -85,7 +84,7 @@ export default {
   },
 }
 
-function useViewport() {
+function useViewport(syncViewport) {
   const viewport = reactive({
     width: 0,
     height: 0,
@@ -94,8 +93,8 @@ function useViewport() {
   onBeforeMount(() => {
     updateViewport()
 
-    window.addEventListener('resize', updateViewport)
-    window.addEventListener('orientationChange', updateViewport)
+    window.addEventListener('resize', updateViewportWithRaf)
+    window.addEventListener('orientationChange', updateViewportWithRaf)
   })
 
   onBeforeUnmount(() => {
@@ -103,14 +102,19 @@ function useViewport() {
     window.removeEventListener('orientationChange', updateViewport)
   })
 
-  return viewport
-
   function updateViewport() {
+    /**
+     * 不用 document.documentElement.clientWidth 和 .clientHeight 的原因：
+     * 為了與 CSS media queries 判斷寬高的方式相同
+     */
+    ;({ innerWidth: viewport.width, innerHeight: viewport.height } = window)
+
+    syncViewport(viewport)
+  }
+
+  function updateViewportWithRaf() {
     rafWithDebounce(() => {
-      /**
-       * 不用 document.documentElement.clientWidth 和 .clientHeight 的原因：為了與 CSS media queries 判斷寬高的方式相同
-       */
-      ;({ innerWidth: viewport.width, innerHeight: viewport.height } = window)
+      updateViewport()
     })
   }
 }
