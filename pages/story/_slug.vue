@@ -1,5 +1,9 @@
 <template>
   <div class="story-container">
+    <ClientOnly>
+      <ContainerGptAd class="story__ad-hd" :pageKey="sectionId" adKey="HD" />
+    </ClientOnly>
+
     <UIStoryBody :story="story">
       <template v-slot:story-relateds>
         <UIStoryListWithArrow
@@ -64,6 +68,7 @@ import UIStoryListRelated from '~/components/UIStoryListRelated.vue'
 import UIStoryListWithArrow from '~/components/UIStoryListWithArrow.vue'
 import FbPage from '~/components/FbPage.vue'
 import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import { DOMAIN_NAME, ENV } from '~/configs/config'
 import {
@@ -85,6 +90,7 @@ export default {
     UIStoryListWithArrow,
     FbPage,
     UIStoryListWithHeading,
+    ContainerGptAd,
   },
   async fetch() {
     const response = await this.$fetchPosts({
@@ -374,10 +380,13 @@ export default {
 <style lang="scss" scoped>
 .story-container {
   max-width: 1160px;
+  padding-top: 20px;
+  overflow: hidden;
   @include media-breakpoint-up(lg) {
     position: relative;
     margin: 0 auto;
-    padding: 30px 50px;
+    padding-left: 50px;
+    padding-right: 50px;
     background-color: #fff;
   }
 }
@@ -399,6 +408,12 @@ export default {
       order: 2;
       margin-bottom: 0;
     }
+  }
+
+  &__ad-hd {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
   }
 }
 
