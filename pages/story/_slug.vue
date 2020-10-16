@@ -22,6 +22,12 @@
 
       <aside>
         <ClientOnly>
+          <ContainerGptAd
+            class="story__ad-r1"
+            :pageKey="sectionId"
+            adKey="PC_R1"
+          />
+
           <lazy-component class="story__fb-page">
             <FbPage />
           </lazy-component>
@@ -420,6 +426,12 @@ export default {
   }
 
   &__ad-hd {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+
+  &__ad-r1 {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
