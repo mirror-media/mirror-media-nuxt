@@ -39,44 +39,43 @@ export default {
     paragraph: {
       type: Object,
       required: true,
+      default: () => ({}),
     },
   },
-  render(h, { props }) {
-    const paragraph = props.paragraph
-    switch (paragraph.type) {
+  render(_, { props }) {
+    const { type, content = [] } = props.paragraph
+
+    switch (type) {
       case 'header-one':
         return (
           <h1
             class="g-story-heading story__heading"
-            domPropsInnerHTML={paragraph.content[0]}
+            domPropsInnerHTML={content[0]}
           />
         )
       case 'header-two':
         return (
           <h2
             class="g-story-heading story__heading"
-            domPropsInnerHTML={paragraph.content[0]}
+            domPropsInnerHTML={content[0]}
           />
         )
       case 'image': {
-        const description = paragraph.content[0].description
+        const description = content[0].description
         return (
           <figure class="g-story-figure">
-            <img v-lazy={paragraph.content[0]?.mobile?.url} alt={description} />
+            <img v-lazy={content[0]?.mobile?.url} alt={description} />
             <figcaption>{description}</figcaption>
           </figure>
         )
       }
       case 'quoteby': {
-        const quoteBy = paragraph.content[0]?.quoteBy
+        const quoteBy = content[0]?.quoteBy
         return (
           <div class="g-story-quote-by">
             <div
               class="g-story-quote-by__quote"
-              domPropsInnerHTML={paragraph.content[0]?.quote.replace(
-                /\n/g,
-                '<br>'
-              )}
+              domPropsInnerHTML={content[0]?.quote.replace(/\n/g, '<br>')}
             />
             {quoteBy ? (
               <span class="g-story-quote-by__quote-by">{quoteBy}</span>
@@ -88,7 +87,7 @@ export default {
       }
       case 'unordered-list-item':
       case 'ordered-list-item': {
-        const isOrderedListType = paragraph.type === 'ordered-list-item'
+        const isOrderedListType = type === 'ordered-list-item'
         const listTag = isOrderedListType ? 'ol' : 'ul'
 
         return (
@@ -97,14 +96,14 @@ export default {
               isOrderedListType ? 'ordered' : 'unordered'
             }-list`}
           >
-            {processListItmes(paragraph.content).map((item) => (
+            {processListItmes(content).map((item) => (
               <li domPropsInnerHTML={item} />
             ))}
           </listTag>
         )
       }
       case 'slideshow': {
-        const Slides = paragraph.content.map(function slide(item) {
+        const Slides = content.map(function slide(item) {
           return (
             <figure key={item.id} class="swiper-slide g-story-figure">
               <img src={item.mobile.url} />
@@ -135,16 +134,12 @@ export default {
         )
       }
       case 'infobox':
-        return (
-          <UIInfobox class="story__infobox" content={paragraph.content[0]} />
-        )
+        return <UIInfobox class="story__infobox" content={content[0]} />
       case 'embeddedcode':
         return (
           <lazy-component
             class="story__embedded-code"
-            domPropsInnerHTML={addTitleAndLazyloadToIframe(
-              paragraph.content[0]
-            )}
+            domPropsInnerHTML={addTitleAndLazyloadToIframe(content[0])}
           />
         )
       case 'audio':
@@ -152,24 +147,21 @@ export default {
           <ClientOnly>
             <ContainerAudioPlayer
               class="story__audio-player"
-              content={paragraph.content[0]}
+              content={content[0]}
             />
           </ClientOnly>
         )
       case 'video':
-        return <UIStoryVideo video={paragraph.content[0]} />
+        return <UIStoryVideo video={content[0]} />
       case 'blockquote':
         return (
-          <blockquote
-            class="story-blockquote"
-            domPropsInnerHTML={paragraph.content[0]}
-          />
+          <blockquote class="story-blockquote" domPropsInnerHTML={content[0]} />
         )
       case 'unstyled':
         return (
           <p
             class="g-story-paragraph"
-            domPropsInnerHTML={addExternalLinkRel(paragraph.content[0])}
+            domPropsInnerHTML={addExternalLinkRel(content[0])}
           />
         )
       default:
