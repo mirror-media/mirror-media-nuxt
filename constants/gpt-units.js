@@ -1,5 +1,6 @@
 /**
  * 注意，下面這份 spreadsheet 有隱藏部分欄位，建議下載成 csv 檔查看
+ * 只需看「DFP廣告單元列表_PC」和「DFP廣告單元列表_Mobile」這兩張工作表
  * 資料來源：https://docs.google.com/spreadsheets/d/1PipyoWtAimAYie3pd7EOxxbCBpavF8wx-db3gHznMgI/edit?usp=sharing
  */
 
