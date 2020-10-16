@@ -4,53 +4,55 @@
       <ContainerGptAd class="story__ad-hd" :pageKey="sectionId" adKey="HD" />
     </ClientOnly>
 
-    <UIStoryBody :story="story">
-      <template v-slot:story-relateds>
-        <UIStoryListWithArrow
-          :categoryTitle="categoryTitle"
-          :items="relateds"
-          :sectionName="sectionName"
-        />
-        <UIStoryListRelated
-          :items="relatedsWithoutFirstTwo"
-          :images="relatedImages"
-          @show="fetchRelatedImages"
-        />
-      </template>
-    </UIStoryBody>
-
-    <aside>
-      <ClientOnly>
-        <lazy-component class="story__fb-page">
-          <FbPage />
-        </lazy-component>
-
-        <lazy-component
-          v-if="isDesktopWidth"
-          class="story__list story__list--latest"
-          :style="{ height: hasLatestStories ? undefined : '100vh' }"
-          @show="fetchLatestStories"
-        >
-          <UIStoryListWithHeading
-            v-if="hasLatestStories"
-            heading="最新文章"
-            :items="latestStories"
-            :extractTitle="sectionCategory"
+    <div class="story-wrapper">
+      <UIStoryBody :story="story">
+        <template v-slot:story-relateds>
+          <UIStoryListWithArrow
+            :categoryTitle="categoryTitle"
+            :items="relateds"
+            :sectionName="sectionName"
           />
-        </lazy-component>
-
-        <lazy-component
-          class="story__list story__list--popular"
-          @show="fetchPopularStories"
-        >
-          <UIStoryListWithHeading
-            v-if="hasPopularStories"
-            heading="熱門文章"
-            :items="popularStories"
+          <UIStoryListRelated
+            :items="relatedsWithoutFirstTwo"
+            :images="relatedImages"
+            @show="fetchRelatedImages"
           />
-        </lazy-component>
-      </ClientOnly>
-    </aside>
+        </template>
+      </UIStoryBody>
+
+      <aside>
+        <ClientOnly>
+          <lazy-component class="story__fb-page">
+            <FbPage />
+          </lazy-component>
+
+          <lazy-component
+            v-if="isDesktopWidth"
+            class="story__list story__list--latest"
+            :style="{ height: hasLatestStories ? undefined : '100vh' }"
+            @show="fetchLatestStories"
+          >
+            <UIStoryListWithHeading
+              v-if="hasLatestStories"
+              heading="最新文章"
+              :items="latestStories"
+              :extractTitle="sectionCategory"
+            />
+          </lazy-component>
+
+          <lazy-component
+            class="story__list story__list--popular"
+            @show="fetchPopularStories"
+          >
+            <UIStoryListWithHeading
+              v-if="hasPopularStories"
+              heading="熱門文章"
+              :items="popularStories"
+            />
+          </lazy-component>
+        </ClientOnly>
+      </aside>
+    </div>
 
     <UIAdultContentWarning v-if="story.isAdult" />
   </div>
@@ -383,11 +385,18 @@ export default {
   padding-top: 20px;
   overflow: hidden;
   @include media-breakpoint-up(lg) {
-    position: relative;
     margin: 0 auto;
     padding-left: 50px;
     padding-right: 50px;
     background-color: #fff;
+  }
+}
+
+.story-wrapper {
+  position: relative;
+  @include media-breakpoint-up(lg) {
+    padding-top: 30px;
+    display: flex;
   }
 }
 
@@ -425,12 +434,10 @@ aside {
   margin-right: auto;
   overflow: hidden;
   @include media-breakpoint-up(lg) {
-    position: absolute;
-    top: 30px;
-    right: 50px;
     width: 300px;
     display: flex;
     flex-direction: column;
+    margin-right: 0;
     margin-bottom: 0;
   }
 }

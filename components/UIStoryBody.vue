@@ -224,7 +224,7 @@ function useToggleShareSidebox(isViewportWidthUpMd) {
 
 <style lang="scss" scoped>
 .story {
-  padding: 0 0 20px;
+  padding: 20px 0;
   color: #000;
   line-height: 1.15;
   text-align: justify;
@@ -272,10 +272,6 @@ function useToggleShareSidebox(isViewportWidthUpMd) {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    margin-top: 20px;
-    @include media-breakpoint-up(lg) {
-      margin-top: 0;
-    }
   }
   &__category {
     color: #34495e;
