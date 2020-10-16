@@ -1,7 +1,7 @@
 <template>
   <div class="story-container">
     <ClientOnly>
-      <ContainerGptAd class="story__ad-hd" :pageKey="sectionId" adKey="HD" />
+      <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="HD" />
     </ClientOnly>
 
     <div class="story-wrapper">
@@ -23,7 +23,7 @@
       <aside>
         <ClientOnly>
           <ContainerGptAd
-            class="story__ad-r1"
+            class="story__ad"
             :pageKey="sectionId"
             adKey="PC_R1"
           />
@@ -45,6 +45,12 @@
               :extractTitle="sectionCategory"
             />
           </lazy-component>
+
+          <ContainerGptAd
+            class="story__ad"
+            :pageKey="sectionId"
+            adKey="PC_R2"
+          />
 
           <lazy-component
             class="story__list story__list--popular"
@@ -425,13 +431,7 @@ export default {
     }
   }
 
-  &__ad-hd {
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-  }
-
-  &__ad-r1 {
+  &__ad {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
