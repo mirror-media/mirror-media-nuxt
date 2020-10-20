@@ -28,9 +28,11 @@
         :paragraph="paragraph"
       />
     </div>
-    <template v-for="paragraph in content">
+
+    <template v-for="paragraph in contents">
       <UIStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
     </template>
+
     <p v-if="isUpdatedAtVisible" class="story__updated-at">
       更新時間｜<span v-text="updatedAt" />
     </p>
@@ -76,6 +78,9 @@ import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 import UIShareSidebox from '~/components/UIShareSidebox.vue'
 import { AUTH_LINK, SUBSCRIBE_LINK, SITE_OG_IMG } from '~/constants/index.js'
+
+const THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY = 6
+const AD_KEYS_IN_STORY_CONTENT = ['MB_AT1', 'PC_AT1', 'MB_AT2']
 
 export default {
   name: 'UIStoryBody',
@@ -146,8 +151,95 @@ export default {
 
       return creditHtml
     },
-    content() {
+
+    apiData() {
       return this.story.content?.apiData ?? []
+    },
+    contents() {
+      const {
+        // MB_AT1 出現位置：第一段文字下，第二段文字上（若無第二段，則不出現）
+        0: idxAdMbAt1,
+        1: hasIdxAfterAdMbAt1,
+
+        // PC_AT1 出現位置：第三段文字下，第四段文字上（若無第四段，則不出現）
+        2: idxAdPcAt1,
+        3: hasIdxAfterAdPcAt1,
+
+        // MB_AT2 出現位置：第五段文字下，第六段文字上（若無第六段，則不出現）
+        4: idxAdMbAt2,
+        5: hasIdxAfterAdMbAt2,
+      } = this.idxesOfApiDataUnstyledAndNotEmpty
+
+      const [adMbAt1, adPcAt1, adMbAt2] = AD_KEYS_IN_STORY_CONTENT.map(
+        buildAdContent.bind(this)
+      )
+
+      return [
+        ...this.apiData.slice(
+          0,
+          idxAdMbAt1 !== undefined ? idxAdMbAt1 + 1 : undefined
+        ),
+        ...insertIfNotUndefined(hasIdxAfterAdMbAt1, adMbAt1),
+        ...insertIfNotUndefined(
+          idxAdMbAt1,
+          this.apiData.slice(
+            idxAdMbAt1 + 1,
+            idxAdPcAt1 !== undefined ? idxAdPcAt1 + 1 : undefined
+          )
+        ),
+        ...insertIfNotUndefined(hasIdxAfterAdPcAt1, adPcAt1),
+        ...insertIfNotUndefined(
+          idxAdPcAt1,
+          this.apiData.slice(
+            idxAdPcAt1 + 1,
+            idxAdMbAt2 !== undefined ? idxAdMbAt2 + 1 : undefined
+          )
+        ),
+        ...insertIfNotUndefined(hasIdxAfterAdMbAt2, adMbAt2),
+        ...insertIfNotUndefined(idxAdMbAt2, this.apiData.slice(idxAdMbAt2 + 1)),
+      ]
+
+      function buildAdContent(adKey) {
+        return {
+          type: 'gpt-ad',
+          pageKey: this.section.id,
+          adKey,
+        }
+      }
+
+      function insertIfNotUndefined(idx, elems) {
+        elems = Array.isArray(elems) ? elems : [elems]
+
+        return idx !== undefined ? elems : []
+      }
+    },
+    idxesOfApiDataUnstyledAndNotEmpty() {
+      const idxes = {}
+
+      {
+        let keyIdx = 0
+        let idxApiData = 0
+
+        while (
+          keyIdx < THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY &&
+          this.apiData[idxApiData]
+        ) {
+          const datum = this.apiData[idxApiData]
+
+          if (
+            datum.type === 'unstyled' &&
+            datum.content.join('').trim() !== ''
+          ) {
+            idxes[keyIdx] = idxApiData
+
+            keyIdx += 1
+          }
+
+          idxApiData += 1
+        }
+      }
+
+      return idxes
     },
     hasBrief() {
       const rawBrief = this.brief
@@ -220,6 +312,11 @@ function useToggleShareSidebox(isViewportWidthUpMd) {
 
   return shouldOpenShareSidebox
 }
+
+export {
+  THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY,
+  AD_KEYS_IN_STORY_CONTENT,
+}
 </script>
 
 <style lang="scss" scoped>
@@ -229,26 +326,30 @@ function useToggleShareSidebox(isViewportWidthUpMd) {
   line-height: 1.15;
   text-align: justify;
   word-break: break-word;
+  max-width: 645px;
+  margin-left: auto;
+  margin-right: auto;
   @include media-breakpoint-up(lg) {
     width: calc(100% - 300px - 20px);
     max-width: 695px;
+    margin-left: 0;
   }
+
   &::v-deep {
     > * {
       width: calc(100% - 50px);
-      max-width: 645px;
       margin-left: auto;
       margin-right: auto;
       @include media-breakpoint-up(lg) {
         width: 100%;
-        max-width: none;
       }
 
       + .story__heading {
         margin-top: 40px;
       }
 
-      + p {
+      + p,
+      + .gpt-ad {
         margin-top: 1.5em;
       }
 

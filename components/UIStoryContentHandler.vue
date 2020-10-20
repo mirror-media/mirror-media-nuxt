@@ -3,6 +3,7 @@ import UISlideshow from './UISlideshow.vue'
 import UIInfobox from './UIInfobox.vue'
 import UIStoryVideo from './UIStoryVideo.vue'
 import ContainerAudioPlayer from './audio-player/ContainerAudioPlayer.vue'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import SvgArrowPrev from '~/assets/arrow-prev-slideshow.svg?inline'
 import SvgArrowNext from '~/assets/arrow-next-slideshow.svg?inline'
@@ -43,7 +44,7 @@ export default {
     },
   },
   render(_, { props }) {
-    const { type, content = [] } = props.paragraph
+    const { type, content = [], pageKey, adKey } = props.paragraph
 
     switch (type) {
       case 'header-one':
@@ -156,6 +157,12 @@ export default {
       case 'blockquote':
         return (
           <blockquote class="story-blockquote" domPropsInnerHTML={content[0]} />
+        )
+      case 'gpt-ad':
+        return (
+          <ClientOnly>
+            <ContainerGptAd class="gpt-ad" pageKey={pageKey} adKey={adKey} />
+          </ClientOnly>
         )
       case 'unstyled':
         return (

@@ -1,6 +1,9 @@
 import dayjs from 'dayjs'
 
-import UIStoryBody from '../UIStoryBody.vue'
+import UIStoryBody, {
+  THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY,
+  AD_KEYS_IN_STORY_CONTENT,
+} from '../UIStoryBody.vue'
 import UIShareSidebox from '../UIShareSidebox.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
@@ -264,6 +267,113 @@ describe('UIShareSidebox.vue', () => {
 
     expect(wrapper.findComponent(UIShareSidebox).exists()).toBe(false)
   })
+})
+
+describe('computed "contents"', () => {
+  const sectionIdMock = '57e1e11cee85930e00cad4ea'
+
+  test('should not have any ADs when unstyled and not empty contents of "apiData" <= 1', () => {
+    const apiDataNumOfUnstyledAndNotEmptyMock = 1
+
+    applyTestToContents(apiDataNumOfUnstyledAndNotEmptyMock, (contents) => {
+      expect(contents).toHaveLength(apiDataNumOfUnstyledAndNotEmptyMock)
+
+      AD_KEYS_IN_STORY_CONTENT.forEach((adKey) => {
+        expect(contents).not.toContainEqual({
+          type: 'gpt-ad',
+          pageKey: sectionIdMock,
+          adKey,
+        })
+      })
+    })
+  })
+
+  test('should at least have AD of MB_AT1 when unstyled and not empty contents of "apiData" >= 2', () => {
+    const apiDataNumOfUnstyledAndNotEmptyMock = 2
+
+    applyTestToContents(apiDataNumOfUnstyledAndNotEmptyMock, (contents) => {
+      expect(contents).toHaveLength(
+        apiDataNumOfUnstyledAndNotEmptyMock +
+          AD_KEYS_IN_STORY_CONTENT.length -
+          2
+      )
+
+      findAdsInContents([1], contents)
+    })
+  })
+
+  test('should at least have ADs of PC_AT1 and MB_AT1 when unstyled and not empty contents of "apiData" >= 4', () => {
+    const apiDataNumOfUnstyledAndNotEmptyMock = 4
+
+    applyTestToContents(apiDataNumOfUnstyledAndNotEmptyMock, (contents) => {
+      expect(contents).toHaveLength(
+        apiDataNumOfUnstyledAndNotEmptyMock +
+          AD_KEYS_IN_STORY_CONTENT.length -
+          1
+      )
+
+      findAdsInContents([1, 4], contents)
+    })
+  })
+
+  test('should have all ADs with correct order when unstyled and not empty contents of "apiData" >= 6', () => {
+    const apiDataNumOfUnstyledAndNotEmptyMock = THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY
+
+    applyTestToContents(apiDataNumOfUnstyledAndNotEmptyMock, (contents) => {
+      expect(contents).toHaveLength(
+        apiDataNumOfUnstyledAndNotEmptyMock + AD_KEYS_IN_STORY_CONTENT.length
+      )
+
+      findAdsInContents([1, 4, 7], contents)
+    })
+  })
+
+  test('should render correctly when "apiData" has no unstyled and not empty contents', () => {
+    const apiDataNumOfNormal = 2
+    const wrapper = createWrapper(UIStoryBody, {
+      propsData: {
+        story: {
+          content: {
+            apiData: Array(apiDataNumOfNormal).fill({
+              type: 'other',
+              content: ['其它'],
+            }),
+          },
+          sections: [{ id: sectionIdMock }],
+        },
+      },
+    })
+
+    expect(wrapper.vm.contents).toHaveLength(apiDataNumOfNormal)
+  })
+
+  function applyTestToContents(apiDataNumOfUnstyledAndNotEmpty, expectFn) {
+    const wrapper = createWrapper(UIStoryBody, {
+      propsData: {
+        story: {
+          content: {
+            apiData: Array(apiDataNumOfUnstyledAndNotEmpty).fill({
+              type: 'unstyled',
+              content: ['內容'],
+            }),
+          },
+          sections: [{ id: sectionIdMock }],
+        },
+      },
+    })
+
+    expectFn(wrapper.vm.contents)
+  }
+
+  function findAdsInContents(idxesAdInContents, contents) {
+    idxesAdInContents.forEach((idxAd, idx) => {
+      expect(contents[idxAd]).toEqual({
+        type: 'gpt-ad',
+        pageKey: sectionIdMock,
+        adKey: AD_KEYS_IN_STORY_CONTENT[idx],
+      })
+    })
+  }
 })
 
 describe('handleSendGa', () => {
