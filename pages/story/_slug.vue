@@ -102,6 +102,10 @@
     </ClientOnly>
 
     <UIAdultContentWarning v-if="story.isAdult" />
+
+    <UIStickyAd>
+      <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
+    </UIStickyAd>
   </div>
 </template>
 
@@ -118,6 +122,7 @@ import UIStoryListWithArrow from '~/components/UIStoryListWithArrow.vue'
 import FbPage from '~/components/FbPage.vue'
 import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
+import UIStickyAd from '~/components/UIStickyAd.vue'
 
 import { DOMAIN_NAME, ENV } from '~/configs/config'
 import {
@@ -141,6 +146,7 @@ export default {
     FbPage,
     UIStoryListWithHeading,
     ContainerGptAd,
+    UIStickyAd,
   },
   async fetch() {
     const response = await this.$fetchPosts({
