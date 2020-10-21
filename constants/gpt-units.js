@@ -4,9 +4,23 @@
  * 資料來源：https://docs.google.com/spreadsheets/d/1PipyoWtAimAYie3pd7EOxxbCBpavF8wx-db3gHznMgI/edit?usp=sharing
  */
 
+import { SECTION_IDS } from './index.js'
+
+const {
+  news,
+  entertainment,
+  businessmoney,
+  people,
+  international,
+  foodtravel,
+  mafalda,
+  culture,
+  carandwatch,
+} = SECTION_IDS
+
 /**
- * page key（比如 global、57e1e0e5ee85930e00cad4e9）註解中各項文字代表的涵義：
- * // page key: spreadsheet 的「分類」欄位, spreadsheet 的「section」欄位 (鏡官網的 section name)
+ * page key（比如 global、[news]）註解中各項文字代表的涵義：
+ * // page key: spreadsheet 的「分類」欄位, spreadsheet 的「section」欄位
  */
 
 /**
@@ -219,7 +233,7 @@ export default {
   },
 
   // page key: 時事, news
-  '57e1e0e5ee85930e00cad4e9': {
+  [news]: {
     MB_HD: {
       adUnit: 'mirror_m_news_300x250_HD',
       adSize: [
@@ -338,8 +352,8 @@ export default {
     },
   },
 
-  // page key: 娛樂, ent (entertainment)
-  '57e1e11cee85930e00cad4ea': {
+  // page key: 娛樂, ent
+  [entertainment]: {
     MB_HD: {
       adUnit: 'mirror_m_ent_300x250_HD',
       adSize: [
@@ -458,8 +472,8 @@ export default {
     },
   },
 
-  // page key: 財經理財, fin (businessmoney)
-  '596441d04bbe120f002a319a': {
+  // page key: 財經理財, fin
+  [businessmoney]: {
     MB_HD: {
       adUnit: 'mirror_m_fin_300x250_HD',
       adSize: [
@@ -578,8 +592,8 @@ export default {
     },
   },
 
-  // page key: 人物, peo (people)
-  '596441604bbe120f002a3197': {
+  // page key: 人物, peo
+  [people]: {
     MB_HD: {
       adUnit: 'mirror_m_peo_300x250_HD',
       adSize: [
@@ -698,7 +712,7 @@ export default {
     },
   },
 
-  // page key: 影音, video (videohub)
+  // page key: 影音, video
   videohub: {
     MB_HD: {
       adUnit: 'mirror_m_video_300x250_HD',
@@ -761,8 +775,8 @@ export default {
     },
   },
 
-  // page key: 國際, int (international)
-  '5964400d4bbe120f002a3191': {
+  // page key: 國際, int
+  [international]: {
     MB_HD: {
       adUnit: 'mirror_m_int_300x250_HD',
       adSize: [
@@ -881,8 +895,8 @@ export default {
     },
   },
 
-  // page key: 美食旅遊, tra (foodtravel)
-  '57dfe399ee85930e00cad4d6': {
+  // page key: 美食旅遊, tra
+  [foodtravel]: {
     MB_HD: {
       adUnit: 'mirror_m_tra_300x250_HD',
       adSize: [
@@ -1010,8 +1024,8 @@ export default {
     },
   },
 
-  // page key: 瑪法達, mafa (mafalda)
-  '5971aa8ce531830d00e32812': {
+  // page key: 瑪法達, mafa
+  [mafalda]: {
     MB_HD: {
       adUnit: 'mirror_m_mafa_300x250_HD',
       adSize: [
@@ -1130,8 +1144,8 @@ export default {
     },
   },
 
-  // page key: 文化, cul (culture)
-  '5964418a4bbe120f002a3198': {
+  // page key: 文化, cul
+  [culture]: {
     MB_HD: {
       adUnit: 'mirror_m_cul_300x250_HD',
       adSize: [
@@ -1250,8 +1264,8 @@ export default {
     },
   },
 
-  // page key: 汽車鐘錶, wat (carandwatch)
-  '57dfe3b0ee85930e00cad4d7': {
+  // page key: 汽車鐘錶, wat
+  [carandwatch]: {
     MB_HD: {
       adUnit: 'mirror_m_wat_300x250_HD',
       adSize: [

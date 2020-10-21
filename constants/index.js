@@ -111,6 +111,18 @@ const VIDEOHUB_CATEGORIES_PLAYLIST_MAPPING = {
   video_carandwatch: 'PLgvIJQ8OtT8LOdwVF4P9hdQiuf6uAiwb6',
 }
 
+const SECTION_IDS = {
+  news: '57e1e0e5ee85930e00cad4e9',
+  entertainment: '57e1e11cee85930e00cad4ea',
+  businessmoney: '596441d04bbe120f002a319a',
+  people: '596441604bbe120f002a3197',
+  international: '5964400d4bbe120f002a3191',
+  foodtravel: '57dfe399ee85930e00cad4d6',
+  mafalda: '5971aa8ce531830d00e32812',
+  culture: '5964418a4bbe120f002a3198',
+  carandwatch: '57dfe3b0ee85930e00cad4d7',
+}
+
 const SITE_TITLE = '鏡週刊 Mirror Media'
 const SITE_DESCRIPTION =
   '鏡傳媒以台灣為基地，是一跨平台綜合媒體，包含《鏡週刊》以及下設五大分眾內容的《鏡傳媒》網站，刊載時事、財經、人物、國際、文化、娛樂、美食旅遊、精品鐘錶等深入報導及影音內容。我們以「鏡」為名，務求反映事實、時代與人性。'
@@ -125,6 +137,7 @@ export {
   OTHER_LINKS,
   SUB_BRAND_LINKS,
   VIDEOHUB_CATEGORIES_PLAYLIST_MAPPING,
+  SECTION_IDS,
   SITE_TITLE,
   SITE_DESCRIPTION,
   SITE_URL,

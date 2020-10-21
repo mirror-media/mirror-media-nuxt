@@ -106,6 +106,13 @@
     <UIStickyAd>
       <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
     </UIStickyAd>
+
+    <ClientOnly v-if="shouldOpenAdPcFloating">
+      <div class="ad-pc-floating">
+        <ContainerGptAd :pageKey="sectionCarandwatchId" adKey="PC_FLOATING" />
+        <SvgCloseIcon @click="doesClickCloseAdPcFloating = true" />
+      </div>
+    </ClientOnly>
   </div>
 </template>
 
@@ -124,8 +131,11 @@ import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 
+import SvgCloseIcon from '~/assets/close-black.svg?inline'
+
 import { DOMAIN_NAME, ENV } from '~/configs/config'
 import {
+  SECTION_IDS,
   SITE_OG_IMG,
   SITE_TITLE,
   SITE_DESCRIPTION,
@@ -147,6 +157,8 @@ export default {
     UIStoryListWithHeading,
     ContainerGptAd,
     UIStickyAd,
+
+    SvgCloseIcon,
   },
   async fetch() {
     const response = await this.$fetchPosts({
@@ -167,6 +179,9 @@ export default {
 
       DABLE_WIDGET_IDS,
       shouldLoadDableScript: false,
+
+      sectionCarandwatchId: SECTION_IDS.carandwatch,
+      doesClickCloseAdPcFloating: false,
     }
   },
 
@@ -215,6 +230,14 @@ export default {
     },
     hasPopularStories() {
       return this.popularStories.length > 0
+    },
+
+    shouldOpenAdPcFloating() {
+      return (
+        this.sectionId === this.sectionCarandwatchId &&
+        this.isDesktopWidth &&
+        !this.doesClickCloseAdPcFloating
+      )
     },
   },
 
@@ -556,6 +579,22 @@ aside {
   @include media-breakpoint-up(lg) {
     margin-top: 1.5em;
     margin-bottom: 0;
+  }
+}
+
+.ad-pc-floating {
+  position: fixed;
+  top: 175px;
+  right: 15px;
+
+  svg {
+    position: absolute;
+    top: -12.5px;
+    right: -12.5px;
+    width: 25px;
+    height: auto;
+    cursor: pointer;
+    user-select: none;
   }
 }
 </style>
