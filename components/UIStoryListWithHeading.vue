@@ -127,7 +127,7 @@ export default {
     width: calc(50% - 5px);
     @include media-breakpoint-up(lg) {
       display: flex;
-      width: auto;
+      width: 100%;
     }
     &:first-child {
       width: 100%;
