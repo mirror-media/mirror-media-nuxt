@@ -62,6 +62,8 @@
       </div>
     </lazy-component>
 
+    <slot name="dableWidget"></slot>
+
     <transition name="fade">
       <ClientOnly v-if="shouldOpenShareSidebox">
         <UIShareSidebox class="story__share-sidebox" @sendGa="handleSendGa" />

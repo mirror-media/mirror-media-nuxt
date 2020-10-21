@@ -18,6 +18,18 @@
             @show="fetchRelatedImages"
           />
         </template>
+
+        <template #dableWidget>
+          <ClientOnly>
+            <div v-if="isDesktopWidth" class="dable-widget">
+              <lazy-component
+                :id="`dablewidget_${DABLE_WIDGET_IDS.desktop}`"
+                :data-widget_id="DABLE_WIDGET_IDS.desktop"
+                @show="handleShowDableWidget(DABLE_WIDGET_IDS.desktop)"
+              ></lazy-component>
+            </div>
+          </ClientOnly>
+        </template>
       </UIStoryBody>
 
       <aside>
@@ -31,6 +43,14 @@
           <lazy-component class="story__fb-page">
             <FbPage />
           </lazy-component>
+
+          <div v-if="!isDesktopWidth" class="dable-widget">
+            <lazy-component
+              :id="`dablewidget_${DABLE_WIDGET_IDS.mobile}`"
+              :data-widget_id="DABLE_WIDGET_IDS.mobile"
+              @show="handleShowDableWidget(DABLE_WIDGET_IDS.mobile)"
+            ></lazy-component>
+          </div>
 
           <lazy-component
             v-if="isDesktopWidth"
@@ -91,6 +111,7 @@ import {
   SITE_DESCRIPTION,
   SITE_URL,
 } from '~/constants/index'
+import { DABLE_WIDGET_IDS } from '~/constants/ads.js'
 
 export default {
   name: 'Story',
@@ -122,6 +143,9 @@ export default {
       popularStories: [],
       story: {},
       relatedImages: [],
+
+      DABLE_WIDGET_IDS,
+      shouldLoadDableScript: false,
     }
   },
 
@@ -213,6 +237,13 @@ export default {
     doesNotHaveCurrentStorySlug(item) {
       return item.slug !== this.storySlug
     },
+    handleShowDableWidget(widgetId) {
+      if (this.shouldLoadDableScript) {
+        window.dable('renderWidget', `dablewidget_${widgetId}`)
+      } else {
+        this.shouldLoadDableScript = true
+      }
+    },
   },
   head() {
     const {
@@ -293,7 +324,34 @@ export default {
         { rel: 'canonical', href: pageUrl },
         { rel: 'amphtml', href: `${SITE_URL}/story/amp/${this.storySlug}/` },
       ],
-      script: [...jsonLds.bind(this)()],
+      script: [
+        ...jsonLds.bind(this)(),
+        {
+          hid: 'dable',
+          skip: !this.shouldLoadDableScript,
+          innerHTML: `
+            (function (d, a, b, l, e, _) {
+              if (d[b] && d[b].q) return
+              d[b] = function () {
+                ;(d[b].q = d[b].q || []).push(arguments)
+              }
+              e = a.createElement(l)
+              e.async = 1
+              e.charset = 'utf-8'
+              e.src = '//static.dable.io/dist/plugin.min.js'
+              _ = a.getElementsByTagName(l)[0]
+              _.parentNode.insertBefore(e, _)
+            })(window, document, 'dable', 'script')
+            dable('setService', 'mirrormedia.mg')
+            dable('sendLogOnce')
+            dable('renderWidget', 'dablewidget_${DABLE_WIDGET_IDS.mobile}')
+            dable('renderWidget', 'dablewidget_${DABLE_WIDGET_IDS.desktop}')
+          `,
+        },
+      ],
+      __dangerouslyDisableSanitizersByTagID: {
+        dable: ['innerHTML'],
+      },
     }
 
     function jsonLds() {
@@ -461,6 +519,14 @@ aside {
     display: flex;
     flex-direction: column;
     margin-right: 0;
+    margin-bottom: 0;
+  }
+}
+
+.dable-widget {
+  margin-bottom: 20px;
+  @include media-breakpoint-up(lg) {
+    margin-top: 1.5em;
     margin-bottom: 0;
   }
 }
