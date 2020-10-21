@@ -37,6 +37,11 @@
       更新時間｜<span v-text="updatedAt" />
     </p>
     <slot name="storyRelateds"></slot>
+
+    <ClientOnly>
+      <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="MB_AT3" />
+    </ClientOnly>
+
     <p class="g-story-paragraph smaller">
       更多內容，歡迎<a
         :href="SUBSCRIBE_LINK.href"
@@ -79,6 +84,8 @@ import UIStoryContentHandler from './UIStoryContentHandler.vue'
 import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 import UIShareSidebox from '~/components/UIShareSidebox.vue'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
+
 import { AUTH_LINK, SUBSCRIBE_LINK, SITE_OG_IMG } from '~/constants/index.js'
 
 const THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY = 6
@@ -108,6 +115,7 @@ export default {
     UIShareFb,
     UIShareLine,
     UIShareSidebox,
+    ContainerGptAd,
   },
   props: {
     story: {
@@ -204,7 +212,7 @@ export default {
       function buildAdContent(adKey) {
         return {
           type: 'gpt-ad',
-          pageKey: this.section.id,
+          pageKey: this.sectionId,
           adKey,
         }
       }
@@ -267,6 +275,9 @@ export default {
     },
     section() {
       return this.story.sections?.[0] ?? {}
+    },
+    sectionId() {
+      return this.section.id
     },
     updatedAt() {
       return this.$dayjs(this.story.updatedAt).format('YYYY.MM.DD HH:mm')
@@ -579,6 +590,10 @@ export {
   &__share-sidebox {
     width: 30px;
     position: fixed;
+  }
+
+  &__ad {
+    margin-top: 1.5em;
   }
 }
 
