@@ -93,6 +93,14 @@
       </aside>
     </div>
 
+    <ClientOnly>
+      <ContainerGptAd
+        class="story__ad story__ad--ft"
+        :pageKey="sectionId"
+        adKey="FT"
+      />
+    </ClientOnly>
+
     <UIAdultContentWarning v-if="story.isAdult" />
   </div>
 </template>
@@ -511,6 +519,13 @@ export default {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
+
+    &--ft {
+      margin-bottom: 40px;
+      @include media-breakpoint-up(lg) {
+        margin-bottom: 20px;
+      }
+    }
   }
 }
 
