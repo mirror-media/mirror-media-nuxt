@@ -44,6 +44,12 @@
             <FbPage />
           </lazy-component>
 
+          <ContainerGptAd
+            class="story__ad"
+            :pageKey="sectionId"
+            adKey="MB_E1"
+          />
+
           <div v-if="!isDesktopWidth" class="dable-widget">
             <lazy-component
               :id="`dablewidget_${DABLE_WIDGET_IDS.mobile}`"
