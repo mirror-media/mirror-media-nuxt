@@ -52,19 +52,20 @@
             ></lazy-component>
           </div>
 
-          <lazy-component
-            v-if="isDesktopWidth"
-            class="story__list story__list--latest"
-            :style="{ height: hasLatestStories ? undefined : '100vh' }"
-            @show="fetchLatestStories"
-          >
-            <UIStoryListWithHeading
-              v-if="hasLatestStories"
-              heading="最新文章"
-              :items="latestStories"
-              :extractTitle="sectionCategory"
-            />
-          </lazy-component>
+          <div v-if="isDesktopWidth">
+            <lazy-component
+              class="story__list story__list--latest"
+              :style="{ height: hasLatestStories ? undefined : '100vh' }"
+              @show="fetchLatestStories"
+            >
+              <UIStoryListWithHeading
+                v-if="hasLatestStories"
+                heading="最新文章"
+                :items="latestStories"
+                :extractTitle="sectionCategory"
+              />
+            </lazy-component>
+          </div>
 
           <ContainerGptAd
             class="story__ad"
