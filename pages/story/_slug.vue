@@ -162,6 +162,9 @@ export default {
     sectionTitle() {
       return this.section.title ?? ''
     },
+    hasRelatedImages() {
+      return this.relatedImages.length > 0
+    },
     hasLatestStories() {
       return this.latestStories.length > 0
     },
@@ -172,6 +175,10 @@ export default {
 
   methods: {
     async fetchRelatedImages() {
+      if (this.hasRelatedImages) {
+        return
+      }
+
       const imageIds = this.relatedsWithoutFirstTwo.map(
         (item) => item.heroImage
       )
@@ -179,6 +186,10 @@ export default {
       this.relatedImages = items
     },
     async fetchLatestStories() {
+      if (this.hasLatestStories) {
+        return
+      }
+
       const { items = [] } = await this.$fetchList({
         sort: '-publishedDate',
         sections: this.sectionId,
@@ -189,7 +200,7 @@ export default {
         .slice(0, 6)
     },
     async fetchPopularStories() {
-      if (ENV === 'lighthouse') {
+      if (this.hasPopularStories || ENV === 'lighthouse') {
         return
       }
 
