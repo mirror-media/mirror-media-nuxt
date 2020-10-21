@@ -67,6 +67,13 @@
       </div>
     </lazy-component>
 
+    <ClientOnly>
+      <div class="story__ad-container">
+        <ContainerGptAd :pageKey="sectionId" adKey="PC_E1" />
+        <ContainerGptAd :pageKey="sectionId" adKey="PC_E2" />
+      </div>
+    </ClientOnly>
+
     <slot name="dableWidget"></slot>
 
     <transition name="fade">
@@ -592,8 +599,14 @@ export {
     position: fixed;
   }
 
-  &__ad {
+  &__ad,
+  &__ad-container {
     margin-top: 1.5em;
+  }
+
+  &__ad-container {
+    display: flex;
+    justify-content: space-around;
   }
 }
 
