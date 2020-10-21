@@ -6,7 +6,7 @@
       class="section__latest"
       @sendGA="handleSendGA"
     >
-      <template v-slot:heading>
+      <template #heading>
         <h1>最新影片</h1>
       </template>
     </UIVideoIframeWithItems>

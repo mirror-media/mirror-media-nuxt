@@ -6,7 +6,7 @@
 
     <div class="story-wrapper">
       <UIStoryBody :story="story">
-        <template v-slot:story-relateds>
+        <template #storyRelateds>
           <UIStoryListWithArrow
             :categoryTitle="categoryTitle"
             :items="relateds"

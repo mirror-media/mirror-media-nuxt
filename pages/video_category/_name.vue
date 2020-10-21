@@ -5,7 +5,7 @@
       class="section__highlight"
       @sendGA="handleSendGA"
     >
-      <template v-if="categoryTitle" v-slot:heading>
+      <template v-if="categoryTitle" #heading>
         <h1
           :class="categoryName"
           class="section__heading"

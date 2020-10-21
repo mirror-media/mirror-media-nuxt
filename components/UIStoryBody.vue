@@ -36,7 +36,7 @@
     <p v-if="isUpdatedAtVisible" class="story__updated-at">
       更新時間｜<span v-text="updatedAt" />
     </p>
-    <slot name="story-relateds" />
+    <slot name="storyRelateds"></slot>
     <p class="g-story-paragraph smaller">
       更多內容，歡迎<a
         :href="SUBSCRIBE_LINK.href"
