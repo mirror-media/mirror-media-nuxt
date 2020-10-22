@@ -54,7 +54,7 @@ import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import styleVariables from '~/scss/_variables.scss'
 import gptUnits from '~/constants/gpt-units.js'
-import microAdUnits from '~/constants/microAdUnits'
+import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
 
 export default {
@@ -78,7 +78,7 @@ export default {
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
-      microAdUnits: microAdUnits.LISTING,
+      microAdUnits: MICRO_AD_UNITS.LISTING,
     }
   },
   computed: {

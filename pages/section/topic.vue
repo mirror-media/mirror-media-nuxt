@@ -53,7 +53,7 @@ import UIStickyAd from '~/components/UIStickyAd.vue'
 import MicroAd from '~/components/MicroAd.vue'
 import gptUnits from '~/constants/gpt-units.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
-import microAdUnits from '~/constants/microAdUnits'
+import { MICRO_AD_UNITS } from '~/constants/ads.js'
 
 export default {
   name: 'SectionTopic',
@@ -76,7 +76,7 @@ export default {
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
-      microAdUnits: microAdUnits.LISTING,
+      microAdUnits: MICRO_AD_UNITS.LISTING,
     }
   },
   computed: {

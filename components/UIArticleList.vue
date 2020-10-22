@@ -37,9 +37,9 @@
 
 <script>
 import UIArticleCard from './UIArticleCard.vue'
-import microAdUnits from '~/constants/microAdUnits'
+import { MICRO_AD_UNITS } from '~/constants/ads.js'
 
-const microAdUnitsKey = Object.keys(microAdUnits.LISTING)
+const microAdUnitsKey = Object.keys(MICRO_AD_UNITS.LISTING)
 
 export default {
   components: {
