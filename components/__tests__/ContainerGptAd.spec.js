@@ -1,6 +1,6 @@
 import ContainerGptAd, { validateAdData } from '../ContainerGptAd.vue'
 
-import gptUnits from '~/constants/gpt-units.js'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper.js'
 
 const pageKeyMock = '57e1e0e5ee85930e00cad4e9'
@@ -63,7 +63,7 @@ describe('prop "adKey" without a device text', () => {
       },
     })
 
-    const { adUnit, adSize } = gptUnits[pageKeyMock][`${device}_${adKeyMock}`]
+    const { adUnit, adSize } = gptAdUnits[pageKeyMock][`${device}_${adKeyMock}`]
 
     expect(wrapper.html()).toContain(adUnit)
     expect(wrapper.html()).toContain(adSize)

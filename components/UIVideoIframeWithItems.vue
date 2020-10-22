@@ -37,7 +37,7 @@
 <script>
 import UILinkedItemWithTitle from './UILinkedItemWithTitle.vue'
 import UIYoutubeIframe from './UIYoutubeIframe.vue'
-import gptUnits from '~/constants/gpt-units.js'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 export default {
   name: 'UIVideoIframeWithItems',
@@ -57,7 +57,7 @@ export default {
   },
   data() {
     return {
-      videoAdUnits: gptUnits.videohub ?? {},
+      videoAdUnits: gptAdUnits.videohub ?? {},
     }
   },
   computed: {

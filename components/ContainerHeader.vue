@@ -80,7 +80,7 @@ import UIOthersList from './UIOthersList.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
 import UISidebar from './UISidebar.vue'
-import gptUnits from '~/constants/gpt-units.js'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 import {
   SUB_BRAND_LINKS,
@@ -107,7 +107,7 @@ export default {
       shouldOpenSidebar: false,
       defaultOption: { title: '全部類別' },
       SITE_TITLE,
-      logoAdUnit: gptUnits.global.RWD_LOGO,
+      logoAdUnit: gptAdUnits.global.RWD_LOGO,
       hasGptLogo: false,
     }
   },

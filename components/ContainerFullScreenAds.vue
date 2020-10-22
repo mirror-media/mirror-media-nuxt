@@ -40,7 +40,7 @@
 
 <script>
 import UIFullScreenAd from '~/components/UIFullScreenAd.vue'
-import gptUnits from '~/constants/gpt-units.js'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 /*
   蓋板廣告有三層，分別為：第一層 FS、第二層 AD2、第三層 Innity
@@ -77,7 +77,7 @@ export default {
       hasModifiedStyle: true,
       isAdFirstVisible: false,
       isAdFirstClosedBtnVisible: false,
-      globalAdUnits: gptUnits.global,
+      globalAdUnits: gptAdUnits.global,
       timerClosedBtn: null,
     }
   },

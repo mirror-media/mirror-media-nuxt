@@ -80,7 +80,7 @@ import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
-import gptUnits from '~/constants/gpt-units.js'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 const VIDEO_CATEGORIES_NAME = Object.keys(PLAYLIST_MAPPING)
 const MAX_RESULTS = 25
@@ -105,7 +105,7 @@ export default {
       VIDEO_CATEGORIES_NAME,
       nextPageToken: '',
       playlistItems: [],
-      videoAdUnits: gptUnits.videohub ?? {},
+      videoAdUnits: gptAdUnits.videohub ?? {},
     }
   },
   computed: {

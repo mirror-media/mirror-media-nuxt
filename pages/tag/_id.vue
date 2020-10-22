@@ -52,7 +52,7 @@ import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import styleVariables from '~/scss/_variables.scss'
-import gptUnits from '~/constants/gpt-units.js'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
 
@@ -117,13 +117,13 @@ export default {
       return this.$ua.isFromPc() ? 'PC' : 'MB'
     },
     adTop() {
-      return gptUnits.other[`${this.adDevice}_HD`]
+      return gptAdUnits.other[`${this.adDevice}_HD`]
     },
     adBottom() {
-      return gptUnits.other[`${this.adDevice}_FT`]
+      return gptAdUnits.other[`${this.adDevice}_FT`]
     },
     adFixedBottomMobile() {
-      return gptUnits.other.MB_ST ?? {}
+      return gptAdUnits.other.MB_ST ?? {}
     },
   },
   methods: {

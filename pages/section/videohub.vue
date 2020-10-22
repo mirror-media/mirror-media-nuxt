@@ -64,7 +64,7 @@ import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import UIVideoPopular from '~/components/UIVideoPopular.vue'
 import UIVideoSubscriptions from '~/components/UIVideoSubscriptions.vue'
 import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
-import gptUnits from '~/constants/gpt-units.js'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 const INVERTED_PLAYLIST_MAPPING = _.invert(PLAYLIST_MAPPING)
 
@@ -88,7 +88,7 @@ export default {
       latestData: [],
       popularData: [],
       categoriesPlaylistData: {},
-      videoAdUnits: gptUnits.videohub ?? {},
+      videoAdUnits: gptAdUnits.videohub ?? {},
     }
   },
   computed: {

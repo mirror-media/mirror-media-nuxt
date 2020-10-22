@@ -10,7 +10,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import gptUnits from '~/constants/gpt-units.js'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 export default {
   name: 'ContainerGptAd',
@@ -50,7 +50,7 @@ export default {
       }
     },
     adData() {
-      const data = gptUnits[this.pageKey][this.adKeyFull]
+      const data = gptAdUnits[this.pageKey][this.adKeyFull]
 
       validateAdData(data)
 
