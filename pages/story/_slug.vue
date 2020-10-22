@@ -103,7 +103,7 @@
 
     <UIAdultContentWarning v-if="story.isAdult" />
 
-    <UIStickyAd>
+    <UIStickyAd v-if="!hasWineCategory">
       <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
     </UIStickyAd>
 
@@ -189,14 +189,22 @@ export default {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
     }),
+    categories() {
+      return this.story.categories || []
+    },
     category() {
-      return this.story.categories?.[0] || {}
+      return this.categories[0] || {}
     },
     hasCategory() {
       return !_.isEmpty(this.category)
     },
     categoryTitle() {
       return this.category.title ?? ''
+    },
+    hasWineCategory() {
+      return Boolean(
+        this.categories.find((category) => category.name === 'wine')
+      )
     },
     relateds() {
       return (this.story.relateds ?? []).filter((item) => item.slug)
