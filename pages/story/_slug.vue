@@ -113,6 +113,8 @@
         <SvgCloseIcon @click="doesClickCloseAdPcFloating = true" />
       </div>
     </ClientOnly>
+
+    <ContainerFullScreenAds v-if="!hasWineCategory" />
   </div>
 </template>
 
@@ -130,6 +132,7 @@ import FbPage from '~/components/FbPage.vue'
 import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
@@ -157,6 +160,7 @@ export default {
     UIStoryListWithHeading,
     ContainerGptAd,
     UIStickyAd,
+    ContainerFullScreenAds,
 
     SvgCloseIcon,
   },
