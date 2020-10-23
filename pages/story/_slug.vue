@@ -16,7 +16,17 @@
             :items="relatedsWithoutFirstTwo"
             :images="relatedImages"
             @show="fetchRelatedImages"
-          />
+          >
+            <template #ads>
+              <ClientOnly>
+                <MicroAd
+                  v-for="unit in microAdUnits[device]"
+                  :key="unit.name"
+                  :unitId="unit.id"
+                />
+              </ClientOnly>
+            </template>
+          </UIStoryListRelated>
         </template>
 
         <template #dableWidget>
@@ -133,6 +143,7 @@ import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+import MicroAd from '~/components/MicroAd.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
@@ -144,7 +155,7 @@ import {
   SITE_DESCRIPTION,
   SITE_URL,
 } from '~/constants/index'
-import { DABLE_WIDGET_IDS } from '~/constants/ads.js'
+import { DABLE_WIDGET_IDS, MICRO_AD_UNITS } from '~/constants/ads.js'
 
 export default {
   name: 'Story',
@@ -158,9 +169,11 @@ export default {
     UIStoryListWithArrow,
     FbPage,
     UIStoryListWithHeading,
+
     ContainerGptAd,
     UIStickyAd,
     ContainerFullScreenAds,
+    MicroAd,
 
     SvgCloseIcon,
   },
@@ -181,6 +194,8 @@ export default {
       story: {},
       relatedImages: [],
 
+      microAdUnits: MICRO_AD_UNITS.story,
+
       DABLE_WIDGET_IDS,
       shouldLoadDableScript: false,
 
@@ -193,6 +208,9 @@ export default {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
     }),
+    device() {
+      return this.isDesktopWidth ? 'PC' : 'MB'
+    },
     categories() {
       return this.story.categories || []
     },
@@ -517,6 +535,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/css/micro-ad/story.scss';
+
 .story-container {
   max-width: 1160px;
   padding-top: 20px;

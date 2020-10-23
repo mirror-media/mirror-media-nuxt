@@ -17,13 +17,17 @@ const MICRO_AD_UNITS = {
     NA2_RWD_SP: '4273368',
     NA3_RWD_SP: '4273372',
   },
-  ARTICLE: {
-    NA1_PC_AP: '4276377',
-    NA2_PC_AP: '4276378',
-    NA3_PC_AP: '4276379',
-    NA1_MB_AP: '4273365',
-    NA2_MB_AP: '4273369',
-    NA3_MB_AP: '4273373',
+  story: {
+    PC: [
+      { name: 'NA1_PC_AP', id: '4276377' },
+      { name: 'NA2_PC_AP', id: '4276378' },
+      { name: 'NA3_PC_AP', id: '4276379' },
+    ],
+    MB: [
+      { name: 'NA1_MB_AP', id: '4273365' },
+      { name: 'NA2_MB_AP', id: '4273369' },
+      { name: 'NA3_MB_AP', id: '4273373' },
+    ],
   },
 }
 

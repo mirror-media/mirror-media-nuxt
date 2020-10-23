@@ -23,6 +23,8 @@
         />
       </a>
     </div>
+
+    <slot name="ads"></slot>
   </lazy-component>
 </template>
 
@@ -65,57 +67,59 @@ export default {
   flex-direction: column;
   .item {
     display: flex;
-    color: grey;
+    color: #808080;
     background-color: #eee;
     &::before {
       content: '';
       display: block;
       width: 10px;
-      background-color: grey;
+      flex-shrink: 0;
+      background-color: #808080;
     }
     + .item {
       margin-top: 16px;
     }
     &__title {
-      flex: 1;
       display: flex;
       align-items: center;
-      padding: 1em;
+      flex-grow: 1;
+      padding: 16px;
       @include media-breakpoint-up(md) {
-        padding: 1em 2em;
+        padding-left: 32px;
+        padding-right: 32px;
       }
       a {
+        display: block;
         display: -webkit-box;
-        max-height: calc(18px * 1.3 * 2);
         font-size: 18px;
         line-height: 1.3;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
-        text-overflow: ellipsis;
         overflow: hidden;
+        // 2.6em = 1em * 1.3 * 2
+        max-height: 2.6em;
       }
     }
     &__image {
       position: relative;
       width: 33%;
+      flex-shrink: 0;
+      padding-top: calc(33% * 0.75);
       @include media-breakpoint-up(md) {
         width: 25%;
-        padding-top: calc(25% * 0.5625);
+        padding-top: calc(25% * 0.75);
       }
       @include media-breakpoint-up(lg) {
         width: 20%;
-        padding-top: calc(20% * 0.6666);
+        padding-top: calc(20% * 0.75);
       }
       img {
         position: absolute;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: center center;
       }
     }
   }
