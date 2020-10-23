@@ -41,7 +41,8 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 500;
-  > div {
+
+  &::v-deep > div {
     margin-left: auto;
     margin-right: auto;
   }
