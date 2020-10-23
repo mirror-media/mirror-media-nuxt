@@ -35,7 +35,7 @@
               <lazy-component
                 :id="`dablewidget_${DABLE_WIDGET_IDS.PC}`"
                 :data-widget_id="DABLE_WIDGET_IDS.PC"
-                @show="handleShowDableWidget(DABLE_WIDGET_IDS.PC)"
+                @show="handleShowDableWidget"
               ></lazy-component>
             </div>
           </ClientOnly>
@@ -64,7 +64,7 @@
             <lazy-component
               :id="`dablewidget_${DABLE_WIDGET_IDS.MB}`"
               :data-widget_id="DABLE_WIDGET_IDS.MB"
-              @show="handleShowDableWidget(DABLE_WIDGET_IDS.MB)"
+              @show="handleShowDableWidget"
             ></lazy-component>
           </div>
 
@@ -311,12 +311,8 @@ export default {
     doesNotHaveCurrentStorySlug(item) {
       return item.slug !== this.storySlug
     },
-    handleShowDableWidget(widgetId) {
-      if (this.shouldLoadDableScript) {
-        window.dable('renderWidget', `dablewidget_${widgetId}`)
-      } else {
-        this.shouldLoadDableScript = true
-      }
+    handleShowDableWidget() {
+      this.shouldLoadDableScript = true
     },
   },
   head() {
