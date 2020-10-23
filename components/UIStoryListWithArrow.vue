@@ -56,10 +56,11 @@ export default {
   justify-content: space-between;
   &:not(.single) {
     .item:last-child {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+
       .item__arrow {
         order: 1;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
         &:before {
           transform: rotate(180deg);
         }
@@ -70,6 +71,7 @@ export default {
     flex: 1;
     display: flex;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
     @include media-breakpoint-up(md) {
       max-width: 50%;
     }
@@ -81,10 +83,8 @@ export default {
       }
     }
     &:first-child {
-      .item__arrow {
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
-      }
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
     }
     + .item {
       margin-left: 5px;
