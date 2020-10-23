@@ -57,66 +57,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.micro-ad {
-  &::v-deep {
-    // Listing MicroAd Style
-    #compass-fit-widget-content {
-      .listArticleBlock__figure {
-        position: relative;
-        a {
-          display: block;
-          position: relative;
-          padding-top: 66.66%;
-          img {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
-        }
-        .listArticleBlock__figure--colorBlock {
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          padding: 8px;
-          line-height: 1;
-          font-size: 16px;
-          color: white;
-          display: inline-block;
-          max-width: 100%;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-      }
-      .listArticleBlock__content {
-        flex: 1 1 auto;
-        display: flex;
-        flex-direction: column;
-        padding: 15px 30px;
-        text-align: justify;
-        h2 {
-          color: #34495e;
-          font-size: 20.8px;
-          font-weight: 300;
-          line-height: 1.3;
-        }
-        p {
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          margin: 10px 0 0 0;
-          color: #999;
-          font-size: 16px;
-          font-weight: 300;
-          line-height: 1.5;
-          word-wrap: break-word;
-          -webkit-line-clamp: 3;
-          overflow: hidden;
-        }
-      }
-    }
-  }
-}
+/**
+ * 請把樣式寫在 ~/css/micro-ad/ 資料夾中，再把樣式引入到需要它的元件內
+ */
 </style>

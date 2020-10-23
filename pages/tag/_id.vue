@@ -207,6 +207,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/css/micro-ad/listing.scss';
+
 .section {
   background-color: #f2f2f2;
   padding: 36px 0;
@@ -224,29 +226,6 @@ export default {
   &__list {
     @include media-breakpoint-up(md) {
       margin: 8px 0 0 0;
-    }
-  }
-}
-
-.micro-ad {
-  height: 100%;
-  background-color: #f4f1e9;
-  box-shadow: 5px 5px 5px #bcbcbc;
-  @include media-breakpoint-up(xl) {
-    transition: all 0.3s ease-in-out;
-    &:hover {
-      transform: translateY(-20px);
-      box-shadow: 5px 15px 5px #bcbcbc;
-    }
-  }
-  &::v-deep {
-    #compass-fit-widget {
-      height: 100%;
-    }
-    #compass-fit-widget-content {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
     }
   }
 }
