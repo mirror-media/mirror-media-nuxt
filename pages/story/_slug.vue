@@ -33,9 +33,9 @@
           <ClientOnly>
             <div v-if="isDesktopWidth" class="dable-widget">
               <lazy-component
-                :id="`dablewidget_${DABLE_WIDGET_IDS.desktop}`"
-                :data-widget_id="DABLE_WIDGET_IDS.desktop"
-                @show="handleShowDableWidget(DABLE_WIDGET_IDS.desktop)"
+                :id="`dablewidget_${DABLE_WIDGET_IDS.PC}`"
+                :data-widget_id="DABLE_WIDGET_IDS.PC"
+                @show="handleShowDableWidget(DABLE_WIDGET_IDS.PC)"
               ></lazy-component>
             </div>
           </ClientOnly>
@@ -62,9 +62,9 @@
 
           <div v-if="!isDesktopWidth" class="dable-widget">
             <lazy-component
-              :id="`dablewidget_${DABLE_WIDGET_IDS.mobile}`"
-              :data-widget_id="DABLE_WIDGET_IDS.mobile"
-              @show="handleShowDableWidget(DABLE_WIDGET_IDS.mobile)"
+              :id="`dablewidget_${DABLE_WIDGET_IDS.MB}`"
+              :data-widget_id="DABLE_WIDGET_IDS.MB"
+              @show="handleShowDableWidget(DABLE_WIDGET_IDS.MB)"
             ></lazy-component>
           </div>
 
@@ -418,8 +418,8 @@ export default {
             })(window, document, 'dable', 'script')
             dable('setService', 'mirrormedia.mg')
             dable('sendLogOnce')
-            dable('renderWidget', 'dablewidget_${DABLE_WIDGET_IDS.mobile}')
-            dable('renderWidget', 'dablewidget_${DABLE_WIDGET_IDS.desktop}')
+            dable('renderWidget', 'dablewidget_${DABLE_WIDGET_IDS.MB}')
+            dable('renderWidget', 'dablewidget_${DABLE_WIDGET_IDS.PC}')
           `,
         },
       ],

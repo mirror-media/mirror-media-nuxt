@@ -1,6 +1,6 @@
 const DABLE_WIDGET_IDS = {
-  mobile: '6XgaOJ7N',
-  desktop: 'GlYwenoy',
+  MB: '6XgaOJ7N',
+  PC: 'GlYwenoy',
 }
 
 const MICRO_AD_UNITS = {
