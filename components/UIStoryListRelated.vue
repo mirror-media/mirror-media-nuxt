@@ -65,10 +65,12 @@ export default {
 .story-list {
   display: flex;
   flex-direction: column;
+
   .item {
     display: flex;
     color: #808080;
     background-color: #eee;
+
     &::before {
       content: '';
       display: block;
@@ -76,9 +78,11 @@ export default {
       flex-shrink: 0;
       background-color: #808080;
     }
+
     + .item {
       margin-top: 16px;
     }
+
     &__title {
       display: flex;
       align-items: center;
@@ -88,11 +92,12 @@ export default {
         padding-left: 32px;
         padding-right: 32px;
       }
+
       a {
-        display: block;
-        display: -webkit-box;
         font-size: 18px;
         line-height: 1.3;
+        display: block;
+        display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
@@ -100,10 +105,11 @@ export default {
         max-height: 2.6em;
       }
     }
+
     &__image {
       position: relative;
-      width: 33%;
       flex-shrink: 0;
+      width: 33%;
       padding-top: calc(33% * 0.75);
       @include media-breakpoint-up(md) {
         width: 25%;
@@ -113,6 +119,7 @@ export default {
         width: 20%;
         padding-top: calc(20% * 0.75);
       }
+
       img {
         position: absolute;
         top: 0;
