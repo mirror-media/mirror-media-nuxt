@@ -15,7 +15,7 @@
           <UIStoryListRelated
             :items="relatedsWithoutFirstTwo"
             :images="relatedImages"
-            @show="fetchRelatedImages"
+            @show="handleShowStoryListRelated"
           >
             <template #ads>
               <ClientOnly>
@@ -24,6 +24,8 @@
                   :key="unit.name"
                   :unitId="unit.id"
                 />
+
+                <div id="_popIn_recommend"></div>
               </ClientOnly>
             </template>
           </UIStoryListRelated>
@@ -199,6 +201,8 @@ export default {
       DABLE_WIDGET_IDS,
       shouldLoadDableScript: false,
 
+      shouldLoadPopinScript: false,
+
       sectionCarandwatchId: SECTION_IDS.carandwatch,
       doesClickCloseAdPcFloating: false,
     }
@@ -272,6 +276,11 @@ export default {
   },
 
   methods: {
+    handleShowStoryListRelated() {
+      this.fetchRelatedImages()
+
+      this.shouldLoadPopinScript = true
+    },
     async fetchRelatedImages() {
       if (this.hasRelatedImages) {
         return
@@ -418,9 +427,29 @@ export default {
             dable('renderWidget', 'dablewidget_${DABLE_WIDGET_IDS.PC}')
           `,
         },
+        {
+          hid: 'popinAd',
+          skip: !this.shouldLoadPopinScript,
+          innerHTML: `
+            (function () {
+              var pa = document.createElement('script')
+              pa.type = 'text/javascript'
+              pa.charset = 'utf-8'
+              pa.async = true
+
+              pa.src =
+                window.location.protocol +
+                '//api.popin.cc/searchbox/mirrormedia_tw.js'
+
+              var s = document.getElementsByTagName('script')[0]
+              s.parentNode.insertBefore(pa, s)
+            })()
+          `,
+        },
       ],
       __dangerouslyDisableSanitizersByTagID: {
         dable: ['innerHTML'],
+        popinAd: ['innerHTML'],
       },
     }
 
@@ -623,6 +652,54 @@ aside {
     height: auto;
     cursor: pointer;
     user-select: none;
+  }
+}
+
+#_popIn_recommend {
+  &::v-deep {
+    ._popIn_recommend_container {
+      padding-bottom: 0;
+    }
+
+    ._popIn_recommend_article {
+      &::before {
+        flex-shrink: 0;
+        position: static;
+        height: auto;
+      }
+    }
+
+    ._popIn_recommend_art_title {
+      flex-grow: 1;
+      margin-left: 0;
+      white-space: normal;
+      @include media-breakpoint-up(md) {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+
+      a {
+        display: block;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+
+    ._popIn_recommend_art_img {
+      flex-shrink: 0;
+      width: 33%;
+      padding-top: calc(33% * 0.75);
+      @include media-breakpoint-up(md) {
+        width: 25%;
+        padding-top: calc(25% * 0.75);
+      }
+      @include media-breakpoint-up(lg) {
+        width: 20%;
+        padding-top: calc(20% * 0.75);
+      }
+    }
   }
 }
 </style>
