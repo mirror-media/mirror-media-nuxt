@@ -54,6 +54,7 @@ export default {
 .story-list {
   display: flex;
   justify-content: space-between;
+
   &:not(.single) {
     .item:last-child {
       border-top-right-radius: 4px;
@@ -61,6 +62,7 @@ export default {
 
       .item__arrow {
         order: 1;
+
         &:before {
           transform: rotate(180deg);
         }
@@ -75,6 +77,7 @@ export default {
     @include media-breakpoint-up(md) {
       max-width: 50%;
     }
+
     &:hover,
     &:active {
       .item__info {
@@ -82,13 +85,16 @@ export default {
         outline-offset: -2px;
       }
     }
+
     &:first-child {
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
     }
+
     + .item {
       margin-left: 5px;
     }
+
     &__arrow {
       display: flex;
       justify-content: center;
@@ -96,6 +102,7 @@ export default {
       width: 26px;
       height: 100%;
       background-color: #000;
+
       &:before {
         content: '';
         display: block;
@@ -107,6 +114,7 @@ export default {
         border-color: transparent #fff transparent transparent;
       }
     }
+
     &__info {
       flex: 1;
       display: flex;
@@ -116,6 +124,7 @@ export default {
       font-size: 14px; // 0.875rem
       line-height: 1.5;
       text-align: justify;
+
       span {
         display: -webkit-box;
         height: calc(1em * 1.5 * 2);
@@ -126,6 +135,7 @@ export default {
       }
     }
   }
+
   @each $name, $color in $sections-color {
     &.#{$name} {
       .item {
@@ -136,6 +146,7 @@ export default {
           }
         }
       }
+
       .item__arrow {
         background-color: $color;
       }
