@@ -3,17 +3,19 @@
     v-if="hasItems"
     :class="[{ single: isSingle }, sectionName, 'story-list']"
   >
-    <nuxt-link
+    <a
       v-for="item in itemsSliced"
       :key="item.slug"
-      :to="`/story/${item.slug}`"
+      :href="`/story/${item.slug}`"
+      target="_blank"
+      rel="noopener noreferrer"
       class="item"
     >
       <div class="item__arrow" />
       <div class="item__info">
         <span v-text="item.title" />
       </div>
-    </nuxt-link>
+    </a>
   </lazy-component>
 </template>
 
