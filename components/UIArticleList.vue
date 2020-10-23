@@ -39,7 +39,7 @@
 import UIArticleCard from './UIArticleCard.vue'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 
-const microAdUnitsKey = Object.keys(MICRO_AD_UNITS.LISTING)
+const microAdUnits = MICRO_AD_UNITS.LISTING.RWD
 
 export default {
   components: {
@@ -62,10 +62,10 @@ export default {
   },
   data() {
     return {
-      indexToMicroAdKey: {
-        1: microAdUnitsKey[0],
-        2: microAdUnitsKey[1],
-        5: microAdUnitsKey[2],
+      indexToMicroAdName: {
+        1: microAdUnits[0].name,
+        2: microAdUnits[1].name,
+        5: microAdUnits[2].name,
       },
     }
   },
@@ -82,7 +82,7 @@ export default {
       return index === 1 || index === 2 || index === 5
     },
     getMicroAdSlotNameAfter(index) {
-      return this.indexToMicroAdKey[index]
+      return this.indexToMicroAdName[index]
     },
     isSlotForMicroAd(unit) {
       return Object.keys(this.$slots).includes(unit)

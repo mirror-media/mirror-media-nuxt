@@ -5,19 +5,25 @@ const DABLE_WIDGET_IDS = {
 
 const MICRO_AD_UNITS = {
   HOME: {
-    NA1_PC_HP: '4273362',
-    NA2_PC_HP: '4273366',
-    NA3_PC_HP: '4273370',
-    NA1_MB_HP: '4273363',
-    NA2_MB_HP: '4273367',
-    NA3_MB_HP: '4273371',
+    PC: [
+      { name: 'NA1_PC_HP', id: '4273362' },
+      { name: 'NA2_PC_HP', id: '4273366' },
+      { name: 'NA3_PC_HP', id: '4273370' },
+    ],
+    MB: [
+      { name: 'NA1_MB_HP', id: '4273363' },
+      { name: 'NA2_MB_HP', id: '4273367' },
+      { name: 'NA3_MB_HP', id: '4273371' },
+    ],
   },
   LISTING: {
-    NA1_RWD_SP: '4273364',
-    NA2_RWD_SP: '4273368',
-    NA3_RWD_SP: '4273372',
+    RWD: [
+      { name: 'NA1_RWD_SP', id: '4273364' },
+      { name: 'NA2_RWD_SP', id: '4273368' },
+      { name: 'NA3_RWD_SP', id: '4273372' },
+    ],
   },
-  story: {
+  STORY: {
     PC: [
       { name: 'NA1_PC_AP', id: '4276377' },
       { name: 'NA2_PC_AP', id: '4276378' },

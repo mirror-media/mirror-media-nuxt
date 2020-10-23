@@ -194,7 +194,7 @@ export default {
       story: {},
       relatedImages: [],
 
-      microAdUnits: MICRO_AD_UNITS.story,
+      microAdUnits: MICRO_AD_UNITS.STORY,
 
       DABLE_WIDGET_IDS,
       shouldLoadDableScript: false,

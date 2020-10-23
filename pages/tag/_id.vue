@@ -13,8 +13,8 @@
       :listTitleColor="'#BCBCBC'"
       :listData="listDataFirstPage"
     >
-      <template v-for="(unitId, key) in microAdUnits" v-slot:[key]>
-        <MicroAd :key="unitId" :unitId="unitId" />
+      <template v-for="unit in microAdUnits" v-slot:[unit.name]>
+        <MicroAd :key="unit.name" :unitId="unit.id" />
       </template>
     </UIArticleList>
     <client-only>
@@ -81,7 +81,7 @@ export default {
       listDataMaxResults: 9,
       listDataTotal: undefined,
       tagName: undefined,
-      microAdUnits: MICRO_AD_UNITS.LISTING,
+      microAdUnits: MICRO_AD_UNITS.LISTING.RWD,
     }
   },
   computed: {
