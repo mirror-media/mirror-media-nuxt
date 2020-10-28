@@ -4,5 +4,6 @@ module.exports = {
   API_PORT: '',
   API_TIMEOUT: 500,
   DOMAIN_NAME: '',
+  ENV: 'dev',
   GPT_MODE: 'dev',
 }
