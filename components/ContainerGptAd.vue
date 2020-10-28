@@ -1,10 +1,12 @@
 <template>
-  <GPTAD
-    v-if="shouldOpenAd"
-    :adUnit="adData.adUnit"
-    :adSize="adData.adSize"
-    :adNetwork="adNetwork"
-  />
+  <div>
+    <GPTAD
+      v-if="shouldOpenAd"
+      :adUnit="adData.adUnit"
+      :adSize="adData.adSize"
+      :adNetwork="adNetwork"
+    />
+  </div>
 </template>
 
 <script>
