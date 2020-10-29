@@ -17,8 +17,9 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchTopicsData() {
-    const response = await this.$fetchCombo({ endpoint: 'topics' })
-    return response
+  async fetchTopicsData({ commit }) {
+    const response = (await this.$fetchCombo({ endpoint: 'topics' })) || {}
+
+    commit('setTopicsData', response.endpoints?.topics || {})
   },
 }

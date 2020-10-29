@@ -27,19 +27,14 @@ export default {
   setup() {
     useViewport()
   },
+
   async fetch() {
-    const [partnersResponse, topicsResponse] = await Promise.allSettled([
+    await Promise.all([
       this.$store.dispatch('partners/fetchPartnersData'),
       this.$store.dispatch('topics/fetchTopicsData'),
     ])
-
-    if (partnersResponse.status === 'fulfilled') {
-      this.commitPartnersData(partnersResponse.value)
-    }
-    if (topicsResponse.status === 'fulfilled') {
-      this.commitTopicsData(topicsResponse.value)
-    }
   },
+
   computed: {
     isListing() {
       const listingRouteNames = [
@@ -55,17 +50,6 @@ export default {
     },
     isSearchPage() {
       return this.$route.name === 'search-keyword'
-    },
-  },
-  methods: {
-    commitPartnersData(response) {
-      this.$store.commit('partners/setPartnersData', response)
-    },
-    commitTopicsData(response) {
-      this.$store.commit(
-        'topics/setTopicsData',
-        response.endpoints.topics ?? {}
-      )
     },
   },
 }

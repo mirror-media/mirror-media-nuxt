@@ -202,13 +202,21 @@ export default {
 
     SvgCloseIcon,
   },
+
   async fetch() {
-    const response = await this.$fetchPosts({
-      slug: this.storySlug,
-      isAudioSiteOnly: false,
-      clean: 'content',
-    })
-    this.story = response.items[0] ?? {}
+    const [postResponse] = await Promise.allSettled([
+      this.$fetchPosts({
+        slug: this.storySlug,
+        isAudioSiteOnly: false,
+        clean: 'content',
+      }),
+      this.$store.dispatch('partners/fetchPartnersData'),
+      this.$store.dispatch('topics/fetchTopicsData'),
+    ])
+
+    if (postResponse.status === 'fulfilled') {
+      this.story = postResponse.value.items?.[0] ?? {}
+    }
   },
 
   data() {
