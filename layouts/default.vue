@@ -4,7 +4,6 @@
       {
         listing: isListing,
         'listing--white-background': isSearchPage,
-        'story-page': isStory,
       },
     ]"
   >
@@ -15,16 +14,10 @@
 </template>
 
 <script>
-import {
-  reactive,
-  onBeforeMount,
-  onBeforeUnmount,
-  useContext,
-} from '@nuxtjs/composition-api'
-import { rafWithDebounce } from '~/utils/animation.js'
-
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import UIFooter from '~/components/UIFooter.vue'
+
+import { useViewport } from '~/composition/viewport.js'
 
 export default {
   components: {
@@ -32,11 +25,7 @@ export default {
     UIFooter,
   },
   setup() {
-    const { store } = useContext()
-
-    useViewport((viewport) => {
-      store.commit('viewport/setViewport', viewport)
-    })
+    useViewport()
   },
   async fetch() {
     const [partnersResponse, topicsResponse] = await Promise.allSettled([
@@ -67,9 +56,6 @@ export default {
     isSearchPage() {
       return this.$route.name === 'search-keyword'
     },
-    isStory() {
-      return this.$route.path.match(/\/story\//)
-    },
   },
   methods: {
     commitPartnersData(response) {
@@ -82,41 +68,6 @@ export default {
       )
     },
   },
-}
-
-function useViewport(syncViewport) {
-  const viewport = reactive({
-    width: 0,
-    height: 0,
-  })
-
-  onBeforeMount(() => {
-    updateViewport()
-
-    window.addEventListener('resize', updateViewportWithRaf)
-    window.addEventListener('orientationChange', updateViewportWithRaf)
-  })
-
-  onBeforeUnmount(() => {
-    window.removeEventListener('resize', updateViewport)
-    window.removeEventListener('orientationChange', updateViewport)
-  })
-
-  function updateViewport() {
-    /**
-     * 不用 document.documentElement.clientWidth 和 .clientHeight 的原因：
-     * 為了與 CSS media queries 判斷寬高的方式相同
-     */
-    ;({ innerWidth: viewport.width, innerHeight: viewport.height } = window)
-
-    syncViewport(viewport)
-  }
-
-  function updateViewportWithRaf() {
-    rafWithDebounce(() => {
-      updateViewport()
-    })
-  }
 }
 </script>
 
@@ -131,12 +82,6 @@ function useViewport(syncViewport) {
   // most of the listing page's background-color is #f2f2f2, except search page
   &--white-background {
     background-color: white;
-  }
-}
-
-.story-page {
-  @include media-breakpoint-up(lg) {
-    background-color: #414141;
   }
 }
 

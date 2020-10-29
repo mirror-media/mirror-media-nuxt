@@ -1,132 +1,145 @@
 <template>
-  <div class="story-container">
-    <ClientOnly>
-      <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="HD" />
-    </ClientOnly>
+  <div class="story-layout">
+    <ContainerPhotoGallery v-if="isPhotographyStyle" :story="story" />
 
-    <div class="story-wrapper">
-      <UIStoryBody :story="story">
-        <template #storyRelateds>
-          <UIStoryListWithArrow
-            :categoryTitle="categoryTitle"
-            :items="relateds"
-            :sectionName="sectionName"
-          />
-          <UIStoryListRelated
-            :items="relatedsWithoutFirstTwo"
-            :images="relatedImages"
-            @show="handleShowStoryListRelated"
-          >
-            <template #ads>
+    <template v-else>
+      <ContainerHeader />
+
+      <div class="story-container">
+        <ClientOnly>
+          <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="HD" />
+        </ClientOnly>
+
+        <div class="story-wrapper">
+          <UIStoryBody :story="story">
+            <template #storyRelateds>
+              <UIStoryListWithArrow
+                :categoryTitle="categoryTitle"
+                :items="relateds"
+                :sectionName="sectionName"
+              />
+              <UIStoryListRelated
+                :items="relatedsWithoutFirstTwo"
+                :images="relatedImages"
+                @show="handleShowStoryListRelated"
+              >
+                <template #ads>
+                  <ClientOnly>
+                    <MicroAd
+                      v-for="unit in microAdUnits[device]"
+                      :key="unit.name"
+                      :unitId="unit.id"
+                    />
+
+                    <div id="_popIn_recommend"></div>
+                  </ClientOnly>
+                </template>
+              </UIStoryListRelated>
+            </template>
+
+            <template #dableWidget>
               <ClientOnly>
-                <MicroAd
-                  v-for="unit in microAdUnits[device]"
-                  :key="unit.name"
-                  :unitId="unit.id"
-                />
-
-                <div id="_popIn_recommend"></div>
+                <div v-if="isDesktopWidth" class="dable-widget">
+                  <lazy-component
+                    :id="`dablewidget_${DABLE_WIDGET_IDS.PC}`"
+                    :data-widget_id="DABLE_WIDGET_IDS.PC"
+                    @show="handleShowDableWidget"
+                  ></lazy-component>
+                </div>
               </ClientOnly>
             </template>
-          </UIStoryListRelated>
-        </template>
+          </UIStoryBody>
 
-        <template #dableWidget>
-          <ClientOnly>
-            <div v-if="isDesktopWidth" class="dable-widget">
+          <aside>
+            <ClientOnly>
+              <ContainerGptAd
+                class="story__ad"
+                :pageKey="sectionId"
+                adKey="PC_R1"
+              />
+
+              <lazy-component class="story__fb-page">
+                <FbPage />
+              </lazy-component>
+
+              <ContainerGptAd
+                class="story__ad"
+                :pageKey="sectionId"
+                adKey="MB_E1"
+              />
+
+              <div v-if="!isDesktopWidth" class="dable-widget">
+                <lazy-component
+                  :id="`dablewidget_${DABLE_WIDGET_IDS.MB}`"
+                  :data-widget_id="DABLE_WIDGET_IDS.MB"
+                  @show="handleShowDableWidget"
+                ></lazy-component>
+              </div>
+
+              <div v-if="isDesktopWidth">
+                <lazy-component
+                  class="story__list story__list--latest"
+                  :style="{ height: hasLatestStories ? undefined : '100vh' }"
+                  @show="fetchLatestStories"
+                >
+                  <UIStoryListWithHeading
+                    v-if="hasLatestStories"
+                    heading="最新文章"
+                    :items="latestStories"
+                    :extractTitle="sectionCategory"
+                  />
+                </lazy-component>
+              </div>
+
+              <ContainerGptAd
+                class="story__ad"
+                :pageKey="sectionId"
+                adKey="PC_R2"
+              />
+
               <lazy-component
-                :id="`dablewidget_${DABLE_WIDGET_IDS.PC}`"
-                :data-widget_id="DABLE_WIDGET_IDS.PC"
-                @show="handleShowDableWidget"
-              ></lazy-component>
-            </div>
-          </ClientOnly>
-        </template>
-      </UIStoryBody>
+                class="story__list story__list--popular"
+                @show="fetchPopularStories"
+              >
+                <UIStoryListWithHeading
+                  v-if="hasPopularStories"
+                  heading="熱門文章"
+                  :items="popularStories"
+                />
+              </lazy-component>
+            </ClientOnly>
+          </aside>
+        </div>
 
-      <aside>
         <ClientOnly>
           <ContainerGptAd
-            class="story__ad"
+            class="story__ad story__ad--ft"
             :pageKey="sectionId"
-            adKey="PC_R1"
+            adKey="FT"
           />
-
-          <lazy-component class="story__fb-page">
-            <FbPage />
-          </lazy-component>
-
-          <ContainerGptAd
-            class="story__ad"
-            :pageKey="sectionId"
-            adKey="MB_E1"
-          />
-
-          <div v-if="!isDesktopWidth" class="dable-widget">
-            <lazy-component
-              :id="`dablewidget_${DABLE_WIDGET_IDS.MB}`"
-              :data-widget_id="DABLE_WIDGET_IDS.MB"
-              @show="handleShowDableWidget"
-            ></lazy-component>
-          </div>
-
-          <div v-if="isDesktopWidth">
-            <lazy-component
-              class="story__list story__list--latest"
-              :style="{ height: hasLatestStories ? undefined : '100vh' }"
-              @show="fetchLatestStories"
-            >
-              <UIStoryListWithHeading
-                v-if="hasLatestStories"
-                heading="最新文章"
-                :items="latestStories"
-                :extractTitle="sectionCategory"
-              />
-            </lazy-component>
-          </div>
-
-          <ContainerGptAd
-            class="story__ad"
-            :pageKey="sectionId"
-            adKey="PC_R2"
-          />
-
-          <lazy-component
-            class="story__list story__list--popular"
-            @show="fetchPopularStories"
-          >
-            <UIStoryListWithHeading
-              v-if="hasPopularStories"
-              heading="熱門文章"
-              :items="popularStories"
-            />
-          </lazy-component>
         </ClientOnly>
-      </aside>
-    </div>
 
-    <ClientOnly>
-      <ContainerGptAd
-        class="story__ad story__ad--ft"
-        :pageKey="sectionId"
-        adKey="FT"
-      />
-    </ClientOnly>
+        <UIAdultContentWarning v-if="story.isAdult" />
 
-    <UIAdultContentWarning v-if="story.isAdult" />
+        <UIStickyAd v-if="!hasWineCategory">
+          <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
+        </UIStickyAd>
 
-    <UIStickyAd v-if="!hasWineCategory">
-      <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
-    </UIStickyAd>
+        <ClientOnly v-if="shouldOpenAdPcFloating">
+          <div class="ad-pc-floating">
+            <ContainerGptAd
+              :pageKey="sectionCarandwatchId"
+              adKey="PC_FLOATING"
+            />
+            <SvgCloseIcon @click="doesClickCloseAdPcFloating = true" />
+          </div>
+        </ClientOnly>
 
-    <ClientOnly v-if="shouldOpenAdPcFloating">
-      <div class="ad-pc-floating">
-        <ContainerGptAd :pageKey="sectionCarandwatchId" adKey="PC_FLOATING" />
-        <SvgCloseIcon @click="doesClickCloseAdPcFloating = true" />
+        <ContainerFullScreenAds v-if="!hasWineCategory" />
       </div>
-    </ClientOnly>
 
-    <ContainerFullScreenAds v-if="!hasWineCategory" />
+      <UIFooter />
+    </template>
   </div>
 </template>
 
@@ -134,8 +147,11 @@
 import { mapGetters } from 'vuex'
 import _ from 'lodash'
 
+import { useViewport } from '~/composition/viewport.js'
 import { useFbQuotePlugin } from '~/composition/fb-plugins.js'
 
+import ContainerHeader from '~/components/ContainerHeader.vue'
+import ContainerPhotoGallery from '~/components/photo-gallery/ContainerPhotoGallery.vue'
 import UIAdultContentWarning from '~/components/UIAdultContentWarning.vue'
 import UIStoryBody from '~/components/UIStoryBody.vue'
 import UIStoryListRelated from '~/components/UIStoryListRelated.vue'
@@ -146,6 +162,7 @@ import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import MicroAd from '~/components/MicroAd.vue'
+import UIFooter from '~/components/UIFooter.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
@@ -161,10 +178,14 @@ import { DABLE_WIDGET_IDS, MICRO_AD_UNITS } from '~/constants/ads.js'
 
 export default {
   name: 'Story',
+  layout: 'empty',
   setup() {
+    useViewport()
     useFbQuotePlugin()
   },
   components: {
+    ContainerHeader,
+    ContainerPhotoGallery,
     UIAdultContentWarning,
     UIStoryBody,
     UIStoryListRelated,
@@ -176,6 +197,8 @@ export default {
     UIStickyAd,
     ContainerFullScreenAds,
     MicroAd,
+
+    UIFooter,
 
     SvgCloseIcon,
   },
@@ -212,6 +235,9 @@ export default {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
     }),
+    isPhotographyStyle() {
+      return this.story.style === 'photography'
+    },
     device() {
       return this.isDesktopWidth ? 'PC' : 'MB'
     },
@@ -561,6 +587,12 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/css/micro-ad/story.scss';
+
+.story-layout {
+  @include media-breakpoint-up(lg) {
+    background-color: #414141;
+  }
+}
 
 .story-container {
   max-width: 1160px;

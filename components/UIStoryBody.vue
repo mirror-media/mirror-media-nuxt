@@ -10,6 +10,7 @@
     </div>
     <h1 class="story__title" v-text="story.title" />
 
+    <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-if="credit" class="story__credit" v-html="credit"></div>
 
     <div class="story__share">
@@ -94,6 +95,7 @@ import UIShareSidebox from '~/components/UIShareSidebox.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import { AUTH_LINK, SUBSCRIBE_LINK, SITE_OG_IMG } from '~/constants/index.js'
+import { creditHtml } from '~/utils/article.js'
 
 const THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY = 6
 const AD_KEYS_IN_STORY_CONTENT = ['MB_AT1', 'PC_AT1', 'MB_AT2']
@@ -145,28 +147,7 @@ export default {
       return this.story.categories?.[0]?.title
     },
     credit() {
-      const {
-        writers = [],
-        photographers = [],
-        designers = [],
-        engineers = [],
-        cameraMan = [],
-        extendByline = '',
-      } = this.story
-      const data = [
-        [writers, '文'],
-        [photographers, '攝影'],
-        [designers, '設計'],
-        [engineers, '工程'],
-        [cameraMan, '影音'],
-        [extendByline, ''],
-      ]
-      const creditHtml = data
-        .filter(hasAnyAuthors)
-        .map(constructCreditHtml)
-        .join('&nbsp;&nbsp;&nbsp;&nbsp;')
-
-      return creditHtml
+      return creditHtml(this.story)
     },
 
     apiData() {
@@ -296,22 +277,6 @@ export default {
       return this.tags.length > 0
     },
   },
-}
-
-function hasAnyAuthors([authors]) {
-  return authors.length
-}
-
-function constructCreditHtml([authors, role]) {
-  if (role === '') {
-    return authors
-  }
-
-  return `${role}｜${authors.map(constructLink).join('&nbsp;')}`
-}
-
-function constructLink(author) {
-  return `<a href="/author/${author.id}" target="_blank">${author.name}</a>`
 }
 
 function useToggleShareSidebox(isViewportWidthUpMd) {

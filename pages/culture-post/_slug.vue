@@ -38,7 +38,7 @@ const regexIsPreview = new RegExp(`${PREVIEW_QUERY}`, 'gs')
 
 export default {
   name: 'CulturePost',
-  layout: 'app',
+  layout: 'empty',
   components: {
     UICulturePostContent,
     UICulturePostIndex,

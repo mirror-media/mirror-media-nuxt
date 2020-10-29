@@ -9,6 +9,13 @@ const createWrapper = createWrapperHelper({
   computed: {
     isDesktopWidth: () => true,
   },
+  mocks: {
+    $nuxt: {
+      context: {
+        store: { commit() {} },
+      },
+    },
+  },
   stubs: ['ClientOnly'],
 })
 
