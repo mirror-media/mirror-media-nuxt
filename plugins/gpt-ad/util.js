@@ -1,12 +1,3 @@
-export function insertGPTScript() {
-  // const GPTScript = document.createElement('script')
-  // GPTScript.type = 'text/javascript'
-  // GPTScript.async = true
-  // GPTScript.src = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js'
-  // const head = document.getElementsByTagName('head')[0]
-  // head.appendChild(GPTScript)
-}
-
 export function getAdSizeType(adSize = []) {
   /*
    ** see: https://developers.google.com/doubleclick-gpt/guides/ad-sizes

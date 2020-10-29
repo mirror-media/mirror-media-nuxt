@@ -1,5 +1,4 @@
 import GPTAD from './index.vue'
-import { insertGPTScript } from './util'
 
 let isGPTScriptInserted = false
 const GPTAdSlotsDefined = {}
@@ -25,7 +24,6 @@ export default {
     Component = Component.extend({
       beforeMount() {
         if (!isGPTScriptInserted) {
-          insertGPTScript()
           isGPTScriptInserted = true
           window.googletag = window.googletag || {}
           window.googletag.cmd = window.googletag.cmd || []
