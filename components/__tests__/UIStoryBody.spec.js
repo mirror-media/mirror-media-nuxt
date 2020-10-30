@@ -14,6 +14,9 @@ const createWrapper = createWrapperHelper({
   },
   mocks: {
     $dayjs: dayjs,
+    $store: {
+      state: { canAdvertise: true },
+    },
     $nuxt: {
       context: {
         store: { getters: {} },
@@ -403,4 +406,20 @@ describe('handleSendGa', () => {
 
     expect($ga.event).toBeCalledWith(gaArg)
   })
+})
+
+/**
+ * dableWidget 由於是 slot，因此無法測試
+ * 其餘未寫入此測試的廣告，會在 <ContainerGptAd> 內部處理
+ */
+test('should not render any ADs when canAdvertise is false', () => {
+  const wrapper = createWrapper(UIStoryBody, {
+    mocks: {
+      $store: {
+        state: { canAdvertise: false },
+      },
+    },
+  })
+
+  expect(wrapper.find('.story__ad-container').exists()).toBe(false)
 })

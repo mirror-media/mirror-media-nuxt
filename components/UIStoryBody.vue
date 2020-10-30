@@ -68,7 +68,7 @@
       </div>
     </lazy-component>
 
-    <ClientOnly>
+    <ClientOnly v-if="canAdvertise">
       <div class="story__ad-container">
         <ContainerGptAd :pageKey="sectionId" adKey="PC_E1" />
         <ContainerGptAd :pageKey="sectionId" adKey="PC_E2" />
@@ -86,6 +86,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { ref, computed, onMounted, useContext } from '@nuxtjs/composition-api'
 
 import UIStoryContentHandler from './UIStoryContentHandler.vue'
@@ -139,6 +140,8 @@ export default {
     }
   },
   computed: {
+    ...mapState(['canAdvertise']),
+
     brief() {
       const data = this.story.brief?.apiData ?? []
       return data.filter((paragraph) => paragraph.type === 'unstyled')

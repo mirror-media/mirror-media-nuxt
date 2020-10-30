@@ -8,9 +8,15 @@ const pageKeyMock = '57e1e0e5ee85930e00cad4e9'
 const createWrapper = createWrapperHelper({
   propsData: {
     pageKey: pageKeyMock,
+    adKey: 'RWD_LOGO',
   },
   computed: {
     isDesktopWidth: () => false,
+  },
+  mocks: {
+    $store: {
+      state: { canAdvertise: true },
+    },
   },
   stubs: ['GPTAD'],
 })
@@ -72,6 +78,18 @@ describe('prop "adKey" without a device text', () => {
 
 test('throw an error for an invalid AdData', () => {
   expect(() => validateAdData(undefined)).toThrow()
+})
+
+test('should not render content when canAdvertise is false', () => {
+  const wrapper = createWrapper(ContainerGptAd, {
+    mocks: {
+      $store: {
+        state: { canAdvertise: false },
+      },
+    },
+  })
+
+  expect(wrapper.find('.container-gpt-ad').exists()).toBe(false)
 })
 
 function applyTestToAdWithDeviceText(adKey, isDesktopWidth, expectFn) {

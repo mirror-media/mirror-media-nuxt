@@ -23,7 +23,7 @@
                 :images="relatedImages"
                 @show="handleShowStoryListRelated"
               >
-                <template #ads>
+                <template v-if="canAdvertise" #ads>
                   <ClientOnly>
                     <MicroAd
                       v-for="unit in microAdUnits[device]"
@@ -37,9 +37,9 @@
               </UIStoryListRelated>
             </template>
 
-            <template #dableWidget>
+            <template v-if="canAdvertise && isDesktopWidth" #dableWidget>
               <ClientOnly>
-                <div v-if="isDesktopWidth" class="dable-widget">
+                <div class="dable-widget">
                   <lazy-component
                     :id="`dablewidget_${DABLE_WIDGET_IDS.PC}`"
                     :data-widget_id="DABLE_WIDGET_IDS.PC"
@@ -68,7 +68,7 @@
                 adKey="MB_E1"
               />
 
-              <div v-if="!isDesktopWidth" class="dable-widget">
+              <div v-if="canAdvertise && !isDesktopWidth" class="dable-widget">
                 <lazy-component
                   :id="`dablewidget_${DABLE_WIDGET_IDS.MB}`"
                   :data-widget_id="DABLE_WIDGET_IDS.MB"
@@ -121,7 +121,7 @@
 
         <UIAdultContentWarning v-if="story.isAdult" />
 
-        <UIStickyAd v-if="!hasWineCategory">
+        <UIStickyAd v-if="!hasWineCategory && canAdvertise">
           <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
         </UIStickyAd>
 
@@ -135,7 +135,7 @@
           </div>
         </ClientOnly>
 
-        <ContainerFullScreenAds v-if="!hasWineCategory" />
+        <ContainerFullScreenAds v-if="!hasWineCategory && canAdvertise" />
       </div>
 
       <UIFooter />
@@ -144,7 +144,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import _ from 'lodash'
 
 import { useViewport } from '~/composition/viewport.js'
@@ -216,6 +216,11 @@ export default {
 
     if (postResponse.status === 'fulfilled') {
       this.story = postResponse.value.items?.[0] ?? {}
+
+      this.$store.commit(
+        'setCanAdvertise',
+        !this.story.hiddenAdvertised ?? true
+      )
     }
   },
 
@@ -240,6 +245,7 @@ export default {
   },
 
   computed: {
+    ...mapState(['canAdvertise']),
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
     }),
@@ -303,6 +309,7 @@ export default {
     shouldOpenAdPcFloating() {
       return (
         this.sectionId === this.sectionCarandwatchId &&
+        this.canAdvertise &&
         this.isDesktopWidth &&
         !this.doesClickCloseAdPcFloating
       )
@@ -436,9 +443,22 @@ export default {
       link: [
         { rel: 'canonical', href: pageUrl },
         { rel: 'amphtml', href: `${SITE_URL}/story/amp/${this.storySlug}/` },
+        {
+          hid: 'gptLink',
+          skip: !this.canAdvertise,
+          rel: 'preload',
+          href: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
+          as: 'script',
+        },
       ],
       script: [
         ...jsonLds.bind(this)(),
+        {
+          hid: 'gptScript',
+          skip: !this.canAdvertise,
+          src: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
+          async: true,
+        },
         {
           hid: 'dable',
           skip: !this.shouldLoadDableScript,

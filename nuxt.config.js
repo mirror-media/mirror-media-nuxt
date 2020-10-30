@@ -125,6 +125,7 @@ module.exports = {
 
       // https://developers.google.com/doubleclick-gpt/guides/general-best-practices#use_preload_when_appropriate
       {
+        hid: 'gptLink',
         rel: 'preload',
         href: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
         as: 'script',
@@ -133,6 +134,7 @@ module.exports = {
     script: [
       // https://developers.google.com/doubleclick-gpt/guides/general-best-practices#load_statically
       {
+        hid: 'gptScript',
         src: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
         async: true,
       },

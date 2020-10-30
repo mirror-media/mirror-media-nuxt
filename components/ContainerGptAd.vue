@@ -1,5 +1,5 @@
 <template>
-  <div class="container-gpt-ad">
+  <div v-if="$store.state.canAdvertise" class="container-gpt-ad">
     <GPTAD
       v-if="shouldOpenAd"
       :adUnit="adData.adUnit"

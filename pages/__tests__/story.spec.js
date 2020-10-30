@@ -1,15 +1,25 @@
 import Story from '../story/_slug.vue'
 import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
+import UIStickyAd from '~/components/UIStickyAd.vue'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import { DOMAIN_NAME } from '~/configs/config.js'
-import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '~/constants/index'
+import {
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  SITE_URL,
+  SECTION_IDS,
+} from '~/constants/index'
 
 const createWrapper = createWrapperHelper({
   computed: {
     isDesktopWidth: () => true,
   },
   mocks: {
+    $store: {
+      state: { canAdvertise: true },
+    },
     $nuxt: {
       context: {
         store: { commit() {} },
@@ -18,6 +28,16 @@ const createWrapper = createWrapperHelper({
   },
   stubs: ['ClientOnly'],
 })
+
+const storyMockRequired = {
+  publishedDate: 'Tue, 13 Oct 2020 08:59:35 GMT',
+  updatedAt: 'Tue, 13 Oct 2020 08:59:36 GMT',
+}
+
+const routeMock = {
+  path: '/story/20201013edi033/',
+  params: { slug: '20201013edi033' },
+}
 
 describe('latest list', () => {
   test('open when viewport >= lg', () => {
@@ -106,16 +126,62 @@ describe('latest list', () => {
   })
 })
 
-describe('JSON-LD', () => {
-  const storyMockRequired = {
-    publishedDate: 'Tue, 13 Oct 2020 08:59:35 GMT',
-    updatedAt: 'Tue, 13 Oct 2020 08:59:36 GMT',
-  }
-  const routeMock = {
-    path: '/story/20201013edi033/',
-    params: { slug: '20201013edi033' },
-  }
+describe('AD', () => {
+  test('should not load gpt script when canAdvertise is false', () => {
+    const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyMockRequired,
+        }
+      },
+      mocks: {
+        $store: {
+          state: { canAdvertise: false },
+        },
+        $route: routeMock,
+      },
+    })
+    const { link, script } = wrapper.vm.$options.head.call(wrapper.vm)
 
+    expect(findValByHid(link, 'gptLink').skip).toBe(true)
+    expect(findValByHid(script, 'gptScript').skip).toBe(true)
+
+    function findValByHid(list = [], hid) {
+      return list.find((item) => item.hid === hid)
+    }
+  })
+
+  /**
+   * <MicroAd>、popinAd 和桌機版的 dableWidget 由於是 slot，因此無法測試
+   * 其餘未寫入此測試的廣告，會在 <ContainerGptAd> 內部處理
+   */
+  test('should not render any ADs when canAdvertise is false', () => {
+    const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: {
+            sections: [{ id: SECTION_IDS.carandwatch }],
+          },
+        }
+      },
+      computed: {
+        isDesktopWidth: () => false,
+      },
+      mocks: {
+        $store: {
+          state: { canAdvertise: false },
+        },
+      },
+    })
+
+    expect(wrapper.find('.dable-widget').exists()).toBe(false)
+    expect(wrapper.findComponent(UIStickyAd).exists()).toBe(false)
+    expect(wrapper.findComponent(ContainerFullScreenAds).exists()).toBe(false)
+    expect(wrapper.find('.ad-pc-floating').exists()).toBe(false)
+  })
+})
+
+describe('JSON-LD', () => {
   test('render the proper content in most cases', () => {
     const storyMock = {
       title: '蔡英文視察樂山雷達站',
