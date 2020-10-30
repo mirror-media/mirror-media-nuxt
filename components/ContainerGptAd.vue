@@ -5,6 +5,7 @@
       :adUnit="adData.adUnit"
       :adSize="adData.adSize"
       :adNetwork="adNetwork"
+      v-on="$listeners"
     />
   </div>
 </template>

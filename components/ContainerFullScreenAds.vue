@@ -7,10 +7,10 @@
         :hasDefaultStyle="true"
         :isClosedBtnVisible="isAdFirstClosedBtnVisible"
       >
-        <GPTAD
+        <ContainerGptAd
           key="ad-first"
-          :adUnit="globalAdUnits.MB_FS.adUnit"
-          :adSize="globalAdUnits.MB_FS.adSize"
+          pageKey="global"
+          adKey="MB_FS"
           @slotRequested="setTimerForClosedBtn"
           @slotRenderEnded="handleAdRenderEndedFirst"
         />
@@ -19,18 +19,18 @@
         v-if="hasAdSecondOrThird"
         :hasModifiedStyle="hasModifiedStyle"
       >
-        <GPTAD
+        <ContainerGptAd
           v-if="hasAdSecond"
           key="ad-second"
-          :adUnit="globalAdUnits.MB_AD2.adUnit"
-          :adSize="globalAdUnits.MB_AD2.adSize"
+          pageKey="global"
+          adKey="MB_AD2"
           @slotRenderEnded="disableModifiedStyle"
         />
-        <GPTAD
+        <ContainerGptAd
           v-if="hasAdThird"
           key="ad-third"
-          :adUnit="globalAdUnits.MB_INNITY.adUnit"
-          :adSize="globalAdUnits.MB_INNITY.adSize"
+          pageKey="global"
+          adKey="MB_INNITY"
           @slotRenderEnded="disableModifiedStyle"
         />
       </UIFullScreenAd>
@@ -40,7 +40,7 @@
 
 <script>
 import UIFullScreenAd from '~/components/UIFullScreenAd.vue'
-import gptAdUnits from '~/constants/gpt-ad-units.js'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 /*
   蓋板廣告有三層，分別為：第一層 FS、第二層 AD2、第三層 Innity
@@ -68,6 +68,7 @@ export default {
   name: 'ContainerFullScreenAds',
   components: {
     UIFullScreenAd,
+    ContainerGptAd,
   },
   data() {
     return {
@@ -77,7 +78,6 @@ export default {
       hasModifiedStyle: true,
       isAdFirstVisible: false,
       isAdFirstClosedBtnVisible: false,
-      globalAdUnits: gptAdUnits.global,
       timerClosedBtn: null,
     }
   },
