@@ -20,10 +20,10 @@
           @sendGA="handleSendGA"
         />
         <client-only>
-          <GPTAD
+          <ContainerGptAd
             v-show="hasGptLogo"
-            :adUnit="logoAdUnit.adUnit"
-            :adSize="logoAdUnit.adSize"
+            pageKey="global"
+            adKey="RWD_LOGO"
             class="logo"
             @slotRenderEnded="handleLogoAdRenderEnded"
           />
@@ -80,7 +80,7 @@ import UIOthersList from './UIOthersList.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
 import UISidebar from './UISidebar.vue'
-import gptAdUnits from '~/constants/gpt-ad-units.js'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import {
   SUB_BRAND_LINKS,
@@ -98,6 +98,7 @@ export default {
     UIHeaderNavSection,
     UIHeaderNavTopic,
     UISidebar,
+    ContainerGptAd,
   },
   data() {
     return {
@@ -107,7 +108,6 @@ export default {
       shouldOpenSidebar: false,
       defaultOption: { title: '全部類別' },
       SITE_TITLE,
-      logoAdUnit: gptAdUnits.global.RWD_LOGO,
       hasGptLogo: false,
     }
   },
