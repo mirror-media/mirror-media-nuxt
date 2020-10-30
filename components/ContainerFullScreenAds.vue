@@ -7,6 +7,7 @@
         :hasDefaultStyle="true"
         :isClosedBtnVisible="isAdFirstClosedBtnVisible"
       >
+        <!-- 加 key 的原因：當廣告在 v-if 之間切換時，render 會出現錯誤 -->
         <ContainerGptAd
           key="ad-first"
           pageKey="global"
