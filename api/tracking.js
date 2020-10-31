@@ -16,6 +16,7 @@ module.exports = function (req, res, next) {
     const entry = log.entry(metadata, query)
     log.write(entry)
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(`[ERROR] Client info logging error occurred: ${error}.`)
   }
 }

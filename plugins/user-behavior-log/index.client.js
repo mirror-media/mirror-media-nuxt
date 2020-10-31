@@ -23,6 +23,7 @@ export default (context) => {
         sendLog(log)
       })
       .catch((err) => {
+        // eslint-disable-next-line no-console
         console.log(err)
       })
     next()
@@ -49,6 +50,7 @@ export default (context) => {
         sendLog(log)
       })
       .catch((err) => {
+        // eslint-disable-next-line no-console
         console.log(err)
       })
   })
@@ -71,6 +73,7 @@ export default (context) => {
         sendLog(log)
       })
       .catch((err) => {
+        // eslint-disable-next-line no-console
         console.log(err)
       })
   })

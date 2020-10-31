@@ -1,6 +1,7 @@
 <template>
   <article class="content">
     <template v-for="item in content">
+      <!-- eslint-disable vue/no-v-html -->
       <h2
         v-if="item.type === 'header-one' && checkContentIsNotEmpty(item)"
         :id="`header-${item.id}`"
@@ -17,6 +18,8 @@
         :key="item.id"
         v-html="item.content[0]"
       />
+      <!-- eslint-enable vue/no-v-html -->
+
       <figure v-if="item.type === 'image'" :key="item.id">
         <img
           v-lazy="processImageData(item).url"

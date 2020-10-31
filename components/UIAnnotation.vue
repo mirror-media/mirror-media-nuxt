@@ -7,6 +7,7 @@
       v-text="annotation.text"
     />
     <div v-show="openAnnotation" class="annotation__content">
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="content" v-html="annotation.annotation" />
     </div>
   </div>

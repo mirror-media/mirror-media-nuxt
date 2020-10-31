@@ -13,6 +13,7 @@ module.exports = async function (req, res, next) {
 
       res.send({ endpoints: { sections: response.data } })
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(
         '[API](/combo?endpoint=sections) fetch data from static json fail: ',
         error

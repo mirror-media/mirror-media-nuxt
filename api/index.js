@@ -24,6 +24,8 @@ module.exports = async function (req, res, next) {
   } catch (error) {
     res.set(NO_CACHE_HEADERS)
     res.status(500).send(error.message)
+
+    // eslint-disable-next-line no-console
     console.error(`[API] url: ${req.url}`, error)
   }
 }

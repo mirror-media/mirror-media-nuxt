@@ -24,6 +24,8 @@
           <UIShareLine />
         </div>
       </div>
+
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <p class="video__description" v-html="descriptionParsed" />
     </article>
     <client-only v-if="isMobile">
