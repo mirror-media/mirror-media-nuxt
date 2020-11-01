@@ -1,9 +1,9 @@
 import { shallowMount } from '@vue/test-utils'
 import _ from 'lodash'
 
-/*
- ** lodash mergeWith customizer let us can override objValue with array or empty object
- ** see: https://lodash.com/docs/4.17.15#mergeWith
+/**
+ * lodash mergeWith customizer let us can override objValue with array or empty object
+ * see: https://lodash.com/docs/4.17.15#mergeWith
  */
 const customizer = function (objValue, srcValue) {
   if (Array.isArray(srcValue)) {

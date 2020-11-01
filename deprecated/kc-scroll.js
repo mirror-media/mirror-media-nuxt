@@ -9,10 +9,12 @@ function currentYPosition() {
   if (self.pageYOffset) {
     return self.pageYOffset
   }
+
   // Internet Explorer 6 - standards mode
   if (document.documentElement && document.documentElement.scrollTop) {
     return document.documentElement.scrollTop
   }
+
   // Internet Explorer 6, 7 and 8
   if (document.body.scrollTop) {
     return document.body.scrollTop
@@ -52,12 +54,14 @@ function smoothScrollTo({ eID, yPos, steps }) {
     return
   }
   let speed = Math.round(distance / 50)
+
   // do scrollTo after every single 'speed'
   if (speed > 20) speed = 20
   if (speed < 10) speed = 10
 
   const _stepTimes = steps !== null && steps !== undefined ? steps : 25
   const step = Math.round(distance / _stepTimes)
+
   // do scrollTo for every 'step'px for 25 times
   let leapY = stopY > startY ? startY + step : startY - step
   let timer = 1
@@ -289,7 +293,7 @@ class OnePageScroller {
           default:
             return
         }
-        // }
+
         return false
       }
       this.doc.onkeydown = _keydownHandler

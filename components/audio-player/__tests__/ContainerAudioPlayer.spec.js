@@ -142,6 +142,7 @@ describe('audio status', () => {
     const mockCurrentTime = 3
 
     audio.currentTime = mockCurrentTime
+
     // 避免 UIAudioPlayerBar 針對 prop 'value' 自定義的 validator 檢查失敗
     audioStatus.duration = 6
 

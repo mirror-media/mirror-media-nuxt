@@ -214,6 +214,7 @@ export default {
     },
     activeTheNavSection(path) {
       const regexWithPrefixOfStory = this.generateRegexWithPrefixOf('/story/')
+
       // 文章頁也需要設定 sectionName，但不是在這邊做，而需移到 story page，故 return
       if (this.hasPrefix(path, regexWithPrefixOfStory)) {
         return

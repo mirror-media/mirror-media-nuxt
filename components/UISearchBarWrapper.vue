@@ -48,13 +48,16 @@ export default {
       const keyword = this.handleWhitespace(this.keyword)
       const { id } = this.selectedOption
       const query = id ? `?section=${id}` : ''
+
       // this.$router.push(`/search/${keyword}${query}`)
       location.assign(`/search/${keyword}${query}`)
     },
     handleWhitespace(str) {
-      // 1. remove whitespace from both sides of a string
-      // 2. remove whitespace from both sides of any comma
-      // 3. replace whitespace bwtween two letters with a comma
+      /**
+       * 1. remove whitespace from both sides of a string
+       * 2. remove whitespace from both sides of any comma
+       * 3. replace whitespace bwtween two letters with a comma
+       */
       return str
         .trim()
         .replace(/\s*,\s*/g, ',')

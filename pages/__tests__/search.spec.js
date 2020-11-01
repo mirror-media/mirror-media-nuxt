@@ -82,6 +82,7 @@ describe('section data', () => {
     })
     expect(wrapper.vm.sectionQueryTitle).toBe(sectionTitleMock)
   })
+
   // test('section title should be null if section query in url not exist', () => {
   //   const wrapper = createWrapper(page)
   //   expect(wrapper.vm.sectionQueryTitle).toBe(null)

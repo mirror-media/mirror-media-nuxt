@@ -1,7 +1,7 @@
 export function getAdSizeType(adSize = []) {
-  /*
-   ** see: https://developers.google.com/doubleclick-gpt/guides/ad-sizes
-   ** Ad size should be just ONE of these cases
+  /**
+   * see: https://developers.google.com/doubleclick-gpt/guides/ad-sizes
+   * Ad size should be just ONE of these cases
    */
   const sizeValidators = [
     function fixed() {
@@ -16,6 +16,7 @@ export function getAdSizeType(adSize = []) {
       return adSize.length === 1 && adSize[0] === 'fluid' ? 'fluid' : undefined
     },
   ]
+
   // output 'fixed', 'multi, 'fluid' or undefined
   const sizeValidator = sizeValidators.find(function findTruth(validator) {
     return validator()
