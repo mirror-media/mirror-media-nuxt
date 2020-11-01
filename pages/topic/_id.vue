@@ -45,9 +45,11 @@ export default {
       return Math.ceil(this.listDataTotal / this.listDataMaxResults)
     },
 
-    // Constraint which prevent loadmore unexpectly
-    // if we navigating on client-side
-    // due to the list data of the first page has not been loaded.
+    /**
+     * Constraint which prevent loadmore unexpectly
+     * if we navigating on client-side
+     * due to the list data of the first page has not been loaded.
+     */
     shouldMountInfiniteLoading() {
       return this.listDataCurrentPage >= 1
     },

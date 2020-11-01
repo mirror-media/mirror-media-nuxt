@@ -50,6 +50,7 @@ describe('search feature', () => {
     }
 
     searchBarVM.$emit('search')
+
     // expect($router.push).toBeCalledWith('/search/明星')
     expect(window.location.assign).toBeCalledWith('/search/明星')
 
@@ -58,6 +59,7 @@ describe('search feature', () => {
       keyword: '',
     })
     searchBarVM.$emit('search')
+
     // expect($router.push).not.toBeCalled()
     expect(window.location.assign).not.toBeCalled()
 
@@ -66,6 +68,7 @@ describe('search feature', () => {
       keyword: '明星 媒體',
     })
     searchBarVM.$emit('search')
+
     // expect($router.push).toBeCalledWith('/search/明星,媒體')
     expect(window.location.assign).toBeCalledWith('/search/明星,媒體')
 
@@ -74,6 +77,7 @@ describe('search feature', () => {
       keyword: ' 明星  媒體   ',
     })
     searchBarVM.$emit('search')
+
     // expect($router.push).toBeCalledWith('/search/明星,媒體')
     expect(window.location.assign).toBeCalledWith('/search/明星,媒體')
 
@@ -82,6 +86,7 @@ describe('search feature', () => {
       keyword: '明星, 媒體',
     })
     searchBarVM.$emit('search')
+
     // expect($router.push).toBeCalledWith('/search/明星,媒體')
     expect(window.location.assign).toBeCalledWith('/search/明星,媒體')
 
@@ -90,6 +95,7 @@ describe('search feature', () => {
       selectedOption: { title: '娛樂', id: '57e1e11cee85930e00cad4ea' },
     })
     searchBarVM.$emit('search')
+
     // expect($router.push).toBeCalledWith(
     //   '/search/明星,媒體?section=57e1e11cee85930e00cad4ea'
     // )

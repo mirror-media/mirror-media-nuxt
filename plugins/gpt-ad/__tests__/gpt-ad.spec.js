@@ -11,10 +11,13 @@ describe('adNetwork settings', () => {
     const localVue = createLocalVue()
     localVue.use(
       plugin
-      // adNetwork is missing in plugin option
-      // {
-      //   adNetwork: '',
-      // }
+
+      /**
+       * adNetwork is missing in plugin option
+       * {
+       *   adNetwork: '',
+       * }
+       */
     )
 
     const TestWrapperComponent = {

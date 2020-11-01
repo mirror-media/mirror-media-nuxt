@@ -8,8 +8,8 @@ const FB_APP_ID = '175313259598308'
 const FB_PAGE_ID = '1855418728011324'
 
 module.exports = {
-  /*
-   ** Headers of the page
+  /**
+   * Headers of the page
    */
   head: {
     htmlAttrs: {
@@ -140,16 +140,19 @@ module.exports = {
       },
     ],
   },
-  /*
-   ** Customize the progress-bar color
+
+  /**
+   * Customize the progress-bar color
    */
   loading: { color: '#fff' },
-  /*
-   ** Global CSS
+
+  /**
+   * Global CSS
    */
   css: ['~/css/base.css', 'swiper/css/swiper.css'],
-  /*
-   ** Plugins to load before mounting the App
+
+  /**
+   * Plugins to load before mounting the App
    */
   plugins: [
     '~/plugins/vuePluginsGlobal.js',
@@ -159,8 +162,9 @@ module.exports = {
     '~/plugins/article/index.js',
     '~/plugins/user-behavior-log/index.client.js',
   ],
-  /*
-   ** Nuxt.js Server Middleware
+
+  /**
+   * Nuxt.js Server Middleware
    */
   serverMiddleware: [
     '~/api/headers.js',
@@ -178,17 +182,20 @@ module.exports = {
     },
     { path: '/api', handler: '~/api/index.js' },
   ],
-  /*
-   ** Nuxt.js dev-modules
+
+  /**
+   * Nuxt.js dev-modules
    */
   buildModules: [
     '@nuxtjs/composition-api',
+
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
-    /*
-     ** googleAnalytics module configuration
-     ** https://github.com/nuxt-community/analytics-module
+
+    /**
+     * googleAnalytics module configuration
+     * https://github.com/nuxt-community/analytics-module
      */
     [
       '@nuxtjs/google-analytics',
@@ -202,8 +209,9 @@ module.exports = {
     ],
     '@nuxtjs/svg',
   ],
-  /*
-   ** Nuxt.js modules
+
+  /**
+   * Nuxt.js modules
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
@@ -214,11 +222,12 @@ module.exports = {
       ? ['@mirror-media/nuxt-ssr-cache']
       : []),
   ],
+
   // config for @mirror-media/nuxt-ssr-cache
   cache: {
-    /*
-     ** Workaround, pages array must exist and not empty,
-     ** see: https://github.com/arash16/nuxt-ssr-cache/blob/master/src/middleware.js#L34
+    /**
+     * Workaround, pages array must exist and not empty,
+     * see: https://github.com/arash16/nuxt-ssr-cache/blob/master/src/middleware.js#L34
      */
     pages: ['/'],
 
@@ -238,10 +247,11 @@ module.exports = {
     },
     store: {
       type: 'redis',
-      /*
-       ** readHost and writeHost working in @mirror-media/nuxt-ssr-cache only,
-       ** for redis write/read master-slave replication
-       ** Not working in the original nuxt-ssr-cache package
+
+      /**
+       * readHost and writeHost working in @mirror-media/nuxt-ssr-cache only,
+       * for redis write/read master-slave replication
+       * Not working in the original nuxt-ssr-cache package
        */
       readHost: require('./configs/config').REDIS_READ_HOST,
       writeHost: require('./configs/config').REDIS_WRITE_HOST,
@@ -250,16 +260,18 @@ module.exports = {
       ttl: 60 * 5,
     },
   },
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
+
+  /**
+   * Axios module configuration
+   * See https://axios.nuxtjs.org/options
    */
   axios: {},
   styleResources: {
     scss: '~/scss/*.scss',
   },
-  /*
-   ** Build configuration
+
+  /**
+   * Build configuration
    */
   build: {
     babel: {
@@ -268,8 +280,9 @@ module.exports = {
         options.corejs = { version: 3, proposals: true }
       },
     },
-    /*
-     ** You can extend webpack config here
+
+    /**
+     * You can extend webpack config here
      */
     extend(config, ctx) {
       config.resolve.extensions = ['.js']
@@ -284,9 +297,10 @@ module.exports = {
       }
     },
   },
-  /*
-   ** Nuxt Telemetry configuration
-   ** Doc: https://github.com/nuxt/telemetry#opting-out
+
+  /**
+   * Nuxt Telemetry configuration
+   * Doc: https://github.com/nuxt/telemetry#opting-out
    */
   telemetry: false,
 }
