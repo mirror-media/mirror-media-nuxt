@@ -10,12 +10,17 @@
     <ContainerHeader />
     <nuxt />
     <UIFooter :class="[{ 'footer--listing': isListing }]" />
+
+    <ClientOnly>
+      <TheGdpr />
+    </ClientOnly>
   </div>
 </template>
 
 <script>
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import UIFooter from '~/components/UIFooter.vue'
+import TheGdpr from '~/components/TheGdpr.vue'
 
 import { useViewport } from '~/composition/viewport.js'
 
@@ -23,6 +28,7 @@ export default {
   components: {
     ContainerHeader,
     UIFooter,
+    TheGdpr,
   },
   setup() {
     useViewport()
