@@ -343,6 +343,7 @@ export {
       + figure,
       + ul,
       + ol,
+      + .story__code,
       + .story__embedded-code,
       + .story-list {
         margin-top: 20px;
@@ -561,6 +562,10 @@ export {
     }
   }
 
+  &__code {
+    line-height: 2em;
+  }
+
   &__share-sidebox {
     width: 30px;
     position: fixed;
@@ -596,6 +601,13 @@ export {
 $quote-by-color: #255577;
 $quote-by-border: border(3px, $quote-by-color);
 $link-color: #3195b3;
+
+.story {
+  code {
+    white-space: pre-wrap;
+    color: #34495e;
+  }
+}
 
 .g-story {
   &-heading,

@@ -178,6 +178,12 @@ export default {
             <ContainerGptAd class="gpt-ad" pageKey={pageKey} adKey={adKey} />
           </ClientOnly>
         )
+      case 'code-block':
+        return (
+          <div class="story__code">
+            <code>{content[0] ?? ''}</code>
+          </div>
+        )
       case 'unstyled':
         return (
           <p
