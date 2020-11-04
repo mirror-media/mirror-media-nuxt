@@ -139,7 +139,7 @@
       </div>
 
       <div class="footer-container">
-        <UIFooter class="story__footer" />
+        <UIFooter />
       </div>
     </template>
   </div>
@@ -676,14 +676,6 @@ export default {
       margin-bottom: 0;
     }
   }
-
-  &__footer {
-    margin-bottom: 100px;
-
-    @include media-breakpoint-up(lg) {
-      margin-bottom: 0;
-    }
-  }
 }
 
 aside {
@@ -703,7 +695,9 @@ aside {
 }
 
 .footer-container {
+  margin-bottom: 100px;
   @include media-breakpoint-up(lg) {
+    margin-bottom: 0;
     max-width: 1160px;
     margin-left: auto;
     margin-right: auto;
