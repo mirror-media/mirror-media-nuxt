@@ -138,7 +138,9 @@
         <ContainerFullScreenAds v-if="!hasWineCategory && canAdvertise" />
       </div>
 
-      <UIFooter class="story__footer" />
+      <div class="footer-container">
+        <UIFooter class="story__footer" />
+      </div>
     </template>
   </div>
 </template>
@@ -625,12 +627,16 @@ export default {
 .story-container {
   max-width: 1160px;
   padding-top: 20px;
+  padding-bottom: 40px;
   overflow: hidden;
   @include media-breakpoint-up(lg) {
     margin: 0 auto;
     padding-left: 50px;
     padding-right: 50px;
     background-color: #fff;
+  }
+  @include media-breakpoint-up(xl) {
+    padding-bottom: 20px;
   }
 }
 
@@ -667,10 +673,7 @@ export default {
     margin-bottom: 20px;
 
     &--ft {
-      margin-bottom: 40px;
-      @include media-breakpoint-up(lg) {
-        margin-bottom: 20px;
-      }
+      margin-bottom: 0;
     }
   }
 
@@ -696,6 +699,15 @@ aside {
     flex-direction: column;
     margin-right: 0;
     margin-bottom: 0;
+  }
+}
+
+.footer-container {
+  @include media-breakpoint-up(lg) {
+    max-width: 1160px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
   }
 }
 
