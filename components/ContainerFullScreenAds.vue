@@ -61,8 +61,6 @@ import ContainerGptAd from '~/components/ContainerGptAd.vue'
  *
  * 第三層 Innity（AdThird）:
  * 同 AD2 一樣為不額外帶有樣式的廣告，因此需要先設置修正用樣式
- *
- * ＊ APP 用頁面沒有蓋板廣告
  */
 
 export default {
@@ -84,10 +82,7 @@ export default {
   },
   computed: {
     hasFullScreenAd() {
-      const isNotApp = this.$route.query.layout !== 'app'
-      return (
-        isNotApp && (this.hasAdFirst || this.hasAdSecond || this.hasAdThird)
-      )
+      return this.hasAdFirst || this.hasAdSecond || this.hasAdThird
     },
     hasAdSecondOrThird() {
       return this.hasAdSecond || this.hasAdThird
