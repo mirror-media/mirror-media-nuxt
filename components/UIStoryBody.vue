@@ -10,6 +10,8 @@
     </div>
     <h1 class="story__title" v-text="story.title" />
 
+    <h2 v-if="story.subtitle" class="story__subtitle">{{ story.subtitle }}</h2>
+
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-if="credit" class="story__credit" v-html="credit"></div>
 
@@ -361,6 +363,7 @@ export {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
+    margin-bottom: 13px;
   }
   &__category {
     color: #34495e;
@@ -388,7 +391,7 @@ export {
     }
   }
   &__title {
-    margin-top: 13px;
+    margin-bottom: 25px;
     font-size: 28px; // 1.75rem
     font-weight: 400;
     line-height: 1.25;
@@ -397,6 +400,13 @@ export {
       font-size: 32px;
     }
   }
+
+  &__subtitle {
+    font-size: 24px;
+    line-height: 1.5;
+    margin-bottom: 50px;
+  }
+
   &__brief {
     padding: 1em 2em;
     color: #fff;
@@ -435,8 +445,7 @@ export {
 
   &__share {
     display: flex;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin-bottom: 45px;
 
     a {
       width: 35px;
@@ -450,7 +459,7 @@ export {
   &__hero-img {
     width: 100%;
     max-width: none;
-    margin-top: 20px;
+
     figcaption {
       max-width: 645px;
       margin: 5px 0 0;

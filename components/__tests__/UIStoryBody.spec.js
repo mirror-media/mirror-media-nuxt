@@ -54,6 +54,25 @@ describe('render the proper content from props "story"', () => {
     expect(title.text()).toBe(titleMock)
   })
 
+  test('subtitle', () => {
+    const subtitleMock = '副標'
+    const wrapper = createWrapper(UIStoryBody, {
+      propsData: {
+        story: {
+          subtitle: subtitleMock,
+        },
+      },
+    })
+
+    expect(wrapper.get('h2').text()).toBe(subtitleMock)
+  })
+
+  test('should not render subtitle when no subtitle', () => {
+    const wrapper = createWrapper(UIStoryBody)
+
+    expect(wrapper.find('h2').exists()).toBe(false)
+  })
+
   test('sections', () => {
     const sectionNameMock = 'section-name'
     const wrapper = createWrapper(UIStoryBody, {
