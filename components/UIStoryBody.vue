@@ -427,7 +427,6 @@ export {
     margin-top: 25px;
     margin-bottom: 25px;
     line-height: 1.5;
-    text-align: left;
 
     &::v-deep a {
       color: #0b4fa2;
@@ -470,7 +469,7 @@ export {
   }
   &__updated-at {
     color: #064f77;
-    text-align: left;
+
     span {
       color: #61a4cd;
     }
@@ -515,7 +514,7 @@ export {
     color: #3a759e;
     font-size: 1.2rem;
     line-height: 2.2rem;
-    text-align: left;
+
     &::before {
       flex: 0 0 40px;
       display: inline-block;
@@ -615,7 +614,6 @@ $link-color: #3195b3;
   h2 {
     color: #000;
     font-size: 24px; // 1.5rem
-    text-align: left;
   }
 
   &-paragraph,
@@ -705,10 +703,6 @@ $link-color: #3195b3;
     color: rgba(0, 0, 0, 0.702);
     line-height: 2.2;
     letter-spacing: 0.3px;
-
-    li {
-      text-align: left;
-    }
   }
 
   &-ordered-list,
