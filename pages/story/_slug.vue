@@ -138,7 +138,7 @@
         <ContainerFullScreenAds v-if="!hasWineCategory && canAdvertise" />
       </div>
 
-      <UIFooter />
+      <UIFooter class="story__footer" />
     </template>
   </div>
 </template>
@@ -671,6 +671,14 @@ export default {
       @include media-breakpoint-up(lg) {
         margin-bottom: 20px;
       }
+    }
+  }
+
+  &__footer {
+    margin-bottom: 100px;
+
+    @include media-breakpoint-up(lg) {
+      margin-bottom: 0;
     }
   }
 }
