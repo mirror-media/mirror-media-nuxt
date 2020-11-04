@@ -3,6 +3,8 @@ import UISlideshow from './UISlideshow.vue'
 import UIInfobox from './UIInfobox.vue'
 import UIStoryVideo from './UIStoryVideo.vue'
 import ContainerAudioPlayer from './audio-player/ContainerAudioPlayer.vue'
+import ContainerParagraphWithAnnotation from './ContainerParagraphWithAnnotation.vue'
+import UIStoryAnnotation from '~/components/UIStoryAnnotation.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import SvgArrowPrev from '~/assets/arrow-prev-slideshow.svg?inline'
@@ -157,6 +159,18 @@ export default {
       case 'blockquote':
         return (
           <blockquote class="story-blockquote" domPropsInnerHTML={content[0]} />
+        )
+      case 'annotation':
+        return (
+          <ContainerParagraphWithAnnotation
+            class="g-story-paragraph"
+            content={content[0] || ''}
+            scopedSlots={{
+              default: ({ data }) => (
+                <UIStoryAnnotation key={data.id} content={data} />
+              ),
+            }}
+          />
         )
       case 'gpt-ad':
         return (
