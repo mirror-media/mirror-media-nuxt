@@ -1,12 +1,12 @@
 <template>
-  <div class="paragraph-with-annotation">
+  <p class="paragraph-with-annotation">
     <template v-for="data in splitContents">
       <slot v-if="data.pureAnnotationText !== undefined" :data="data"></slot>
 
       <!-- eslint-disable-next-line vue/no-v-html -->
       <span v-else :key="data.id" v-html="data.html"></span>
     </template>
-  </div>
+  </p>
 </template>
 
 <script>
