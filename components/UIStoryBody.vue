@@ -312,7 +312,6 @@ export {
   padding: 20px 0;
   color: #000;
   line-height: 1.15;
-  text-align: justify;
   word-break: break-word;
   max-width: 645px;
   margin-left: auto;
@@ -612,7 +611,6 @@ $link-color: #3195b3;
     color: #171717;
     font-size: 18px;
     line-height: 36px;
-    text-align: justify;
 
     &.smaller {
       font-size: 16px;
