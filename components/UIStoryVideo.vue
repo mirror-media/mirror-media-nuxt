@@ -1,14 +1,12 @@
 <template>
   <lazy-component class="story-video">
     <video
-      :id="`video-${video.id}`"
+      :src="video.url"
       preload="metadata"
       controlsList="nodownload"
       controls
       playsinline
-    >
-      <source :src="video.url" :type="video.filetype" />
-    </video>
+    />
   </lazy-component>
 </template>
 
