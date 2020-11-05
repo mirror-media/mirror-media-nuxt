@@ -4,6 +4,7 @@ import UIStoryBody, {
   THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY,
   AD_KEYS_IN_STORY_CONTENT,
 } from '../UIStoryBody.vue'
+import UIStoryVideo from '../UIStoryVideo.vue'
 import UIShareSidebox from '../UIShareSidebox.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
@@ -27,6 +28,11 @@ const createWrapper = createWrapperHelper({
 })
 
 describe('render the proper content from props "story"', () => {
+  const heroVideoMock = {
+    video: { url: 'https://www.google.com/' },
+  }
+  const heroCaptionMock = 'hero caption'
+
   test('published date', () => {
     const publishedDate = 'Mon, 14 Sep 2020 08:29:45 GMT'
     const wrapper = createWrapper(UIStoryBody, {
@@ -134,38 +140,64 @@ describe('render the proper content from props "story"', () => {
     expect(wrapper.find('.story__credit').exists()).toBe(false)
   })
 
-  test('hero image', async () => {
-    const heroImageMock = 'https://image.jpg'
-    const wrapper = await createWrapper(UIStoryBody, {
+  test('hero video', () => {
+    const wrapper = createWrapper(UIStoryBody, {
+      propsData: {
+        story: {
+          heroVideo: heroVideoMock,
+          heroCaption: heroCaptionMock,
+        },
+      },
+    })
+
+    expect(wrapper.findComponent(UIStoryVideo).exists()).toBe(true)
+    expect(wrapper.get('.story__hero-caption').text()).toBe(heroCaptionMock)
+
+    expect(wrapper.find('figure.story__hero').exists()).toBe(false)
+  })
+
+  test('should render hero img when no hero video', () => {
+    const heroImgUrlMock = 'https://image.jpg'
+    const wrapper = createWrapper(UIStoryBody, {
       propsData: {
         story: {
           heroImage: {
             image: {
-              resizedTargets: {
-                mobile: {
-                  url: heroImageMock,
-                },
-              },
+              resizedTargets: { mobile: { url: heroImgUrlMock } },
             },
           },
+          heroCaption: heroCaptionMock,
         },
       },
     })
-    const image = wrapper.get('.story__hero-img img')
-    expect(image.attributes().src).toBe(heroImageMock)
+
+    expect(wrapper.findComponent(UIStoryVideo).exists()).toBe(false)
+
+    expect(wrapper.get('figure.story__hero img').attributes().src).toBe(
+      heroImgUrlMock
+    )
+    expect(wrapper.get('figure.story__hero figcaption').text()).toBe(
+      heroCaptionMock
+    )
   })
 
-  test('hero caption', () => {
-    const herocaptionMock = 'hero caption'
+  test('should not render hero caption when no hero caption', async () => {
     const wrapper = createWrapper(UIStoryBody, {
       propsData: {
         story: {
-          heroCaption: herocaptionMock,
+          heroVideo: heroVideoMock,
         },
       },
     })
-    const categoryTitle = wrapper.get('.story__hero-img figcaption')
-    expect(categoryTitle.text()).toBe(herocaptionMock)
+
+    expect(wrapper.find('.story__hero-caption').exists()).toBe(false)
+
+    // 改換 render hero img
+    await wrapper.setProps({
+      story: {},
+    })
+
+    expect(wrapper.find('figure.story__hero figcaption').exists()).toBe(false)
   })
 
   test('updated-at should be rendered', () => {

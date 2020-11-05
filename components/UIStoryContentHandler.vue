@@ -154,12 +154,15 @@ export default {
             />
           </ClientOnly>
         )
-      case 'video':
-        return (
+      case 'video': {
+        const { url } = content[0] || {}
+
+        return url ? (
           <lazy-component>
-            <UIStoryVideo video={content[0]} />
+            <UIStoryVideo src={url} />
           </lazy-component>
-        )
+        ) : undefined
+      }
       case 'blockquote':
         return (
           <blockquote class="story-blockquote" domPropsInnerHTML={content[0]} />

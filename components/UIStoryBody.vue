@@ -20,10 +20,16 @@
       <UIShareLine />
     </div>
 
-    <figure class="g-story-figure story__hero-img">
-      <img :src="heroImage" :alt="story.heroCaption" />
-      <figcaption v-text="story.heroCaption" />
+    <div v-if="heroVideo.url" class="story__hero">
+      <UIStoryVideo :src="heroVideo.url" :poster="heroVideoPoster" />
+      <p v-if="heroCaption" class="story__hero-caption">{{ heroCaption }}</p>
+    </div>
+
+    <figure v-else class="g-story-figure story__hero">
+      <img :src="heroImg" :alt="heroCaption" />
+      <figcaption v-if="heroCaption" v-text="heroCaption" />
     </figure>
+
     <div v-if="hasBrief" class="story__brief">
       <UIStoryContentHandler
         v-for="paragraph in brief"
@@ -94,6 +100,7 @@ import { ref, computed, onMounted, useContext } from '@nuxtjs/composition-api'
 import UIStoryContentHandler from './UIStoryContentHandler.vue'
 import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
+import UIStoryVideo from '~/components/UIStoryVideo.vue'
 import UIShareSidebox from '~/components/UIShareSidebox.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
@@ -126,6 +133,7 @@ export default {
     UIStoryContentHandler,
     UIShareFb,
     UIShareLine,
+    UIStoryVideo,
     UIShareSidebox,
     ContainerGptAd,
   },
@@ -135,8 +143,20 @@ export default {
       required: true,
     },
   },
+
+  async fetch() {
+    const { coverPhoto: imgId } = this.story.heroVideo || {}
+
+    if (imgId) {
+      const { items = [] } = (await this.$fetchImages({ id: imgId })) || {}
+
+      this.heroVideoImg = items[0] || {}
+    }
+  },
+
   data() {
     return {
+      heroVideoImg: {},
       AUTH_LINK,
       SUBSCRIBE_LINK,
     }
@@ -248,10 +268,19 @@ export default {
       const rawBrief = this.brief
       return Array.isArray(rawBrief) && rawBrief.length > 0
     },
-    heroImage() {
+    heroVideo() {
+      return this.story.heroVideo?.video ?? {}
+    },
+    heroVideoPoster() {
+      return this.heroVideoImg.image?.resizedTargets?.tablet?.url || false
+    },
+    heroImg() {
       return (
         this.story.heroImage?.image?.resizedTargets?.mobile?.url ?? SITE_OG_IMG
       )
+    },
+    heroCaption() {
+      return this.story.heroCaption ?? ''
     },
     isAdvertised() {
       return this.story.isAdvertised
@@ -456,26 +485,30 @@ export {
     }
   }
 
-  &__hero-img {
+  &__hero {
     width: 100%;
-    max-width: none;
 
-    figcaption {
+    figcaption,
+    &-caption {
       max-width: 645px;
-      margin: 5px 0 0;
-      padding: 0 25px;
+      margin-top: 8px;
+      padding-left: 25px;
+      padding-right: 25px;
       color: #34495e;
       font-size: 16px;
       line-height: 1.3;
       @include media-breakpoint-up(md) {
-        padding: 0;
-        margin: 5px auto 0;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
       }
       @include media-breakpoint-up(lg) {
         max-width: none;
       }
     }
   }
+
   &__updated-at {
     color: #064f77;
 

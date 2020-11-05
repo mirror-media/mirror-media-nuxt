@@ -1,32 +1,35 @@
 <template>
-  <div class="story-video">
-    <video
-      :src="video.url"
-      preload="metadata"
-      controlsList="nodownload"
-      controls
-      playsinline
-    />
-  </div>
+  <video
+    :src="src"
+    :poster="poster"
+    preload="metadata"
+    controlsList="nodownload"
+    controls
+    playsinline
+  />
 </template>
 
 <script>
 export default {
   name: 'UIStoryVideo',
+
   props: {
-    video: {
-      type: Object,
+    src: {
+      type: String,
       required: true,
+    },
+    poster: {
+      type: [String, Boolean],
+      default: false,
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.story-video {
-  background-color: #000;
-  video {
-    width: 100%;
-  }
+video {
+  width: 100%;
+  outline: none;
+  object-fit: cover;
 }
 </style>

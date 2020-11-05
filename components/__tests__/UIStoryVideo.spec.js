@@ -3,17 +3,18 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper()
 
-describe('props', () => {
-  test('should has proper section class', () => {
-    const urlMock = 'test'
-    const wrapper = createWrapper(UIStoryVideo, {
-      propsData: {
-        video: {
-          url: urlMock,
-        },
-      },
-    })
-
-    expect(wrapper.get('video').attributes().src).toBe(urlMock)
+test('should render correct content', () => {
+  const srcMock = 'https://www.google.com/1234/'
+  const posterMock = 'https://www.google.com/5678/'
+  const wrapper = createWrapper(UIStoryVideo, {
+    propsData: {
+      src: srcMock,
+      poster: posterMock,
+    },
   })
+
+  const videoAttrs = wrapper.get('video').attributes()
+
+  expect(videoAttrs.src).toBe(srcMock)
+  expect(videoAttrs.poster).toBe(posterMock)
 })
