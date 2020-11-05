@@ -1,6 +1,6 @@
 import page from '../video/_id.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
-import UIShareFacebook from '~/components/UIShareFacebook.vue'
+import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 import UIYoutubeIframe from '~/components/UIYoutubeIframe.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
@@ -100,7 +100,7 @@ describe('latest list data', () => {
 describe('share components', () => {
   test('should has share components', () => {
     const wrapper = createWrapper(page)
-    expect(wrapper.findComponent(UIShareFacebook).exists()).toBe(true)
+    expect(wrapper.findComponent(UIShareFb).exists()).toBe(true)
     expect(wrapper.findComponent(UIShareLine).exists()).toBe(true)
   })
 })

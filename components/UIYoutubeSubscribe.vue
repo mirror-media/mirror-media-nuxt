@@ -1,3 +1,6 @@
+<!--
+  Document: https://developers.google.com/youtube/youtube_subscribe_button
+-->
 <template>
   <lazy-component @show="init">
     <!-- "g-ytsubscribe" is a required class setting by youtube, do not remove. -->
@@ -11,8 +14,6 @@
 </template>
 
 <script>
-// Document: https://developers.google.com/youtube/youtube_subscribe_button
-
 export default {
   name: 'UIYoutubeSubscribe',
   props: {

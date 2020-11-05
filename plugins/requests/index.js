@@ -3,7 +3,11 @@ import _ from 'lodash'
 import axios from 'axios'
 import qs from 'qs'
 
-import { API_TIMEOUT, DOMAIN_NAME } from '~/configs/config'
+import { ENV, API_TIMEOUT, DOMAIN_NAME } from '~/configs/config.js'
+
+const baseUrl = process.browser
+  ? `//${location.host}/`
+  : process.env._AXIOS_BASE_URL_
 
 function isPureObject(params) {
   return _.isObject(params) && !Array.isArray(params)
@@ -20,16 +24,12 @@ function snakeCase(text) {
 
 async function fetchAPIData(url) {
   try {
-    const baseUrl = process.browser
-      ? `//${location.host}/`
-      : process.env._AXIOS_BASE_URL_
     const res = await axios.get(`${baseUrl}api${url}`)
     const data = camelizeKeys(res.data)
     const hasData =
       (data.items && data.items.length > 0) ||
       (data.endpoints && Object.keys(data.endpoints).length > 0) ||
-      // properties responsed by /search api
-      (data.hits && data.hits.total > 0) ||
+      (data.hits && data.hits.total > 0) || // properties responsed by /search api
       (url.startsWith('/tags') && data.id)
 
     if (hasData) {
@@ -114,15 +114,27 @@ export function buildYoutubeParams(params = {}) {
   return ''
 }
 
-async function fetchGCSData(filename) {
+async function fetchGcsData(filename) {
+  let apiUrl
+
   try {
-    const url = `https://${DOMAIN_NAME}/json/${filename}.json`
-    const { data } = await axios.get(url, { timeout: API_TIMEOUT })
+    let data
+
+    if (ENV === 'prod' || !process.browser) {
+      apiUrl = `https://${DOMAIN_NAME}/json/${filename}.json`
+      ;({ data = {} } = await axios.get(apiUrl, { timeout: API_TIMEOUT }))
+    } else {
+      // 由於 CORS 的問題，不能直接在 browser 端打 api（除了生產環境），而是必須透過前端 server 去打
+      apiUrl = `${baseUrl}api/gcs/${filename}`
+      ;({ data = {} } = await axios.get(apiUrl))
+    }
+
     return camelizeKeys(data)
   } catch (err) {
     const message = err.response?.statusText ?? 'Not Found'
     const code = err.response?.status ?? 404
-    throw new FetchError(message, code)
+
+    throw new FetchError(message, code, apiUrl)
   }
 }
 
@@ -210,7 +222,7 @@ export default (context, inject) => {
     fetchAPIData(`/youtube/videos${buildYoutubeParams(params)}`)
   )
 
-  inject('fetchGrouped', () => fetchGCSData('grouped'))
+  inject('fetchGrouped', () => fetchGcsData('grouped'))
 
-  inject('fetchPopular', () => fetchGCSData('popularlist'))
+  inject('fetchPopular', () => fetchGcsData('popularlist'))
 }

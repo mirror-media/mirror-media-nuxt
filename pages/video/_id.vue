@@ -3,7 +3,7 @@
     <client-only v-if="!isMobile">
       <GPTAD
         class="video__ad"
-        :adUnit="getAdUnit('HD').adUnitCode"
+        :adUnit="getAdUnit('HD').adUnit"
         :adSize="getAdUnit('HD').adSize"
       />
     </client-only>
@@ -12,7 +12,7 @@
       <client-only v-if="isMobile">
         <GPTAD
           class="video__ad"
-          :adUnit="getAdUnit('HD').adUnitCode"
+          :adUnit="getAdUnit('HD').adUnit"
           :adSize="getAdUnit('HD').adSize"
         />
       </client-only>
@@ -20,16 +20,18 @@
       <div class="video__data-share">
         <p class="video__datetime" v-text="datetime" />
         <div class="video__share">
-          <UIShareFacebook />
+          <UIShareFb />
           <UIShareLine />
         </div>
       </div>
+
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <p class="video__description" v-html="descriptionParsed" />
     </article>
     <client-only v-if="isMobile">
       <GPTAD
         class="video__ad"
-        :adUnit="getAdUnit('E1').adUnitCode"
+        :adUnit="getAdUnit('E1').adUnit"
         :adSize="getAdUnit('E1').adSize"
       />
     </client-only>
@@ -37,7 +39,7 @@
       <client-only v-if="!isMobile">
         <GPTAD
           class="video__ad"
-          :adUnit="getAdUnit('R1').adUnitCode"
+          :adUnit="getAdUnit('R1').adUnit"
           :adSize="getAdUnit('R1').adSize"
         />
       </client-only>
@@ -60,7 +62,7 @@
     <client-only>
       <GPTAD
         class="video__ad"
-        :adUnit="getAdUnit('FT').adUnitCode"
+        :adUnit="getAdUnit('FT').adUnit"
         :adSize="getAdUnit('FT').adSize"
       />
     </client-only>
@@ -68,7 +70,7 @@
     <UIStickyAd>
       <client-only>
         <GPTAD
-          :adUnit="getAdUnit('ST').adUnitCode"
+          :adUnit="getAdUnit('ST').adUnit"
           :adSize="getAdUnit('ST').adSize"
         />
       </client-only>
@@ -77,16 +79,16 @@
 </template>
 
 <script>
-import { SITE_OG_IMAGE, SITE_URL } from '~/constants/index'
+import { SITE_OG_IMG, SITE_URL } from '~/constants/index'
 import { processResponseItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
-import UIShareFacebook from '~/components/UIShareFacebook.vue'
+import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 import UIYoutubeIframe from '~/components/UIYoutubeIframe.vue'
 import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
-import gptUnits from '~/constants/gptUnits'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 export default {
   name: 'Video',
@@ -97,7 +99,7 @@ export default {
     ContainerFullScreenAds,
     UIStickyAd,
     UILinkedItemWithTitle,
-    UIShareFacebook,
+    UIShareFb,
     UIShareLine,
     UIYoutubeIframe,
     UIYoutubePolicies,
@@ -112,7 +114,7 @@ export default {
   },
   data() {
     return {
-      videoAdUnits: gptUnits.videohub ?? {},
+      videoAdUnits: gptAdUnits.videohub ?? {},
       videoData: {},
       listDataLatest: [],
     }
@@ -174,7 +176,7 @@ export default {
       this.listDataLatest = processResponseItems(response)
     },
     getAdUnit(position) {
-      return this.videoAdUnits[`${this.adDevice}${position}`] ?? {}
+      return this.videoAdUnits[`${this.adDevice}_${position}`] ?? {}
     },
     getHref(videoId) {
       if (this.isApp) {
@@ -194,7 +196,7 @@ export default {
     const image =
       this.videoData?.thumbnails?.maxres?.url ||
       this.videoData?.thumbnails?.standard?.url ||
-      SITE_OG_IMAGE
+      SITE_OG_IMG
     return {
       title: this.title,
       meta: [
@@ -318,13 +320,12 @@ export default {
   }
   &__share {
     display: flex;
-    > a + a {
-      margin-left: 10px;
-    }
-    &::v-deep {
-      img {
-        width: 35px;
-        height: 35px;
+
+    a {
+      width: 35px;
+
+      + a {
+        margin-left: 10px;
       }
     }
   }

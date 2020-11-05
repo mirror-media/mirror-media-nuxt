@@ -4,38 +4,43 @@
       {
         listing: isListing,
         'listing--white-background': isSearchPage,
-        'story-page': isStory,
       },
     ]"
   >
     <ContainerHeader />
     <nuxt />
     <UIFooter :class="[{ 'footer--listing': isListing }]" />
+
+    <ClientOnly>
+      <TheGdpr />
+    </ClientOnly>
   </div>
 </template>
 
 <script>
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import UIFooter from '~/components/UIFooter.vue'
+import TheGdpr from '~/components/TheGdpr.vue'
+
+import { useViewport } from '~/composition/viewport.js'
 
 export default {
   components: {
     ContainerHeader,
     UIFooter,
+    TheGdpr,
   },
+  setup() {
+    useViewport()
+  },
+
   async fetch() {
-    const [partnersResponse, topicsResponse] = await Promise.allSettled([
+    await Promise.all([
       this.$store.dispatch('partners/fetchPartnersData'),
       this.$store.dispatch('topics/fetchTopicsData'),
     ])
-
-    if (partnersResponse.status === 'fulfilled') {
-      this.commitPartnersData(partnersResponse.value)
-    }
-    if (topicsResponse.status === 'fulfilled') {
-      this.commitTopicsData(topicsResponse.value)
-    }
   },
+
   computed: {
     isListing() {
       const listingRouteNames = [
@@ -52,20 +57,6 @@ export default {
     isSearchPage() {
       return this.$route.name === 'search-keyword'
     },
-    isStory() {
-      return this.$route.path.match(/\/story\//)
-    },
-  },
-  methods: {
-    commitPartnersData(response) {
-      this.$store.commit('partners/setPartnersData', response)
-    },
-    commitTopicsData(response) {
-      this.$store.commit(
-        'topics/setTopicsData',
-        response.endpoints.topics ?? {}
-      )
-    },
   },
 }
 </script>
@@ -81,12 +72,6 @@ export default {
   // most of the listing page's background-color is #f2f2f2, except search page
   &--white-background {
     background-color: white;
-  }
-}
-
-.story-page {
-  @include media-breakpoint-up(lg) {
-    background-color: #414141;
   }
 }
 

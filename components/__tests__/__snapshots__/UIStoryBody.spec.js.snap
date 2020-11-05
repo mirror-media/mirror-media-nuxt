@@ -7,6 +7,7 @@ exports[`render the proper content from props "story" credit 1`] = `
   文｜
   <a
     href="/author/123"
+    rel="noopener noreferrer"
     target="_blank"
   >
     Tom
@@ -14,6 +15,7 @@ exports[`render the proper content from props "story" credit 1`] = `
       攝影｜
   <a
     href="/author/456"
+    rel="noopener noreferrer"
     target="_blank"
   >
     Mary
@@ -21,6 +23,7 @@ exports[`render the proper content from props "story" credit 1`] = `
       設計｜
   <a
     href="/author/789"
+    rel="noopener noreferrer"
     target="_blank"
   >
     Tony
@@ -28,6 +31,7 @@ exports[`render the proper content from props "story" credit 1`] = `
       工程｜
   <a
     href="/author/987"
+    rel="noopener noreferrer"
     target="_blank"
   >
     Andy
@@ -35,6 +39,7 @@ exports[`render the proper content from props "story" credit 1`] = `
       影音｜
   <a
     href="/author/654"
+    rel="noopener noreferrer"
     target="_blank"
   >
     Allen

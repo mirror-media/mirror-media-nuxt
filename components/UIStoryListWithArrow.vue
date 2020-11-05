@@ -1,20 +1,22 @@
 <template>
-  <div
+  <lazy-component
     v-if="hasItems"
     :class="[{ single: isSingle }, sectionName, 'story-list']"
   >
-    <nuxt-link
+    <a
       v-for="item in itemsSliced"
       :key="item.slug"
-      :to="`/story/${item.slug}`"
+      :href="`/story/${item.slug}`"
+      target="_blank"
+      rel="noopener noreferrer"
       class="item"
     >
       <div class="item__arrow" />
       <div class="item__info">
         <span v-text="item.title" />
       </div>
-    </nuxt-link>
-  </div>
+    </a>
+  </lazy-component>
 </template>
 
 <script>
@@ -52,12 +54,15 @@ export default {
 .story-list {
   display: flex;
   justify-content: space-between;
+
   &:not(.single) {
     .item:last-child {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+
       .item__arrow {
         order: 1;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
+
         &:before {
           transform: rotate(180deg);
         }
@@ -68,9 +73,11 @@ export default {
     flex: 1;
     display: flex;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
     @include media-breakpoint-up(md) {
       max-width: 50%;
     }
+
     &:hover,
     &:active {
       .item__info {
@@ -78,15 +85,16 @@ export default {
         outline-offset: -2px;
       }
     }
+
     &:first-child {
-      .item__arrow {
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
-      }
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
     }
+
     + .item {
       margin-left: 5px;
     }
+
     &__arrow {
       display: flex;
       justify-content: center;
@@ -94,6 +102,7 @@ export default {
       width: 26px;
       height: 100%;
       background-color: #000;
+
       &:before {
         content: '';
         display: block;
@@ -105,6 +114,7 @@ export default {
         border-color: transparent #fff transparent transparent;
       }
     }
+
     &__info {
       flex: 1;
       display: flex;
@@ -114,6 +124,7 @@ export default {
       font-size: 14px; // 0.875rem
       line-height: 1.5;
       text-align: justify;
+
       span {
         display: -webkit-box;
         height: calc(1em * 1.5 * 2);
@@ -124,6 +135,7 @@ export default {
       }
     }
   }
+
   @each $name, $color in $sections-color {
     &.#{$name} {
       .item {
@@ -134,6 +146,7 @@ export default {
           }
         }
       }
+
       .item__arrow {
         background-color: $color;
       }

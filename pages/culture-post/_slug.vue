@@ -28,7 +28,7 @@
 import _ from 'lodash'
 import { clearAllBodyScrollLocks, disableBodyScroll } from 'body-scroll-lock'
 import { PREVIEW_QUERY } from '~/configs/config'
-import { SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '~/constants/index'
+import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import UICulturePostContent from '~/components/UICulturePostContent.vue'
 import UICulturePostIndex from '~/components/UICulturePostIndex.vue'
 import UICulturePostIntro from '~/components/UICulturePostIntro.vue'
@@ -38,7 +38,7 @@ const regexIsPreview = new RegExp(`${PREVIEW_QUERY}`, 'gs')
 
 export default {
   name: 'CulturePost',
-  layout: 'app',
+  layout: 'empty',
   components: {
     UICulturePostContent,
     UICulturePostIndex,
@@ -166,7 +166,7 @@ export default {
   head() {
     const title = this.post.title
     const description = this.post.brief?.replace(/(<([^>]+)>)/gi, '')
-    const image = this.post.heroImage?.desktop?.url || SITE_OG_IMAGE
+    const image = this.post.heroImage?.desktop?.url || SITE_OG_IMG
     return {
       title,
       meta: [

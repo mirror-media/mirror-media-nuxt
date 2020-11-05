@@ -5,7 +5,7 @@
       class="section__highlight"
       @sendGA="handleSendGA"
     >
-      <template v-if="categoryTitle" v-slot:heading>
+      <template v-if="categoryTitle" #heading>
         <h1
           :class="categoryName"
           class="section__heading"
@@ -25,7 +25,7 @@
       />
       <client-only>
         <div class="section__ad dfp-ft">
-          <GPTAD :adUnit="adBottom.adUnitCode" :adSize="adBottom.adSize" />
+          <GPTAD :adUnit="adBottom.adUnit" :adSize="adBottom.adSize" />
         </div>
       </client-only>
       <UILinkedItemWithTitle
@@ -58,8 +58,8 @@
     <UIStickyAd>
       <client-only>
         <GPTAD
-          :adUnit="videoAdUnits.MBST.adUnitCode"
-          :adSize="videoAdUnits.MBST.adSize"
+          :adUnit="videoAdUnits.MB_ST.adUnit"
+          :adSize="videoAdUnits.MB_ST.adSize"
         />
       </client-only>
     </UIStickyAd>
@@ -80,7 +80,7 @@ import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
 import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
-import gptUnits from '~/constants/gptUnits'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 const VIDEO_CATEGORIES_NAME = Object.keys(PLAYLIST_MAPPING)
 const MAX_RESULTS = 25
@@ -105,7 +105,7 @@ export default {
       VIDEO_CATEGORIES_NAME,
       nextPageToken: '',
       playlistItems: [],
-      videoAdUnits: gptUnits.videohub ?? {},
+      videoAdUnits: gptAdUnits.videohub ?? {},
     }
   },
   computed: {
@@ -115,7 +115,7 @@ export default {
           ?.categories ?? [],
     }),
     adBottom() {
-      return this.videoAdUnits[`${this.adDevice}FT`] ?? {}
+      return this.videoAdUnits[`${this.adDevice}_FT`] ?? {}
     },
     adDevice() {
       return this.$ua.isFromPc() ? 'PC' : 'MB'

@@ -15,18 +15,20 @@
               :key="item.id"
               :class="{ active: currentIndex === index + 1 }"
             >
+              <!-- eslint-disable vue/no-v-html -->
               <a
                 :href="`#header-${item.id}`"
                 data-scroll
                 @click="$emit('closeIndex')"
                 v-html="item.content"
               />
+              <!-- eslint-enable vue/no-v-html -->
             </li>
           </ul>
         </div>
         <div class="share">
           <p>分享到：</p>
-          <UIShareFacebook />
+          <UIShareFb />
           <UIShareLine />
         </div>
       </div>
@@ -35,13 +37,13 @@
 </template>
 
 <script>
-import UIShareFacebook from '~/components/UIShareFacebook.vue'
+import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 
 export default {
   name: 'UICulturePostIndex',
   components: {
-    UIShareFacebook,
+    UIShareFb,
     UIShareLine,
   },
   props: {

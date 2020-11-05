@@ -1,7 +1,7 @@
 import page from '../section/_name.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
-import { SITE_TITLE } from '~/constants'
+import { SITE_TITLE, SITE_DESCRIPTION } from '~/constants'
 
 const createWrapper = createWrapperHelper({
   mocks: {
@@ -270,9 +270,7 @@ describe('meta', function () {
     ]
     descriptionMetas.forEach(function assertion(metaName) {
       const metaObject = metaResults.meta.find((d) => d.hid === metaName)
-      expect(metaObject.content).toBe(
-        '鏡傳媒以台灣為基地，是一跨平台綜合媒體，包含《鏡週刊》以及下設五大分眾內容的《鏡傳媒》網站，刊載時事、財經、人物、國際、文化、娛樂、美食旅遊、精品鐘錶等深入報導及影音內容。我們以「鏡」為名，務求反映事實、時代與人性。'
-      )
+      expect(metaObject.content).toBe(SITE_DESCRIPTION)
     })
   })
 })

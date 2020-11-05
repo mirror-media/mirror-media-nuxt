@@ -6,7 +6,7 @@
       class="section__latest"
       @sendGA="handleSendGA"
     >
-      <template v-slot:heading>
+      <template #heading>
         <h1>最新影片</h1>
       </template>
     </UIVideoIframeWithItems>
@@ -20,7 +20,7 @@
       <client-only>
         <GPTAD
           class="section__ad"
-          :adUnit="adBottom.adUnitCode"
+          :adUnit="adBottom.adUnit"
           :adSize="adBottom.adSize"
         />
       </client-only>
@@ -40,8 +40,8 @@
     <UIStickyAd>
       <client-only>
         <GPTAD
-          :adUnit="videoAdUnits.MBST.adUnitCode"
-          :adSize="videoAdUnits.MBST.adSize"
+          :adUnit="videoAdUnits.MB_ST.adUnit"
+          :adSize="videoAdUnits.MB_ST.adSize"
         />
       </client-only>
     </UIStickyAd>
@@ -64,7 +64,7 @@ import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
 import UIVideoPopular from '~/components/UIVideoPopular.vue'
 import UIVideoSubscriptions from '~/components/UIVideoSubscriptions.vue'
 import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
-import gptUnits from '~/constants/gptUnits'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 const INVERTED_PLAYLIST_MAPPING = _.invert(PLAYLIST_MAPPING)
 
@@ -88,7 +88,7 @@ export default {
       latestData: [],
       popularData: [],
       categoriesPlaylistData: {},
-      videoAdUnits: gptUnits.videohub ?? {},
+      videoAdUnits: gptAdUnits.videohub ?? {},
     }
   },
   computed: {
@@ -98,7 +98,7 @@ export default {
       },
     }),
     adBottom() {
-      return this.videoAdUnits[`${this.adDevice}FT`] ?? {}
+      return this.videoAdUnits[`${this.adDevice}_FT`] ?? {}
     },
     adDevice() {
       return this.$ua.isFromPc() ? 'PC' : 'MB'

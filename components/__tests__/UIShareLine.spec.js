@@ -2,6 +2,7 @@ import UIShareLine from '../UIShareLine.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper()
+const lineSharedUrl = 'https://social-plugins.line.me/lineit/share?url='
 
 describe('href', () => {
   test('render the proper href', async () => {
@@ -16,42 +17,30 @@ describe('href', () => {
     await wrapper.vm.$nextTick()
     const link = wrapper.get('a')
     expect(link.attributes().href).toBe(
-      `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
-        url
-      )}`
+      `${lineSharedUrl}${encodeURIComponent(url)}`
     )
   })
 
-  test('render the proper href from props', () => {
-    const url = 'https://www.mirrormedia.mg/'
+  test('render the proper href from the prop "url"', async () => {
+    const mockUrl1 = 'https://www.mirrormedia.mg/'
+    const mockUrl2 = 'https://www.mirrormedia.mg/story/20200921ent009/'
     const wrapper = createWrapper(UIShareLine, {
       propsData: {
-        url,
+        url: mockUrl1,
       },
     })
+
     const link = wrapper.get('a')
+
     expect(link.attributes().href).toBe(
-      `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
-        url
-      )}`
+      `${lineSharedUrl}${encodeURIComponent(mockUrl1)}`
     )
-  })
-})
 
-describe('facebook logo', () => {
-  test('use proper png image', () => {
-    const wrapper = createWrapper(UIShareLine)
-    const image = wrapper.get(`picture > img`)
+    await wrapper.setProps({ url: mockUrl2 })
 
-    const logoUrlPng = '~/assets/line_logo_official_90.png'
-    expect(image.attributes().src).toBe(logoUrlPng)
-  })
-  test('use proper webp image', () => {
-    const wrapper = createWrapper(UIShareLine)
-    const image = wrapper.get(`picture > source[type="image/webp"]`)
-
-    const logoUrlWebp = '~/assets/line_logo_official_90.webp'
-    expect(image.attributes().srcset).toBe(logoUrlWebp)
+    expect(link.attributes().href).toBe(
+      `${lineSharedUrl}${encodeURIComponent(mockUrl2)}`
+    )
   })
 })
 

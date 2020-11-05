@@ -41,6 +41,7 @@ describe('main article', () => {
     const wrapper = createWrapper(UIArticleListFocus)
 
     const mainLink = wrapper.get(`[href="/story/${mockAricleMain.slug}/"]`)
+
     // expect(mainLink.get('img').attributes().src).toBe(
     //   mockAricleMain.heroImage.image.resizedTargets.mobile.url
     // )

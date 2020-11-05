@@ -3,7 +3,7 @@
     <client-only>
       <GPTAD
         class="section__ad"
-        :adUnit="adTop.adUnitCode"
+        :adUnit="adTop.adUnit"
         :adSize="adTop.adSize"
       />
     </client-only>
@@ -13,14 +13,14 @@
       :listTitleColor="currentSectionThemeColor"
       :listData="listDataFirstPage"
     >
-      <template v-for="(unitId, key) in microAdUnits" v-slot:[key]>
-        <MicroAd :key="unitId" :unitId="unitId" />
+      <template v-for="unit in microAdUnits" v-slot:[unit.name]>
+        <MicroAd :key="unit.name" :unitId="unit.id" />
       </template>
     </UIArticleList>
     <client-only>
       <GPTAD
         class="section__ad"
-        :adUnit="adBottom.adUnitCode"
+        :adUnit="adBottom.adUnit"
         :adSize="adBottom.adSize"
       />
     </client-only>
@@ -36,7 +36,7 @@
     <UIStickyAd v-if="adDevice === 'MB'">
       <client-only>
         <GPTAD
-          :adUnit="adFixedBottomMobile.adUnitCode"
+          :adUnit="adFixedBottomMobile.adUnit"
           :adSize="adFixedBottomMobile.adSize"
         />
       </client-only>
@@ -47,15 +47,16 @@
 
 <script>
 import { mapState } from 'vuex'
+import _ from 'lodash'
 import MicroAd from '~/components/MicroAd.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import styleVariables from '~/scss/_variables.scss'
-import gptUnits from '~/constants/gptUnits'
-import microAdUnits from '~/constants/microAdUnits'
-import { SITE_TITLE, SITE_URL } from '~/constants'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
+import { MICRO_AD_UNITS } from '~/constants/ads.js'
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '~/constants'
 
 export default {
   name: 'Section',
@@ -74,19 +75,136 @@ export default {
   },
   data() {
     return {
-      listData: [],
+      listData_: [],
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
-      microAdUnits: microAdUnits.LISTING,
+      microAdUnits: MICRO_AD_UNITS.LISTING.RWD,
     }
   },
+  computed: {
+    ...mapState({
+      sections: (state) => state.sections.data.items ?? [],
+    }),
+    currentSectionName() {
+      return this.$route.params.name
+    },
+    currentSectionData() {
+      return (
+        this.sections.find(
+          (section) => section.name === this.currentSectionName
+        ) ?? {}
+      )
+    },
+    currentSectionId() {
+      return this.currentSectionData.id
+    },
+    currentSectionTitle() {
+      return this.currentSectionData.title
+    },
+    currentSectionThemeColor() {
+      const key = `section-color-${this.currentSectionName}`
+      return styleVariables[key]
+    },
+    listDataPageLimit() {
+      if (this.listDataTotal === undefined) {
+        return undefined
+      }
+      return Math.ceil(this.listDataTotal / this.listDataMaxResults)
+    },
+
+    /**
+     * Constraint which prevent loadmore unexpectly
+     * if we navigating on client-side
+     * due to the list data of the first page has not been loaded.
+     */
+    shouldMountInfiniteLoading() {
+      return this.listDataCurrentPage >= 1
+    },
+
+    listData() {
+      return _.uniqBy(this.listData_, function identifyDuplicatedItemById(
+        listItem
+      ) {
+        return listItem.id
+      })
+    },
+    listDataFirstPage() {
+      return this.listData.slice(0, this.listDataMaxResults)
+    },
+    listDataLoadmorePage() {
+      return this.listData.slice(this.listDataMaxResults, Infinity)
+    },
+    showListDataLoadmorePage() {
+      return this.listDataLoadmorePage.length > 0
+    },
+
+    adDevice() {
+      return this.$ua.isFromPc() ? 'PC' : 'MB'
+    },
+    adTop() {
+      return gptAdUnits?.[this.currentSectionId]?.[`${this.adDevice}_HD`] ?? {}
+    },
+    adBottom() {
+      return gptAdUnits?.[this.currentSectionId]?.[`${this.adDevice}_FT`] ?? {}
+    },
+    adFixedBottomMobile() {
+      return gptAdUnits?.[this.currentSectionId]?.['MB_ST'] ?? {}
+    },
+  },
+  methods: {
+    stripHtmlTag(html = '') {
+      return html.replace(/<\/?[^>]+(>|$)/g, '')
+    },
+    mapDataToComponentProps(item) {
+      return {
+        id: item.id,
+        href: item.slug ? `/story/${item.slug}` : '/',
+        imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
+        imgText: this.currentSectionTitle,
+        imgTextBackgroundColor: this.currentSectionThemeColor,
+        infoTitle: item.title ?? '',
+        infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
+      }
+    },
+    async fetchSectionListing({ page = 1 } = {}) {
+      const response = await this.$fetchList({
+        maxResults: this.listDataMaxResults,
+        sort: '-publishedDate',
+        sections: [this.currentSectionId],
+        page,
+      })
+      return response
+    },
+    setListData(response = {}) {
+      let listData = response.items ?? []
+      listData = listData.map(this.mapDataToComponentProps)
+      this.listData_.push(...listData)
+    },
+    setListDataTotal(response = {}) {
+      this.listDataTotal = response.meta?.total ?? 0
+    },
+    async infiniteHandler($state) {
+      this.listDataCurrentPage += 1
+      try {
+        const response = await this.fetchSectionListing({
+          page: this.listDataCurrentPage,
+        })
+        this.setListData(response)
+
+        if (this.listDataCurrentPage >= this.listDataPageLimit) {
+          $state.complete()
+        } else {
+          $state.loaded()
+        }
+      } catch (e) {
+        $state.error()
+      }
+    },
+  },
   head() {
-    const defaultSectionDescription =
-      '鏡傳媒以台灣為基地，是一跨平台綜合媒體，包含《鏡週刊》以及下設五大分眾內容的《鏡傳媒》網站，刊載時事、財經、人物、國際、文化、娛樂、美食旅遊、精品鐘錶等深入報導及影音內容。我們以「鏡」為名，務求反映事實、時代與人性。'
     const title = `${this.currentSectionTitle} - ${SITE_TITLE}`
-    const description =
-      this.currentSectionData?.description || defaultSectionDescription
+    const description = this.currentSectionData?.description || SITE_DESCRIPTION
 
     return {
       title,
@@ -129,121 +247,12 @@ export default {
       ],
     }
   },
-  computed: {
-    ...mapState({
-      sections: (state) => state.sections.data.items ?? [],
-    }),
-    currentSectionName() {
-      return this.$route.params.name
-    },
-    currentSectionData() {
-      return (
-        this.sections.find(
-          (section) => section.name === this.currentSectionName
-        ) ?? {}
-      )
-    },
-    currentSectionId() {
-      return this.currentSectionData.id
-    },
-    currentSectionTitle() {
-      return this.currentSectionData.title
-    },
-    currentSectionThemeColor() {
-      const key = `section-color-${this.currentSectionName}`
-      return styleVariables[key]
-    },
-    listDataPageLimit() {
-      if (this.listDataTotal === undefined) {
-        return undefined
-      }
-      return Math.ceil(this.listDataTotal / this.listDataMaxResults)
-    },
-
-    // Constraint which prevent loadmore unexpectly
-    // if we navigating on client-side
-    // due to the list data of the first page has not been loaded.
-    shouldMountInfiniteLoading() {
-      return this.listDataCurrentPage >= 1
-    },
-
-    listDataFirstPage() {
-      return this.listData.slice(0, this.listDataMaxResults)
-    },
-    listDataLoadmorePage() {
-      return this.listData.slice(this.listDataMaxResults, Infinity)
-    },
-    showListDataLoadmorePage() {
-      return this.listDataLoadmorePage.length > 0
-    },
-
-    adDevice() {
-      return this.$ua.isFromPc() ? 'PC' : 'MB'
-    },
-    adTop() {
-      return gptUnits?.[this.currentSectionId]?.[`L${this.adDevice}HD`] ?? {}
-    },
-    adBottom() {
-      return gptUnits?.[this.currentSectionId]?.[`L${this.adDevice}FT`] ?? {}
-    },
-    adFixedBottomMobile() {
-      return gptUnits?.[this.currentSectionId]?.['MBST'] ?? {}
-    },
-  },
-  methods: {
-    stripHtmlTag(html = '') {
-      return html.replace(/<\/?[^>]+(>|$)/g, '')
-    },
-    mapDataToComponentProps(item) {
-      return {
-        id: item.id,
-        href: item.slug ? `/story/${item.slug}` : '/',
-        imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
-        imgText: this.currentSectionTitle,
-        imgTextBackgroundColor: this.currentSectionThemeColor,
-        infoTitle: item.title ?? '',
-        infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
-      }
-    },
-    async fetchSectionListing({ page = 1 } = {}) {
-      const response = await this.$fetchList({
-        maxResults: this.listDataMaxResults,
-        sort: '-publishedDate',
-        sections: [this.currentSectionId],
-        page,
-      })
-      return response
-    },
-    setListData(response = {}) {
-      let listData = response.items ?? []
-      listData = listData.map(this.mapDataToComponentProps)
-      this.listData.push(...listData)
-    },
-    setListDataTotal(response = {}) {
-      this.listDataTotal = response.meta?.total ?? 0
-    },
-    async infiniteHandler($state) {
-      this.listDataCurrentPage += 1
-      try {
-        const response = await this.fetchSectionListing({
-          page: this.listDataCurrentPage,
-        })
-        this.setListData(response)
-
-        if (this.listDataCurrentPage >= this.listDataPageLimit) {
-          $state.complete()
-        } else {
-          $state.loaded()
-        }
-      } catch (e) {
-        $state.error()
-      }
-    },
-  },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '~/css/micro-ad/listing.scss';
+
 .section {
   background-color: #f2f2f2;
   padding: 36px 0;
@@ -261,29 +270,6 @@ export default {
   &__list {
     @include media-breakpoint-up(md) {
       margin: 8px 0 0 0;
-    }
-  }
-}
-
-.micro-ad {
-  height: 100%;
-  background-color: #f4f1e9;
-  box-shadow: 5px 5px 5px #bcbcbc;
-  @include media-breakpoint-up(xl) {
-    transition: all 0.3s ease-in-out;
-    &:hover {
-      transform: translateY(-20px);
-      box-shadow: 5px 15px 5px #bcbcbc;
-    }
-  }
-  &::v-deep {
-    #compass-fit-widget {
-      height: 100%;
-    }
-    #compass-fit-widget-content {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
     }
   }
 }

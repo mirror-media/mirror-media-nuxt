@@ -19,6 +19,8 @@
       <img v-lazy="imagePortraitMobile" :alt="titleWithoutBreakLine" />
     </picture>
     <div class="intro__gradient" />
+
+    <!-- eslint-disable-next-line vue/no-v-html -->
     <h1 :style="{ color: `#${post.titleColor}` }" v-html="post.title" />
     <div class="intro__container">
       <div class="intro__datetime-credit">
@@ -32,6 +34,8 @@
           <span v-if="post.extendByline" v-text="post.extendByline" />
         </div>
       </div>
+
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="intro__brief" v-html="post.brief" />
     </div>
   </section>

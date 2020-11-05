@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const requestIp = require('request-ip')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
@@ -17,6 +18,7 @@ async function start() {
   const { host, port } = nuxt.options.server
 
   await nuxt.ready()
+
   // Build only in dev mode
   if (config.dev) {
     const builder = new Builder(nuxt)
@@ -30,6 +32,7 @@ async function start() {
   )
 
   app.use(bodyParser.json())
+  app.use(requestIp.mw())
 
   // Give nuxt middleware to express
   app.use(nuxt.render)

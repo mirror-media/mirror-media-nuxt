@@ -3,16 +3,21 @@ import plugin from '../index'
 
 describe('adNetwork settings', () => {
   test("should throw error if adNetwork not provided via plugin option or component's adNetwork props", () => {
+    /* eslint-disable no-console */
     // Disable Vue warn from lifecycle hooks temporarily
     console.error = () => {}
+    /* eslint-enable no-console */
 
     const localVue = createLocalVue()
     localVue.use(
       plugin
-      // adNetwork is missing in plugin option
-      // {
-      //   adNetwork: '',
-      // }
+
+      /**
+       * adNetwork is missing in plugin option
+       * {
+       *   adNetwork: '',
+       * }
+       */
     )
 
     const TestWrapperComponent = {

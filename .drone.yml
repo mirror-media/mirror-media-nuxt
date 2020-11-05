@@ -26,6 +26,16 @@ pipeline:
       event: [push]
       branch: [dev, master]
 
+  getGCSKeyFile:
+    image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
+    secrets: [google_credentials]
+    commands:
+      - gcloud source repos clone configs ../configs
+      - cp ../configs/mirror-media/mirror-media-nuxt/gcskeyfile.json ./gcskeyfile.json
+    when:
+      event: [push]
+      branch: [dev, master]
+
   getCIConfig:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
     secrets: [google_credentials]

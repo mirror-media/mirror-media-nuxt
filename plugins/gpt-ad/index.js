@@ -1,5 +1,4 @@
 import GPTAD from './index.vue'
-import { insertGPTScript } from './util'
 
 let isGPTScriptInserted = false
 const GPTAdSlotsDefined = {}
@@ -25,14 +24,13 @@ export default {
     Component = Component.extend({
       beforeMount() {
         if (!isGPTScriptInserted) {
-          insertGPTScript()
           isGPTScriptInserted = true
           window.googletag = window.googletag || {}
           window.googletag.cmd = window.googletag.cmd || []
         }
 
         window.googletag.cmd.push(() => {
-          /*
+          /**
            * Do not use lazy loading with SRA.
            *
            * With lazy loading in SRA,
@@ -45,10 +43,14 @@ export default {
           window.googletag.pubads().enableLazyLoad({
             // Fetch slots within 1.5 viewports.
             fetchMarginPercent: 150,
+
             // Render slots within 1 viewports.
             renderMarginPercent: 100,
-            // Double the above values on mobile, where viewports are smaller
-            // and users tend to scroll faster.
+
+            /**
+             * Double the above values on mobile, where viewports are smaller
+             * and users tend to scroll faster.
+             */
             mobileScaling: 2.0,
           })
           window.googletag.pubads().collapseEmptyDivs()

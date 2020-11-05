@@ -15,8 +15,10 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchPartnersData() {
-    const response = await this.$fetchPartners({ maxResults: 25, page: 1 })
-    return response
+  async fetchPartnersData({ commit }) {
+    const response =
+      (await this.$fetchPartners({ maxResults: 25, page: 1 })) || {}
+
+    commit('setPartnersData', response)
   },
 }

@@ -6,6 +6,8 @@
         :key="`${item.id}-${index}`"
         :annotation="data"
       />
+
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <span v-else :key="`${item.id}-${index}`" v-html="data" />
     </template>
   </div>

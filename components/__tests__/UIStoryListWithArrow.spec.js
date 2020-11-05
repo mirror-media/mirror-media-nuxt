@@ -16,13 +16,13 @@ describe('props', () => {
     })
     expect(wrapper.get('.story-list').classes()).toContain(sectionName)
   })
-  test('should render proper nuxt-link to attribute', () => {
+  test('should render proper href', () => {
     const slug = 'test'
     const wrapper = createWrapper(UIStoryListWithArrow, {
       propsData: {
         items: [{ slug }],
       },
     })
-    expect(wrapper.get('.item').attributes().to).toBe(`/story/${slug}`)
+    expect(wrapper.get('.item').attributes().href).toBe(`/story/${slug}`)
   })
 })

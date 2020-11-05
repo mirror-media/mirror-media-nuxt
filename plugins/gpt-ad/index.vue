@@ -137,11 +137,12 @@ export default {
 
 <style lang="scss" scoped>
 .gpt-ad-wrapper {
+  max-width: 100%;
+
   /* not using align-items: center; to prevent gpt layout issue */
-  ::v-deep iframe {
+  &::v-deep iframe {
     margin-left: auto;
     margin-right: auto;
   }
-  max-width: 100%;
 }
 </style>

@@ -10,7 +10,7 @@
 
       <div class="logo-wrapper">
         <a href="/" class="logo" @click="sendHeaderGA('logo')">
-          <img src="~/assets/logo.svg" :alt="SITE_TITLE" />
+          <img src="/logo.png" :alt="SITE_TITLE" />
         </a>
 
         <UIEventLogo
@@ -20,10 +20,10 @@
           @sendGA="handleSendGA"
         />
         <client-only>
-          <GPTAD
+          <ContainerGptAd
             v-show="hasGptLogo"
-            :adUnit="logoAdUnit.adUnitCode"
-            :adSize="logoAdUnit.adSize"
+            pageKey="global"
+            adKey="RWD_LOGO"
             class="logo"
             @slotRenderEnded="handleLogoAdRenderEnded"
           />
@@ -80,7 +80,7 @@ import UIOthersList from './UIOthersList.vue'
 import UIHeaderNavSection from './UIHeaderNavSection.vue'
 import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
 import UISidebar from './UISidebar.vue'
-import gptUnits from '~/constants/gptUnits'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import {
   SUB_BRAND_LINKS,
@@ -98,6 +98,7 @@ export default {
     UIHeaderNavSection,
     UIHeaderNavTopic,
     UISidebar,
+    ContainerGptAd,
   },
   data() {
     return {
@@ -107,7 +108,6 @@ export default {
       shouldOpenSidebar: false,
       defaultOption: { title: '全部類別' },
       SITE_TITLE,
-      logoAdUnit: gptUnits.global.LOGO,
       hasGptLogo: false,
     }
   },
@@ -214,6 +214,7 @@ export default {
     },
     activeTheNavSection(path) {
       const regexWithPrefixOfStory = this.generateRegexWithPrefixOf('/story/')
+
       // 文章頁也需要設定 sectionName，但不是在這邊做，而需移到 story page，故 return
       if (this.hasPrefix(path, regexWithPrefixOfStory)) {
         return
@@ -257,7 +258,10 @@ export default {
 <style lang="scss" scoped>
 header {
   background-color: #f5f5f5;
+  z-index: 99;
+  position: relative;
 }
+
 .header-top-layer {
   display: flex;
   align-items: center;
@@ -327,8 +331,6 @@ header {
 }
 .header-nav {
   box-shadow: 0 2px 1px rgba(#000, 0.2);
-  position: relative;
-  z-index: 99;
   @include media-breakpoint-up(xl) {
     box-shadow: 0 0 5px #ccc;
   }

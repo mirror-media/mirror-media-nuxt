@@ -36,7 +36,9 @@ describe('stripHtmlTag method', () => {
 })
 
 describe('component methods', () => {
-  test('setListData', () => {
+  test('setListData', async () => {
+    expect.assertions(1)
+
     const idMock = 'id'
     const slugMock = 'slug'
     const imageUrlMock = 'imageurl'
@@ -73,6 +75,7 @@ describe('component methods', () => {
 
     const wrapper = createWrapper(page)
     wrapper.vm.setListData(responseMock)
+    await wrapper.vm.$nextTick()
     const list = wrapper.findComponent(UIArticleList)
     expect(list.props().listData).toEqual([
       {

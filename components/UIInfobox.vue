@@ -2,6 +2,8 @@
   <div class="infobox">
     <div class="wrapper">
       <p v-if="content.title" class="title">{{ content.title }}</p>
+
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="g-story body" v-html="content.body"></div>
     </div>
   </div>

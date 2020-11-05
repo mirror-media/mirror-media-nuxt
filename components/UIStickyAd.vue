@@ -1,9 +1,9 @@
 <template>
-  <client-only>
-    <div v-if="isMobile" v-show="isVisible" class="sticky-ad">
+  <div v-if="isMobile" v-show="isVisible" class="sticky-ad">
+    <client-only>
       <slot />
-    </div>
-  </client-only>
+    </client-only>
+  </div>
 </template>
 
 <script>
@@ -41,7 +41,8 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 500;
-  > div {
+
+  &::v-deep > div {
     margin-left: auto;
     margin-right: auto;
   }

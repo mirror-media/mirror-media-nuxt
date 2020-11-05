@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { SITE_OG_IMG } from '~/constants/index.js'
+
 export default {
   name: 'UICulturePostRelateds',
   props: {
@@ -34,10 +36,7 @@ export default {
   },
   methods: {
     getImageUrl(item) {
-      return (
-        item.heroImage?.image?.resizedTargets?.mobile?.url ??
-        require('~/assets/notImage.png')
-      )
+      return item.heroImage?.image?.resizedTargets?.mobile?.url ?? SITE_OG_IMG
     },
   },
 }

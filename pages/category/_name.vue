@@ -3,7 +3,7 @@
     <client-only>
       <GPTAD
         class="section__ad"
-        :adUnit="adTop.adUnitCode"
+        :adUnit="adTop.adUnit"
         :adSize="adTop.adSize"
       />
     </client-only>
@@ -13,14 +13,14 @@
       :listTitleColor="sectionThemeColor"
       :listData="listDataFirstPage"
     >
-      <template v-for="(unitId, key) in microAdUnits" v-slot:[key]>
-        <MicroAd :key="unitId" :unitId="unitId" />
+      <template v-for="unit in microAdUnits" v-slot:[unit.name]>
+        <MicroAd :key="unit.name" :unitId="unit.id" />
       </template>
     </UIArticleList>
     <client-only>
       <GPTAD
         class="section__ad"
-        :adUnit="adBottom.adUnitCode"
+        :adUnit="adBottom.adUnit"
         :adSize="adBottom.adSize"
       />
     </client-only>
@@ -36,7 +36,7 @@
     <UIStickyAd v-if="adDevice === 'MB'">
       <client-only>
         <GPTAD
-          :adUnit="adFixedBottomMobile.adUnitCode"
+          :adUnit="adFixedBottomMobile.adUnit"
           :adSize="adFixedBottomMobile.adSize"
         />
       </client-only>
@@ -47,14 +47,15 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import _ from 'lodash'
 import MicroAd from '~/components/MicroAd.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import styleVariables from '~/scss/_variables.scss'
-import gptUnits from '~/constants/gptUnits'
-import microAdUnits from '~/constants/microAdUnits'
+import gptAdUnits from '~/constants/gpt-ad-units.js'
+import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
 
 export default {
@@ -74,39 +75,11 @@ export default {
   },
   data() {
     return {
-      listData: [],
+      listData_: [],
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
-      microAdUnits: microAdUnits.LISTING,
-    }
-  },
-  head() {
-    const title = `${this.categoryTitle} - ${SITE_TITLE}`
-    return {
-      title,
-      meta: [
-        {
-          hid: 'og:title',
-          name: 'og:title',
-          content: title,
-        },
-        {
-          hid: 'twitter:title',
-          name: 'twitter:title',
-          content: title,
-        },
-        {
-          hid: 'og:url',
-          property: 'og:url',
-          content: `${SITE_URL}/category/${this.$route.params.name}`,
-        },
-        {
-          hid: 'section-name',
-          name: 'section-name',
-          content: this.sectionName,
-        },
-      ],
+      microAdUnits: MICRO_AD_UNITS.LISTING.RWD,
     }
   },
   computed: {
@@ -155,13 +128,22 @@ export default {
       return Math.ceil(this.listDataTotal / this.listDataMaxResults)
     },
 
-    // Constraint which prevent loadmore unexpectly
-    // if we navigating on client-side
-    // due to the list data of the first page has not been loaded.
+    /**
+     * Constraint which prevent loadmore unexpectly
+     * if we navigating on client-side
+     * due to the list data of the first page has not been loaded.
+     */
     shouldMountInfiniteLoading() {
       return this.listDataCurrentPage >= 1
     },
 
+    listData() {
+      return _.uniqBy(this.listData_, function identifyDuplicatedItemById(
+        listItem
+      ) {
+        return listItem.id
+      })
+    },
     listDataFirstPage() {
       return this.listData.slice(0, this.listDataMaxResults)
     },
@@ -176,13 +158,13 @@ export default {
       return this.$ua.isFromPc() ? 'PC' : 'MB'
     },
     adTop() {
-      return gptUnits?.[this.sectionId]?.[`L${this.adDevice}HD`] ?? {}
+      return gptAdUnits?.[this.sectionId]?.[`${this.adDevice}_HD`] ?? {}
     },
     adBottom() {
-      return gptUnits?.[this.sectionId]?.[`L${this.adDevice}FT`] ?? {}
+      return gptAdUnits?.[this.sectionId]?.[`${this.adDevice}_FT`] ?? {}
     },
     adFixedBottomMobile() {
-      return gptUnits?.[this.sectionId]?.['MBST'] ?? {}
+      return gptAdUnits?.[this.sectionId]?.['MB_ST'] ?? {}
     },
   },
   methods: {
@@ -212,7 +194,7 @@ export default {
     setListData(response = {}) {
       let listData = response.items ?? []
       listData = listData.map(this.mapDataToComponentProps)
-      this.listData.push(...listData)
+      this.listData_.push(...listData)
     },
     setListDataTotal(response = {}) {
       this.listDataTotal = response.meta?.total ?? 0
@@ -235,10 +217,40 @@ export default {
       }
     },
   },
+  head() {
+    const title = `${this.categoryTitle} - ${SITE_TITLE}`
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: title,
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: title,
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${SITE_URL}/category/${this.$route.params.name}`,
+        },
+        {
+          hid: 'section-name',
+          name: 'section-name',
+          content: this.sectionName,
+        },
+      ],
+    }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '~/css/micro-ad/listing.scss';
+
 .section {
   background-color: #f2f2f2;
   padding: 36px 0;
@@ -256,29 +268,6 @@ export default {
   &__list {
     @include media-breakpoint-up(md) {
       margin: 8px 0 0 0;
-    }
-  }
-}
-
-.micro-ad {
-  height: 100%;
-  background-color: #f4f1e9;
-  box-shadow: 5px 5px 5px #bcbcbc;
-  @include media-breakpoint-up(xl) {
-    transition: all 0.3s ease-in-out;
-    &:hover {
-      transform: translateY(-20px);
-      box-shadow: 5px 15px 5px #bcbcbc;
-    }
-  }
-  &::v-deep {
-    #compass-fit-widget {
-      height: 100%;
-    }
-    #compass-fit-widget-content {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
     }
   }
 }

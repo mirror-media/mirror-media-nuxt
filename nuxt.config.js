@@ -2,15 +2,14 @@ const SITE_TITLE = '鏡週刊 Mirror Media'
 const SITE_DESCRIPTION =
   '鏡傳媒以台灣為基地，是一跨平台綜合媒體，包含《鏡週刊》以及下設五大分眾內容的《鏡傳媒》網站，刊載時事、財經、人物、國際、文化、娛樂、美食旅遊、精品鐘錶等深入報導及影音內容。我們以「鏡」為名，務求反映事實、時代與人性。'
 const SITE_KEYWORDS = '鏡週刊,mirror media,新聞人物,娛樂焦點,美食旅遊,瑪法達'
-const SITE_OG_IMAGE =
-  'https://www.mirrormedia.mg/assets/mirrormedia/notImage.png'
+const SITE_OG_IMG = '/default-og-img.png'
 const SITE_URL = 'https://www.mirrormedia.mg'
 const FB_APP_ID = '175313259598308'
 const FB_PAGE_ID = '1855418728011324'
 
 module.exports = {
-  /*
-   ** Headers of the page
+  /**
+   * Headers of the page
    */
   head: {
     htmlAttrs: {
@@ -48,7 +47,7 @@ module.exports = {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: SITE_OG_IMAGE,
+        content: SITE_OG_IMG,
       },
       {
         hid: 'og:url',
@@ -98,7 +97,7 @@ module.exports = {
       {
         hid: 'twitter:image',
         name: 'twitter:image',
-        content: SITE_OG_IMAGE,
+        content: SITE_OG_IMG,
       },
       { name: 'theme-color', content: '#ffffff' },
     ],
@@ -126,6 +125,7 @@ module.exports = {
 
       // https://developers.google.com/doubleclick-gpt/guides/general-best-practices#use_preload_when_appropriate
       {
+        hid: 'gptLink',
         rel: 'preload',
         href: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
         as: 'script',
@@ -134,21 +134,25 @@ module.exports = {
     script: [
       // https://developers.google.com/doubleclick-gpt/guides/general-best-practices#load_statically
       {
+        hid: 'gptScript',
         src: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
         async: true,
       },
     ],
   },
-  /*
-   ** Customize the progress-bar color
+
+  /**
+   * Customize the progress-bar color
    */
   loading: { color: '#fff' },
-  /*
-   ** Global CSS
+
+  /**
+   * Global CSS
    */
-  css: ['~/css/base.css'],
-  /*
-   ** Plugins to load before mounting the App
+  css: ['~/css/base.css', 'swiper/css/swiper.css'],
+
+  /**
+   * Plugins to load before mounting the App
    */
   plugins: [
     '~/plugins/vuePluginsGlobal.js',
@@ -156,28 +160,42 @@ module.exports = {
     '~/plugins/vueDirectivesGlobal.js',
     '~/plugins/requests/index.js',
     '~/plugins/article/index.js',
+    '~/plugins/user-behavior-log/index.client.js',
   ],
-  /*
-   ** Nuxt.js Server Middleware
+
+  /**
+   * Nuxt.js Server Middleware
    */
   serverMiddleware: [
     '~/api/headers.js',
     {
+      path: '/api/gcs',
+      handler: '~/api/gcs.js',
+    },
+    {
       path: '/api/combo',
       handler: '~/api/combo.js',
     },
+    {
+      path: '/api/tracking',
+      handler: '~/api/tracking.js',
+    },
     { path: '/api', handler: '~/api/index.js' },
   ],
-  /*
-   ** Nuxt.js dev-modules
+
+  /**
+   * Nuxt.js dev-modules
    */
   buildModules: [
+    '@nuxtjs/composition-api',
+
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
-    /*
-     ** googleAnalytics module configuration
-     ** https://github.com/nuxt-community/analytics-module
+
+    /**
+     * googleAnalytics module configuration
+     * https://github.com/nuxt-community/analytics-module
      */
     [
       '@nuxtjs/google-analytics',
@@ -189,9 +207,11 @@ module.exports = {
         },
       },
     ],
+    '@nuxtjs/svg',
   ],
-  /*
-   ** Nuxt.js modules
+
+  /**
+   * Nuxt.js modules
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
@@ -202,11 +222,12 @@ module.exports = {
       ? ['@mirror-media/nuxt-ssr-cache']
       : []),
   ],
+
   // config for @mirror-media/nuxt-ssr-cache
   cache: {
-    /*
-     ** Workaround, pages array must exist and not empty,
-     ** see: https://github.com/arash16/nuxt-ssr-cache/blob/master/src/middleware.js#L34
+    /**
+     * Workaround, pages array must exist and not empty,
+     * see: https://github.com/arash16/nuxt-ssr-cache/blob/master/src/middleware.js#L34
      */
     pages: ['/'],
 
@@ -226,10 +247,11 @@ module.exports = {
     },
     store: {
       type: 'redis',
-      /*
-       ** readHost and writeHost working in @mirror-media/nuxt-ssr-cache only,
-       ** for redis write/read master-slave replication
-       ** Not working in the original nuxt-ssr-cache package
+
+      /**
+       * readHost and writeHost working in @mirror-media/nuxt-ssr-cache only,
+       * for redis write/read master-slave replication
+       * Not working in the original nuxt-ssr-cache package
        */
       readHost: require('./configs/config').REDIS_READ_HOST,
       writeHost: require('./configs/config').REDIS_WRITE_HOST,
@@ -238,16 +260,18 @@ module.exports = {
       ttl: 60 * 5,
     },
   },
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
+
+  /**
+   * Axios module configuration
+   * See https://axios.nuxtjs.org/options
    */
   axios: {},
   styleResources: {
     scss: '~/scss/*.scss',
   },
-  /*
-   ** Build configuration
+
+  /**
+   * Build configuration
    */
   build: {
     babel: {
@@ -256,8 +280,9 @@ module.exports = {
         options.corejs = { version: 3, proposals: true }
       },
     },
-    /*
-     ** You can extend webpack config here
+
+    /**
+     * You can extend webpack config here
      */
     extend(config, ctx) {
       config.resolve.extensions = ['.js']
@@ -272,9 +297,10 @@ module.exports = {
       }
     },
   },
-  /*
-   ** Nuxt Telemetry configuration
-   ** Doc: https://github.com/nuxt/telemetry#opting-out
+
+  /**
+   * Nuxt Telemetry configuration
+   * Doc: https://github.com/nuxt/telemetry#opting-out
    */
   telemetry: false,
 }
