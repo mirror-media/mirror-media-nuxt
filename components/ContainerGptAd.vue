@@ -53,7 +53,7 @@ export default {
       }
     },
     adData() {
-      const data = gptAdUnits[this.pageKey][this.adKeyFull]
+      const data = gptAdUnits[this.pageKey]?.[this.adKeyFull]
 
       validateAdData(data)
 
