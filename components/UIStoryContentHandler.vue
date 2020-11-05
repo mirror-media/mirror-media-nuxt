@@ -155,7 +155,11 @@ export default {
           </ClientOnly>
         )
       case 'video':
-        return <UIStoryVideo video={content[0]} />
+        return (
+          <lazy-component>
+            <UIStoryVideo video={content[0]} />
+          </lazy-component>
+        )
       case 'blockquote':
         return (
           <blockquote class="story-blockquote" domPropsInnerHTML={content[0]} />

@@ -1,5 +1,5 @@
 <template>
-  <lazy-component class="story-video">
+  <div class="story-video">
     <video
       :src="video.url"
       preload="metadata"
@@ -7,7 +7,7 @@
       controls
       playsinline
     />
-  </lazy-component>
+  </div>
 </template>
 
 <script>
