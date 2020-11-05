@@ -90,9 +90,12 @@ describe('component methods', () => {
               },
             },
           },
-          // brief: {
-          //   html: briefHtmlMock,
-          // },
+
+          /*
+           * brief: {
+           *   html: briefHtmlMock,
+           * },
+           */
           ogDescription: ogDescriptionMock,
         },
       ],

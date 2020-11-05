@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
@@ -27,7 +28,7 @@ export default {
   },
   data() {
     return {
-      listData: [],
+      listData_: [],
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
@@ -52,6 +53,14 @@ export default {
      */
     shouldMountInfiniteLoading() {
       return this.listDataCurrentPage >= 1
+    },
+
+    listData() {
+      return _.uniqBy(this.listData_, function identifyDuplicatedItemById(
+        listItem
+      ) {
+        return listItem.id
+      })
     },
   },
   methods: {
@@ -82,7 +91,7 @@ export default {
     setListData(response = {}) {
       let listData = response.items ?? []
       listData = listData.map(this.mapDataToComponentProps)
-      this.listData.push(...listData)
+      this.listData_.push(...listData)
     },
     setListDataTotal(response = {}) {
       this.listDataTotal = response.meta?.total ?? 0

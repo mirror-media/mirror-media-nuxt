@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import MicroAd from '~/components/MicroAd.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
@@ -76,7 +77,7 @@ export default {
   },
   data() {
     return {
-      listData: [],
+      listData_: [],
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
@@ -105,6 +106,13 @@ export default {
       return this.listDataCurrentPage >= 1
     },
 
+    listData() {
+      return _.uniqBy(this.listData_, function identifyDuplicatedItemById(
+        listItem
+      ) {
+        return listItem.id
+      })
+    },
     listDataFirstPage() {
       return this.listData.slice(0, this.listDataMaxResults)
     },
@@ -156,7 +164,7 @@ export default {
     setListData(response = {}) {
       let listData = response.items ?? []
       listData = listData.map(this.mapDataToComponentProps)
-      this.listData.push(...listData)
+      this.listData_.push(...listData)
     },
     setListDataTotal(response = {}) {
       this.listDataTotal = response.meta?.total ?? 0

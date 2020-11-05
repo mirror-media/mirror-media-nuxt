@@ -83,10 +83,12 @@ describe('section data', () => {
     expect(wrapper.vm.sectionQueryTitle).toBe(sectionTitleMock)
   })
 
-  // test('section title should be null if section query in url not exist', () => {
-  //   const wrapper = createWrapper(page)
-  //   expect(wrapper.vm.sectionQueryTitle).toBe(null)
-  // })
+  /*
+   * test('section title should be null if section query in url not exist', () => {
+   *   const wrapper = createWrapper(page)
+   *   expect(wrapper.vm.sectionQueryTitle).toBe(null)
+   * })
+   */
   test('section title should be null if section id cannot be found in section store', () => {
     const sectionIdMock = 'test-id'
     const sectionTitleMock = 'test-title'
@@ -185,7 +187,9 @@ describe('fetchSearchListing query object', () => {
 })
 
 describe('component methods', () => {
-  test('setListData', () => {
+  test('setListData', async () => {
+    expect.assertions(1)
+
     const idMock = 'id'
     const slugMock = 'slug'
     const imageUrlMock = 'imageurl'
@@ -224,6 +228,7 @@ describe('component methods', () => {
 
     const wrapper = createWrapper(page)
     wrapper.vm.setListData(responseMock)
+    await wrapper.vm.$nextTick()
     const list = wrapper.findComponent(UIArticleList)
     expect(list.props().listData).toEqual([
       {
