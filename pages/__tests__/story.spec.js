@@ -44,7 +44,7 @@ describe('latest list', () => {
     sections: [{ id: '57e1e0e5ee85930e00cad4e9' }],
   }
 
-  test('open when viewport >= lg', () => {
+  test('should render when viewport >= lg', () => {
     const wrapper = createWrapper(Story, {
       data() {
         return {
@@ -56,7 +56,7 @@ describe('latest list', () => {
     expect(wrapper.find('.story__list--latest').exists()).toBe(true)
   })
 
-  test('close when viewport < lg', () => {
+  test('should not render when viewport < lg', () => {
     const wrapper = createWrapper(Story, {
       data() {
         return {
@@ -77,7 +77,7 @@ describe('latest list', () => {
     expect(wrapper.find('.story__list--latest').exists()).toBe(false)
   })
 
-  test('open UIStoryListWithHeading when latest stories are loaded', () => {
+  test('should render UIStoryListWithHeading when latest stories are loaded', () => {
     const wrapper = createWrapper(Story, {
       data() {
         return {
@@ -95,7 +95,7 @@ describe('latest list', () => {
     ).toBe(true)
   })
 
-  test('close UIStoryListWithHeading when latest stories are not loaded', () => {
+  test('should not render UIStoryListWithHeading when latest stories are not loaded', () => {
     const wrapper = createWrapper(Story, {
       data() {
         return {
@@ -112,7 +112,7 @@ describe('latest list', () => {
     ).toBe(false)
   })
 
-  test('render the proper latest stories', async () => {
+  test('should render the proper latest stories', async () => {
     const mockStorySlug = '20201007fin003'
     const mockLatestStoryWithCurrentStorySlug = { slug: mockStorySlug }
     const mockLatestStories = [
@@ -147,7 +147,7 @@ describe('latest list', () => {
    * 為了避免這個問題，需要在一開始元件還沒內容時，就給它一個固定高度 100vh，以確保其底下的元件不會出現在視埠之中
    * 直到元件有內容後，再拿掉固定高度，讓其底下元件達到 lazy load 的效果
    */
-  test('has height 100vh when latest stories are not loaded', async () => {
+  test('its height should be 100vh when latest stories are not loaded', async () => {
     const wrapper = createWrapper(Story, {
       data() {
         return {
@@ -221,7 +221,7 @@ describe('AD', () => {
 })
 
 describe('JSON-LD', () => {
-  test('render the proper content in most cases', () => {
+  test('should render the proper content in most cases', () => {
     const storyMock = {
       title: '蔡英文視察樂山雷達站',
       ogDescription: '近期共軍頻繁擾台',
@@ -347,7 +347,7 @@ describe('JSON-LD', () => {
     })
   })
 
-  test('change the @type NewsArticle author when the story does not has a writer', () => {
+  test('should change the @type NewsArticle author when the story does not has a writer', () => {
     applyTestWithMinimalSetting((script) => {
       expect(findJsonLdByType(script, 'NewsArticle').json.author).toEqual({
         '@type': 'Organization',
@@ -356,7 +356,7 @@ describe('JSON-LD', () => {
     })
   })
 
-  test('@type NewsArticle articleSection is undefined when the story does not has a section title', () => {
+  test('@type NewsArticle articleSection should be undefined when the story does not has a section title', () => {
     applyTestWithMinimalSetting((script) => {
       expect(
         findJsonLdByType(script, 'NewsArticle').json.articleSection
@@ -364,7 +364,7 @@ describe('JSON-LD', () => {
     })
   })
 
-  test('@type Person is omitted when the story does not has a writer', () => {
+  test('@type Person should be omitted when the story does not has a writer', () => {
     applyTestWithMinimalSetting((script) => {
       expect(findJsonLdByType(script, 'Person')).toBeUndefined()
     })
