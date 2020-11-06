@@ -1,7 +1,6 @@
 <template>
-  <div v-if="$store.state.canAdvertise" class="container-gpt-ad">
+  <div v-if="shouldOpenAd" class="container-gpt-ad">
     <GPTAD
-      v-if="shouldOpenAd"
       :adUnit="adData.adUnit"
       :adSize="adData.adSize"
       :adNetwork="adNetwork"
@@ -38,6 +37,10 @@ export default {
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
     }),
     shouldOpenAd() {
+      if (!this.adData || !this.$store.state.canAdvertise) {
+        return false
+      }
+
       if (this.isVersionOf('MB')) {
         return !this.isDesktopWidth
       } else if (this.isVersionOf('PC')) {
@@ -49,7 +52,12 @@ export default {
     adData() {
       const data = gptAdUnits[this.pageKey]?.[this.adKeyFull]
 
-      validateAdData(data)
+      if (!data) {
+        // eslint-disable-next-line no-console
+        console.error(
+          `Unable to find the AD data. Got the pageKey "${this.pageKey}" and adKey "${this.adKeyFull}". Please provide a vaild pageKey or adKey.`
+        )
+      }
 
       return data
     },
@@ -69,16 +77,6 @@ export default {
     },
   },
 }
-
-function validateAdData(data) {
-  if (data === undefined) {
-    throw new Error(
-      'Unable to find the AD data. Please provide a vaild pageKey or adKey'
-    )
-  }
-}
-
-export { validateAdData }
 </script>
 
 <style lang="scss" scoped>
