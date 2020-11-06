@@ -121,30 +121,25 @@ describe('MicroAd slot', function () {
         infoDescription: 'test infoDescription',
       },
     ])
-    const MicroAdMock = {
-      template: `
-        <div></div>
-      `,
-    }
     const wrapper = shallowMount(UIArticleList, {
       propsData: {
         listData,
       },
       slots: {
-        NA1_RWD_SP: MicroAdMock,
-        NA2_RWD_SP: MicroAdMock,
-        NA3_RWD_SP: MicroAdMock,
+        NA1_RWD_SP: '<div id="na1-rwd-sp" />',
+        NA2_RWD_SP: '<div id="na2-rwd-sp" />',
+        NA3_RWD_SP: '<div id="na3-rwd-sp" />',
       },
     })
 
     const listItems = wrapper.findAll('.list__list-item')
     expect(listItems).toHaveLength(9 + 3)
     expect(listItems.at(2).classes()).toContain('list__list-item--ad')
-    expect(listItems.at(2).find(MicroAdMock).exists()).toBe(true)
+    expect(listItems.at(2).find('#na1-rwd-sp').exists()).toBe(true)
     expect(listItems.at(4).classes()).toContain('list__list-item--ad')
-    expect(listItems.at(4).find(MicroAdMock).exists()).toBe(true)
+    expect(listItems.at(4).find('#na2-rwd-sp').exists()).toBe(true)
     expect(listItems.at(8).classes()).toContain('list__list-item--ad')
-    expect(listItems.at(8).find(MicroAdMock).exists()).toBe(true)
+    expect(listItems.at(8).find('#na3-rwd-sp').exists()).toBe(true)
 
     const listItemAds = wrapper.findAll('.list__list-item--ad')
     expect(listItemAds).toHaveLength(3)
