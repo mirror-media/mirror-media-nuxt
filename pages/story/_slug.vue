@@ -76,7 +76,7 @@
                 ></lazy-component>
               </div>
 
-              <div v-if="isDesktopWidth">
+              <div v-if="shouldOpenLatestList">
                 <lazy-component
                   class="story__list story__list--latest"
                   :style="{ height: hasLatestStories ? undefined : '100vh' }"
@@ -301,6 +301,9 @@ export default {
     hasRelatedImages() {
       return this.relatedImages.length > 0
     },
+    shouldOpenLatestList() {
+      return this.isDesktopWidth && this.sectionId !== 'other'
+    },
     hasLatestStories() {
       return this.latestStories.length > 0
     },
@@ -336,7 +339,7 @@ export default {
       this.relatedImages = items
     },
     async fetchLatestStories() {
-      if (this.hasLatestStories) {
+      if (this.hasLatestStories || this.sectionId === 'other') {
         return
       }
 

@@ -40,18 +40,39 @@ const routeMock = {
 }
 
 describe('latest list', () => {
+  const storyWithSectionsMock = {
+    sections: [{ id: '57e1e0e5ee85930e00cad4e9' }],
+  }
+
   test('open when viewport >= lg', () => {
-    const wrapper = createWrapper(Story)
+    const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyWithSectionsMock,
+        }
+      },
+    })
 
     expect(wrapper.find('.story__list--latest').exists()).toBe(true)
   })
 
   test('close when viewport < lg', () => {
     const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyWithSectionsMock,
+        }
+      },
       computed: {
         isDesktopWidth: () => false,
       },
     })
+
+    expect(wrapper.find('.story__list--latest').exists()).toBe(false)
+  })
+
+  test('should not render when no sections', () => {
+    const wrapper = createWrapper(Story)
 
     expect(wrapper.find('.story__list--latest').exists()).toBe(false)
   })
@@ -61,6 +82,7 @@ describe('latest list', () => {
       data() {
         return {
           latestStories: [{}],
+          story: storyWithSectionsMock,
         }
       },
     })
@@ -74,7 +96,13 @@ describe('latest list', () => {
   })
 
   test('close UIStoryListWithHeading when latest stories are not loaded', () => {
-    const wrapper = createWrapper(Story)
+    const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyWithSectionsMock,
+        }
+      },
+    })
 
     expect(
       wrapper
@@ -92,6 +120,11 @@ describe('latest list', () => {
       ...Array(8).fill({}),
     ]
     const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyWithSectionsMock,
+        }
+      },
       mocks: {
         $route: { params: { slug: mockStorySlug } },
         $fetchList: () => Promise.resolve({ items: mockLatestStories }),
@@ -115,7 +148,13 @@ describe('latest list', () => {
    * 直到元件有內容後，再拿掉固定高度，讓其底下元件達到 lazy load 的效果
    */
   test('has height 100vh when latest stories are not loaded', async () => {
-    const wrapper = createWrapper(Story)
+    const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyWithSectionsMock,
+        }
+      },
+    })
     const latestList = wrapper.get('.story__list--latest')
 
     expect(latestList.element.style.height).toBe('100vh')
