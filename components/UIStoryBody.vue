@@ -299,7 +299,7 @@ export default {
       return this.story.sections?.[0] ?? {}
     },
     sectionId() {
-      return this.section.id ?? ''
+      return this.section.id ?? 'other'
     },
     updatedAt() {
       return this.$dayjs(this.story.updatedAt).format('YYYY.MM.DD HH:mm')

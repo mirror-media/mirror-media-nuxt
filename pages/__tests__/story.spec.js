@@ -350,3 +350,9 @@ describe('JSON-LD', () => {
     return scripts.find((script) => script.json?.['@type'] === type)
   }
 })
+
+test('sectionId should be "other" when no sections', () => {
+  const wrapper = createWrapper(Story)
+
+  expect(wrapper.vm.sectionId).toBe('other')
+})

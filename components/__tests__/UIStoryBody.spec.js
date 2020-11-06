@@ -93,6 +93,12 @@ describe('render the proper content from props "story"', () => {
     expect(categoryTitle.classes()).toContain(sectionNameMock)
   })
 
+  test('sectionId should be "other" when no sections', () => {
+    const wrapper = createWrapper(UIStoryBody)
+
+    expect(wrapper.vm.sectionId).toBe('other')
+  })
+
   test('categories', () => {
     const categoryTitleMock = 'category title'
     const wrapper = createWrapper(UIStoryBody, {
