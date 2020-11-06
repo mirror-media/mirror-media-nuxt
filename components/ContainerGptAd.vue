@@ -33,12 +33,6 @@ export default {
     },
   },
 
-  data() {
-    return {
-      hasRequested: false,
-    }
-  },
-
   computed: {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
