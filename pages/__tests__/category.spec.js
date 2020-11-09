@@ -1,5 +1,9 @@
 import page from '../category/_name.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
+import UIWineWarning from '~/components/UIWineWarning.vue'
+import UIStickyAd from '~/components/UIStickyAd.vue'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import { SITE_TITLE } from '~/constants'
 
@@ -249,4 +253,34 @@ describe('meta', function () {
       sectionNameMock
     )
   })
+})
+
+describe('wine warning', () => {
+  test('show the wine warning when the category name is wine', () => {
+    testWineCatogoryPage((sut) => {
+      expect(sut.findComponent(UIWineWarning).exists()).toBe(true)
+    })
+  })
+
+  test('do not show ADs of MB_ST, MB_FS, MB_AD2 & MB_INNITY when the category name is wine', () => {
+    testWineCatogoryPage((sut) => {
+      // MB_ST
+      expect(sut.findComponent(UIStickyAd).exists()).toBe(false)
+
+      // MB_FS, MB_AD2 & MB_INNITY
+      expect(sut.findComponent(ContainerFullScreenAds).exists()).toBe(false)
+    })
+  })
+
+  function testWineCatogoryPage(assert) {
+    const sut = createWrapper(page, {
+      mocks: {
+        $route: {
+          params: { name: 'wine' },
+        },
+      },
+    })
+
+    assert(sut)
+  }
 })

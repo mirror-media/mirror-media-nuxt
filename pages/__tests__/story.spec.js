@@ -1,5 +1,6 @@
 import Story from '../story/_slug.vue'
 import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
+import UIWineWarning from '~/components/UIWineWarning.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
@@ -218,6 +219,16 @@ describe('AD', () => {
     expect(wrapper.findComponent(ContainerFullScreenAds).exists()).toBe(false)
     expect(wrapper.find('.ad-pc-floating').exists()).toBe(false)
   })
+
+  test('do not show ADs of MB_ST, MB_FS, MB_AD2 & MB_INNITY when a story has the wine category name', () => {
+    testStoryWithWineCategory((sut) => {
+      // MB_ST
+      expect(sut.findComponent(UIStickyAd).exists()).toBe(false)
+
+      // MB_FS, MB_AD2 & MB_INNITY
+      expect(sut.findComponent(ContainerFullScreenAds).exists()).toBe(false)
+    })
+  })
 })
 
 describe('JSON-LD', () => {
@@ -390,8 +401,28 @@ describe('JSON-LD', () => {
   }
 })
 
+test('show the wine warning when a story has the wine category name', () => {
+  testStoryWithWineCategory((sut) => {
+    expect(sut.findComponent(UIWineWarning).exists()).toBe(true)
+  })
+})
+
 test('sectionId should be "other" when no sections', () => {
   const wrapper = createWrapper(Story)
 
   expect(wrapper.vm.sectionId).toBe('other')
 })
+
+function testStoryWithWineCategory(assert) {
+  const sut = createWrapper(Story, {
+    data() {
+      return {
+        story: {
+          categories: [{ name: 'wine' }],
+        },
+      }
+    },
+  })
+
+  assert(sut)
+}

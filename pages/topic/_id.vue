@@ -5,6 +5,8 @@
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
+
+    <UIWineWarning v-if="isTopicWine" />
   </section>
 </template>
 
@@ -12,13 +14,22 @@
 import _ from 'lodash'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
+import UIWineWarning from '~/components/UIWineWarning.vue'
+
 import styleVariables from '~/scss/_variables.scss'
+
+const TOPIC_IDS_WINE = [
+  '5c25f9e3315ec51000903a82',
+  '5d22bb9fe311f3925c49396c',
+  '5a4d8e60160ac91000294611',
+]
 
 export default {
   name: 'Topic',
   components: {
     UIArticleList,
     UIInfiniteLoading,
+    UIWineWarning,
   },
   async fetch() {
     const response = await this.fetchTopicListing({ page: 1 })
@@ -37,6 +48,9 @@ export default {
   computed: {
     currentTopicId() {
       return this.$route.params.id
+    },
+    isTopicWine() {
+      return TOPIC_IDS_WINE.includes(this.currentTopicId)
     },
 
     listDataPageLimit() {

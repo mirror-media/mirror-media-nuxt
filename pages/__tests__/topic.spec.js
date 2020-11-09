@@ -1,5 +1,7 @@
 import page from '../topic/_id.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
+import UIWineWarning from '~/components/UIWineWarning.vue'
+
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
@@ -102,5 +104,27 @@ describe('component methods', () => {
     expect(wrapper.vm.listDataPageLimit).toBe(
       Math.ceil(totalMock / wrapper.vm.listDataMaxResults)
     )
+  })
+})
+
+describe('wine warning', () => {
+  const TOPIC_IDS_WINE = [
+    '5c25f9e3315ec51000903a82',
+    '5d22bb9fe311f3925c49396c',
+    '5a4d8e60160ac91000294611',
+  ]
+
+  TOPIC_IDS_WINE.forEach((id) => {
+    test(`show the wine warning when the topic id is ${id}`, () => {
+      const sut = createWrapper(page, {
+        mocks: {
+          $route: {
+            params: { id },
+          },
+        },
+      })
+
+      expect(sut.findComponent(UIWineWarning).exists()).toBe(true)
+    })
   })
 })

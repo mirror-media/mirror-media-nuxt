@@ -138,6 +138,8 @@
         <ContainerFullScreenAds v-if="!hasWineCategory && canAdvertise" />
       </div>
 
+      <UIWineWarning v-if="hasWineCategory" />
+
       <div class="footer-container">
         <UIFooter />
       </div>
@@ -164,6 +166,7 @@ import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import MicroAd from '~/components/MicroAd.vue'
+import UIWineWarning from '~/components/UIWineWarning.vue'
 import UIFooter from '~/components/UIFooter.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
@@ -199,6 +202,7 @@ export default {
     UIStickyAd,
     ContainerFullScreenAds,
     MicroAd,
+    UIWineWarning,
 
     UIFooter,
 

@@ -33,7 +33,10 @@
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
-    <UIStickyAd v-if="adDevice === 'MB'">
+
+    <UIWineWarning v-if="isCategoryWine" />
+
+    <UIStickyAd v-if="adDevice === 'MB' && !isCategoryWine">
       <client-only>
         <GPTAD
           :adUnit="adFixedBottomMobile.adUnit"
@@ -41,7 +44,8 @@
         />
       </client-only>
     </UIStickyAd>
-    <ContainerFullScreenAds />
+
+    <ContainerFullScreenAds v-if="!isCategoryWine" />
   </section>
 </template>
 
@@ -51,8 +55,10 @@ import _ from 'lodash'
 import MicroAd from '~/components/MicroAd.vue'
 import UIArticleList from '~/components/UIArticleList.vue'
 import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
+import UIWineWarning from '~/components/UIWineWarning.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UIStickyAd from '~/components/UIStickyAd.vue'
+
 import styleVariables from '~/scss/_variables.scss'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
@@ -64,6 +70,7 @@ export default {
     MicroAd,
     UIArticleList,
     UIInfiniteLoading,
+    UIWineWarning,
     ContainerFullScreenAds,
     UIStickyAd,
   },
@@ -119,6 +126,9 @@ export default {
     },
     categoryId() {
       return this.categoryData.id
+    },
+    isCategoryWine() {
+      return this.categoryName === 'wine'
     },
 
     listDataPageLimit() {
