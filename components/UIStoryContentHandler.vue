@@ -64,11 +64,18 @@ export default {
           />
         )
       case 'image': {
-        const description = content[0].description
+        const { description, alignment, mobile = {} } = content[0] || {}
+
         return (
-          <figure class="g-story-figure">
-            <img v-lazy={content[0]?.mobile?.url} alt={description} />
-            <figcaption>{description}</figcaption>
+          <figure
+            class={[
+              'g-story-figure',
+              'story__figure',
+              alignment !== 'center' && alignment,
+            ]}
+          >
+            <img v-lazy={mobile.url} alt={description} />
+            {description && <figcaption>{description}</figcaption>}
           </figure>
         )
       }
@@ -207,6 +214,32 @@ export default {
 
 <style lang="scss" scoped>
 .story {
+  &__figure {
+    @include media-breakpoint-up(md) {
+      &.left,
+      &.right {
+        clear: both;
+        width: 300px;
+        margin-bottom: 30px;
+
+        figcaption {
+          border-bottom: 2px solid #255577;
+          padding-bottom: 10px;
+        }
+      }
+
+      &.left {
+        float: left;
+        margin-right: 20px;
+      }
+
+      &.right {
+        float: right;
+        margin-left: 20px;
+      }
+    }
+  }
+
   &__slideshow {
     margin-top: 1.5em;
     margin-bottom: 1.5em;
