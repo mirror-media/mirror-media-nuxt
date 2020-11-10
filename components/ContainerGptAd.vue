@@ -1,6 +1,6 @@
 <template>
   <div v-if="shouldOpenAd" class="container-gpt-ad">
-    <GPTAD
+    <GptAd
       :adUnit="adData.adUnit"
       :adSize="adData.adSize"
       :adNetwork="adNetwork"
@@ -81,7 +81,7 @@ export default {
 
 <style lang="scss" scoped>
 /**
- * 廣告有時會替換掉原本 <GPTAD> 元件裡頭的根元素 <div>
+ * 廣告有時會替換掉原本 <GptAd> 元件裡頭的根元素 <div>
  * 因此用 ::v-deep，並不限定所指定的元素類型（*）
  * 以確保能選擇到 .container-gpt-ad 的直接子元素
  */

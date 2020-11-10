@@ -1,16 +1,16 @@
 <template>
   <section class="video">
     <client-only v-if="!isMobile">
-      <GPTAD
+      <GptAd
         class="video__ad"
         :adUnit="getAdUnit('HD').adUnit"
         :adSize="getAdUnit('HD').adSize"
       />
     </client-only>
     <article class="video__content-wrapper">
-      <UIYoutubeIframe :videoId="videoId" class="video__iframe" />
+      <UiYoutubeIframe :videoId="videoId" class="video__iframe" />
       <client-only v-if="isMobile">
-        <GPTAD
+        <GptAd
           class="video__ad"
           :adUnit="getAdUnit('HD').adUnit"
           :adSize="getAdUnit('HD').adSize"
@@ -20,8 +20,8 @@
       <div class="video__data-share">
         <p class="video__datetime" v-text="datetime" />
         <div class="video__share">
-          <UIShareFb />
-          <UIShareLine />
+          <UiShareFb />
+          <UiShareLine />
         </div>
       </div>
 
@@ -29,7 +29,7 @@
       <p class="video__description" v-html="descriptionParsed" />
     </article>
     <client-only v-if="isMobile">
-      <GPTAD
+      <GptAd
         class="video__ad"
         :adUnit="getAdUnit('E1').adUnit"
         :adSize="getAdUnit('E1').adSize"
@@ -37,7 +37,7 @@
     </client-only>
     <div class="video__latest-wrapper">
       <client-only v-if="!isMobile">
-        <GPTAD
+        <GptAd
           class="video__ad"
           :adUnit="getAdUnit('R1').adUnit"
           :adSize="getAdUnit('R1').adSize"
@@ -45,7 +45,7 @@
       </client-only>
       <template v-if="hasLatestItems">
         <h2 class="video__heading">最新影音</h2>
-        <UILinkedItemWithTitle
+        <UiLinkedItemWithTitle
           v-for="item in listDataLatest"
           :key="item.videoId"
           :title="item.title"
@@ -58,23 +58,23 @@
         />
       </template>
     </div>
-    <UIYoutubePolicies class="video__policies" />
+    <UiYoutubePolicies class="video__policies" />
     <client-only>
-      <GPTAD
+      <GptAd
         class="video__ad"
         :adUnit="getAdUnit('FT').adUnit"
         :adSize="getAdUnit('FT').adSize"
       />
     </client-only>
     <ContainerFullScreenAds />
-    <UIStickyAd>
+    <UiStickyAd>
       <client-only>
-        <GPTAD
+        <GptAd
           :adUnit="getAdUnit('ST').adUnit"
           :adSize="getAdUnit('ST').adSize"
         />
       </client-only>
-    </UIStickyAd>
+    </UiStickyAd>
   </section>
 </template>
 
@@ -82,12 +82,12 @@
 import { SITE_OG_IMG, SITE_URL } from '~/constants/index'
 import { processResponseItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
-import UIStickyAd from '~/components/UIStickyAd.vue'
-import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
-import UIShareFb from '~/components/UIShareFb.vue'
-import UIShareLine from '~/components/UIShareLine.vue'
-import UIYoutubeIframe from '~/components/UIYoutubeIframe.vue'
-import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
+import UiLinkedItemWithTitle from '~/components/UiLinkedItemWithTitle.vue'
+import UiShareFb from '~/components/UiShareFb.vue'
+import UiShareLine from '~/components/UiShareLine.vue'
+import UiYoutubeIframe from '~/components/UiYoutubeIframe.vue'
+import UiYoutubePolicies from '~/components/UiYoutubePolicies.vue'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 export default {
@@ -97,12 +97,12 @@ export default {
   },
   components: {
     ContainerFullScreenAds,
-    UIStickyAd,
-    UILinkedItemWithTitle,
-    UIShareFb,
-    UIShareLine,
-    UIYoutubeIframe,
-    UIYoutubePolicies,
+    UiStickyAd,
+    UiLinkedItemWithTitle,
+    UiShareFb,
+    UiShareLine,
+    UiYoutubeIframe,
+    UiYoutubePolicies,
   },
   async fetch() {
     const response = await this.$fetchYoutubeVideos({

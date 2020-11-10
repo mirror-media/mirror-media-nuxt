@@ -2,9 +2,9 @@
   <main>
     <aside>
       <section>
-        <UIColumnHeader title="焦點新聞" class="home__column-header" />
+        <UiColumnHeader title="焦點新聞" class="home__column-header" />
         <div class="article-list-focus-container">
-          <UIArticleListFocus
+          <UiArticleListFocus
             v-for="article in articlesFocus"
             :key="article.slug"
             :articleMain="article"
@@ -18,14 +18,14 @@
 </template>
 
 <script>
-import UIColumnHeader from '~/components/UIColumnHeader.vue'
-import UIArticleListFocus from '~/components/UIArticleListFocus.vue'
+import UiColumnHeader from '~/components/UiColumnHeader.vue'
+import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 
 export default {
   name: 'Home',
   components: {
-    UIColumnHeader,
-    UIArticleListFocus,
+    UiColumnHeader,
+    UiArticleListFocus,
   },
   async fetch() {
     this.articleGrouped = await this.$fetchGrouped()

@@ -1,20 +1,20 @@
 <template>
   <section class="section">
-    <UIArticleList class="section__list" :listData="listData" />
-    <UIInfiniteLoading
+    <UiArticleList class="section__list" :listData="listData" />
+    <UiInfiniteLoading
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
 
-    <UIWineWarning v-if="isTopicWine" />
+    <UiWineWarning v-if="isTopicWine" />
   </section>
 </template>
 
 <script>
 import _ from 'lodash'
-import UIArticleList from '~/components/UIArticleList.vue'
-import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
-import UIWineWarning from '~/components/UIWineWarning.vue'
+import UiArticleList from '~/components/UiArticleList.vue'
+import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import styleVariables from '~/scss/_variables.scss'
 
@@ -27,9 +27,9 @@ const TOPIC_IDS_WINE = [
 export default {
   name: 'Topic',
   components: {
-    UIArticleList,
-    UIInfiniteLoading,
-    UIWineWarning,
+    UiArticleList,
+    UiInfiniteLoading,
+    UiWineWarning,
   },
   async fetch() {
     const response = await this.fetchTopicListing({ page: 1 })

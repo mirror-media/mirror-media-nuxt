@@ -3,7 +3,7 @@ import ContainerFullScreenAds from '../ContainerFullScreenAds.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
-  stubs: ['client-only', 'GPTAD'],
+  stubs: ['client-only', 'GptAd'],
 })
 
 describe('computed', () => {

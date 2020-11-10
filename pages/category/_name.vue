@@ -1,13 +1,13 @@
 <template>
   <section class="section">
     <client-only>
-      <GPTAD
+      <GptAd
         class="section__ad"
         :adUnit="adTop.adUnit"
         :adSize="adTop.adSize"
       />
     </client-only>
-    <UIArticleList
+    <UiArticleList
       class="section__list"
       :listTitle="categoryTitle"
       :listTitleColor="sectionThemeColor"
@@ -16,34 +16,34 @@
       <template v-for="unit in microAdUnits" v-slot:[unit.name]>
         <MicroAd :key="unit.name" :unitId="unit.id" />
       </template>
-    </UIArticleList>
+    </UiArticleList>
     <client-only>
-      <GPTAD
+      <GptAd
         class="section__ad"
         :adUnit="adBottom.adUnit"
         :adSize="adBottom.adSize"
       />
     </client-only>
-    <UIArticleList
+    <UiArticleList
       v-show="showListDataLoadmorePage"
       class="section__list"
       :listData="listDataLoadmorePage"
     />
-    <UIInfiniteLoading
+    <UiInfiniteLoading
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
 
-    <UIWineWarning v-if="isCategoryWine" />
+    <UiWineWarning v-if="isCategoryWine" />
 
-    <UIStickyAd v-if="adDevice === 'MB' && !isCategoryWine">
+    <UiStickyAd v-if="adDevice === 'MB' && !isCategoryWine">
       <client-only>
-        <GPTAD
+        <GptAd
           :adUnit="adFixedBottomMobile.adUnit"
           :adSize="adFixedBottomMobile.adSize"
         />
       </client-only>
-    </UIStickyAd>
+    </UiStickyAd>
 
     <ContainerFullScreenAds v-if="!isCategoryWine" />
   </section>
@@ -53,11 +53,11 @@
 import { mapGetters } from 'vuex'
 import _ from 'lodash'
 import MicroAd from '~/components/MicroAd.vue'
-import UIArticleList from '~/components/UIArticleList.vue'
-import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
-import UIWineWarning from '~/components/UIWineWarning.vue'
+import UiArticleList from '~/components/UiArticleList.vue'
+import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
-import UIStickyAd from '~/components/UIStickyAd.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 
 import styleVariables from '~/scss/_variables.scss'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
@@ -68,11 +68,11 @@ export default {
   name: 'Category',
   components: {
     MicroAd,
-    UIArticleList,
-    UIInfiniteLoading,
-    UIWineWarning,
+    UiArticleList,
+    UiInfiniteLoading,
+    UiWineWarning,
     ContainerFullScreenAds,
-    UIStickyAd,
+    UiStickyAd,
   },
   async fetch() {
     const response = await this.fetchCategoryListing({ page: 1 })

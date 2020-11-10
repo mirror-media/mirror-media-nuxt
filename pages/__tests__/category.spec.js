@@ -1,7 +1,7 @@
 import page from '../category/_name.vue'
-import UIArticleList from '~/components/UIArticleList.vue'
-import UIWineWarning from '~/components/UIWineWarning.vue'
-import UIStickyAd from '~/components/UIStickyAd.vue'
+import UiArticleList from '~/components/UiArticleList.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
@@ -25,7 +25,7 @@ const createWrapper = createWrapperHelper({
       },
     },
   },
-  stubs: ['client-only', 'GPTAD'],
+  stubs: ['client-only', 'GptAd'],
 })
 
 describe('stripHtmlTag method', () => {
@@ -104,7 +104,7 @@ describe('category data', () => {
       },
     })
 
-    const list = wrapper.findComponent(UIArticleList)
+    const list = wrapper.findComponent(UiArticleList)
     expect(wrapper.vm.categoryId).toBe(categoryIdMock)
     expect(list.props().listTitle).toBe(categoryTitleMock)
   })
@@ -258,14 +258,14 @@ describe('meta', function () {
 describe('wine warning', () => {
   test('show the wine warning when the category name is wine', () => {
     testWineCatogoryPage((sut) => {
-      expect(sut.findComponent(UIWineWarning).exists()).toBe(true)
+      expect(sut.findComponent(UiWineWarning).exists()).toBe(true)
     })
   })
 
   test('do not show ADs of MB_ST, MB_FS, MB_AD2 & MB_INNITY when the category name is wine', () => {
     testWineCatogoryPage((sut) => {
       // MB_ST
-      expect(sut.findComponent(UIStickyAd).exists()).toBe(false)
+      expect(sut.findComponent(UiStickyAd).exists()).toBe(false)
 
       // MB_FS, MB_AD2 & MB_INNITY
       expect(sut.findComponent(ContainerFullScreenAds).exists()).toBe(false)

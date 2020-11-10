@@ -11,14 +11,14 @@
         </ClientOnly>
 
         <div class="story-wrapper">
-          <UIStoryBody :story="story">
+          <UiStoryBody :story="story">
             <template #storyRelateds>
-              <UIStoryListWithArrow
+              <UiStoryListWithArrow
                 :categoryTitle="categoryTitle"
                 :items="relateds"
                 :sectionName="sectionName"
               />
-              <UIStoryListRelated
+              <UiStoryListRelated
                 :items="relatedsWithoutFirstTwo"
                 :images="relatedImages"
                 @show="handleShowStoryListRelated"
@@ -34,7 +34,7 @@
                     <div id="_popIn_recommend"></div>
                   </ClientOnly>
                 </template>
-              </UIStoryListRelated>
+              </UiStoryListRelated>
             </template>
 
             <template v-if="canAdvertise && isDesktopWidth" #dableWidget>
@@ -48,7 +48,7 @@
                 </div>
               </ClientOnly>
             </template>
-          </UIStoryBody>
+          </UiStoryBody>
 
           <aside>
             <ClientOnly>
@@ -82,7 +82,7 @@
                   :style="{ height: hasLatestStories ? undefined : '100vh' }"
                   @show="fetchLatestStories"
                 >
-                  <UIStoryListWithHeading
+                  <UiStoryListWithHeading
                     v-if="hasLatestStories"
                     heading="最新文章"
                     :items="latestStories"
@@ -101,7 +101,7 @@
                 class="story__list story__list--popular"
                 @show="fetchPopularStories"
               >
-                <UIStoryListWithHeading
+                <UiStoryListWithHeading
                   v-if="hasPopularStories"
                   heading="熱門文章"
                   :items="popularStories"
@@ -119,11 +119,11 @@
           />
         </ClientOnly>
 
-        <UIAdultContentWarning v-if="story.isAdult" />
+        <UiAdultContentWarning v-if="story.isAdult" />
 
-        <UIStickyAd v-if="!hasWineCategory && canAdvertise">
+        <UiStickyAd v-if="!hasWineCategory && canAdvertise">
           <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
-        </UIStickyAd>
+        </UiStickyAd>
 
         <ClientOnly v-if="shouldOpenAdPcFloating">
           <div class="ad-pc-floating">
@@ -138,10 +138,10 @@
         <ContainerFullScreenAds v-if="!hasWineCategory && canAdvertise" />
       </div>
 
-      <UIWineWarning v-if="hasWineCategory" />
+      <UiWineWarning v-if="hasWineCategory" />
 
       <div class="footer-container">
-        <UIFooter />
+        <UiFooter />
       </div>
     </template>
   </div>
@@ -156,18 +156,18 @@ import { useFbQuotePlugin } from '~/composition/fb-plugins.js'
 
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import ContainerPhotoGallery from '~/components/photo-gallery/ContainerPhotoGallery.vue'
-import UIAdultContentWarning from '~/components/UIAdultContentWarning.vue'
-import UIStoryBody from '~/components/UIStoryBody.vue'
-import UIStoryListRelated from '~/components/UIStoryListRelated.vue'
-import UIStoryListWithArrow from '~/components/UIStoryListWithArrow.vue'
+import UiAdultContentWarning from '~/components/UiAdultContentWarning.vue'
+import UiStoryBody from '~/components/UiStoryBody.vue'
+import UiStoryListRelated from '~/components/UiStoryListRelated.vue'
+import UiStoryListWithArrow from '~/components/UiStoryListWithArrow.vue'
 import FbPage from '~/components/FbPage.vue'
-import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
+import UiStoryListWithHeading from '~/components/UiStoryListWithHeading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
-import UIStickyAd from '~/components/UIStickyAd.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import MicroAd from '~/components/MicroAd.vue'
-import UIWineWarning from '~/components/UIWineWarning.vue'
-import UIFooter from '~/components/UIFooter.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
+import UiFooter from '~/components/UiFooter.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
@@ -191,20 +191,20 @@ export default {
   components: {
     ContainerHeader,
     ContainerPhotoGallery,
-    UIAdultContentWarning,
-    UIStoryBody,
-    UIStoryListRelated,
-    UIStoryListWithArrow,
+    UiAdultContentWarning,
+    UiStoryBody,
+    UiStoryListRelated,
+    UiStoryListWithArrow,
     FbPage,
-    UIStoryListWithHeading,
+    UiStoryListWithHeading,
 
     ContainerGptAd,
-    UIStickyAd,
+    UiStickyAd,
     ContainerFullScreenAds,
     MicroAd,
-    UIWineWarning,
+    UiWineWarning,
 
-    UIFooter,
+    UiFooter,
 
     SvgCloseIcon,
   },

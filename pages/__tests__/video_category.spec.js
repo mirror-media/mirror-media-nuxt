@@ -1,6 +1,6 @@
 import page from '../video_category/_name.vue'
-import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
-import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
+import UiLinkedItemWithTitle from '~/components/UiLinkedItemWithTitle.vue'
+import UiVideoIframeWithItems from '~/components/UiVideoIframeWithItems.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const $ga = {
@@ -25,7 +25,7 @@ const createWrapper = createWrapperHelper({
     },
     $ga,
   },
-  stubs: ['client-only', 'GPTAD'],
+  stubs: ['client-only', 'GptAd'],
 })
 
 const sectionNameMock = 'video_coverstory'
@@ -82,15 +82,15 @@ describe('handleSendGA method', () => {
     eventAction: 'click',
     eventLabel: 'test',
   }
-  test('call $ga.event when UIVideoIframeWithItems emits sendGA', () => {
-    wrapper.findComponent(UIVideoIframeWithItems).vm.$emit('sendGA', gaArgs)
+  test('call $ga.event when UiVideoIframeWithItems emits sendGA', () => {
+    wrapper.findComponent(UiVideoIframeWithItems).vm.$emit('sendGA', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 })
 
 describe('handleClick method', () => {
-  test('call $ga.event when UIVideoIframeWithItems emits sendGA', () => {
-    wrapper.findComponent(UILinkedItemWithTitle).vm.$emit('click')
+  test('call $ga.event when UiVideoIframeWithItems emits sendGA', () => {
+    wrapper.findComponent(UiLinkedItemWithTitle).vm.$emit('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: 'listing',
       eventAction: 'click',

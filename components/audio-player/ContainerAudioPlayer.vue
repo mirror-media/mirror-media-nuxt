@@ -2,7 +2,7 @@
   <div class="audio-player">
     <audio ref="audio" :src="content.url" />
 
-    <UIAudioPlayerInfo :title="content.title" />
+    <UiAudioPlayerInfo :title="content.title" />
 
     <div class="controls">
       <button type="button" @click="toggleAudio">
@@ -13,14 +13,14 @@
       </button>
 
       <div class="progress">
-        <UIAudioPlayerBar
+        <UiAudioPlayerBar
           class="audio-player__bar"
           :options="audioPlayerBarOptions"
           :value.sync="audioPlayerBarValue"
           :railStyle="bufferedStyle"
         />
 
-        <UIAudioPlayerTime
+        <UiAudioPlayerTime
           :currentTime="formatTime(audioStatus.currentTime)"
           :duration="formatTime(audioStatus.duration)"
         />
@@ -30,16 +30,16 @@
 </template>
 
 <script>
-import UIAudioPlayerInfo from './UIAudioPlayerInfo.vue'
-import UIAudioPlayerBar from './UIAudioPlayerBar.vue'
-import UIAudioPlayerTime from './UIAudioPlayerTime.vue'
+import UiAudioPlayerInfo from './UiAudioPlayerInfo.vue'
+import UiAudioPlayerBar from './UiAudioPlayerBar.vue'
+import UiAudioPlayerTime from './UiAudioPlayerTime.vue'
 
 export default {
-  name: 'UIAudioPlayer',
+  name: 'UiAudioPlayer',
   components: {
-    UIAudioPlayerInfo,
-    UIAudioPlayerBar,
-    UIAudioPlayerTime,
+    UiAudioPlayerInfo,
+    UiAudioPlayerBar,
+    UiAudioPlayerTime,
   },
   props: {
     content: {

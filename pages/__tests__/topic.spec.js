@@ -1,6 +1,6 @@
 import page from '../topic/_id.vue'
-import UIArticleList from '~/components/UIArticleList.vue'
-import UIWineWarning from '~/components/UIWineWarning.vue'
+import UiArticleList from '~/components/UiArticleList.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -78,7 +78,7 @@ describe('component methods', () => {
     const wrapper = createWrapper(page)
     wrapper.vm.setListData(responseMock)
     await wrapper.vm.$nextTick()
-    const list = wrapper.findComponent(UIArticleList)
+    const list = wrapper.findComponent(UiArticleList)
     expect(list.props().listData).toEqual([
       {
         id: idMock,
@@ -124,7 +124,7 @@ describe('wine warning', () => {
         },
       })
 
-      expect(sut.findComponent(UIWineWarning).exists()).toBe(true)
+      expect(sut.findComponent(UiWineWarning).exists()).toBe(true)
     })
   })
 })

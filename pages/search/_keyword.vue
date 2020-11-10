@@ -1,8 +1,8 @@
 <template>
   <section class="section">
     <h1 class="section__title" v-text="currentKeyword" />
-    <UIArticleList class="section__list" :listData="listData" />
-    <UIInfiniteLoading
+    <UiArticleList class="section__list" :listData="listData" />
+    <UiInfiniteLoading
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
@@ -12,15 +12,15 @@
 <script>
 import { mapState } from 'vuex'
 import _ from 'lodash'
-import UIArticleList from '~/components/UIArticleList.vue'
-import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
+import UiArticleList from '~/components/UiArticleList.vue'
+import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
 
 export default {
   name: 'Search',
   components: {
-    UIArticleList,
-    UIInfiniteLoading,
+    UiArticleList,
+    UiInfiniteLoading,
   },
   async fetch() {
     const response = await this.fetchSearchListing({ page: 1 })

@@ -24,7 +24,7 @@ describe('adNetwork settings', () => {
       template: `
         <div>
           <!-- adNetwork is missing in component props -->
-          <GPTAD
+          <GptAd
             :adNetwork="undefined"
             :adUnit="'adUnitMock'"
             :adSize="[0, 0]"
@@ -54,7 +54,7 @@ describe('adNetwork settings', () => {
       template: `
         <div>
           <!-- adNetwork is missing in component props -->
-          <GPTAD
+          <GptAd
             class="ad"
             :adNetwork="undefined"
             :adUnit="adUnit"
@@ -87,7 +87,7 @@ describe('adNetwork settings', () => {
     const TestWrapperComponent = {
       template: `
         <div>
-          <GPTAD
+          <GptAd
             class="ad"
             :adNetwork="adNetwork"
             :adUnit="'adUnitMock'"
@@ -120,7 +120,7 @@ describe('error handling', () => {
     const TestWrapperComponent = {
       template: `
         <div>
-          <GPTAD
+          <GptAd
             :adUnit="''"
             :adSize="[0, 0]"
           />
@@ -131,7 +131,7 @@ describe('error handling', () => {
       mount(TestWrapperComponent, {
         localVue,
       })
-    }).toThrowError('adUnit props not found in GPTAD component')
+    }).toThrowError('adUnit props not found in GptAd component')
   })
 
   test('should throw error when adSize props cannot specify', () => {
@@ -143,7 +143,7 @@ describe('error handling', () => {
     const TestWrapperComponent = {
       template: `
         <div>
-          <GPTAD
+          <GptAd
             :adUnit="'adUnit'"
             :adSize="[]"
           />
@@ -176,7 +176,7 @@ describe('mode setting', () => {
       template: `
         <div>
           <!-- adNetwork is missing in component props -->
-          <GPTAD
+          <GptAd
             class="ad"
             :adNetwork="undefined"
             :adUnit="adUnit"
@@ -199,7 +199,7 @@ describe('mode setting', () => {
   })
 })
 
-describe('GPTAD component computeds', () => {
+describe('GptAd component computeds', () => {
   test('adUnitPath and adOptDiv', () => {
     const adNetworkMock = 'adNetwork'
     const adUnitMock = 'adUnit'
@@ -211,7 +211,7 @@ describe('GPTAD component computeds', () => {
     const TestWrapperComponent = {
       template: `
         <div>
-          <GPTAD
+          <GptAd
             class="ad"
             :adUnit="'${adUnitMock}'"
             :adSize="[0, 0]"
@@ -239,7 +239,7 @@ describe('different ad sizes', () => {
     const TestWrapperComponent = {
       template: `
         <div>
-          <GPTAD
+          <GptAd
             class="ad"
             :adUnit="'adUnit'"
             :adSize="[${widthMock}, 456]"
@@ -264,7 +264,7 @@ describe('different ad sizes', () => {
     const TestWrapperComponent = {
       template: `
         <div>
-          <GPTAD
+          <GptAd
             class="ad"
             :adUnit="'adUnit'"
             :adSize="[
@@ -292,7 +292,7 @@ describe('different ad sizes', () => {
     const TestWrapperComponent = {
       template: `
         <div>
-          <GPTAD
+          <GptAd
             class="ad"
             :adUnit="'adUnit'"
             :adSize="['fluid']"

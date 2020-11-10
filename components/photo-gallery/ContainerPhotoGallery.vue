@@ -112,7 +112,7 @@
 
       <ClientOnly>
         <lazy-component @show="fetchRelatedImgs">
-          <UIArticleList
+          <UiArticleList
             class="photos__article-list"
             :items="relateds"
             :itemImgs="relatedImgs"
@@ -126,7 +126,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import UIArticleList from './UIArticleList.vue'
+import UiArticleList from './UiArticleList.vue'
 
 import {
   OnePageScroller,
@@ -156,7 +156,7 @@ export default {
   },
 
   components: {
-    UIArticleList,
+    UiArticleList,
 
     SvgShareIcon,
     SvgFbIcon,

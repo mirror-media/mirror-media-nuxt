@@ -18,7 +18,7 @@ const createWrapper = createWrapperHelper({
       state: { canAdvertise: true },
     },
   },
-  stubs: ['GPTAD'],
+  stubs: ['GptAd'],
 })
 
 describe('prop "adKey" with a device "MB" text', () => {

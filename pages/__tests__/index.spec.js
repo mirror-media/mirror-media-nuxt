@@ -1,5 +1,5 @@
 import page from '../index.vue'
-import UIArticleListFocus from '~/components/UIArticleListFocus.vue'
+import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -8,7 +8,7 @@ const createWrapper = createWrapperHelper()
 const mockGrouped = [{}, {}, {}, {}]
 const mockGroupedRelateds = [{}, {}, {}, {}]
 
-describe('UIArticleListFocus', () => {
+describe('UiArticleListFocus', () => {
   test('render the correct number', () => {
     const wrapper = createWrapper(page, {
       data() {
@@ -20,7 +20,7 @@ describe('UIArticleListFocus', () => {
       },
     })
 
-    const focusArticleLists = wrapper.findAllComponents(UIArticleListFocus)
+    const focusArticleLists = wrapper.findAllComponents(UiArticleListFocus)
     expect(focusArticleLists).toHaveLength(mockGrouped.length)
   })
 
@@ -35,7 +35,7 @@ describe('UIArticleListFocus', () => {
       },
     })
 
-    const focusArticleList = wrapper.findComponent(UIArticleListFocus)
+    const focusArticleList = wrapper.findComponent(UiArticleListFocus)
     expect(focusArticleList.props().articlesRelated).toHaveLength(
       mockGroupedRelateds.length - 1
     )

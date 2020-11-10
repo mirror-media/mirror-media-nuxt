@@ -79,7 +79,7 @@ export default {
       )
     }
     if (!this.adUnit || this.adUnit === '') {
-      throw new Error('adUnit props not found in GPTAD component')
+      throw new Error('adUnit props not found in GptAd component')
     }
     if (getAdSizeType(this.adSize) === undefined) {
       throw new Error(

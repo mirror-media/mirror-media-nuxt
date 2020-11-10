@@ -13,7 +13,7 @@
           <img src="/logo.png" :alt="SITE_TITLE" />
         </a>
 
-        <UIEventLogo
+        <UiEventLogo
           v-if="shouldOpenEventLogo"
           class="logo"
           :eventLogo="eventLogo"
@@ -31,8 +31,8 @@
       </div>
 
       <div class="header-search">
-        <UISearchBarWrapper :options="options" @sendGA="handleSendGA" />
-        <UIOthersList
+        <UiSearchBarWrapper :options="options" @sendGA="handleSendGA" />
+        <UiOthersList
           class="others-list"
           :links="otherLinks"
           eventCategory="header"
@@ -42,13 +42,13 @@
     </div>
 
     <nav class="header-nav">
-      <UIHeaderNavSection
+      <UiHeaderNavSection
         :sections="sections"
         :currentSectionName="sectionName"
         :partners="partners"
         @sendGA="handleSendGA"
       />
-      <UIHeaderNavTopic
+      <UiHeaderNavTopic
         :topics="topics"
         :subBrands="subBrandLinks"
         @sendGA="handleSendGA"
@@ -56,7 +56,7 @@
     </nav>
 
     <transition name="slide">
-      <UISidebar
+      <UiSidebar
         v-if="shouldOpenSidebar"
         :topics="topics"
         :sections="sections"
@@ -74,12 +74,12 @@
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
 
-import UIEventLogo from './UIEventLogo.vue'
-import UISearchBarWrapper from './UISearchBarWrapper.vue'
-import UIOthersList from './UIOthersList.vue'
-import UIHeaderNavSection from './UIHeaderNavSection.vue'
-import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
-import UISidebar from './UISidebar.vue'
+import UiEventLogo from './UiEventLogo.vue'
+import UiSearchBarWrapper from './UiSearchBarWrapper.vue'
+import UiOthersList from './UiOthersList.vue'
+import UiHeaderNavSection from './UiHeaderNavSection.vue'
+import UiHeaderNavTopic from './UiHeaderNavTopic.vue'
+import UiSidebar from './UiSidebar.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import {
@@ -92,12 +92,12 @@ import {
 export default {
   name: 'ContainerHeader',
   components: {
-    UIEventLogo,
-    UISearchBarWrapper,
-    UIOthersList,
-    UIHeaderNavSection,
-    UIHeaderNavTopic,
-    UISidebar,
+    UiEventLogo,
+    UiSearchBarWrapper,
+    UiOthersList,
+    UiHeaderNavSection,
+    UiHeaderNavTopic,
+    UiSidebar,
     ContainerGptAd,
   },
   data() {

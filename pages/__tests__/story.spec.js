@@ -1,7 +1,7 @@
 import Story from '../story/_slug.vue'
-import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
-import UIWineWarning from '~/components/UIWineWarning.vue'
-import UIStickyAd from '~/components/UIStickyAd.vue'
+import UiStoryListWithHeading from '~/components/UiStoryListWithHeading.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
@@ -78,7 +78,7 @@ describe('latest list', () => {
     expect(wrapper.find('.story__list--latest').exists()).toBe(false)
   })
 
-  test('should render UIStoryListWithHeading when latest stories are loaded', () => {
+  test('should render UiStoryListWithHeading when latest stories are loaded', () => {
     const wrapper = createWrapper(Story, {
       data() {
         return {
@@ -91,12 +91,12 @@ describe('latest list', () => {
     expect(
       wrapper
         .get('.story__list--latest')
-        .findComponent(UIStoryListWithHeading)
+        .findComponent(UiStoryListWithHeading)
         .exists()
     ).toBe(true)
   })
 
-  test('should not render UIStoryListWithHeading when latest stories are not loaded', () => {
+  test('should not render UiStoryListWithHeading when latest stories are not loaded', () => {
     const wrapper = createWrapper(Story, {
       data() {
         return {
@@ -108,7 +108,7 @@ describe('latest list', () => {
     expect(
       wrapper
         .get('.story__list--latest')
-        .findComponent(UIStoryListWithHeading)
+        .findComponent(UiStoryListWithHeading)
         .exists()
     ).toBe(false)
   })
@@ -136,14 +136,14 @@ describe('latest list', () => {
     latestList.vm.$emit('show')
     await wrapper.vm.$nextTick()
 
-    const { items } = latestList.findComponent(UIStoryListWithHeading).props()
+    const { items } = latestList.findComponent(UiStoryListWithHeading).props()
 
     expect(items).toHaveLength(6)
     expect(items).not.toContainEqual(mockLatestStoryWithCurrentStorySlug)
   })
 
   /**
-   * 由於 UIStoryListWithHeading 的內容是需要打 API 取得，又沒 SSR，所以內容一開始會是空的
+   * 由於 UiStoryListWithHeading 的內容是需要打 API 取得，又沒 SSR，所以內容一開始會是空的
    * 其底下的元件因此會往上擠，出現在視埠（viewport）之中，導致這些應該被 lazy load 的元件，在一開始就被載入進來
    * 為了避免這個問題，需要在一開始元件還沒內容時，就給它一個固定高度 100vh，以確保其底下的元件不會出現在視埠之中
    * 直到元件有內容後，再拿掉固定高度，讓其底下元件達到 lazy load 的效果
@@ -215,7 +215,7 @@ describe('AD', () => {
     })
 
     expect(wrapper.find('.dable-widget').exists()).toBe(false)
-    expect(wrapper.findComponent(UIStickyAd).exists()).toBe(false)
+    expect(wrapper.findComponent(UiStickyAd).exists()).toBe(false)
     expect(wrapper.findComponent(ContainerFullScreenAds).exists()).toBe(false)
     expect(wrapper.find('.ad-pc-floating').exists()).toBe(false)
   })
@@ -223,7 +223,7 @@ describe('AD', () => {
   test('do not show ADs of MB_ST, MB_FS, MB_AD2 & MB_INNITY when a story has the wine category name', () => {
     testStoryWithWineCategory((sut) => {
       // MB_ST
-      expect(sut.findComponent(UIStickyAd).exists()).toBe(false)
+      expect(sut.findComponent(UiStickyAd).exists()).toBe(false)
 
       // MB_FS, MB_AD2 & MB_INNITY
       expect(sut.findComponent(ContainerFullScreenAds).exists()).toBe(false)
@@ -403,7 +403,7 @@ describe('JSON-LD', () => {
 
 test('show the wine warning when a story has the wine category name', () => {
   testStoryWithWineCategory((sut) => {
-    expect(sut.findComponent(UIWineWarning).exists()).toBe(true)
+    expect(sut.findComponent(UiWineWarning).exists()).toBe(true)
   })
 })
 
