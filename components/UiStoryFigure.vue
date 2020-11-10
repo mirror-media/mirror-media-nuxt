@@ -1,7 +1,7 @@
 <template>
   <div class="story-figure" :class="alignment">
     <figure>
-      <img v-lazy="imgSrcTablet" @click="openLightbox" />
+      <img v-lazy="imgSrcTablet" alt="" @click="openLightbox" />
       <figcaption v-if="description">
         {{ description }}
       </figcaption>
@@ -13,7 +13,7 @@
       class="lightbox"
       @click="closeLightbox"
     >
-      <img :src="imgSrcDesktop" @click.stop />
+      <img :src="imgSrcDesktop" alt="" @click.stop />
 
       <button type="button" />
     </div>
