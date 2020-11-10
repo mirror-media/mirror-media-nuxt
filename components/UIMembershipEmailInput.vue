@@ -56,6 +56,11 @@ export default {
         this.$v.$touch()
       }
     },
+    '$v.email.$invalid'(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.$emit('inputValidStateChange', !newValue)
+      }
+    },
   },
   validations: {
     email: {

@@ -73,4 +73,12 @@ describe('component behaviours', function () {
     await input.setValue(emailValid)
     expect(wrapper.emitted().input[0]).toEqual([emailValid])
   })
+  test('should emit "inputValidStateChange" event with value when input validation state changed', async function () {
+    expect.assertions(1)
+    const wrapper = shallowMount(UIMembershipEmailInput)
+    const input = wrapper.find('input')
+    const emailValid = 'example@example.com'
+    await input.setValue(emailValid)
+    expect(wrapper.emitted().inputValidStateChange[0]).toEqual([true])
+  })
 })
