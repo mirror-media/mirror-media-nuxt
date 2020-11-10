@@ -67,8 +67,11 @@ export default {
   }
   @include media-breakpoint-up(xl) {
     flex-direction: row;
+    position: relative;
     &__invalid-hint {
       margin: 0 0 0 16px;
+      position: absolute !important;
+      left: 300px;
     }
   }
 }
