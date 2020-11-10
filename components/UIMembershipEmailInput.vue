@@ -5,7 +5,7 @@
       :class="{ 'input-wrapper--invalid': inputInvalid }"
     >
       <input
-        v-model.trim.lazy="$v.email.$model"
+        v-model.trim="$v.email.$model"
         class="input-wrapper__input input"
         placeholder="name@example.com"
         type="email"
@@ -34,6 +34,12 @@ import { email, required } from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],
+  props: {
+    showInvalidHint: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       email: '',
@@ -41,7 +47,14 @@ export default {
   },
   computed: {
     inputInvalid() {
-      return !this.$v.email.email
+      return this.showInvalidHint && this.$v.email.$error
+    },
+  },
+  watch: {
+    showInvalidHint() {
+      if (this.showInvalidHint && !this.$v.$dirty) {
+        this.$v.$touch()
+      }
     },
   },
   validations: {
