@@ -680,12 +680,15 @@ $link-color: #3195b3;
       height: 250px;
       object-fit: contain;
     }
-    figcaption {
-      margin-top: 10px;
-      color: rgba(0, 0, 0, 0.498);
-      font-size: 15px;
-      line-height: 1.7;
-    }
+  }
+
+  &-caption,
+  &-figure figcaption,
+  figure figcaption {
+    margin-top: 10px;
+    color: rgba(#000, 0.498);
+    font-size: 15px;
+    line-height: 1.7;
   }
 
   &-quote-by {

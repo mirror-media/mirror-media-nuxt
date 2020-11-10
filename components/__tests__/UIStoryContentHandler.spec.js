@@ -47,3 +47,28 @@ describe('slideshow', () => {
     expect(wrapper.find('.swiper-slide').exists()).toBe(true)
   })
 })
+
+describe('youtube', () => {
+  test('display the correct content', () => {
+    /* Arrange */
+    const contentMock = {
+      youtubeId: 1234,
+      description: '測試圖說',
+    }
+    const sut = createWrapper(UIStoryContentHandler, {
+      propsData: {
+        paragraph: {
+          type: 'youtube',
+          content: [contentMock],
+        },
+      },
+      stubs: ['ClientOnly', 'lazy-component'],
+    })
+
+    /* Assert */
+    expect(sut.get('iframe').attributes().src).toBe(
+      `https://www.youtube.com/embed/${contentMock.youtubeId}`
+    )
+    expect(sut.text()).toContain(contentMock.description)
+  })
+})

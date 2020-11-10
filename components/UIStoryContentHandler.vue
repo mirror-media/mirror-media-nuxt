@@ -179,6 +179,28 @@ export default {
             }}
           />
         )
+      case 'youtube': {
+        const { youtubeId, description } = content[0] || {}
+
+        return (
+          <ClientOnly>
+            <lazy-component class="story__youtube">
+              <div class="youtube-wrapper">
+                <iframe
+                  width="560"
+                  height="315"
+                  src={`https://www.youtube.com/embed/${youtubeId}`}
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
+                  allowfullscreen
+                />
+              </div>
+
+              {description && <p class="g-story-caption">{description}</p>}
+            </lazy-component>
+          </ClientOnly>
+        )
+      }
       case 'gpt-ad':
         return (
           <ClientOnly>
@@ -317,6 +339,23 @@ export default {
   &__audio-player {
     margin-top: 1em;
     margin-bottom: 1em;
+  }
+
+  &__youtube {
+    margin-top: 20px;
+
+    .youtube-wrapper {
+      position: relative;
+      padding-top: 56.25%; // 315 / 560 * 100%
+    }
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>
