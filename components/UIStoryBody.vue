@@ -112,7 +112,7 @@ const AD_KEYS_IN_STORY_CONTENT = ['MB_AT1', 'PC_AT1', 'MB_AT2']
 
 export default {
   name: 'UIStoryBody',
-  setup(props) {
+  setup() {
     const { store, $ga } = useContext()
     const isViewportWidthUpMd = computed(
       () => store.getters['viewport/isViewportWidthUpMd']
