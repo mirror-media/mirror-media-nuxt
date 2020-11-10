@@ -26,7 +26,6 @@
 
 <script>
 import _ from 'lodash'
-import { clearAllBodyScrollLocks, disableBodyScroll } from 'body-scroll-lock'
 import { PREVIEW_QUERY } from '~/configs/config'
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import UICulturePostContent from '~/components/UICulturePostContent.vue'
@@ -87,11 +86,7 @@ export default {
       return this.post.updatedAt
     },
   },
-  watch: {
-    isIndexActive(isActive) {
-      isActive ? disableBodyScroll() : clearAllBodyScrollLocks()
-    },
-  },
+
   mounted() {
     this.detectCurrentIndex()
     window.addEventListener(

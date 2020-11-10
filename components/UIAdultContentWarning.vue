@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { clearAllBodyScrollLocks, disableBodyScroll } from 'body-scroll-lock'
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 
 export default {
   name: 'UIAdultContentWarning',
@@ -26,15 +26,15 @@ export default {
     }
   },
   mounted() {
-    disableBodyScroll()
+    disableBodyScroll(this.$el)
   },
   beforeDestroy() {
-    clearAllBodyScrollLocks()
+    enableBodyScroll(this.$el)
   },
   methods: {
     closeWarning() {
       this.showWarning = false
-      clearAllBodyScrollLocks()
+      enableBodyScroll(this.$el)
     },
   },
 }

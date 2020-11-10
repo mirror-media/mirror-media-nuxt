@@ -4,7 +4,7 @@
       <img v-lazy="require('~/assets/hamburger.svg')" alt="開啟" />
     </div>
     <div class="index__curtain">
-      <div class="index-container">
+      <div ref="indexContainer" class="index-container">
         <button class="index__btn close" @click="$emit('closeIndex')">
           <img v-lazy="require('~/assets/close.svg')" alt="關閉" />
         </button>
@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+
 import UIShareFb from '~/components/UIShareFb.vue'
 import UIShareLine from '~/components/UIShareLine.vue'
 
@@ -70,6 +72,15 @@ export default {
       return this.items.length > 0
     },
   },
+
+  watch: {
+    isIndexActive(isActive) {
+      isActive
+        ? disableBodyScroll(this.$refs.indexContainer)
+        : enableBodyScroll(this.$refs.indexContainer)
+    },
+  },
+
   mounted() {
     this.enableSmoothScroll()
   },
