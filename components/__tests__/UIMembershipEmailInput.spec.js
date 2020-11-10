@@ -65,12 +65,12 @@ describe('features affect by input state', function () {
 })
 
 describe('component behaviours', function () {
-  test('should emit "change" event with value when input was change', async function () {
+  test('should emit "input" event with value when input was change', async function () {
     expect.assertions(1)
     const wrapper = shallowMount(UIMembershipEmailInput)
     const input = wrapper.find('input')
     const emailValid = 'example@example.com'
     await input.setValue(emailValid)
-    expect(wrapper.emitted().change[0]).toEqual([emailValid])
+    expect(wrapper.emitted().input[0]).toEqual([emailValid])
   })
 })

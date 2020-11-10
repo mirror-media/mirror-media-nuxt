@@ -9,7 +9,7 @@
         class="input-wrapper__input input"
         placeholder="name@example.com"
         type="email"
-        @change="handleChange"
+        @input="handleInput"
       />
       <img
         v-show="inputInvalid"
@@ -64,8 +64,8 @@ export default {
     },
   },
   methods: {
-    handleChange() {
-      this.$emit('change', this.email)
+    handleInput() {
+      this.$emit('input', this.email)
     },
   },
 }
