@@ -31,9 +31,7 @@ test('display the correct content', async () => {
   expect(sut.get('.story-figure').classes()).toContain(contentMock.alignment)
   expect(sut.get('figure img').html()).toContain(contentMock.tablet.url)
   expect(sut.text()).toContain(contentMock.description)
-  expect(sut.get('.lightbox img').attributes().src).toBe(
-    contentMock.desktop.url
-  )
+  expect(sut.get('.lightbox img').html()).toContain(contentMock.desktop.url)
 })
 
 describe('lightbox', () => {

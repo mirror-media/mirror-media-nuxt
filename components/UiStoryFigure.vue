@@ -13,7 +13,7 @@
       class="lightbox"
       @click="closeLightbox"
     >
-      <img :src="imgSrcDesktop" alt="" @click.stop />
+      <img v-lazy="imgSrcDesktop" alt="" @click.stop />
 
       <button type="button" />
     </div>
