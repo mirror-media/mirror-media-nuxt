@@ -4,6 +4,7 @@ import UIInfobox from './UIInfobox.vue'
 import UIStoryVideo from './UIStoryVideo.vue'
 import ContainerAudioPlayer from './audio-player/ContainerAudioPlayer.vue'
 import ContainerParagraphWithAnnotation from './ContainerParagraphWithAnnotation.vue'
+import UiStoryFigure from '~/components/UiStoryFigure.vue'
 import UIStoryAnnotation from '~/components/UIStoryAnnotation.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
@@ -64,19 +65,11 @@ export default {
           />
         )
       case 'image': {
-        const { description, alignment, mobile = {} } = content[0] || {}
-
         return (
-          <figure
-            class={[
-              'g-story-figure',
-              'story__figure',
-              alignment !== 'center' && alignment,
-            ]}
-          >
-            <img v-lazy={mobile.url} alt={description} />
-            {description && <figcaption>{description}</figcaption>}
-          </figure>
+          <UiStoryFigure
+            class="g-story-figure story__figure"
+            content={content[0] || {}}
+          />
         )
       }
       case 'quoteby': {
@@ -214,32 +207,6 @@ export default {
 
 <style lang="scss" scoped>
 .story {
-  &__figure {
-    @include media-breakpoint-up(md) {
-      &.left,
-      &.right {
-        clear: both;
-        width: 300px;
-        margin-bottom: 30px;
-
-        figcaption {
-          border-bottom: 2px solid #255577;
-          padding-bottom: 10px;
-        }
-      }
-
-      &.left {
-        float: left;
-        margin-right: 20px;
-      }
-
-      &.right {
-        float: right;
-        margin-left: 20px;
-      }
-    }
-  }
-
   &__slideshow {
     margin-top: 1.5em;
     margin-bottom: 1.5em;

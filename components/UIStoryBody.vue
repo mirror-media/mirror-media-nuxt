@@ -374,6 +374,7 @@ export {
       + figure,
       + ul,
       + ol,
+      + .story__figure,
       + .story__code,
       + .story__embedded-code,
       + .story-list {
