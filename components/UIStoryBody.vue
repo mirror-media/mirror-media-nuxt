@@ -675,10 +675,11 @@ $link-color: #3195b3;
   figure {
     img {
       width: 100%;
-    }
-    img[lazy='loading'] {
-      height: 250px;
-      object-fit: contain;
+
+      &[lazy='loading'] {
+        height: 250px;
+        object-fit: contain;
+      }
     }
   }
 
