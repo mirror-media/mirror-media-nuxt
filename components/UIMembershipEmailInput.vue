@@ -2,7 +2,7 @@
   <div class="component-wrapper">
     <div
       class="input-wrapper"
-      :class="{ 'input-wrapper--invalid': inputInvalid }"
+      :class="{ 'input-wrapper--invalid': showInputInvalid }"
     >
       <input
         v-model.trim="$v.email.$model"
@@ -12,14 +12,14 @@
         @input="handleInput"
       />
       <img
-        v-show="inputInvalid"
+        v-show="showInputInvalid"
         class="invalid-icon"
         src="~/assets/membership-input-invalid.svg"
         alt="membership-input-invalid"
       />
     </div>
     <div
-      v-show="inputInvalid"
+      v-show="showInputInvalid"
       class="component-wrapper__invalid-hint invalid-hint"
     >
       <div class="invalid-hint__triangle invalid-hint-triangle" />
@@ -46,7 +46,7 @@ export default {
     }
   },
   computed: {
-    inputInvalid() {
+    showInputInvalid() {
       return this.showInvalidHint && this.$v.email.$error
     },
   },
