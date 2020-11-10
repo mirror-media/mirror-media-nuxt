@@ -3,7 +3,7 @@
     <UiVideoIframeWithItems
       :items="playlistItems"
       class="section__highlight"
-      @sendGA="handleSendGA"
+      @sendGa="handleSendGa"
     >
       <template v-if="categoryTitle" #heading>
         <h1
@@ -163,7 +163,7 @@ export default {
         eventLabel: 'latest_video',
       })
     },
-    handleSendGA(param = {}) {
+    handleSendGa(param = {}) {
       this.$ga.event(param)
     },
     async infiniteHandler($state) {

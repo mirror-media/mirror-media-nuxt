@@ -76,20 +76,20 @@ describe('computed data', () => {
   })
 })
 
-describe('handleSendGA method', () => {
+describe('handleSendGa method', () => {
   const gaArgs = {
     eventCategory: 'listing',
     eventAction: 'click',
     eventLabel: 'test',
   }
-  test('call $ga.event when UiVideoIframeWithItems emits sendGA', () => {
-    wrapper.findComponent(UiVideoIframeWithItems).vm.$emit('sendGA', gaArgs)
+  test('call $ga.event when UiVideoIframeWithItems emits sendGa', () => {
+    wrapper.findComponent(UiVideoIframeWithItems).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 })
 
 describe('handleClick method', () => {
-  test('call $ga.event when UiVideoIframeWithItems emits sendGA', () => {
+  test('call $ga.event when UiVideoIframeWithItems emits sendGa', () => {
     wrapper.findComponent(UiLinkedItemWithTitle).vm.$emit('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: 'listing',

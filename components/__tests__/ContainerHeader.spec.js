@@ -245,7 +245,7 @@ describe('setSectionName', () => {
   })
 })
 
-describe('GA event', () => {
+describe('Ga event', () => {
   test('call the $ga method when users click the menu icon', () => {
     const $ga = {
       event: jest.fn(),
@@ -306,8 +306,8 @@ describe('GA event', () => {
   })
 })
 
-describe('handleSendGA method', () => {
-  test('call the $ga method when the UiEventLogo.vue emits a "sendGA"', () => {
+describe('handleSendGa method', () => {
+  test('call the $ga method when the UiEventLogo.vue emits a "sendGa"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -325,11 +325,11 @@ describe('handleSendGA method', () => {
       eventAction: 'click',
       eventLabel: 'logo event',
     }
-    wrapper.findComponent(UiEventLogo).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UiEventLogo).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
-  test('call the $ga method when the UiSearchBarWrapper.vue emits a "sendGA"', () => {
+  test('call the $ga method when the UiSearchBarWrapper.vue emits a "sendGa"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -344,11 +344,11 @@ describe('handleSendGA method', () => {
       eventAction: 'click',
       eventLabel: 'search',
     }
-    wrapper.findComponent(UiSearchBarWrapper).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UiSearchBarWrapper).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
-  test('call the $ga method when the UiOthersList.vue emits a "sendGA"', () => {
+  test('call the $ga method when the UiOthersList.vue emits a "sendGa"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -363,11 +363,11 @@ describe('handleSendGA method', () => {
       eventAction: 'click',
       eventLabel: 'more subscribe',
     }
-    wrapper.findComponent(UiOthersList).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UiOthersList).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
-  test('call the $ga method when the UiHeaderNavSection.vue emits a "sendGA"', () => {
+  test('call the $ga method when the UiHeaderNavSection.vue emits a "sendGa"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -382,11 +382,11 @@ describe('handleSendGA method', () => {
       eventAction: 'click',
       eventLabel: 'section news',
     }
-    wrapper.findComponent(UiHeaderNavSection).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UiHeaderNavSection).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
-  test('call the $ga method when the UiHeaderNavTopic.vue emits a "sendGA"', () => {
+  test('call the $ga method when the UiHeaderNavTopic.vue emits a "sendGa"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -401,11 +401,11 @@ describe('handleSendGA method', () => {
       eventAction: 'click',
       eventLabel: 'topic 人造地獄',
     }
-    wrapper.findComponent(UiHeaderNavTopic).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UiHeaderNavTopic).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
-  test('call the $ga method when the UiSidebar.vue emits a "sendGA"', () => {
+  test('call the $ga method when the UiSidebar.vue emits a "sendGa"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -425,7 +425,7 @@ describe('handleSendGA method', () => {
       eventAction: 'click',
       eventLabel: 'section new',
     }
-    wrapper.findComponent(UiSidebar).vm.$emit('sendGA', gaArgs)
+    wrapper.findComponent(UiSidebar).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 })

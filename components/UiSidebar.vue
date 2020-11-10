@@ -8,7 +8,7 @@
         :key="topic.id"
         :href="`/topic/${topic.id}`"
         class="topics__title"
-        @click="emitGA(`topic ${topic.name}`)"
+        @click="emitGa(`topic ${topic.name}`)"
       >
         <h2>{{ topic.name }}</h2>
       </a>
@@ -16,7 +16,7 @@
       <a
         href="/section/topic"
         class="topics__title"
-        @click="emitGA('topic 更多')"
+        @click="emitGa('topic 更多')"
       >
         <h2>更多</h2>
       </a>
@@ -31,7 +31,7 @@
         <a
           :href="`/section/${section.name}`"
           class="section__title"
-          @click="emitGA(`section ${section.name}`)"
+          @click="emitGa(`section ${section.name}`)"
         >
           <h2>{{ section.title }}</h2>
         </a>
@@ -44,7 +44,7 @@
             v-for="category in section.categories"
             :key="category.id"
             :href="getCategoryHref(section.name, category.name)"
-            @click="emitGA(`category ${category.name}`)"
+            @click="emitGa(`category ${category.name}`)"
           >
             <h3>{{ category.title }}</h3>
           </a>
@@ -61,7 +61,7 @@
             v-for="partner in partners"
             :key="partner.id"
             :href="`/externals/${partner.name}`"
-            @click="emitGA(`external ${partner.name}`)"
+            @click="emitGa(`external ${partner.name}`)"
           >
             <h3>{{ partner.display }}</h3>
           </a>
@@ -79,7 +79,7 @@
           target="_blank"
           class="section__title"
           rel="noopener noreferrer"
-          @click="emitGA(`section ${subBrand.name}`)"
+          @click="emitGa(`section ${subBrand.name}`)"
         >
           {{ subBrand.title }}
         </a>
@@ -93,7 +93,7 @@
         :href="other.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="emitGA(`more ${other.name}`)"
+        @click="emitGa(`more ${other.name}`)"
       >
         {{ other.title }}
       </a>
@@ -106,7 +106,7 @@
         :href="medium.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="emitGA(`social ${medium.name}`)"
+        @click="emitGa(`social ${medium.name}`)"
       >
         <img
           :class="medium.name"
@@ -171,8 +171,8 @@ export default {
       }
       return `/category/${categoryName}`
     },
-    emitGA(eventLabel) {
-      this.$emit('sendGA', {
+    emitGa(eventLabel) {
+      this.$emit('sendGa', {
         eventCategory: 'sidebar',
         eventAction: 'click',
         eventLabel,

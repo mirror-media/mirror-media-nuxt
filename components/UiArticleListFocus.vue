@@ -7,7 +7,7 @@
             :href="$getHref(articleMain)"
             target="_blank"
             rel="noopener noreferrer"
-            @click="emitGA"
+            @click="emitGa"
           >
             <img v-lazy="$getImage(articleMain, 'mobile')" alt="" />
             <h1 class="main-title">{{ articleMain.title }}</h1>
@@ -21,7 +21,7 @@
             :href="$getHref(related)"
             target="_blank"
             rel="noopener noreferrer"
-            @click="emitGA"
+            @click="emitGa"
           >
             <h1>{{ related.title }}</h1>
           </a>
@@ -56,8 +56,8 @@ export default {
     }
   },
   methods: {
-    emitGA() {
-      this.$emit('sendGA', this.ga)
+    emitGa() {
+      this.$emit('sendGa', this.ga)
     },
   },
 }

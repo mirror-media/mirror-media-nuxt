@@ -8,7 +8,7 @@
         :href="other.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="sendGA(`more ${other.name}`)"
+        @click="sendGa(`more ${other.name}`)"
       >
         {{ other.title }}
       </a>
@@ -22,7 +22,7 @@
         :href="medium.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="sendGA(`social ${medium.name}`)"
+        @click="sendGa(`social ${medium.name}`)"
       >
         <img
           :src="require(`~/assets/${medium.name}@2x.png`)"
@@ -46,7 +46,7 @@ export default {
     },
   },
   methods: {
-    sendGA(eventLabel) {
+    sendGa(eventLabel) {
       this.$ga.event({
         eventCategory: 'footer',
         eventAction: 'click',

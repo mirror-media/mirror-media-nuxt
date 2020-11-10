@@ -84,22 +84,22 @@ describe('items exclude the first item', () => {
   })
 })
 
-describe('emit sendGA event', () => {
+describe('emit sendGa event', () => {
   const mockPropsData = {
     items: [{ videoId: 'test1' }, { videoId: 'test2' }],
   }
-  test('emits sendGA when first item link is clicked', () => {
+  test('emits sendGa when first item link is clicked', () => {
     const wrapper = createWrapper(UiVideoIframeWithItems, {
       propsData: mockPropsData,
     })
     wrapper.get('.video-iframe-items__first-title').trigger('click')
-    expect(wrapper.emitted('sendGA')).toHaveLength(1)
+    expect(wrapper.emitted('sendGa')).toHaveLength(1)
   })
-  test('emits sendGA when UiLinkedItemWithTitle emits click', () => {
+  test('emits sendGa when UiLinkedItemWithTitle emits click', () => {
     const wrapper = createWrapper(UiVideoIframeWithItems, {
       propsData: mockPropsData,
     })
     wrapper.findComponent(UiLinkedItemWithTitle).vm.$emit('click')
-    expect(wrapper.emitted('sendGA')).toHaveLength(1)
+    expect(wrapper.emitted('sendGa')).toHaveLength(1)
   })
 })

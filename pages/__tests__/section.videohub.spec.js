@@ -50,7 +50,7 @@ describe('isThisSection method', () => {
   })
 })
 
-describe('handleSendGA method', () => {
+describe('handleSendGa method', () => {
   const $ga = {
     event: jest.fn(),
   }
@@ -64,12 +64,12 @@ describe('handleSendGA method', () => {
       $ga,
     },
   })
-  test('call $ga.event when UiVideoIframeWithItems emits sendGA', () => {
-    wrapper.findComponent(UiVideoIframeWithItems).vm.$emit('sendGA', gaArgs)
+  test('call $ga.event when UiVideoIframeWithItems emits sendGa', () => {
+    wrapper.findComponent(UiVideoIframeWithItems).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
-  test('call $ga.event when UiVideoPopular emits sendGA', () => {
-    wrapper.findComponent(UiVideoPopular).vm.$emit('sendGA', gaArgs)
+  test('call $ga.event when UiVideoPopular emits sendGa', () => {
+    wrapper.findComponent(UiVideoPopular).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 })

@@ -11,7 +11,7 @@
       @setSelectedOption="selectedOption = $event"
       @setText="keyword = $event"
       @search="search"
-      @sendGA="emitGA"
+      @sendGa="emitGa"
     />
   </section>
 </template>
@@ -63,8 +63,8 @@ export default {
         .replace(/\s*,\s*/g, ',')
         .replace(/\s+/g, ',')
     },
-    emitGA(param = {}) {
-      this.$emit('sendGA', param)
+    emitGa(param = {}) {
+      this.$emit('sendGa', param)
     },
   },
 }

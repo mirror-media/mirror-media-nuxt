@@ -44,14 +44,14 @@ describe('items', () => {
   })
 })
 
-describe('emit sendGA event', () => {
-  test('emits sendGA when UiLinkedItemWithTitle emits click', () => {
+describe('emit sendGa event', () => {
+  test('emits sendGa when UiLinkedItemWithTitle emits click', () => {
     const wrapper = createWrapper(UiVideoPopular, {
       propsData: {
         items: [{ videoId: 'test1' }],
       },
     })
     wrapper.findComponent(UiLinkedItemWithTitle).vm.$emit('click')
-    expect(wrapper.emitted('sendGA')).toHaveLength(1)
+    expect(wrapper.emitted('sendGa')).toHaveLength(1)
   })
 })

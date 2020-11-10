@@ -78,7 +78,7 @@ describe('"items" props is not empty array', () => {
   })
 })
 
-describe('emit sendGA event', () => {
+describe('emit sendGa event', () => {
   const mockPropsData = {
     category: {},
     items: [
@@ -90,23 +90,23 @@ describe('emit sendGA event', () => {
     ],
   }
 
-  test('emits sendGA when first UiLinkedItemWithTitle emits click', () => {
+  test('emits sendGa when first UiLinkedItemWithTitle emits click', () => {
     const wrapper = createWrapper(UiVideoCategory, {
       propsData: mockPropsData,
     })
     wrapper.findComponent(UiLinkedItemWithTitle).vm.$emit('click')
-    expect(wrapper.emitted('sendGA')).toHaveLength(1)
+    expect(wrapper.emitted('sendGa')).toHaveLength(1)
   })
 
-  test('emits sendGA when first item link is clicked', () => {
+  test('emits sendGa when first item link is clicked', () => {
     const wrapper = createWrapper(UiVideoCategory, {
       propsData: mockPropsData,
     })
     wrapper.get('.video-category__category-link').trigger('click')
-    expect(wrapper.emitted('sendGA')).toHaveLength(1)
+    expect(wrapper.emitted('sendGa')).toHaveLength(1)
   })
 
-  test('emits sendGA when remaining UiLinkedItemWithTitle emits click', () => {
+  test('emits sendGa when remaining UiLinkedItemWithTitle emits click', () => {
     const wrapper = createWrapper(UiVideoCategory, {
       propsData: {
         category: {},
@@ -125,6 +125,6 @@ describe('emit sendGA event', () => {
       },
     })
     wrapper.findAllComponents(UiLinkedItemWithTitle).at(1).vm.$emit('click')
-    expect(wrapper.emitted('sendGA')).toHaveLength(1)
+    expect(wrapper.emitted('sendGa')).toHaveLength(1)
   })
 })

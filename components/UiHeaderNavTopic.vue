@@ -7,13 +7,13 @@
           :key="topic.id"
           class="topic topic--normal"
           :href="`/topic/${topic.id}`"
-          @click="emitGA(`topic ${topic.name}`)"
+          @click="emitGa(`topic ${topic.name}`)"
         >
           <h2>{{ topic.name }}</h2>
         </a>
       </div>
 
-      <a href="/section/topic" class="topic" @click="emitGA('topic 更多')">
+      <a href="/section/topic" class="topic" @click="emitGa('topic 更多')">
         <h2>更多</h2>
       </a>
 
@@ -24,7 +24,7 @@
           :href="subBrand.href"
           target="_blank"
           rel="noopener noreferrer"
-          @click="emitGA(`section ${subBrand.name}`)"
+          @click="emitGa(`section ${subBrand.name}`)"
         >
           <img
             :src="require(`~/assets/${subBrand.name}.png`)"
@@ -52,8 +52,8 @@ export default {
     },
   },
   methods: {
-    emitGA(eventLabel) {
-      this.$emit('sendGA', {
+    emitGa(eventLabel) {
+      this.$emit('sendGa', {
         eventCategory: 'header',
         eventAction: 'click',
         eventLabel,

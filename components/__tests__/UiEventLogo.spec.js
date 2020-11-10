@@ -34,12 +34,12 @@ describe('event logo', () => {
   })
 })
 
-describe('emitGA method', () => {
+describe('emitGa method', () => {
   test('with a proper argument when users click the event logo', () => {
     const wrapper = createWrapper(UiEventLogo)
 
     wrapper.get(`[href="${mockEventLogo.link}"]`).trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',

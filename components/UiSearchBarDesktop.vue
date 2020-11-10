@@ -37,10 +37,10 @@ export default {
     },
     handleClickSearchIcon() {
       this.emitSearch()
-      this.emitGA('search')
+      this.emitGa('search')
     },
-    emitGA(eventLabel) {
-      this.$emit('sendGA', {
+    emitGa(eventLabel) {
+      this.$emit('sendGa', {
         eventCategory: 'header',
         eventAction: 'click',
         eventLabel,

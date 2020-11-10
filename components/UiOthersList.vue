@@ -8,7 +8,7 @@
         :href="link.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="emitGA(`more ${link.name}`)"
+        @click="emitGa(`more ${link.name}`)"
       >
         {{ link.title }}
       </a>
@@ -44,10 +44,10 @@ export default {
     },
     handleClickMoreIcon() {
       this.toggleLinkList()
-      this.emitGA('more open')
+      this.emitGa('more open')
     },
-    emitGA(eventLabel) {
-      this.$emit('sendGA', {
+    emitGa(eventLabel) {
+      this.$emit('sendGa', {
         eventCategory: this.eventCategory,
         eventAction: 'click',
         eventLabel,

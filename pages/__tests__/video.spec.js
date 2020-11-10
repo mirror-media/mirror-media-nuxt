@@ -125,7 +125,7 @@ describe('handleClick method', () => {
       }
     },
   })
-  test('call $ga.event when UiLinkedItemWithTitle emits sendGA', () => {
+  test('call $ga.event when UiLinkedItemWithTitle emits sendGa', () => {
     wrapper.findComponent(UiLinkedItemWithTitle).vm.$emit('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: 'listing',

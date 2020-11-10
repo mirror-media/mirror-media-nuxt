@@ -105,8 +105,8 @@ describe('search feature', () => {
   })
 })
 
-describe('emitGA method', () => {
-  test('emit sendGA when UiSearchBarDesktop.vue emits sendGA', () => {
+describe('emitGa method', () => {
+  test('emit sendGa when UiSearchBarDesktop.vue emits sendGa', () => {
     const wrapper = createWrapper(UiSearchBarWrapper)
 
     const gaArgs = {
@@ -114,7 +114,7 @@ describe('emitGA method', () => {
       eventAction: 'click',
       eventLabel: 'search',
     }
-    wrapper.findComponent(UiSearchBarDesktop).vm.$emit('sendGA', gaArgs)
-    expect(wrapper.emitted().sendGA[0]).toEqual([gaArgs])
+    wrapper.findComponent(UiSearchBarDesktop).vm.$emit('sendGa', gaArgs)
+    expect(wrapper.emitted().sendGa[0]).toEqual([gaArgs])
   })
 })

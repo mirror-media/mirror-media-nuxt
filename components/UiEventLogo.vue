@@ -3,7 +3,7 @@
     :href="eventLogoLink"
     target="_blank"
     rel="noopener noreferrer"
-    @click="emitGA"
+    @click="emitGa"
   >
     <img :src="eventLogoImage" :alt="eventLogo.name" />
   </a>
@@ -28,8 +28,8 @@ export default {
     },
   },
   methods: {
-    emitGA() {
-      this.$emit('sendGA', {
+    emitGa() {
+      this.$emit('sendGa', {
         eventCategory: 'header',
         eventAction: 'click',
         eventLabel: 'logo event',

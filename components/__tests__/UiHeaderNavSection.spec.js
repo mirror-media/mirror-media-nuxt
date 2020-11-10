@@ -58,13 +58,13 @@ describe('external section nav', () => {
   })
 })
 
-describe('emitGA method', () => {
+describe('emitGa method', () => {
   test('with a proper argument when users click a section link', () => {
     const wrapper = createWrapper(UiHeaderNavSection)
 
     const linkNormal = wrapper.get(`[href="/section/${mockSection.name}"]`)
     linkNormal.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',
@@ -74,7 +74,7 @@ describe('emitGA method', () => {
 
     const linkHome = wrapper.get(`[href="/"]`)
     linkHome.trigger('click')
-    expect(wrapper.emitted().sendGA[1]).toEqual([
+    expect(wrapper.emitted().sendGa[1]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',
@@ -89,7 +89,7 @@ describe('emitGA method', () => {
     const [category] = mockSection.categories
     const link = wrapper.get(`[href="/category/${category.name}"]`)
     link.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',
@@ -103,7 +103,7 @@ describe('emitGA method', () => {
 
     const link = wrapper.get(`[href="/externals/${mockPartner.name}"]`)
     link.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',

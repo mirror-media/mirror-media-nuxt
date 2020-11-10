@@ -248,7 +248,7 @@ describe('audio player time', () => {
   })
 })
 
-describe('GA event', () => {
+describe('Ga event', () => {
   test('all the $ga method when users play the audio', () => {
     const $ga = {
       event: jest.fn(),

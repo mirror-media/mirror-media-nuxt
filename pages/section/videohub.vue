@@ -4,7 +4,7 @@
       :items="latestData"
       textPositionInMdViewport="right"
       class="section__latest"
-      @sendGA="handleSendGA"
+      @sendGa="handleSendGa"
     >
       <template #heading>
         <h1>最新影片</h1>
@@ -14,7 +14,7 @@
       <UiVideoPopular
         :items="popularData"
         class="section__popular"
-        @sendGA="handleSendGA"
+        @sendGa="handleSendGa"
       />
       <UiVideoSubscriptions class="section__subscriptions" />
       <client-only>
@@ -31,7 +31,7 @@
           :category="category"
           :items="getCategoryItems(category)"
           class="section__category"
-          @sendGA="handleSendGA"
+          @sendGa="handleSendGa"
         />
       </div>
       <UiYoutubePolicies class="section__policies" />
@@ -158,7 +158,7 @@ export default {
     getCategoryItems(category) {
       return this.categoriesPlaylistData[category.name] ?? []
     },
-    handleSendGA(param = {}) {
+    handleSendGa(param = {}) {
       this.$ga.event(param)
     },
     isThisSection(section) {

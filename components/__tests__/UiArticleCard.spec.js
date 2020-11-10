@@ -45,8 +45,8 @@ describe('href behaviour', () => {
   })
 })
 
-describe('GA event', () => {
-  test('should send proper GA event', () => {
+describe('Ga event', () => {
+  test('should send proper Ga event', () => {
     const $ga = {
       event: jest.fn(),
     }

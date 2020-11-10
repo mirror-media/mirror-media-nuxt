@@ -47,7 +47,7 @@ describe('sub-brand nav', () => {
   })
 })
 
-describe('emitGA method', () => {
+describe('emitGa method', () => {
   test('with a proper argument when users click a topic link', () => {
     const wrapper = createWrapper(UiHeaderNavTopic, {
       propsData: {
@@ -58,7 +58,7 @@ describe('emitGA method', () => {
 
     const linkNormal = wrapper.get(`[href="/topic/${mockTopic.id}"]`)
     linkNormal.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',
@@ -68,7 +68,7 @@ describe('emitGA method', () => {
 
     const linkMore = wrapper.get(`[href="/section/topic"]`)
     linkMore.trigger('click')
-    expect(wrapper.emitted().sendGA[1]).toEqual([
+    expect(wrapper.emitted().sendGa[1]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',
@@ -86,7 +86,7 @@ describe('emitGA method', () => {
 
     const subBrandLink = wrapper.get(`[href="${mockSubBrand.href}"]`)
     subBrandLink.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',

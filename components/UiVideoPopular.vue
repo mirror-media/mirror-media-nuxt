@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     handleClick() {
-      this.$emit('sendGA', {
+      this.$emit('sendGa', {
         eventCategory: 'listing',
         eventAction: 'click',
         eventLabel: 'popular_video',

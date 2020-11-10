@@ -60,7 +60,7 @@ describe('related articles', () => {
   })
 })
 
-describe('emitGA method', () => {
+describe('emitGa method', () => {
   test('with a proper argument when users click an article link', () => {
     const wrapper = createWrapper(UiArticleListFocus)
     const gaArgs = {
@@ -71,12 +71,12 @@ describe('emitGA method', () => {
 
     const mainLink = wrapper.get(`[href="/story/${mockAricleMain.slug}/"]`)
     mainLink.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([gaArgs])
+    expect(wrapper.emitted().sendGa[0]).toEqual([gaArgs])
 
     const relatedLink = wrapper.get(
       `[href="/story/${mockArticlesRelated.slug}/"]`
     )
     relatedLink.trigger('click')
-    expect(wrapper.emitted().sendGA[1]).toEqual([gaArgs])
+    expect(wrapper.emitted().sendGa[1]).toEqual([gaArgs])
   })
 })

@@ -5,7 +5,7 @@
         class="section section--home"
         :class="{ active: isCurrentSection('home') }"
       >
-        <a href="/" @click="emitGA('section home')">
+        <a href="/" @click="emitGa('section home')">
           <h2>首頁</h2>
         </a>
       </div>
@@ -21,7 +21,7 @@
       >
         <a
           :href="`/section/${section.name}`"
-          @click="emitGA(`section ${section.name}`)"
+          @click="emitGa(`section ${section.name}`)"
         >
           <h2>{{ section.title }}</h2>
         </a>
@@ -30,7 +30,7 @@
             v-for="category in section.categories"
             :key="category.id"
             :href="getCategoryHref(section.name, category.name)"
-            @click="emitGA(`category ${category.name}`)"
+            @click="emitGa(`category ${category.name}`)"
           >
             <h3>{{ category.title }}</h3>
           </a>
@@ -44,7 +44,7 @@
             v-for="partner in partners"
             :key="partner.id"
             :href="`/externals/${partner.name}`"
-            @click="emitGA(`external ${partner.name}`)"
+            @click="emitGa(`external ${partner.name}`)"
           >
             <h3>{{ partner.display }}</h3>
           </a>
@@ -83,8 +83,8 @@ export default {
       }
       return `/category/${categoryName}`
     },
-    emitGA(eventLabel) {
-      this.$emit('sendGA', {
+    emitGa(eventLabel) {
+      this.$emit('sendGa', {
         eventCategory: 'header',
         eventAction: 'click',
         eventLabel,

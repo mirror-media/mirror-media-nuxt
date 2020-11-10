@@ -9,7 +9,7 @@
       />
 
       <div class="logo-wrapper">
-        <a href="/" class="logo" @click="sendHeaderGA('logo')">
+        <a href="/" class="logo" @click="sendHeaderGa('logo')">
           <img src="/logo.png" :alt="SITE_TITLE" />
         </a>
 
@@ -17,7 +17,7 @@
           v-if="shouldOpenEventLogo"
           class="logo"
           :eventLogo="eventLogo"
-          @sendGA="handleSendGA"
+          @sendGa="handleSendGa"
         />
         <client-only>
           <ContainerGptAd
@@ -31,12 +31,12 @@
       </div>
 
       <div class="header-search">
-        <UiSearchBarWrapper :options="options" @sendGA="handleSendGA" />
+        <UiSearchBarWrapper :options="options" @sendGa="handleSendGa" />
         <UiOthersList
           class="others-list"
           :links="otherLinks"
           eventCategory="header"
-          @sendGA="handleSendGA"
+          @sendGa="handleSendGa"
         />
       </div>
     </div>
@@ -46,12 +46,12 @@
         :sections="sections"
         :currentSectionName="sectionName"
         :partners="partners"
-        @sendGA="handleSendGA"
+        @sendGa="handleSendGa"
       />
       <UiHeaderNavTopic
         :topics="topics"
         :subBrands="subBrandLinks"
-        @sendGA="handleSendGA"
+        @sendGa="handleSendGa"
       />
     </nav>
 
@@ -65,7 +65,7 @@
         :others="otherLinks"
         :socialMedia="socialMediaLinks"
         @close="handleSidebarClose"
-        @sendGA="handleSendGA"
+        @sendGa="handleSendGa"
       />
     </transition>
   </header>
@@ -190,11 +190,11 @@ export default {
     },
     handleClickMenuIcon() {
       this.openSidebar()
-      this.sendHeaderGA('menu open')
+      this.sendHeaderGa('menu open')
     },
     handleSidebarClose() {
       this.closeSidebar()
-      this.sendHeaderGA('menu close')
+      this.sendHeaderGa('menu close')
     },
     openSidebar() {
       this.shouldOpenSidebar = true
@@ -202,14 +202,14 @@ export default {
     closeSidebar() {
       this.shouldOpenSidebar = false
     },
-    sendHeaderGA(eventLabel, eventAction = 'click') {
+    sendHeaderGa(eventLabel, eventAction = 'click') {
       this.$ga.event({
         eventCategory: 'header',
         eventAction,
         eventLabel,
       })
     },
-    handleSendGA(param = {}) {
+    handleSendGa(param = {}) {
       this.$ga.event(param)
     },
     activeTheNavSection(path) {

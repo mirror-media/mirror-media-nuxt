@@ -170,7 +170,7 @@ describe('custom events', () => {
   })
 })
 
-describe('emitGA method', () => {
+describe('emitGa method', () => {
   test('with a proper argument when users click a topic link', () => {
     const wrapper = createWrapper(UiSidebar, {
       propsData: {
@@ -180,7 +180,7 @@ describe('emitGA method', () => {
 
     const topicLink = wrapper.get(`[href="/topic/${mockTopic.id}"]`)
     topicLink.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'sidebar',
         eventAction: 'click',
@@ -190,7 +190,7 @@ describe('emitGA method', () => {
 
     const topicMoreLink = wrapper.get('[href="/section/topic"]')
     topicMoreLink.trigger('click')
-    expect(wrapper.emitted().sendGA[1]).toEqual([
+    expect(wrapper.emitted().sendGa[1]).toEqual([
       {
         eventCategory: 'sidebar',
         eventAction: 'click',
@@ -208,7 +208,7 @@ describe('emitGA method', () => {
 
     const sectionLink = wrapper.get(`[href="/section/${mockSection.name}"]`)
     sectionLink.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'sidebar',
         eventAction: 'click',
@@ -227,7 +227,7 @@ describe('emitGA method', () => {
     const [mockCategory] = mockSection.categories
     const categoryLink = wrapper.get(`[href="/category/${mockCategory.name}"]`)
     categoryLink.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'sidebar',
         eventAction: 'click',
@@ -245,7 +245,7 @@ describe('emitGA method', () => {
 
     const partnerLink = wrapper.get(`[href="/externals/${mockPartner.name}"]`)
     partnerLink.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'sidebar',
         eventAction: 'click',
@@ -263,7 +263,7 @@ describe('emitGA method', () => {
 
     const subBrandLink = wrapper.get(`[href="${mockSubBrand.href}"]`)
     subBrandLink.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'sidebar',
         eventAction: 'click',
@@ -281,7 +281,7 @@ describe('emitGA method', () => {
 
     const otherLink = wrapper.get(`[href="${mockOther.href}"]`)
     otherLink.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'sidebar',
         eventAction: 'click',
@@ -299,7 +299,7 @@ describe('emitGA method', () => {
 
     const socialMediaLink = wrapper.get(`[href="${mockSocialMedia.href}"]`)
     socialMediaLink.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'sidebar',
         eventAction: 'click',

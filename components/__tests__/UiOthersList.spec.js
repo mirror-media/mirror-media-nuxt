@@ -59,7 +59,7 @@ describe('link list', () => {
   })
 })
 
-describe('emitGA method', () => {
+describe('emitGa method', () => {
   const eventCategory = 'header'
 
   test('with a proper argument when users click an other link', () => {
@@ -77,7 +77,7 @@ describe('emitGA method', () => {
 
     const link = wrapper.get(`[href="${mockLink.href}"]`)
     link.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory,
         eventAction: 'click',
@@ -95,7 +95,7 @@ describe('emitGA method', () => {
 
     const moreIcon = wrapper.get('.more-icon')
     moreIcon.trigger('click')
-    expect(wrapper.emitted().sendGA[0]).toEqual([
+    expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory,
         eventAction: 'click',
