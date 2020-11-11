@@ -340,18 +340,9 @@ export {
 
 <style lang="scss" scoped>
 .story {
-  padding: 20px 0;
   color: #000;
   line-height: 1.15;
   word-break: break-word;
-  max-width: 645px;
-  margin-left: auto;
-  margin-right: auto;
-  @include media-breakpoint-up(lg) {
-    width: calc(100% - 300px - 20px);
-    max-width: 695px;
-    margin-left: 0;
-  }
 
   &::v-deep {
     > * {

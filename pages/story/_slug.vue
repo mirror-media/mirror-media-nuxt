@@ -11,7 +11,7 @@
         </ClientOnly>
 
         <div class="story-wrapper">
-          <UiStoryBody :story="story">
+          <UiStoryBody :story="story" class="layout__story-body">
             <template #storyRelateds>
               <UiStoryListWithArrow
                 :categoryTitle="categoryTitle"
@@ -625,9 +625,26 @@ export default {
 <style lang="scss" scoped>
 @import '~/css/micro-ad/story.scss';
 
+$aside-width: 300px;
+
 .story-layout {
   @include media-breakpoint-up(lg) {
     background-color: #414141;
+  }
+}
+
+.layout {
+  &__story-body {
+    max-width: 645px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    @include media-breakpoint-up(lg) {
+      width: calc(100% - #{$aside-width} - 20px);
+      max-width: 695px;
+      margin-left: 0;
+    }
   }
 }
 
@@ -693,7 +710,7 @@ aside {
   margin-right: auto;
   overflow: hidden;
   @include media-breakpoint-up(lg) {
-    width: 300px;
+    width: $aside-width;
     display: flex;
     flex-direction: column;
     margin-right: 0;
