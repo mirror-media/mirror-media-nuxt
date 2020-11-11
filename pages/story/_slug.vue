@@ -104,7 +104,7 @@
                 @show="fetchPopularStories"
               >
                 <UiStoryListWithHeading
-                  v-if="hasPopularStories"
+                  v-if="doesHavePopularStories"
                   heading="熱門文章"
                   :items="popularStories"
                 />
@@ -318,7 +318,7 @@ export default {
     doesHaveLatestStories() {
       return this.latestStories.length > 0
     },
-    hasPopularStories() {
+    doesHavePopularStories() {
       return this.popularStories.length > 0
     },
 
@@ -366,7 +366,7 @@ export default {
       this.hasLoadedLatestStories = true
     },
     async fetchPopularStories() {
-      if (this.hasPopularStories || ENV === 'lighthouse') {
+      if (this.doesHavePopularStories || ENV === 'lighthouse') {
         return
       }
 
