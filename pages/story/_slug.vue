@@ -78,12 +78,14 @@
 
               <div v-if="shouldOpenLatestList">
                 <lazy-component
-                  class="story__list story__list--latest"
-                  :style="{ height: hasLatestStories ? undefined : '100vh' }"
+                  class="lazy-latest-list"
+                  :style="{
+                    height: doesHaveLatestStories ? undefined : '100vh',
+                  }"
                   @show="fetchLatestStories"
                 >
                   <UiStoryListWithHeading
-                    v-if="hasLatestStories"
+                    class="latest-list"
                     heading="最新文章"
                     :items="latestStories"
                     :extractTitle="sectionCategory"
@@ -233,6 +235,7 @@ export default {
   data() {
     return {
       latestStories: [],
+      hasLoadedLatestStories: false,
 
       popularStories: [],
       story: {},
@@ -306,9 +309,13 @@ export default {
       return this.relatedImages.length > 0
     },
     shouldOpenLatestList() {
-      return this.isDesktopWidth && this.sectionId !== 'other'
+      return (
+        this.isDesktopWidth &&
+        this.sectionId !== 'other' &&
+        (this.hasLoadedLatestStories ? this.doesHaveLatestStories : true)
+      )
     },
-    hasLatestStories() {
+    doesHaveLatestStories() {
       return this.latestStories.length > 0
     },
     hasPopularStories() {
@@ -343,7 +350,7 @@ export default {
       this.relatedImages = items
     },
     async fetchLatestStories() {
-      if (this.hasLatestStories || this.sectionId === 'other') {
+      if (this.doesHaveLatestStories || this.sectionId === 'other') {
         return
       }
 
@@ -355,6 +362,8 @@ export default {
       this.latestStories = items
         .filter(this.doesNotHaveCurrentStorySlug)
         .slice(0, 6)
+
+      this.hasLoadedLatestStories = true
     },
     async fetchPopularStories() {
       if (this.hasPopularStories || ENV === 'lighthouse') {
