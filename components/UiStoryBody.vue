@@ -1,5 +1,5 @@
 <template>
-  <article :class="['story', section.name]">
+  <article class="story-body" :class="section.name">
     <div class="story__section-datetime">
       <p
         v-if="!isAdvertised && categoryTitle"
@@ -339,47 +339,71 @@ export {
 </script>
 
 <style lang="scss" scoped>
-.story {
+.story-body {
   color: #000;
   line-height: 1.15;
   word-break: break-word;
 
-  &::v-deep {
-    > * {
-      width: calc(100% - 50px);
-      margin-left: auto;
-      margin-right: auto;
-      @include media-breakpoint-up(lg) {
-        width: 100%;
-      }
-
-      + .story__heading {
-        margin-top: 40px;
-      }
-
-      + p,
-      + .gpt-ad {
-        margin-top: 1.5em;
-      }
-
-      + figure,
-      + ul,
-      + ol,
-      + .story__figure,
-      + .story__code,
-      + .story__embedded-code,
-      + .story-list {
-        margin-top: 20px;
-      }
-      + .story-blockquote {
-        margin-top: 3em;
-      }
-      + .story__brief {
-        margin-top: 30px;
+  @each $name, $color in $sections-color {
+    &.#{$name} {
+      .story__category::before,
+      .story__brief {
+        background-color: $color;
       }
     }
   }
 
+  &::v-deep > * {
+    width: calc(100% - 50px);
+    margin-left: auto;
+    margin-right: auto;
+    @include media-breakpoint-up(lg) {
+      width: 100%;
+    }
+
+    + .story__heading {
+      margin-top: 40px;
+    }
+
+    + p,
+    + .gpt-ad {
+      margin-top: 1.5em;
+    }
+
+    + figure,
+    + ul,
+    + ol,
+    + .story__figure,
+    + .story__code,
+    + .story__embedded-code,
+    + .story-list {
+      margin-top: 20px;
+    }
+
+    + .story-blockquote {
+      margin-top: 3em;
+    }
+
+    + .story__brief {
+      margin-top: 30px;
+    }
+  }
+
+  .g-story-quote-by {
+    @include media-breakpoint-up(md) {
+      max-width: 575px;
+    }
+    @include media-breakpoint-up(lg) {
+      max-width: 625px;
+    }
+
+    + * {
+      margin-top: 70px;
+    }
+  }
+}
+
+.story {
   &__section-datetime {
     display: flex;
     align-items: flex-end;
@@ -570,29 +594,10 @@ export {
       margin-top: 3em !important;
     }
   }
-  @each $name, $color in $sections-color {
-    &.#{$name} {
-      .story__category::before,
-      .story__brief {
-        background-color: $color;
-      }
-    }
-  }
 
   &__embedded-code::v-deep iframe {
     max-width: 100%;
     margin: auto;
-  }
-  .g-story-quote-by {
-    @include media-breakpoint-up(md) {
-      max-width: 575px;
-    }
-    @include media-breakpoint-up(lg) {
-      max-width: 625px;
-    }
-    + * {
-      margin-top: 70px;
-    }
   }
 
   &__code {
@@ -635,11 +640,9 @@ $quote-by-color: #255577;
 $quote-by-border: border(3px, $quote-by-color);
 $link-color: #3195b3;
 
-.story {
-  code {
-    white-space: pre-wrap;
-    color: #34495e;
-  }
+.story-body code {
+  white-space: pre-wrap;
+  color: #34495e;
 }
 
 .g-story {
