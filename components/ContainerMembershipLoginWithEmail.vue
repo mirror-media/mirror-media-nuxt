@@ -138,7 +138,7 @@ export default {
       loginPageState: 'form',
     }
   },
-  async created() {
+  async beforeMount() {
     await this.loadAuthService()
   },
   methods: {
