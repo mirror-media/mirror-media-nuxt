@@ -35,7 +35,7 @@ import { email, required } from 'vuelidate/lib/validators'
 export default {
   mixins: [validationMixin],
   props: {
-    showInvalidHint: {
+    shouldShowInvalidHint: {
       type: Boolean,
       default: false,
     },
@@ -47,12 +47,12 @@ export default {
   },
   computed: {
     showInputInvalid() {
-      return this.showInvalidHint && this.$v.email.$error
+      return this.shouldShowInvalidHint && this.$v.email.$error
     },
   },
   watch: {
     showInvalidHint() {
-      if (this.showInvalidHint && !this.$v.$dirty) {
+      if (this.shouldShowInvalidHint && !this.$v.$dirty) {
         this.$v.$touch()
       }
     },

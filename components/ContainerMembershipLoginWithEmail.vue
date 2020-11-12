@@ -4,7 +4,7 @@
       <h1 class="title">登入</h1>
       <form class="page__form form" @submit.prevent>
         <UiMembershipEmailInput
-          :showInvalidHint="showInvalidHint"
+          :shouldShowInvalidHint="shouldShowInvalidHint"
           @input="handleEmailInput"
           @inputValidStateChange="handleInputValidStateChange"
         />
@@ -132,7 +132,7 @@ export default {
   },
   data() {
     return {
-      showInvalidHint: false,
+      shouldShowInvalidHint: false,
       isEmailInputValid: false,
       emailInput: '',
       loginPageState: 'form',
@@ -143,7 +143,7 @@ export default {
   },
   methods: {
     handleSubmit() {
-      this.showInvalidHint = true
+      this.shouldShowInvalidHint = true
       if (this.isEmailInputValid) {
         this.sendSignInLinkToEmail()
       }

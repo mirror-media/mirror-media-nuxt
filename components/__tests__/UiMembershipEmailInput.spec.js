@@ -18,7 +18,7 @@ describe('features affect by input state', function () {
     expect.assertions(3)
     const wrapper = shallowMount(UiMembershipEmailInput)
     await wrapper.setProps({
-      showInvalidHint: true,
+      shouldShowInvalidHint: true,
     })
     const input = wrapper.find('input')
     const emailInvalid = 'emailInvalid'
@@ -34,7 +34,7 @@ describe('features affect by input state', function () {
     expect.assertions(3)
     const wrapper = shallowMount(UiMembershipEmailInput)
     await wrapper.setProps({
-      showInvalidHint: true,
+      shouldShowInvalidHint: true,
     })
     const input = wrapper.find('input')
     const emailValid = 'example@example.com'
@@ -46,11 +46,11 @@ describe('features affect by input state', function () {
     expect(invalidIcon.element.style.display).toBe('none')
     expect(inputWrapper.classes()).not.toContain('input-wrapper--invalid')
   })
-  test('should not display invalid hint, invalid icon and invalid modifier when "showInvalidHint"props is false, even if input is invalid', async function () {
+  test('should not display invalid hint, invalid icon and invalid modifier when "shouldShowInvalidHint"props is false, even if input is invalid', async function () {
     expect.assertions(3)
     const wrapper = shallowMount(UiMembershipEmailInput)
     await wrapper.setProps({
-      showInvalidHint: false,
+      shouldShowInvalidHint: false,
     })
     const input = wrapper.find('input')
     const emailInvalid = 'mailInvalid'

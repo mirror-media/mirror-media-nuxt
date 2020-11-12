@@ -60,7 +60,7 @@ describe('handleSubmit method about behaviours after login button clicked', func
     const submitButton = wrapper.find('.login-button')
     await submitButton.trigger('click')
     const emailInput = wrapper.findComponent(UIMembershipEmailInput)
-    expect(emailInput.props().showInvalidHint).toBe(true)
+    expect(emailInput.props().shouldShowInvalidHint).toBe(true)
     expect(mockSendSignInLinkToEmail).not.toHaveBeenCalled()
   })
   test(`should
@@ -93,7 +93,7 @@ describe('handleSubmit method about behaviours after login button clicked', func
     await emailInput.vm.$emit('inputValidStateChange', true)
     const submitButton = wrapper.find('.login-button')
     await submitButton.trigger('click')
-    expect(emailInput.props().showInvalidHint).toBe(true)
+    expect(emailInput.props().shouldShowInvalidHint).toBe(true)
     expect(mockSendSignInLinkToEmail.mock.calls[0][0]).toBe(mockEmail)
     expect(window.localStorage.setItem).toHaveBeenCalledWith(
       'emailForSignIn',
