@@ -11,7 +11,7 @@
         type="email"
         @input="handleInput"
       />
-      <img
+      <SvgInvalidIcon
         v-show="canShowInputInvalid"
         class="invalid-icon"
         src="~/assets/membership-input-invalid.svg"
@@ -31,8 +31,12 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { email, required } from 'vuelidate/lib/validators'
+import SvgInvalidIcon from '~/assets/membership-input-invalid.svg?inline'
 
 export default {
+  components: {
+    SvgInvalidIcon,
+  },
   mixins: [validationMixin],
   props: {
     shouldShowInvalidHint: {
