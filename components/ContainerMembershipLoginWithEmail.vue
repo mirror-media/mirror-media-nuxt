@@ -162,8 +162,6 @@ export default {
           this.emailInput,
           actionCodeSettings
         )
-
-        // window.localStorage.setItem('emailForSignIn', this.emailInput)
         localforage.setItem('emailForSignIn', this.emailInput)
         this.loginPageState = 'success'
       } catch (e) {
