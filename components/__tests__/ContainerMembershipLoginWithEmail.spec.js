@@ -71,11 +71,17 @@ describe('handleSubmit method about behaviours after login button clicked', func
     hide form and show the success hint in /login page
     if email input is valid and @nuxtjs/firebase auth request send successfully
   `, async function () {
-    expect.assertions(5)
+    expect.assertions(6)
     const mockSendSignInLinkToEmail = jest.fn(() => Promise.resolve())
     const spySetItem = jest
       .spyOn(localforage, 'setItem')
       .mockImplementation(() => {})
+    const mockOrigin = 'http://mockOrigin'
+    Object.defineProperty(window, 'location', {
+      value: {
+        origin: mockOrigin,
+      },
+    })
     const wrapper = createWrapper(ContainerMembershipLoginWithEmail, {
       mocks: {
         $fire: {
@@ -93,6 +99,9 @@ describe('handleSubmit method about behaviours after login button clicked', func
     await submitButton.trigger('click')
     expect(emailInput.props().shouldShowInvalidHint).toBe(true)
     expect(mockSendSignInLinkToEmail.mock.calls[0][0]).toBe(mockEmail)
+    expect(mockSendSignInLinkToEmail.mock.calls[0][1].url).toBe(
+      `${mockOrigin}/finishSignUp`
+    )
     expect(spySetItem).toHaveBeenCalledWith('emailForSignIn', mockEmail)
     await flushPromises()
     expect(wrapper.find('.login-form-wrapper').exists()).toBe(false)
