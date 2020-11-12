@@ -1,5 +1,5 @@
 <template>
-  <div class="fb-page-container">
+  <div ref="fbPage" class="fb-page-container">
     <div class="fb-page" v-bind="fbPageSettings">
       <blockquote
         cite="https://www.facebook.com/mirrormediamg"
@@ -18,6 +18,8 @@ import { useFbPagePlugin } from '~/composition/fb-plugins.js'
 export default {
   name: 'FbPage',
   setup(props) {
+    const fbPage = useFbPagePlugin()
+
     const fbPageSettings = reactive({
       'data-href': 'https://www.facebook.com/mirrormediamg',
       'data-tabs': 'timeline',
@@ -26,9 +28,8 @@ export default {
       ...props.settings,
     })
 
-    useFbPagePlugin()
-
     return {
+      fbPage,
       fbPageSettings,
     }
   },

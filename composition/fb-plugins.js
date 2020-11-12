@@ -1,6 +1,6 @@
 /* global FB:readonly */
 
-import { onMounted } from '@nuxtjs/composition-api'
+import { ref, onMounted } from '@nuxtjs/composition-api'
 
 export { useFbPagePlugin, useFbQuotePlugin }
 
@@ -8,10 +8,14 @@ let isFbSdkLoading = false
 let hasFbSdkLoaded = false
 
 function useFbPagePlugin() {
+  const fbPage = ref(undefined)
+
   onMounted(() => {
     insertRootDiv()
-    initPlugin()
+    initPlugin(fbPage.value)
   })
+
+  return fbPage
 }
 
 function useFbQuotePlugin() {
