@@ -67,7 +67,7 @@ describe('handleSubmit method about behaviours after login button clicked', func
   test(`should
     show invalid hint in UIMembershipEmailInput,
     send finish-sign-in link to email through @nuxtjs/firebase,
-    store the email in localstorage,
+    store the email using localforage,
     hide form and show the success hint in /login page
     if email input is valid and @nuxtjs/firebase auth request send successfully
   `, async function () {
