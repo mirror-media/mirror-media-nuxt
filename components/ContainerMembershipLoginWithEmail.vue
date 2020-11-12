@@ -17,25 +17,11 @@
         </button>
       </form>
     </div>
-    <div
+    <UiMembershipEmailSuccess
       v-else-if="loginPageState === 'success'"
-      class="after-form-submit-wrapper login-success-wrapper"
-    >
-      <h1>
-        <span>請到信箱收取驗證信件，</span>
-        <span>即可進行會員登入！</span>
-      </h1>
-      <div>
-        <p>
-          <span>登入鏡週刊的連結已寄送至 &nbsp;</span>
-          <span v-text="emailInput"></span>
-        </p>
-        <p>
-          <span>請收信並點擊信件中連結，</span>
-          <span>即可登入鏡週刊。</span>
-        </p>
-      </div>
-    </div>
+      class="login-success-wrapper"
+      :emailInput="emailInput"
+    />
     <div
       v-else-if="loginPageState === 'error'"
       class="after-form-submit-wrapper login-error-wrapper"
@@ -70,8 +56,9 @@
 </template>
 
 <script>
-import UiMembershipEmailInput from '@/components/UiMembershipEmailInput.vue'
 import localforage from 'localforage'
+import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
+import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.
@@ -112,6 +99,7 @@ import localforage from 'localforage'
 export default {
   components: {
     UiMembershipEmailInput,
+    UiMembershipEmailSuccess,
   },
   data() {
     return {
