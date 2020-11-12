@@ -26,12 +26,13 @@ function useFbQuotePlugin() {
   })
 }
 
-function initPlugin(parsedDom = document.body) {
+// domToBeParsed：只 parse 需要 parse 的部分，提升網頁效能
+function initPlugin(domToBeParsed = document.body) {
   const theFirstTime = loadSdk()
 
   if (!theFirstTime && hasFbSdkLoaded) {
     // Docs: https://developers.facebook.com/docs/reference/javascript/FB.XFBML.parse
-    FB.XFBML.parse(parsedDom)
+    FB.XFBML.parse(domToBeParsed)
   }
 }
 
