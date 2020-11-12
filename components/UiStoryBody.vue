@@ -77,7 +77,7 @@
     </lazy-component>
 
     <ClientOnly v-if="canAdvertise">
-      <div class="story__ad-container">
+      <div class="story__ad story__ad--container">
         <ContainerGptAd :pageKey="sectionId" adKey="PC_E1" />
         <ContainerGptAd :pageKey="sectionId" adKey="PC_E2" />
       </div>
@@ -365,8 +365,7 @@ export {
       margin-top: 40px;
     }
 
-    + p,
-    + .gpt-ad {
+    + p {
       margin-top: 1.5em;
     }
 
@@ -609,14 +608,14 @@ export {
     position: fixed;
   }
 
-  &__ad,
-  &__ad-container {
+  &__ad {
+    width: 100%;
     margin-top: 1.5em;
-  }
 
-  &__ad-container {
-    display: flex;
-    justify-content: space-around;
+    &--container {
+      display: flex;
+      justify-content: space-around;
+    }
   }
 }
 

@@ -782,8 +782,7 @@ $aside-width: 300px;
   }
 
   &__ad {
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
     margin-bottom: 20px;
 
     &--ft {
@@ -793,7 +792,6 @@ $aside-width: 300px;
 }
 
 aside {
-  width: calc(100% - 50px);
   max-width: 645px;
   margin-bottom: 40px;
   margin-left: auto;
@@ -803,6 +801,16 @@ aside {
     width: $aside-width;
     margin-right: 0;
     margin-bottom: 0;
+  }
+
+  > * {
+    width: calc(100% - 50px);
+    margin-left: auto;
+    margin-right: auto;
+
+    @include media-breakpoint-up(lg) {
+      width: 100%;
+    }
   }
 }
 

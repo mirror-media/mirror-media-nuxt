@@ -204,7 +204,7 @@ export default {
       case 'gpt-ad':
         return (
           <ClientOnly>
-            <ContainerGptAd class="gpt-ad" pageKey={pageKey} adKey={adKey} />
+            <ContainerGptAd class="story__ad" pageKey={pageKey} adKey={adKey} />
           </ClientOnly>
         )
       case 'code-block':
