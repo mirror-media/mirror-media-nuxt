@@ -1,10 +1,10 @@
 import { shallowMount } from '@vue/test-utils'
-import UIMembershipEmailInput from '../UIMembershipEmailInput.vue'
+import UiMembershipEmailInput from '../UiMembershipEmailInput.vue'
 
 describe('data binding between v-model.trim and vuelidate', function () {
   test('should trim white spaces', async function () {
     expect.assertions(1)
-    const wrapper = shallowMount(UIMembershipEmailInput)
+    const wrapper = shallowMount(UiMembershipEmailInput)
     const input = wrapper.find('input')
     const emailWithWhiteSpace = ' example@example.com '
     const emailWithNoWhiteSpace = 'example@example.com'
@@ -16,7 +16,7 @@ describe('data binding between v-model.trim and vuelidate', function () {
 describe('features affect by input state', function () {
   test('should display invalid hint, invalid icon and invalid modifier when input is invalid', async function () {
     expect.assertions(3)
-    const wrapper = shallowMount(UIMembershipEmailInput)
+    const wrapper = shallowMount(UiMembershipEmailInput)
     await wrapper.setProps({
       showInvalidHint: true,
     })
@@ -32,7 +32,7 @@ describe('features affect by input state', function () {
   })
   test('should not display invalid hint, invalid icon and invalid modifier when input is valid', async function () {
     expect.assertions(3)
-    const wrapper = shallowMount(UIMembershipEmailInput)
+    const wrapper = shallowMount(UiMembershipEmailInput)
     await wrapper.setProps({
       showInvalidHint: true,
     })
@@ -48,7 +48,7 @@ describe('features affect by input state', function () {
   })
   test('should not display invalid hint, invalid icon and invalid modifier when "showInvalidHint"props is false, even if input is invalid', async function () {
     expect.assertions(3)
-    const wrapper = shallowMount(UIMembershipEmailInput)
+    const wrapper = shallowMount(UiMembershipEmailInput)
     await wrapper.setProps({
       showInvalidHint: false,
     })
@@ -67,7 +67,7 @@ describe('features affect by input state', function () {
 describe('component behaviours', function () {
   test('should emit "input" event with value when input was change', async function () {
     expect.assertions(1)
-    const wrapper = shallowMount(UIMembershipEmailInput)
+    const wrapper = shallowMount(UiMembershipEmailInput)
     const input = wrapper.find('input')
     const emailValid = 'example@example.com'
     await input.setValue(emailValid)
@@ -75,7 +75,7 @@ describe('component behaviours', function () {
   })
   test('should emit "inputValidStateChange" event with value when input validation state changed', async function () {
     expect.assertions(1)
-    const wrapper = shallowMount(UIMembershipEmailInput)
+    const wrapper = shallowMount(UiMembershipEmailInput)
     const input = wrapper.find('input')
     const emailValid = 'example@example.com'
     await input.setValue(emailValid)

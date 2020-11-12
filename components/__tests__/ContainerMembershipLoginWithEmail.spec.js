@@ -1,7 +1,7 @@
 import flushPromises from 'flush-promises'
+import UIMembershipEmailInput from '@/components/UiMembershipEmailInput.vue'
 import ContainerMembershipLoginWithEmail from '../ContainerMembershipLoginWithEmail.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
-import UIMembershipEmailInput from '~/components/UIMembershipEmailInput.vue'
 
 const createWrapper = createWrapperHelper({
   mocks: {

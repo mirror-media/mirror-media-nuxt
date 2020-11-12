@@ -3,7 +3,7 @@
     <div v-if="loginPageState === 'form'" class="login-form-wrapper">
       <h1 class="title">登入</h1>
       <form class="page__form form" @submit.prevent>
-        <UIMembershipEmailInput
+        <UiMembershipEmailInput
           :showInvalidHint="showInvalidHint"
           @input="handleEmailInput"
           @inputValidStateChange="handleInputValidStateChange"
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import UIMembershipEmailInput from '~/components/UIMembershipEmailInput.vue'
+import UiMembershipEmailInput from '@/components/UiMembershipEmailInput.vue'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.
@@ -128,7 +128,7 @@ const actionCodeSettings = {
 }
 export default {
   components: {
-    UIMembershipEmailInput,
+    UiMembershipEmailInput,
   },
   data() {
     return {
