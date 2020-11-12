@@ -107,6 +107,37 @@ describe('handleSubmit method about behaviours after login button clicked', func
     expect(wrapper.find('.login-form-wrapper').exists()).toBe(false)
     expect(wrapper.find('.login-success-wrapper').exists()).toBe(true)
   })
+  test('should append "shouldRememberMe=true" query to sign in link to email if .remember-me-checkbox was checked', async function () {
+    expect.assertions(1)
+    const mockSendSignInLinkToEmail = jest.fn(() => Promise.resolve())
+    jest.spyOn(localforage, 'setItem').mockImplementation(() => {})
+    const mockOrigin = 'http://mockOrigin'
+    Object.defineProperty(window, 'location', {
+      value: {
+        origin: mockOrigin,
+      },
+    })
+    const wrapper = createWrapper(ContainerMembershipLoginWithEmail, {
+      mocks: {
+        $fire: {
+          auth: {
+            sendSignInLinkToEmail: mockSendSignInLinkToEmail,
+          },
+        },
+      },
+    })
+    const emailInput = wrapper.findComponent(UiMembershipEmailInput)
+    const mockEmail = 'example@example.com'
+    await emailInput.vm.$emit('input', mockEmail)
+    await emailInput.vm.$emit('inputValidStateChange', true)
+    const rememberMeCheckbox = wrapper.find('.remember-me-checkbox')
+    await rememberMeCheckbox.trigger('click')
+    const submitButton = wrapper.find('.login-button')
+    await submitButton.trigger('click')
+    expect(mockSendSignInLinkToEmail.mock.calls[0][1].url).toBe(
+      `${mockOrigin}/finishSignUp?shouldRememberMe=true`
+    )
+  })
   test(`should
     show error hint,
     be able to get back to the form in error hint

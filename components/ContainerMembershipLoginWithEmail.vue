@@ -8,6 +8,10 @@
           @input="handleEmailInput"
           @inputValidStateChange="handleInputValidStateChange"
         />
+        <label class="form__remember-me-checkbox remember-me-checkbox">
+          <input v-model="shouldRememberMe" type="checkbox" />
+          保持登入
+        </label>
         <button class="form__login-button login-button" @click="handleSubmit">
           登入
         </button>
@@ -115,6 +119,7 @@ export default {
       isEmailInputValid: false,
       emailInput: '',
       loginPageState: 'form',
+      shouldRememberMe: false,
     }
   },
   async beforeMount() {
@@ -134,13 +139,20 @@ export default {
         console.error(e)
       }
     },
+    createSignInLinkToEmail() {
+      const origin = window.location.origin
+      const path = '/finishSignUp'
+      return this.shouldRememberMe
+        ? `${origin}${path}?shouldRememberMe=true`
+        : `${origin}${path}`
+    },
     async sendSignInLinkToEmail() {
       const actionCodeSettings = {
         /*
          * URL you want to redirect back to. The domain (www.example.com) for this
          * URL must be in the authorized domains list in the Firebase Console.
          */
-        url: `${window.location.origin}/finishSignUp`,
+        url: this.createSignInLinkToEmail(),
 
         // This must be true.
         handleCodeInApp: true,
@@ -209,8 +221,19 @@ export default {
 }
 
 .form {
+  &__remember-me-checkbox {
+    margin: 10px 0 0 0;
+  }
   &__login-button {
     margin: 20px 0 0 0;
+  }
+}
+.remember-me-checkbox {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  input {
+    margin: 0 10px 0 0;
   }
 }
 .login-button {
