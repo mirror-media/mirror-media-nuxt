@@ -2,7 +2,7 @@
   <section class="page">
     <div v-if="loginPageState === 'form'" class="login-form-wrapper">
       <h1 class="title">登入</h1>
-      <form class="page__form form" @submit.prevent>
+      <form class="page__form form" novalidate @submit.prevent>
         <UiMembershipEmailInput
           :shouldShowInvalidHint="shouldShowInvalidHint"
           @input="handleEmailInput"
