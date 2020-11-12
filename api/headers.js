@@ -1,4 +1,4 @@
-const { PREVIEW_QUERY } = require('../configs/config')
+const { PREVIEW_QUERY, ENV } = require('../configs/config')
 
 module.exports = function (req, res, next) {
   const hostname = req.hostname
@@ -7,6 +7,7 @@ module.exports = function (req, res, next) {
   const regexUrlNoCaching = new RegExp(`${PREVIEW_QUERY}|culturepreview`, 'gs')
 
   const isNoCaching =
+    ENV === 'dev' ||
     hostname.match(/dev.mirrormedia.mg|keystone/gs) ||
     url.match(regexUrlNoCaching)
 
