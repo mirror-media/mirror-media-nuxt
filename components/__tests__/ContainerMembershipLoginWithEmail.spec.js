@@ -1,5 +1,5 @@
 import flushPromises from 'flush-promises'
-import UIMembershipEmailInput from '@/components/UiMembershipEmailInput.vue'
+import UiMembershipEmailInput from '@/components/UiMembershipEmailInput.vue'
 import ContainerMembershipLoginWithEmail from '../ContainerMembershipLoginWithEmail.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -14,14 +14,14 @@ const createWrapper = createWrapperHelper({
 describe('handle event emitted by child component UIMembershipEmailInput', function () {
   test('handle "input" event emitted by UIMembershipEmailInput', function () {
     const wrapper = createWrapper(ContainerMembershipLoginWithEmail)
-    const emailInput = wrapper.findComponent(UIMembershipEmailInput)
+    const emailInput = wrapper.findComponent(UiMembershipEmailInput)
     const mockInputValue = 'mockInputValue'
     emailInput.vm.$emit('input', mockInputValue)
     expect(wrapper.vm.emailInput).toBe(mockInputValue)
   })
   test('handle "inputValidStateChange" event emitted by UIMembershipEmailInput', function () {
     const wrapper = createWrapper(ContainerMembershipLoginWithEmail)
-    const emailInput = wrapper.findComponent(UIMembershipEmailInput)
+    const emailInput = wrapper.findComponent(UiMembershipEmailInput)
     const mockEmailInputValidState = true
     emailInput.vm.$emit('inputValidStateChange', mockEmailInputValidState)
     expect(wrapper.vm.isEmailInputValid).toBe(mockEmailInputValidState)
@@ -59,7 +59,7 @@ describe('handleSubmit method about behaviours after login button clicked', func
     })
     const submitButton = wrapper.find('.login-button')
     await submitButton.trigger('click')
-    const emailInput = wrapper.findComponent(UIMembershipEmailInput)
+    const emailInput = wrapper.findComponent(UiMembershipEmailInput)
     expect(emailInput.props().shouldShowInvalidHint).toBe(true)
     expect(mockSendSignInLinkToEmail).not.toHaveBeenCalled()
   })
@@ -87,7 +87,7 @@ describe('handleSubmit method about behaviours after login button clicked', func
         },
       },
     })
-    const emailInput = wrapper.findComponent(UIMembershipEmailInput)
+    const emailInput = wrapper.findComponent(UiMembershipEmailInput)
     const mockEmail = 'example@example.com'
     await emailInput.vm.$emit('input', mockEmail)
     await emailInput.vm.$emit('inputValidStateChange', true)
@@ -121,7 +121,7 @@ describe('handleSubmit method about behaviours after login button clicked', func
         },
       },
     })
-    const emailInput = wrapper.findComponent(UIMembershipEmailInput)
+    const emailInput = wrapper.findComponent(UiMembershipEmailInput)
     const mockEmail = 'example@example.com'
     await emailInput.vm.$emit('input', mockEmail)
     await emailInput.vm.$emit('inputValidStateChange', true)
