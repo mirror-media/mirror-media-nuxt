@@ -18,6 +18,9 @@
                 :items="relateds"
                 :sectionName="sectionName"
               />
+
+              <div ref="fixedTriggerFinished" />
+
               <UiStoryListRelated
                 :items="relatedsWithoutFirstTwo"
                 :images="relatedImages"
@@ -58,7 +61,7 @@
                 adKey="PC_R1"
               />
 
-              <lazy-component class="story__fb-page">
+              <lazy-component v-if="!isDesktopWidth" class="story__fb-page">
                 <FbPage />
               </lazy-component>
 
@@ -76,7 +79,7 @@
                 ></lazy-component>
               </div>
 
-              <div v-if="shouldOpenLatestList">
+              <div v-if="shouldOpenLatestList" ref="latestList">
                 <lazy-component
                   class="lazy-latest-list"
                   :style="{
@@ -93,22 +96,28 @@
                 </lazy-component>
               </div>
 
-              <ContainerGptAd
-                class="story__ad"
-                :pageKey="sectionId"
-                adKey="PC_R2"
-              />
-
-              <lazy-component
-                class="story__list story__list--popular"
-                @show="fetchPopularStories"
-              >
-                <UiStoryListWithHeading
-                  v-if="doesHavePopularStories"
-                  heading="熱門文章"
-                  :items="popularStories"
+              <div ref="fixedContainer" class="fixed-container">
+                <ContainerGptAd
+                  class="story__ad"
+                  :pageKey="sectionId"
+                  adKey="PC_R2"
                 />
-              </lazy-component>
+
+                <lazy-component
+                  class="story__popular-list"
+                  @show="fetchPopularStories"
+                >
+                  <UiStoryListWithHeading
+                    v-if="doesHavePopularStories"
+                    heading="熱門文章"
+                    :items="popularStories"
+                  />
+                </lazy-component>
+
+                <lazy-component v-if="isDesktopWidth" class="story__fb-page">
+                  <FbPage />
+                </lazy-component>
+              </div>
             </ClientOnly>
           </aside>
         </div>
@@ -254,7 +263,10 @@ export default {
   },
 
   computed: {
-    ...mapState(['canAdvertise']),
+    ...mapState({
+      canAdvertise: (state) => state.canAdvertise,
+      viewportHeight: (state) => state.viewport.height,
+    }),
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
     }),
@@ -332,6 +344,18 @@ export default {
     },
   },
 
+  watch: {
+    isDesktopWidth() {
+      this.isDesktopWidth
+        ? window.addEventListener('scroll', this.handleFixAside)
+        : this.cleanFixedAside()
+    },
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleFixAside)
+  },
+
   methods: {
     handleShowStoryListRelated() {
       this.fetchRelatedImages()
@@ -381,6 +405,65 @@ export default {
     },
     handleShowDableWidget() {
       this.shouldLoadDableScript = true
+    },
+    handleFixAside() {
+      _.throttle(
+        () => {
+          const {
+            latestList,
+            fixedContainer,
+            fixedTriggerFinished,
+          } = this.$refs
+
+          if (!latestList) {
+            return
+          }
+
+          const {
+            bottom: latestListBottom,
+          } = latestList.getBoundingClientRect()
+          const {
+            top: fixedTriggerFinishedTop,
+          } = fixedTriggerFinished.getBoundingClientRect()
+
+          // 當視窗頂部 <= latestList 底部，結束 fix
+          if (latestListBottom > 0) {
+            fixedContainer.classList.remove('fixed')
+            fixedContainer.style.marginTop = ''
+
+            return
+          }
+
+          // 當視窗頂部 > latestList 底部，且視窗底部 <= fixedTriggerFinished 頂部，開始 fix
+          if (
+            latestListBottom <= 0 &&
+            fixedTriggerFinishedTop - this.viewportHeight > 0
+          ) {
+            fixedContainer.classList.add('fixed')
+            fixedContainer.style.marginTop = ''
+
+            return
+          }
+
+          // 當視窗底部 > fixedTriggerFinished 頂部，結束 fix
+          if (fixedTriggerFinishedTop - this.viewportHeight <= 0) {
+            fixedContainer.classList.remove('fixed')
+            fixedContainer.style.marginTop = `${
+              fixedTriggerFinishedTop - latestListBottom - this.viewportHeight
+            }px`
+          }
+        },
+        100,
+        { trailing: false }
+      )()
+    },
+    cleanFixedAside() {
+      const { fixedContainer } = this.$refs
+
+      fixedContainer.classList.remove('fixed')
+      fixedContainer.style.marginTop = ''
+
+      window.removeEventListener('scroll', this.handleFixAside)
     },
   },
   head() {
@@ -634,6 +717,9 @@ export default {
 <style lang="scss" scoped>
 @import '~/css/micro-ad/story.scss';
 
+$story-max-width: 1160px;
+$story-padding-right-lg: 50px;
+
 $aside-width: 300px;
 
 .story-layout {
@@ -652,20 +738,21 @@ $aside-width: 300px;
     @include media-breakpoint-up(lg) {
       width: calc(100% - #{$aside-width} - 20px);
       max-width: 695px;
+      padding-bottom: 0;
       margin-left: 0;
     }
   }
 }
 
 .story-container {
-  max-width: 1160px;
+  max-width: $story-max-width;
   padding-top: 20px;
   padding-bottom: 40px;
   overflow: hidden;
   @include media-breakpoint-up(lg) {
     margin: 0 auto;
     padding-left: 50px;
-    padding-right: 50px;
+    padding-right: $story-padding-right-lg;
     background-color: #fff;
   }
   @include media-breakpoint-up(xl) {
@@ -677,25 +764,19 @@ $aside-width: 300px;
   position: relative;
   @include media-breakpoint-up(lg) {
     padding-top: 30px;
+    padding-bottom: 20px;
     display: flex;
   }
 }
 
 .story {
-  &__list {
+  &__popular-list {
     margin-bottom: 20px;
-
-    &--popular {
-      @include media-breakpoint-up(lg) {
-        order: 1;
-      }
-    }
   }
 
   &__fb-page {
     margin-bottom: 20px;
     @include media-breakpoint-up(lg) {
-      order: 2;
       margin-bottom: 0;
     }
   }
@@ -720,10 +801,23 @@ aside {
   overflow: hidden;
   @include media-breakpoint-up(lg) {
     width: $aside-width;
-    display: flex;
-    flex-direction: column;
     margin-right: 0;
     margin-bottom: 0;
+  }
+}
+
+.fixed-container {
+  @include media-breakpoint-up(lg) {
+    padding-top: 20px;
+
+    &.fixed {
+      position: fixed;
+      top: 0;
+      right: calc(
+        (100% - #{$story-max-width}) / 2 + #{$story-padding-right-lg}
+      );
+      width: $aside-width;
+    }
   }
 }
 
@@ -731,7 +825,7 @@ aside {
   margin-bottom: 100px;
   @include media-breakpoint-up(lg) {
     margin-bottom: 0;
-    max-width: 1160px;
+    max-width: $story-max-width;
     margin-left: auto;
     margin-right: auto;
     background-color: #fff;
