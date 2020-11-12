@@ -67,6 +67,7 @@
 
 <script>
 import UiMembershipEmailInput from '@/components/UiMembershipEmailInput.vue'
+import localforage from 'localforage'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.
@@ -161,7 +162,9 @@ export default {
           this.emailInput,
           actionCodeSettings
         )
-        window.localStorage.setItem('emailForSignIn', this.emailInput)
+
+        // window.localStorage.setItem('emailForSignIn', this.emailInput)
+        localforage.setItem('emailForSignIn', this.emailInput)
         this.loginPageState = 'success'
       } catch (e) {
         console.error(e)

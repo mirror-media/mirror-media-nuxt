@@ -1,5 +1,6 @@
 import flushPromises from 'flush-promises'
 import UiMembershipEmailInput from '@/components/UiMembershipEmailInput.vue'
+import localforage from 'localforage'
 import ContainerMembershipLoginWithEmail from '../ContainerMembershipLoginWithEmail.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -72,12 +73,9 @@ describe('handleSubmit method about behaviours after login button clicked', func
   `, async function () {
     expect.assertions(5)
     const mockSendSignInLinkToEmail = jest.fn(() => Promise.resolve())
-    const localStorageMock = (function () {
-      return {
-        setItem: jest.fn(),
-      }
-    })()
-    Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+    const spySetItem = jest
+      .spyOn(localforage, 'setItem')
+      .mockImplementation(() => {})
     const wrapper = createWrapper(ContainerMembershipLoginWithEmail, {
       mocks: {
         $fire: {
@@ -95,10 +93,7 @@ describe('handleSubmit method about behaviours after login button clicked', func
     await submitButton.trigger('click')
     expect(emailInput.props().shouldShowInvalidHint).toBe(true)
     expect(mockSendSignInLinkToEmail.mock.calls[0][0]).toBe(mockEmail)
-    expect(window.localStorage.setItem).toHaveBeenCalledWith(
-      'emailForSignIn',
-      mockEmail
-    )
+    expect(spySetItem).toHaveBeenCalledWith('emailForSignIn', mockEmail)
     await flushPromises()
     expect(wrapper.find('.login-form-wrapper').exists()).toBe(false)
     expect(wrapper.find('.login-success-wrapper').exists()).toBe(true)
