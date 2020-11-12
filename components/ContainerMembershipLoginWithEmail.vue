@@ -209,44 +209,4 @@ export default {
   color: white;
   height: 30px;
 }
-
-.after-form-submit-wrapper {
-  width: 100%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  h1 {
-    font-size: 30px;
-    color: #204f74;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  div {
-    margin: 60px 0 0 0;
-  }
-  p {
-    //margin: 60px 0 0 0;
-    line-height: 2;
-    font-size: 20px;
-    display: flex;
-    flex-direction: column;
-    &.row {
-      flex-direction: row;
-    }
-    justify-content: center;
-    align-items: center;
-    @include media-breakpoint-up(xl) {
-      flex-direction: row;
-    }
-  }
-  button,
-  a {
-    color: cornflowerblue;
-  }
-  button {
-    text-decoration: underline;
-  }
-}
 </style>
