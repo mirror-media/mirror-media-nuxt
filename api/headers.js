@@ -1,5 +1,4 @@
 const { PREVIEW_QUERY } = require('../configs/config')
-const { NO_CACHE_HEADERS } = require('./constant')
 
 module.exports = function (req, res, next) {
   const hostname = req.hostname
@@ -12,12 +11,12 @@ module.exports = function (req, res, next) {
     url.match(regexUrlNoCaching)
 
   if (isNoCaching) {
-    res.set(NO_CACHE_HEADERS)
+    res.set('Cache-Control', 'no-store')
     return next()
   }
 
   if (url.match(/^\/$|^\/(video_category|externals)\//gs)) {
-    res.set(NO_CACHE_HEADERS)
+    res.set('Cache-Control', 'no-store')
   }
   if (url.match(/^\/(api|story|culture-post|video|app)\//gs)) {
     res.set('cache-control', 'public, max-age=600')

@@ -6,7 +6,6 @@ const {
   API_PROTOCOL,
   API_TIMEOUT,
 } = require('../configs/config')
-const { NO_CACHE_HEADERS } = require('./constant')
 
 module.exports = async function (req, res, next) {
   try {
@@ -18,11 +17,11 @@ module.exports = async function (req, res, next) {
     })
 
     if (response.data._status === 'ERR') {
-      res.set(NO_CACHE_HEADERS)
+      res.set('Cache-Control', 'no-store')
     }
     res.send(response.data)
   } catch (error) {
-    res.set(NO_CACHE_HEADERS)
+    res.set('Cache-Control', 'no-store')
     res.status(500).send(error.message)
 
     // eslint-disable-next-line no-console
