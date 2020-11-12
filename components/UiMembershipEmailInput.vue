@@ -56,10 +56,8 @@ export default {
         this.$v.$touch()
       }
     },
-    '$v.email.$invalid'(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.$emit('inputValidStateChange', !newValue)
-      }
+    '$v.email.$invalid'(value) {
+      this.$emit('inputValidStateChange', !value)
     },
   },
   validations: {
