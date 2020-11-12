@@ -51,12 +51,17 @@ export default {
   },
   computed: {
     canShowInputInvalid() {
-      return this.shouldShowInvalidHint && this.$v.email.$error
+      return this.shouldShowInvalidHint && this.$v.$dirty && this.$v.$invalid
     },
   },
   watch: {
     shouldShowInvalidHint() {
+      /*
+       * toggling invalid hint when input was empty but we really want to show it
+       * because invalid hint was always disable if we never touch it
+       */
       if (this.shouldShowInvalidHint && !this.$v.$dirty) {
+        // same as this.$v.$dirty = true
         this.$v.$touch()
       }
     },
