@@ -1,6 +1,7 @@
 import flushPromises from 'flush-promises'
 import UiMembershipEmailInput from '@/components/UiMembershipEmailInput.vue'
 import localforage from 'localforage'
+import UiMembershipEmailError from '@/components/UiMembershipEmailError.vue'
 import ContainerMembershipLoginWithEmail from '../ContainerMembershipLoginWithEmail.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -165,8 +166,8 @@ describe('handleSubmit method about behaviours after login button clicked', func
     await flushPromises()
     expect(wrapper.find('.login-form-wrapper').exists()).toBe(false)
     expect(wrapper.find('.login-error-wrapper').exists()).toBe(true)
-    const backToFormButton = wrapper.find('.back-to-form-button')
-    await backToFormButton.trigger('click')
+    const errorWrapper = wrapper.findComponent(UiMembershipEmailError)
+    await errorWrapper.vm.$emit('backToForm')
     expect(wrapper.find('.login-form-wrapper').exists()).toBe(true)
     expect(wrapper.find('.login-error-wrapper').exists()).toBe(false)
   })

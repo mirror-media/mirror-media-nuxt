@@ -22,36 +22,11 @@
       class="login-success-wrapper"
       :emailInput="emailInput"
     />
-    <div
+    <UiMembershipEmailError
       v-else-if="loginPageState === 'error'"
-      class="after-form-submit-wrapper login-error-wrapper"
-    >
-      <h1>登入失敗</h1>
-      <div>
-        <p class="row">
-          <span>請點選</span>
-          <button class="back-to-form-button" @click="handleBackToForm">
-            此連結
-          </button>
-          <span>重新登入，</span>
-        </p>
-        <p>
-          <span>或是聯繫客服 &nbsp;</span>
-          <span>
-            <a
-              href="mailto:service@mirrormedia.mg"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              service@mirrormedia.mg
-            </a>
-            &nbsp; / &nbsp;
-          </span>
-          <span>02-6633-3805 &nbsp;</span>
-          <span>我們將有專人為你服務。</span>
-        </p>
-      </div>
-    </div>
+      class="login-error-wrapper"
+      @backToForm="handleBackToForm"
+    />
   </section>
 </template>
 
@@ -59,6 +34,7 @@
 import localforage from 'localforage'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
 import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
+import UiMembershipEmailError from '~/components/UiMembershipEmailError.vue'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.
@@ -100,6 +76,7 @@ export default {
   components: {
     UiMembershipEmailInput,
     UiMembershipEmailSuccess,
+    UiMembershipEmailError,
   },
   data() {
     return {
