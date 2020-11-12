@@ -9,6 +9,7 @@
       <img :alt="SITE_TITLE" src="~/assets/logo@2x.png" />
     </a>
     <UiCulturePostIndex
+      v-if="indexes.length > 0"
       :currentIndex="currentIndex"
       :isIndexActive="isIndexActive"
       :items="indexes"
