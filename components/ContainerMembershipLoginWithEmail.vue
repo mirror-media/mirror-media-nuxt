@@ -162,7 +162,7 @@ export default {
           this.emailInput,
           actionCodeSettings
         )
-        localforage.setItem('emailForSignIn', this.emailInput)
+        await localforage.setItem('emailForSignIn', this.emailInput)
         this.loginPageState = 'success'
       } catch (e) {
         console.error(e)
