@@ -622,7 +622,7 @@ export default {
       {
         const hasWriter = writers[0] !== undefined
         const authorName = hasWriter ? writerName : '鏡週刊'
-        const logoUrl = `${SITE_URL}/logo.png`
+        const logoUrl = require('~/assets/logo.png')
 
         jsonLdNewsArticle = {
           type: 'application/ld+json',

@@ -263,7 +263,7 @@ describe('JSON-LD', () => {
     } = storyMock
     const pageUrl = `https://${DOMAIN_NAME}${routeMock.path}`
     const imgUrl = ogImage.image.resizedTargets.tablet.url
-    const logoUrl = `${SITE_URL}/logo.png`
+    const logoUrl = require('~/assets/logo.png')
     const { name: writerName, id: writerId } = writers[0]
     const { title: sectionTitle, name: sectionName } = sections[0]
 
