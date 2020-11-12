@@ -1,4 +1,4 @@
-import ContainerGptAd, { validateAdData } from '../ContainerGptAd.vue'
+import ContainerGptAd from '../ContainerGptAd.vue'
 
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper.js'
@@ -8,7 +8,7 @@ const pageKeyMock = '57e1e0e5ee85930e00cad4e9'
 const createWrapper = createWrapperHelper({
   propsData: {
     pageKey: pageKeyMock,
-    adKey: 'RWD_LOGO',
+    adKey: 'MB_AT3',
   },
   computed: {
     isDesktopWidth: () => false,
@@ -18,7 +18,7 @@ const createWrapper = createWrapperHelper({
       state: { canAdvertise: true },
     },
   },
-  stubs: ['GPTAD'],
+  stubs: ['GptAd'],
 })
 
 describe('prop "adKey" with a device "MB" text', () => {
@@ -70,26 +70,35 @@ describe('prop "adKey" without a device text', () => {
     })
 
     const { adUnit, adSize } = gptAdUnits[pageKeyMock][`${device}_${adKeyMock}`]
+    const wrapperHtml = wrapper.html()
 
-    expect(wrapper.html()).toContain(adUnit)
-    expect(wrapper.html()).toContain(adSize)
+    expect(wrapperHtml).toContain(adUnit)
+    expect(wrapperHtml).toContain(adSize)
   }
 })
 
-test('throw an error for an invalid AdData', () => {
-  expect(() => validateAdData(undefined)).toThrow()
-})
-
-test('should not render content when canAdvertise is false', () => {
-  const wrapper = createWrapper(ContainerGptAd, {
-    mocks: {
-      $store: {
-        state: { canAdvertise: false },
+describe('GPT AD', () => {
+  test('should not render when canAdvertise is false', () => {
+    const wrapper = createWrapper(ContainerGptAd, {
+      mocks: {
+        $store: {
+          state: { canAdvertise: false },
+        },
       },
-    },
+    })
+
+    expect(wrapper.html()).not.toContain('gptad')
   })
 
-  expect(wrapper.find('.container-gpt-ad').exists()).toBe(false)
+  test('should not render when no adData', () => {
+    const wrapper = createWrapper(ContainerGptAd, {
+      computed: {
+        adData: () => undefined,
+      },
+    })
+
+    expect(wrapper.html()).not.toContain('gptad')
+  })
 })
 
 function applyTestToAdWithDeviceText(adKey, isDesktopWidth, expectFn) {

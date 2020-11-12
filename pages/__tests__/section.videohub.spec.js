@@ -1,6 +1,6 @@
 import videohub from '../section/videohub.vue'
-import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
-import UIVideoPopular from '~/components/UIVideoPopular.vue'
+import UiVideoIframeWithItems from '~/components/UiVideoIframeWithItems.vue'
+import UiVideoPopular from '~/components/UiVideoPopular.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -23,7 +23,7 @@ const createWrapper = createWrapperHelper({
       },
     },
   },
-  stubs: ['client-only', 'GPTAD'],
+  stubs: ['client-only', 'GptAd'],
 })
 
 describe('isThisSection method', () => {
@@ -50,7 +50,7 @@ describe('isThisSection method', () => {
   })
 })
 
-describe('handleSendGA method', () => {
+describe('handleSendGa method', () => {
   const $ga = {
     event: jest.fn(),
   }
@@ -64,12 +64,12 @@ describe('handleSendGA method', () => {
       $ga,
     },
   })
-  test('call $ga.event when UIVideoIframeWithItems emits sendGA', () => {
-    wrapper.findComponent(UIVideoIframeWithItems).vm.$emit('sendGA', gaArgs)
+  test('call $ga.event when UiVideoIframeWithItems emits sendGa', () => {
+    wrapper.findComponent(UiVideoIframeWithItems).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
-  test('call $ga.event when UIVideoPopular emits sendGA', () => {
-    wrapper.findComponent(UIVideoPopular).vm.$emit('sendGA', gaArgs)
+  test('call $ga.event when UiVideoPopular emits sendGa', () => {
+    wrapper.findComponent(UiVideoPopular).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 })

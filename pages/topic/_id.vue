@@ -1,24 +1,35 @@
 <template>
   <section class="section">
-    <UIArticleList class="section__list" :listData="listData" />
-    <UIInfiniteLoading
+    <UiArticleList class="section__list" :listData="listData" />
+    <UiInfiniteLoading
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
+
+    <UiWineWarning v-if="isTopicWine" />
   </section>
 </template>
 
 <script>
 import _ from 'lodash'
-import UIArticleList from '~/components/UIArticleList.vue'
-import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
+import UiArticleList from '~/components/UiArticleList.vue'
+import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
+
 import styleVariables from '~/scss/_variables.scss'
+
+const TOPIC_IDS_WINE = [
+  '5c25f9e3315ec51000903a82',
+  '5d22bb9fe311f3925c49396c',
+  '5a4d8e60160ac91000294611',
+]
 
 export default {
   name: 'Topic',
   components: {
-    UIArticleList,
-    UIInfiniteLoading,
+    UiArticleList,
+    UiInfiniteLoading,
+    UiWineWarning,
   },
   async fetch() {
     const response = await this.fetchTopicListing({ page: 1 })
@@ -37,6 +48,9 @@ export default {
   computed: {
     currentTopicId() {
       return this.$route.params.id
+    },
+    isTopicWine() {
+      return TOPIC_IDS_WINE.includes(this.currentTopicId)
     },
 
     listDataPageLimit() {

@@ -1,6 +1,6 @@
 /* global FB:readonly */
 
-import { onMounted } from '@nuxtjs/composition-api'
+import { ref, onMounted } from '@nuxtjs/composition-api'
 
 export { useFbPagePlugin, useFbQuotePlugin }
 
@@ -8,10 +8,14 @@ let isFbSdkLoading = false
 let hasFbSdkLoaded = false
 
 function useFbPagePlugin() {
+  const fbPage = ref(undefined)
+
   onMounted(() => {
     insertRootDiv()
-    initPlugin()
+    initPlugin(fbPage.value)
   })
+
+  return fbPage
 }
 
 function useFbQuotePlugin() {
@@ -22,12 +26,13 @@ function useFbQuotePlugin() {
   })
 }
 
-function initPlugin(parsedDom = document.body) {
+// domToBeParsed：只 parse 需要 parse 的部分，提升網頁效能
+function initPlugin(domToBeParsed = document.body) {
   const theFirstTime = loadSdk()
 
   if (!theFirstTime && hasFbSdkLoaded) {
     // Docs: https://developers.facebook.com/docs/reference/javascript/FB.XFBML.parse
-    FB.XFBML.parse(parsedDom)
+    FB.XFBML.parse(domToBeParsed)
   }
 }
 

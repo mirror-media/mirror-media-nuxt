@@ -9,15 +9,15 @@
       />
 
       <div class="logo-wrapper">
-        <a href="/" class="logo" @click="sendHeaderGA('logo')">
-          <img src="/logo.png" :alt="SITE_TITLE" />
+        <a href="/" class="logo" @click="sendHeaderGa('logo')">
+          <img src="~/assets/logo.png" :alt="SITE_TITLE" />
         </a>
 
-        <UIEventLogo
+        <UiEventLogo
           v-if="shouldOpenEventLogo"
           class="logo"
           :eventLogo="eventLogo"
-          @sendGA="handleSendGA"
+          @sendGa="handleSendGa"
         />
         <client-only>
           <ContainerGptAd
@@ -31,32 +31,32 @@
       </div>
 
       <div class="header-search">
-        <UISearchBarWrapper :options="options" @sendGA="handleSendGA" />
-        <UIOthersList
+        <UiSearchBarWrapper :options="options" @sendGa="handleSendGa" />
+        <UiOthersList
           class="others-list"
           :links="otherLinks"
           eventCategory="header"
-          @sendGA="handleSendGA"
+          @sendGa="handleSendGa"
         />
       </div>
     </div>
 
     <nav class="header-nav">
-      <UIHeaderNavSection
+      <UiHeaderNavSection
         :sections="sections"
         :currentSectionName="sectionName"
         :partners="partners"
-        @sendGA="handleSendGA"
+        @sendGa="handleSendGa"
       />
-      <UIHeaderNavTopic
+      <UiHeaderNavTopic
         :topics="topics"
         :subBrands="subBrandLinks"
-        @sendGA="handleSendGA"
+        @sendGa="handleSendGa"
       />
     </nav>
 
     <transition name="slide">
-      <UISidebar
+      <UiSidebar
         v-if="shouldOpenSidebar"
         :topics="topics"
         :sections="sections"
@@ -65,7 +65,7 @@
         :others="otherLinks"
         :socialMedia="socialMediaLinks"
         @close="handleSidebarClose"
-        @sendGA="handleSendGA"
+        @sendGa="handleSendGa"
       />
     </transition>
   </header>
@@ -74,12 +74,12 @@
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
 
-import UIEventLogo from './UIEventLogo.vue'
-import UISearchBarWrapper from './UISearchBarWrapper.vue'
-import UIOthersList from './UIOthersList.vue'
-import UIHeaderNavSection from './UIHeaderNavSection.vue'
-import UIHeaderNavTopic from './UIHeaderNavTopic.vue'
-import UISidebar from './UISidebar.vue'
+import UiEventLogo from './UiEventLogo.vue'
+import UiSearchBarWrapper from './UiSearchBarWrapper.vue'
+import UiOthersList from './UiOthersList.vue'
+import UiHeaderNavSection from './UiHeaderNavSection.vue'
+import UiHeaderNavTopic from './UiHeaderNavTopic.vue'
+import UiSidebar from './UiSidebar.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import {
@@ -92,12 +92,12 @@ import {
 export default {
   name: 'ContainerHeader',
   components: {
-    UIEventLogo,
-    UISearchBarWrapper,
-    UIOthersList,
-    UIHeaderNavSection,
-    UIHeaderNavTopic,
-    UISidebar,
+    UiEventLogo,
+    UiSearchBarWrapper,
+    UiOthersList,
+    UiHeaderNavSection,
+    UiHeaderNavTopic,
+    UiSidebar,
     ContainerGptAd,
   },
   data() {
@@ -190,11 +190,11 @@ export default {
     },
     handleClickMenuIcon() {
       this.openSidebar()
-      this.sendHeaderGA('menu open')
+      this.sendHeaderGa('menu open')
     },
     handleSidebarClose() {
       this.closeSidebar()
-      this.sendHeaderGA('menu close')
+      this.sendHeaderGa('menu close')
     },
     openSidebar() {
       this.shouldOpenSidebar = true
@@ -202,14 +202,14 @@ export default {
     closeSidebar() {
       this.shouldOpenSidebar = false
     },
-    sendHeaderGA(eventLabel, eventAction = 'click') {
+    sendHeaderGa(eventLabel, eventAction = 'click') {
       this.$ga.event({
         eventCategory: 'header',
         eventAction,
         eventLabel,
       })
     },
-    handleSendGA(param = {}) {
+    handleSendGa(param = {}) {
       this.$ga.event(param)
     },
     activeTheNavSection(path) {

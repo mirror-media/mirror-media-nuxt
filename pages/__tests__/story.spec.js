@@ -1,6 +1,6 @@
 import Story from '../story/_slug.vue'
-import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
-import UIStickyAd from '~/components/UIStickyAd.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
@@ -40,51 +40,71 @@ const routeMock = {
 }
 
 describe('latest list', () => {
-  test('open when viewport >= lg', () => {
-    const wrapper = createWrapper(Story)
+  const storyWithSectionsMock = {
+    sections: [{ id: '57e1e0e5ee85930e00cad4e9' }],
+  }
 
-    expect(wrapper.find('.story__list--latest').exists()).toBe(true)
+  test('should render when viewport >= lg', () => {
+    const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyWithSectionsMock,
+        }
+      },
+    })
+
+    expect(wrapper.find('.latest-list').exists()).toBe(true)
   })
 
-  test('close when viewport < lg', () => {
+  test('should not render when viewport < lg', () => {
     const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyWithSectionsMock,
+        }
+      },
       computed: {
         isDesktopWidth: () => false,
       },
     })
 
-    expect(wrapper.find('.story__list--latest').exists()).toBe(false)
+    expect(wrapper.find('.latest-list').exists()).toBe(false)
   })
 
-  test('open UIStoryListWithHeading when latest stories are loaded', () => {
+  test('should not render when no sections', () => {
+    const wrapper = createWrapper(Story)
+
+    expect(wrapper.find('.latest-list').exists()).toBe(false)
+  })
+
+  test('should render UiStoryListWithHeading when latest stories are loaded', () => {
     const wrapper = createWrapper(Story, {
       data() {
         return {
+          hasLoadedLatestStories: true,
           latestStories: [{}],
+          story: storyWithSectionsMock,
         }
       },
     })
 
-    expect(
-      wrapper
-        .get('.story__list--latest')
-        .findComponent(UIStoryListWithHeading)
-        .exists()
-    ).toBe(true)
+    expect(wrapper.find('.latest-list').exists()).toBe(true)
   })
 
-  test('close UIStoryListWithHeading when latest stories are not loaded', () => {
-    const wrapper = createWrapper(Story)
+  test('should not render UiStoryListWithHeading when latest stories are not loaded', () => {
+    const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          hasLoadedLatestStories: true,
+          story: storyWithSectionsMock,
+        }
+      },
+    })
 
-    expect(
-      wrapper
-        .get('.story__list--latest')
-        .findComponent(UIStoryListWithHeading)
-        .exists()
-    ).toBe(false)
+    expect(wrapper.find('.latest-list').exists()).toBe(false)
   })
 
-  test('render the proper latest stories', async () => {
+  test('should render the proper latest stories', async () => {
     const mockStorySlug = '20201007fin003'
     const mockLatestStoryWithCurrentStorySlug = { slug: mockStorySlug }
     const mockLatestStories = [
@@ -92,37 +112,47 @@ describe('latest list', () => {
       ...Array(8).fill({}),
     ]
     const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyWithSectionsMock,
+        }
+      },
       mocks: {
         $route: { params: { slug: mockStorySlug } },
         $fetchList: () => Promise.resolve({ items: mockLatestStories }),
       },
     })
 
-    const latestList = wrapper.get('.story__list--latest')
-    latestList.vm.$emit('show')
+    wrapper.get('.lazy-latest-list').vm.$emit('show')
     await wrapper.vm.$nextTick()
 
-    const { items } = latestList.findComponent(UIStoryListWithHeading).props()
+    const { items } = wrapper.get('.latest-list').props()
 
     expect(items).toHaveLength(6)
     expect(items).not.toContainEqual(mockLatestStoryWithCurrentStorySlug)
   })
 
   /**
-   * 由於 UIStoryListWithHeading 的內容是需要打 API 取得，又沒 SSR，所以內容一開始會是空的
+   * 由於 latest list 的內容是需要打 API 取得，又沒 SSR，所以內容一開始會是空的
    * 其底下的元件因此會往上擠，出現在視埠（viewport）之中，導致這些應該被 lazy load 的元件，在一開始就被載入進來
    * 為了避免這個問題，需要在一開始元件還沒內容時，就給它一個固定高度 100vh，以確保其底下的元件不會出現在視埠之中
    * 直到元件有內容後，再拿掉固定高度，讓其底下元件達到 lazy load 的效果
    */
-  test('has height 100vh when latest stories are not loaded', async () => {
-    const wrapper = createWrapper(Story)
-    const latestList = wrapper.get('.story__list--latest')
+  test('its height should be 100vh when latest stories are not loaded', async () => {
+    const wrapper = createWrapper(Story, {
+      data() {
+        return {
+          story: storyWithSectionsMock,
+        }
+      },
+    })
+    const lazyLatestList = wrapper.get('.lazy-latest-list')
 
-    expect(latestList.element.style.height).toBe('100vh')
+    expect(lazyLatestList.element.style.height).toBe('100vh')
 
     await wrapper.setData({ latestStories: [{}] })
 
-    expect(latestList.element.style.height).toBe('')
+    expect(lazyLatestList.element.style.height).toBe('')
   })
 })
 
@@ -175,14 +205,24 @@ describe('AD', () => {
     })
 
     expect(wrapper.find('.dable-widget').exists()).toBe(false)
-    expect(wrapper.findComponent(UIStickyAd).exists()).toBe(false)
+    expect(wrapper.findComponent(UiStickyAd).exists()).toBe(false)
     expect(wrapper.findComponent(ContainerFullScreenAds).exists()).toBe(false)
     expect(wrapper.find('.ad-pc-floating').exists()).toBe(false)
+  })
+
+  test('do not show ADs of MB_ST, MB_FS, MB_AD2 & MB_INNITY when a story has the wine category name', () => {
+    testStoryWithWineCategory((sut) => {
+      // MB_ST
+      expect(sut.findComponent(UiStickyAd).exists()).toBe(false)
+
+      // MB_FS, MB_AD2 & MB_INNITY
+      expect(sut.findComponent(ContainerFullScreenAds).exists()).toBe(false)
+    })
   })
 })
 
 describe('JSON-LD', () => {
-  test('render the proper content in most cases', () => {
+  test('should render the proper content in most cases', () => {
     const storyMock = {
       title: '蔡英文視察樂山雷達站',
       ogDescription: '近期共軍頻繁擾台',
@@ -223,7 +263,7 @@ describe('JSON-LD', () => {
     } = storyMock
     const pageUrl = `https://${DOMAIN_NAME}${routeMock.path}`
     const imgUrl = ogImage.image.resizedTargets.tablet.url
-    const logoUrl = `${SITE_URL}/logo.png`
+    const logoUrl = require('~/assets/logo.png')
     const { name: writerName, id: writerId } = writers[0]
     const { title: sectionTitle, name: sectionName } = sections[0]
 
@@ -308,7 +348,7 @@ describe('JSON-LD', () => {
     })
   })
 
-  test('change the @type NewsArticle author when the story does not has a writer', () => {
+  test('should change the @type NewsArticle author when the story does not has a writer', () => {
     applyTestWithMinimalSetting((script) => {
       expect(findJsonLdByType(script, 'NewsArticle').json.author).toEqual({
         '@type': 'Organization',
@@ -317,7 +357,7 @@ describe('JSON-LD', () => {
     })
   })
 
-  test('@type NewsArticle articleSection is undefined when the story does not has a section title', () => {
+  test('@type NewsArticle articleSection should be undefined when the story does not has a section title', () => {
     applyTestWithMinimalSetting((script) => {
       expect(
         findJsonLdByType(script, 'NewsArticle').json.articleSection
@@ -325,7 +365,7 @@ describe('JSON-LD', () => {
     })
   })
 
-  test('@type Person is omitted when the story does not has a writer', () => {
+  test('@type Person should be omitted when the story does not has a writer', () => {
     applyTestWithMinimalSetting((script) => {
       expect(findJsonLdByType(script, 'Person')).toBeUndefined()
     })
@@ -350,3 +390,29 @@ describe('JSON-LD', () => {
     return scripts.find((script) => script.json?.['@type'] === type)
   }
 })
+
+test('show the wine warning when a story has the wine category name', () => {
+  testStoryWithWineCategory((sut) => {
+    expect(sut.findComponent(UiWineWarning).exists()).toBe(true)
+  })
+})
+
+test('sectionId should be "other" when no sections', () => {
+  const wrapper = createWrapper(Story)
+
+  expect(wrapper.vm.sectionId).toBe('other')
+})
+
+function testStoryWithWineCategory(assert) {
+  const sut = createWrapper(Story, {
+    data() {
+      return {
+        story: {
+          categories: [{ name: 'wine' }],
+        },
+      }
+    },
+  })
+
+  assert(sut)
+}

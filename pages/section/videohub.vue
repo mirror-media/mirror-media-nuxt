@@ -1,50 +1,50 @@
 <template>
   <section class="section">
-    <UIVideoIframeWithItems
+    <UiVideoIframeWithItems
       :items="latestData"
       textPositionInMdViewport="right"
       class="section__latest"
-      @sendGA="handleSendGA"
+      @sendGa="handleSendGa"
     >
       <template #heading>
         <h1>最新影片</h1>
       </template>
-    </UIVideoIframeWithItems>
+    </UiVideoIframeWithItems>
     <div class="section__bottom-wrapper">
-      <UIVideoPopular
+      <UiVideoPopular
         :items="popularData"
         class="section__popular"
-        @sendGA="handleSendGA"
+        @sendGa="handleSendGa"
       />
-      <UIVideoSubscriptions class="section__subscriptions" />
+      <UiVideoSubscriptions class="section__subscriptions" />
       <client-only>
-        <GPTAD
+        <GptAd
           class="section__ad"
           :adUnit="adBottom.adUnit"
           :adSize="adBottom.adSize"
         />
       </client-only>
       <div class="section__categories-wrapper">
-        <UIVideoCategory
+        <UiVideoCategory
           v-for="category in categories"
           :key="`video-category-${category.id}`"
           :category="category"
           :items="getCategoryItems(category)"
           class="section__category"
-          @sendGA="handleSendGA"
+          @sendGa="handleSendGa"
         />
       </div>
-      <UIYoutubePolicies class="section__policies" />
+      <UiYoutubePolicies class="section__policies" />
     </div>
     <ContainerFullScreenAds />
-    <UIStickyAd>
+    <UiStickyAd>
       <client-only>
-        <GPTAD
+        <GptAd
           :adUnit="videoAdUnits.MB_ST.adUnit"
           :adSize="videoAdUnits.MB_ST.adSize"
         />
       </client-only>
-    </UIStickyAd>
+    </UiStickyAd>
   </section>
 </template>
 
@@ -58,12 +58,12 @@ import {
 } from '~/constants/index'
 import { processResponseItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
-import UIStickyAd from '~/components/UIStickyAd.vue'
-import UIVideoCategory from '~/components/UIVideoCategory.vue'
-import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
-import UIVideoPopular from '~/components/UIVideoPopular.vue'
-import UIVideoSubscriptions from '~/components/UIVideoSubscriptions.vue'
-import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
+import UiVideoCategory from '~/components/UiVideoCategory.vue'
+import UiVideoIframeWithItems from '~/components/UiVideoIframeWithItems.vue'
+import UiVideoPopular from '~/components/UiVideoPopular.vue'
+import UiVideoSubscriptions from '~/components/UiVideoSubscriptions.vue'
+import UiYoutubePolicies from '~/components/UiYoutubePolicies.vue'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 const INVERTED_PLAYLIST_MAPPING = _.invert(PLAYLIST_MAPPING)
@@ -72,12 +72,12 @@ export default {
   name: 'SectionVideohub',
   components: {
     ContainerFullScreenAds,
-    UIStickyAd,
-    UIVideoCategory,
-    UIVideoIframeWithItems,
-    UIVideoPopular,
-    UIVideoSubscriptions,
-    UIYoutubePolicies,
+    UiStickyAd,
+    UiVideoCategory,
+    UiVideoIframeWithItems,
+    UiVideoPopular,
+    UiVideoSubscriptions,
+    UiYoutubePolicies,
   },
   async fetch() {
     const response = await this.fetchChannelData()
@@ -158,7 +158,7 @@ export default {
     getCategoryItems(category) {
       return this.categoriesPlaylistData[category.name] ?? []
     },
-    handleSendGA(param = {}) {
+    handleSendGa(param = {}) {
       this.$ga.event(param)
     },
     isThisSection(section) {

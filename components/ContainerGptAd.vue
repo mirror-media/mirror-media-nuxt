@@ -1,7 +1,6 @@
 <template>
-  <div v-if="$store.state.canAdvertise" class="container-gpt-ad">
-    <GPTAD
-      v-if="shouldOpenAd"
+  <div v-if="shouldOpenAd" class="container-gpt-ad">
+    <GptAd
       :adUnit="adData.adUnit"
       :adSize="adData.adSize"
       :adNetwork="adNetwork"
@@ -33,17 +32,15 @@ export default {
     },
   },
 
-  data() {
-    return {
-      hasRequested: false,
-    }
-  },
-
   computed: {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
     }),
     shouldOpenAd() {
+      if (!this.adData || !this.$store.state.canAdvertise) {
+        return false
+      }
+
       if (this.isVersionOf('MB')) {
         return !this.isDesktopWidth
       } else if (this.isVersionOf('PC')) {
@@ -53,9 +50,14 @@ export default {
       }
     },
     adData() {
-      const data = gptAdUnits[this.pageKey][this.adKeyFull]
+      const data = gptAdUnits[this.pageKey]?.[this.adKeyFull]
 
-      validateAdData(data)
+      if (!data) {
+        // eslint-disable-next-line no-console
+        console.error(
+          `Unable to find the AD data. Got the pageKey "${this.pageKey}" and adKey "${this.adKeyFull}". Please provide a vaild pageKey or adKey.`
+        )
+      }
 
       return data
     },
@@ -75,21 +77,11 @@ export default {
     },
   },
 }
-
-function validateAdData(data) {
-  if (data === undefined) {
-    throw new Error(
-      'Unable to find the AD data. Please provide a vaild pageKey or adKey'
-    )
-  }
-}
-
-export { validateAdData }
 </script>
 
 <style lang="scss" scoped>
 /**
- * 廣告有時會替換掉原本 <GPTAD> 元件裡頭的根元素 <div>
+ * 廣告有時會替換掉原本 <GptAd> 元件裡頭的根元素 <div>
  * 因此用 ::v-deep，並不限定所指定的元素類型（*）
  * 以確保能選擇到 .container-gpt-ad 的直接子元素
  */

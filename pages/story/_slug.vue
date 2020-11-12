@@ -11,14 +11,17 @@
         </ClientOnly>
 
         <div class="story-wrapper">
-          <UIStoryBody :story="story">
+          <UiStoryBody :story="story" class="layout__story-body">
             <template #storyRelateds>
-              <UIStoryListWithArrow
+              <UiStoryListWithArrow
                 :categoryTitle="categoryTitle"
                 :items="relateds"
                 :sectionName="sectionName"
               />
-              <UIStoryListRelated
+
+              <div ref="fixedTriggerFinished" />
+
+              <UiStoryListRelated
                 :items="relatedsWithoutFirstTwo"
                 :images="relatedImages"
                 @show="handleShowStoryListRelated"
@@ -34,7 +37,7 @@
                     <div id="_popIn_recommend"></div>
                   </ClientOnly>
                 </template>
-              </UIStoryListRelated>
+              </UiStoryListRelated>
             </template>
 
             <template v-if="canAdvertise && isDesktopWidth" #dableWidget>
@@ -48,7 +51,7 @@
                 </div>
               </ClientOnly>
             </template>
-          </UIStoryBody>
+          </UiStoryBody>
 
           <aside>
             <ClientOnly>
@@ -58,7 +61,7 @@
                 adKey="PC_R1"
               />
 
-              <lazy-component class="story__fb-page">
+              <lazy-component v-if="!isDesktopWidth" class="story__fb-page">
                 <FbPage />
               </lazy-component>
 
@@ -76,14 +79,16 @@
                 ></lazy-component>
               </div>
 
-              <div v-if="isDesktopWidth">
+              <div v-if="shouldOpenLatestList" ref="latestList">
                 <lazy-component
-                  class="story__list story__list--latest"
-                  :style="{ height: hasLatestStories ? undefined : '100vh' }"
+                  class="lazy-latest-list"
+                  :style="{
+                    height: doesHaveLatestStories ? undefined : '100vh',
+                  }"
                   @show="fetchLatestStories"
                 >
-                  <UIStoryListWithHeading
-                    v-if="hasLatestStories"
+                  <UiStoryListWithHeading
+                    class="latest-list"
                     heading="最新文章"
                     :items="latestStories"
                     :extractTitle="sectionCategory"
@@ -91,22 +96,28 @@
                 </lazy-component>
               </div>
 
-              <ContainerGptAd
-                class="story__ad"
-                :pageKey="sectionId"
-                adKey="PC_R2"
-              />
-
-              <lazy-component
-                class="story__list story__list--popular"
-                @show="fetchPopularStories"
-              >
-                <UIStoryListWithHeading
-                  v-if="hasPopularStories"
-                  heading="熱門文章"
-                  :items="popularStories"
+              <div ref="fixedContainer" class="fixed-container">
+                <ContainerGptAd
+                  class="story__ad"
+                  :pageKey="sectionId"
+                  adKey="PC_R2"
                 />
-              </lazy-component>
+
+                <lazy-component
+                  class="story__popular-list"
+                  @show="fetchPopularStories"
+                >
+                  <UiStoryListWithHeading
+                    v-if="doesHavePopularStories"
+                    heading="熱門文章"
+                    :items="popularStories"
+                  />
+                </lazy-component>
+
+                <lazy-component v-if="isDesktopWidth" class="story__fb-page">
+                  <FbPage />
+                </lazy-component>
+              </div>
             </ClientOnly>
           </aside>
         </div>
@@ -119,11 +130,11 @@
           />
         </ClientOnly>
 
-        <UIAdultContentWarning v-if="story.isAdult" />
+        <UiAdultContentWarning v-if="story.isAdult" />
 
-        <UIStickyAd v-if="!hasWineCategory && canAdvertise">
+        <UiStickyAd v-if="!hasWineCategory && canAdvertise">
           <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
-        </UIStickyAd>
+        </UiStickyAd>
 
         <ClientOnly v-if="shouldOpenAdPcFloating">
           <div class="ad-pc-floating">
@@ -138,8 +149,10 @@
         <ContainerFullScreenAds v-if="!hasWineCategory && canAdvertise" />
       </div>
 
+      <UiWineWarning v-if="hasWineCategory" />
+
       <div class="footer-container">
-        <UIFooter />
+        <UiFooter />
       </div>
     </template>
   </div>
@@ -154,17 +167,18 @@ import { useFbQuotePlugin } from '~/composition/fb-plugins.js'
 
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import ContainerPhotoGallery from '~/components/photo-gallery/ContainerPhotoGallery.vue'
-import UIAdultContentWarning from '~/components/UIAdultContentWarning.vue'
-import UIStoryBody from '~/components/UIStoryBody.vue'
-import UIStoryListRelated from '~/components/UIStoryListRelated.vue'
-import UIStoryListWithArrow from '~/components/UIStoryListWithArrow.vue'
+import UiAdultContentWarning from '~/components/UiAdultContentWarning.vue'
+import UiStoryBody from '~/components/UiStoryBody.vue'
+import UiStoryListRelated from '~/components/UiStoryListRelated.vue'
+import UiStoryListWithArrow from '~/components/UiStoryListWithArrow.vue'
 import FbPage from '~/components/FbPage.vue'
-import UIStoryListWithHeading from '~/components/UIStoryListWithHeading.vue'
+import UiStoryListWithHeading from '~/components/UiStoryListWithHeading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
-import UIStickyAd from '~/components/UIStickyAd.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import MicroAd from '~/components/MicroAd.vue'
-import UIFooter from '~/components/UIFooter.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
+import UiFooter from '~/components/UiFooter.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
@@ -188,19 +202,20 @@ export default {
   components: {
     ContainerHeader,
     ContainerPhotoGallery,
-    UIAdultContentWarning,
-    UIStoryBody,
-    UIStoryListRelated,
-    UIStoryListWithArrow,
+    UiAdultContentWarning,
+    UiStoryBody,
+    UiStoryListRelated,
+    UiStoryListWithArrow,
     FbPage,
-    UIStoryListWithHeading,
+    UiStoryListWithHeading,
 
     ContainerGptAd,
-    UIStickyAd,
+    UiStickyAd,
     ContainerFullScreenAds,
     MicroAd,
+    UiWineWarning,
 
-    UIFooter,
+    UiFooter,
 
     SvgCloseIcon,
   },
@@ -229,6 +244,7 @@ export default {
   data() {
     return {
       latestStories: [],
+      hasLoadedLatestStories: false,
 
       popularStories: [],
       story: {},
@@ -247,7 +263,10 @@ export default {
   },
 
   computed: {
-    ...mapState(['canAdvertise']),
+    ...mapState({
+      canAdvertise: (state) => state.canAdvertise,
+      viewportHeight: (state) => state.viewport.height,
+    }),
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
     }),
@@ -301,10 +320,17 @@ export default {
     hasRelatedImages() {
       return this.relatedImages.length > 0
     },
-    hasLatestStories() {
+    shouldOpenLatestList() {
+      return (
+        this.isDesktopWidth &&
+        this.sectionId !== 'other' &&
+        (this.hasLoadedLatestStories ? this.doesHaveLatestStories : true)
+      )
+    },
+    doesHaveLatestStories() {
       return this.latestStories.length > 0
     },
-    hasPopularStories() {
+    doesHavePopularStories() {
       return this.popularStories.length > 0
     },
 
@@ -316,6 +342,18 @@ export default {
         !this.doesClickCloseAdPcFloating
       )
     },
+  },
+
+  watch: {
+    isDesktopWidth() {
+      this.isDesktopWidth
+        ? window.addEventListener('scroll', this.handleFixAside)
+        : this.cleanFixedAside()
+    },
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleFixAside)
   },
 
   methods: {
@@ -336,7 +374,7 @@ export default {
       this.relatedImages = items
     },
     async fetchLatestStories() {
-      if (this.hasLatestStories) {
+      if (this.doesHaveLatestStories || this.sectionId === 'other') {
         return
       }
 
@@ -348,9 +386,11 @@ export default {
       this.latestStories = items
         .filter(this.doesNotHaveCurrentStorySlug)
         .slice(0, 6)
+
+      this.hasLoadedLatestStories = true
     },
     async fetchPopularStories() {
-      if (this.hasPopularStories || ENV === 'lighthouse') {
+      if (this.doesHavePopularStories || ENV === 'lighthouse') {
         return
       }
 
@@ -365,6 +405,65 @@ export default {
     },
     handleShowDableWidget() {
       this.shouldLoadDableScript = true
+    },
+    handleFixAside() {
+      _.throttle(
+        () => {
+          const {
+            latestList,
+            fixedContainer,
+            fixedTriggerFinished,
+          } = this.$refs
+
+          if (!latestList) {
+            return
+          }
+
+          const {
+            bottom: latestListBottom,
+          } = latestList.getBoundingClientRect()
+          const {
+            top: fixedTriggerFinishedTop,
+          } = fixedTriggerFinished.getBoundingClientRect()
+
+          // 當視窗頂部 <= latestList 底部，結束 fix
+          if (latestListBottom > 0) {
+            fixedContainer.classList.remove('fixed')
+            fixedContainer.style.marginTop = ''
+
+            return
+          }
+
+          // 當視窗頂部 > latestList 底部，且視窗底部 <= fixedTriggerFinished 頂部，開始 fix
+          if (
+            latestListBottom <= 0 &&
+            fixedTriggerFinishedTop - this.viewportHeight > 0
+          ) {
+            fixedContainer.classList.add('fixed')
+            fixedContainer.style.marginTop = ''
+
+            return
+          }
+
+          // 當視窗底部 > fixedTriggerFinished 頂部，結束 fix
+          if (fixedTriggerFinishedTop - this.viewportHeight <= 0) {
+            fixedContainer.classList.remove('fixed')
+            fixedContainer.style.marginTop = `${
+              fixedTriggerFinishedTop - latestListBottom - this.viewportHeight
+            }px`
+          }
+        },
+        100,
+        { trailing: false }
+      )()
+    },
+    cleanFixedAside() {
+      const { fixedContainer } = this.$refs
+
+      fixedContainer.classList.remove('fixed')
+      fixedContainer.style.marginTop = ''
+
+      window.removeEventListener('scroll', this.handleFixAside)
     },
   },
   head() {
@@ -523,7 +622,7 @@ export default {
       {
         const hasWriter = writers[0] !== undefined
         const authorName = hasWriter ? writerName : '鏡週刊'
-        const logoUrl = `${SITE_URL}/logo.png`
+        const logoUrl = require('~/assets/logo.png')
 
         jsonLdNewsArticle = {
           type: 'application/ld+json',
@@ -618,21 +717,42 @@ export default {
 <style lang="scss" scoped>
 @import '~/css/micro-ad/story.scss';
 
+$story-max-width: 1160px;
+$story-padding-right-lg: 50px;
+
+$aside-width: 300px;
+
 .story-layout {
   @include media-breakpoint-up(lg) {
     background-color: #414141;
   }
 }
 
+.layout {
+  &__story-body {
+    max-width: 645px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    @include media-breakpoint-up(lg) {
+      width: calc(100% - #{$aside-width} - 20px);
+      max-width: 695px;
+      padding-bottom: 0;
+      margin-left: 0;
+    }
+  }
+}
+
 .story-container {
-  max-width: 1160px;
+  max-width: $story-max-width;
   padding-top: 20px;
   padding-bottom: 40px;
   overflow: hidden;
   @include media-breakpoint-up(lg) {
     margin: 0 auto;
     padding-left: 50px;
-    padding-right: 50px;
+    padding-right: $story-padding-right-lg;
     background-color: #fff;
   }
   @include media-breakpoint-up(xl) {
@@ -644,25 +764,19 @@ export default {
   position: relative;
   @include media-breakpoint-up(lg) {
     padding-top: 30px;
+    padding-bottom: 20px;
     display: flex;
   }
 }
 
 .story {
-  &__list {
+  &__popular-list {
     margin-bottom: 20px;
-
-    &--popular {
-      @include media-breakpoint-up(lg) {
-        order: 1;
-      }
-    }
   }
 
   &__fb-page {
     margin-bottom: 20px;
     @include media-breakpoint-up(lg) {
-      order: 2;
       margin-bottom: 0;
     }
   }
@@ -686,11 +800,24 @@ aside {
   margin-right: auto;
   overflow: hidden;
   @include media-breakpoint-up(lg) {
-    width: 300px;
-    display: flex;
-    flex-direction: column;
+    width: $aside-width;
     margin-right: 0;
     margin-bottom: 0;
+  }
+}
+
+.fixed-container {
+  @include media-breakpoint-up(lg) {
+    padding-top: 20px;
+
+    &.fixed {
+      position: fixed;
+      top: 0;
+      right: calc(
+        (100% - #{$story-max-width}) / 2 + #{$story-padding-right-lg}
+      );
+      width: $aside-width;
+    }
   }
 }
 
@@ -698,7 +825,7 @@ aside {
   margin-bottom: 100px;
   @include media-breakpoint-up(lg) {
     margin-bottom: 0;
-    max-width: 1160px;
+    max-width: $story-max-width;
     margin-left: auto;
     margin-right: auto;
     background-color: #fff;

@@ -1,8 +1,8 @@
 import page from '../video/_id.vue'
-import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
-import UIShareFb from '~/components/UIShareFb.vue'
-import UIShareLine from '~/components/UIShareLine.vue'
-import UIYoutubeIframe from '~/components/UIYoutubeIframe.vue'
+import UiLinkedItemWithTitle from '~/components/UiLinkedItemWithTitle.vue'
+import UiShareFb from '~/components/UiShareFb.vue'
+import UiShareLine from '~/components/UiShareLine.vue'
+import UiYoutubeIframe from '~/components/UiYoutubeIframe.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const idMock = 'NhhxOUw5o4E'
@@ -23,7 +23,7 @@ const createWrapper = createWrapperHelper({
       },
     },
   },
-  stubs: ['client-only', 'GPTAD'],
+  stubs: ['client-only', 'GptAd'],
 })
 
 describe('video id', () => {
@@ -31,8 +31,8 @@ describe('video id', () => {
   test('should return proper videoId', () => {
     expect(wrapper.vm.videoId).toBe(idMock)
   })
-  test('should has UIYoutubeIframe component', () => {
-    expect(wrapper.findComponent(UIYoutubeIframe).exists()).toBe(true)
+  test('should has UiYoutubeIframe component', () => {
+    expect(wrapper.findComponent(UiYoutubeIframe).exists()).toBe(true)
   })
 })
 
@@ -77,7 +77,7 @@ describe('description', () => {
 })
 
 describe('latest list data', () => {
-  test('should render proper number of UILinkedItemWithTitle', () => {
+  test('should render proper number of UiLinkedItemWithTitle', () => {
     const items = [
       {
         thumbnails: '',
@@ -92,7 +92,7 @@ describe('latest list data', () => {
         }
       },
     })
-    const linkedItems = wrapper.findAllComponents(UILinkedItemWithTitle)
+    const linkedItems = wrapper.findAllComponents(UiLinkedItemWithTitle)
     expect(linkedItems).toHaveLength(items.length)
   })
 })
@@ -100,8 +100,8 @@ describe('latest list data', () => {
 describe('share components', () => {
   test('should has share components', () => {
     const wrapper = createWrapper(page)
-    expect(wrapper.findComponent(UIShareFb).exists()).toBe(true)
-    expect(wrapper.findComponent(UIShareLine).exists()).toBe(true)
+    expect(wrapper.findComponent(UiShareFb).exists()).toBe(true)
+    expect(wrapper.findComponent(UiShareLine).exists()).toBe(true)
   })
 })
 
@@ -125,8 +125,8 @@ describe('handleClick method', () => {
       }
     },
   })
-  test('call $ga.event when UILinkedItemWithTitle emits sendGA', () => {
-    wrapper.findComponent(UILinkedItemWithTitle).vm.$emit('click')
+  test('call $ga.event when UiLinkedItemWithTitle emits sendGa', () => {
+    wrapper.findComponent(UiLinkedItemWithTitle).vm.$emit('click')
     expect($ga.event).toBeCalledWith({
       eventCategory: 'listing',
       eventAction: 'click',

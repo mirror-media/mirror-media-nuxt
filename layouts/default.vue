@@ -9,7 +9,7 @@
   >
     <ContainerHeader />
     <nuxt />
-    <UIFooter :class="[{ 'footer--listing': isListing }]" />
+    <UiFooter :class="[{ 'footer--listing': isListing }]" />
 
     <ClientOnly>
       <TheGdpr />
@@ -19,7 +19,7 @@
 
 <script>
 import ContainerHeader from '~/components/ContainerHeader.vue'
-import UIFooter from '~/components/UIFooter.vue'
+import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
 
 import { useViewport } from '~/composition/viewport.js'
@@ -27,7 +27,7 @@ import { useViewport } from '~/composition/viewport.js'
 export default {
   components: {
     ContainerHeader,
-    UIFooter,
+    UiFooter,
     TheGdpr,
   },
   setup() {

@@ -1,9 +1,9 @@
 <template>
   <section class="section">
-    <UIVideoIframeWithItems
+    <UiVideoIframeWithItems
       :items="playlistItems"
       class="section__highlight"
-      @sendGA="handleSendGA"
+      @sendGa="handleSendGa"
     >
       <template v-if="categoryTitle" #heading>
         <h1
@@ -12,9 +12,9 @@
           v-text="categoryTitle"
         />
       </template>
-    </UIVideoIframeWithItems>
+    </UiVideoIframeWithItems>
     <div class="section__remaining">
-      <UILinkedItemWithTitle
+      <UiLinkedItemWithTitle
         v-if="remainingItemsBeforeMobileAd"
         :key="remainingItemsBeforeMobileAd.videoId"
         :imgSrc="remainingItemsBeforeMobileAd.thumbnails"
@@ -25,10 +25,10 @@
       />
       <client-only>
         <div class="section__ad dfp-ft">
-          <GPTAD :adUnit="adBottom.adUnit" :adSize="adBottom.adSize" />
+          <GptAd :adUnit="adBottom.adUnit" :adSize="adBottom.adSize" />
         </div>
       </client-only>
-      <UILinkedItemWithTitle
+      <UiLinkedItemWithTitle
         v-for="item in remainingItemsAfterMobileAdBeforeDesktopAd"
         :key="item.videoId"
         :imgSrc="item.thumbnails"
@@ -38,9 +38,9 @@
         @click="handleClick"
       />
     </div>
-    <UIYoutubePolicies class="section__policies" />
+    <UiYoutubePolicies class="section__policies" />
     <div v-if="hasLoadedMore" class="section__remaining">
-      <UILinkedItemWithTitle
+      <UiLinkedItemWithTitle
         v-for="item in remainingItemsAfterDesktopAd"
         :key="item.videoId"
         :imgSrc="item.thumbnails"
@@ -50,19 +50,19 @@
         @click="handleClick"
       />
     </div>
-    <UIInfiniteLoading
+    <UiInfiniteLoading
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
     <ContainerFullScreenAds />
-    <UIStickyAd>
+    <UiStickyAd>
       <client-only>
-        <GPTAD
+        <GptAd
           :adUnit="videoAdUnits.MB_ST.adUnit"
           :adSize="videoAdUnits.MB_ST.adSize"
         />
       </client-only>
-    </UIStickyAd>
+    </UiStickyAd>
   </section>
 </template>
 
@@ -75,11 +75,11 @@ import {
 } from '~/constants/index'
 import { processResponseItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
-import UIStickyAd from '~/components/UIStickyAd.vue'
-import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
-import UILinkedItemWithTitle from '~/components/UILinkedItemWithTitle.vue'
-import UIVideoIframeWithItems from '~/components/UIVideoIframeWithItems.vue'
-import UIYoutubePolicies from '~/components/UIYoutubePolicies.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
+import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
+import UiLinkedItemWithTitle from '~/components/UiLinkedItemWithTitle.vue'
+import UiVideoIframeWithItems from '~/components/UiVideoIframeWithItems.vue'
+import UiYoutubePolicies from '~/components/UiYoutubePolicies.vue'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 const VIDEO_CATEGORIES_NAME = Object.keys(PLAYLIST_MAPPING)
@@ -89,11 +89,11 @@ export default {
   name: 'VideoCategory',
   components: {
     ContainerFullScreenAds,
-    UIStickyAd,
-    UIInfiniteLoading,
-    UILinkedItemWithTitle,
-    UIVideoIframeWithItems,
-    UIYoutubePolicies,
+    UiStickyAd,
+    UiInfiniteLoading,
+    UiLinkedItemWithTitle,
+    UiVideoIframeWithItems,
+    UiYoutubePolicies,
   },
   async fetch() {
     const response = await this.fetchYoutubePlaylistItems()
@@ -163,7 +163,7 @@ export default {
         eventLabel: 'latest_video',
       })
     },
-    handleSendGA(param = {}) {
+    handleSendGa(param = {}) {
       this.$ga.event(param)
     },
     async infiniteHandler($state) {

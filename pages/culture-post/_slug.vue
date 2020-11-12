@@ -8,16 +8,16 @@
     >
       <img :alt="SITE_TITLE" src="~/assets/logo@2x.png" />
     </a>
-    <UICulturePostIndex
+    <UiCulturePostIndex
       :currentIndex="currentIndex"
       :isIndexActive="isIndexActive"
       :items="indexes"
       @closeIndex="handleIndexActive(false)"
       @openIndex="handleIndexActive(true)"
     />
-    <UICulturePostIntro :post="post" />
-    <UICulturePostContent :content="post.content" />
-    <UICulturePostRelateds v-if="hasRelateds" :items="relateds" />
+    <UiCulturePostIntro :post="post" />
+    <UiCulturePostContent :content="post.content" />
+    <UiCulturePostRelateds v-if="hasRelateds" :items="relateds" />
     <div v-if="updatedAt" class="culture-post__updated-at">
       更新時間 / {{ updatedAt }}
     </div>
@@ -26,13 +26,12 @@
 
 <script>
 import _ from 'lodash'
-import { clearAllBodyScrollLocks, disableBodyScroll } from 'body-scroll-lock'
 import { PREVIEW_QUERY } from '~/configs/config'
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
-import UICulturePostContent from '~/components/UICulturePostContent.vue'
-import UICulturePostIndex from '~/components/UICulturePostIndex.vue'
-import UICulturePostIntro from '~/components/UICulturePostIntro.vue'
-import UICulturePostRelateds from '~/components/UICulturePostRelateds.vue'
+import UiCulturePostContent from '~/components/UiCulturePostContent.vue'
+import UiCulturePostIndex from '~/components/UiCulturePostIndex.vue'
+import UiCulturePostIntro from '~/components/UiCulturePostIntro.vue'
+import UiCulturePostRelateds from '~/components/UiCulturePostRelateds.vue'
 
 const regexIsPreview = new RegExp(`${PREVIEW_QUERY}`, 'gs')
 
@@ -40,10 +39,10 @@ export default {
   name: 'CulturePost',
   layout: 'empty',
   components: {
-    UICulturePostContent,
-    UICulturePostIndex,
-    UICulturePostIntro,
-    UICulturePostRelateds,
+    UiCulturePostContent,
+    UiCulturePostIndex,
+    UiCulturePostIntro,
+    UiCulturePostRelateds,
   },
   async fetch() {
     const slug = this.$route.params.slug
@@ -87,11 +86,7 @@ export default {
       return this.post.updatedAt
     },
   },
-  watch: {
-    isIndexActive(isActive) {
-      isActive ? disableBodyScroll() : clearAllBodyScrollLocks()
-    },
-  },
+
   mounted() {
     this.detectCurrentIndex()
     window.addEventListener(

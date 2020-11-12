@@ -1,5 +1,5 @@
 import page from '../search/_keyword.vue'
-import UIArticleList from '~/components/UIArticleList.vue'
+import UiArticleList from '~/components/UiArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
@@ -229,7 +229,7 @@ describe('component methods', () => {
     const wrapper = createWrapper(page)
     wrapper.vm.setListData(responseMock)
     await wrapper.vm.$nextTick()
-    const list = wrapper.findComponent(UIArticleList)
+    const list = wrapper.findComponent(UiArticleList)
     expect(list.props().listData).toEqual([
       {
         id: idMock,

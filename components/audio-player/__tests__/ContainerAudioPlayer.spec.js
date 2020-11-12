@@ -1,7 +1,7 @@
 import ContainerAudioPlayer from '../ContainerAudioPlayer.vue'
-import UIAudioPlayerInfo from '../UIAudioPlayerInfo.vue'
-import UIAudioPlayerBar from '../UIAudioPlayerBar.vue'
-import UIAudioPlayerTime from '../UIAudioPlayerTime.vue'
+import UiAudioPlayerInfo from '../UiAudioPlayerInfo.vue'
+import UiAudioPlayerBar from '../UiAudioPlayerBar.vue'
+import UiAudioPlayerTime from '../UiAudioPlayerTime.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -34,10 +34,10 @@ describe('prop "content"', () => {
     expect(wrapper.vm.$refs.audio.src).toBe(mockContent.url)
   })
 
-  test('set the correct prop "title" of the UIAudioPlayerInfo', () => {
+  test('set the correct prop "title" of the UiAudioPlayerInfo', () => {
     const wrapper = createWrapper(ContainerAudioPlayer)
 
-    expect(wrapper.findComponent(UIAudioPlayerInfo).props().title).toBe(
+    expect(wrapper.findComponent(UiAudioPlayerInfo).props().title).toBe(
       mockContent.title
     )
   })
@@ -143,7 +143,7 @@ describe('audio status', () => {
 
     audio.currentTime = mockCurrentTime
 
-    // 避免 UIAudioPlayerBar 針對 prop 'value' 自定義的 validator 檢查失敗
+    // 避免 UiAudioPlayerBar 針對 prop 'value' 自定義的 validator 檢查失敗
     audioStatus.duration = 6
 
     await audio.dispatchEvent(new Event(evtType))
@@ -175,7 +175,7 @@ describe('audio status', () => {
 describe('audio player bar', () => {
   test('get correct value', async () => {
     const wrapper = createWrapper(ContainerAudioPlayer)
-    const audioPlayerBar = wrapper.findComponent(UIAudioPlayerBar)
+    const audioPlayerBar = wrapper.findComponent(UiAudioPlayerBar)
 
     expect(audioPlayerBar.props().value).toBe(0)
 
@@ -191,7 +191,7 @@ describe('audio player bar', () => {
 
   test('get correct rail (buffered) style', async () => {
     const wrapper = createWrapper(ContainerAudioPlayer)
-    const audioPlayerBar = wrapper.findComponent(UIAudioPlayerBar)
+    const audioPlayerBar = wrapper.findComponent(UiAudioPlayerBar)
 
     expect(audioPlayerBar.props().railStyle).toEqual({
       backgroundImage: 'linear-gradient(90deg, #7d7d7d 0%, #000 0%)',
@@ -209,7 +209,7 @@ describe('audio player bar', () => {
     })
   })
 
-  test('set the "audio.currentTime" when the UIAudioPlayerBar emits an "update:value"', () => {
+  test('set the "audio.currentTime" when the UiAudioPlayerBar emits an "update:value"', () => {
     const mockDuration = 100
     const mockValue = 0.6
     const wrapper = createWrapper(ContainerAudioPlayer, {
@@ -222,7 +222,7 @@ describe('audio player bar', () => {
       },
     })
 
-    wrapper.findComponent(UIAudioPlayerBar).vm.$emit('update:value', mockValue)
+    wrapper.findComponent(UiAudioPlayerBar).vm.$emit('update:value', mockValue)
 
     expect(wrapper.vm.$refs.audio.currentTime).toBe(mockDuration * mockValue)
   })
@@ -241,14 +241,14 @@ describe('audio player time', () => {
       },
     })
 
-    const audioPlayerTime = wrapper.findComponent(UIAudioPlayerTime)
+    const audioPlayerTime = wrapper.findComponent(UiAudioPlayerTime)
 
     expect(audioPlayerTime.props().duration).toBe('19:10')
     expect(audioPlayerTime.props().currentTime).toBe('06:23')
   })
 })
 
-describe('GA event', () => {
+describe('Ga event', () => {
   test('all the $ga method when users play the audio', () => {
     const $ga = {
       event: jest.fn(),

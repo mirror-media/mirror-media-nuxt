@@ -5,7 +5,7 @@ module.exports = {
     '^~/(.*)$': '<rootDir>/$1',
     '^vue$': 'vue/dist/vue.common.js',
     '\\.css$': '<rootDir>/test/__mocks__/empty.js',
-    '@nuxtjs/composition-api': '@nuxtjs/composition-api/lib/cjs/entrypoint.js',
+    '@nuxtjs/composition-api': '@nuxtjs/composition-api/lib/entrypoint.js',
   },
   moduleFileExtensions: ['js', 'vue'],
   transform: {

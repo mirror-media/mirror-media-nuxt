@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <div v-if="hasFullScreenAd" class="full-screen-ads">
-      <UIFullScreenAd
+      <UiFullScreenAd
         v-if="hasAdFirst"
         v-show="isAdFirstVisible"
         :hasDefaultStyle="true"
@@ -15,8 +15,8 @@
           @slotRequested="setTimerForClosedBtn"
           @slotRenderEnded="handleAdRenderEndedFirst"
         />
-      </UIFullScreenAd>
-      <UIFullScreenAd
+      </UiFullScreenAd>
+      <UiFullScreenAd
         v-if="hasAdSecondOrThird"
         :hasModifiedStyle="hasModifiedStyle"
       >
@@ -34,13 +34,13 @@
           adKey="MB_INNITY"
           @slotRenderEnded="disableModifiedStyle"
         />
-      </UIFullScreenAd>
+      </UiFullScreenAd>
     </div>
   </client-only>
 </template>
 
 <script>
-import UIFullScreenAd from '~/components/UIFullScreenAd.vue'
+import UiFullScreenAd from '~/components/UiFullScreenAd.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 /**
@@ -66,7 +66,7 @@ import ContainerGptAd from '~/components/ContainerGptAd.vue'
 export default {
   name: 'ContainerFullScreenAds',
   components: {
-    UIFullScreenAd,
+    UiFullScreenAd,
     ContainerGptAd,
   },
   data() {

@@ -1,5 +1,5 @@
 import page from '../section/_name.vue'
-import UIArticleList from '~/components/UIArticleList.vue'
+import UiArticleList from '~/components/UiArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import { SITE_TITLE, SITE_DESCRIPTION } from '~/constants'
 
@@ -25,7 +25,7 @@ const createWrapper = createWrapperHelper({
       },
     },
   },
-  stubs: ['client-only', 'GPTAD'],
+  stubs: ['client-only', 'GptAd'],
 })
 
 describe('stripHtmlTag method', () => {
@@ -71,7 +71,7 @@ describe('section data', () => {
         },
       },
     })
-    const list = wrapper.findComponent(UIArticleList)
+    const list = wrapper.findComponent(UiArticleList)
     expect(wrapper.vm.currentSectionId).toBe(sectionIdMock)
     expect(list.props().listTitle).toBe(sectionTitleMock)
   })

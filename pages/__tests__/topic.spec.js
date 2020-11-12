@@ -1,5 +1,7 @@
 import page from '../topic/_id.vue'
-import UIArticleList from '~/components/UIArticleList.vue'
+import UiArticleList from '~/components/UiArticleList.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
+
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
@@ -76,7 +78,7 @@ describe('component methods', () => {
     const wrapper = createWrapper(page)
     wrapper.vm.setListData(responseMock)
     await wrapper.vm.$nextTick()
-    const list = wrapper.findComponent(UIArticleList)
+    const list = wrapper.findComponent(UiArticleList)
     expect(list.props().listData).toEqual([
       {
         id: idMock,
@@ -102,5 +104,27 @@ describe('component methods', () => {
     expect(wrapper.vm.listDataPageLimit).toBe(
       Math.ceil(totalMock / wrapper.vm.listDataMaxResults)
     )
+  })
+})
+
+describe('wine warning', () => {
+  const TOPIC_IDS_WINE = [
+    '5c25f9e3315ec51000903a82',
+    '5d22bb9fe311f3925c49396c',
+    '5a4d8e60160ac91000294611',
+  ]
+
+  TOPIC_IDS_WINE.forEach((id) => {
+    test(`show the wine warning when the topic id is ${id}`, () => {
+      const sut = createWrapper(page, {
+        mocks: {
+          $route: {
+            params: { id },
+          },
+        },
+      })
+
+      expect(sut.findComponent(UiWineWarning).exists()).toBe(true)
+    })
   })
 })

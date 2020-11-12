@@ -1,13 +1,13 @@
 <template>
   <section class="section">
     <client-only>
-      <GPTAD
+      <GptAd
         class="section__ad"
         :adUnit="adTop.adUnit"
         :adSize="adTop.adSize"
       />
     </client-only>
-    <UIArticleList
+    <UiArticleList
       class="section__list"
       :listTitle="'Topic'"
       :listTitleColor="'#BCBCBC'"
@@ -16,30 +16,30 @@
       <template v-for="unit in microAdUnits" v-slot:[unit.name]>
         <MicroAd :key="unit.name" :unitId="unit.id" />
       </template>
-    </UIArticleList>
+    </UiArticleList>
     <client-only>
-      <GPTAD
+      <GptAd
         class="section__ad"
         :adUnit="adBottom.adUnit"
         :adSize="adBottom.adSize"
       />
     </client-only>
-    <UIArticleList
+    <UiArticleList
       v-show="showListDataLoadmorePage"
       class="section__list"
       :listData="listDataLoadmorePage"
     />
-    <UIInfiniteLoading
+    <UiInfiniteLoading
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
-    <UIStickyAd v-if="adDevice === 'MB'">
+    <UiStickyAd v-if="adDevice === 'MB'">
       <client-only>
-        <GPTAD
+        <GptAd
           :adUnit="adFixedBottomMobile.adUnit"
           :adSize="adFixedBottomMobile.adSize"
         />
-      </client-only> </UIStickyAd
+      </client-only> </UiStickyAd
     >>
     <ContainerFullScreenAds />
   </section>
@@ -47,10 +47,10 @@
 
 <script>
 import _ from 'lodash'
-import UIArticleList from '~/components/UIArticleList.vue'
-import UIInfiniteLoading from '~/components/UIInfiniteLoading.vue'
+import UiArticleList from '~/components/UiArticleList.vue'
+import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
-import UIStickyAd from '~/components/UIStickyAd.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 import MicroAd from '~/components/MicroAd.vue'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
@@ -59,10 +59,10 @@ import { MICRO_AD_UNITS } from '~/constants/ads.js'
 export default {
   name: 'SectionTopic',
   components: {
-    UIArticleList,
-    UIInfiniteLoading,
+    UiArticleList,
+    UiInfiniteLoading,
     ContainerFullScreenAds,
-    UIStickyAd,
+    UiStickyAd,
     MicroAd,
   },
   async fetch() {

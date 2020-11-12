@@ -1,4 +1,4 @@
-import GPTAD from './index.vue'
+import GptAd from './index.vue'
 
 let isGPTScriptInserted = false
 const GPTAdSlotsDefined = {}
@@ -6,7 +6,7 @@ const GPTAdSlotsDefined = {}
 export default {
   install(Vue, options = {}) {
     if (options.isAdDisable) {
-      return Vue.component('GPTAD', {
+      return Vue.component('GptAd', {
         render() {
           return ''
         },
@@ -20,7 +20,7 @@ export default {
       return GPTAdSlotsDefined[key]
     }
 
-    let Component = Vue.extend(GPTAD)
+    let Component = Vue.extend(GptAd)
     Component = Component.extend({
       beforeMount() {
         if (!isGPTScriptInserted) {
@@ -78,6 +78,6 @@ export default {
       },
     })
 
-    Vue.component('GPTAD', Component)
+    Vue.component('GptAd', Component)
   },
 }
