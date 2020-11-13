@@ -51,7 +51,7 @@ import UiMembershipEmailError from '~/components/UiMembershipEmailError.vue'
  *                                                               |
  *                                                               |
  *                                                               v
- * 3. https://website/finishSignIn    firebase.auth.isSignInWithEmailLink(window.location.href)
+ * 3. https://website/finishSignUp    firebase.auth.isSignInWithEmailLink(window.location.href)
  *                                                 +                            +
  *                                              No |                            | Yes
  *                                                 |                            |
