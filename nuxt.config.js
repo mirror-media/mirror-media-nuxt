@@ -238,7 +238,9 @@ module.exports = {
           appId: '1:983956931553:web:5a12da06616a5bcdab48a0',
         },
         services: {
-          auth: true,
+          auth: {
+            persistence: 'session',
+          },
         },
         lazy: true,
       },

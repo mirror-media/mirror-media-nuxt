@@ -1,0 +1,189 @@
+<template>
+  <section class="page">
+    <template v-if="shouldProvideEmailManually">
+      <div
+        v-if="provideEmailManuallyState === 'form'"
+        class="confirm-email-form-wrapper"
+      >
+        <h1 class="title">登入</h1>
+        <form class="page__form form" novalidate @submit.prevent>
+          <p class="form__confirm-email-hint confirm-email-hint">
+            請輸入你所註冊的 Email，進行登入
+          </p>
+          <UiMembershipEmailInput
+            class="form__email-input"
+            :shouldShowInvalidHint="shouldShowInvalidHint"
+            @input="handleEmailInput"
+            @inputValidStateChange="handleInputValidStateChange"
+          />
+          <button class="form__login-button login-button" @click="handleSubmit">
+            登入
+          </button>
+        </form>
+      </div>
+      <UiMembershipEmailError
+        v-else-if="provideEmailManuallyState === 'error'"
+        class="confirm-email-error-wrapper"
+        @backToForm="handleBackToForm"
+      />
+    </template>
+  </section>
+</template>
+
+<script>
+import localforage from 'localforage'
+import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
+import UiMembershipEmailError from '~/components/UiMembershipEmailError.vue'
+
+/*
+ * Firebase Authenticate with Firebase Using Email Link flow.
+ * This component just implement the 1. part below in the flow and store the email for further email validation in 3. part.
+ * For more info: https://firebase.google.com/docs/auth/web/email-link-auth
+ *
+ * 1. https://website/login            firebase.auth.sendSignInLinkToEmail("example@example.com")
+ *                                                               +
+ *                                                               |
+ *                                                               |
+ *                                                               v
+ * 2. member's email service             click "https://website/finishSignIn" link in email
+ *                                                               +
+ *                                                               |
+ *                                                               |
+ *                                                               v
+ * 3. https://website/finishSignUp    firebase.auth.isSignInWithEmailLink(window.location.href)
+ *                                                 +                            +
+ *                                              No |                            | Yes
+ *                                                 |                            |
+ *                                                 |       +-------------email validation------------+
+ *                                                 v       |                    v                    |
+ *                             back to "https://website/"  |   is email store in storage of device?  |
+ *                                                         |           +                   +         |
+ *                                                         |           |                   |         |
+ *                                                         |        No |                   | Yes     |
+ *                                                         |           |                   |         |
+ *                                                         |           v                   |         |
+ *                                                         |  provide your email           |         |
+ *                                                         |           +                   |         |
+ *                                                         |           |                   |         |
+ *                                                         +-----------------------------------------+
+ *                                                                     |                   v
+ *                                                                     +-------->  sign in with email successfully
+ *                                                                      with firebase.auth.signInWithEmailLink("example@example.com", window.location.href)
+ */
+export default {
+  components: {
+    UiMembershipEmailInput,
+    UiMembershipEmailError,
+  },
+
+  async middleware({ app, redirect, req }) {
+    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    await app.$fire.authReady()
+    if (!app.$fire.auth.isSignInWithEmailLink(fullUrl)) {
+      redirect('/')
+    }
+  },
+  data() {
+    return {
+      emailInput: '',
+      isEmailInputValid: false,
+      shouldProvideEmailManually: false,
+      shouldShowInvalidHint: false,
+      provideEmailManuallyState: 'form',
+    }
+  },
+  computed: {
+    authPersistence() {
+      // https://firebase.google.com/docs/auth/web/auth-state-persistence
+      const shouldRememberMe = Boolean(this.$route.query.shouldRememberMe)
+      return shouldRememberMe ? 'local' : 'session'
+    },
+  },
+  async beforeMount() {
+    const email = await this.getEmail()
+    if (email) {
+      await this.signInWithEmail(email)
+    } else {
+      this.shouldProvideEmailManually = true
+    }
+  },
+  methods: {
+    async getEmail() {
+      return this.emailInput || (await localforage.getItem('emailForSignIn'))
+    },
+    handleSubmit() {
+      this.shouldShowInvalidHint = true
+      if (this.isEmailInputValid) {
+        this.signInWithEmail(this.emailInput)
+      }
+    },
+    async signInWithEmail(email) {
+      try {
+        await this.$fire.authReady()
+        await this.$fire.auth.setPersistence(this.authPersistence)
+        await this.$fire.auth.signInWithEmailLink(email, window.location.href)
+        await localforage.removeItem('emailForSignIn')
+        this.$router.replace('/')
+      } catch (e) {
+        console.error(e)
+        this.provideEmailManuallyState = 'error'
+      }
+    },
+    handleInputValidStateChange(value) {
+      this.isEmailInputValid = value
+    },
+    handleEmailInput(value) {
+      this.emailInput = value
+    },
+    handleBackToForm() {
+      this.$router.replace('/login')
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.page {
+  padding: 0 20px;
+  min-height: calc(100vh - 118px);
+  display: flex;
+  align-items: center;
+  &__form {
+    margin: 20px 0 0 0;
+  }
+}
+
+.confirm-email-form-wrapper {
+  width: 100%;
+  @include media-breakpoint-up(xl) {
+    width: 300px;
+    margin: 0 auto;
+  }
+}
+
+.title {
+  text-align: center;
+  font-weight: 900;
+  font-size: 18px;
+  color: #054f77;
+}
+
+.form {
+  &__login-button,
+  &__email-input {
+    margin: 20px 0 0 0;
+  }
+}
+.confirm-email-hint {
+  font-size: 18px;
+  text-align: center;
+}
+.login-button {
+  background-color: #054f77;
+  width: 100%;
+  text-align: center;
+  font-weight: 900;
+  color: white;
+  height: 30px;
+}
+</style>
