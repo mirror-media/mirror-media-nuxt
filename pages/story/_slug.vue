@@ -275,6 +275,9 @@ export default {
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
     }),
 
+    isStyleDefault() {
+      return !this.isStylePhotography && !this.isStyleWide
+    },
     isStylePhotography() {
       return this.story.style === 'photography'
     },
@@ -355,9 +358,11 @@ export default {
 
   watch: {
     isDesktopWidth() {
-      this.isDesktopWidth
-        ? window.addEventListener('scroll', this.handleFixAside)
-        : this.cleanFixedAside()
+      if (this.isStyleDefault) {
+        this.isDesktopWidth
+          ? window.addEventListener('scroll', this.handleFixAside)
+          : this.cleanFixedAside()
+      }
     },
   },
 
