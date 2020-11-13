@@ -11,12 +11,7 @@
         type="email"
         @input="handleInput"
       />
-      <SvgInvalidIcon
-        v-show="canShowInputInvalid"
-        class="invalid-icon"
-        src="~/assets/membership-input-invalid.svg"
-        alt="membership-input-invalid"
-      />
+      <SvgInvalidIcon v-show="canShowInputInvalid" class="invalid-icon" />
     </div>
     <div
       v-show="canShowInputInvalid"
