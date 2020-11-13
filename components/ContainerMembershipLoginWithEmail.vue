@@ -97,11 +97,15 @@ export default {
         this.sendSignInLinkToEmail()
       }
     },
+    handleError(e) {
+      // eslint-disable-next-line no-console
+      console.error(e)
+    },
     async loadAuthService() {
       try {
         await this.$fire.authReady()
       } catch (e) {
-        console.error(e)
+        this.handleError(e)
       }
     },
     createSignInLinkToEmail() {
@@ -142,7 +146,7 @@ export default {
         await localforage.setItem('emailForSignIn', this.emailInput)
         this.loginPageState = 'success'
       } catch (e) {
-        console.error(e)
+        this.handleError(e)
         this.loginPageState = 'error'
       }
     },
