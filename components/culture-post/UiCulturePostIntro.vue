@@ -2,36 +2,39 @@
   <section class="intro">
     <picture>
       <source
-        :srcset="imageLandscapeDesktop"
+        :srcset="imgLandscapeDesktop"
         media="(min-width: 768px) and (orientation: landscape)"
         type="image/jpeg"
       />
       <source
-        :srcset="imagePortraitDesktop"
+        :srcset="imgPortraitDesktop"
         media="(min-width: 768px) and (orientation: portrait)"
         type="image/jpeg"
       />
       <source
-        :srcset="imageLandscapeDesktop"
+        :srcset="imgLandscapeDesktop"
         media="(max-width: 767px) and (orientation: landscape)"
         type="image/jpeg"
       />
-      <img v-lazy="imagePortraitMobile" :alt="titleWithoutBreakLine" />
+      <img :src="imgPortraitMobile" alt="" />
     </picture>
+
     <div class="intro__gradient" />
 
     <!-- eslint-disable-next-line vue/no-v-html -->
     <h1 :style="{ color: `#${post.titleColor}` }" v-html="post.title" />
+
     <div class="intro__container">
       <div class="intro__datetime-credit">
         <p>發布時間 / {{ post.publishedDate }}</p>
+
         <div class="intro__credit">
           <span v-if="post.writers"> 記者 / {{ post.writers }} </span>
           <span v-if="post.photographers">
             攝影 / {{ post.photographers }}
           </span>
           <span v-if="post.cameraMan"> 影音 / {{ post.cameraMan }} </span>
-          <span v-if="post.extendByline" v-text="post.extendByline" />
+          <span v-if="post.extendByline">{{ post.extendByline }}</span>
         </div>
       </div>
 
@@ -44,28 +47,26 @@
 <script>
 export default {
   name: 'UiCulturePostIntro',
+
   props: {
     post: {
       type: Object,
+      default: () => ({}),
       required: true,
     },
   },
+
   computed: {
-    imageLandscapeDesktop() {
+    imgLandscapeDesktop() {
       return this.post.heroImage?.desktop?.url
     },
-    imagePortraitDesktop() {
-      return (
-        this.post.mobileImage?.desktop?.url || this.post.heroImage?.desktop?.url
-      )
+    imgPortraitDesktop() {
+      return this.post.mobileImage?.desktop?.url || this.imgLandscapeDesktop
     },
-    imagePortraitMobile() {
+    imgPortraitMobile() {
       return (
         this.post.mobileImage?.mobile?.url || this.post.heroImage?.mobile?.url
       )
-    },
-    titleWithoutBreakLine() {
-      return this.post.title?.replace(/<br>/g, '')
     },
   },
 }
@@ -84,8 +85,10 @@ export default {
   }
   @include media-breakpoint-up(lg) {
     min-height: 900px;
-    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
+
   picture {
     position: absolute;
     top: 0;
@@ -99,15 +102,15 @@ export default {
     }
     @include media-breakpoint-up(xl) {
       z-index: 0;
-      object-position: 50% bottom;
     }
+
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: 50% center;
     }
   }
+
   h1,
   .intro__container {
     position: relative;
@@ -116,15 +119,17 @@ export default {
       left: 15%;
     }
   }
+
   h1 {
     width: 200px;
+    font-family: source-han-serif-tc, 'Songti TC', serif;
     font-size: 46px;
     font-weight: 900;
-    font-family: source-han-serif-tc, Songti, 'Microsoft YaHei', serif;
     line-height: normal;
     @include media-breakpoint-up(md) {
       width: 300px;
-      >>> br {
+
+      &::v-deep br {
         display: none;
       }
     }
@@ -135,12 +140,14 @@ export default {
       line-height: 1.27;
     }
   }
-  >>> p {
+
+  &::v-deep p {
     text-align: justify;
     @include media-breakpoint-up(lg) {
       font-size: 18px;
     }
   }
+
   &__container {
     margin-top: 60px;
     @include media-breakpoint-up(md) {
@@ -156,24 +163,28 @@ export default {
       max-width: 634px;
     }
   }
+
   &__datetime-credit {
     @include media-breakpoint-up(lg) {
       order: 2;
       margin-top: 40px;
     }
+
     p,
     span {
-      color: rgba(0, 0, 0, 0.66);
+      color: rgba(#000, 0.66);
       font-size: 13px;
       line-height: 1.5;
     }
   }
+
   &__credit {
     display: flex;
     flex-wrap: wrap;
     margin-top: 10px;
+
     span {
-      margin: 0 2em 0 0;
+      margin-right: 2em;
     }
   }
 
@@ -186,6 +197,14 @@ export default {
       order: 1;
       margin-top: 0;
     }
+
+    &::v-deep p {
+      line-height: 2;
+
+      + p {
+        margin-top: 2em;
+      }
+    }
   }
 
   &__gradient {
@@ -197,16 +216,16 @@ export default {
     z-index: 0;
     background: linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0) 35%,
-      rgba(255, 255, 255, 1) 80%
+      rgba(#fff, 0) 0%,
+      rgba(#fff, 0) 35%,
+      rgba(#fff, 1) 80%
     );
     @include media-breakpoint-up(md) {
       background: linear-gradient(
         to bottom,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0) 35%,
-        rgba(255, 255, 255, 1) 95%
+        rgba(#fff, 0) 0%,
+        rgba(#fff, 0) 35%,
+        rgba(#fff, 1) 95%
       );
     }
   }

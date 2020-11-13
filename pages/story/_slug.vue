@@ -1,8 +1,10 @@
 <template>
-  <div class="story-layout">
-    <ContainerPhotoGallery v-if="isPhotographyStyle" :story="story" />
+  <div class="story-slug">
+    <ContainerPhotoGallery v-if="isStylePhotography" :story="story" />
 
-    <template v-else>
+    <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
+
+    <div v-else class="article">
       <ContainerHeader />
 
       <div class="story-container">
@@ -11,7 +13,7 @@
         </ClientOnly>
 
         <div class="story-wrapper">
-          <UiStoryBody :story="story" class="layout__story-body">
+          <UiStoryBody :story="story" class="story-slug__story-body">
             <template #storyRelateds>
               <UiStoryListWithArrow
                 :categoryTitle="categoryTitle"
@@ -154,7 +156,7 @@
       <div class="footer-container">
         <UiFooter />
       </div>
-    </template>
+    </div>
   </div>
 </template>
 
@@ -167,6 +169,7 @@ import { useFbQuotePlugin } from '~/composition/fb-plugins.js'
 
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import ContainerPhotoGallery from '~/components/photo-gallery/ContainerPhotoGallery.vue'
+import ContainerCulturePost from '~/components/culture-post/ContainerCulturePost.vue'
 import UiAdultContentWarning from '~/components/UiAdultContentWarning.vue'
 import UiStoryBody from '~/components/UiStoryBody.vue'
 import UiStoryListRelated from '~/components/UiStoryListRelated.vue'
@@ -202,6 +205,7 @@ export default {
   components: {
     ContainerHeader,
     ContainerPhotoGallery,
+    ContainerCulturePost,
     UiAdultContentWarning,
     UiStoryBody,
     UiStoryListRelated,
@@ -270,9 +274,14 @@ export default {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
     }),
-    isPhotographyStyle() {
+
+    isStylePhotography() {
       return this.story.style === 'photography'
     },
+    isStyleWide() {
+      return this.story.style === 'wide'
+    },
+
     device() {
       return this.isDesktopWidth ? 'PC' : 'MB'
     },
@@ -714,13 +723,7 @@ $story-padding-right-lg: 50px;
 
 $aside-width: 300px;
 
-.story-layout {
-  @include media-breakpoint-up(lg) {
-    background-color: #414141;
-  }
-}
-
-.layout {
+.story-slug {
   &__story-body {
     max-width: 645px;
     padding-top: 20px;
@@ -733,6 +736,12 @@ $aside-width: 300px;
       padding-bottom: 0;
       margin-left: 0;
     }
+  }
+}
+
+.article {
+  @include media-breakpoint-up(lg) {
+    background-color: #414141;
   }
 }
 

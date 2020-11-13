@@ -4,7 +4,7 @@ module.exports = function (req, res, next) {
   const hostname = req.hostname
   const url = req.url
 
-  const regexUrlNoCaching = new RegExp(`${PREVIEW_QUERY}|culturepreview`, 'gs')
+  const regexUrlNoCaching = new RegExp(PREVIEW_QUERY, 'gs')
 
   const isNoCaching =
     ENV === 'dev' ||

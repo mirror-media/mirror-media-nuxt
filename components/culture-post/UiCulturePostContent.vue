@@ -1,18 +1,23 @@
 <template>
   <article class="content">
+    <!--
+      TODO: 改用更好的 render 方式，理由請見：https://vuejs.org/v2/style-guide/#Avoid-v-if-with-v-for-essential
+    -->
     <template v-for="item in content">
       <!-- eslint-disable vue/no-v-html -->
       <h2
-        v-if="item.type === 'header-one' && checkContentIsNotEmpty(item)"
+        v-if="item.type === 'header-one' && doesHaveContent(item)"
         :id="`header-${item.id}`"
         :key="item.id"
         v-html="item.content[0]"
       />
+
       <h3
-        v-if="item.type === 'header-two' && checkContentIsNotEmpty(item)"
+        v-if="item.type === 'header-two' && doesHaveContent(item)"
         :key="item.id"
         v-html="item.content[0]"
       />
+
       <p
         v-if="item.type === 'unstyled'"
         :key="item.id"
@@ -21,12 +26,13 @@
       <!-- eslint-enable vue/no-v-html -->
 
       <figure v-if="item.type === 'image'" :key="item.id">
-        <img
-          v-lazy="processImageData(item).url"
-          :alt="processImageData(item).description"
-        />
-        <figcaption v-text="processImageData(item).description" />
+        <img v-lazy="gainImgSrc(item)" alt="" />
+
+        <figcaption v-if="gainImgCaption(item)">
+          {{ gainImgCaption(item) }}
+        </figcaption>
       </figure>
+
       <UiParagraphWithAnnotation
         v-if="item.type === 'annotation'"
         :key="item.id"
@@ -42,24 +48,28 @@ import UiParagraphWithAnnotation from '~/components/UiParagraphWithAnnotation.vu
 
 export default {
   name: 'UiCulturePostContent',
+
   components: {
     UiParagraphWithAnnotation,
   },
+
   props: {
     content: {
       type: Array,
+      default: () => [],
       required: true,
     },
   },
+
   methods: {
-    checkContentIsNotEmpty(item) {
+    doesHaveContent(item = {}) {
       return item.content?.[0]
     },
-    processImageData(image) {
-      return {
-        description: image.content?.[0]?.description,
-        url: image.content?.[0]?.tablet.url,
-      }
+    gainImgSrc(item = {}) {
+      return item.content?.[0]?.tablet?.url
+    },
+    gainImgCaption(item = {}) {
+      return item.content?.[0]?.description
     },
   },
 }
@@ -68,17 +78,27 @@ export default {
 <style lang="scss" scoped>
 .content {
   width: 300px;
-  margin: 0 auto;
-  padding: 50px 0 40px;
+  padding-top: 50px;
+  padding-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
   border-top: solid 1px #979797;
   @include media-breakpoint-up(md) {
     width: 700px;
-    padding: 0 0 62px;
+    padding-bottom: 62px;
     border-top: none;
   }
-
   @include media-breakpoint-up(lg) {
-    padding: 73px 0 62px;
+    padding-top: 73px;
+  }
+
+  &::v-deep p {
+    font-size: 15px;
+    line-height: 2;
+
+    + p {
+      margin-top: 2em;
+    }
   }
 
   > * {
@@ -88,79 +108,90 @@ export default {
     @include media-breakpoint-up(md) {
       width: 634px;
     }
-    & + * {
+
+    + * {
       margin-top: 30px;
     }
-    & + p {
+
+    + p {
       margin-top: 40px;
     }
   }
+
   h2,
   h3 {
+    font-family: source-han-serif-tc, 'Songti TC', serif;
     font-weight: 900;
-    font-family: source-han-serif-tc, Songti, 'Microsoft YaHei', serif;
     line-height: 1.5;
   }
+
   h2 {
     font-size: 28px;
     @include media-breakpoint-up(lg) {
       font-size: 30px;
     }
   }
+
   h3 {
     font-size: 18px;
-    & + .article__lightbox {
+
+    + .article__lightbox {
       margin-top: 40px;
     }
   }
+
   p {
     text-align: justify;
-    & + p {
+
+    + p {
       margin-top: 2em;
     }
-    & + .article__lightbox {
+
+    + .article__lightbox {
       margin-top: 40px;
     }
+
     &.figcaption {
       padding-top: 10px;
-      color: rgba(0, 0, 0, 0.66);
+      color: rgba(#000, 0.66);
       font-size: 13px;
       line-height: 1.5;
       letter-spacing: 1px;
       border-top: solid 1px #979797;
     }
   }
+
   &__annotation {
     text-align: justify;
-    &::v-deep {
-      span {
-        color: rgba(0, 0, 0, 0.87);
-        font-size: 15px;
-        line-height: 2;
-      }
+
+    &::v-deep span {
+      font-size: 15px;
+      line-height: 2;
     }
   }
 
-  &::v-deep {
-    a {
-      color: rgba(199, 159, 101, 0.87);
-      text-decoration: underline;
-    }
+  &::v-deep a {
+    color: rgba(199, 159, 101, 0.87);
+    text-decoration: underline;
   }
 
   figure {
     width: 100%;
+
     img {
       width: 100%;
       min-height: 100px;
       font-size: 13px;
       border-radius: 4px;
     }
+
     figcaption {
       width: 266px;
-      margin: 12px auto 0;
       padding-top: 10px;
-      color: rgba(0, 0, 0, 0.66);
+      margin-top: 12px;
+      margin-left: auto;
+      margin-right: auto;
+      color: rgba(#000, 0.66);
       font-size: 13px;
       line-height: 1.5;
       letter-spacing: 1px;

@@ -158,14 +158,6 @@ export default (context, inject) => {
     fetchAPIData(`/contacts${buildParams(params)}`)
   )
 
-  inject('fetchCulturePosts', (params, isPreview = false) => {
-    let endpoint = 'cultureposts'
-    if (isPreview) {
-      endpoint = 'culturepreview'
-    }
-    return fetchAPIData(`/${endpoint}${buildParams(params)}`)
-  })
-
   inject('fetchEvent', (params) => fetchAPIData(`/event${buildParams(params)}`))
 
   inject('fetchExternals', (params) =>

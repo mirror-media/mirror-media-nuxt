@@ -1,15 +1,22 @@
-import CulturePost from '../culture-post/_slug.vue'
-import UiCulturePostIndex from '~/components/UiCulturePostIndex.vue'
+import CulturePost from '../ContainerCulturePost.vue'
+import UiCulturePostIndex from '../UiCulturePostIndex.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper.js'
 
 const createWrapper = createWrapperHelper({
   data() {
     return {
-      post: {
+      story: {
         content: [],
       },
     }
+  },
+  mocks: {
+    $store: {
+      getters: {
+        'viewport/isViewportWidthUpXl': false,
+      },
+    },
   },
 })
 
