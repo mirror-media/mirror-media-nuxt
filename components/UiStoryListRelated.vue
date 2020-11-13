@@ -10,17 +10,12 @@
         />
       </div>
       <a
-        v-if="showImage"
         :href="`/story/${item.slug}`"
         class="item__image"
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img
-          :src="getImageSrc(item.heroImage)"
-          :alt="item.title"
-          loading="lazy"
-        />
+        <img :src="getImageSrc(item.heroImage)" alt="" />
       </a>
     </div>
 
@@ -45,17 +40,11 @@ export default {
     hasItems() {
       return this.items.length > 0
     },
-    imageIds() {
-      return this.items.map((item) => item.heroImage)
-    },
   },
   methods: {
     getImageSrc(id) {
       const data = this.images?.find((item) => item.id === id) || {}
       return data.image?.resizedTargets?.mobile?.url
-    },
-    showImage(id) {
-      return this.images.length > 0 && this.getImageSrc(id)
     },
   },
 }
