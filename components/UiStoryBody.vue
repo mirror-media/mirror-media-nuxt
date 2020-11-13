@@ -374,8 +374,7 @@ export {
     + ol,
     + .story__figure,
     + .story__code,
-    + .story__embedded-code,
-    + .story-list {
+    + .story__embedded-code {
       margin-top: 20px;
     }
 

@@ -1,5 +1,5 @@
 <template>
-  <lazy-component v-if="hasItems" class="story-list" @show="$emit('show')">
+  <div class="story-list-related">
     <div v-for="item in items" :key="item.slug" class="item">
       <div class="item__title">
         <a
@@ -20,7 +20,7 @@
     </div>
 
     <slot name="ads"></slot>
-  </lazy-component>
+  </div>
 </template>
 
 <script>
@@ -40,11 +40,7 @@ export default {
       required: true,
     },
   },
-  computed: {
-    hasItems() {
-      return this.items.length > 0
-    },
-  },
+
   methods: {
     gainImgSrcById,
   },
@@ -52,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.story-list {
+.story-list-related {
   display: flex;
   flex-direction: column;
 

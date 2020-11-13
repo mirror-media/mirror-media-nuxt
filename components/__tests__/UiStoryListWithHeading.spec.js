@@ -16,7 +16,7 @@ describe('props', () => {
         heading: headingMock,
       },
     })
-    expect(wrapper.get('.story-list__heading').text()).toBe(headingMock)
+    expect(wrapper.get('.heading').text()).toBe(headingMock)
   })
 
   test('render proper item', () => {

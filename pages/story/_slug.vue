@@ -16,6 +16,7 @@
           <UiStoryBody :story="story" class="story-slug__story-body">
             <template #storyRelateds>
               <UiStoryListWithArrow
+                class="story__list"
                 :categoryTitle="categoryTitle"
                 :items="relateds"
                 :sectionName="sectionName"
@@ -23,23 +24,28 @@
 
               <div ref="fixedTriggerFinished" />
 
-              <UiStoryListRelated
-                :items="relatedsWithoutFirstTwo"
-                :images="relatedImages"
+              <lazy-component
+                class="story__list"
                 @show="handleShowStoryListRelated"
               >
-                <template v-if="canAdvertise" #ads>
-                  <ClientOnly>
-                    <MicroAd
-                      v-for="unit in microAdUnits[device]"
-                      :key="unit.name"
-                      :unitId="unit.id"
-                    />
+                <UiStoryListRelated
+                  v-if="relatedsWithoutFirstTwo.length > 0"
+                  :items="relatedsWithoutFirstTwo"
+                  :images="relatedImages"
+                >
+                  <template v-if="canAdvertise" #ads>
+                    <ClientOnly>
+                      <MicroAd
+                        v-for="unit in microAdUnits[device]"
+                        :key="unit.name"
+                        :unitId="unit.id"
+                      />
 
-                    <div id="_popIn_recommend"></div>
-                  </ClientOnly>
-                </template>
-              </UiStoryListRelated>
+                      <div id="_popIn_recommend"></div>
+                    </ClientOnly>
+                  </template>
+                </UiStoryListRelated>
+              </lazy-component>
             </template>
 
             <template v-if="canAdvertise && isDesktopWidth" #dableWidget>
@@ -776,6 +782,10 @@ $aside-width: 300px;
 }
 
 .story {
+  &__list {
+    margin-top: 20px;
+  }
+
   &__popular-list {
     margin-bottom: 20px;
   }

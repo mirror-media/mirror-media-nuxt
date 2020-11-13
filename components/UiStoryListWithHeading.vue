@@ -1,7 +1,7 @@
 <template>
-  <div class="story-list">
-    <div class="story-list__heading" v-text="heading" />
-    <div class="story-list__list">
+  <div class="story-list-with-heading">
+    <div class="heading" v-text="heading" />
+    <div class="list">
       <div
         v-for="item in items"
         :key="item.slug"
@@ -92,9 +92,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.story-list {
+.story-list-with-heading {
   color: #34495e;
-  &__heading {
+
+  .heading {
     font-size: 24px;
     font-weight: 700;
     @include media-breakpoint-up(lg) {
@@ -110,7 +111,8 @@ export default {
       }
     }
   }
-  &__list {
+
+  .list {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
