@@ -10,7 +10,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img :src="gainImgSrc(item.heroImage)" alt="" />
+          <img :src="gainImgSrcById(imgs, item.heroImage)" alt="" />
         </a>
 
         <a
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { SITE_OG_IMG } from '~/constants/index.js'
+import { gainImgSrcById } from '~/utils/img.js'
 
 export default {
   name: 'UiCulturePostRelateds',
@@ -45,11 +45,7 @@ export default {
   },
 
   methods: {
-    gainImgSrc(id) {
-      const item = this.imgs.find((item) => item.id === id) || {}
-
-      return item.image?.resizedTargets?.mobile?.url || SITE_OG_IMG
-    },
+    gainImgSrcById,
   },
 }
 </script>

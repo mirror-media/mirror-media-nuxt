@@ -15,7 +15,7 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img :src="getImageSrc(item.heroImage)" alt="" />
+        <img :src="gainImgSrcById(images, item.heroImage)" alt="" />
       </a>
     </div>
 
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { gainImgSrcById } from '~/utils/img.js'
+
 export default {
   name: 'UiStoryListRelated',
   props: {
@@ -42,10 +44,7 @@ export default {
     },
   },
   methods: {
-    getImageSrc(id) {
-      const data = this.images?.find((item) => item.id === id) || {}
-      return data.image?.resizedTargets?.mobile?.url
-    },
+    gainImgSrcById,
   },
 }
 </script>
