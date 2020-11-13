@@ -10,7 +10,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img v-lazy="gainImgSrc(item)" alt="" />
+          <img :src="gainImgSrc(item.heroImage)" alt="" />
         </a>
 
         <a
@@ -37,12 +37,18 @@ export default {
       default: () => [],
       required: true,
     },
+    imgs: {
+      type: Array,
+      default: () => [],
+      required: true,
+    },
   },
 
   methods: {
-    // FIXME
-    gainImgSrc(item) {
-      return item.heroImage?.image?.resizedTargets?.mobile?.url || SITE_OG_IMG
+    gainImgSrc(id) {
+      const item = this.imgs.find((item) => item.id === id) || {}
+
+      return item.image?.resizedTargets?.mobile?.url || SITE_OG_IMG
     },
   },
 }

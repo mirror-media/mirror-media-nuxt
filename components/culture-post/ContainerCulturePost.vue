@@ -22,7 +22,13 @@
 
     <UiCulturePostContent :content="post.content" />
 
-    <UiCulturePostRelateds v-if="relateds.length > 0" :items="relateds" />
+    <lazy-component @show="fetchRelatedImgs">
+      <UiCulturePostRelateds
+        v-if="relateds.length > 0"
+        :items="relateds"
+        :imgs="relatedImgs"
+      />
+    </lazy-component>
 
     <div v-if="updatedAt" class="culture-post__updated-at">
       更新時間 / {{ updatedAt }}
@@ -66,6 +72,8 @@ export default {
 
       currentIndex: 0,
       isIndexActive: false,
+
+      relatedImgs: [],
     }
   },
 
@@ -177,6 +185,17 @@ export default {
     },
     handleIndexActive(isActive) {
       this.isIndexActive = isActive
+    },
+
+    async fetchRelatedImgs() {
+      if (this.relatedImgs.length > 0) {
+        return
+      }
+
+      const imgIds = this.relateds.map((item) => item.heroImage)
+      const { items = [] } = await this.$fetchImages({ id: imgIds })
+
+      this.relatedImgs = items
     },
   },
 
