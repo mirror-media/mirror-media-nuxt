@@ -406,57 +406,49 @@ export default {
     handleShowDableWidget() {
       this.shouldLoadDableScript = true
     },
-    handleFixAside() {
-      _.throttle(
-        () => {
-          const {
-            latestList,
-            fixedContainer,
-            fixedTriggerFinished,
-          } = this.$refs
+    handleFixAside: _.throttle(
+      function () {
+        const { latestList, fixedContainer, fixedTriggerFinished } = this.$refs
 
-          if (!latestList) {
-            return
-          }
+        if (!latestList) {
+          return
+        }
 
-          const {
-            bottom: latestListBottom,
-          } = latestList.getBoundingClientRect()
-          const {
-            top: fixedTriggerFinishedTop,
-          } = fixedTriggerFinished.getBoundingClientRect()
+        const { bottom: latestListBottom } = latestList.getBoundingClientRect()
+        const {
+          top: fixedTriggerFinishedTop,
+        } = fixedTriggerFinished.getBoundingClientRect()
 
-          // 當視窗頂部 <= latestList 底部，結束 fix
-          if (latestListBottom > 0) {
-            fixedContainer.classList.remove('fixed')
-            fixedContainer.style.marginTop = ''
+        // 當視窗頂部 <= latestList 底部，結束 fix
+        if (latestListBottom > 0) {
+          fixedContainer.classList.remove('fixed')
+          fixedContainer.style.marginTop = ''
 
-            return
-          }
+          return
+        }
 
-          // 當視窗頂部 > latestList 底部，且視窗底部 <= fixedTriggerFinished 頂部，開始 fix
-          if (
-            latestListBottom <= 0 &&
-            fixedTriggerFinishedTop - this.viewportHeight > 0
-          ) {
-            fixedContainer.classList.add('fixed')
-            fixedContainer.style.marginTop = ''
+        // 當視窗頂部 > latestList 底部，且視窗底部 <= fixedTriggerFinished 頂部，開始 fix
+        if (
+          latestListBottom <= 0 &&
+          fixedTriggerFinishedTop - this.viewportHeight > 0
+        ) {
+          fixedContainer.classList.add('fixed')
+          fixedContainer.style.marginTop = ''
 
-            return
-          }
+          return
+        }
 
-          // 當視窗底部 > fixedTriggerFinished 頂部，結束 fix
-          if (fixedTriggerFinishedTop - this.viewportHeight <= 0) {
-            fixedContainer.classList.remove('fixed')
-            fixedContainer.style.marginTop = `${
-              fixedTriggerFinishedTop - latestListBottom - this.viewportHeight
-            }px`
-          }
-        },
-        100,
-        { trailing: false }
-      )()
-    },
+        // 當視窗底部 > fixedTriggerFinished 頂部，結束 fix
+        if (fixedTriggerFinishedTop - this.viewportHeight <= 0) {
+          fixedContainer.classList.remove('fixed')
+          fixedContainer.style.marginTop = `${
+            fixedTriggerFinishedTop - latestListBottom - this.viewportHeight
+          }px`
+        }
+      },
+      100,
+      { trailing: false }
+    ),
     cleanFixedAside() {
       const { fixedContainer } = this.$refs
 
