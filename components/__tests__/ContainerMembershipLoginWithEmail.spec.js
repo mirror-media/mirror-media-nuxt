@@ -13,15 +13,15 @@ const createWrapper = createWrapperHelper({
   },
 })
 
-describe('handle event emitted by child component UIMembershipEmailInput', function () {
-  test('handle "input" event emitted by UIMembershipEmailInput', function () {
+describe('handle event emitted by child component UiMembershipEmailInput', function () {
+  test('handle "input" event emitted by UiMembershipEmailInput', function () {
     const wrapper = createWrapper(ContainerMembershipLoginWithEmail)
     const emailInput = wrapper.findComponent(UiMembershipEmailInput)
     const mockInputValue = 'mockInputValue'
     emailInput.vm.$emit('input', mockInputValue)
     expect(wrapper.vm.emailInput).toBe(mockInputValue)
   })
-  test('handle "inputValidStateChange" event emitted by UIMembershipEmailInput', function () {
+  test('handle "inputValidStateChange" event emitted by UiMembershipEmailInput', function () {
     const wrapper = createWrapper(ContainerMembershipLoginWithEmail)
     const emailInput = wrapper.findComponent(UiMembershipEmailInput)
     const mockEmailInputValidState = true
@@ -47,7 +47,7 @@ describe('@nuxtjs/firebase service', function () {
 })
 
 describe('handleSubmit method about behaviours after login button clicked', function () {
-  test('should not send finish-sign-in link to email through @nuxtjs/firebase if email input is empty, but show the invalid hint in child component UIMembershipEmailInput', async function () {
+  test('should not send finish-sign-in link to email through @nuxtjs/firebase if email input is empty, but show the invalid hint in child component UiMembershipEmailInput', async function () {
     expect.assertions(2)
     const mockSendSignInLinkToEmail = jest.fn()
     const wrapper = createWrapper(ContainerMembershipLoginWithEmail, {
@@ -66,7 +66,7 @@ describe('handleSubmit method about behaviours after login button clicked', func
     expect(mockSendSignInLinkToEmail).not.toHaveBeenCalled()
   })
   test(`should
-    show invalid hint in UIMembershipEmailInput,
+    show invalid hint in UiMembershipEmailInput,
     send finish-sign-in link to email through @nuxtjs/firebase,
     store the email using localforage,
     hide form and show the success hint in /login page
