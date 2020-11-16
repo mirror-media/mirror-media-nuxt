@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header :class="{ fixed: shouldFixHeader }">
     <div class="header-top-layer">
       <button
         type="button"
@@ -9,19 +9,25 @@
       />
 
       <div class="logo-wrapper">
-        <a href="/" class="logo" @click="sendHeaderGa('logo')">
-          <img src="~/assets/logo.png" :alt="SITE_TITLE" />
+        <a href="/" class="logo logo--site" @click="sendHeaderGa('logo')">
+          <img
+            :src="
+              require(`~/assets/${shouldFixHeader ? 'logo@2x' : 'logo'}.png`)
+            "
+            :alt="SITE_TITLE"
+          />
         </a>
 
         <UiEventLogo
           v-if="shouldOpenEventLogo"
+          v-show="!shouldFixHeader"
           class="logo"
           :eventLogo="eventLogo"
           @sendGa="handleSendGa"
         />
         <client-only>
           <ContainerGptAd
-            v-show="hasGptLogo"
+            v-show="shouldShowGptLogo"
             pageKey="global"
             adKey="RWD_LOGO"
             class="logo"
@@ -31,13 +37,23 @@
       </div>
 
       <div class="header-search">
-        <UiSearchBarWrapper :options="options" @sendGa="handleSendGa" />
+        <UiSearchBarWrapper
+          class="header__search-bar-wrapper"
+          :options="options"
+          @sendGa="handleSendGa"
+        />
+
         <UiOthersList
           class="others-list"
           :links="otherLinks"
           eventCategory="header"
           @sendGa="handleSendGa"
         />
+      </div>
+
+      <div v-if="shouldFixHeader" class="share-wrapper">
+        <UiShareFb />
+        <UiShareLine />
       </div>
     </div>
 
@@ -80,6 +96,8 @@ import UiOthersList from './UiOthersList.vue'
 import UiHeaderNavSection from './UiHeaderNavSection.vue'
 import UiHeaderNavTopic from './UiHeaderNavTopic.vue'
 import UiSidebar from './UiSidebar.vue'
+import UiShareFb from '~/components/UiShareFb.vue'
+import UiShareLine from '~/components/UiShareLine.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import {
@@ -88,6 +106,8 @@ import {
   OTHER_LINKS,
   SITE_TITLE,
 } from '~/constants/index'
+
+let headerHight = 0
 
 export default {
   name: 'ContainerHeader',
@@ -98,10 +118,13 @@ export default {
     UiHeaderNavSection,
     UiHeaderNavTopic,
     UiSidebar,
+    UiShareFb,
+    UiShareLine,
     ContainerGptAd,
   },
   data() {
     return {
+      shouldFixHeader: false,
       eventLogo: {},
       now: new Date(),
       intervalIdOfUpdateNow: undefined,
@@ -118,6 +141,7 @@ export default {
       sectionByCategoryName: 'sections/sectionByCategoryName',
       partners: 'partners/displayedPartners',
       topics: 'topics/displayedTopics',
+      isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
     shouldOpenEventLogo() {
       // 當有 GPT Logo 時不應該出現 Event Logo
@@ -132,6 +156,9 @@ export default {
     },
     hasEventLogo() {
       return Object.keys(this.eventLogo).length > 0
+    },
+    shouldShowGptLogo() {
+      return this.hasGptLogo && !this.shouldFixHeader
     },
     options() {
       const sections = this.sections.filter(
@@ -150,6 +177,13 @@ export default {
     },
   },
   watch: {
+    isDesktopWidth() {
+      if (!this.isDesktopWidth) {
+        this.listenScrollToFixHeader()
+      } else {
+        this.cleanFixedHeader()
+      }
+    },
     '$route.fullPath'() {
       this.shouldOpenSidebar = false
     },
@@ -163,7 +197,16 @@ export default {
 
     this.intervalIdOfUpdateNow = setInterval(this.updateNow, 1000)
   },
+
+  mounted() {
+    if (!this.isDesktopWidth) {
+      this.listenScrollToFixHeader()
+    }
+  },
+
   beforeDestroy() {
+    window.removeEventListener('scroll', this.handleFixHeader)
+
     clearInterval(this.intervalIdOfUpdateNow)
   },
   methods: {
@@ -171,6 +214,26 @@ export default {
     fetchOnClient() {
       this.fetchEventLogo()
     },
+
+    listenScrollToFixHeader() {
+      headerHight = this.$el.offsetHeight
+      this.handleFixHeader()
+      window.addEventListener('scroll', this.handleFixHeader)
+    },
+    handleFixHeader() {
+      this.shouldFixHeader = window.pageYOffset >= headerHight
+
+      document.body.style.paddingTop = this.shouldFixHeader
+        ? `${headerHight}px`
+        : ''
+    },
+    cleanFixedHeader() {
+      window.removeEventListener('scroll', this.handleFixHeader)
+
+      this.shouldFixHeader = false
+      document.body.style.paddingTop = ''
+    },
+
     async fetchEventLogo() {
       const eventLogoResponse = await this.$fetchEvent({
         isFeatured: true,
@@ -256,21 +319,62 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$header-top-layer-width: 90%;
+$header-top-layer-padding-x: (100% - $header-top-layer-width) / 2;
 $menu-icon-width: 24px;
 $logo-wrapper-margin-x: 8px;
+$header-search-margin-right: 20px;
+$share-wrapper-width: 70px;
 $search-icon-width: 18px;
+$search-field-arrow-width: 11px;
 
 header {
   background-color: #f5f5f5;
   z-index: 99;
   position: relative;
+
+  &.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    .header-top-layer {
+      height: 50px;
+    }
+
+    .logo-wrapper {
+      width: auto;
+      margin-right: auto;
+      margin-left: 10px;
+    }
+
+    .logo--site img {
+      width: 30px;
+    }
+
+    .header-search {
+      margin-right: $header-search-margin-right;
+    }
+
+    .header__search-bar-wrapper::v-deep .search-bar .field {
+      top: 50px;
+
+      &::before {
+        right: calc(
+          #{$header-top-layer-padding-x} + #{$share-wrapper-width} + #{$header-search-margin-right} +
+            #{($search-icon-width - $search-field-arrow-width) / 2}
+        );
+      }
+    }
+  }
 }
 
 .header-top-layer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 90%;
+  width: $header-top-layer-width;
   max-width: 1024px;
   height: 90px;
   margin-left: auto;
@@ -329,6 +433,19 @@ header {
   align-items: center;
   z-index: 149;
 }
+
+.share-wrapper {
+  display: flex;
+
+  a {
+    width: 30px;
+
+    + a {
+      margin-left: 10px;
+    }
+  }
+}
+
 .others-list {
   display: none;
   @include media-breakpoint-up(xl) {

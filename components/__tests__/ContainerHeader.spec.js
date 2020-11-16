@@ -1,5 +1,6 @@
 import ContainerHeader from '../ContainerHeader.vue'
 import UiEventLogo from '../UiEventLogo.vue'
+import ContainerGptAd from '../ContainerGptAd.vue'
 import UiSearchBarWrapper from '../UiSearchBarWrapper.vue'
 import UiOthersList from '../UiOthersList.vue'
 import UiHeaderNavSection from '../UiHeaderNavSection.vue'
@@ -16,6 +17,7 @@ const createWrapper = createWrapperHelper({
     }),
     partners: () => [],
     topics: () => [],
+    isDesktopWidth: () => false,
   },
   mocks: {
     $fetchEvent: () => Promise.resolve({}),
@@ -27,6 +29,124 @@ const createWrapper = createWrapperHelper({
     },
   },
   stubs: ['nuxt-link', 'client-only', 'GptAd'],
+})
+
+describe('when the header is fixed', () => {
+  test('display the fixed header', async () => {
+    expect.assertions(1)
+
+    /* Arrange */
+    const sut = createWrapper(ContainerHeader)
+
+    await sut.vm.$nextTick()
+
+    /* Assert */
+    expect(sut.get('header').classes('fixed')).toBe(true)
+  })
+
+  test('hide the event logo', async () => {
+    expect.assertions(1)
+
+    /* Arrange */
+    const sut = createWrapper(ContainerHeader, {
+      computed: {
+        shouldOpenEventLogo: () => true,
+      },
+    })
+
+    await sut.vm.$nextTick()
+
+    /* Assert */
+    expect(sut.getComponent(UiEventLogo).isVisible()).toBe(false)
+  })
+
+  test('hide the AD of RWD_LOGO', async () => {
+    expect.assertions(1)
+
+    /* Arrange */
+    const sut = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          hasGptLogo: true,
+        }
+      },
+    })
+
+    await sut.vm.$nextTick()
+
+    /* Assert */
+    expect(sut.getComponent(ContainerGptAd).isVisible()).toBe(false)
+  })
+
+  test('show the share icons', async () => {
+    expect.assertions(1)
+
+    /* Arrange */
+    const sut = createWrapper(ContainerHeader)
+
+    await sut.vm.$nextTick()
+
+    /* Assert */
+    expect(sut.find('.share-wrapper').exists()).toBe(true)
+  })
+
+  /**
+   * 測不到這個行為，僅作為提醒
+   * test('display the small Mirror Media logo')
+   */
+})
+
+describe('when the header is not fixed', () => {
+  test('display the normal header', () => {
+    const sut = createWrapper(ContainerHeader, {
+      computed: {
+        isDesktopWidth: () => true,
+      },
+    })
+
+    expect(sut.get('header').classes('fixed')).toBe(false)
+  })
+
+  test('show the event logo', () => {
+    const sut = createWrapper(ContainerHeader, {
+      computed: {
+        isDesktopWidth: () => true,
+        shouldOpenEventLogo: () => true,
+      },
+    })
+
+    expect(sut.getComponent(UiEventLogo).isVisible()).toBe(true)
+  })
+
+  test('show the AD of RWD_LOGO', () => {
+    const sut = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          hasGptLogo: true,
+        }
+      },
+      computed: {
+        isDesktopWidth: () => true,
+      },
+    })
+
+    expect(sut.getComponent(ContainerGptAd).isVisible()).toBe(true)
+  })
+
+  test('hide the share icons', () => {
+    const sut = createWrapper(ContainerHeader, {
+      computed: {
+        isDesktopWidth: () => true,
+      },
+    })
+
+    expect(sut.find('.share-wrapper').exists()).toBe(false)
+  })
+
+  /**
+   * 測不到這個行為，僅作為提醒
+   * test('display the full Mirror Media logo')
+   */
 })
 
 describe('event logo', () => {
