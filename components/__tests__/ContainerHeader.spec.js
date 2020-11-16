@@ -12,7 +12,7 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 const createWrapper = createWrapperHelper({
   computed: {
     sections: () => [],
-    sectionByCategoryName: () => () => ({
+    gainSectionByCategoryName: () => () => ({
       name: undefined,
     }),
     partners: () => [],
@@ -27,6 +27,7 @@ const createWrapper = createWrapperHelper({
       },
       commit: jest.fn(),
     },
+    $route: { path: '/' },
   },
   stubs: ['ClientOnly'],
 })
@@ -275,10 +276,7 @@ describe('setSectionName', () => {
       commit: jest.fn(),
     }
     createWrapper(ContainerHeader, {
-      mocks: {
-        $route: { path: '/' },
-        $store,
-      },
+      mocks: { $store },
     })
 
     expect($store.commit).toBeCalledWith('setSectionName', 'home')
@@ -306,7 +304,7 @@ describe('setSectionName', () => {
     const mockSectionName = 'people'
     createWrapper(ContainerHeader, {
       computed: {
-        sectionByCategoryName: () => () => ({
+        gainSectionByCategoryName: () => () => ({
           name: mockSectionName,
         }),
       },
@@ -352,10 +350,7 @@ describe('setSectionName', () => {
       commit: jest.fn(),
     }
     const wrapper = createWrapper(ContainerHeader, {
-      mocks: {
-        $route: { path: '/' },
-        $store,
-      },
+      mocks: { $store },
     })
 
     const mockSectionName = 'news'

@@ -105,6 +105,7 @@ import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
+import { removePrefix } from '~/utils/index.js'
 import {
   SUB_BRAND_LINKS,
   SOCIAL_MEDIA_LINKS,
@@ -149,7 +150,7 @@ export default {
     ...mapState(['sectionName']),
     ...mapGetters({
       sections: 'sections/displayedSections',
-      sectionByCategoryName: 'sections/sectionByCategoryName',
+      gainSectionByCategoryName: 'sections/gainSectionByCategoryName',
       partners: 'partners/displayedPartners',
       topics: 'topics/displayedTopics',
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
@@ -192,7 +193,7 @@ export default {
       this.shouldOpenSidebar = false
     },
     '$route.path': {
-      handler: 'activeTheNavSection',
+      handler: 'highlightANavSection',
       immediate: true,
     },
   },
@@ -280,44 +281,36 @@ export default {
       this.$ga.event(param)
     },
 
-    activeTheNavSection(path) {
-      const regexWithPrefixOfStory = this.generateRegexWithPrefixOf('/story/')
-
+    highlightANavSection(path) {
       // 文章頁也需要設定 sectionName，但不是在這邊做，而需移到 story page，故 return
-      if (this.hasPrefix(path, regexWithPrefixOfStory)) {
+      if (path.startsWith('/story/')) {
         return
       }
 
-      const regexWithPrefixOfSection = this.generateRegexWithPrefixOf(
-        '/section/'
-      )
-      const regexWithPrefixOfCategory = this.generateRegexWithPrefixOf(
-        '/category/'
-      )
-      let sectionName
+      {
+        let sectionName
 
-      if (path === '/') {
-        sectionName = 'home'
-      } else if (this.hasPrefix(path, regexWithPrefixOfSection)) {
-        sectionName = this.removePrefix(path, regexWithPrefixOfSection)
-        if (sectionName === 'topic') {
-          return
+        {
+          const sec = '/section/'
+          const cat = '/category/'
+
+          if (path === '/') {
+            sectionName = 'home'
+          } else if (path.startsWith(sec)) {
+            sectionName = removePrefix(path, sec)
+
+            if (sectionName === 'topic') {
+              return
+            }
+          } else if (path.startsWith(cat)) {
+            const categoryName = removePrefix(path, cat)
+
+            sectionName = this.gainSectionByCategoryName(categoryName).name
+          }
         }
-      } else if (this.hasPrefix(path, regexWithPrefixOfCategory)) {
-        const categoryName = this.removePrefix(path, regexWithPrefixOfCategory)
-        sectionName = this.sectionByCategoryName(categoryName).name
-      }
 
-      this.setSectionName(sectionName)
-    },
-    generateRegexWithPrefixOf(string) {
-      return new RegExp(`^${string}`, 'i')
-    },
-    hasPrefix(string, prefix) {
-      return prefix.test(string)
-    },
-    removePrefix(string, prefix) {
-      return string.split(prefix)[1]
+        this.setSectionName(sectionName)
+      }
     },
   },
 }

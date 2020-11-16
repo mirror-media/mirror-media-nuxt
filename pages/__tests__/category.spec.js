@@ -9,7 +9,7 @@ import { SITE_TITLE } from '~/constants'
 
 const createWrapper = createWrapperHelper({
   computed: {
-    sectionByCategoryName: () => () => ({
+    gainSectionByCategoryName: () => () => ({
       categories: [],
     }),
   },
@@ -60,7 +60,7 @@ describe('section data', () => {
     }
     const wrapper = createWrapper(page, {
       computed: {
-        sectionByCategoryName: () => () => sectionDataMock,
+        gainSectionByCategoryName: () => () => sectionDataMock,
       },
       mocks: {
         $route: {
@@ -93,7 +93,7 @@ describe('category data', () => {
     }
     const wrapper = createWrapper(page, {
       computed: {
-        sectionByCategoryName: () => () => sectionDataMock,
+        gainSectionByCategoryName: () => () => sectionDataMock,
       },
       mocks: {
         $route: {
@@ -158,7 +158,7 @@ describe('component methods', () => {
 
     const wrapper = createWrapper(page, {
       computed: {
-        sectionByCategoryName: () => () => sectionDataMock,
+        gainSectionByCategoryName: () => () => sectionDataMock,
       },
       mocks: {
         $route: {
@@ -220,7 +220,7 @@ describe('meta', function () {
 
     const wrapper = createWrapper(page, {
       computed: {
-        sectionByCategoryName: () => () => sectionDataMock,
+        gainSectionByCategoryName: () => () => sectionDataMock,
       },
       mocks: {
         $route: {

@@ -3,4 +3,9 @@ function isTruthy(val) {
   return val
 }
 
-export { isTruthy }
+// Example: removePrefix('/section/news', '/section/') will return 'news'
+function removePrefix(str = '', prefix = '') {
+  return str.slice(prefix.length)
+}
+
+export { isTruthy, removePrefix }
