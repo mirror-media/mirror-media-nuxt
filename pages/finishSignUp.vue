@@ -37,38 +37,9 @@ import UiMembershipEmailError from '~/components/UiMembershipEmailError.vue'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.
- * This component just implement the 1. part below in the flow and store the email for further email validation in 3. part.
- * For more info: https://firebase.google.com/docs/auth/web/email-link-auth
- *
- * 1. https://website/login            firebase.auth.sendSignInLinkToEmail("example@example.com")
- *                                                               +
- *                                                               |
- *                                                               |
- *                                                               v
- * 2. member's email service             click "https://website/finishSignIn" link in email
- *                                                               +
- *                                                               |
- *                                                               |
- *                                                               v
- * 3. https://website/finishSignUp    firebase.auth.isSignInWithEmailLink(window.location.href)
- *                                                 +                            +
- *                                              No |                            | Yes
- *                                                 |                            |
- *                                                 |       +-------------email validation------------+
- *                                                 v       |                    v                    |
- *                             back to "https://website/"  |   is email store in storage of device?  |
- *                                                         |           +                   +         |
- *                                                         |           |                   |         |
- *                                                         |        No |                   | Yes     |
- *                                                         |           |                   |         |
- *                                                         |           v                   |         |
- *                                                         |  provide your email           |         |
- *                                                         |           +                   |         |
- *                                                         |           |                   |         |
- *                                                         +-----------------------------------------+
- *                                                                     |                   v
- *                                                                     +-------->  sign in with email successfully
- *                                                                      with firebase.auth.signInWithEmailLink("example@example.com", window.location.href)
+ * https://github.com/mirror-media/mirror-media-nuxt/wiki/Firebase-Email-Authenticate-Flow
+ * This page component is about the 3rd part of the flow
+ * For more info: https://firebase.google.com/docs/auth/web/email-link-auth#complete_sign_in_with_the_email_link
  */
 export default {
   components: {
