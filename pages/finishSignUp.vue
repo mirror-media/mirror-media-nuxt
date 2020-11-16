@@ -1,6 +1,11 @@
 <template>
   <section class="page">
-    <template v-if="shouldProvideEmailManually">
+    <UiMembershipError
+      v-if="isErrorOccur"
+      class="confirm-email-error-wrapper"
+      @backToForm="handleBackToForm"
+    />
+    <template v-else-if="shouldProvideEmailManually">
       <div
         v-if="provideEmailManuallyState === 'form'"
         class="confirm-email-form-wrapper"
@@ -21,11 +26,6 @@
           </button>
         </form>
       </div>
-      <UiMembershipError
-        v-else-if="provideEmailManuallyState === 'error'"
-        class="confirm-email-error-wrapper"
-        @backToForm="handleBackToForm"
-      />
     </template>
   </section>
 </template>
@@ -61,6 +61,7 @@ export default {
       shouldProvideEmailManually: false,
       shouldShowInvalidHint: false,
       provideEmailManuallyState: 'form',
+      isErrorOccur: false,
     }
   },
   computed: {
@@ -98,7 +99,7 @@ export default {
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e)
-        this.provideEmailManuallyState = 'error'
+        this.isErrorOccur = true
       }
     },
     handleInputValidStateChange(value) {
