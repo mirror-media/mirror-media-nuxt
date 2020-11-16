@@ -276,7 +276,7 @@ header {
   }
 }
 .menu-icon {
-  flex: 0 0 auto;
+  flex-shrink: 0;
   width: 24px;
   height: 40px;
   background-image: url(~assets/hamburger@2x.png);
@@ -293,7 +293,6 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 0 1 auto;
   // 58 = (24 + 18) + (8 * 2)
   width: calc(100% - 58px);
   @include media-breakpoint-up(xl) {
@@ -304,13 +303,11 @@ header {
 .logo {
   cursor: pointer;
   user-select: none;
-  &::v-deep {
-    img {
-      width: 95px;
-      @include media-breakpoint-up(xl) {
-        width: auto;
-        height: 50px;
-      }
+  &::v-deep img {
+    width: 95px;
+    @include media-breakpoint-up(xl) {
+      width: auto;
+      height: 50px;
     }
   }
   + .logo {
@@ -319,7 +316,7 @@ header {
 }
 .header-search {
   display: flex;
-  flex: 0 0 auto;
+  flex-shrink: 0;
   align-items: center;
   z-index: 149;
 }
