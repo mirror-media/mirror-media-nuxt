@@ -1,8 +1,8 @@
 import createWrapperHelper from '@/test/helpers/createWrapperHelper'
 import localforage from 'localforage'
 import flushPromises from 'flush-promises'
-import UiMembershipEmailError from '@/components/UiMembershipEmailError.vue'
 import page from '../finishSignUp.vue'
+import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
 
 const createWrapper = createWrapperHelper({
@@ -87,7 +87,7 @@ describe('email validations', function () {
     await submitButton.trigger('click')
     await flushPromises()
     expect(wrapper.find('.confirm-email-error-wrapper').exists()).toBe(true)
-    const errorWrapper = wrapper.findComponent(UiMembershipEmailError)
+    const errorWrapper = wrapper.findComponent(UiMembershipError)
     errorWrapper.vm.$emit('backToForm')
     expect(mockRouter.replace).toHaveBeenCalledWith('/login')
   })

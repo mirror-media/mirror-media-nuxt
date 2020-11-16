@@ -21,7 +21,7 @@
           </button>
         </form>
       </div>
-      <UiMembershipEmailError
+      <UiMembershipError
         v-else-if="provideEmailManuallyState === 'error'"
         class="confirm-email-error-wrapper"
         @backToForm="handleBackToForm"
@@ -32,8 +32,8 @@
 
 <script>
 import localforage from 'localforage'
+import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
-import UiMembershipEmailError from '~/components/UiMembershipEmailError.vue'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.
@@ -44,7 +44,7 @@ import UiMembershipEmailError from '~/components/UiMembershipEmailError.vue'
 export default {
   components: {
     UiMembershipEmailInput,
-    UiMembershipEmailError,
+    UiMembershipError,
   },
 
   async middleware({ app, redirect, req }) {
