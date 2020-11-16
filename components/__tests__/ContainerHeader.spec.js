@@ -28,7 +28,7 @@ const createWrapper = createWrapperHelper({
       commit: jest.fn(),
     },
   },
-  stubs: ['nuxt-link', 'client-only', 'GptAd'],
+  stubs: ['client-only'],
 })
 
 describe('when the header is fixed', () => {
