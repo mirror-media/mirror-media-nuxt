@@ -32,122 +32,73 @@ const createWrapper = createWrapperHelper({
   stubs: ['ClientOnly'],
 })
 
-describe('when the header is fixed', () => {
-  test('display the fixed header', async () => {
-    expect.assertions(1)
+describe('fixed header', () => {
+  test('disply the content when the header is fixed', async () => {
+    expect.assertions(4)
 
     /* Arrange */
-    const sut = createWrapper(ContainerHeader)
+    const sut = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          hasGptLogo: true,
+        }
+      },
+      computed: {
+        shouldOpenEventLogo: () => true,
+      },
+    })
 
     await sut.vm.$nextTick()
 
     /* Assert */
+    // display the fixed header style
     expect(sut.get('header').classes('fixed')).toBe(true)
-  })
 
-  test('hide the event logo', async () => {
-    expect.assertions(1)
-
-    /* Arrange */
-    const sut = createWrapper(ContainerHeader, {
-      computed: {
-        shouldOpenEventLogo: () => true,
-      },
-    })
-
-    await sut.vm.$nextTick()
-
-    /* Assert */
+    // hide the event logo
     expect(sut.getComponent(UiEventLogo).isVisible()).toBe(false)
+
+    // hide the AD of RWD_LOGO
+    expect(sut.getComponent(ContainerGptAd).isVisible()).toBe(false)
+
+    // show the share icons
+    expect(sut.find('.share-wrapper').exists()).toBe(true)
+
+    /**
+     * 以下的行為測不到，僅作為提醒：
+     * display the small Mirror Media logo
+     */
   })
 
-  test('hide the AD of RWD_LOGO', async () => {
-    expect.assertions(1)
-
-    /* Arrange */
+  test('disply the content when the header is not fixed', () => {
     const sut = createWrapper(ContainerHeader, {
       data() {
         return {
           hasGptLogo: true,
         }
       },
-    })
-
-    await sut.vm.$nextTick()
-
-    /* Assert */
-    expect(sut.getComponent(ContainerGptAd).isVisible()).toBe(false)
-  })
-
-  test('show the share icons', async () => {
-    expect.assertions(1)
-
-    /* Arrange */
-    const sut = createWrapper(ContainerHeader)
-
-    await sut.vm.$nextTick()
-
-    /* Assert */
-    expect(sut.find('.share-wrapper').exists()).toBe(true)
-  })
-
-  /**
-   * 測不到這個行為，僅作為提醒
-   * test('display the small Mirror Media logo')
-   */
-})
-
-describe('when the header is not fixed', () => {
-  test('display the normal header', () => {
-    const sut = createWrapper(ContainerHeader, {
-      computed: {
-        isDesktopWidth: () => true,
-      },
-    })
-
-    expect(sut.get('header').classes('fixed')).toBe(false)
-  })
-
-  test('show the event logo', () => {
-    const sut = createWrapper(ContainerHeader, {
       computed: {
         isDesktopWidth: () => true,
         shouldOpenEventLogo: () => true,
       },
     })
 
+    // display the normal header style
+    expect(sut.get('header').classes('fixed')).toBe(false)
+
+    // show the event logo
     expect(sut.getComponent(UiEventLogo).isVisible()).toBe(true)
-  })
 
-  test('show the AD of RWD_LOGO', () => {
-    const sut = createWrapper(ContainerHeader, {
-      data() {
-        return {
-          hasGptLogo: true,
-        }
-      },
-      computed: {
-        isDesktopWidth: () => true,
-      },
-    })
-
+    // show the AD of RWD_LOGO
     expect(sut.getComponent(ContainerGptAd).isVisible()).toBe(true)
-  })
 
-  test('hide the share icons', () => {
-    const sut = createWrapper(ContainerHeader, {
-      computed: {
-        isDesktopWidth: () => true,
-      },
-    })
-
+    // hide the share icons
     expect(sut.find('.share-wrapper').exists()).toBe(false)
-  })
 
-  /**
-   * 測不到這個行為，僅作為提醒
-   * test('display the full Mirror Media logo')
-   */
+    /**
+     * 以下的行為測不到，僅作為提醒：
+     * display the full Mirror Media logo
+     */
+  })
 })
 
 describe('event logo', () => {
