@@ -1,7 +1,6 @@
 import flushPromises from 'flush-promises'
 import UiMembershipEmailInput from '@/components/UiMembershipEmailInput.vue'
 import localforage from 'localforage'
-import UiMembershipEmailError from '@/components/UiMembershipEmailError.vue'
 import ContainerMembershipLoginWithEmail from '../ContainerMembershipLoginWithEmail.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -71,10 +70,9 @@ describe('handleSubmit method about behaviours after login button clicked', func
     than
     send finish-sign-in link to email through @nuxtjs/firebase,
     store the email using localforage,
-    hide form and show the success hint in /login page
     if email input is valid and @nuxtjs/firebase auth request send successfully
   `, async function () {
-    expect.assertions(6)
+    expect.assertions(5)
     const mockSendSignInLinkToEmail = jest.fn(() => Promise.resolve())
     const spySetItem = jest
       .spyOn(localforage, 'setItem')
@@ -107,8 +105,7 @@ describe('handleSubmit method about behaviours after login button clicked', func
     )
     expect(spySetItem).toHaveBeenCalledWith('emailForSignIn', mockEmail)
     await flushPromises()
-    expect(wrapper.find('.login-form-wrapper').exists()).toBe(false)
-    expect(wrapper.find('.login-success-wrapper').exists()).toBe(true)
+    expect(wrapper.emitted().success[0]).toEqual([mockEmail])
   })
   test('should append "shouldRememberMe=true" query to sign in link to email if .remember-me-checkbox was checked', async function () {
     expect.assertions(1)
@@ -141,12 +138,8 @@ describe('handleSubmit method about behaviours after login button clicked', func
       `${mockOrigin}/finishSignUp?shouldRememberMe=true`
     )
   })
-  test(`should
-    show error hint,
-    be able to get back to the form in error hint
-    if we encounter some error after @nuxjs/firebase auth request
-  `, async function () {
-    expect.assertions(4)
+  test('should emit error event if we encounter some error after @nuxjs/firebase auth request', async function () {
+    expect.assertions(1)
     const mockSendSignInLinkToEmail = jest.fn(() =>
       Promise.reject(new Error('mock error'))
     )
@@ -166,11 +159,6 @@ describe('handleSubmit method about behaviours after login button clicked', func
     const submitButton = wrapper.find('.login-button')
     await submitButton.trigger('click')
     await flushPromises()
-    expect(wrapper.find('.login-form-wrapper').exists()).toBe(false)
-    expect(wrapper.find('.login-error-wrapper').exists()).toBe(true)
-    const errorWrapper = wrapper.findComponent(UiMembershipEmailError)
-    await errorWrapper.vm.$emit('backToForm')
-    expect(wrapper.find('.login-form-wrapper').exists()).toBe(true)
-    expect(wrapper.find('.login-error-wrapper').exists()).toBe(false)
+    expect(wrapper.emitted().error).toBeTruthy()
   })
 })

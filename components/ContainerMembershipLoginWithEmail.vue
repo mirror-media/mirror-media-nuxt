@@ -1,40 +1,26 @@
 <template>
-  <section class="page">
-    <div v-if="loginPageState === 'form'" class="login-form-wrapper">
-      <h1 class="title">登入</h1>
-      <form class="page__form form" novalidate @submit.prevent>
-        <UiMembershipEmailInput
-          :shouldShowInvalidHint="shouldShowInvalidHint"
-          @input="handleEmailInput"
-          @inputValidStateChange="handleInputValidStateChange"
-        />
-        <label class="form__remember-me-checkbox remember-me-checkbox">
-          <input v-model="shouldRememberMe" type="checkbox" />
-          保持登入
-        </label>
-        <button class="form__login-button login-button" @click="handleSubmit">
-          登入
-        </button>
-      </form>
-    </div>
-    <UiMembershipEmailSuccess
-      v-else-if="loginPageState === 'success'"
-      class="login-success-wrapper"
-      :emailInput="emailInput"
-    />
-    <UiMembershipEmailError
-      v-else-if="loginPageState === 'error'"
-      class="login-error-wrapper"
-      @backToForm="handleBackToForm"
-    />
-  </section>
+  <div class="login-form-wrapper">
+    <h1 class="title">登入</h1>
+    <form class="login-form-wrapper__form form" novalidate @submit.prevent>
+      <UiMembershipEmailInput
+        :shouldShowInvalidHint="shouldShowInvalidHint"
+        @input="handleEmailInput"
+        @inputValidStateChange="handleInputValidStateChange"
+      />
+      <label class="form__remember-me-checkbox remember-me-checkbox">
+        <input v-model="shouldRememberMe" type="checkbox" />
+        保持登入
+      </label>
+      <button class="form__login-button login-button" @click="handleSubmit">
+        登入
+      </button>
+    </form>
+  </div>
 </template>
 
 <script>
 import localforage from 'localforage'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
-import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
-import UiMembershipEmailError from '~/components/UiMembershipEmailError.vue'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.
@@ -45,15 +31,12 @@ import UiMembershipEmailError from '~/components/UiMembershipEmailError.vue'
 export default {
   components: {
     UiMembershipEmailInput,
-    UiMembershipEmailSuccess,
-    UiMembershipEmailError,
   },
   data() {
     return {
       shouldShowInvalidHint: false,
       isEmailInputValid: false,
       emailInput: '',
-      loginPageState: 'form',
       shouldRememberMe: false,
     }
   },
@@ -114,10 +97,10 @@ export default {
           actionCodeSettings
         )
         await localforage.setItem('emailForSignIn', this.emailInput)
-        this.loginPageState = 'success'
+        this.$emit('success', this.emailInput)
       } catch (e) {
         this.handleError(e)
-        this.loginPageState = 'error'
+        this.$emit('error')
       }
     },
     handleInputValidStateChange(value) {
@@ -126,26 +109,16 @@ export default {
     handleEmailInput(value) {
       this.emailInput = value
     },
-    handleBackToForm() {
-      this.loginPageState = 'form'
-    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.page {
-  padding: 0 20px;
-  min-height: calc(100vh - 118px);
-  display: flex;
-  align-items: center;
+.login-form-wrapper {
+  width: 100%;
   &__form {
     margin: 20px 0 0 0;
   }
-}
-
-.login-form-wrapper {
-  width: 100%;
   @include media-breakpoint-up(xl) {
     width: 300px;
     margin: 0 auto;
