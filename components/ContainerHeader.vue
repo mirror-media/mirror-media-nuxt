@@ -46,7 +46,7 @@
 
         <UiOthersList
           class="others-list"
-          :links="otherLinks"
+          :links="OTHER_LINKS"
           eventCategory="header"
           @sendGa="handleSendGa"
         />
@@ -69,7 +69,7 @@
       />
       <UiHeaderNavTopic
         :topics="topics"
-        :subBrands="subBrandLinks"
+        :subBrands="SUB_BRAND_LINKS"
         @sendGa="handleSendGa"
       />
     </nav>
@@ -81,9 +81,9 @@
           :topics="topics"
           :sections="sections"
           :partners="partners"
-          :subBrands="subBrandLinks"
-          :others="otherLinks"
-          :socialMedia="socialMediaLinks"
+          :subBrands="SUB_BRAND_LINKS"
+          :others="OTHER_LINKS"
+          :socialMedia="SOCIAL_MEDIA_LINKS"
           @close="handleSidebarClose"
           @sendGa="handleSendGa"
         />
@@ -130,13 +130,19 @@ export default {
   data() {
     return {
       shouldFixHeader: false,
+      SITE_TITLE,
+
       eventLogo: {},
       now: new Date(),
       intervalIdOfUpdateNow: undefined,
-      shouldOpenSidebar: false,
-      defaultOption: { title: '全部類別' },
-      SITE_TITLE,
       hasGptLogo: false,
+
+      defaultOption: { title: '全部類別' },
+
+      shouldOpenSidebar: false,
+      OTHER_LINKS,
+      SOCIAL_MEDIA_LINKS,
+      SUB_BRAND_LINKS,
     }
   },
   computed: {
@@ -148,16 +154,17 @@ export default {
       topics: 'topics/displayedTopics',
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
+
     shouldOpenEventLogo() {
       // 當有 GPT Logo 時不應該出現 Event Logo
       if (!this.hasEventLogo || this.hasGptLogo) {
         return false
       }
 
-      const startTime = new Date(this.eventLogo.startDate)
-      const endTime = new Date(this.eventLogo.endDate)
-
-      return this.duringThePeriodBetween(startTime, endTime)
+      return this.isInThePeriodBetween(
+        new Date(this.eventLogo.startDate),
+        new Date(this.eventLogo.endDate)
+      )
     },
     hasEventLogo() {
       return Object.keys(this.eventLogo).length > 0
@@ -165,20 +172,12 @@ export default {
     shouldShowGptLogo() {
       return this.hasGptLogo && !this.shouldFixHeader
     },
+
     options() {
       const sections = this.sections.filter(
         (section) => section.name !== 'videohub'
       )
       return [this.defaultOption, ...sections]
-    },
-    otherLinks() {
-      return OTHER_LINKS
-    },
-    socialMediaLinks() {
-      return SOCIAL_MEDIA_LINKS
-    },
-    subBrandLinks() {
-      return SUB_BRAND_LINKS
     },
   },
   watch: {
@@ -198,7 +197,7 @@ export default {
     },
   },
   beforeMount() {
-    this.fetchOnClient()
+    this.fetchEventLogo()
 
     this.intervalIdOfUpdateNow = setInterval(this.updateNow, 1000)
   },
@@ -216,9 +215,6 @@ export default {
   },
   methods: {
     ...mapMutations(['setSectionName']),
-    fetchOnClient() {
-      this.fetchEventLogo()
-    },
 
     listenScrollToFixHeader() {
       headerHight = this.$el.offsetHeight
@@ -247,15 +243,17 @@ export default {
       })
       this.eventLogo = eventLogoResponse.items?.[0] ?? {}
     },
-    duringThePeriodBetween(startTime, endTime) {
+    isInThePeriodBetween(startTime, endTime) {
       return this.now >= startTime && this.now < endTime
     },
     updateNow() {
       this.now = new Date()
     },
+
     handleLogoAdRenderEnded(event) {
       this.hasGptLogo = !event.isEmpty
     },
+
     handleClickMenuIcon() {
       this.openSidebar()
       this.sendHeaderGa('menu open')
@@ -270,6 +268,7 @@ export default {
     closeSidebar() {
       this.shouldOpenSidebar = false
     },
+
     sendHeaderGa(eventLabel, eventAction = 'click') {
       this.$ga.event({
         eventCategory: 'header',
@@ -280,6 +279,7 @@ export default {
     handleSendGa(param = {}) {
       this.$ga.event(param)
     },
+
     activeTheNavSection(path) {
       const regexWithPrefixOfStory = this.generateRegexWithPrefixOf('/story/')
 
