@@ -18,14 +18,15 @@
           />
         </a>
 
-        <UiEventLogo
-          v-if="shouldOpenEventLogo"
-          v-show="!shouldFixHeader"
-          class="logo"
-          :eventLogo="eventLogo"
-          @sendGa="handleSendGa"
-        />
-        <client-only>
+        <ClientOnly>
+          <UiEventLogo
+            v-if="shouldOpenEventLogo"
+            v-show="!shouldFixHeader"
+            class="logo"
+            :eventLogo="eventLogo"
+            @sendGa="handleSendGa"
+          />
+
           <ContainerGptAd
             v-show="shouldShowGptLogo"
             pageKey="global"
@@ -33,7 +34,7 @@
             class="logo"
             @slotRenderEnded="handleLogoAdRenderEnded"
           />
-        </client-only>
+        </ClientOnly>
       </div>
 
       <div class="header-search">
@@ -51,10 +52,12 @@
         />
       </div>
 
-      <div v-if="shouldFixHeader" class="share-wrapper">
-        <UiShareFb />
-        <UiShareLine />
-      </div>
+      <ClientOnly>
+        <div v-if="shouldFixHeader" class="share-wrapper">
+          <UiShareFb />
+          <UiShareLine />
+        </div>
+      </ClientOnly>
     </div>
 
     <nav class="header-nav">
@@ -71,19 +74,21 @@
       />
     </nav>
 
-    <transition name="slide">
-      <UiSidebar
-        v-if="shouldOpenSidebar"
-        :topics="topics"
-        :sections="sections"
-        :partners="partners"
-        :subBrands="subBrandLinks"
-        :others="otherLinks"
-        :socialMedia="socialMediaLinks"
-        @close="handleSidebarClose"
-        @sendGa="handleSendGa"
-      />
-    </transition>
+    <ClientOnly>
+      <transition name="slide">
+        <UiSidebar
+          v-if="shouldOpenSidebar"
+          :topics="topics"
+          :sections="sections"
+          :partners="partners"
+          :subBrands="subBrandLinks"
+          :others="otherLinks"
+          :socialMedia="socialMediaLinks"
+          @close="handleSidebarClose"
+          @sendGa="handleSendGa"
+        />
+      </transition>
+    </ClientOnly>
   </header>
 </template>
 

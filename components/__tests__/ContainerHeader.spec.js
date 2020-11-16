@@ -28,7 +28,7 @@ const createWrapper = createWrapperHelper({
       commit: jest.fn(),
     },
   },
-  stubs: ['client-only'],
+  stubs: ['ClientOnly'],
 })
 
 describe('when the header is fixed', () => {
