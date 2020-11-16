@@ -54,6 +54,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$header-top-layer-w: 90%;
+$header-top-layer-padding-x: (100% - $header-top-layer-w) / 2;
+$search-icon-width: 18px;
+$search-field-arrow-width: 11px;
+$search-field-arrow-width-half: $search-field-arrow-width / 2;
+
 .search-bar {
   @include media-breakpoint-up(xl) {
     display: none;
@@ -64,7 +70,7 @@ export default {
 }
 .search-icon {
   display: block;
-  width: 18px;
+  width: $search-icon-width;
   height: 18px;
   background-image: url(~assets/icon_search_mobile.png);
   background-size: 18px;
@@ -85,14 +91,15 @@ export default {
     display: block;
     position: absolute;
     top: -12px;
-    /**
-     * 5% = (100% - 90%) / 2
-     * 3.5 = (18 - 11) / 2
-     */
-    right: calc(5% + 3.5px);
+    right: calc(
+      #{$header-top-layer-padding-x} + #{(
+          $search-icon-width - $search-field-arrow-width
+        ) / 2}
+    );
     border-color: transparent transparent #064f77;
     border-style: solid;
-    border-width: 0 5.5px 12px 5.5px;
+    border-width: 0 $search-field-arrow-width-half 12px
+      $search-field-arrow-width-half;
   }
 }
 </style>

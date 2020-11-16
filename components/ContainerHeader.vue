@@ -256,6 +256,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$menu-icon-width: 24px;
+$logo-wrapper-margin-x: 8px;
+$search-icon-width: 18px;
+
 header {
   background-color: #f5f5f5;
   z-index: 99;
@@ -277,7 +281,7 @@ header {
 }
 .menu-icon {
   flex-shrink: 0;
-  width: 24px;
+  width: $menu-icon-width;
   height: 40px;
   background-image: url(~assets/hamburger@2x.png);
   background-size: 24px;
@@ -293,8 +297,13 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  // 58 = (24 + 18) + (8 * 2)
-  width: calc(100% - 58px);
+  width: calc(
+    100% -
+      (
+        #{$menu-icon-width} + #{$search-icon-width} + #{$logo-wrapper-margin-x} *
+          2
+      )
+  );
   @include media-breakpoint-up(xl) {
     justify-content: flex-start;
     width: auto;
