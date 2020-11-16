@@ -96,6 +96,7 @@ export default {
         await localforage.removeItem('emailForSignIn')
         this.$router.replace('/')
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e)
         this.provideEmailManuallyState = 'error'
       }
