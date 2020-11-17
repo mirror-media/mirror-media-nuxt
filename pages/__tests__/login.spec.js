@@ -28,7 +28,7 @@ describe('email auth', function () {
     expect(wrapper.find('.error-wrapper').exists()).toBe(false)
   })
 
-  test('should hide email form and show the email sent successfully hint with proper email in /login page', async function () {
+  test('should hide email form and show the error hint if encounter some error', async function () {
     const wrapper = createWrapper(page)
     const emailForm = wrapper.findComponent(ContainerMembershipLoginWithEmail)
     await emailForm.vm.$emit('error')
