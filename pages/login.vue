@@ -1,11 +1,18 @@
 <template>
   <section class="page">
-    <ContainerMembershipLoginWithGoogle />
-    <ContainerMembershipLoginWithEmail
-      v-if="pageState === 'form'"
-      @success="handleEmailLoginSuccess"
-      @error="handleLoginError"
-    />
+    <div v-if="pageState === 'form'" class="form-wrapper">
+      <h1 class="form-wrapper__title title">登入</h1>
+      <div class="form-wrapper__federated-login federated-login">
+        <ContainerMembershipLoginWithGoogle />
+      </div>
+      <div class="form-wrapper__separator separator">
+        <p>或</p>
+      </div>
+      <ContainerMembershipLoginWithEmail
+        @success="handleEmailLoginSuccess"
+        @error="handleLoginError"
+      />
+    </div>
     <UiMembershipEmailSuccess
       v-else-if="pageState === 'success'"
       class="success-wrapper"
@@ -73,5 +80,39 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.form-wrapper {
+  width: 100%;
+  &__federated-login {
+    margin: 20px 0 0 0;
+  }
+  &__separator {
+    margin: 20px 0;
+  }
+  @include media-breakpoint-up(xl) {
+    width: 300px;
+  }
+}
+.title {
+  text-align: center;
+  font-weight: 900;
+  font-size: 18px;
+  color: #054f77;
+}
+.separator {
+  font-size: 16px;
+  color: #4a4a4a;
+  display: flex;
+  align-items: center;
+  p {
+    margin: 0 22px;
+  }
+  &:before,
+  &:after {
+    content: '';
+    flex: 1 1 auto;
+    height: 1px;
+    background-color: #4a4a4a;
+  }
 }
 </style>
