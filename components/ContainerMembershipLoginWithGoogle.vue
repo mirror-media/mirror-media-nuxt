@@ -7,6 +7,7 @@
 
 <script>
 import SvgGoogleIcon from '~/assets/membership-google-icon.svg?inline'
+
 export default {
   components: {
     SvgGoogleIcon,
