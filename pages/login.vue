@@ -46,7 +46,18 @@ export default {
     }
   },
   async beforeMount() {
+    /*
+     * When we use firebase.auth().signInWithRedirect(provider)
+     * firebase always redirect to the page where federated login at, which is login page
+     * so we must get redirect result in the login page too
+     * for more info: https://firebase.google.com/docs/auth/web/google-signin
+     */
     try {
+      /*
+       * TODO: we should implement pending state and layout here
+       * because the async request below may take a moment
+       * cause the page may not been redirect to home page immediately
+       */
       const result = await this.$fire.auth.getRedirectResult()
       if (result.user !== null) {
         this.$router.replace('/')
