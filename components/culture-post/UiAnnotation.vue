@@ -1,20 +1,22 @@
 <template>
   <span class="annotation">
     <span
-      :class="{ active: shouldOpenAnnotation }"
       class="annotation__text"
+      :class="{ open: shouldOpenAnnotation }"
       @click="shouldOpenAnnotation = !shouldOpenAnnotation"
-      v-text="content.text"
-    />
-    <div v-if="shouldOpenAnnotation" class="annotation__content">
-      {{ content.pureAnnotationText }}
-    </div>
+      >{{ content.text }}</span
+    >
+
+    <span v-if="shouldOpenAnnotation" class="annotation__content">{{
+      content.pureAnnotationText
+    }}</span>
   </span>
 </template>
 
 <script>
 export default {
   name: 'UiAnnotation',
+
   props: {
     content: {
       type: Object,
@@ -22,6 +24,7 @@ export default {
       required: true,
     },
   },
+
   data() {
     return {
       shouldOpenAnnotation: false,
@@ -33,8 +36,8 @@ export default {
 <style lang="scss" scoped>
 .annotation {
   &__text {
-    display: inline;
     cursor: pointer;
+
     &::after {
       content: '';
       display: inline-block;
@@ -45,14 +48,17 @@ export default {
       border-color: #3e67aa transparent transparent transparent;
       transition: transform 0.3s ease-in;
     }
-    &.active {
-      &::after {
-        transform: rotate(-180deg);
-      }
+
+    &.open::after {
+      transform: rotate(-180deg);
     }
   }
+
   &__content {
-    margin: 13px auto 20px;
+    display: inline-block;
+    width: 100%;
+    margin-top: 13px;
+    margin-bottom: 20px;
     padding: 23px;
     color: rgba(0, 0, 0, 0.87);
     font-size: 15px;
@@ -62,8 +68,8 @@ export default {
     background-color: rgba(216, 216, 216, 0.3);
     border-radius: 2px;
     @include media-breakpoint-up(md) {
-      margin: 13px 0 20px;
-      padding: 23px 37px;
+      padding-left: 37px;
+      padding-right: 37px;
     }
   }
 }
