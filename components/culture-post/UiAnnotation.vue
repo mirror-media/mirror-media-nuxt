@@ -1,16 +1,16 @@
 <template>
-  <div class="annotation">
+  <span class="annotation">
     <span
-      :class="{ active: openAnnotation }"
+      :class="{ active: shouldOpenAnnotation }"
       class="annotation__text"
-      @click="openAnnotation = !openAnnotation"
+      @click="shouldOpenAnnotation = !shouldOpenAnnotation"
       v-text="annotation.text"
     />
-    <div v-show="openAnnotation" class="annotation__content">
+    <div v-if="shouldOpenAnnotation" class="annotation__content">
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="content" v-html="annotation.annotation" />
     </div>
-  </div>
+  </span>
 </template>
 
 <script>
@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      openAnnotation: false,
+      shouldOpenAnnotation: false,
     }
   },
 }
@@ -32,7 +32,6 @@ export default {
 
 <style lang="scss" scoped>
 .annotation {
-  display: inline;
   &__text {
     display: inline;
     cursor: pointer;
