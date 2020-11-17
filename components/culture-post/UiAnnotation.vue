@@ -7,8 +7,7 @@
       v-text="content.text"
     />
     <div v-if="shouldOpenAnnotation" class="annotation__content">
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <div class="content" v-html="content.annotation" />
+      {{ content.pureAnnotationText }}
     </div>
   </span>
 </template>
@@ -65,13 +64,6 @@ export default {
     @include media-breakpoint-up(md) {
       margin: 13px 0 20px;
       padding: 23px 37px;
-    }
-    .content {
-      width: 266px;
-      margin: 0 auto;
-      @include media-breakpoint-up(md) {
-        width: 100%;
-      }
     }
   }
 }
