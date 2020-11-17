@@ -27,6 +27,20 @@
         </figcaption>
       </figure>
 
+      <!-- eslint-disable vue/no-v-html -->
+      <div
+        v-else-if="item.type === 'blockquote' && gainContent(item)"
+        :key="item.id"
+        class="quote"
+      >
+        <div class="quote-icon-wrapper">
+          <SvgQuoteIcon />
+        </div>
+
+        <blockquote v-html="gainContent(item)"></blockquote>
+      </div>
+      <!-- eslint-enable vue/no-v-html -->
+
       <ContainerParagraphWithAnnotation
         v-else-if="item.type === 'annotation' && gainContent(item)"
         v-slot="{ data }"
@@ -51,12 +65,16 @@
 import ContainerParagraphWithAnnotation from '~/components/ContainerParagraphWithAnnotation.vue'
 import UiAnnotation from '~/components/culture-post/UiAnnotation.vue'
 
+import SvgQuoteIcon from '~/assets/quote.svg?inline'
+
 export default {
   name: 'UiCulturePostContent',
 
   components: {
     UiAnnotation,
     ContainerParagraphWithAnnotation,
+
+    SvgQuoteIcon,
   },
 
   props: {
@@ -82,6 +100,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$quote-color: #4a90e2;
+
 .content {
   width: 300px;
   padding-top: 50px;
@@ -98,15 +118,6 @@ export default {
     padding-top: 73px;
   }
 
-  &::v-deep p {
-    font-size: 15px;
-    line-height: 2;
-
-    + p {
-      margin-top: 30px;
-    }
-  }
-
   > * {
     width: 266px;
     margin-left: auto;
@@ -118,16 +129,17 @@ export default {
     + * {
       margin-top: 30px;
     }
-
-    + p {
-      margin-top: 40px;
-    }
   }
 
   &::v-deep a {
     color: rgba(199, 159, 101, 0.87);
     text-decoration: underline;
   }
+}
+
+p {
+  font-size: 15px;
+  line-height: 2;
 }
 
 h2,
@@ -176,5 +188,40 @@ figure {
       margin-top: 16px;
     }
   }
+}
+
+.quote {
+  max-width: 510px;
+}
+
+.quote-icon-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 11px;
+
+  &::before,
+  &::after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    background-color: $quote-color;
+  }
+
+  svg {
+    width: 20px;
+    height: auto;
+    flex-shrink: 0;
+    margin-left: 33px;
+    margin-right: 33px;
+  }
+}
+
+blockquote {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.78;
+  color: $quote-color;
+  text-align: justify;
 }
 </style>
