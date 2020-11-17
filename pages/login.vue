@@ -10,7 +10,7 @@
       class="success-wrapper"
       :emailInput="emailShowInSuccess"
     />
-    <UiMembershipEmailError
+    <UiMembershipError
       v-else-if="pageState === 'error'"
       class="error-wrapper"
       @backToForm="handleBackToForm"
@@ -21,13 +21,13 @@
 <script>
 import ContainerMembershipLoginWithEmail from '~/components/ContainerMembershipLoginWithEmail.vue'
 import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
-import UiMembershipEmailError from '~/components/UiMembershipEmailError.vue'
+import UiMembershipError from '~/components/UiMembershipError.vue'
 
 export default {
   components: {
     ContainerMembershipLoginWithEmail,
     UiMembershipEmailSuccess,
-    UiMembershipEmailError,
+    UiMembershipError,
   },
   data() {
     return {
