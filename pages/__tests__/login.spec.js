@@ -14,26 +14,28 @@ const createWrapper = createWrapperHelper({
   },
 })
 
-test('should hide email form and show the email sent successfully hint with proper email in /login page', async function () {
-  const wrapper = createWrapper(page)
-  const emailForm = wrapper.findComponent(ContainerMembershipLoginWithEmail)
-  const mockEmail = 'example@example.com'
-  await emailForm.vm.$emit('success', mockEmail)
-  expect(emailForm.exists()).toBe(false)
-  expect(wrapper.find('.success-wrapper').exists()).toBe(true)
-  expect(
-    wrapper.findComponent(UiMembershipEmailSuccess).props().emailInput
-  ).toBe(mockEmail)
-  expect(wrapper.find('.error-wrapper').exists()).toBe(false)
-})
+describe('email auth', function () {
+  test('should hide email form and show the email sent successfully hint with proper email in /login page', async function () {
+    const wrapper = createWrapper(page)
+    const emailForm = wrapper.findComponent(ContainerMembershipLoginWithEmail)
+    const mockEmail = 'example@example.com'
+    await emailForm.vm.$emit('success', mockEmail)
+    expect(emailForm.exists()).toBe(false)
+    expect(wrapper.find('.success-wrapper').exists()).toBe(true)
+    expect(
+      wrapper.findComponent(UiMembershipEmailSuccess).props().emailInput
+    ).toBe(mockEmail)
+    expect(wrapper.find('.error-wrapper').exists()).toBe(false)
+  })
 
-test('should hide email form and show the email sent successfully hint with proper email in /login page', async function () {
-  const wrapper = createWrapper(page)
-  const emailForm = wrapper.findComponent(ContainerMembershipLoginWithEmail)
-  await emailForm.vm.$emit('error')
-  expect(emailForm.exists()).toBe(false)
-  expect(wrapper.find('.success-wrapper').exists()).toBe(false)
-  expect(wrapper.find('.error-wrapper').exists()).toBe(true)
+  test('should hide email form and show the email sent successfully hint with proper email in /login page', async function () {
+    const wrapper = createWrapper(page)
+    const emailForm = wrapper.findComponent(ContainerMembershipLoginWithEmail)
+    await emailForm.vm.$emit('error')
+    expect(emailForm.exists()).toBe(false)
+    expect(wrapper.find('.success-wrapper').exists()).toBe(false)
+    expect(wrapper.find('.error-wrapper').exists()).toBe(true)
+  })
 })
 
 describe('validations about visitor have been redirect back to login page after Google/Facebook auth', function () {
