@@ -118,17 +118,9 @@ export default {
     }
   }
 
-  p {
-    text-align: justify;
-  }
-
-  &__annotation {
-    text-align: justify;
-
-    &::v-deep span {
-      font-size: 15px;
-      line-height: 2;
-    }
+  &__annotation::v-deep span {
+    font-size: 15px;
+    line-height: 2;
   }
 
   &::v-deep a {
