@@ -1,7 +1,7 @@
 <template>
   <section class="page">
     <UiMembershipError
-      v-if="isErrorOccur"
+      v-if="doesErrorOccur"
       class="confirm-email-error-wrapper"
       @backToForm="handleBackToForm"
     />
@@ -61,7 +61,7 @@ export default {
       shouldProvideEmailManually: false,
       shouldShowInvalidHint: false,
       provideEmailManuallyState: 'form',
-      isErrorOccur: false,
+      doesErrorOccur: false,
     }
   },
   computed: {
@@ -99,7 +99,7 @@ export default {
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e)
-        this.isErrorOccur = true
+        this.doesErrorOccur = true
       }
     },
     handleInputValidStateChange(value) {
