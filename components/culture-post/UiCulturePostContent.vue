@@ -39,7 +39,7 @@
         :key="item.id"
         :content="gainContent(item)"
       >
-        <UiAnnotation :key="data.id" :annotation="data" />
+        <UiAnnotation :key="data.id" :content="data" />
       </ContainerParagraphWithAnnotation>
     </template>
   </article>

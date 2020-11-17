@@ -4,11 +4,11 @@
       :class="{ active: shouldOpenAnnotation }"
       class="annotation__text"
       @click="shouldOpenAnnotation = !shouldOpenAnnotation"
-      v-text="annotation.text"
+      v-text="content.text"
     />
     <div v-if="shouldOpenAnnotation" class="annotation__content">
       <!-- eslint-disable-next-line vue/no-v-html -->
-      <div class="content" v-html="annotation.annotation" />
+      <div class="content" v-html="content.annotation" />
     </div>
   </span>
 </template>
@@ -17,8 +17,9 @@
 export default {
   name: 'UiAnnotation',
   props: {
-    annotation: {
+    content: {
       type: Object,
+      default: () => ({}),
       required: true,
     },
   },
