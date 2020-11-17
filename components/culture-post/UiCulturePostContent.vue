@@ -97,7 +97,7 @@ export default {
     line-height: 2;
 
     + p {
-      margin-top: 2em;
+      margin-top: 30px;
     }
   }
 
@@ -118,47 +118,8 @@ export default {
     }
   }
 
-  h2,
-  h3 {
-    font-family: source-han-serif-tc, 'Songti TC', serif;
-    font-weight: 900;
-    line-height: 1.5;
-  }
-
-  h2 {
-    font-size: 28px;
-    @include media-breakpoint-up(lg) {
-      font-size: 30px;
-    }
-  }
-
-  h3 {
-    font-size: 18px;
-
-    + .article__lightbox {
-      margin-top: 40px;
-    }
-  }
-
   p {
     text-align: justify;
-
-    + p {
-      margin-top: 2em;
-    }
-
-    + .article__lightbox {
-      margin-top: 40px;
-    }
-
-    &.figcaption {
-      padding-top: 10px;
-      color: rgba(#000, 0.66);
-      font-size: 13px;
-      line-height: 1.5;
-      letter-spacing: 1px;
-      border-top: solid 1px #979797;
-    }
   }
 
   &__annotation {
@@ -174,34 +135,52 @@ export default {
     color: rgba(199, 159, 101, 0.87);
     text-decoration: underline;
   }
+}
 
-  figure {
+h2,
+h3 {
+  font-family: source-han-serif-tc, 'Songti TC', serif;
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+h2 {
+  font-size: 28px;
+  @include media-breakpoint-up(lg) {
+    font-size: 30px;
+  }
+}
+
+h3 {
+  font-size: 18px;
+}
+
+figure {
+  width: 100%;
+
+  img {
     width: 100%;
+    min-height: 100px;
+    font-size: 13px;
+    border-radius: 4px;
+  }
 
-    img {
-      width: 100%;
-      min-height: 100px;
-      font-size: 13px;
-      border-radius: 4px;
+  figcaption {
+    width: 266px;
+    padding-top: 10px;
+    margin-top: 12px;
+    margin-left: auto;
+    margin-right: auto;
+    color: rgba(#000, 0.66);
+    font-size: 13px;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    border-top: 1px solid #979797;
+    @include media-breakpoint-up(md) {
+      width: 634px;
     }
-
-    figcaption {
-      width: 266px;
-      padding-top: 10px;
-      margin-top: 12px;
-      margin-left: auto;
-      margin-right: auto;
-      color: rgba(#000, 0.66);
-      font-size: 13px;
-      line-height: 1.5;
-      letter-spacing: 1px;
-      border-top: 1px solid #979797;
-      @include media-breakpoint-up(md) {
-        width: 634px;
-      }
-      @include media-breakpoint-up(lg) {
-        margin-top: 16px;
-      }
+    @include media-breakpoint-up(lg) {
+      margin-top: 16px;
     }
   }
 }
