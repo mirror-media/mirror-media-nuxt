@@ -40,9 +40,7 @@ export default {
       shouldRememberMe: false,
     }
   },
-  async beforeMount() {
-    await this.loadAuthService()
-  },
+
   methods: {
     handleSubmit() {
       this.shouldShowInvalidHint = true
@@ -53,13 +51,6 @@ export default {
     handleError(e) {
       // eslint-disable-next-line no-console
       console.error(e)
-    },
-    async loadAuthService() {
-      try {
-        await this.$fire.authReady()
-      } catch (e) {
-        this.handleError(e)
-      }
     },
     createSignInLinkToEmail() {
       const origin = window.location.origin

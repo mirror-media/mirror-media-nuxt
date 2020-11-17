@@ -242,7 +242,13 @@ module.exports = {
             persistence: 'session',
           },
         },
-        lazy: true,
+
+        /*
+         * disable lazy-load due to issue with $fire.authReady() and $fireModule
+         * https://github.com/nuxt-community/firebase-module/issues/366
+         */
+
+        // lazy: true,
       },
     ],
   ],
