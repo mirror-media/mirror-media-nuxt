@@ -6,22 +6,22 @@
     <template v-for="item in content">
       <!-- eslint-disable vue/no-v-html -->
       <h2
-        v-if="item.type === 'header-one' && doesHaveContent(item)"
+        v-if="item.type === 'header-one' && gainContent(item)"
         :id="`header-${item.id}`"
         :key="item.id"
-        v-html="item.content[0]"
+        v-html="gainContent(item)"
       />
 
       <h3
-        v-if="item.type === 'header-two' && doesHaveContent(item)"
+        v-if="item.type === 'header-two' && gainContent(item)"
         :key="item.id"
-        v-html="item.content[0]"
+        v-html="gainContent(item)"
       />
 
       <p
         v-if="item.type === 'unstyled'"
         :key="item.id"
-        v-html="item.content[0]"
+        v-html="gainContent(item)"
       />
       <!-- eslint-enable vue/no-v-html -->
 
@@ -33,24 +33,28 @@
         </figcaption>
       </figure>
 
-      <UiParagraphWithAnnotation
-        v-if="item.type === 'annotation'"
+      <ContainerParagraphWithAnnotation
+        v-if="item.type === 'annotation' && gainContent(item)"
+        v-slot="{ data }"
         :key="item.id"
-        :item="item"
-        class="content__annotation"
-      />
+        :content="gainContent(item)"
+      >
+        <UiAnnotation :key="data.id" :annotation="data" />
+      </ContainerParagraphWithAnnotation>
     </template>
   </article>
 </template>
 
 <script>
-import UiParagraphWithAnnotation from '~/components/UiParagraphWithAnnotation.vue'
+import ContainerParagraphWithAnnotation from '~/components/ContainerParagraphWithAnnotation.vue'
+import UiAnnotation from '~/components/culture-post/UiAnnotation.vue'
 
 export default {
   name: 'UiCulturePostContent',
 
   components: {
-    UiParagraphWithAnnotation,
+    UiAnnotation,
+    ContainerParagraphWithAnnotation,
   },
 
   props: {
@@ -62,7 +66,7 @@ export default {
   },
 
   methods: {
-    doesHaveContent(item = {}) {
+    gainContent(item = {}) {
       return item.content?.[0]
     },
     gainImgSrc(item = {}) {
@@ -116,11 +120,6 @@ export default {
     + p {
       margin-top: 40px;
     }
-  }
-
-  &__annotation::v-deep span {
-    font-size: 15px;
-    line-height: 2;
   }
 
   &::v-deep a {
