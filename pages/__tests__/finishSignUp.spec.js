@@ -83,7 +83,7 @@ describe('email validations', function () {
     const mockEmail = 'example@example.com'
     await emailInput.vm.$emit('input', mockEmail)
     await emailInput.vm.$emit('inputValidStateChange', true)
-    const submitButton = wrapper.find('.login-button')
+    const submitButton = wrapper.get('.login-button')
     await submitButton.trigger('click')
     await flushPromises()
     expect(wrapper.find('.confirm-email-error-wrapper').exists()).toBe(true)
