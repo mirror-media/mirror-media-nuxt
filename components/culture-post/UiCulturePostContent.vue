@@ -13,19 +13,13 @@
       />
 
       <h3
-        v-if="item.type === 'header-two' && gainContent(item)"
-        :key="item.id"
-        v-html="gainContent(item)"
-      />
-
-      <p
-        v-if="item.type === 'unstyled'"
+        v-else-if="item.type === 'header-two' && gainContent(item)"
         :key="item.id"
         v-html="gainContent(item)"
       />
       <!-- eslint-enable vue/no-v-html -->
 
-      <figure v-if="item.type === 'image'" :key="item.id">
+      <figure v-else-if="item.type === 'image'" :key="item.id">
         <img v-lazy="gainImgSrc(item)" alt="" />
 
         <figcaption v-if="gainImgCaption(item)">
@@ -34,13 +28,21 @@
       </figure>
 
       <ContainerParagraphWithAnnotation
-        v-if="item.type === 'annotation' && gainContent(item)"
+        v-else-if="item.type === 'annotation' && gainContent(item)"
         v-slot="{ data }"
         :key="item.id"
         :content="gainContent(item)"
       >
         <UiAnnotation :key="data.id" :content="data" />
       </ContainerParagraphWithAnnotation>
+
+      <!-- eslint-disable vue/no-v-html -->
+      <p
+        v-else-if="item.type === 'unstyled'"
+        :key="item.id"
+        v-html="gainContent(item)"
+      />
+      <!-- eslint-enable vue/no-v-html -->
     </template>
   </article>
 </template>
