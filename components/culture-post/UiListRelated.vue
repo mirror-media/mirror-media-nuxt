@@ -1,12 +1,12 @@
 <template>
-  <div class="relateds">
+  <div class="list-related">
     <h2>延伸閱讀</h2>
 
-    <div class="relateds__items">
-      <div v-for="item in items" :key="item.slug" class="related">
+    <div class="list">
+      <div v-for="item in items" :key="item.slug" class="item">
         <a
           :href="`/story/${item.slug}`"
-          class="related__image"
+          class="item__img"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -15,7 +15,7 @@
 
         <a
           :href="`/story/${item.slug}`"
-          class="related__title"
+          class="item__title"
           target="_blank"
           rel="noopener noreferrer"
           >{{ item.title }}</a
@@ -51,7 +51,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.relateds {
+.list-related {
   width: 300px;
   padding-bottom: 63px;
   margin-left: auto;
@@ -59,34 +59,34 @@ export default {
   @include media-breakpoint-up(md) {
     width: 700px;
   }
+}
 
-  h2 {
-    width: 266px;
-    margin-left: auto;
-    margin-right: auto;
-    font-family: source-han-serif-tc, 'Songti TC', serif;
-    font-size: 28px;
-    font-weight: 900;
-    @include media-breakpoint-up(md) {
-      width: 634px;
-    }
-  }
-
-  a {
-    display: block;
-  }
-
-  &__items {
-    margin-top: 40px;
-    @include media-breakpoint-up(md) {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
+h2 {
+  width: 266px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: source-han-serif-tc, 'Songti TC', serif;
+  font-size: 28px;
+  font-weight: 900;
+  @include media-breakpoint-up(md) {
+    width: 634px;
   }
 }
 
-.related {
+.list {
+  margin-top: 40px;
+  @include media-breakpoint-up(md) {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+}
+
+a {
+  display: block;
+}
+
+.item {
   display: flex;
   @include media-breakpoint-up(md) {
     display: block;
@@ -96,11 +96,11 @@ export default {
     margin-right: 10px;
   }
 
-  + .related {
+  + .item {
     margin-top: 20px;
   }
 
-  &__image {
+  &__img {
     position: relative;
     width: 116px;
     padding-top: calc(116px * 0.6666);
