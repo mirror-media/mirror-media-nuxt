@@ -240,6 +240,11 @@ module.exports = {
         services: {
           auth: {
             persistence: 'session',
+            initialize: {
+              onAuthStateChangedMutation:
+                'membership/ON_AUTH_STATE_CHANGED_MUTATION',
+              subscribeManually: false,
+            },
           },
         },
 
