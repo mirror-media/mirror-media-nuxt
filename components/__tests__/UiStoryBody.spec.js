@@ -1,5 +1,3 @@
-import dayjs from 'dayjs'
-
 import UiStoryBody, {
   THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY,
   AD_KEYS_IN_STORY_CONTENT,
@@ -14,7 +12,6 @@ const createWrapper = createWrapperHelper({
     story: {},
   },
   mocks: {
-    $dayjs: dayjs,
     $store: {
       state: { canAdvertise: true },
     },
@@ -43,7 +40,7 @@ describe('render the proper content from props "story"', () => {
       },
     })
     expect(wrapper.get('.story__published-date').text()).toBe(
-      dayjs(publishedDate).format('YYYY.MM.DD HH:mm')
+      '2020.09.14 16:29'
     )
   })
 
@@ -216,7 +213,7 @@ describe('render the proper content from props "story"', () => {
       },
     })
     expect(wrapper.get('.story__updated-at').text()).toBe(
-      `更新時間｜${dayjs(updatedAt).format('YYYY.MM.DD HH:mm')}`
+      '更新時間｜2020.09.14 16:29'
     )
   })
 

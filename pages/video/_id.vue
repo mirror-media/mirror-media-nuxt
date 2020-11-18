@@ -79,6 +79,8 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
+
 import { SITE_OG_IMG, SITE_URL } from '~/constants/index'
 import { processResponseItems } from '~/utils/youtube'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
@@ -130,9 +132,7 @@ export default {
       return this.videoData.channelId
     },
     datetime() {
-      return this.$dayjs(this.videoData.publishedAt).format(
-        'YYYY/MM/DD HH:mm:ss'
-      )
+      return dayjs(this.videoData.publishedAt).format('YYYY/MM/DD HH:mm:ss')
     },
     descriptionParsed() {
       const description = this.videoData.description ?? ''

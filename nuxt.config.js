@@ -216,7 +216,6 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/dayjs',
     'nuxt-user-agent',
     ...(process.env.NODE_ENV === 'production'
       ? ['@mirror-media/nuxt-ssr-cache']

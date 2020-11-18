@@ -2485,14 +2485,6 @@
     defu "^3.1.0"
     normalize-path "^3.0.0"
 
-"@nuxtjs/dayjs@^1.1.9":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/dayjs/-/dayjs-1.2.0.tgz#5c2ddb45092187532926469f3b825bce003f19e9"
-  integrity sha512-3SmiHKV8yaMAKII9pj7iYdboH8Xi9ekIXb21JaAQV+qIpLnb107w1EAO1y9Mylc0VVRA0GvxCHr9crPZ7cuuZw==
-  dependencies:
-    consola "^2.3.2"
-    dayjs "^1.8.9"
-
 "@nuxtjs/eslint-config@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@nuxtjs/eslint-config/-/eslint-config-4.0.0.tgz#5e341d2221955bbcaf30b44796c65b522ed3e838"
@@ -4634,7 +4626,7 @@ connection-parse@0.0.x:
   resolved "https://registry.yarnpkg.com/connection-parse/-/connection-parse-0.0.7.tgz#18e7318aab06a699267372b10c5226d25a1c9a69"
   integrity sha1-GOcxiqsGppkmc3KxDFIm0locmmk=
 
-consola@^2.10.0, consola@^2.14.0, consola@^2.15.0, consola@^2.3.2, consola@^2.6.0, consola@^2.9.0:
+consola@^2.10.0, consola@^2.14.0, consola@^2.15.0, consola@^2.6.0, consola@^2.9.0:
   version "2.15.0"
   resolved "https://registry.yarnpkg.com/consola/-/consola-2.15.0.tgz#40fc4eefa4d2f8ef2e2806147f056ea207fcc0e9"
   integrity sha512-vlcSGgdYS26mPf7qNi+dCisbhiyDnrN1zaRbw3CSuc2wGOMEGGPsp46PdRG5gqXwgtJfjxDkxRNAgRPr1B77vQ==
@@ -5140,7 +5132,7 @@ date-and-time@^0.14.0:
   resolved "https://registry.yarnpkg.com/date-and-time/-/date-and-time-0.14.1.tgz#969634697b78956fb66b8be6fb0f39fbd631f2f6"
   integrity sha512-M4RggEH5OF2ZuCOxgOU67R6Z9ohjKbxGvAQz48vj53wLmL0bAgumkBvycR32f30pK+Og9pIR+RFDyChbaE4oLA==
 
-dayjs@^1.8.35, dayjs@^1.8.9:
+dayjs@^1.8.35:
   version "1.9.5"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.9.5.tgz#fd49994ebe71639d2ce9575e97186642dfce9808"
   integrity sha512-WULIw7UpW/E0y6VywewpbXAMH3d5cZijEhoHLwM+OMVbk/NtchKS/W+57H/0P1rqU7gHrAArjiRLHCUhgMQl6w==

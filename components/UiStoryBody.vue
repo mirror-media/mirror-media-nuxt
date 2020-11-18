@@ -96,6 +96,7 @@
 <script>
 import { mapState } from 'vuex'
 import { ref, computed, onMounted, useContext } from '@nuxtjs/composition-api'
+import dayjs from 'dayjs'
 
 import UiStoryContentHandler from './UiStoryContentHandler.vue'
 import UiShareFb from '~/components/UiShareFb.vue'
@@ -293,7 +294,7 @@ export default {
       )
     },
     publishedDate() {
-      return this.$dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm')
+      return dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm')
     },
     section() {
       return this.story.sections?.[0] ?? {}
@@ -302,7 +303,7 @@ export default {
       return this.section.id ?? 'other'
     },
     updatedAt() {
-      return this.$dayjs(this.story.updatedAt).format('YYYY.MM.DD HH:mm')
+      return dayjs(this.story.updatedAt).format('YYYY.MM.DD HH:mm')
     },
     tags() {
       return this.story.tags || []
