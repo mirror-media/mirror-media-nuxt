@@ -37,7 +37,7 @@ describe('isSignInWithEmailLink middleware', function () {
     }
     const mockRedirect = jest.fn()
     const mockReq = {
-      protocal: 'http',
+      protocol: 'http',
       get() {
         return 'example'
       },
