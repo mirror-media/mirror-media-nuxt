@@ -1,5 +1,9 @@
 <template>
   <article class="content">
+    <div v-if="doesHaveBrief" class="brief">
+      <p v-for="item in brief" :key="item.id">{{ item.content }}</p>
+    </div>
+
     <!--
       TODO: 改用更好的 render 方式，理由請見：https://vuejs.org/v2/style-guide/#Avoid-v-if-with-v-for-essential
     -->
@@ -78,10 +82,21 @@ export default {
   },
 
   props: {
+    brief: {
+      type: Array,
+      default: () => [],
+      required: true,
+    },
     content: {
       type: Array,
       default: () => [],
       required: true,
+    },
+  },
+
+  computed: {
+    doesHaveBrief() {
+      return this.brief.length > 0
     },
   },
 
@@ -103,32 +118,17 @@ export default {
 $quote-color: #4a90e2;
 
 .content {
-  width: 300px;
-  padding-top: 50px;
+  width: 266px;
   padding-bottom: 40px;
-  margin-left: auto;
-  margin-right: auto;
-  border-top: solid 1px #979797;
+  font-size: 15px;
+  line-height: 2;
   @include media-breakpoint-up(md) {
-    width: 700px;
+    width: 634px;
     padding-bottom: 62px;
-    border-top: none;
-  }
-  @include media-breakpoint-up(lg) {
-    padding-top: 73px;
   }
 
-  > * {
-    width: 266px;
-    margin-left: auto;
-    margin-right: auto;
-    @include media-breakpoint-up(md) {
-      width: 634px;
-    }
-
-    + * {
-      margin-top: 30px;
-    }
+  > * + * {
+    margin-top: 30px;
   }
 
   &::v-deep a {
@@ -137,9 +137,17 @@ $quote-color: #4a90e2;
   }
 }
 
-p {
-  font-size: 15px;
-  line-height: 2;
+.brief {
+  margin-bottom: 24px;
+  @include media-breakpoint-up(lg) {
+    margin-bottom: 60px;
+    font-size: 18px;
+    line-height: 1.67;
+  }
+
+  p + p {
+    margin-top: 2em;
+  }
 }
 
 h2,
@@ -165,17 +173,12 @@ figure {
 
   img {
     width: 100%;
-    min-height: 100px;
-    font-size: 13px;
     border-radius: 4px;
   }
 
   figcaption {
-    width: 266px;
     padding-top: 10px;
     margin-top: 12px;
-    margin-left: auto;
-    margin-right: auto;
     color: rgba(#000, 0.66);
     font-size: 13px;
     line-height: 1.5;
@@ -192,6 +195,8 @@ figure {
 
 .quote {
   max-width: 510px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .quote-icon-wrapper {

@@ -1,5 +1,3 @@
-import dayjs from 'dayjs'
-
 function creditHtml({
   writers = [],
   photographers = [],
@@ -39,8 +37,4 @@ function creditHtml({
   }
 }
 
-function formatDate(date) {
-  return dayjs(date).format('YYYY.MM.DD HH:mm:ss')
-}
-
-export { creditHtml, formatDate }
+export { creditHtml }

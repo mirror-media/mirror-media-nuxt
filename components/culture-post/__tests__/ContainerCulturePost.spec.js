@@ -4,12 +4,10 @@ import UiCulturePostIndex from '../UiCulturePostIndex.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper.js'
 
 const createWrapper = createWrapperHelper({
-  data() {
-    return {
-      story: {
-        content: [],
-      },
-    }
+  propsData: {
+    story: {
+      brief: { apiData: [] },
+    },
   },
   mocks: {
     $store: {

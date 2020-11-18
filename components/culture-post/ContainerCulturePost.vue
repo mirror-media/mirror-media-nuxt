@@ -1,11 +1,6 @@
 <template>
   <section class="culture-post">
-    <a
-      :href="SITE_URL"
-      class="culture-post__logo"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a :href="SITE_URL" class="logo" target="_blank" rel="noopener noreferrer">
       <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />
     </a>
 
@@ -18,9 +13,21 @@
       @openIndex="handleIndexActive(true)"
     />
 
-    <UiCulturePostIntro :post="post" />
+    <UiTheCover :title="post.title" :picture="post.coverPicture" />
 
-    <UiCulturePostContent :content="post.content" />
+    <div class="info">
+      <div>發布時間 {{ post.publishedDate }}</div>
+
+      <div class="credit">
+        <span v-for="credit in post.credits" :key="credit">{{ credit }}</span>
+      </div>
+    </div>
+
+    <UiCulturePostContent
+      class="culture-post__content"
+      :brief="post.brief"
+      :content="post.content"
+    />
 
     <lazy-component @show="fetchRelatedImgs">
       <UiCulturePostRelateds
@@ -30,30 +37,29 @@
       />
     </lazy-component>
 
-    <div v-if="updatedAt" class="culture-post__updated-at">
-      更新時間 / {{ updatedAt }}
-    </div>
+    <div v-if="updatedAt" class="updated-at">更新時間／{{ updatedAt }}</div>
   </section>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import dayjs from 'dayjs'
 
-import { formatDate } from '~/utils/article.js'
+import UiTheCover from './UiTheCover.vue'
+
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 
 import UiCulturePostContent from '~/components/culture-post/UiCulturePostContent.vue'
 import UiCulturePostIndex from '~/components/culture-post/UiCulturePostIndex.vue'
-import UiCulturePostIntro from '~/components/culture-post/UiCulturePostIntro.vue'
 import UiCulturePostRelateds from '~/components/culture-post/UiCulturePostRelateds.vue'
 
 export default {
   name: 'ContainerCulturePost',
 
   components: {
+    UiTheCover,
     UiCulturePostContent,
     UiCulturePostIndex,
-    UiCulturePostIntro,
     UiCulturePostRelateds,
   },
 
@@ -84,7 +90,6 @@ export default {
     post() {
       const {
         title = '',
-        titleColor = '',
         brief = {},
         writers = [],
         photographers = [],
@@ -98,20 +103,57 @@ export default {
         relateds = [],
       } = this.story
 
+      const heroImgsResized = heroImage.image?.resizedTargets || {}
+
       return {
         title,
-        titleColor,
-        brief: this.gainBriefHtml(brief.apiData || []),
-        writers: this.joinNames(writers),
-        photographers: this.joinNames(photographers),
-        cameraMan: this.joinNames(cameraMan),
-        extendByline,
+        credits: gainCredits(),
+        brief: gainBrief(),
         content: content.apiData || [],
-        heroImage: heroImage.image?.resizedTargets || {},
-        mobileImage: mobileImage.image?.resizedTargets || {},
+        heroImage: heroImgsResized,
+        coverPicture: {
+          heroImage: heroImgsResized,
+          mobileImage: mobileImage.image?.resizedTargets || {},
+        },
         publishedDate: formatDate(publishedDate),
         updatedAt: formatDate(updatedAt),
         relateds,
+      }
+
+      function gainCredits() {
+        return [
+          [writers, '記者'],
+          [photographers, '攝影'],
+          [cameraMan, '影音'],
+          [extendByline, ''],
+        ]
+          .filter(doesHaveAnyPeople)
+          .map(buildText)
+
+        function doesHaveAnyPeople([people]) {
+          return people.length > 0
+        }
+
+        function buildText([people, role]) {
+          return role !== '' ? `${role}／${joinNames(people)}` : people
+        }
+
+        function joinNames(items = []) {
+          return items.map((item) => item.name).join('、')
+        }
+      }
+
+      function gainBrief() {
+        return brief.apiData
+          .filter((item = {}) => item.type === 'unstyled' && item.content?.[0])
+          .map((item) => ({
+            id: item.id,
+            content: item.content[0],
+          }))
+      }
+
+      function formatDate(date) {
+        return dayjs(date).format('YYYY.M.D')
       }
     },
     indexes() {
@@ -143,17 +185,6 @@ export default {
   },
 
   methods: {
-    gainBriefHtml(apiData = []) {
-      return apiData
-        .filter((item) => item.type === 'unstyled')
-        .reduce(function buildHtml(acc, cur) {
-          return `${acc}<p>${cur?.content?.[0]}</p>`
-        }, '')
-    },
-    joinNames(items = []) {
-      return items.map((item) => item.name).join(' ')
-    },
-
     detectCurrentIndex() {
       import('intersection-observer').then(() => {
         const targets = [
@@ -201,7 +232,7 @@ export default {
 
   head() {
     const { title = '', brief = '', heroImage = {} } = this.post
-    const description = brief.replace(/(<([^>]+)>)/gi, '')
+    const description = brief.map((item) => item.content).join('')
     const image = heroImage.desktop?.url || SITE_OG_IMG
 
     return {
@@ -243,36 +274,66 @@ export default {
   word-break: break-word;
   overflow-wrap: break-word;
 
-  &__logo {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 900;
-    width: 44px;
-
-    img {
-      width: 100%;
-    }
-  }
-
-  &__updated-at {
-    width: 300px;
-    padding-top: 12px;
-    padding-bottom: 15px;
+  &__content {
     margin-left: auto;
     margin-right: auto;
-    color: rgba(#000, 0.66);
-    font-size: 13px;
-    line-height: 2.31;
-    letter-spacing: 1px;
-    text-align: center;
-    border-top: 1px solid #979797;
-    @include media-breakpoint-up(md) {
-      width: 700px;
-    }
+  }
+}
+
+.logo {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 900;
+  width: 44px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.info,
+.updated-at {
+  font-size: 13px;
+  line-height: 2.31;
+  text-align: center;
+  color: rgba(#000, 0.66);
+}
+
+.info {
+  padding: 16px 31px;
+  margin-bottom: 24px;
+  @include media-breakpoint-up(lg) {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    margin-bottom: 60px;
+  }
+}
+
+.credit {
+  margin-top: 4px;
+
+  span + span {
+    margin-left: 12px;
     @include media-breakpoint-up(lg) {
-      width: 900px;
+      margin-left: 24px;
     }
+  }
+}
+
+.updated-at {
+  width: 300px;
+  padding-top: 12px;
+  padding-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  letter-spacing: 1px;
+  border-top: 1px solid #979797;
+  @include media-breakpoint-up(md) {
+    width: 700px;
+  }
+  @include media-breakpoint-up(lg) {
+    width: 900px;
   }
 }
 </style>
