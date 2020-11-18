@@ -18,6 +18,6 @@ export const mutations = {
 
 export const getters = {
   isLoggedIn(state) {
-    return state.user.email
+    return !!state.user.email
   },
 }
