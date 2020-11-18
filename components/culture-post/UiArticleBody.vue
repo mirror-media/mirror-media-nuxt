@@ -23,7 +23,11 @@
       />
       <!-- eslint-enable vue/no-v-html -->
 
-      <figure v-else-if="item.type === 'image'" :key="item.id">
+      <figure
+        v-else-if="item.type === 'image'"
+        :key="item.id"
+        :class="gainAlignment(item)"
+      >
         <img v-lazy="gainImgSrc(item)" alt="" />
 
         <figcaption v-if="gainImgCaption(item)">
@@ -72,7 +76,7 @@ import UiAnnotation from '~/components/culture-post/UiAnnotation.vue'
 import SvgQuoteIcon from '~/assets/quote.svg?inline'
 
 export default {
-  name: 'UiCulturePostContent',
+  name: 'UiArticleBody',
 
   components: {
     UiAnnotation,
@@ -103,6 +107,11 @@ export default {
   methods: {
     gainContent(item = {}) {
       return item.content?.[0]
+    },
+
+    gainAlignment(item = {}) {
+      // 不需要 'center' 來判斷樣式，故排除
+      return item.alignment !== 'center' && item.alignment
     },
     gainImgSrc(item = {}) {
       return item.content?.[0]?.tablet?.url
@@ -171,6 +180,23 @@ h3 {
 figure {
   width: 100%;
 
+  &.left,
+  &.right {
+    clear: both;
+    width: 300px;
+    margin-bottom: 35px;
+  }
+
+  &.left {
+    float: left;
+    margin-right: 35px;
+  }
+
+  &.right {
+    float: right;
+    margin-left: 35px;
+  }
+
   img {
     width: 100%;
     border-radius: 4px;
@@ -184,9 +210,6 @@ figure {
     line-height: 1.5;
     letter-spacing: 1px;
     border-top: 1px solid #979797;
-    @include media-breakpoint-up(md) {
-      width: 634px;
-    }
     @include media-breakpoint-up(lg) {
       margin-top: 16px;
     }
