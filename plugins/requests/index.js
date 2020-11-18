@@ -7,7 +7,7 @@ import { ENV, API_TIMEOUT, DOMAIN_NAME } from '~/configs/config.js'
 
 const baseUrl = process.browser
   ? `//${location.host}/`
-  : process.env._AXIOS_BASE_URL_
+  : 'http://localhost:3000/'
 
 function isPureObject(params) {
   return _.isObject(params) && !Array.isArray(params)
