@@ -29,7 +29,7 @@
       :content="post.content"
     />
 
-    <lazy-component @show="fetchRelatedImgs">
+    <lazy-component class="list-related-container" @show="fetchRelatedImgs">
       <UiListRelated
         v-if="relateds.length > 0"
         :items="relateds"
@@ -274,8 +274,15 @@ export default {
   overflow-wrap: break-word;
 
   &__article-body {
-    margin-left: auto;
-    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    @include media-breakpoint-up(md) {
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 700px;
+    }
   }
 }
 
@@ -320,19 +327,25 @@ export default {
   }
 }
 
+.list-related-container {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 .updated-at {
-  width: 300px;
   padding-top: 12px;
   padding-bottom: 15px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 10px;
+  margin-right: 10px;
   letter-spacing: 1px;
   border-top: 1px solid #979797;
   @include media-breakpoint-up(md) {
-    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
   }
   @include media-breakpoint-up(lg) {
-    width: 900px;
+    max-width: 900px;
   }
 }
 </style>

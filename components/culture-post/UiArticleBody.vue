@@ -127,129 +127,155 @@ export default {
 $quote-color: #4a90e2;
 
 .article-body {
-  width: 266px;
-  padding-bottom: 40px;
+  padding-bottom: 60px;
   font-size: 15px;
   line-height: 2;
   @include media-breakpoint-up(md) {
-    width: 634px;
-    padding-bottom: 62px;
+    padding-bottom: 50px;
   }
 
-  > * + * {
-    margin-top: 30px;
+  > * {
+    margin: 40px auto;
+    padding-left: 27px;
+    padding-right: 27px;
+    @include media-breakpoint-up(md) {
+      padding-left: 33px;
+      padding-right: 33px;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   &::v-deep a {
     color: rgba(199, 159, 101, 0.87);
     text-decoration: underline;
   }
-}
 
-.brief {
-  margin-bottom: 24px;
-  @include media-breakpoint-up(lg) {
-    margin-bottom: 60px;
-    font-size: 18px;
-    line-height: 1.67;
-  }
-
-  p + p {
-    margin-top: 2em;
-  }
-}
-
-h2,
-h3 {
-  font-family: source-han-serif-tc, 'Songti TC', serif;
-  font-weight: 900;
-  line-height: 1.5;
-}
-
-h2 {
-  font-size: 28px;
-  @include media-breakpoint-up(lg) {
-    font-size: 30px;
-  }
-}
-
-h3 {
-  font-size: 18px;
-}
-
-figure {
-  width: 100%;
-
-  &.left,
-  &.right {
-    clear: both;
-    width: 300px;
-    margin-bottom: 35px;
-  }
-
-  &.left {
-    float: left;
-    margin-right: 35px;
-  }
-
-  &.right {
-    float: right;
-    margin-left: 35px;
-  }
-
-  img {
-    width: 100%;
-    border-radius: 4px;
-  }
-
-  figcaption {
-    padding-top: 10px;
-    margin-top: 12px;
-    color: rgba(#000, 0.66);
-    font-size: 13px;
-    line-height: 1.5;
-    letter-spacing: 1px;
-    border-top: 1px solid #979797;
+  .brief {
+    margin-bottom: 48px;
     @include media-breakpoint-up(lg) {
-      margin-top: 16px;
+      margin-bottom: 120px;
+      font-size: 18px;
+      line-height: 1.67;
+    }
+
+    + * {
+      margin-top: 0;
+    }
+
+    p + p {
+      margin-top: 2em;
     }
   }
-}
 
-.quote {
-  max-width: 510px;
-  margin-left: auto;
-  margin-right: auto;
-}
+  h2,
+  h3 {
+    font-family: source-han-serif-tc, 'Songti TC', serif;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-top: 60px;
+  }
 
-.quote-icon-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 11px;
+  h2 {
+    font-size: 28px;
+    @include media-breakpoint-up(lg) {
+      font-size: 30px;
+    }
+  }
 
-  &::before,
-  &::after {
-    content: '';
+  h3 {
+    font-size: 18px;
+  }
+
+  figure {
     width: 100%;
-    height: 1px;
-    background-color: $quote-color;
+    padding-left: 0;
+    padding-right: 0;
+    @include media-breakpoint-up(md) {
+      &.left,
+      &.right {
+        clear: both;
+        width: 300px;
+        margin-bottom: 35px;
+
+        figcaption {
+          margin-left: 0;
+          margin-right: 0;
+        }
+      }
+
+      &.left {
+        float: left;
+        margin-right: 35px;
+        padding-left: 33px;
+      }
+
+      &.right {
+        float: right;
+        margin-left: 35px;
+        padding-right: 33px;
+      }
+    }
+
+    img {
+      width: 100%;
+      border-radius: 4px;
+    }
+
+    figcaption {
+      padding-top: 10px;
+      margin-top: 12px;
+      margin-left: 17px;
+      margin-right: 17px;
+      color: rgba(#000, 0.66);
+      font-size: 13px;
+      line-height: 1.5;
+      letter-spacing: 1px;
+      border-top: 1px solid #979797;
+      @include media-breakpoint-up(lg) {
+        margin-top: 16px;
+        margin-left: 33px;
+        margin-right: 33px;
+      }
+    }
   }
 
-  svg {
-    width: 20px;
-    height: auto;
-    flex-shrink: 0;
-    margin-left: 33px;
-    margin-right: 33px;
+  .quote {
+    max-width: 510px;
+    margin: 30px auto;
   }
-}
 
-blockquote {
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 1.78;
-  color: $quote-color;
-  text-align: justify;
+  .quote-icon-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 11px;
+
+    &::before,
+    &::after {
+      content: '';
+      width: 100%;
+      height: 1px;
+      background-color: $quote-color;
+    }
+
+    svg {
+      width: 20px;
+      height: auto;
+      flex-shrink: 0;
+      margin-left: 33px;
+      margin-right: 33px;
+    }
+  }
+
+  blockquote {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.78;
+    color: $quote-color;
+    text-align: justify;
+  }
 }
 </style>

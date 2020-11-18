@@ -220,7 +220,7 @@ export default {
       display: inline;
       font-family: source-han-serif-tc, 'Songti TC', serif;
       font-size: 18px;
-      font-weight: 900;
+      font-weight: 700;
       cursor: pointer;
 
       &.active a {

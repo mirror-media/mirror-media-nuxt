@@ -57,9 +57,9 @@ export default {
   &__content {
     display: inline-block;
     width: 100%;
-    margin-top: 13px;
+    margin-top: 20px;
     margin-bottom: 20px;
-    padding: 23px;
+    padding: 23px 27px;
     color: rgba(0, 0, 0, 0.87);
     font-size: 15px;
     line-height: 1.5;
@@ -68,8 +68,7 @@ export default {
     background-color: rgba(216, 216, 216, 0.3);
     border-radius: 2px;
     @include media-breakpoint-up(md) {
-      padding-left: 37px;
-      padding-right: 37px;
+      padding: 26px 37px;
     }
   }
 }

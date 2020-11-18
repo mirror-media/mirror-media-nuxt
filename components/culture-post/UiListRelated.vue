@@ -51,25 +51,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.list-related {
-  width: 300px;
-  padding-bottom: 63px;
+.list-related,
+h2 {
   margin-left: auto;
   margin-right: auto;
+}
+
+.list-related {
+  max-width: 300px;
+  padding-bottom: 63px;
   @include media-breakpoint-up(md) {
-    width: 700px;
+    max-width: 700px;
   }
 }
 
 h2 {
-  width: 266px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 266px;
   font-family: source-han-serif-tc, 'Songti TC', serif;
   font-size: 28px;
-  font-weight: 900;
+  font-weight: 700;
   @include media-breakpoint-up(md) {
-    width: 634px;
+    max-width: 634px;
   }
 }
 
@@ -127,7 +129,7 @@ a {
     margin-left: 10px;
     font-family: source-han-serif-tc, 'Songti TC', serif;
     font-size: 15px;
-    font-weight: 900;
+    font-weight: 700;
     line-height: 1.73;
     @include media-breakpoint-up(md) {
       margin-top: 10px;
