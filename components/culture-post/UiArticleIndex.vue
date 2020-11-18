@@ -48,7 +48,7 @@ import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
 
 export default {
-  name: 'UiCulturePostIndex',
+  name: 'UiArticleIndex',
 
   components: {
     UiShareFb,

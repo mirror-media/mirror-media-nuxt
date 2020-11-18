@@ -4,7 +4,7 @@
       <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />
     </a>
 
-    <UiCulturePostIndex
+    <UiArticleIndex
       v-if="indexes.length > 0"
       :items="indexes"
       :currentIndex="currentIndex"
@@ -23,14 +23,14 @@
       </div>
     </div>
 
-    <UiCulturePostContent
-      class="culture-post__content"
+    <UiArticleBody
+      class="culture-post__article-body"
       :brief="post.brief"
       :content="post.content"
     />
 
     <lazy-component @show="fetchRelatedImgs">
-      <UiCulturePostRelateds
+      <UiListRelated
         v-if="relateds.length > 0"
         :items="relateds"
         :imgs="relatedImgs"
@@ -46,21 +46,20 @@ import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
 import UiTheCover from './UiTheCover.vue'
+import UiArticleBody from './UiArticleBody.vue'
+import UiArticleIndex from './UiArticleIndex.vue'
+import UiListRelated from './UiListRelated.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
-
-import UiCulturePostContent from '~/components/culture-post/UiCulturePostContent.vue'
-import UiCulturePostIndex from '~/components/culture-post/UiCulturePostIndex.vue'
-import UiCulturePostRelateds from '~/components/culture-post/UiCulturePostRelateds.vue'
 
 export default {
   name: 'ContainerCulturePost',
 
   components: {
     UiTheCover,
-    UiCulturePostContent,
-    UiCulturePostIndex,
-    UiCulturePostRelateds,
+    UiArticleBody,
+    UiArticleIndex,
+    UiListRelated,
   },
 
   props: {
@@ -274,7 +273,7 @@ export default {
   word-break: break-word;
   overflow-wrap: break-word;
 
-  &__content {
+  &__article-body {
     margin-left: auto;
     margin-right: auto;
   }

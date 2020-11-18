@@ -29,7 +29,7 @@
 import { gainImgSrcById } from '~/utils/img.js'
 
 export default {
-  name: 'UiCulturePostRelateds',
+  name: 'UiListRelated',
 
   props: {
     items: {

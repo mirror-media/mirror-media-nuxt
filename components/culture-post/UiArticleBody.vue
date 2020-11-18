@@ -1,5 +1,5 @@
 <template>
-  <article class="content">
+  <article class="article-body">
     <div v-if="doesHaveBrief" class="brief">
       <p v-for="item in brief" :key="item.id">{{ item.content }}</p>
     </div>
@@ -117,7 +117,7 @@ export default {
 <style lang="scss" scoped>
 $quote-color: #4a90e2;
 
-.content {
+.article-body {
   width: 266px;
   padding-bottom: 40px;
   font-size: 15px;
