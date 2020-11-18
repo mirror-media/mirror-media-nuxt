@@ -214,8 +214,6 @@ module.exports = {
    * Nuxt.js modules
    */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
     'nuxt-user-agent',
     ...(process.env.NODE_ENV === 'production'
       ? ['@mirror-media/nuxt-ssr-cache']
@@ -290,11 +288,6 @@ module.exports = {
     },
   },
 
-  /**
-   * Axios module configuration
-   * See https://axios.nuxtjs.org/options
-   */
-  axios: {},
   styleResources: {
     scss: '~/scss/*.scss',
   },
