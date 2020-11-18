@@ -5,7 +5,7 @@ export const state = () => ({
 export const mutations = {
   /*
    * this mutation will be commit by @nuxtjs/firebase automatically
-   * which is setting in service.auth.initialize.onAuthStateChangedMutation of nuxt.confij.js
+   * which is setting in service.auth.initialize.onAuthStateChangedMutation of nuxt.config.js
    * for more info: https://firebase.nuxtjs.org/service-options/auth#onauthstatechangedmutation
    */
   ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser }) {
