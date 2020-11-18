@@ -47,9 +47,8 @@ export default {
     UiMembershipError,
   },
 
-  async middleware({ app, redirect, req }) {
+  middleware({ app, redirect, req }) {
     const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`
-    await app.$fire.authReady()
     if (!app.$fire.auth.isSignInWithEmailLink(fullUrl)) {
       redirect('/')
     }
@@ -91,7 +90,6 @@ export default {
     },
     async signInWithEmail(email) {
       try {
-        await this.$fire.authReady()
         await this.$fire.auth.setPersistence(this.authPersistence)
         await this.$fire.auth.signInWithEmailLink(email, window.location.href)
         await localforage.removeItem('emailForSignIn')
