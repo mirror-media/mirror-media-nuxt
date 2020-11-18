@@ -4,13 +4,7 @@ import localforage from 'localforage'
 import ContainerMembershipLoginWithEmail from '../ContainerMembershipLoginWithEmail.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
-const createWrapper = createWrapperHelper({
-  mocks: {
-    $fire: {
-      authReady: jest.fn(),
-    },
-  },
-})
+const createWrapper = createWrapperHelper()
 
 describe('handle event emitted by child component UiMembershipEmailInput', function () {
   test('handle "input" event emitted by UiMembershipEmailInput', function () {
@@ -26,22 +20,6 @@ describe('handle event emitted by child component UiMembershipEmailInput', funct
     const mockEmailInputValidState = true
     emailInput.vm.$emit('inputValidStateChange', mockEmailInputValidState)
     expect(wrapper.vm.isEmailInputValid).toBe(mockEmailInputValidState)
-  })
-})
-
-describe('@nuxtjs/firebase service', function () {
-  test('should lazyload @nuxtjs/firebase auth service on component created', async function () {
-    expect.assertions(1)
-    const mockAuthReady = jest.fn()
-    createWrapper(ContainerMembershipLoginWithEmail, {
-      mocks: {
-        $fire: {
-          authReady: mockAuthReady,
-        },
-      },
-    })
-    await flushPromises()
-    expect(mockAuthReady).toHaveBeenCalled()
   })
 })
 

@@ -1,21 +1,18 @@
 <template>
-  <div class="login-form-wrapper">
-    <h1 class="title">登入</h1>
-    <form class="login-form-wrapper__form form" novalidate @submit.prevent>
-      <UiMembershipEmailInput
-        :shouldShowInvalidHint="shouldShowInvalidHint"
-        @input="handleEmailInput"
-        @inputValidStateChange="handleInputValidStateChange"
-      />
-      <label class="form__remember-me-checkbox remember-me-checkbox">
-        <input v-model="shouldRememberMe" type="checkbox" />
-        保持登入
-      </label>
-      <button class="form__login-button login-button" @click="handleSubmit">
-        登入
-      </button>
-    </form>
-  </div>
+  <form class="login-form-wrapper__form form" novalidate @submit.prevent>
+    <UiMembershipEmailInput
+      :shouldShowInvalidHint="shouldShowInvalidHint"
+      @input="handleEmailInput"
+      @inputValidStateChange="handleInputValidStateChange"
+    />
+    <label class="form__remember-me-checkbox remember-me-checkbox">
+      <input v-model="shouldRememberMe" type="checkbox" />
+      保持登入
+    </label>
+    <button class="form__login-button login-button" @click="handleSubmit">
+      登入
+    </button>
+  </form>
 </template>
 
 <script>
@@ -40,9 +37,7 @@ export default {
       shouldRememberMe: false,
     }
   },
-  async beforeMount() {
-    await this.loadAuthService()
-  },
+
   methods: {
     handleSubmit() {
       this.shouldShowInvalidHint = true
@@ -53,13 +48,6 @@ export default {
     handleError(e) {
       // eslint-disable-next-line no-console
       console.error(e)
-    },
-    async loadAuthService() {
-      try {
-        await this.$fire.authReady()
-      } catch (e) {
-        this.handleError(e)
-      }
     },
     createSignInLinkToEmail() {
       const origin = window.location.origin
@@ -114,24 +102,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.login-form-wrapper {
-  width: 100%;
-  &__form {
-    margin: 20px 0 0 0;
-  }
-  @include media-breakpoint-up(xl) {
-    width: 300px;
-    margin: 0 auto;
-  }
-}
-
-.title {
-  text-align: center;
-  font-weight: 900;
-  font-size: 18px;
-  color: #054f77;
-}
-
 .form {
   &__remember-me-checkbox {
     margin: 10px 0 0 0;
