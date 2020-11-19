@@ -5,25 +5,21 @@
       <div
         v-for="item in items"
         :key="item.slug"
-        :class="[sectionName(item), 'item']"
+        :class="[gainSectionName(item), 'item']"
       >
         <a
-          :href="href(item)"
+          :href="gainHref(item)"
           class="item__image"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img
-            :src="imgSrc(item)"
-            :srcset="imgSrcset(item)"
-            :alt="item.title"
-          />
+          <img :src="gainImgSrc(item)" :srcset="gainImgSrcset(item)" alt="" />
           <div class="item__section">{{ extractTitle(item) }}</div>
         </a>
         <div class="item__section-title">
           <div class="item__section">{{ extractTitle(item) }}</div>
           <a
-            :href="href(item)"
+            :href="gainHref(item)"
             class="item__title"
             target="_blank"
             rel="noopener noreferrer"
@@ -54,37 +50,39 @@ export default {
     extractTitle: {
       type: Function,
       default(...args) {
-        return this.sectionTitle(...args)
+        return this.gainSectionTitle(...args)
       },
     },
   },
 
   methods: {
-    imgSrc(item) {
-      return this.heroImgTiny(item)
+    gainImgSrc(item = {}) {
+      return this.gainHeroImgTiny(item)
     },
-    imgSrcset(item) {
-      const tinyUrl = this.heroImgTiny(item)
-      const mobileUrl = this.heroImg(item).mobile?.url || SITE_OG_IMG
+    gainImgSrcset(item = {}) {
+      const tinyUrl = this.gainHeroImgTiny(item)
+      const mobileUrl = this.gainHeroImg(item).mobile?.url || SITE_OG_IMG
 
       return `${tinyUrl} 1x, ${mobileUrl} 2x`
     },
-    heroImg({ heroImage = {} }) {
+    gainHeroImg({ heroImage = {} }) {
       return heroImage.image?.resizedTargets || {}
     },
-    heroImgTiny(item) {
-      return this.heroImg(item).tiny?.url || SITE_OG_IMG
+    gainHeroImgTiny(item = {}) {
+      return this.gainHeroImg(item).tiny?.url || SITE_OG_IMG
     },
-    section({ sections = [] }) {
+
+    gainSection({ sections = [] }) {
       return sections[0] || {}
     },
-    sectionName(item) {
-      return this.section(item).name
+    gainSectionName(item = {}) {
+      return this.gainSection(item).name
     },
-    sectionTitle(item = {}) {
-      return this.section(item).title || '新聞'
+    gainSectionTitle(item = {}) {
+      return this.gainSection(item).title || '新聞'
     },
-    href({ slug = '' }) {
+
+    gainHref({ slug = '' }) {
       return slug.startsWith('/story/') ? slug : `/story/${slug}/`
     },
   },
