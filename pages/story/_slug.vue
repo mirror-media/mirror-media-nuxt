@@ -14,8 +14,8 @@
 
         <div class="story-wrapper">
           <ContainerStoryBody :story="story" class="story-slug__story-body">
-            <template #fixedTriggerFinished>
-              <div ref="fixedTriggerFinished" />
+            <template #fixedTriggerEnd>
+              <div ref="fixedTriggerEnd" />
             </template>
 
             <template #storyRelateds>
@@ -430,7 +430,7 @@ export default {
     },
     handleFixAside: _.throttle(
       function () {
-        const { latestList, fixedContainer, fixedTriggerFinished } = this.$refs
+        const { latestList, fixedContainer, fixedTriggerEnd } = this.$refs
 
         if (!latestList) {
           return
@@ -438,8 +438,8 @@ export default {
 
         const { bottom: latestListBottom } = latestList.getBoundingClientRect()
         const {
-          top: fixedTriggerFinishedTop,
-        } = fixedTriggerFinished.getBoundingClientRect()
+          top: fixedTriggerEndTop,
+        } = fixedTriggerEnd.getBoundingClientRect()
 
         // 當視窗頂部 <= latestList 底部，結束 fix
         if (latestListBottom > 0) {
@@ -449,10 +449,10 @@ export default {
           return
         }
 
-        // 當視窗頂部 > latestList 底部，且視窗底部 <= fixedTriggerFinished 頂部，開始 fix
+        // 當視窗頂部 > latestList 底部，且視窗底部 <= fixedTriggerEnd 頂部，開始 fix
         if (
           latestListBottom <= 0 &&
-          fixedTriggerFinishedTop - this.viewportHeight > 0
+          fixedTriggerEndTop - this.viewportHeight > 0
         ) {
           fixedContainer.classList.add('fixed')
           fixedContainer.style.marginTop = ''
@@ -460,11 +460,11 @@ export default {
           return
         }
 
-        // 當視窗底部 > fixedTriggerFinished 頂部，結束 fix
-        if (fixedTriggerFinishedTop - this.viewportHeight <= 0) {
+        // 當視窗底部 > fixedTriggerEnd 頂部，結束 fix
+        if (fixedTriggerEndTop - this.viewportHeight <= 0) {
           fixedContainer.classList.remove('fixed')
           fixedContainer.style.marginTop = `${
-            fixedTriggerFinishedTop - latestListBottom - this.viewportHeight
+            fixedTriggerEndTop - latestListBottom - this.viewportHeight
           }px`
         }
       },

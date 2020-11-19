@@ -46,7 +46,7 @@
       更新時間｜<span v-text="updatedAt" />
     </p>
 
-    <slot name="fixedTriggerFinished"></slot>
+    <slot name="fixedTriggerEnd"></slot>
 
     <slot v-if="!isAdvertised" name="storyRelateds"></slot>
 
