@@ -114,8 +114,8 @@ export default {
           heroImage: heroImgsResized,
           mobileImage: mobileImage.image?.resizedTargets || {},
         },
-        publishedDate: formatDate(publishedDate),
-        updatedAt: formatDate(updatedAt),
+        publishedDate: dayjs(publishedDate).format('YYYY.M.D'),
+        updatedAt: dayjs(updatedAt).format('YYYY.M.D HH:mm'),
         relateds,
       }
 
@@ -149,10 +149,6 @@ export default {
             id: item.id,
             content: item.content[0],
           }))
-      }
-
-      function formatDate(date) {
-        return dayjs(date).format('YYYY.M.D')
       }
     },
     indexes() {
