@@ -23,12 +23,12 @@ describe('data bindings with vuex store', function () {
     }
   })
 
-  test('should show ".not-logged-in-icon" if current visitor is not a member', function () {
+  test('should show ".not-logged-in-link" if current visitor is not a member', function () {
     const wrapper = shallowMount(ContainerMembershipMemberIcon, {
       localVue,
       store: new Vuex.Store(storeOptions),
     })
-    expect(wrapper.find('.not-logged-in-icon').exists()).toBe(true)
+    expect(wrapper.find('.not-logged-in-link').exists()).toBe(true)
     expect(wrapper.find('.logged-in-icon').exists()).toBe(false)
   })
 
@@ -38,7 +38,7 @@ describe('data bindings with vuex store', function () {
       localVue,
       store: new Vuex.Store(storeOptions),
     })
-    expect(wrapper.find('.not-logged-in-icon').exists()).toBe(false)
+    expect(wrapper.find('.not-logged-in-link').exists()).toBe(false)
     expect(wrapper.find('.logged-in-icon').exists()).toBe(true)
   })
 })

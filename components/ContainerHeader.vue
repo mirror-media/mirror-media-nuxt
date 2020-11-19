@@ -406,8 +406,7 @@ header {
   }
 }
 .member-icon-mobile {
-  width: 20px;
-  height: 20px;
+  width: 30px;
   margin: 0 0 0 10px;
   @include media-breakpoint-up(xl) {
     display: none;
