@@ -497,3 +497,18 @@ test('should not render any ADs when canAdvertise is false', () => {
 
   expect(wrapper.find('.story__ad-container').exists()).toBe(false)
 })
+
+test('render the content under the condition that isAdvertised is true', () => {
+  const sut = createWrapper(ContainerStoryBody, {
+    computed: {
+      isAdvertised: () => true,
+      categoryTitle: () => 'test category title',
+    },
+    slots: {
+      storyRelateds: '<div class="slot-story-relateds" />',
+    },
+  })
+
+  expect(sut.find('.story__category').exists()).toBe(false)
+  expect(sut.find('.slot-story-relateds').exists()).toBe(false)
+})

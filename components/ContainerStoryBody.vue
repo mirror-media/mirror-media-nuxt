@@ -45,7 +45,8 @@
     <p v-if="isUpdatedAtVisible" class="story__updated-at">
       更新時間｜<span v-text="updatedAt" />
     </p>
-    <slot name="storyRelateds"></slot>
+
+    <slot v-if="!isAdvertised" name="storyRelateds"></slot>
 
     <ClientOnly>
       <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="MB_AT3" />
