@@ -491,6 +491,7 @@ export default {
       title = '',
       topics = {},
       writers = [],
+      tags = [],
     } = this.story
     const robots = isAdult ? 'noindex' : 'index'
     const metaTitle = ogTitle || title || SITE_TITLE
@@ -508,6 +509,7 @@ export default {
     const publishedDateIso = new Date(publishedDate).toISOString()
     const topicId = topics._id ?? ''
     const { name: writerName, id: writerId } = writers[0] || {}
+    const tagNamesStr = tags.map((tag) => tag.name).join(', ')
 
     return {
       title,
@@ -526,6 +528,12 @@ export default {
           property: 'og:url',
           content: pageUrl,
         },
+        tagNamesStr !== ''
+          ? {
+              name: 'news_keywords',
+              content: tagNamesStr,
+            }
+          : {},
         this.hasSection
           ? { name: 'section-name', content: this.sectionName }
           : {},
