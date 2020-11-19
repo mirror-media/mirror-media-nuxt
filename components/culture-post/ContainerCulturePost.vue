@@ -24,6 +24,7 @@
     </div>
 
     <UiArticleBody
+      ref="articleBody"
       class="culture-post__article-body"
       :brief="post.brief"
       :content="post.content"
@@ -182,9 +183,7 @@ export default {
   methods: {
     detectCurrentIndex() {
       import('intersection-observer').then(() => {
-        const targets = [
-          ...document.querySelectorAll('.culture-post .content h2'),
-        ]
+        const targets = [...this.$refs.articleBody.$el.querySelectorAll('h2')]
         let observer
 
         {
