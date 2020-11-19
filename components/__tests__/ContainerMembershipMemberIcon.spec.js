@@ -1,4 +1,4 @@
-import { createLocalVue } from '@vue/test-utils'
+import { createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import Vuex from 'vuex'
 import createWrapperHelper from '@/test/helpers/createWrapperHelper'
 import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMemberIcon.vue'
@@ -11,7 +11,9 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 const createWrapper = createWrapperHelper({
-  stubs: ['NuxtLink'],
+  stubs: {
+    NuxtLink: RouterLinkStub,
+  },
 })
 
 describe('data bindings with vuex store', function () {
@@ -28,12 +30,13 @@ describe('data bindings with vuex store', function () {
     }
   })
 
-  test('should show ".not-logged-in-link" if current visitor is not a member', function () {
+  test('should show ".not-logged-in-link" if current visitor is not a member, and the link is nuxt-link to login page', function () {
     const wrapper = createWrapper(ContainerMembershipMemberIcon, {
       localVue,
       store: new Vuex.Store(storeOptions),
     })
     expect(wrapper.find('.not-logged-in-link').exists()).toBe(true)
+    expect(wrapper.getComponent(RouterLinkStub).props().to).toBe('/login')
     expect(wrapper.find('.logged-in-icon').exists()).toBe(false)
   })
 
