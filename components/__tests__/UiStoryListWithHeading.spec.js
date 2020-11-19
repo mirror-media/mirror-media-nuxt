@@ -19,8 +19,37 @@ describe('props', () => {
     expect(wrapper.get('.heading').text()).toBe(headingMock)
   })
 
+  test('render the href', async () => {
+    expect.assertions(4)
+
+    /* Arrange */
+    const slugNormalMock = 'slug-normal'
+    const sut = createWrapper(UiStoryListWithHeading, {
+      propsData: {
+        items: [{ slug: slugNormalMock }],
+      },
+    })
+
+    /* Assert */
+    expect(sut.get('.item__image').attributes().href).toBe(
+      `/story/${slugNormalMock}/`
+    )
+    expect(sut.get('.item__title').attributes().href).toBe(
+      `/story/${slugNormalMock}/`
+    )
+
+    /* Act */
+    const slugStoryMock = '/story/slug/'
+    sut.setProps({ items: [{ slug: slugStoryMock }] })
+
+    await sut.vm.$nextTick()
+
+    /* Assert */
+    expect(sut.get('.item__image').attributes().href).toBe(slugStoryMock)
+    expect(sut.get('.item__title').attributes().href).toBe(slugStoryMock)
+  })
+
   test('render proper item', () => {
-    const slugMock = 'test-slug'
     const titleMock = 'test title'
     const mobileImageUrlMock = 'https://www.mm.tw/mobile.jpg'
     const sectionNameMock = 'news'
@@ -44,16 +73,13 @@ describe('props', () => {
                 title: sectionTitleMock,
               },
             ],
-            slug: slugMock,
             title: titleMock,
           },
         ],
       },
     })
-    const hrefExpected = `/story/${slugMock}/`
 
     expect(wrapper.get('.item').classes()).toContain(sectionNameMock)
-    expect(wrapper.get('.item__image').attributes().href).toBe(hrefExpected)
     expect(wrapper.get('.item__image img').attributes().src).toBe(
       mobileImageUrlMock
     )
@@ -63,7 +89,6 @@ describe('props', () => {
     expect(wrapper.get('.item__section-title .item__section').text()).toBe(
       sectionTitleMock
     )
-    expect(wrapper.get('.item__title').attributes().href).toBe(hrefExpected)
     expect(wrapper.get('.item__title').text()).toBe(titleMock)
   })
 
