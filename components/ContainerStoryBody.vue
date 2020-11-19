@@ -62,7 +62,7 @@
       >。
     </p>
 
-    <lazy-component v-if="shouldOpenTags" class="story__tags">
+    <lazy-component v-if="doesHaveTags" class="story__tags">
       <p class="title">相關關鍵字：</p>
       <div class="wrapper">
         <a
@@ -303,7 +303,7 @@ export default {
     tags() {
       return this.story.tags || []
     },
-    shouldOpenTags() {
+    doesHaveTags() {
       return this.tags.length > 0
     },
   },
