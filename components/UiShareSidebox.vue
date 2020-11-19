@@ -1,6 +1,6 @@
 <template>
   <div ref="shareSidebox" class="share-sidebox">
-    <NuxtLink ref="logo" class="logo" to="/" @click.native="emitGa('home')">
+    <a ref="logo" class="logo" href="/" @click="emitGa('home')">
       <picture>
         <source srcset="~/assets/mirrormedia-square.webp" type="image/webp" />
         <img
@@ -9,7 +9,7 @@
           loading="lazy"
         />
       </picture>
-    </NuxtLink>
+    </a>
     <a
       :href="sharedLineUrl"
       target="_blank"
@@ -127,12 +127,11 @@ function useToggleLogo() {
   function toggleLogo() {
     rafWithDebounce(() => {
       const { bottom } = headerTopLayer.getBoundingClientRect()
-      const { $el } = logo.value
 
       if (bottom <= 0) {
-        $el.classList.add('shown')
+        logo.value.classList.add('shown')
       } else {
-        $el.classList.remove('shown')
+        logo.value.classList.remove('shown')
       }
     })
   }

@@ -3,9 +3,7 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 let header, storyContainer, headerTopLayer
 
-const createWrapper = createWrapperHelper({
-  stubs: ['NuxtLink'],
-})
+const createWrapper = createWrapperHelper()
 
 describe('position of share sidebox', () => {
   const mockOffsetW = 1
