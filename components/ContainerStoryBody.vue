@@ -112,7 +112,7 @@ const THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY = 6
 const AD_KEYS_IN_STORY_CONTENT = ['MB_AT1', 'PC_AT1', 'MB_AT2']
 
 export default {
-  name: 'UiStoryBody',
+  name: 'ContainerStoryBody',
   setup() {
     const { store, $ga } = useContext()
     const isViewportWidthUpMd = computed(

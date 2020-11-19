@@ -13,7 +13,7 @@
         </ClientOnly>
 
         <div class="story-wrapper">
-          <UiStoryBody :story="story" class="story-slug__story-body">
+          <ContainerStoryBody :story="story" class="story-slug__story-body">
             <template #storyRelateds>
               <UiStoryListWithArrow
                 class="story__list"
@@ -59,7 +59,7 @@
                 </div>
               </ClientOnly>
             </template>
-          </UiStoryBody>
+          </ContainerStoryBody>
 
           <aside>
             <ClientOnly>
@@ -176,8 +176,8 @@ import { useFbQuotePlugin } from '~/composition/fb-plugins.js'
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import ContainerPhotoGallery from '~/components/photo-gallery/ContainerPhotoGallery.vue'
 import ContainerCulturePost from '~/components/culture-post/ContainerCulturePost.vue'
+import ContainerStoryBody from '~/components/ContainerStoryBody.vue'
 import UiAdultContentWarning from '~/components/UiAdultContentWarning.vue'
-import UiStoryBody from '~/components/UiStoryBody.vue'
 import UiStoryListRelated from '~/components/UiStoryListRelated.vue'
 import UiStoryListWithArrow from '~/components/UiStoryListWithArrow.vue'
 import FbPage from '~/components/FbPage.vue'
@@ -212,8 +212,8 @@ export default {
     ContainerHeader,
     ContainerPhotoGallery,
     ContainerCulturePost,
+    ContainerStoryBody,
     UiAdultContentWarning,
-    UiStoryBody,
     UiStoryListRelated,
     UiStoryListWithArrow,
     FbPage,
