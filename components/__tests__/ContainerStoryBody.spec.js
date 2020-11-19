@@ -433,30 +433,7 @@ describe('computed "contents"', () => {
   }
 })
 
-describe('handleSendGa', () => {
-  test('call the $ga method when the UiShareSidebox.vue emits a "sendGa"', () => {
-    const $ga = {
-      event: jest.fn(),
-    }
-    const wrapper = createWrapper(ContainerStoryBody, {
-      data() {
-        return {
-          shouldOpenShareSidebox: true,
-        }
-      },
-      mocks: { $ga },
-    })
-    const gaArg = {
-      eventCategory: 'article',
-      eventAction: 'click',
-      eventLabel: 'share line side',
-    }
-
-    wrapper.findComponent(UiShareSidebox).vm.$emit('sendGa', gaArg)
-
-    expect($ga.event).toBeCalledWith(gaArg)
-  })
-
+describe('GA events', () => {
   test('send a GA event when users click a tag', () => {
     /* Arrange */
     const $ga = { event: jest.fn() }
@@ -478,6 +455,30 @@ describe('handleSendGa', () => {
       eventAction: 'click',
       eventLabel: 'tag',
     })
+  })
+
+  test('send a GA event if the component UiShareSidebox emits a "sendGa" event', () => {
+    /* Arrange */
+    const $ga = { event: jest.fn() }
+    const sut = createWrapper(ContainerStoryBody, {
+      data() {
+        return {
+          shouldOpenShareSidebox: true,
+        }
+      },
+      mocks: { $ga },
+    })
+    const gaArg = {
+      eventCategory: 'article',
+      eventAction: 'click',
+      eventLabel: 'share line side',
+    }
+
+    /* Act */
+    sut.getComponent(UiShareSidebox).vm.$emit('sendGa', gaArg)
+
+    /* Assert */
+    expect($ga.event).toBeCalledWith(gaArg)
   })
 })
 
