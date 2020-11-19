@@ -8,6 +8,10 @@
         @click="handleClickMenuIcon"
       />
 
+      <ClientOnly>
+        <ContainerMembershipMemberIcon class="member-icon-mobile" />
+      </ClientOnly>
+
       <div class="logo-wrapper">
         <a href="/" class="logo logo--site" @click="sendHeaderGa('logo')">
           <img
@@ -43,6 +47,10 @@
           :options="options"
           @sendGa="handleSendGa"
         />
+
+        <ClientOnly>
+          <ContainerMembershipMemberIcon class="member-icon-desktop" />
+        </ClientOnly>
 
         <UiOthersList
           class="others-list"
@@ -104,6 +112,7 @@ import UiSidebar from './UiSidebar.vue'
 import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
+import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMemberIcon.vue'
 
 import { removePrefix } from '~/utils/index.js'
 import {
@@ -127,6 +136,7 @@ export default {
     UiShareFb,
     UiShareLine,
     ContainerGptAd,
+    ContainerMembershipMemberIcon,
   },
   data() {
     return {
@@ -393,6 +403,22 @@ header {
   user-select: none;
   @include media-breakpoint-up(xl) {
     display: none;
+  }
+}
+.member-icon-mobile {
+  width: 30px;
+  margin: 0 0 0 10px;
+  @include media-breakpoint-up(xl) {
+    display: none;
+  }
+}
+.member-icon-desktop {
+  display: none;
+  @include media-breakpoint-up(xl) {
+    display: initial;
+    width: 33px;
+    height: 36px;
+    margin: 0 10px 0 20px;
   }
 }
 .logo-wrapper {
