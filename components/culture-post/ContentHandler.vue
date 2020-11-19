@@ -2,7 +2,7 @@
 import UiAnnotation from './UiAnnotation.vue'
 import ContainerParagraphWithAnnotation from '~/components/ContainerParagraphWithAnnotation.vue'
 
-import SvgQuoteIcon from '~/assets/quote.svg?inline'
+import SvgQuotationMark from '~/assets/quotation-mark-culture-post.svg?inline'
 
 export default {
   name: 'ContentHandler',
@@ -50,7 +50,7 @@ export default {
         return (
           <div class="quote">
             <div class="quote-icon-wrapper">
-              <SvgQuoteIcon />
+              <SvgQuotationMark />
             </div>
 
             <blockquote domPropsInnerHTML={content}></blockquote>
@@ -166,6 +166,10 @@ $quote-color: #4a90e2;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 11px;
+
+    svg {
+      fill: $quote-color;
+    }
 
     &::before,
     &::after {
