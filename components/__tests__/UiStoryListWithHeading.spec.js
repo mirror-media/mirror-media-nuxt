@@ -23,7 +23,6 @@ describe('props', () => {
     const slugMock = 'test-slug'
     const titleMock = 'test title'
     const mobileImageUrlMock = 'https://www.mm.tw/mobile.jpg'
-    const tinyImageUrlMock = 'https://www.mm.tw/tiny.jpg'
     const sectionNameMock = 'news'
     const sectionTitleMock = 'section title'
     const wrapper = createWrapper(UiStoryListWithHeading, {
@@ -35,9 +34,6 @@ describe('props', () => {
                 resizedTargets: {
                   mobile: {
                     url: mobileImageUrlMock,
-                  },
-                  tiny: {
-                    url: tinyImageUrlMock,
                   },
                 },
               },
@@ -59,10 +55,7 @@ describe('props', () => {
     expect(wrapper.get('.item').classes()).toContain(sectionNameMock)
     expect(wrapper.get('.item__image').attributes().href).toBe(hrefExpected)
     expect(wrapper.get('.item__image img').attributes().src).toBe(
-      tinyImageUrlMock
-    )
-    expect(wrapper.get('.item__image img').attributes().srcset).toBe(
-      `${tinyImageUrlMock} 1x, ${mobileImageUrlMock} 2x`
+      mobileImageUrlMock
     )
     expect(wrapper.get('.item__image .item__section').text()).toBe(
       sectionTitleMock

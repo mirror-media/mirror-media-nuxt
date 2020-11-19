@@ -13,7 +13,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img :src="gainImgSrc(item)" :srcset="gainImgSrcset(item)" alt="" />
+          <img :src="gainImgSrc(item)" alt="" />
           <div class="item__section">{{ extractTitle(item) }}</div>
         </a>
         <div class="item__section-title">
@@ -57,19 +57,7 @@ export default {
 
   methods: {
     gainImgSrc(item = {}) {
-      return this.gainHeroImgTiny(item)
-    },
-    gainImgSrcset(item = {}) {
-      const tinyUrl = this.gainHeroImgTiny(item)
-      const mobileUrl = this.gainHeroImg(item).mobile?.url || SITE_OG_IMG
-
-      return `${tinyUrl} 1x, ${mobileUrl} 2x`
-    },
-    gainHeroImg({ heroImage = {} }) {
-      return heroImage.image?.resizedTargets || {}
-    },
-    gainHeroImgTiny(item = {}) {
-      return this.gainHeroImg(item).tiny?.url || SITE_OG_IMG
+      return item.heroImage?.image?.resizedTargets?.mobile?.url || SITE_OG_IMG
     },
 
     gainSection({ sections = [] }) {
