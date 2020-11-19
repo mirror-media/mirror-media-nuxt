@@ -1,5 +1,6 @@
-import { createLocalVue, shallowMount } from '@vue/test-utils'
+import { createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
+import createWrapperHelper from '@/test/helpers/createWrapperHelper'
 import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMemberIcon.vue'
 import {
   state as stateMembership,
@@ -8,6 +9,10 @@ import {
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+
+const createWrapper = createWrapperHelper({
+  stubs: ['NuxtLink'],
+})
 
 describe('data bindings with vuex store', function () {
   let storeOptions
@@ -24,7 +29,7 @@ describe('data bindings with vuex store', function () {
   })
 
   test('should show ".not-logged-in-link" if current visitor is not a member', function () {
-    const wrapper = shallowMount(ContainerMembershipMemberIcon, {
+    const wrapper = createWrapper(ContainerMembershipMemberIcon, {
       localVue,
       store: new Vuex.Store(storeOptions),
     })
@@ -34,7 +39,7 @@ describe('data bindings with vuex store', function () {
 
   test('should show ".logged-in-icon" if current visitor is a member', function () {
     storeOptions.modules.membership.state.user.email = 'example@example.com'
-    const wrapper = shallowMount(ContainerMembershipMemberIcon, {
+    const wrapper = createWrapper(ContainerMembershipMemberIcon, {
       localVue,
       store: new Vuex.Store(storeOptions),
     })
