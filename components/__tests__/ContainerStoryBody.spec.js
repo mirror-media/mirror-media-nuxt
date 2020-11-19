@@ -444,11 +444,7 @@ describe('handleSendGa', () => {
           shouldOpenShareSidebox: true,
         }
       },
-      mocks: {
-        $nuxt: {
-          context: { $ga },
-        },
-      },
+      mocks: { $ga },
     })
     const gaArg = {
       eventCategory: 'article',
@@ -459,6 +455,29 @@ describe('handleSendGa', () => {
     wrapper.findComponent(UiShareSidebox).vm.$emit('sendGa', gaArg)
 
     expect($ga.event).toBeCalledWith(gaArg)
+  })
+
+  test('send a GA event when users click a tag', () => {
+    /* Arrange */
+    const $ga = { event: jest.fn() }
+    const sut = createWrapper(ContainerStoryBody, {
+      propsData: {
+        story: {
+          tags: [{}],
+        },
+      },
+      mocks: { $ga },
+    })
+
+    /* Act */
+    sut.get('.story__tags a').trigger('click')
+
+    /* Assert */
+    expect($ga.event).toBeCalledWith({
+      eventCategory: 'article',
+      eventAction: 'click',
+      eventLabel: 'tag',
+    })
   })
 })
 

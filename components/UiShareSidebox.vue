@@ -49,8 +49,6 @@ export default {
 
     function emitGa(name) {
       emit('sendGa', {
-        eventCategory: 'article',
-        eventAction: 'click',
         eventLabel: `share ${name} side`,
       })
     }

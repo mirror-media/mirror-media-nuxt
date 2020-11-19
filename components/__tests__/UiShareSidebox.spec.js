@@ -175,11 +175,6 @@ describe('share url', () => {
 })
 
 describe('emitGa method', () => {
-  const commonGaArg = {
-    eventCategory: 'article',
-    eventAction: 'click',
-  }
-
   test('with a proper argument when users click a logo link', () => {
     applyTestToGaArg('.logo', 'home')
   })
@@ -198,10 +193,7 @@ describe('emitGa method', () => {
     wrapper.get(selector).trigger('click')
 
     expect(wrapper.emitted().sendGa[0]).toEqual([
-      {
-        ...commonGaArg,
-        eventLabel: `share ${name} side`,
-      },
+      { eventLabel: `share ${name} side` },
     ])
   }
 })

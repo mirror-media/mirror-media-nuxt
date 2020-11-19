@@ -70,6 +70,7 @@
           :key="tag.id"
           :href="`/tag/${tag.id}/`"
           target="_blank"
+          @click="handleSendGa({ eventLabel: 'tag' })"
         >
           {{ tag.name }}
         </a>
@@ -114,20 +115,14 @@ const AD_KEYS_IN_STORY_CONTENT = ['MB_AT1', 'PC_AT1', 'MB_AT2']
 export default {
   name: 'ContainerStoryBody',
   setup() {
-    const { store, $ga } = useContext()
+    const { store } = useContext()
     const isViewportWidthUpMd = computed(
       () => store.getters['viewport/isViewportWidthUpMd']
     )
     const shouldOpenShareSidebox = useToggleShareSidebox(isViewportWidthUpMd)
 
-    function handleSendGa(param) {
-      $ga.event(param)
-    }
-
     return {
       shouldOpenShareSidebox,
-
-      handleSendGa,
     }
   },
   components: {
@@ -310,6 +305,16 @@ export default {
     },
     shouldOpenTags() {
       return this.tags.length > 0
+    },
+  },
+
+  methods: {
+    handleSendGa(param = {}) {
+      this.$ga.event({
+        eventCategory: 'article',
+        eventAction: 'click',
+        ...param,
+      })
     },
   },
 }
