@@ -37,7 +37,7 @@ describe('data bindings with vuex store', function () {
     })
     expect(wrapper.find('.not-logged-in-link').exists()).toBe(true)
     expect(wrapper.getComponent(RouterLinkStub).props().to).toBe('/login')
-    expect(wrapper.find('.logged-in-icon').exists()).toBe(false)
+    expect(wrapper.find('.logged-in-wrapper').exists()).toBe(false)
   })
 
   test('should show ".logged-in-icon" if current visitor is a member', function () {
@@ -47,6 +47,56 @@ describe('data bindings with vuex store', function () {
       store: new Vuex.Store(storeOptions),
     })
     expect(wrapper.find('.not-logged-in-link').exists()).toBe(false)
-    expect(wrapper.find('.logged-in-icon').exists()).toBe(true)
+    expect(wrapper.find('.logged-in-wrapper').exists()).toBe(true)
+  })
+
+  test('should show a nuxt-link to profile page if current visitor is a member', function () {
+    storeOptions.modules.membership.state.user.email = 'example@example.com'
+    const wrapper = createWrapper(ContainerMembershipMemberIcon, {
+      localVue,
+      store: new Vuex.Store(storeOptions),
+    })
+    expect(wrapper.getComponent(RouterLinkStub).props().to).toBe('/profile')
+  })
+
+  test('should call the $fire.auth.signOut after we click the sign out button, if current visitor is a member', async function () {
+    storeOptions.modules.membership.state.user.email = 'example@example.com'
+    const mockFire = {
+      auth: {
+        signOut: jest.fn(() => Promise.resolve()),
+      },
+    }
+    const wrapper = createWrapper(ContainerMembershipMemberIcon, {
+      localVue,
+      store: new Vuex.Store(storeOptions),
+      mocks: {
+        $fire: mockFire,
+      },
+    })
+    const signOutButton = wrapper.get('.sign-out-button')
+    await signOutButton.trigger('click')
+    expect(mockFire.auth.signOut).toHaveBeenCalled()
+  })
+
+  test('should hide the dropdown menu in the logged in wrapper after mounted', function () {
+    storeOptions.modules.membership.state.user.email = 'example@example.com'
+    const wrapper = createWrapper(ContainerMembershipMemberIcon, {
+      localVue,
+      store: new Vuex.Store(storeOptions),
+    })
+    expect(wrapper.get('.dropdown-menu').element.style.display).toBe('none')
+  })
+
+  test('should show the dropdown menu in the logged in wrapper after logged in icon been clicked, and hide it when we click again', async function () {
+    storeOptions.modules.membership.state.user.email = 'example@example.com'
+    const wrapper = createWrapper(ContainerMembershipMemberIcon, {
+      localVue,
+      store: new Vuex.Store(storeOptions),
+    })
+    const memberIcon = wrapper.get('.logged-in-icon')
+    await memberIcon.trigger('click')
+    expect(wrapper.get('.dropdown-menu').element.style.display).not.toBe('none')
+    await memberIcon.trigger('click')
+    expect(wrapper.get('.dropdown-menu').element.style.display).toBe('none')
   })
 })
