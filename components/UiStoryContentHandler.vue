@@ -8,6 +8,7 @@ import UiStoryFigure from '~/components/UiStoryFigure.vue'
 import UiStoryAnnotation from '~/components/UiStoryAnnotation.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
+import SvgQuotationMark from '~/assets/quotation-mark-story.svg?inline'
 import SvgArrowPrev from '~/assets/arrow-prev-slideshow.svg?inline'
 import SvgArrowNext from '~/assets/arrow-next-slideshow.svg?inline'
 
@@ -165,7 +166,10 @@ export default {
       }
       case 'blockquote':
         return (
-          <blockquote class="story-blockquote" domPropsInnerHTML={content[0]} />
+          <blockquote class="story__blockquote">
+            <SvgQuotationMark />
+            <div domPropsInnerHTML={content[0]} />
+          </blockquote>
         )
       case 'annotation':
         return (

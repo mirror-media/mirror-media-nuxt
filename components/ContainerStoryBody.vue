@@ -385,7 +385,7 @@ export {
       margin-top: 20px;
     }
 
-    + .story-blockquote {
+    + .story__blockquote {
       margin-top: 3em;
     }
 
@@ -571,30 +571,24 @@ export {
     }
   }
 
-  &-blockquote {
+  &__blockquote {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     color: #3a759e;
     font-size: 1.2rem;
     line-height: 2.2rem;
 
-    &::before {
-      flex: 0 0 40px;
-      display: inline-block;
+    svg {
+      fill: #064f77;
       width: 40px;
-      height: 40px;
-      margin: 0 20px 0 0;
-      background-image: url(~assets/blockquote.png);
-      background-size: contain;
-      background-position: center center;
-      background-repeat: no-repeat;
-      content: '';
+      height: auto;
+      flex-shrink: 0;
+      margin-right: 20px;
       @include media-breakpoint-up(lg) {
-        flex: 0 0 45px;
         width: 45px;
-        height: 45px;
       }
     }
+
     + * {
       margin-top: 3em !important;
     }
