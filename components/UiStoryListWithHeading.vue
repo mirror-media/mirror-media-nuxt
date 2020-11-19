@@ -84,8 +84,8 @@ export default {
     sectionTitle(item = {}) {
       return this.section(item).title || '新聞'
     },
-    href({ slug }) {
-      return `/story/${slug}/`
+    href({ slug = '' }) {
+      return slug.startsWith('/story/') ? slug : `/story/${slug}/`
     },
   },
 }
