@@ -10,7 +10,6 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('data bindings with vuex store', function () {
-  let store
   let storeOptions
   beforeEach(() => {
     storeOptions = {
@@ -22,13 +21,12 @@ describe('data bindings with vuex store', function () {
         },
       },
     }
-    store = new Vuex.Store(storeOptions)
   })
 
   test('should show ".not-logged-in-icon" if current visitor is not a member', function () {
     const wrapper = shallowMount(ContainerMembershipMemberIcon, {
       localVue,
-      store,
+      store: new Vuex.Store(storeOptions),
     })
     expect(wrapper.find('.not-logged-in-icon').exists()).toBe(true)
     expect(wrapper.find('.logged-in-icon').exists()).toBe(false)
@@ -36,10 +34,9 @@ describe('data bindings with vuex store', function () {
 
   test('should show ".logged-in-icon" if current visitor is a member', function () {
     storeOptions.modules.membership.state.user.email = 'example@example.com'
-    store = new Vuex.Store(storeOptions)
     const wrapper = shallowMount(ContainerMembershipMemberIcon, {
       localVue,
-      store,
+      store: new Vuex.Store(storeOptions),
     })
     expect(wrapper.find('.not-logged-in-icon').exists()).toBe(false)
     expect(wrapper.find('.logged-in-icon').exists()).toBe(true)
