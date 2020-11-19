@@ -14,6 +14,10 @@
 
         <div class="story-wrapper">
           <ContainerStoryBody :story="story" class="story-slug__story-body">
+            <template #fixedTriggerFinished>
+              <div ref="fixedTriggerFinished" />
+            </template>
+
             <template #storyRelateds>
               <UiStoryListWithArrow
                 class="story__list"
@@ -21,8 +25,6 @@
                 :items="relateds"
                 :sectionName="sectionName"
               />
-
-              <div ref="fixedTriggerFinished" />
 
               <lazy-component
                 class="story__list"
