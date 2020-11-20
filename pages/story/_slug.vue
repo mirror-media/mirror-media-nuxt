@@ -105,7 +105,11 @@
                 </lazy-component>
               </div>
 
-              <div ref="fixedContainer" class="fixed-container">
+              <div
+                ref="fixedContainer"
+                class="fixed-container"
+                :class="{ fixed: shouldFixAside }"
+              >
                 <ContainerGptAd
                   class="story__ad"
                   :pageKey="sectionId"
@@ -271,6 +275,8 @@ export default {
 
       sectionCarandwatchId: SECTION_IDS.carandwatch,
       doesClickCloseAdPcFloating: false,
+
+      shouldFixAside: false,
     }
   },
 
@@ -446,7 +452,7 @@ export default {
 
         // 當視窗頂部 <= latestList 底部，結束 fix
         if (latestListBottom > 0) {
-          fixedContainer.classList.remove('fixed')
+          this.shouldFixAside = false
           fixedContainer.style.marginTop = ''
 
           return
@@ -457,7 +463,7 @@ export default {
           latestListBottom <= 0 &&
           fixedTriggerEndTop - this.viewportHeight > 0
         ) {
-          fixedContainer.classList.add('fixed')
+          this.shouldFixAside = true
           fixedContainer.style.marginTop = ''
 
           return
@@ -465,7 +471,7 @@ export default {
 
         // 當視窗底部 > fixedTriggerEnd 頂部，結束 fix
         if (fixedTriggerEndTop - this.viewportHeight <= 0) {
-          fixedContainer.classList.remove('fixed')
+          this.shouldFixAside = false
           fixedContainer.style.marginTop = `${
             fixedTriggerEndTop - latestListBottom - this.viewportHeight
           }px`
@@ -477,7 +483,7 @@ export default {
     cleanFixedAside() {
       const { fixedContainer } = this.$refs
 
-      fixedContainer.classList.remove('fixed')
+      this.shouldFixAside = false
       fixedContainer.style.marginTop = ''
 
       window.removeEventListener('scroll', this.handleFixAside)
