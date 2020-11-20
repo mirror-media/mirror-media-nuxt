@@ -116,11 +116,3 @@ describe('GA events', () => {
     ])
   })
 })
-
-describe('markup', () => {
-  test('render correctly', () => {
-    const sut = createWrapper(UiHeaderNavSection)
-
-    expect(sut.element).toMatchSnapshot()
-  })
-})
