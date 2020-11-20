@@ -17,11 +17,11 @@ module.exports = async function (req, res, next) {
     })
 
     if (response.data._status === 'ERR') {
-      res.set('Cache-Control', 'no-store')
+      res.setHeader('Cache-Control', 'no-store')
     }
     res.send(response.data)
   } catch (error) {
-    res.set('Cache-Control', 'no-store')
+    res.setHeader('Cache-Control', 'no-store')
     res.status(500).send(error.message)
 
     // eslint-disable-next-line no-console
