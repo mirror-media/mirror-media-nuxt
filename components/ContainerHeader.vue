@@ -114,7 +114,6 @@ import UiShareLine from '~/components/UiShareLine.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMemberIcon.vue'
 
-import { removePrefix } from '~/utils/index.js'
 import {
   SUB_BRAND_LINKS,
   SOCIAL_MEDIA_LINKS,
@@ -204,6 +203,10 @@ export default {
       }
 
       return sectionName
+
+      function removePrefix(str = '', prefix = '') {
+        return str.slice(prefix.length)
+      }
     },
 
     shouldOpenEventLogo() {
