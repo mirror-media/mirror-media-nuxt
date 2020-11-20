@@ -123,37 +123,41 @@ export default {
         })
 
         return (
-          <UiSlideshow
-            class="story__slideshow"
-            options={{
-              navigation: {
-                nextEl: '.btn-next',
-                prevEl: '.btn-prev',
-              },
-            }}
-          >
-            <template slot="default">{Slides}</template>
+          <ClientOnly>
+            <UiSlideshow
+              class="story__slideshow"
+              options={{
+                navigation: {
+                  nextEl: '.btn-next',
+                  prevEl: '.btn-prev',
+                },
+              }}
+            >
+              <template slot="default">{Slides}</template>
 
-            <div slot="btnPrev" class="btn-prev">
-              <SvgArrowPrev class="arrow" />
-            </div>
-            <div slot="btnNext" class="btn-next">
-              <SvgArrowNext class="arrow" />
-            </div>
-          </UiSlideshow>
+              <div slot="btnPrev" class="btn-prev">
+                <SvgArrowPrev class="arrow" />
+              </div>
+              <div slot="btnNext" class="btn-next">
+                <SvgArrowNext class="arrow" />
+              </div>
+            </UiSlideshow>
+          </ClientOnly>
         )
       }
       case 'infobox':
         return <UiInfobox class="story__infobox" content={content} />
       case 'embeddedcode':
         return (
-          <lazy-component>
-            {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-            <div
-              class="story__embedded-code"
-              domPropsInnerHTML={addTitleAndLazyloadToIframe(content)}
-            ></div>
-          </lazy-component>
+          <ClientOnly>
+            <lazy-component>
+              {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
+              <div
+                class="story__embedded-code"
+                domPropsInnerHTML={addTitleAndLazyloadToIframe(content)}
+              ></div>
+            </lazy-component>
+          </ClientOnly>
         )
       case 'audio':
         return (
@@ -168,14 +172,16 @@ export default {
         const { url, coverPhoto = {} } = content
 
         return url ? (
-          <lazy-component>
-            {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-            <UiStoryVideo
-              class="story__video"
-              src={url}
-              poster={coverPhoto.mobile?.url || false}
-            />
-          </lazy-component>
+          <ClientOnly>
+            <lazy-component>
+              {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
+              <UiStoryVideo
+                class="story__video"
+                src={url}
+                poster={coverPhoto.mobile?.url || false}
+              />
+            </lazy-component>
+          </ClientOnly>
         ) : undefined
       }
       case 'blockquote':
