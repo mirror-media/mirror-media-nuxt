@@ -1,23 +1,25 @@
 <template>
   <div class="story-list-related">
-    <div v-for="item in items" :key="item.slug" class="item">
-      <div class="item__title">
+    <template v-if="doesHaveAnyItems">
+      <div v-for="item in items" :key="item.slug" class="item">
+        <div class="item__title">
+          <a
+            :href="`/story/${item.slug}`"
+            target="_blank"
+            rel="noopener noreferrer"
+            v-text="item.title"
+          />
+        </div>
         <a
           :href="`/story/${item.slug}`"
+          class="item__image"
           target="_blank"
           rel="noopener noreferrer"
-          v-text="item.title"
-        />
+        >
+          <img :src="gainImgSrcById(images, item.heroImage)" alt="" />
+        </a>
       </div>
-      <a
-        :href="`/story/${item.slug}`"
-        class="item__image"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img :src="gainImgSrcById(images, item.heroImage)" alt="" />
-      </a>
-    </div>
+    </template>
 
     <slot name="ads"></slot>
   </div>
@@ -38,6 +40,12 @@ export default {
       type: Array,
       default: () => [],
       required: true,
+    },
+  },
+
+  computed: {
+    doesHaveAnyItems() {
+      return this.items.length > 0
     },
   },
 

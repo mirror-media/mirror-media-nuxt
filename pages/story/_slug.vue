@@ -31,7 +31,6 @@
                 @show="handleShowStoryListRelated"
               >
                 <UiStoryListRelated
-                  v-if="relatedsWithoutFirstTwo.length > 0"
                   :items="relatedsWithoutFirstTwo"
                   :images="relatedImages"
                 >
@@ -338,7 +337,7 @@ export default {
     sectionTitle() {
       return this.section.title ?? ''
     },
-    hasRelatedImages() {
+    doesHaveAnyRelatedImgs() {
       return this.relatedImages.length > 0
     },
     shouldOpenLatestList() {
@@ -386,7 +385,10 @@ export default {
       this.shouldLoadPopinScript = true
     },
     async fetchRelatedImages() {
-      if (this.hasRelatedImages) {
+      if (
+        this.relatedsWithoutFirstTwo.length <= 0 ||
+        this.doesHaveAnyRelatedImgs
+      ) {
         return
       }
 

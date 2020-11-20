@@ -111,7 +111,7 @@
       <div v-if="credit" class="credit" v-html="credit"></div>
 
       <ClientOnly>
-        <lazy-component @show="fetchRelatedImgs">
+        <lazy-component v-if="doesHaveAnyRelateds" @show="fetchRelatedImgs">
           <UiArticleList
             class="photos__article-list"
             :items="relateds"
@@ -201,9 +201,6 @@ export default {
       isViewportWidthUpMd: 'viewport/isViewportWidthUpMd',
       isViewportWidthUpXl: 'viewport/isViewportWidthUpXl',
     }),
-    hasRelatedImgs() {
-      return this.relatedImgs.length > 0
-    },
 
     brief() {
       return this.story.brief?.apiData || []
@@ -254,9 +251,17 @@ export default {
         return item.type === 'image'
       })
     },
+
     relateds() {
       return this.story.relateds || []
     },
+    doesHaveAnyRelateds() {
+      return this.story.relateds > 0
+    },
+    doesHaveAnyRelatedImgs() {
+      return this.relatedImgs.length > 0
+    },
+
     switchStatus() {
       return {
         on: this.descSwitch,
@@ -324,7 +329,7 @@ export default {
 
   methods: {
     async fetchRelatedImgs() {
-      if (this.hasRelatedImgs) {
+      if (this.doesHaveAnyRelatedImgs) {
         return
       }
 

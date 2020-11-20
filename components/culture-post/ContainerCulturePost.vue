@@ -30,12 +30,12 @@
       :content="post.content"
     />
 
-    <lazy-component class="list-related-container" @show="fetchRelatedImgs">
-      <UiListRelated
-        v-if="relateds.length > 0"
-        :items="relateds"
-        :imgs="relatedImgs"
-      />
+    <lazy-component
+      v-if="doesHaveAnyRelateds"
+      class="list-related-container"
+      @show="fetchRelatedImgs"
+    >
+      <UiListRelated :items="relateds" :imgs="relatedImgs" />
     </lazy-component>
 
     <div v-if="updatedAt" class="updated-at">更新時間／{{ updatedAt }}</div>
@@ -163,8 +163,15 @@ export default {
     updatedAt() {
       return this.post.updatedAt
     },
+
     relateds() {
       return this.post.relateds
+    },
+    doesHaveAnyRelateds() {
+      return this.relateds.length > 0
+    },
+    doesHaveAnyRelatedImgs() {
+      return this.relatedImgs.length > 0
     },
   },
 
@@ -213,7 +220,7 @@ export default {
     },
 
     async fetchRelatedImgs() {
-      if (this.relatedImgs.length > 0) {
+      if (this.doesHaveAnyRelatedImgs) {
         return
       }
 
