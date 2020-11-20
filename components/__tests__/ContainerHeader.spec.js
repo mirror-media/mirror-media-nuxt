@@ -21,12 +21,6 @@ const createWrapper = createWrapperHelper({
   },
   mocks: {
     $fetchEvent: () => Promise.resolve({}),
-    $store: {
-      state: {
-        sectionName: undefined,
-      },
-      commit: jest.fn(),
-    },
     $route: { path: '/' },
   },
   stubs: ['ClientOnly'],
@@ -221,93 +215,78 @@ describe('sidebar', () => {
   })
 })
 
-describe('setSectionName', () => {
-  test('commit with a "home" argument when users stay on the home page', () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    createWrapper(ContainerHeader, {
-      mocks: { $store },
-    })
-
-    expect($store.commit).toBeCalledWith('setSectionName', 'home')
-  })
-
-  test('commit with a proper argument when users stay on the section page', () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    const mockSectionName = 'entertainment'
-    createWrapper(ContainerHeader, {
+describe('hightlight a navbar item', () => {
+  test('hightlight the section navbar item when users on the story page', () => {
+    /* Arrange */
+    const sectionNameMock = 'entertainment'
+    const sut = createWrapper(ContainerHeader, {
+      propsData: {
+        currentSectionName: sectionNameMock,
+      },
       mocks: {
-        $route: { path: `/section/${mockSectionName}` },
-        $store,
+        $route: { path: '/story/20200602pol001' },
       },
     })
 
-    expect($store.commit).toBeCalledWith('setSectionName', mockSectionName)
+    /* Assert */
+    expect(
+      sut.getComponent(UiHeaderNavSection).props().currentSectionName
+    ).toBe(sectionNameMock)
   })
 
-  test('commit with a proper argument when users stay on the category page', () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    const mockSectionName = 'people'
-    createWrapper(ContainerHeader, {
+  test('hightlight the "home" navbar item when users on the homepage', () => {
+    const sut = createWrapper(ContainerHeader)
+
+    expect(
+      sut.getComponent(UiHeaderNavSection).props().currentSectionName
+    ).toBe('home')
+  })
+
+  test('hightlight the section navbar item when users on the section page', () => {
+    /* Arrange */
+    const sectionNameMock = 'entertainment'
+    const sut = createWrapper(ContainerHeader, {
+      mocks: {
+        $route: { path: `/section/${sectionNameMock}` },
+      },
+    })
+
+    /* Assert */
+    expect(
+      sut.getComponent(UiHeaderNavSection).props().currentSectionName
+    ).toBe(sectionNameMock)
+  })
+
+  test('do not hightlight the section navbar item when users on the topic of section page', () => {
+    const sut = createWrapper(ContainerHeader, {
+      mocks: {
+        $route: { path: '/section/topic' },
+      },
+    })
+
+    expect(
+      sut.getComponent(UiHeaderNavSection).props().currentSectionName
+    ).toBeUndefined()
+  })
+
+  test('hightlight the section navbar item when users on the category page', () => {
+    /* Arrange */
+    const sectionNameMock = 'people'
+    const sut = createWrapper(ContainerHeader, {
       computed: {
         gainSectionByCategoryName: () => () => ({
-          name: mockSectionName,
+          name: sectionNameMock,
         }),
       },
       mocks: {
         $route: { path: '/category/somebody' },
-        $store,
       },
     })
 
-    expect($store.commit).toBeCalledWith('setSectionName', mockSectionName)
-  })
-
-  test('do not commit when users stay on the story page', () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    createWrapper(ContainerHeader, {
-      mocks: {
-        $route: { path: '/story/20200602pol001' },
-        $store,
-      },
-    })
-
-    expect($store.commit).not.toBeCalled()
-  })
-
-  test('do not commit when users stay on the section of topic page', () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    createWrapper(ContainerHeader, {
-      mocks: {
-        $route: { path: '/section/topic' },
-        $store,
-      },
-    })
-
-    expect($store.commit).not.toBeCalled()
-  })
-
-  test('commit with a proper argument when users go to other pages', async () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    const wrapper = createWrapper(ContainerHeader, {
-      mocks: { $store },
-    })
-
-    const mockSectionName = 'news'
-    wrapper.vm.$route.path = `/section/${mockSectionName}`
-    await wrapper.vm.$nextTick()
-    expect($store.commit).toBeCalledWith('setSectionName', mockSectionName)
+    /* Assert */
+    expect(
+      sut.getComponent(UiHeaderNavSection).props().currentSectionName
+    ).toBe(sectionNameMock)
   })
 })
 

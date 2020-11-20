@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 
 import UiEventLogo from './UiEventLogo.vue'
 import UiSearchBarWrapper from './UiSearchBarWrapper.vue'
@@ -138,6 +138,14 @@ export default {
     ContainerGptAd,
     ContainerMembershipMemberIcon,
   },
+
+  props: {
+    currentSectionName: {
+      type: String,
+      default: undefined,
+    },
+  },
+
   data() {
     return {
       shouldFixHeader: false,
@@ -157,7 +165,6 @@ export default {
     }
   },
   computed: {
-    ...mapState(['sectionName']),
     ...mapGetters({
       sections: 'sections/displayedSections',
       gainSectionByCategoryName: 'sections/gainSectionByCategoryName',
@@ -165,6 +172,39 @@ export default {
       topics: 'topics/displayedTopics',
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
+
+    sectionName() {
+      let sectionName
+
+      {
+        const { path } = this.$route
+
+        if (path.startsWith('/story/')) {
+          return this.currentSectionName
+        }
+
+        {
+          const sec = '/section/'
+          const cat = '/category/'
+
+          if (path === '/') {
+            sectionName = 'home'
+          } else if (path.startsWith(sec)) {
+            sectionName = removePrefix(path, sec)
+
+            if (sectionName === 'topic') {
+              return
+            }
+          } else if (path.startsWith(cat)) {
+            const categoryName = removePrefix(path, cat)
+
+            sectionName = this.gainSectionByCategoryName(categoryName).name
+          }
+        }
+      }
+
+      return sectionName
+    },
 
     shouldOpenEventLogo() {
       // 當有 GPT Logo 時不應該出現 Event Logo
@@ -202,10 +242,6 @@ export default {
     '$route.fullPath'() {
       this.shouldOpenSidebar = false
     },
-    '$route.path': {
-      handler: 'highlightANavSection',
-      immediate: true,
-    },
   },
   beforeMount() {
     this.fetchEventLogo()
@@ -225,8 +261,6 @@ export default {
     clearInterval(this.intervalIdOfUpdateNow)
   },
   methods: {
-    ...mapMutations(['setSectionName']),
-
     listenScrollToFixHeader() {
       headerHight = this.$el.offsetHeight
       this.handleFixHeader()
@@ -289,38 +323,6 @@ export default {
     },
     handleSendGa(param = {}) {
       this.$ga.event(param)
-    },
-
-    highlightANavSection(path) {
-      // 文章頁也需要設定 sectionName，但不是在這邊做，而需移到 story page，故 return
-      if (path.startsWith('/story/')) {
-        return
-      }
-
-      {
-        let sectionName
-
-        {
-          const sec = '/section/'
-          const cat = '/category/'
-
-          if (path === '/') {
-            sectionName = 'home'
-          } else if (path.startsWith(sec)) {
-            sectionName = removePrefix(path, sec)
-
-            if (sectionName === 'topic') {
-              return
-            }
-          } else if (path.startsWith(cat)) {
-            const categoryName = removePrefix(path, cat)
-
-            sectionName = this.gainSectionByCategoryName(categoryName).name
-          }
-        }
-
-        this.setSectionName(sectionName)
-      }
     },
   },
 }

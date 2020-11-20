@@ -5,7 +5,7 @@
     <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
 
     <div v-else class="article">
-      <ContainerHeader />
+      <ContainerHeader :currentSectionName="sectionName" />
 
       <div class="story-container">
         <ClientOnly>
