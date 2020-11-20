@@ -238,6 +238,7 @@ export default {
         slug: this.storySlug,
         isAudioSiteOnly: false,
         clean: 'content',
+        related: 'full',
       }),
       this.$store.dispatch('partners/fetchPartnersData'),
       this.$store.dispatch('topics/fetchTopicsData'),

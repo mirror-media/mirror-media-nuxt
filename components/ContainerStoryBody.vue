@@ -20,8 +20,8 @@
       <UiShareLine />
     </div>
 
-    <div v-if="heroVideo.url" class="story__hero">
-      <UiStoryVideo :src="heroVideo.url" :poster="heroVideoPoster" />
+    <div v-if="heroVideoSrc" class="story__hero">
+      <UiStoryVideo :src="heroVideoSrc" :poster="heroVideoPoster" />
       <p v-if="heroCaption" class="story__hero-caption">{{ heroCaption }}</p>
     </div>
 
@@ -143,19 +143,8 @@ export default {
     },
   },
 
-  async fetch() {
-    const { coverPhoto: imgId } = this.story.heroVideo || {}
-
-    if (imgId) {
-      const { items = [] } = (await this.$fetchImages({ id: imgId })) || {}
-
-      this.heroVideoImg = items[0] || {}
-    }
-  },
-
   data() {
     return {
-      heroVideoImg: {},
       AUTH_LINK,
       SUBSCRIBE_LINK,
     }
@@ -267,12 +256,19 @@ export default {
       const rawBrief = this.brief
       return Array.isArray(rawBrief) && rawBrief.length > 0
     },
+
     heroVideo() {
-      return this.story.heroVideo?.video ?? {}
+      return this.story.heroVideo || {}
+    },
+    heroVideoSrc() {
+      return this.heroVideo.video?.url || false
     },
     heroVideoPoster() {
-      return this.heroVideoImg.image?.resizedTargets?.tablet?.url || false
+      return (
+        this.heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
+      )
     },
+
     heroImg() {
       return (
         this.story.heroImage?.image?.resizedTargets?.mobile?.url ?? SITE_OG_IMG
