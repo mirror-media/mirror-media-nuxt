@@ -20,7 +20,7 @@ function addExternalLinkRel(content = '') {
 }
 
 function addTitleAndLazyloadToIframe(content = {}) {
-  return content?.embeddedCode.replace(
+  return content.embeddedCode.replace(
     '<iframe',
     `<iframe title="${content.caption}" loading="lazy"`
   )
@@ -48,38 +48,44 @@ export default {
     },
   },
   render(_, { props }) {
-    const { type, content = [], pageKey, adKey } = props.paragraph
+    const { type, content: contents = [], pageKey, adKey } = props.paragraph
+    const content = contents[0]
+
+    if (!content) {
+      return undefined
+    }
 
     switch (type) {
       case 'header-one':
         return (
           <h1
             class="g-story-heading story__heading"
-            domPropsInnerHTML={content[0]}
+            domPropsInnerHTML={content}
           />
         )
       case 'header-two':
         return (
           <h2
             class="g-story-heading story__heading"
-            domPropsInnerHTML={content[0]}
+            domPropsInnerHTML={content}
           />
         )
       case 'image': {
         return (
           <UiStoryFigure
             class="g-story-figure story__figure"
-            content={content[0] || {}}
+            content={content}
           />
         )
       }
       case 'quoteby': {
-        const quoteBy = content[0]?.quoteBy
+        const { quoteBy, quote = '' } = content
+
         return (
           <div class="g-story-quote-by">
             <div
               class="g-story-quote-by__quote"
-              domPropsInnerHTML={content[0]?.quote.replace(/\n/g, '<br>')}
+              domPropsInnerHTML={quote.replace(/\n/g, '<br>')}
             />
             {quoteBy ? (
               <span class="g-story-quote-by__quote-by">{quoteBy}</span>
@@ -100,14 +106,14 @@ export default {
               isOrderedListType ? 'ordered' : 'unordered'
             }-list`}
           >
-            {processListItmes(content).map((item) => (
+            {processListItmes(contents).map((item) => (
               <li domPropsInnerHTML={item} />
             ))}
           </listTag>
         )
       }
       case 'slideshow': {
-        const Slides = content.map(function slide(item) {
+        const Slides = contents.map(function slide(item) {
           return (
             <figure key={item.id} class="swiper-slide g-story-figure">
               <img src={item.mobile.url} />
@@ -138,14 +144,14 @@ export default {
         )
       }
       case 'infobox':
-        return <UiInfobox class="story__infobox" content={content[0]} />
+        return <UiInfobox class="story__infobox" content={content} />
       case 'embeddedcode':
         return (
           <lazy-component>
             {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
             <div
               class="story__embedded-code"
-              domPropsInnerHTML={addTitleAndLazyloadToIframe(content[0])}
+              domPropsInnerHTML={addTitleAndLazyloadToIframe(content)}
             ></div>
           </lazy-component>
         )
@@ -154,12 +160,12 @@ export default {
           <ClientOnly>
             <ContainerAudioPlayer
               class="story__audio-player"
-              content={content[0]}
+              content={content}
             />
           </ClientOnly>
         )
       case 'video': {
-        const { url } = content[0] || {}
+        const { url } = content
 
         return url ? (
           <lazy-component>
@@ -172,14 +178,14 @@ export default {
         return (
           <blockquote class="story__blockquote">
             <SvgQuotationMark />
-            <div domPropsInnerHTML={content[0]} />
+            <div domPropsInnerHTML={content} />
           </blockquote>
         )
       case 'annotation':
         return (
           <ContainerParagraphWithAnnotation
             class="g-story-paragraph"
-            content={content[0] || ''}
+            content={content}
             scopedSlots={{
               default: ({ data }) => (
                 <UiStoryAnnotation key={data.id} content={data} />
@@ -188,7 +194,7 @@ export default {
           />
         )
       case 'youtube': {
-        const { youtubeId, description } = content[0] || {}
+        const { youtubeId, description } = content
 
         return (
           <ClientOnly>
@@ -219,14 +225,14 @@ export default {
       case 'code-block':
         return (
           <div class="story__code">
-            <code>{content[0] ?? ''}</code>
+            <code>{content}</code>
           </div>
         )
       case 'unstyled':
         return (
           <p
             class="g-story-paragraph"
-            domPropsInnerHTML={addExternalLinkRel(content[0])}
+            domPropsInnerHTML={addExternalLinkRel(content)}
           />
         )
       default:
