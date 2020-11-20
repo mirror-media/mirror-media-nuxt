@@ -370,28 +370,14 @@ export {
       width: 100%;
     }
 
-    + .story__heading {
-      margin-top: 40px;
-    }
-
     + p {
       margin-top: 1.5em;
     }
 
     + figure,
     + ul,
-    + ol,
-    + .story__figure,
-    + .story__code {
+    + ol {
       margin-top: 20px;
-    }
-
-    + .story__blockquote {
-      margin-top: 3em;
-    }
-
-    + .story__brief {
-      margin-top: 30px;
     }
   }
 
@@ -460,6 +446,7 @@ export {
 
   &__brief {
     padding: 1em 2em;
+    margin-top: 30px;
     color: #fff;
     font-weight: 700;
     background-color: #000;
@@ -570,33 +557,6 @@ export {
         margin-right: 0;
       }
     }
-  }
-
-  &__blockquote {
-    display: flex;
-    align-items: flex-start;
-    color: #3a759e;
-    font-size: 1.2rem;
-    line-height: 2.2rem;
-
-    svg {
-      fill: #064f77;
-      width: 40px;
-      height: auto;
-      flex-shrink: 0;
-      margin-right: 20px;
-      @include media-breakpoint-up(lg) {
-        width: 45px;
-      }
-    }
-
-    + * {
-      margin-top: 3em !important;
-    }
-  }
-
-  &__code {
-    line-height: 2em;
   }
 
   &__share-sidebox {

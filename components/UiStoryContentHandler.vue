@@ -238,10 +238,44 @@ export default {
 
 <style lang="scss" scoped>
 .story {
+  &__figure,
   &__embedded-code,
   &__video,
-  &__youtube {
+  &__youtube,
+  &__code {
     margin-top: 20px;
+  }
+
+  &__blockquote,
+  &__infobox {
+    margin-top: 3em;
+    margin-bottom: 3em;
+  }
+
+  &__heading {
+    margin-top: 40px;
+  }
+
+  &__blockquote {
+    display: flex;
+    align-items: flex-start;
+    color: #3a759e;
+    font-size: 19px;
+    line-height: 1.77;
+    @include media-breakpoint-up(lg) {
+      line-height: 1.85;
+    }
+
+    svg {
+      fill: #064f77;
+      width: 40px;
+      height: auto;
+      flex-shrink: 0;
+      margin-right: 20px;
+      @include media-breakpoint-up(lg) {
+        width: 45px;
+      }
+    }
   }
 
   &__slideshow {
@@ -346,11 +380,6 @@ export default {
     }
   }
 
-  &__infobox {
-    margin-top: 3em;
-    margin-bottom: 3em;
-  }
-
   &__audio-player {
     margin-top: 1em;
     margin-bottom: 1em;
@@ -360,6 +389,10 @@ export default {
     max-width: 100%;
     margin-right: auto;
     margin-left: auto;
+  }
+
+  &__code {
+    line-height: 2em;
   }
 
   &__youtube {
