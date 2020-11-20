@@ -160,7 +160,8 @@ export default {
 
         return url ? (
           <lazy-component>
-            <UiStoryVideo src={url} />
+            {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
+            <UiStoryVideo class="story__video" src={url} />
           </lazy-component>
         ) : undefined
       }
@@ -343,6 +344,10 @@ export default {
   &__audio-player {
     margin-top: 1em;
     margin-bottom: 1em;
+  }
+
+  &__video {
+    margin-top: 20px;
   }
 
   &__youtube {
