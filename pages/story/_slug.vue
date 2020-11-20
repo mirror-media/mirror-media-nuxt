@@ -241,7 +241,7 @@ export default {
         slug: this.storySlug,
         isAudioSiteOnly: false,
         clean: 'content',
-        related: 'full',
+        related: 'article',
       }),
       this.$store.dispatch('partners/fetchPartnersData'),
       this.$store.dispatch('topics/fetchTopicsData'),
@@ -401,6 +401,7 @@ export default {
       const imageIds = this.relatedsWithoutFirstTwo.map(
         (item) => item.heroImage
       )
+
       const { items = [] } = await this.$fetchImages({ id: imageIds })
       this.relatedImages = items
     },
