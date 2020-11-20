@@ -165,12 +165,16 @@ export default {
           </ClientOnly>
         )
       case 'video': {
-        const { url } = content
+        const { url, coverPhoto = {} } = content
 
         return url ? (
           <lazy-component>
             {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-            <UiStoryVideo class="story__video" src={url} />
+            <UiStoryVideo
+              class="story__video"
+              src={url}
+              poster={coverPhoto.mobile?.url || false}
+            />
           </lazy-component>
         ) : undefined
       }
