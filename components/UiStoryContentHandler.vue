@@ -141,10 +141,13 @@ export default {
         return <UiInfobox class="story__infobox" content={content[0]} />
       case 'embeddedcode':
         return (
-          <lazy-component
-            class="story__embedded-code"
-            domPropsInnerHTML={addTitleAndLazyloadToIframe(content[0])}
-          />
+          <lazy-component>
+            {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
+            <div
+              class="story__embedded-code"
+              domPropsInnerHTML={addTitleAndLazyloadToIframe(content[0])}
+            ></div>
+          </lazy-component>
         )
       case 'audio':
         return (
@@ -189,8 +192,9 @@ export default {
 
         return (
           <ClientOnly>
-            <lazy-component class="story__youtube">
-              <div class="youtube-wrapper">
+            <lazy-component>
+              {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
+              <div class="story__youtube">
                 <iframe
                   width="560"
                   height="315"
@@ -234,6 +238,12 @@ export default {
 
 <style lang="scss" scoped>
 .story {
+  &__embedded-code,
+  &__video,
+  &__youtube {
+    margin-top: 20px;
+  }
+
   &__slideshow {
     margin-top: 1.5em;
     margin-bottom: 1.5em;
@@ -346,17 +356,15 @@ export default {
     margin-bottom: 1em;
   }
 
-  &__video {
-    margin-top: 20px;
+  &__embedded-code ::v-deep iframe {
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   &__youtube {
-    margin-top: 20px;
-
-    .youtube-wrapper {
-      position: relative;
-      padding-top: 56.25%; // 315 / 560 * 100%
-    }
+    position: relative;
+    padding-top: 56.25%; // 315 / 560 * 100%
 
     iframe {
       position: absolute;

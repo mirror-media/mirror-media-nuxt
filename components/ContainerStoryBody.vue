@@ -382,8 +382,7 @@ export {
     + ul,
     + ol,
     + .story__figure,
-    + .story__code,
-    + .story__embedded-code {
+    + .story__code {
       margin-top: 20px;
     }
 
@@ -594,11 +593,6 @@ export {
     + * {
       margin-top: 3em !important;
     }
-  }
-
-  &__embedded-code::v-deep iframe {
-    max-width: 100%;
-    margin: auto;
   }
 
   &__code {
