@@ -7,7 +7,19 @@ const SITE_URL = 'https://www.mirrormedia.mg'
 const FB_APP_ID = '175313259598308'
 const FB_PAGE_ID = '1855418728011324'
 
+const HOST = 'localhost'
+const PORT = 3000
+
 module.exports = {
+  server: {
+    host: HOST,
+    port: PORT,
+  },
+
+  env: {
+    baseUrl: `http://${HOST}:${PORT}/`,
+  },
+
   /**
    * Headers of the page
    */

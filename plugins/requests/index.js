@@ -5,9 +5,7 @@ import qs from 'qs'
 
 import { ENV, API_TIMEOUT, DOMAIN_NAME } from '~/configs/config.js'
 
-const baseUrl = process.browser
-  ? `//${location.host}/`
-  : 'http://localhost:3000/'
+const baseUrl = process.browser ? `//${location.host}/` : process.env.baseUrl
 
 function isPureObject(params) {
   return _.isObject(params) && !Array.isArray(params)
