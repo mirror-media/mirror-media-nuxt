@@ -15,7 +15,7 @@ module.exports = function handleHeaders(req, res, next) {
   }
 
   if (/^\/(api|story|culture-post|video|app)\//gs.test(url)) {
-    res.setHeader(`Cache-Control', 'private, max-age=${60 * 10}`)
+    res.setHeader('Cache-Control', `private, max-age=${60 * 10}`)
 
     return next()
   }
