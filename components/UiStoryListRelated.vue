@@ -1,68 +1,62 @@
 <template>
-  <lazy-component v-if="hasItems" class="story-list" @show="$emit('show')">
-    <div v-for="item in items" :key="item.slug" class="item">
-      <div class="item__title">
+  <div class="story-list-related">
+    <template v-if="doesHaveAnyItems">
+      <div v-for="item in items" :key="item.slug" class="item">
+        <div class="item__title">
+          <a
+            :href="`/story/${item.slug}`"
+            target="_blank"
+            rel="noopener noreferrer"
+            v-text="item.title"
+          />
+        </div>
         <a
           :href="`/story/${item.slug}`"
+          class="item__image"
           target="_blank"
           rel="noopener noreferrer"
-          v-text="item.title"
-        />
+        >
+          <img :src="gainImgSrcById(images, item.heroImage)" alt="" />
+        </a>
       </div>
-      <a
-        v-if="showImage"
-        :href="`/story/${item.slug}`"
-        class="item__image"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img
-          :src="getImageSrc(item.heroImage)"
-          :alt="item.title"
-          loading="lazy"
-        />
-      </a>
-    </div>
+    </template>
 
     <slot name="ads"></slot>
-  </lazy-component>
+  </div>
 </template>
 
 <script>
+import { gainImgSrcById } from '~/utils/img.js'
+
 export default {
   name: 'UiStoryListRelated',
   props: {
     images: {
       type: Array,
       default: () => [],
+      required: true,
     },
     items: {
       type: Array,
       default: () => [],
+      required: true,
     },
   },
+
   computed: {
-    hasItems() {
+    doesHaveAnyItems() {
       return this.items.length > 0
     },
-    imageIds() {
-      return this.items.map((item) => item.heroImage)
-    },
   },
+
   methods: {
-    getImageSrc(id) {
-      const data = this.images?.find((item) => item.id === id) || {}
-      return data.image?.resizedTargets?.mobile?.url
-    },
-    showImage(id) {
-      return this.images.length > 0 && this.getImageSrc(id)
-    },
+    gainImgSrcById,
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.story-list {
+.story-list-related {
   display: flex;
   flex-direction: column;
 

@@ -15,8 +15,8 @@ function useViewport() {
   })
 
   onBeforeUnmount(() => {
-    window.removeEventListener('resize', updateViewport)
-    window.removeEventListener('orientationChange', updateViewport)
+    window.removeEventListener('resize', updateViewportWithRaf)
+    window.removeEventListener('orientationChange', updateViewportWithRaf)
   })
 
   const viewport = reactive({

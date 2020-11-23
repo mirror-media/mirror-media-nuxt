@@ -7,7 +7,7 @@ import { ENV, API_TIMEOUT, DOMAIN_NAME } from '~/configs/config.js'
 
 const baseUrl = process.browser
   ? `//${location.host}/`
-  : process.env._AXIOS_BASE_URL_
+  : 'http://localhost:3000/'
 
 function isPureObject(params) {
   return _.isObject(params) && !Array.isArray(params)
@@ -157,14 +157,6 @@ export default (context, inject) => {
   inject('fetchContacts', (params) =>
     fetchAPIData(`/contacts${buildParams(params)}`)
   )
-
-  inject('fetchCulturePosts', (params, isPreview = false) => {
-    let endpoint = 'cultureposts'
-    if (isPreview) {
-      endpoint = 'culturepreview'
-    }
-    return fetchAPIData(`/${endpoint}${buildParams(params)}`)
-  })
 
   inject('fetchEvent', (params) => fetchAPIData(`/event${buildParams(params)}`))
 

@@ -214,13 +214,45 @@ module.exports = {
    * Nuxt.js modules
    */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/dayjs',
     'nuxt-user-agent',
     ...(process.env.NODE_ENV === 'production'
       ? ['@mirror-media/nuxt-ssr-cache']
       : []),
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          /*
+           * exposed apiKey is not a security risk
+           * see: https://stackoverflow.com/a/37484053
+           */
+          apiKey: 'AIzaSyDPw2r9nOFqgV70qfRzg0_QXpjCHUB3HGw',
+          authDomain: 'mirrormedia-1470651750304.firebaseapp.com',
+          databaseURL: 'https://mirrormedia-1470651750304.firebaseio.com',
+          projectId: 'mirrormedia-1470651750304',
+          storageBucket: 'mirrormedia-1470651750304.appspot.com',
+          messagingSenderId: '983956931553',
+          appId: '1:983956931553:web:5a12da06616a5bcdab48a0',
+        },
+        services: {
+          auth: {
+            persistence: 'session',
+            initialize: {
+              onAuthStateChangedMutation:
+                'membership/ON_AUTH_STATE_CHANGED_MUTATION',
+              subscribeManually: false,
+            },
+          },
+        },
+
+        /*
+         * disable lazy-load due to issue with $fire.authReady() and $fireModule
+         * https://github.com/nuxt-community/firebase-module/issues/366
+         */
+
+        // lazy: true,
+      },
+    ],
   ],
 
   // config for @mirror-media/nuxt-ssr-cache
@@ -261,11 +293,6 @@ module.exports = {
     },
   },
 
-  /**
-   * Axios module configuration
-   * See https://axios.nuxtjs.org/options
-   */
-  axios: {},
   styleResources: {
     scss: '~/scss/*.scss',
   },

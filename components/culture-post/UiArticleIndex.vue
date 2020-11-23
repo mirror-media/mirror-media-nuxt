@@ -1,14 +1,18 @@
 <template>
-  <section :class="{ active: isIndexActive }" class="index">
-    <div class="index__btn open" @click="$emit('openIndex')">
-      <img v-lazy="require('~/assets/hamburger.svg')" alt="開啟" />
-    </div>
+  <section class="index" :class="{ active: isIndexActive }">
+    <button class="index__btn open" @click="$emit('openIndex')">
+      <!-- TODO: inline svg -->
+      <img src="~/assets/hamburger.svg" alt="開啟" />
+    </button>
+
     <div class="index__curtain">
       <div ref="indexContainer" class="index-container">
         <button class="index__btn close" @click="$emit('closeIndex')">
-          <img v-lazy="require('~/assets/close.svg')" alt="關閉" />
+          <!-- TODO: inline svg -->
+          <img src="~/assets/close.svg" alt="關閉" />
         </button>
-        <div v-if="hasItems" class="index-list">
+
+        <div v-if="items.length > 0" class="index-list">
           <ul>
             <li
               v-for="(item, index) in items"
@@ -26,6 +30,7 @@
             </li>
           </ul>
         </div>
+
         <div class="share">
           <p>分享到：</p>
           <UiShareFb />
@@ -43,34 +48,33 @@ import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
 
 export default {
-  name: 'UiCulturePostIndex',
+  name: 'UiArticleIndex',
+
   components: {
     UiShareFb,
     UiShareLine,
   },
+
   props: {
+    items: {
+      type: Array,
+      required: true,
+    },
     currentIndex: {
       type: Number,
+      default: 0,
       required: true,
     },
     isIndexActive: {
       type: Boolean,
       default: false,
     },
-    items: {
-      type: Array,
-      required: true,
-    },
   },
+
   data() {
     return {
       smoothScroll: undefined,
     }
-  },
-  computed: {
-    hasItems() {
-      return this.items.length > 0
-    },
   },
 
   watch: {
@@ -84,22 +88,30 @@ export default {
   mounted() {
     this.enableSmoothScroll()
   },
+
   beforeDestroy() {
     this.disableSmoothScroll()
   },
+
   methods: {
     async enableSmoothScroll() {
-      document.querySelector('html').style['scroll-behavior'] = 'smooth'
-      if (!('scrollBehavior' in document.documentElement.style)) {
-        const smoothScrollModule = await import('smooth-scroll')
-        const SmoothScroll = smoothScrollModule.default
+      const htmlElem = document.documentElement
+
+      htmlElem.style.scrollBehavior = 'smooth'
+
+      if (!('scrollBehavior' in htmlElem.style)) {
+        const { default: SmoothScroll } = await import('smooth-scroll')
+
         this.smoothScroll = new SmoothScroll('a[href*="#"]')
       }
     },
     disableSmoothScroll() {
-      document.querySelector('html').style['scroll-behavior'] = 'auto'
-      if (!('scrollBehavior' in document.documentElement.style)) {
-        this.smoothScroll && this.smoothScroll.destroy()
+      const htmlElem = document.documentElement
+
+      htmlElem.style.scrollBehavior = ''
+
+      if (!('scrollBehavior' in htmlElem.style) && this.smoothScroll) {
+        this.smoothScroll.destroy()
       }
     },
   },
@@ -109,14 +121,13 @@ export default {
 <style lang="scss" scoped>
 .index {
   @include media-breakpoint-up(xl) {
-    position: -webkit-sticky;
     position: sticky;
   }
-  &.active {
-    .index__curtain {
-      display: block;
-    }
+
+  &.active .index__curtain {
+    display: block;
   }
+
   &__btn {
     display: flex;
     justify-content: center;
@@ -128,17 +139,22 @@ export default {
     background-color: #191919;
     border-radius: 50%;
     cursor: pointer;
+    user-select: none;
+    outline: none;
+    @include media-breakpoint-up(xl) {
+      display: none;
+    }
+
     &.open {
       position: fixed;
       z-index: 500;
     }
+
     &.close {
       position: absolute;
     }
-    @include media-breakpoint-up(xl) {
-      display: none;
-    }
   }
+
   &__curtain {
     display: none;
     position: fixed;
@@ -149,7 +165,7 @@ export default {
     z-index: 510;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(#000, 0.8);
     @include media-breakpoint-up(xl) {
       display: inline-block;
       top: 50%;
@@ -162,6 +178,7 @@ export default {
       height: auto;
     }
   }
+
   &-container {
     display: inline-flex;
     flex-direction: column;
@@ -180,11 +197,14 @@ export default {
     }
   }
 }
+
 .index-list {
   display: inline-block;
+
   + * {
     margin-top: 48px;
   }
+
   ul {
     display: inline-flex;
     flex-direction: column;
@@ -195,18 +215,19 @@ export default {
     @include media-breakpoint-up(xl) {
       width: 240px;
     }
+
     li {
       display: inline;
+      font-family: source-han-serif-tc, 'Songti TC', serif;
       font-size: 18px;
-      font-weight: 900;
-      font-family: source-han-serif-tc, Songti, 'Microsoft YaHei', serif;
+      font-weight: 700;
       cursor: pointer;
-      &.active {
-        a {
-          border-bottom: solid 2px #dec5a2;
-        }
+
+      &.active a {
+        border-bottom: solid 2px #dec5a2;
       }
-      & + li {
+
+      + li {
         margin-top: 19px;
       }
     }
@@ -217,11 +238,14 @@ export default {
   display: flex;
   align-items: center;
   font-size: 15px;
+
   p + a {
     margin-left: 18px;
   }
+
   a {
     width: 36px;
+
     + a {
       margin-left: 17px;
     }

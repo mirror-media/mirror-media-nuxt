@@ -14,7 +14,9 @@ describe('props', () => {
         items: [{ slug: '' }],
       },
     })
-    expect(wrapper.get('.story-list').classes()).toContain(sectionName)
+    expect(wrapper.get('.story-list-with-arrow').classes()).toContain(
+      sectionName
+    )
   })
   test('should render proper href', () => {
     const slug = 'test'

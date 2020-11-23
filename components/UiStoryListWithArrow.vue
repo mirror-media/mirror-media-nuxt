@@ -1,7 +1,8 @@
 <template>
   <lazy-component
     v-if="hasItems"
-    :class="[{ single: isSingle }, sectionName, 'story-list']"
+    class="story-list-with-arrow"
+    :class="[{ single: isSingle }, sectionName]"
   >
     <a
       v-for="item in itemsSliced"
@@ -51,7 +52,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.story-list {
+.story-list-with-arrow {
   display: flex;
   justify-content: space-between;
 

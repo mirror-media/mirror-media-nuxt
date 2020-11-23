@@ -2,79 +2,84 @@ import UiHeaderNavSection from '../UiHeaderNavSection.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
-const mockSection = {
+const categoryMock = { name: 'bookreview', title: '書評' }
+const sectionMock = {
   name: 'culture',
   title: '文化',
   isFeatured: true,
-  categories: [{ name: 'bookreview', title: '書評' }],
+  categories: [categoryMock],
 }
-const mockPartner = {
+const partnerMock = {
   name: 'healthnews',
   display: '健康醫療網新聞',
   public: true,
 }
+
 const createWrapper = createWrapperHelper({
   propsData: {
-    sections: [mockSection],
-    partners: [mockPartner],
+    sections: [sectionMock],
+    partners: [partnerMock],
   },
-  stubs: ['nuxt-link'],
 })
 
-describe('normal section nav', () => {
-  test('render the proper section link', () => {
-    const wrapper = createWrapper(UiHeaderNavSection)
+describe('normal navbar items', () => {
+  test('display section navbar items', () => {
+    const sut = createWrapper(UiHeaderNavSection)
 
-    const link = wrapper.get(`[href="/section/${mockSection.name}"]`)
-    expect(link.text()).toBe(mockSection.title)
+    expect(sut.get(`[href="/section/${sectionMock.name}"]`).text()).toBe(
+      sectionMock.title
+    )
   })
 
-  test('render the proper category link', () => {
-    const wrapper = createWrapper(UiHeaderNavSection)
+  test('display category items in the drop-down list', () => {
+    const sut = createWrapper(UiHeaderNavSection)
 
-    const [category] = mockSection.categories
-    const link = wrapper.get(`[href="/category/${category.name}"]`)
-    expect(link.text()).toBe(category.title)
+    expect(sut.get(`[href="/category/${categoryMock.name}"]`).text()).toBe(
+      categoryMock.title
+    )
   })
 
-  test('active the section if its name matches currentSectionName', () => {
-    const wrapper = createWrapper(UiHeaderNavSection, {
+  test('hightlight the section navbar item when users on the specific page', () => {
+    const sut = createWrapper(UiHeaderNavSection, {
       propsData: {
-        currentSectionName: 'culture',
+        currentSectionName: sectionMock.name,
       },
     })
 
-    const link = wrapper.get(`.section--${mockSection.name}`)
-    expect(link.classes('active')).toBe(true)
+    expect(sut.get(`.section--${sectionMock.name}`).classes('active')).toBe(
+      true
+    )
   })
 })
 
-describe('external section nav', () => {
-  test('render the proper partner link', () => {
-    const wrapper = createWrapper(UiHeaderNavSection)
+describe('external navbar item', () => {
+  test('display partner items in the drop-down list', () => {
+    const sut = createWrapper(UiHeaderNavSection)
 
-    const link = wrapper.get(`[href="/externals/${mockPartner.name}"]`)
-    expect(link.text()).toBe(mockPartner.display)
+    expect(sut.get(`[href="/externals/${partnerMock.name}"]`).text()).toBe(
+      partnerMock.display
+    )
   })
 })
 
-describe('emitGa method', () => {
-  test('with a proper argument when users click a section link', () => {
-    const wrapper = createWrapper(UiHeaderNavSection)
+describe('GA events', () => {
+  test('send a GA event when users click a section navbar item', () => {
+    /* Arrange */
+    const sut = createWrapper(UiHeaderNavSection)
 
-    const linkNormal = wrapper.get(`[href="/section/${mockSection.name}"]`)
-    linkNormal.trigger('click')
-    expect(wrapper.emitted().sendGa[0]).toEqual([
+    /* Act */
+    sut.get(`[href="/section/${sectionMock.name}"]`).trigger('click')
+    sut.get(`[href="/"]`).trigger('click')
+
+    /* Assert */
+    expect(sut.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',
-        eventLabel: `section ${mockSection.name}`,
+        eventLabel: `section ${sectionMock.name}`,
       },
     ])
-
-    const linkHome = wrapper.get(`[href="/"]`)
-    linkHome.trigger('click')
-    expect(wrapper.emitted().sendGa[1]).toEqual([
+    expect(sut.emitted().sendGa[1]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',
@@ -83,40 +88,31 @@ describe('emitGa method', () => {
     ])
   })
 
-  test('with a proper argument when users click a category link', () => {
-    const wrapper = createWrapper(UiHeaderNavSection)
+  test('send a GA event when users click a category item in the drop-down list', () => {
+    const sut = createWrapper(UiHeaderNavSection)
 
-    const [category] = mockSection.categories
-    const link = wrapper.get(`[href="/category/${category.name}"]`)
-    link.trigger('click')
-    expect(wrapper.emitted().sendGa[0]).toEqual([
+    sut.get(`[href="/category/${categoryMock.name}"]`).trigger('click')
+
+    expect(sut.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',
-        eventLabel: `category ${category.name}`,
+        eventLabel: `category ${categoryMock.name}`,
       },
     ])
   })
 
-  test('with a proper argument when users click a partner link', () => {
-    const wrapper = createWrapper(UiHeaderNavSection)
+  test('send a GA event when users click a partner item in the drop-down list', () => {
+    const sut = createWrapper(UiHeaderNavSection)
 
-    const link = wrapper.get(`[href="/externals/${mockPartner.name}"]`)
-    link.trigger('click')
-    expect(wrapper.emitted().sendGa[0]).toEqual([
+    sut.get(`[href="/externals/${partnerMock.name}"]`).trigger('click')
+
+    expect(sut.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'header',
         eventAction: 'click',
-        eventLabel: `external ${mockPartner.name}`,
+        eventLabel: `external ${partnerMock.name}`,
       },
     ])
-  })
-})
-
-describe('markup', () => {
-  test('render correctly', () => {
-    const wrapper = createWrapper(UiHeaderNavSection)
-
-    expect(wrapper.element).toMatchSnapshot()
   })
 })

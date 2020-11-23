@@ -20,8 +20,8 @@
       <UiShareLine />
     </div>
 
-    <div v-if="heroVideo.url" class="story__hero">
-      <UiStoryVideo :src="heroVideo.url" :poster="heroVideoPoster" />
+    <div v-if="heroVideoSrc" class="story__hero">
+      <UiStoryVideo :src="heroVideoSrc" :poster="heroVideoPoster" />
       <p v-if="heroCaption" class="story__hero-caption">{{ heroCaption }}</p>
     </div>
 
@@ -45,7 +45,10 @@
     <p v-if="isUpdatedAtVisible" class="story__updated-at">
       更新時間｜<span v-text="updatedAt" />
     </p>
-    <slot name="storyRelateds"></slot>
+
+    <slot name="fixedTriggerEnd"></slot>
+
+    <slot v-if="!isAdvertised" name="storyRelateds"></slot>
 
     <ClientOnly>
       <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="MB_AT3" />
@@ -62,7 +65,7 @@
       >。
     </p>
 
-    <lazy-component v-if="shouldOpenTags" class="story__tags">
+    <lazy-component v-if="doesHaveTags" class="story__tags">
       <p class="title">相關關鍵字：</p>
       <div class="wrapper">
         <a
@@ -70,6 +73,7 @@
           :key="tag.id"
           :href="`/tag/${tag.id}/`"
           target="_blank"
+          @click="handleSendGa({ eventLabel: 'tag' })"
         >
           {{ tag.name }}
         </a>
@@ -77,7 +81,7 @@
     </lazy-component>
 
     <ClientOnly v-if="canAdvertise">
-      <div class="story__ad-container">
+      <div class="story__ad story__ad--container">
         <ContainerGptAd :pageKey="sectionId" adKey="PC_E1" />
         <ContainerGptAd :pageKey="sectionId" adKey="PC_E2" />
       </div>
@@ -96,6 +100,7 @@
 <script>
 import { mapState } from 'vuex'
 import { ref, computed, onMounted, useContext } from '@nuxtjs/composition-api'
+import dayjs from 'dayjs'
 
 import UiStoryContentHandler from './UiStoryContentHandler.vue'
 import UiShareFb from '~/components/UiShareFb.vue'
@@ -111,22 +116,16 @@ const THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY = 6
 const AD_KEYS_IN_STORY_CONTENT = ['MB_AT1', 'PC_AT1', 'MB_AT2']
 
 export default {
-  name: 'UiStoryBody',
+  name: 'ContainerStoryBody',
   setup() {
-    const { store, $ga } = useContext()
+    const { store } = useContext()
     const isViewportWidthUpMd = computed(
       () => store.getters['viewport/isViewportWidthUpMd']
     )
     const shouldOpenShareSidebox = useToggleShareSidebox(isViewportWidthUpMd)
 
-    function handleSendGa(param) {
-      $ga.event(param)
-    }
-
     return {
       shouldOpenShareSidebox,
-
-      handleSendGa,
     }
   },
   components: {
@@ -144,19 +143,8 @@ export default {
     },
   },
 
-  async fetch() {
-    const { coverPhoto: imgId } = this.story.heroVideo || {}
-
-    if (imgId) {
-      const { items = [] } = (await this.$fetchImages({ id: imgId })) || {}
-
-      this.heroVideoImg = items[0] || {}
-    }
-  },
-
   data() {
     return {
-      heroVideoImg: {},
       AUTH_LINK,
       SUBSCRIBE_LINK,
     }
@@ -268,12 +256,19 @@ export default {
       const rawBrief = this.brief
       return Array.isArray(rawBrief) && rawBrief.length > 0
     },
+
     heroVideo() {
-      return this.story.heroVideo?.video ?? {}
+      return this.story.heroVideo || {}
+    },
+    heroVideoSrc() {
+      return this.heroVideo.video?.url || false
     },
     heroVideoPoster() {
-      return this.heroVideoImg.image?.resizedTargets?.tablet?.url || false
+      return (
+        this.heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
+      )
     },
+
     heroImg() {
       return (
         this.story.heroImage?.image?.resizedTargets?.mobile?.url ?? SITE_OG_IMG
@@ -293,7 +288,7 @@ export default {
       )
     },
     publishedDate() {
-      return this.$dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm')
+      return dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm')
     },
     section() {
       return this.story.sections?.[0] ?? {}
@@ -302,13 +297,23 @@ export default {
       return this.section.id ?? 'other'
     },
     updatedAt() {
-      return this.$dayjs(this.story.updatedAt).format('YYYY.MM.DD HH:mm')
+      return dayjs(this.story.updatedAt).format('YYYY.MM.DD HH:mm')
     },
     tags() {
       return this.story.tags || []
     },
-    shouldOpenTags() {
+    doesHaveTags() {
       return this.tags.length > 0
+    },
+  },
+
+  methods: {
+    handleSendGa(param = {}) {
+      this.$ga.event({
+        eventCategory: 'article',
+        eventAction: 'click',
+        ...param,
+      })
     },
   },
 }
@@ -361,31 +366,14 @@ export {
       width: 100%;
     }
 
-    + .story__heading {
-      margin-top: 40px;
-    }
-
-    + p,
-    + .gpt-ad {
+    + p {
       margin-top: 1.5em;
     }
 
     + figure,
     + ul,
-    + ol,
-    + .story__figure,
-    + .story__code,
-    + .story__embedded-code,
-    + .story-list {
+    + ol {
       margin-top: 20px;
-    }
-
-    + .story-blockquote {
-      margin-top: 3em;
-    }
-
-    + .story__brief {
-      margin-top: 30px;
     }
   }
 
@@ -454,6 +442,7 @@ export {
 
   &__brief {
     padding: 1em 2em;
+    margin-top: 30px;
     color: #fff;
     font-weight: 700;
     background-color: #000;
@@ -566,57 +555,19 @@ export {
     }
   }
 
-  &-blockquote {
-    display: flex;
-    align-items: center;
-    color: #3a759e;
-    font-size: 1.2rem;
-    line-height: 2.2rem;
-
-    &::before {
-      flex: 0 0 40px;
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      margin: 0 20px 0 0;
-      background-image: url(~assets/blockquote.png);
-      background-size: contain;
-      background-position: center center;
-      background-repeat: no-repeat;
-      content: '';
-      @include media-breakpoint-up(lg) {
-        flex: 0 0 45px;
-        width: 45px;
-        height: 45px;
-      }
-    }
-    + * {
-      margin-top: 3em !important;
-    }
-  }
-
-  &__embedded-code::v-deep iframe {
-    max-width: 100%;
-    margin: auto;
-  }
-
-  &__code {
-    line-height: 2em;
-  }
-
   &__share-sidebox {
     width: 30px;
     position: fixed;
   }
 
-  &__ad,
-  &__ad-container {
+  &__ad {
+    width: 100%;
     margin-top: 1.5em;
-  }
 
-  &__ad-container {
-    display: flex;
-    justify-content: space-around;
+    &--container {
+      display: flex;
+      justify-content: space-around;
+    }
   }
 }
 

@@ -1,9 +1,11 @@
 <template>
-  <div class="story-layout">
-    <ContainerPhotoGallery v-if="isPhotographyStyle" :story="story" />
+  <div class="story-slug">
+    <ContainerPhotoGallery v-if="isStylePhotography" :story="story" />
 
-    <template v-else>
-      <ContainerHeader />
+    <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
+
+    <div v-else class="article">
+      <ContainerHeader :currentSectionName="sectionName" />
 
       <div class="story-container">
         <ClientOnly>
@@ -11,33 +13,40 @@
         </ClientOnly>
 
         <div class="story-wrapper">
-          <UiStoryBody :story="story" class="layout__story-body">
+          <ContainerStoryBody :story="story" class="story-slug__story-body">
+            <template #fixedTriggerEnd>
+              <div ref="fixedTriggerEnd" />
+            </template>
+
             <template #storyRelateds>
               <UiStoryListWithArrow
+                class="story__list"
                 :categoryTitle="categoryTitle"
                 :items="relateds"
                 :sectionName="sectionName"
               />
 
-              <div ref="fixedTriggerFinished" />
-
-              <UiStoryListRelated
-                :items="relatedsWithoutFirstTwo"
-                :images="relatedImages"
+              <lazy-component
+                class="story__list"
                 @show="handleShowStoryListRelated"
               >
-                <template v-if="canAdvertise" #ads>
-                  <ClientOnly>
-                    <MicroAd
-                      v-for="unit in microAdUnits[device]"
-                      :key="unit.name"
-                      :unitId="unit.id"
-                    />
+                <UiStoryListRelated
+                  :items="relatedsWithoutFirstTwo"
+                  :images="relatedImages"
+                >
+                  <template v-if="canAdvertise" #ads>
+                    <ClientOnly>
+                      <MicroAd
+                        v-for="unit in microAdUnits[device]"
+                        :key="unit.name"
+                        :unitId="unit.id"
+                      />
 
-                    <div id="_popIn_recommend"></div>
-                  </ClientOnly>
-                </template>
-              </UiStoryListRelated>
+                      <div id="_popIn_recommend"></div>
+                    </ClientOnly>
+                  </template>
+                </UiStoryListRelated>
+              </lazy-component>
             </template>
 
             <template v-if="canAdvertise && isDesktopWidth" #dableWidget>
@@ -51,7 +60,7 @@
                 </div>
               </ClientOnly>
             </template>
-          </UiStoryBody>
+          </ContainerStoryBody>
 
           <aside>
             <ClientOnly>
@@ -96,7 +105,11 @@
                 </lazy-component>
               </div>
 
-              <div ref="fixedContainer" class="fixed-container">
+              <div
+                ref="fixedContainer"
+                class="fixed-container"
+                :class="{ fixed: shouldFixAside }"
+              >
                 <ContainerGptAd
                   class="story__ad"
                   :pageKey="sectionId"
@@ -154,7 +167,7 @@
       <div class="footer-container">
         <UiFooter />
       </div>
-    </template>
+    </div>
   </div>
 </template>
 
@@ -167,8 +180,9 @@ import { useFbQuotePlugin } from '~/composition/fb-plugins.js'
 
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import ContainerPhotoGallery from '~/components/photo-gallery/ContainerPhotoGallery.vue'
+import ContainerCulturePost from '~/components/culture-post/ContainerCulturePost.vue'
+import ContainerStoryBody from '~/components/ContainerStoryBody.vue'
 import UiAdultContentWarning from '~/components/UiAdultContentWarning.vue'
-import UiStoryBody from '~/components/UiStoryBody.vue'
 import UiStoryListRelated from '~/components/UiStoryListRelated.vue'
 import UiStoryListWithArrow from '~/components/UiStoryListWithArrow.vue'
 import FbPage from '~/components/FbPage.vue'
@@ -202,8 +216,9 @@ export default {
   components: {
     ContainerHeader,
     ContainerPhotoGallery,
+    ContainerCulturePost,
+    ContainerStoryBody,
     UiAdultContentWarning,
-    UiStoryBody,
     UiStoryListRelated,
     UiStoryListWithArrow,
     FbPage,
@@ -226,6 +241,7 @@ export default {
         slug: this.storySlug,
         isAudioSiteOnly: false,
         clean: 'content',
+        related: 'article',
       }),
       this.$store.dispatch('partners/fetchPartnersData'),
       this.$store.dispatch('topics/fetchTopicsData'),
@@ -259,6 +275,8 @@ export default {
 
       sectionCarandwatchId: SECTION_IDS.carandwatch,
       doesClickCloseAdPcFloating: false,
+
+      shouldFixAside: false,
     }
   },
 
@@ -270,9 +288,17 @@ export default {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpLg',
     }),
-    isPhotographyStyle() {
+
+    isStyleDefault() {
+      return !this.isStylePhotography && !this.isStyleWide
+    },
+    isStylePhotography() {
       return this.story.style === 'photography'
     },
+    isStyleWide() {
+      return this.story.style === 'wide'
+    },
+
     device() {
       return this.isDesktopWidth ? 'PC' : 'MB'
     },
@@ -317,7 +343,7 @@ export default {
     sectionTitle() {
       return this.section.title ?? ''
     },
-    hasRelatedImages() {
+    doesHaveAnyRelatedImgs() {
       return this.relatedImages.length > 0
     },
     shouldOpenLatestList() {
@@ -346,9 +372,11 @@ export default {
 
   watch: {
     isDesktopWidth() {
-      this.isDesktopWidth
-        ? window.addEventListener('scroll', this.handleFixAside)
-        : this.cleanFixedAside()
+      if (this.isStyleDefault) {
+        this.isDesktopWidth
+          ? window.addEventListener('scroll', this.handleFixAside)
+          : this.cleanFixedAside()
+      }
     },
   },
 
@@ -363,13 +391,17 @@ export default {
       this.shouldLoadPopinScript = true
     },
     async fetchRelatedImages() {
-      if (this.hasRelatedImages) {
+      if (
+        this.relatedsWithoutFirstTwo.length <= 0 ||
+        this.doesHaveAnyRelatedImgs
+      ) {
         return
       }
 
       const imageIds = this.relatedsWithoutFirstTwo.map(
         (item) => item.heroImage
       )
+
       const { items = [] } = await this.$fetchImages({ id: imageIds })
       this.relatedImages = items
     },
@@ -406,61 +438,53 @@ export default {
     handleShowDableWidget() {
       this.shouldLoadDableScript = true
     },
-    handleFixAside() {
-      _.throttle(
-        () => {
-          const {
-            latestList,
-            fixedContainer,
-            fixedTriggerFinished,
-          } = this.$refs
+    handleFixAside: _.throttle(
+      function () {
+        const { latestList, fixedContainer, fixedTriggerEnd } = this.$refs
 
-          if (!latestList) {
-            return
-          }
+        if (!latestList) {
+          return
+        }
 
-          const {
-            bottom: latestListBottom,
-          } = latestList.getBoundingClientRect()
-          const {
-            top: fixedTriggerFinishedTop,
-          } = fixedTriggerFinished.getBoundingClientRect()
+        const { bottom: latestListBottom } = latestList.getBoundingClientRect()
+        const {
+          top: fixedTriggerEndTop,
+        } = fixedTriggerEnd.getBoundingClientRect()
 
-          // 當視窗頂部 <= latestList 底部，結束 fix
-          if (latestListBottom > 0) {
-            fixedContainer.classList.remove('fixed')
-            fixedContainer.style.marginTop = ''
+        // 當視窗頂部 <= latestList 底部，結束 fix
+        if (latestListBottom > 0) {
+          this.shouldFixAside = false
+          fixedContainer.style.marginTop = ''
 
-            return
-          }
+          return
+        }
 
-          // 當視窗頂部 > latestList 底部，且視窗底部 <= fixedTriggerFinished 頂部，開始 fix
-          if (
-            latestListBottom <= 0 &&
-            fixedTriggerFinishedTop - this.viewportHeight > 0
-          ) {
-            fixedContainer.classList.add('fixed')
-            fixedContainer.style.marginTop = ''
+        // 當視窗頂部 > latestList 底部，且視窗底部 <= fixedTriggerEnd 頂部，開始 fix
+        if (
+          latestListBottom <= 0 &&
+          fixedTriggerEndTop - this.viewportHeight > 0
+        ) {
+          this.shouldFixAside = true
+          fixedContainer.style.marginTop = ''
 
-            return
-          }
+          return
+        }
 
-          // 當視窗底部 > fixedTriggerFinished 頂部，結束 fix
-          if (fixedTriggerFinishedTop - this.viewportHeight <= 0) {
-            fixedContainer.classList.remove('fixed')
-            fixedContainer.style.marginTop = `${
-              fixedTriggerFinishedTop - latestListBottom - this.viewportHeight
-            }px`
-          }
-        },
-        100,
-        { trailing: false }
-      )()
-    },
+        // 當視窗底部 > fixedTriggerEnd 頂部，結束 fix
+        if (fixedTriggerEndTop - this.viewportHeight <= 0) {
+          this.shouldFixAside = false
+          fixedContainer.style.marginTop = `${
+            fixedTriggerEndTop - latestListBottom - this.viewportHeight
+          }px`
+        }
+      },
+      100,
+      { trailing: false }
+    ),
     cleanFixedAside() {
       const { fixedContainer } = this.$refs
 
-      fixedContainer.classList.remove('fixed')
+      this.shouldFixAside = false
       fixedContainer.style.marginTop = ''
 
       window.removeEventListener('scroll', this.handleFixAside)
@@ -479,6 +503,7 @@ export default {
       title = '',
       topics = {},
       writers = [],
+      tags = [],
     } = this.story
     const robots = isAdult ? 'noindex' : 'index'
     const metaTitle = ogTitle || title || SITE_TITLE
@@ -496,6 +521,7 @@ export default {
     const publishedDateIso = new Date(publishedDate).toISOString()
     const topicId = topics._id ?? ''
     const { name: writerName, id: writerId } = writers[0] || {}
+    const tagNamesStr = tags.map((tag) => tag.name).join(', ')
 
     return {
       title,
@@ -514,6 +540,12 @@ export default {
           property: 'og:url',
           content: pageUrl,
         },
+        tagNamesStr !== ''
+          ? {
+              name: 'news_keywords',
+              content: tagNamesStr,
+            }
+          : {},
         this.hasSection
           ? { name: 'section-name', content: this.sectionName }
           : {},
@@ -722,13 +754,7 @@ $story-padding-right-lg: 50px;
 
 $aside-width: 300px;
 
-.story-layout {
-  @include media-breakpoint-up(lg) {
-    background-color: #414141;
-  }
-}
-
-.layout {
+.story-slug {
   &__story-body {
     max-width: 645px;
     padding-top: 20px;
@@ -741,6 +767,12 @@ $aside-width: 300px;
       padding-bottom: 0;
       margin-left: 0;
     }
+  }
+}
+
+.article {
+  @include media-breakpoint-up(lg) {
+    background-color: #414141;
   }
 }
 
@@ -770,6 +802,10 @@ $aside-width: 300px;
 }
 
 .story {
+  &__list {
+    margin-top: 20px;
+  }
+
   &__popular-list {
     margin-bottom: 20px;
   }
@@ -782,8 +818,7 @@ $aside-width: 300px;
   }
 
   &__ad {
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
     margin-bottom: 20px;
 
     &--ft {
@@ -793,7 +828,6 @@ $aside-width: 300px;
 }
 
 aside {
-  width: calc(100% - 50px);
   max-width: 645px;
   margin-bottom: 40px;
   margin-left: auto;
@@ -803,6 +837,16 @@ aside {
     width: $aside-width;
     margin-right: 0;
     margin-bottom: 0;
+  }
+
+  > * {
+    width: calc(100% - 50px);
+    margin-left: auto;
+    margin-right: auto;
+
+    @include media-breakpoint-up(lg) {
+      width: 100%;
+    }
   }
 }
 

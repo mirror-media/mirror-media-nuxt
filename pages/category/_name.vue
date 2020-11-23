@@ -91,11 +91,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      sectionByCategoryName: 'sections/sectionByCategoryName',
+      gainSectionByCategoryName: 'sections/gainSectionByCategoryName',
     }),
 
     sectionData() {
-      return this.sectionByCategoryName(this.categoryName)
+      return this.gainSectionByCategoryName(this.categoryName)
     },
     sectionName() {
       return this.sectionData.name

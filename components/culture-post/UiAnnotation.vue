@@ -1,30 +1,33 @@
 <template>
-  <div class="annotation">
+  <span class="annotation">
     <span
-      :class="{ active: openAnnotation }"
       class="annotation__text"
-      @click="openAnnotation = !openAnnotation"
-      v-text="annotation.text"
-    />
-    <div v-show="openAnnotation" class="annotation__content">
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <div class="content" v-html="annotation.annotation" />
-    </div>
-  </div>
+      :class="{ open: shouldOpenAnnotation }"
+      @click="shouldOpenAnnotation = !shouldOpenAnnotation"
+      >{{ content.text }}</span
+    >
+
+    <span v-if="shouldOpenAnnotation" class="annotation__content">{{
+      content.pureAnnotationText
+    }}</span>
+  </span>
 </template>
 
 <script>
 export default {
   name: 'UiAnnotation',
+
   props: {
-    annotation: {
+    content: {
       type: Object,
+      default: () => ({}),
       required: true,
     },
   },
+
   data() {
     return {
-      openAnnotation: false,
+      shouldOpenAnnotation: false,
     }
   },
 }
@@ -32,10 +35,9 @@ export default {
 
 <style lang="scss" scoped>
 .annotation {
-  display: inline;
   &__text {
-    display: inline;
     cursor: pointer;
+
     &::after {
       content: '';
       display: inline-block;
@@ -46,15 +48,18 @@ export default {
       border-color: #3e67aa transparent transparent transparent;
       transition: transform 0.3s ease-in;
     }
-    &.active {
-      &::after {
-        transform: rotate(-180deg);
-      }
+
+    &.open::after {
+      transform: rotate(-180deg);
     }
   }
+
   &__content {
-    margin: 13px auto 20px;
-    padding: 23px;
+    display: inline-block;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 23px 27px;
     color: rgba(0, 0, 0, 0.87);
     font-size: 15px;
     line-height: 1.5;
@@ -63,15 +68,7 @@ export default {
     background-color: rgba(216, 216, 216, 0.3);
     border-radius: 2px;
     @include media-breakpoint-up(md) {
-      margin: 13px 0 20px;
-      padding: 23px 37px;
-    }
-    .content {
-      width: 266px;
-      margin: 0 auto;
-      @include media-breakpoint-up(md) {
-        width: 100%;
-      }
+      padding: 26px 37px;
     }
   }
 }

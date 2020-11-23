@@ -1,12 +1,8 @@
 export const state = () => ({
-  sectionName: undefined,
   canAdvertise: true,
 })
 
 export const mutations = {
-  setSectionName(state, name) {
-    state.sectionName = name
-  },
   setCanAdvertise(state, canAdvertise) {
     state.canAdvertise = canAdvertise
   },

@@ -9,93 +9,106 @@ const createWrapper = createWrapperHelper({
 })
 
 describe('props', () => {
-  test('render proper heading', () => {
+  test('display the heading', () => {
+    /* Arrange */
     const headingMock = 'test heading'
-    const wrapper = createWrapper(UiStoryListWithHeading, {
+    const sut = createWrapper(UiStoryListWithHeading, {
       propsData: {
         heading: headingMock,
       },
     })
-    expect(wrapper.get('.story-list__heading').text()).toBe(headingMock)
+
+    /* Assert */
+    expect(sut.get('.heading').text()).toBe(headingMock)
   })
 
-  test('render proper item', () => {
-    const slugMock = 'test-slug'
+  test('render the href', async () => {
+    expect.assertions(4)
+
+    /* Arrange */
+    const slugNormalMock = 'slug-normal'
+    const sut = createWrapper(UiStoryListWithHeading, {
+      propsData: {
+        items: [{ slug: slugNormalMock }],
+      },
+    })
+
+    /* Assert */
+    expect(sut.get('.item__image').attributes().href).toBe(
+      `/story/${slugNormalMock}/`
+    )
+    expect(sut.get('.item__title').attributes().href).toBe(
+      `/story/${slugNormalMock}/`
+    )
+
+    /* Act */
+    const slugStoryMock = '/story/slug/'
+    sut.setProps({ items: [{ slug: slugStoryMock }] })
+
+    await sut.vm.$nextTick()
+
+    /* Assert */
+    expect(sut.get('.item__image').attributes().href).toBe(slugStoryMock)
+    expect(sut.get('.item__title').attributes().href).toBe(slugStoryMock)
+  })
+
+  test('display the list item', () => {
+    /* Arrange */
     const titleMock = 'test title'
-    const mobileImageUrlMock = 'https://www.mm.tw/mobile.jpg'
-    const tinyImageUrlMock = 'https://www.mm.tw/tiny.jpg'
+    const mobileImgUrlMock = 'https://www.mm.tw/mobile.jpg'
     const sectionNameMock = 'news'
-    const sectionTitleMock = 'section title'
-    const wrapper = createWrapper(UiStoryListWithHeading, {
+    const sut = createWrapper(UiStoryListWithHeading, {
       propsData: {
         items: [
           {
             heroImage: {
               image: {
                 resizedTargets: {
-                  mobile: {
-                    url: mobileImageUrlMock,
-                  },
-                  tiny: {
-                    url: tinyImageUrlMock,
-                  },
+                  mobile: { url: mobileImgUrlMock },
                 },
               },
             },
-            sections: [
-              {
-                name: sectionNameMock,
-                title: sectionTitleMock,
-              },
-            ],
-            slug: slugMock,
+            sections: [{ name: sectionNameMock }],
             title: titleMock,
           },
         ],
       },
     })
-    const hrefExpected = `/story/${slugMock}/`
 
-    expect(wrapper.get('.item').classes()).toContain(sectionNameMock)
-    expect(wrapper.get('.item__image').attributes().href).toBe(hrefExpected)
-    expect(wrapper.get('.item__image img').attributes().src).toBe(
-      tinyImageUrlMock
-    )
-    expect(wrapper.get('.item__image img').attributes().srcset).toBe(
-      `${tinyImageUrlMock} 1x, ${mobileImageUrlMock} 2x`
-    )
-    expect(wrapper.get('.item__image .item__section').text()).toBe(
-      sectionTitleMock
-    )
-    expect(wrapper.get('.item__section-title .item__section').text()).toBe(
-      sectionTitleMock
-    )
-    expect(wrapper.get('.item__title').attributes().href).toBe(hrefExpected)
-    expect(wrapper.get('.item__title').text()).toBe(titleMock)
+    /* Assert */
+    expect(sut.get('.item').classes()).toContain(sectionNameMock)
+    expect(sut.get('.item__image img').attributes().src).toBe(mobileImgUrlMock)
+    expect(sut.get('.item__title').text()).toBe(titleMock)
   })
 
-  test('render proper title', async () => {
-    const mockSectionTitle = '娛樂'
-    const mockCategoryTitle = '鏡大咖'
-    const wrapper = createWrapper(UiStoryListWithHeading, {
+  test('display the section title', async () => {
+    expect.assertions(4)
+
+    /* Arrange */
+    const sectionTitleMock = '娛樂'
+    const categoryTitleMock = '鏡大咖'
+    const sut = createWrapper(UiStoryListWithHeading, {
       propsData: {
         items: [
           {
-            sections: [{ title: mockSectionTitle }],
-            categories: [{ title: mockCategoryTitle }],
+            sections: [{ title: sectionTitleMock }],
+            categories: [{ title: categoryTitleMock }],
           },
         ],
       },
     })
-    const imgSection = wrapper.get('.item__image .item__section')
-    const titleSection = wrapper.get('.item__section-title .item__section')
+    const imgSection = sut.get('.item__image .item__section')
+    const titleSection = sut.get('.item__section-title .item__section')
 
-    expect(imgSection.text()).toBe(mockSectionTitle)
-    expect(titleSection.text()).toBe(mockSectionTitle)
+    /* Assert */
+    expect(imgSection.text()).toBe(sectionTitleMock)
+    expect(titleSection.text()).toBe(sectionTitleMock)
 
-    await wrapper.setProps({ extractTitle: (item) => item.categories[0].title })
+    /* Act */
+    await sut.setProps({ extractTitle: (item) => item.categories[0].title })
 
-    expect(imgSection.text()).toBe(mockCategoryTitle)
-    expect(titleSection.text()).toBe(mockCategoryTitle)
+    /* Assert */
+    expect(imgSection.text()).toBe(categoryTitleMock)
+    expect(titleSection.text()).toBe(categoryTitleMock)
   })
 })

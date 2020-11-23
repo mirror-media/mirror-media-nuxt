@@ -1,4 +1,5 @@
 import Story from '../story/_slug.vue'
+import ContainerHeader from '~/components/ContainerHeader.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
@@ -389,6 +390,21 @@ describe('JSON-LD', () => {
   function findJsonLdByType(scripts = [], type) {
     return scripts.find((script) => script.json?.['@type'] === type)
   }
+})
+
+test('hightlight the section navbar item', () => {
+  /* Arrange */
+  const sectionNameMock = 'test section name'
+  const sut = createWrapper(Story, {
+    computed: {
+      sectionName: () => sectionNameMock,
+    },
+  })
+
+  /* Assert */
+  expect(sut.getComponent(ContainerHeader).props().currentSectionName).toBe(
+    sectionNameMock
+  )
 })
 
 test('show the wine warning when a story has the wine category name', () => {

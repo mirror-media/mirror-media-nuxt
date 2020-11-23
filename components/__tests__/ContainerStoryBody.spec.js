@@ -1,9 +1,7 @@
-import dayjs from 'dayjs'
-
-import UiStoryBody, {
+import ContainerStoryBody, {
   THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY,
   AD_KEYS_IN_STORY_CONTENT,
-} from '../UiStoryBody.vue'
+} from '../ContainerStoryBody.vue'
 import UiStoryVideo from '../UiStoryVideo.vue'
 import UiShareSidebox from '../UiShareSidebox.vue'
 
@@ -14,7 +12,6 @@ const createWrapper = createWrapperHelper({
     story: {},
   },
   mocks: {
-    $dayjs: dayjs,
     $store: {
       state: { canAdvertise: true },
     },
@@ -35,7 +32,7 @@ describe('render the proper content from props "story"', () => {
 
   test('published date', () => {
     const publishedDate = 'Mon, 14 Sep 2020 08:29:45 GMT'
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           publishedDate,
@@ -43,13 +40,13 @@ describe('render the proper content from props "story"', () => {
       },
     })
     expect(wrapper.get('.story__published-date').text()).toBe(
-      dayjs(publishedDate).format('YYYY.MM.DD HH:mm')
+      '2020.09.14 16:29'
     )
   })
 
   test('title', () => {
     const titleMock = 'test'
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           title: titleMock,
@@ -62,7 +59,7 @@ describe('render the proper content from props "story"', () => {
 
   test('subtitle', () => {
     const subtitleMock = '副標'
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           subtitle: subtitleMock,
@@ -74,14 +71,14 @@ describe('render the proper content from props "story"', () => {
   })
 
   test('should not render subtitle when no subtitle', () => {
-    const wrapper = createWrapper(UiStoryBody)
+    const wrapper = createWrapper(ContainerStoryBody)
 
     expect(wrapper.find('h2').exists()).toBe(false)
   })
 
   test('sections', () => {
     const sectionNameMock = 'section-name'
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           categories: [{ title: 'category' }],
@@ -94,14 +91,14 @@ describe('render the proper content from props "story"', () => {
   })
 
   test('sectionId should be "other" when no sections', () => {
-    const wrapper = createWrapper(UiStoryBody)
+    const wrapper = createWrapper(ContainerStoryBody)
 
     expect(wrapper.vm.sectionId).toBe('other')
   })
 
   test('categories', () => {
     const categoryTitleMock = 'category title'
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           categories: [{ title: categoryTitleMock }],
@@ -113,7 +110,7 @@ describe('render the proper content from props "story"', () => {
   })
 
   test('credit', () => {
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           writers: [{ id: '123', name: 'Tom' }],
@@ -130,7 +127,7 @@ describe('render the proper content from props "story"', () => {
   })
 
   test('not render credit when no authors', () => {
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           writers: [],
@@ -147,7 +144,7 @@ describe('render the proper content from props "story"', () => {
   })
 
   test('hero video', () => {
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           heroVideo: heroVideoMock,
@@ -164,7 +161,7 @@ describe('render the proper content from props "story"', () => {
 
   test('should render hero img when no hero video', () => {
     const heroImgUrlMock = 'https://image.jpg'
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           heroImage: {
@@ -188,7 +185,7 @@ describe('render the proper content from props "story"', () => {
   })
 
   test('should not render hero caption when no hero caption', async () => {
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           heroVideo: heroVideoMock,
@@ -208,7 +205,7 @@ describe('render the proper content from props "story"', () => {
 
   test('updated-at should be rendered', () => {
     const updatedAt = 'Mon, 14 Sep 2020 08:29:45 GMT'
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           updatedAt,
@@ -216,13 +213,13 @@ describe('render the proper content from props "story"', () => {
       },
     })
     expect(wrapper.get('.story__updated-at').text()).toBe(
-      `更新時間｜${dayjs(updatedAt).format('YYYY.MM.DD HH:mm')}`
+      '更新時間｜2020.09.14 16:29'
     )
   })
 
   test('updated-at should not be rendered', () => {
     const datetime = 'Mon, 14 Sep 2020 08:29:45 GMT'
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           publishedDate: datetime,
@@ -236,7 +233,7 @@ describe('render the proper content from props "story"', () => {
   test('tags', () => {
     const mockTag1 = { id: '59cc4c64436a250d00312173', name: '市議員' }
     const mockTag2 = { id: '586207f43c1f950d00ce24da', name: '台北市長' }
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           tags: [mockTag1, mockTag2],
@@ -253,7 +250,7 @@ describe('render the proper content from props "story"', () => {
   })
 
   test('not render tags when no tags', () => {
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           tags: [],
@@ -267,7 +264,7 @@ describe('render the proper content from props "story"', () => {
 
 describe('UiShareSidebox.vue', () => {
   test('open when viewport >= md and users have scrolled', async () => {
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       mocks: {
         $nuxt: {
           context: {
@@ -288,7 +285,7 @@ describe('UiShareSidebox.vue', () => {
   })
 
   test('close when viewport < md', async () => {
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       mocks: {
         $nuxt: {
           context: {
@@ -311,7 +308,7 @@ describe('UiShareSidebox.vue', () => {
   })
 
   test("close when users haven't scrolled", () => {
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       mocks: {
         $nuxt: {
           context: {
@@ -390,7 +387,7 @@ describe('computed "contents"', () => {
 
   test('should render correctly when "apiData" has no unstyled and not empty contents', () => {
     const apiDataNumOfNormal = 2
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           content: {
@@ -408,7 +405,7 @@ describe('computed "contents"', () => {
   })
 
   function applyTestToContents(apiDataNumOfUnstyledAndNotEmpty, expectFn) {
-    const wrapper = createWrapper(UiStoryBody, {
+    const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
         story: {
           content: {
@@ -436,22 +433,40 @@ describe('computed "contents"', () => {
   }
 })
 
-describe('handleSendGa', () => {
-  test('call the $ga method when the UiShareSidebox.vue emits a "sendGa"', () => {
-    const $ga = {
-      event: jest.fn(),
-    }
-    const wrapper = createWrapper(UiStoryBody, {
+describe('GA events', () => {
+  test('send a GA event when users click a tag', () => {
+    /* Arrange */
+    const $ga = { event: jest.fn() }
+    const sut = createWrapper(ContainerStoryBody, {
+      propsData: {
+        story: {
+          tags: [{}],
+        },
+      },
+      mocks: { $ga },
+    })
+
+    /* Act */
+    sut.get('.story__tags a').trigger('click')
+
+    /* Assert */
+    expect($ga.event).toBeCalledWith({
+      eventCategory: 'article',
+      eventAction: 'click',
+      eventLabel: 'tag',
+    })
+  })
+
+  test('send a GA event if the component UiShareSidebox emits a "sendGa" event', () => {
+    /* Arrange */
+    const $ga = { event: jest.fn() }
+    const sut = createWrapper(ContainerStoryBody, {
       data() {
         return {
           shouldOpenShareSidebox: true,
         }
       },
-      mocks: {
-        $nuxt: {
-          context: { $ga },
-        },
-      },
+      mocks: { $ga },
     })
     const gaArg = {
       eventCategory: 'article',
@@ -459,8 +474,10 @@ describe('handleSendGa', () => {
       eventLabel: 'share line side',
     }
 
-    wrapper.findComponent(UiShareSidebox).vm.$emit('sendGa', gaArg)
+    /* Act */
+    sut.getComponent(UiShareSidebox).vm.$emit('sendGa', gaArg)
 
+    /* Assert */
     expect($ga.event).toBeCalledWith(gaArg)
   })
 })
@@ -470,7 +487,7 @@ describe('handleSendGa', () => {
  * 其餘未寫入此測試的廣告，會在 <ContainerGptAd> 內部處理
  */
 test('should not render any ADs when canAdvertise is false', () => {
-  const wrapper = createWrapper(UiStoryBody, {
+  const wrapper = createWrapper(ContainerStoryBody, {
     mocks: {
       $store: {
         state: { canAdvertise: false },
@@ -479,4 +496,19 @@ test('should not render any ADs when canAdvertise is false', () => {
   })
 
   expect(wrapper.find('.story__ad-container').exists()).toBe(false)
+})
+
+test('render the content under the condition that isAdvertised is true', () => {
+  const sut = createWrapper(ContainerStoryBody, {
+    computed: {
+      isAdvertised: () => true,
+      categoryTitle: () => 'test category title',
+    },
+    slots: {
+      storyRelateds: '<div class="slot-story-relateds" />',
+    },
+  })
+
+  expect(sut.find('.story__category').exists()).toBe(false)
+  expect(sut.find('.slot-story-relateds').exists()).toBe(false)
 })

@@ -1,5 +1,6 @@
 import ContainerHeader from '../ContainerHeader.vue'
 import UiEventLogo from '../UiEventLogo.vue'
+import ContainerGptAd from '../ContainerGptAd.vue'
 import UiSearchBarWrapper from '../UiSearchBarWrapper.vue'
 import UiOthersList from '../UiOthersList.vue'
 import UiHeaderNavSection from '../UiHeaderNavSection.vue'
@@ -11,22 +12,87 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 const createWrapper = createWrapperHelper({
   computed: {
     sections: () => [],
-    sectionByCategoryName: () => () => ({
+    gainSectionByCategoryName: () => () => ({
       name: undefined,
     }),
     partners: () => [],
     topics: () => [],
+    isDesktopWidth: () => false,
   },
   mocks: {
     $fetchEvent: () => Promise.resolve({}),
-    $store: {
-      state: {
-        sectionName: undefined,
-      },
-      commit: jest.fn(),
-    },
+    $route: { path: '/' },
   },
-  stubs: ['nuxt-link', 'client-only', 'GptAd'],
+  stubs: ['ClientOnly'],
+})
+
+describe('fixed header', () => {
+  test('disply the content when the header is fixed', async () => {
+    expect.assertions(4)
+
+    /* Arrange */
+    const sut = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          hasGptLogo: true,
+        }
+      },
+      computed: {
+        shouldOpenEventLogo: () => true,
+      },
+    })
+
+    await sut.vm.$nextTick()
+
+    /* Assert */
+    // display the fixed header style
+    expect(sut.get('header').classes('fixed')).toBe(true)
+
+    // hide the event logo
+    expect(sut.getComponent(UiEventLogo).isVisible()).toBe(false)
+
+    // hide the AD of RWD_LOGO
+    expect(sut.getComponent(ContainerGptAd).isVisible()).toBe(false)
+
+    // show the share icons
+    expect(sut.find('.share-wrapper').exists()).toBe(true)
+
+    /**
+     * 以下的行為測不到，僅作為提醒：
+     * display the small Mirror Media logo
+     */
+  })
+
+  test('disply the content when the header is not fixed', () => {
+    const sut = createWrapper(ContainerHeader, {
+      data() {
+        return {
+          hasGptLogo: true,
+        }
+      },
+      computed: {
+        isDesktopWidth: () => true,
+        shouldOpenEventLogo: () => true,
+      },
+    })
+
+    // display the normal header style
+    expect(sut.get('header').classes('fixed')).toBe(false)
+
+    // show the event logo
+    expect(sut.getComponent(UiEventLogo).isVisible()).toBe(true)
+
+    // show the AD of RWD_LOGO
+    expect(sut.getComponent(ContainerGptAd).isVisible()).toBe(true)
+
+    // hide the share icons
+    expect(sut.find('.share-wrapper').exists()).toBe(false)
+
+    /**
+     * 以下的行為測不到，僅作為提醒：
+     * display the full Mirror Media logo
+     */
+  })
 })
 
 describe('event logo', () => {
@@ -149,99 +215,78 @@ describe('sidebar', () => {
   })
 })
 
-describe('setSectionName', () => {
-  test('commit with a "home" argument when users stay on the home page', () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    createWrapper(ContainerHeader, {
+describe('hightlight a navbar item', () => {
+  test('hightlight the section navbar item when users on the story page', () => {
+    /* Arrange */
+    const sectionNameMock = 'entertainment'
+    const sut = createWrapper(ContainerHeader, {
+      propsData: {
+        currentSectionName: sectionNameMock,
+      },
       mocks: {
-        $route: { path: '/' },
-        $store,
+        $route: { path: '/story/20200602pol001' },
       },
     })
 
-    expect($store.commit).toBeCalledWith('setSectionName', 'home')
+    /* Assert */
+    expect(
+      sut.getComponent(UiHeaderNavSection).props().currentSectionName
+    ).toBe(sectionNameMock)
   })
 
-  test('commit with a proper argument when users stay on the section page', () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    const mockSectionName = 'entertainment'
-    createWrapper(ContainerHeader, {
+  test('hightlight the "home" navbar item when users on the homepage', () => {
+    const sut = createWrapper(ContainerHeader)
+
+    expect(
+      sut.getComponent(UiHeaderNavSection).props().currentSectionName
+    ).toBe('home')
+  })
+
+  test('hightlight the section navbar item when users on the section page', () => {
+    /* Arrange */
+    const sectionNameMock = 'entertainment'
+    const sut = createWrapper(ContainerHeader, {
       mocks: {
-        $route: { path: `/section/${mockSectionName}` },
-        $store,
+        $route: { path: `/section/${sectionNameMock}` },
       },
     })
 
-    expect($store.commit).toBeCalledWith('setSectionName', mockSectionName)
+    /* Assert */
+    expect(
+      sut.getComponent(UiHeaderNavSection).props().currentSectionName
+    ).toBe(sectionNameMock)
   })
 
-  test('commit with a proper argument when users stay on the category page', () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    const mockSectionName = 'people'
-    createWrapper(ContainerHeader, {
+  test('do not hightlight the section navbar item when users on the topic of section page', () => {
+    const sut = createWrapper(ContainerHeader, {
+      mocks: {
+        $route: { path: '/section/topic' },
+      },
+    })
+
+    expect(
+      sut.getComponent(UiHeaderNavSection).props().currentSectionName
+    ).toBeUndefined()
+  })
+
+  test('hightlight the section navbar item when users on the category page', () => {
+    /* Arrange */
+    const sectionNameMock = 'people'
+    const sut = createWrapper(ContainerHeader, {
       computed: {
-        sectionByCategoryName: () => () => ({
-          name: mockSectionName,
+        gainSectionByCategoryName: () => () => ({
+          name: sectionNameMock,
         }),
       },
       mocks: {
         $route: { path: '/category/somebody' },
-        $store,
       },
     })
 
-    expect($store.commit).toBeCalledWith('setSectionName', mockSectionName)
-  })
-
-  test('do not commit when users stay on the story page', () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    createWrapper(ContainerHeader, {
-      mocks: {
-        $route: { path: '/story/20200602pol001' },
-        $store,
-      },
-    })
-
-    expect($store.commit).not.toBeCalled()
-  })
-
-  test('do not commit when users stay on the section of topic page', () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    createWrapper(ContainerHeader, {
-      mocks: {
-        $route: { path: '/section/topic' },
-        $store,
-      },
-    })
-
-    expect($store.commit).not.toBeCalled()
-  })
-
-  test('commit with a proper argument when users go to other pages', async () => {
-    const $store = {
-      commit: jest.fn(),
-    }
-    const wrapper = createWrapper(ContainerHeader, {
-      mocks: {
-        $route: { path: '/' },
-        $store,
-      },
-    })
-
-    const mockSectionName = 'news'
-    wrapper.vm.$route.path = `/section/${mockSectionName}`
-    await wrapper.vm.$nextTick()
-    expect($store.commit).toBeCalledWith('setSectionName', mockSectionName)
+    /* Assert */
+    expect(
+      sut.getComponent(UiHeaderNavSection).props().currentSectionName
+    ).toBe(sectionNameMock)
   })
 })
 

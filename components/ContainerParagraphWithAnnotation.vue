@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import { isTruthy } from '~/utils/index.js'
-
 export default {
   name: 'ContainerParagraphWithAnnotation',
 
@@ -30,23 +28,28 @@ export default {
         .filter(isAnnotationOrText)
         .filter(isTruthy)
         .map(parseStrAndAddId)
+
+      function isAnnotationOrText(item) {
+        return !item.startsWith('<!--')
+      }
+
+      // Example: [0, -0, 0n, '', null, undefined, NaN].filter(isTruthy) will return []
+      function isTruthy(val) {
+        return val
+      }
+
+      function parseStrAndAddId(str, idx) {
+        // str 有可能是不合法的 JSON 格式（比如 'fake str'），這時 JSON.parse 會報錯
+        try {
+          return {
+            id: idx,
+            ...JSON.parse(str),
+          }
+        } catch {
+          return { id: idx, html: str }
+        }
+      }
     },
   },
-}
-
-function isAnnotationOrText(item) {
-  return !item.startsWith('<!--')
-}
-
-function parseStrAndAddId(str, idx) {
-  // str 有可能是不合法的 JSON 格式（比如 'fake str'），這時 JSON.parse 會報錯
-  try {
-    return {
-      id: idx,
-      ...JSON.parse(str),
-    }
-  } catch {
-    return { id: idx, html: str }
-  }
 }
 </script>

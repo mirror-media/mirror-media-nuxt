@@ -14,9 +14,6 @@ const createWrapper = createWrapperHelper({
       },
       query: {},
     },
-    $dayjs: jest.fn(() => ({
-      format: jest.fn(),
-    })),
     $ua: {
       isFromPc() {
         return true
