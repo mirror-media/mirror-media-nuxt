@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: '{{.app}}'
+  name: {{.app}}
 spec:
   selector:
-    app: '{{.app}}'
-    tier: '{{.tier}}'
+    app: {{.app}}
+    tier: {{.tier}}
   ports:
   - port: 80
     protocol: TCP
@@ -16,25 +16,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: '{{.app}}'
-    tier: '{{.tier}}'
-  name: '{{.app}}'
+    app: {{.app}}
+    tier: {{.tier}}
+  name: {{.app}}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: '{{.app}}'
-      tier: '{{.tier}}'
+      app: {{.app}}
   template:
     metadata:
       labels:
-        app: '{{.app}}'
-        tier: '{{.tier}}'
+        app: {{.app}}
+        tier: {{.tier}}
     spec:
       containers:
-      - image: '{{.image}}'
-        imagePullPolicy: IfNotPresent
-        name: '{{.app}}'
+      - image: {{.image}}
+        # imagePullPolicy: IfNotPresent
+        name: {{.app}}
         ports:
         - containerPort: 3000
           protocol: TCP
