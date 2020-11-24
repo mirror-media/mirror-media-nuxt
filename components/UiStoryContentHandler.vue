@@ -26,15 +26,15 @@ function addTitleAndLazyloadToIframe(content = {}) {
   )
 }
 
-function processListItmes(content = []) {
+function processListItmes(contents = []) {
   if (
-    Array.isArray(content) &&
-    content.length > 0 &&
-    typeof content[0] === 'string'
+    Array.isArray(contents) &&
+    contents.length > 0 &&
+    typeof contents[0] === 'string'
   ) {
-    return content
+    return contents
   }
-  return content[0] ?? []
+  return contents[0] ?? []
 }
 
 export default {
@@ -48,206 +48,261 @@ export default {
     },
   },
   render(_, { props }) {
-    const { type, content: contents = [], pageKey, adKey } = props.paragraph
-    const content = contents[0]
+    const { type, content: contents = [] } = props.paragraph
 
-    if (!content) {
-      return undefined
-    }
+    {
+      const typesNeedContent = [
+        'header-one',
+        'header-two',
+        'image',
+        'quoteby',
+        'infobox',
+        'embeddedcode',
+        'audio',
+        'video',
+        'blockquote',
+        'annotation',
+        'youtube',
+        'code-block',
+        'unstyled',
+      ]
 
-    switch (type) {
-      case 'header-one':
-        return (
-          <h1
-            class="g-story-heading story__heading"
-            domPropsInnerHTML={content}
-          />
-        )
-      case 'header-two':
-        return (
-          <h2
-            class="g-story-heading story__heading"
-            domPropsInnerHTML={content}
-          />
-        )
-      case 'image': {
-        return (
-          <UiStoryFigure
-            class="g-story-figure story__figure"
-            content={content}
-          />
-        )
-      }
-      case 'quoteby': {
-        const { quoteBy, quote = '' } = content
+      if (typesNeedContent.includes(type)) {
+        const [content] = contents
 
-        return (
-          <div class="g-story-quote-by">
-            <div
-              class="g-story-quote-by__quote"
-              domPropsInnerHTML={quote.replace(/\n/g, '<br>')}
-            />
-            {quoteBy ? (
-              <span class="g-story-quote-by__quote-by">{quoteBy}</span>
-            ) : (
-              ''
-            )}
-          </div>
-        )
-      }
-      case 'unordered-list-item':
-      case 'ordered-list-item': {
-        const isOrderedListType = type === 'ordered-list-item'
-        const listTag = isOrderedListType ? 'ol' : 'ul'
+        if (!content) {
+          return undefined
+        }
 
-        return (
-          <listTag
-            class={`g-story-${
-              isOrderedListType ? 'ordered' : 'unordered'
-            }-list`}
-          >
-            {processListItmes(contents).map((item) => (
-              <li domPropsInnerHTML={item} />
-            ))}
-          </listTag>
-        )
-      }
-      case 'slideshow': {
-        const Slides = contents.map(function slide(item) {
-          return (
-            <figure key={item.id} class="swiper-slide g-story-figure">
-              <img src={item.mobile.url} />
-              <figcaption>{item.description}</figcaption>
-            </figure>
-          )
-        })
-
-        return (
-          <ClientOnly>
-            <UiSlideshow
-              class="story__slideshow"
-              options={{
-                navigation: {
-                  nextEl: '.btn-next',
-                  prevEl: '.btn-prev',
-                },
-              }}
-            >
-              <template slot="default">{Slides}</template>
-
-              <div slot="btnPrev" class="btn-prev">
-                <SvgArrowPrev class="arrow" />
-              </div>
-              <div slot="btnNext" class="btn-next">
-                <SvgArrowNext class="arrow" />
-              </div>
-            </UiSlideshow>
-          </ClientOnly>
-        )
-      }
-      case 'infobox':
-        return <UiInfobox class="story__infobox" content={content} />
-      case 'embeddedcode':
-        return (
-          <ClientOnly>
-            <lazy-component>
-              {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-              <div
-                class="story__embedded-code"
-                domPropsInnerHTML={addTitleAndLazyloadToIframe(content)}
-              ></div>
-            </lazy-component>
-          </ClientOnly>
-        )
-      case 'audio':
-        return (
-          <ClientOnly>
-            <ContainerAudioPlayer
-              class="story__audio-player"
-              content={content}
-            />
-          </ClientOnly>
-        )
-      case 'video': {
-        const { url, coverPhoto = {} } = content
-
-        return url ? (
-          <ClientOnly>
-            <lazy-component>
-              {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-              <UiStoryVideo
-                class="story__video"
-                src={url}
-                poster={coverPhoto.mobile?.url || false}
+        switch (type) {
+          case 'header-one':
+            return (
+              <h1
+                class="g-story-heading story__heading"
+                domPropsInnerHTML={content}
               />
-            </lazy-component>
-          </ClientOnly>
-        ) : undefined
-      }
-      case 'blockquote':
-        return (
-          <blockquote class="story__blockquote">
-            <SvgQuotationMark />
-            <div domPropsInnerHTML={content} />
-          </blockquote>
-        )
-      case 'annotation':
-        return (
-          <ContainerParagraphWithAnnotation
-            class="g-story-paragraph"
-            content={content}
-            scopedSlots={{
-              default: ({ data }) => (
-                <UiStoryAnnotation key={data.id} content={data} />
-              ),
-            }}
-          />
-        )
-      case 'youtube': {
-        const { youtubeId, description } = content
+            )
 
-        return (
-          <ClientOnly>
-            <lazy-component>
-              {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-              <div class="story__youtube">
-                <iframe
-                  width="560"
-                  height="315"
-                  src={`https://www.youtube.com/embed/${youtubeId}`}
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
-                  allowfullscreen
+          case 'header-two':
+            return (
+              <h2
+                class="g-story-heading story__heading"
+                domPropsInnerHTML={content}
+              />
+            )
+
+          case 'image': {
+            return (
+              <UiStoryFigure
+                class="g-story-figure story__figure"
+                content={content}
+              />
+            )
+          }
+
+          case 'quoteby': {
+            const { quoteBy, quote = '' } = content
+
+            return (
+              <div class="g-story-quote-by">
+                <div
+                  class="g-story-quote-by__quote"
+                  domPropsInnerHTML={quote.replace(/\n/g, '<br>')}
                 />
+                {quoteBy ? (
+                  <span class="g-story-quote-by__quote-by">{quoteBy}</span>
+                ) : (
+                  ''
+                )}
               </div>
+            )
+          }
 
-              {description && <p class="g-story-caption">{description}</p>}
-            </lazy-component>
-          </ClientOnly>
-        )
+          case 'infobox':
+            return <UiInfobox class="story__infobox" content={content} />
+
+          case 'embeddedcode':
+            return (
+              <ClientOnly>
+                <lazy-component>
+                  {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
+                  <div
+                    class="story__embedded-code"
+                    domPropsInnerHTML={addTitleAndLazyloadToIframe(content)}
+                  ></div>
+                </lazy-component>
+              </ClientOnly>
+            )
+
+          case 'audio':
+            return (
+              <ClientOnly>
+                <ContainerAudioPlayer
+                  class="story__audio-player"
+                  content={content}
+                />
+              </ClientOnly>
+            )
+
+          case 'video': {
+            const { url, coverPhoto = {} } = content
+
+            return url ? (
+              <ClientOnly>
+                <lazy-component>
+                  {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
+                  <UiStoryVideo
+                    class="story__video"
+                    src={url}
+                    poster={coverPhoto.mobile?.url || false}
+                  />
+                </lazy-component>
+              </ClientOnly>
+            ) : undefined
+          }
+
+          case 'blockquote':
+            return (
+              <blockquote class="story__blockquote">
+                <SvgQuotationMark />
+                <div domPropsInnerHTML={content} />
+              </blockquote>
+            )
+
+          case 'annotation':
+            return (
+              <ContainerParagraphWithAnnotation
+                class="g-story-paragraph"
+                content={content}
+                scopedSlots={{
+                  default: ({ data }) => (
+                    <UiStoryAnnotation key={data.id} content={data} />
+                  ),
+                }}
+              />
+            )
+
+          case 'youtube': {
+            const { youtubeId, description } = content
+
+            return (
+              <ClientOnly>
+                <lazy-component>
+                  {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
+                  <div class="story__youtube">
+                    <iframe
+                      width="560"
+                      height="315"
+                      src={`https://www.youtube.com/embed/${youtubeId}`}
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
+                      allowfullscreen
+                    />
+                  </div>
+
+                  {description && <p class="g-story-caption">{description}</p>}
+                </lazy-component>
+              </ClientOnly>
+            )
+          }
+
+          case 'code-block':
+            return (
+              <div class="story__code">
+                <code>{content}</code>
+              </div>
+            )
+
+          case 'unstyled':
+            return (
+              <p
+                class="g-story-paragraph"
+                domPropsInnerHTML={addExternalLinkRel(content)}
+              />
+            )
+        }
       }
-      case 'gpt-ad':
-        return (
-          <ClientOnly>
-            <ContainerGptAd class="story__ad" pageKey={pageKey} adKey={adKey} />
-          </ClientOnly>
-        )
-      case 'code-block':
-        return (
-          <div class="story__code">
-            <code>{content}</code>
-          </div>
-        )
-      case 'unstyled':
-        return (
-          <p
-            class="g-story-paragraph"
-            domPropsInnerHTML={addExternalLinkRel(content)}
-          />
-        )
-      default:
-        return undefined
     }
+
+    {
+      const typesNeedContents = [
+        'unordered-list-item',
+        'ordered-list-item',
+        'slideshow',
+      ]
+
+      if (typesNeedContents.includes(type)) {
+        if (contents.length <= 0) {
+          return undefined
+        }
+
+        switch (type) {
+          case 'unordered-list-item':
+          case 'ordered-list-item': {
+            const isOrderedListType = type === 'ordered-list-item'
+            const listTag = isOrderedListType ? 'ol' : 'ul'
+
+            return (
+              <listTag
+                class={`g-story-${
+                  isOrderedListType ? 'ordered' : 'unordered'
+                }-list`}
+              >
+                {processListItmes(contents).map((item) => (
+                  <li domPropsInnerHTML={item} />
+                ))}
+              </listTag>
+            )
+          }
+
+          case 'slideshow': {
+            const Slides = contents.map(function slide(item) {
+              return (
+                <figure key={item.id} class="swiper-slide g-story-figure">
+                  <img src={item.mobile.url} />
+                  <figcaption>{item.description}</figcaption>
+                </figure>
+              )
+            })
+
+            return (
+              <ClientOnly>
+                <UiSlideshow
+                  class="story__slideshow"
+                  options={{
+                    navigation: {
+                      nextEl: '.btn-next',
+                      prevEl: '.btn-prev',
+                    },
+                  }}
+                >
+                  <template slot="default">{Slides}</template>
+
+                  <div slot="btnPrev" class="btn-prev">
+                    <SvgArrowPrev class="arrow" />
+                  </div>
+                  <div slot="btnNext" class="btn-next">
+                    <SvgArrowNext class="arrow" />
+                  </div>
+                </UiSlideshow>
+              </ClientOnly>
+            )
+          }
+        }
+      }
+    }
+
+    if (type === 'gpt-ad') {
+      const { pageKey, adKey } = props.paragraph
+
+      return (
+        <ClientOnly>
+          <ContainerGptAd class="story__ad" pageKey={pageKey} adKey={adKey} />
+        </ClientOnly>
+      )
+    }
+
+    return undefined
   },
 }
 </script>
