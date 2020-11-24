@@ -24,7 +24,7 @@ export default {
   position: fixed;
   left: 0;
   bottom: 0;
-  z-index: 1009;
+  z-index: 419;
   background-color: #000;
 }
 

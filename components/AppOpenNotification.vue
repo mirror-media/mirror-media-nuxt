@@ -87,6 +87,7 @@ $main-color: #14a7d0;
   letter-spacing: 0.6px;
   line-height: 1.47;
   font-weight: 500;
+  z-index: 419;
 }
 
 .app-open-notification-wrapper {

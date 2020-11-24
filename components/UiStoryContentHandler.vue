@@ -363,7 +363,7 @@ export default {
       background-color: rgba(245, 245, 245, 0.25);
       border-radius: 4px;
       position: absolute;
-      z-index: 10;
+      z-index: 9;
       top: 50%;
       transform: translateY(-50%);
       // 為了盡可能垂直置中，減去 figcaption 最小高度的一半

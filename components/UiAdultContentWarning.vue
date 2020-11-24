@@ -47,7 +47,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 999;
+  z-index: 949;
   display: flex;
   justify-content: center;
   align-items: center;

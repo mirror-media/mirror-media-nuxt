@@ -881,6 +881,7 @@ aside {
   width: 100%;
   left: 0;
   bottom: 0;
+  z-index: 419;
 
   > * {
     position: relative;
