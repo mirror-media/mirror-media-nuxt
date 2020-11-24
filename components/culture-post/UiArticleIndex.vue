@@ -9,7 +9,7 @@
       <div ref="indexContainer" class="index-container">
         <button class="index__btn close" @click="$emit('closeIndex')">
           <!-- TODO: inline svg -->
-          <img src="~/assets/close.svg" alt="關閉" />
+          <img src="~/assets/close-1.svg" alt="關閉" />
         </button>
 
         <div v-if="items.length > 0" class="index-list">

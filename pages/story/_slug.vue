@@ -146,10 +146,6 @@
 
         <UiAdultContentWarning v-if="story.isAdult" />
 
-        <UiStickyAd v-if="!hasWineCategory && canAdvertise">
-          <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
-        </UiStickyAd>
-
         <ClientOnly v-if="shouldOpenAdPcFloating">
           <div class="ad-pc-floating">
             <ContainerGptAd
@@ -163,7 +159,15 @@
         <ContainerFullScreenAds v-if="!hasWineCategory && canAdvertise" />
       </div>
 
-      <UiWineWarning v-if="hasWineCategory" />
+      <div class="sticky-footer">
+        <AppOpenNotification />
+
+        <UiStickyAd v-if="!hasWineCategory && canAdvertise">
+          <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
+        </UiStickyAd>
+
+        <UiWineWarning v-if="hasWineCategory" />
+      </div>
 
       <div class="footer-container">
         <UiFooter />
@@ -193,6 +197,7 @@ import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import MicroAd from '~/components/MicroAd.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
+import AppOpenNotification from '~/components/AppOpenNotification.vue'
 import UiFooter from '~/components/UiFooter.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
@@ -229,6 +234,8 @@ export default {
     UiStickyAd,
     ContainerFullScreenAds,
     MicroAd,
+
+    AppOpenNotification,
     UiWineWarning,
 
     UiFooter,
@@ -866,6 +873,17 @@ aside {
     margin-left: auto;
     margin-right: auto;
     background-color: #fff;
+  }
+}
+
+.sticky-footer {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+
+  > * {
+    position: relative;
   }
 }
 
