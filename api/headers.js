@@ -4,7 +4,7 @@ module.exports = function handleHeaders(req, res, next) {
   const { hostname, url } = req
 
   if (
-    ['dev', 'test'].includes(ENV) ||
+    ['local', 'dev'].includes(ENV) ||
     /keystone/gs.test(hostname) ||
     /^\/$|^\/(video_category|externals)\//gs.test(url) ||
     new RegExp(PREVIEW_QUERY, 'gs').test(url)
