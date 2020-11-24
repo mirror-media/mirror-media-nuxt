@@ -6,20 +6,9 @@ const SITE_OG_IMG = '/default-og-img.png'
 const SITE_URL = 'https://www.mirrormedia.mg'
 const FB_APP_ID = '175313259598308'
 const FB_PAGE_ID = '1855418728011324'
-
-const HOST = 'localhost'
-const PORT = 3000
+const { ENV = 'dev' } = require('./configs/config')
 
 module.exports = {
-  server: {
-    host: HOST,
-    port: PORT,
-  },
-
-  env: {
-    baseUrl: `http://${HOST}:${PORT}/`,
-  },
-
   /**
    * Headers of the page
    */
@@ -227,7 +216,8 @@ module.exports = {
    */
   modules: [
     'nuxt-user-agent',
-    ...(process.env.NODE_ENV === 'production'
+    ...(process.env.NODE_ENV === 'production' &&
+    (ENV === 'prod' || ENV === 'staging')
       ? ['@mirror-media/nuxt-ssr-cache']
       : []),
     [
@@ -285,7 +275,7 @@ module.exports = {
       if (shouldCacheCurrentRoute) {
         const prefixForGrep = 'mirror-media-nuxt'
         const version = require('./package.json').version
-        const prefix = `${prefixForGrep}@${version}:`
+        const prefix = `${prefixForGrep}_${ENV}@${version}:`
         return `${prefix}${route}`
       }
     },
