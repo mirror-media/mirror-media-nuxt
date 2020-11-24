@@ -256,7 +256,7 @@ export default {
       return this.story.relateds || []
     },
     doesHaveAnyRelateds() {
-      return this.story.relateds > 0
+      return this.story.relateds.length > 0
     },
     doesHaveAnyRelatedImgs() {
       return this.relatedImgs.length > 0
