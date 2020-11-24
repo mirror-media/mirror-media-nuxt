@@ -12,31 +12,6 @@ import SvgQuotationMark from '~/assets/quotation-mark-story.svg?inline'
 import SvgArrowPrev from '~/assets/arrow-prev-slideshow.svg?inline'
 import SvgArrowNext from '~/assets/arrow-next-slideshow.svg?inline'
 
-function addExternalLinkRel(content = '') {
-  return content.replace(
-    'target="_blank"',
-    'target="_blank" rel="noopener noreferrer"'
-  )
-}
-
-function addTitleAndLazyloadToIframe(content = {}) {
-  return content.embeddedCode.replace(
-    '<iframe',
-    `<iframe title="${content.caption}" loading="lazy"`
-  )
-}
-
-function processListItmes(contents = []) {
-  if (
-    Array.isArray(contents) &&
-    contents.length > 0 &&
-    typeof contents[0] === 'string'
-  ) {
-    return contents
-  }
-  return contents[0] ?? []
-}
-
 export default {
   name: 'UiStoryContentHandler',
   functional: true,
@@ -217,7 +192,7 @@ export default {
             return (
               <p
                 class="g-story-paragraph"
-                domPropsInnerHTML={addExternalLinkRel(content)}
+                domPropsInnerHTML={addRelToExternalLink(content)}
               />
             )
         }
@@ -303,6 +278,34 @@ export default {
     }
 
     return undefined
+
+    function addRelToExternalLink(content = '') {
+      return content.replace(
+        'target="_blank"',
+        'target="_blank" rel="noopener noreferrer"'
+      )
+    }
+
+    function addTitleAndLazyloadToIframe(content = {}) {
+      return content.embeddedCode.replace(
+        '<iframe',
+        `<iframe title="${content.caption}" loading="lazy"`
+      )
+    }
+
+    function processListItmes(contents = []) {
+      if (!Array.isArray(contents)) {
+        return []
+      }
+
+      if (typeof contents[0] !== 'string') {
+        const [nestedContents] = contents
+
+        return Array.isArray(nestedContents) ? nestedContents : []
+      }
+
+      return contents
+    }
   },
 }
 </script>
