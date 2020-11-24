@@ -273,7 +273,8 @@ module.exports = {
       if (shouldCacheCurrentRoute) {
         const prefixForGrep = 'mirror-media-nuxt'
         const version = require('./package.json').version
-        const prefix = `${prefixForGrep}@${version}:`
+        const { ENV = 'dev' } = require('./configs/config')
+        const prefix = `${prefixForGrep}_${ENV}@${version}:`
         return `${prefix}${route}`
       }
     },
