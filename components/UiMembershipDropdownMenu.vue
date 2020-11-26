@@ -1,7 +1,11 @@
 <template>
   <div class="wrapper">
     <div
-      :class="['active-item', { 'active-item--disable': isDisable }]"
+      :class="[
+        'active-item',
+        { 'active-item--disable': state === 'disable' },
+        { 'active-item--invalid': state === 'invalid' },
+      ]"
       :style="{
         height: `${height}px`,
       }"
@@ -49,9 +53,9 @@ export default {
       type: Array,
       required: true,
     },
-    isDisable: {
-      type: Boolean,
-      default: false,
+    state: {
+      type: String,
+      default: 'normal',
     },
     height: {
       type: Number,
@@ -71,7 +75,7 @@ export default {
   },
   methods: {
     handleActiveItemClick() {
-      if (this.isDisable) {
+      if (this.state === 'disable') {
         return
       }
       this.shouldShowOptionList = !this.shouldShowOptionList
@@ -108,6 +112,13 @@ export default {
     outline: none;
     .active-item__triangle-icon {
       border-color: #d8d8d8 transparent transparent transparent;
+    }
+  }
+  &--invalid {
+    color: #d0021b;
+    border: 1px solid #d0021b;
+    .active-item__triangle-icon {
+      border-color: #d0021b transparent transparent transparent;
     }
   }
   &__placeholder {

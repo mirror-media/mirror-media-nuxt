@@ -73,24 +73,37 @@ test('should show the select option value and hide the option list after we clic
   expect(wrapper.emitted().change[0]).toEqual([mockOptionsFirst])
 })
 
-describe('behaviors about the isDisable props is true', function () {
-  test('should not show the option list even if we click the active item, if isDisable props is true', async function () {
+describe('behaviors about the state props is disable', function () {
+  test('should not show the option list even if we click the active item, if state props is disable', async function () {
     const wrapper = createWrapper(UiMembershipDropdownMenu, {
       propsData: {
-        isDisable: true,
+        state: 'disable',
       },
     })
     await wrapper.get('.active-item').trigger('click')
     expect(wrapper.get('.option-list').element.style.display).toBe('none')
   })
-  test('should contain disable modifier on the class of the active item, if isDisable props is true', function () {
+  test('should contain disable modifier in the class of the active item, if state props is disable', function () {
     const wrapper = createWrapper(UiMembershipDropdownMenu, {
       propsData: {
-        isDisable: true,
+        state: 'disable',
       },
     })
     expect(wrapper.get('.active-item').classes()).toContain(
       'active-item--disable'
+    )
+  })
+})
+
+describe('behaviors about the state props is invalid', function () {
+  test('should contain invalid modifier in the class of the active item, if state props is invalid', function () {
+    const wrapper = createWrapper(UiMembershipDropdownMenu, {
+      propsData: {
+        state: 'invalid',
+      },
+    })
+    expect(wrapper.get('.active-item').classes()).toContain(
+      'active-item--invalid'
     )
   })
 })
