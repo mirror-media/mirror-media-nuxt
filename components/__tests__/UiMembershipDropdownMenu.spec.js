@@ -121,7 +121,7 @@ describe('height props', function () {
       expect(optionListItem.element.style.height).toBe(`${mockHeight}px`)
     })
   })
-  test('should apply the maxHeight to the option list which is 4 * height props we provide', function () {
+  test('should apply the maxHeight and the top to the option list which related to the height props we provide', function () {
     const mockHeight = 90
     const wrapper = createWrapper(UiMembershipDropdownMenu, {
       propsData: {
@@ -130,6 +130,9 @@ describe('height props', function () {
     })
     expect(wrapper.get('.option-list').element.style.maxHeight).toBe(
       `${mockHeight * 4}px`
+    )
+    expect(wrapper.get('.option-list').element.style.top).toBe(
+      `${mockHeight}px`
     )
   })
 })

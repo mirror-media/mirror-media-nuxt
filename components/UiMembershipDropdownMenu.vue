@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <button
+  <div class="wrapper">
+    <div
       :class="['active-item', { 'active-item--disable': isDisable }]"
       :style="{
         height: `${height}px`,
@@ -15,12 +15,13 @@
         v-text="activeItemText"
       />
       <span class="active-item__triangle-icon" />
-    </button>
+    </div>
     <ol
       v-show="shouldShowOptionList"
-      class="option-list"
+      class="wrapper__option-list option-list"
       :style="{
         maxHeight: `${height * 4}px`,
+        top: `${height}px`,
       }"
     >
       <li
@@ -85,6 +86,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  position: relative;
+  &__option-list {
+    position: absolute;
+  }
+}
+
 .active-item {
   border: 1px solid #d8d8d8;
   padding: 0 10px;
@@ -93,6 +101,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  cursor: pointer;
   &--disable {
     color: #d8d8d8;
     cursor: not-allowed;
@@ -118,9 +127,11 @@ export default {
 }
 
 .option-list {
+  width: 100%;
   border: 1px solid #d8d8d8;
   border-top: none;
   overflow-y: scroll;
+  background-color: white;
 }
 .option-list-item {
   padding: 0 10px;
