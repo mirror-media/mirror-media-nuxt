@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div v-click-outside="hideOptionList" class="wrapper">
     <div
       :class="[
         'active-item',
@@ -84,6 +84,9 @@ export default {
       this.selectedOption = value
       this.shouldShowOptionList = false
       this.$emit('change', value)
+    },
+    hideOptionList() {
+      this.shouldShowOptionList = false
     },
   },
 }
