@@ -44,6 +44,7 @@
               type="number"
               class="input birthday-form__input-birthday-year input-birthday-year"
               placeholder="西元年"
+              min="1911"
             />
             <UiMembershipDropdownMenu
               class="birthday-form__dropdown-menu-birthday-month"
@@ -56,6 +57,8 @@
               type="number"
               class="input birthday-form__input-birthday-day input-birthday-day"
               placeholder="日期"
+              min="1"
+              max="31"
             />
           </div>
         </div>
@@ -81,6 +84,7 @@
                 class="address-dropdown-menus-item__dropdown-menu"
                 :options="countriesOptions"
                 style="width: 100%"
+                @change="handleDropdownMenuCountryChange"
               />
             </label>
             <label
@@ -89,8 +93,10 @@
               <span class="address-dropdown-menus-item__label">縣市</span>
               <UiMembershipDropdownMenu
                 class="address-dropdown-menus-item__dropdown-menu"
-                :options="[]"
+                :options="twCountiesOptions"
                 style="width: 100%"
+                :state="dropdownMenuStateCounty"
+                @change="handleDropdownMenuCountyChange"
               />
             </label>
             <label
@@ -99,8 +105,10 @@
               <span class="address-dropdown-menus-item__label">行政區</span>
               <UiMembershipDropdownMenu
                 class="address-dropdown-menus-item__dropdown-menu"
-                :options="[]"
+                :options="twDistrictsOptions"
                 style="width: 100%"
+                :state="dropdownMenuStateDistrict"
+                @change="handleDropdownMenuDistrictChange"
               />
             </label>
           </div>
@@ -118,18 +126,70 @@
 <script>
 import UiMembershipDropdownMenu from '~/components/UiMembershipDropdownMenu.vue'
 import countriesData from '~/constants/countries.json'
+import twDistrictsData from '~/constants/taiwan-districts.json'
 
 export default {
   components: {
     UiMembershipDropdownMenu,
+  },
+  data() {
+    return {
+      addressCountry: {},
+      addressCounty: {},
+      addressDistrict: {},
+    }
   },
   computed: {
     currentMemberEmail() {
       return this.$store.state.membership.user.email
     },
     countriesOptions() {
-      return countriesData.map(function getTraditionalName(country) {
+      return countriesData.map(function getTraditionalChineseName(country) {
         return country.Taiwan
+      })
+    },
+    twCountiesOptions() {
+      return twDistrictsData.map(function getCountyName(county) {
+        return county.name
+      })
+    },
+    twDistrictsOptions() {
+      const districts = this.addressCounty.districts ?? []
+      return districts.map(function getDistrictsName(district) {
+        return district.name
+      })
+    },
+    isCountryNotTw() {
+      return this.addressCountry.ISO2 !== 'TW'
+    },
+    dropdownMenuStateCounty() {
+      if (this.isCountryNotTw) {
+        return 'disable'
+      }
+      return 'normal'
+    },
+    dropdownMenuStateDistrict() {
+      if (this.isCountryNotTw) {
+        return 'disable'
+      }
+      return 'normal'
+    },
+  },
+  methods: {
+    handleDropdownMenuCountryChange(value) {
+      this.addressCountry = countriesData.find(function findByTwName(country) {
+        return country.Taiwan === value
+      })
+    },
+    handleDropdownMenuCountyChange(value) {
+      this.addressCounty = twDistrictsData.find(function findByName(county) {
+        return county.name === value
+      })
+    },
+    handleDropdownMenuDistrictChange(value) {
+      const district = this.addressCounty.districts ?? []
+      this.addressDistrict = district.find(function findByName(district) {
+        return district.name === value
       })
     },
   },
@@ -172,6 +232,9 @@ export default {
   padding: 15px 20px;
   font-size: 16px;
   color: #4a4a4a;
+  &::placeholder {
+    color: #888888;
+  }
 }
 .input-birthday-year {
   width: 133px;
