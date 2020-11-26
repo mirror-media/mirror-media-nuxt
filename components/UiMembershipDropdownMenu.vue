@@ -146,6 +146,7 @@ export default {
   border-top: none;
   overflow-y: scroll;
   background-color: white;
+  z-index: 999;
 }
 .option-list-item {
   padding: 0 10px;
