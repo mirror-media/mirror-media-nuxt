@@ -152,6 +152,9 @@
           儲存
         </button>
       </form>
+      <button class="wrapper__cancel-membership cancel-membership">
+        刪除會員
+      </button>
     </div>
   </section>
 </template>
@@ -372,6 +375,9 @@ export default {
   &__form {
     margin: 30px 0 0 0;
   }
+  &__cancel-membership {
+    margin: 34px 0 0 0;
+  }
 }
 
 .title,
@@ -470,5 +476,12 @@ export default {
   background-color: #204f74;
   color: white;
   font-weight: 900;
+}
+
+.cancel-membership {
+  text-decoration: underline;
+  color: #d0021b;
+  font-size: 18px;
+  font-weight: 700;
 }
 </style>
