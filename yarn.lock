@@ -13668,9 +13668,9 @@ vue-jest@^4.0.0-0:
     ts-jest "26.x"
 
 vue-lazy-renderer@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/vue-lazy-renderer/-/vue-lazy-renderer-1.0.1.tgz#05ffc8f842ac34d8913a4d426eb379f84f01e0c7"
-  integrity sha512-1+jeGw9eePcnTRpzFE0Bggl2aadkxAm4CcJvJ5xcZdkIWqTbmJzBBW9HNiX8dafjAfhdw7hUOUzLe65psBU7DQ==
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/vue-lazy-renderer/-/vue-lazy-renderer-1.0.2.tgz#4827ee9a96b97902a773b1f3c38fa12f8ea06449"
+  integrity sha512-A7whZqrenU/CYcruEzVRNvY4MjnFsujMuQKXu+7kVa8yRRBOSaEXpaAVfT1j7StOHvtCc+cCX1N+RIxTu5kNhA==
 
 vue-lazyload@^1.3.3:
   version "1.3.3"
