@@ -41,26 +41,45 @@
           <h2 class="subtitle">生日</h2>
           <div id="profile-birthday-form" class="birthday-form">
             <input
+              v-model.number="$v.birthdayYear.$model"
               type="number"
-              class="input birthday-form__input-birthday-year input-birthday-year"
+              :class="[
+                'input',
+                { 'input--invalid': isBirthdayYearInvalid },
+                'birthday-form__input-birthday-year',
+                'input-birthday-year',
+              ]"
               placeholder="西元年"
               min="1911"
+              @change="handleInputBirthdayYearChange"
             />
             <UiMembershipDropdownMenu
               class="birthday-form__dropdown-menu-birthday-month"
               :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
               :height="50"
               style="width: 104px"
+              :state="isBirthdayMonthInvalid ? 'invalid' : 'normal'"
               :placeholder="'月份'"
+              @change="handleDropdownMenuBirthdayMonthChange"
             />
             <input
+              v-model.number="$v.birthdayDay.$model"
               type="number"
-              class="input birthday-form__input-birthday-day input-birthday-day"
+              :class="[
+                'input',
+                { 'input--invalid': isBirthdayDayInvalid },
+                'birthday-form__input-birthday-day',
+                'input-birthday-day',
+              ]"
               placeholder="日期"
               min="1"
               max="31"
+              @change="handleInputBirthdayDayChange"
             />
           </div>
+          <p v-show="shouldShowBirthdayInvalidHint" class="invalid-hint">
+            請填寫完整出生年月日
+          </p>
         </div>
         <div class="form__item-wrapper phone-wrapper">
           <label class="subtitle" for="profile-phone-input">電話</label>
@@ -83,6 +102,7 @@
               <UiMembershipDropdownMenu
                 class="address-dropdown-menus-item__dropdown-menu"
                 :options="countriesOptions"
+                :state="isAddressCountryInvalid ? 'invalid' : 'normal'"
                 style="width: 100%"
                 @change="handleDropdownMenuCountryChange"
               />
@@ -115,17 +135,30 @@
             </label>
           </div>
           <input
-            class="input address-wrapper__address-input"
+            v-model.trim="$v.addressInput.$model"
+            :class="[
+              'input',
+              { 'input--invalid': isAddressInputInvalid },
+              'address-wrapper__address-input',
+            ]"
             type="text"
             placeholder="請輸入地址"
           />
+          <p v-show="shouldShowAddressInvalidHint" class="invalid-hint">
+            請填寫完整地址
+          </p>
         </div>
+        <button class="form__submit-button submit-button" @click="handleSubmit">
+          儲存
+        </button>
       </form>
     </div>
   </section>
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, requiredIf, between } from 'vuelidate/lib/validators'
 import UiMembershipDropdownMenu from '~/components/UiMembershipDropdownMenu.vue'
 import countriesData from '~/constants/countries.json'
 import twDistrictsData from '~/constants/taiwan-districts.json'
@@ -134,11 +167,57 @@ export default {
   components: {
     UiMembershipDropdownMenu,
   },
+  mixins: [validationMixin],
+  validations: {
+    birthdayYear: {
+      required,
+      between: between(1911, new Date().getFullYear()),
+    },
+    birthdayMonth: {
+      required,
+      between: between(1, 12),
+    },
+    birthdayDay: {
+      required,
+      between: between(1, 31),
+    },
+    birthdayGroup: ['birthdayYear', 'birthdayMonth', 'birthdayDay'],
+
+    addressCountry: {
+      required,
+    },
+    addressCounty: {
+      required: requiredIf(function isCurrentCountryTw() {
+        return !this.isCountryNotTw
+      }),
+    },
+    addressDistrict: {
+      required: requiredIf(function isCurrentCountryTw() {
+        return !this.isCountryNotTw
+      }),
+    },
+    addressInput: {
+      required,
+    },
+    addressGroup: [
+      'addressCountry',
+      'addressCounty',
+      'addressDistrict',
+      'addressInput',
+    ],
+  },
   data() {
     return {
+      birthdayYear: undefined,
+      birthdayMonth: undefined,
+      birthdayDay: undefined,
+
       addressCountry: {},
       addressCounty: {},
       addressDistrict: {},
+      addressInput: '',
+
+      isSubmitButtonClicked: false,
     }
   },
   computed: {
@@ -170,11 +249,17 @@ export default {
       if (this.isCountryNotTw) {
         return 'disable'
       }
+      if (this.isAddressCountyInvalid) {
+        return 'invalid'
+      }
       return 'normal'
     },
     dropdownMenuStateDistrict() {
       if (this.isCountryNotTw) {
         return 'disable'
+      }
+      if (this.isAddressDistrictInvalid) {
+        return 'invalid'
       }
       return 'normal'
     },
@@ -185,12 +270,56 @@ export default {
     currentCountyName() {
       return this.addressCounty.name ?? 'countyName'
     },
+
+    shouldShowBirthdayInvalidHint() {
+      return (
+        this.isSubmitButtonClicked &&
+        this.$v.birthdayGroup.$invalid &&
+        this.$v.birthdayGroup.$anyDirty
+      )
+    },
+    isBirthdayYearInvalid() {
+      return this.shouldShowBirthdayInvalidHint && this.$v.birthdayYear.$invalid
+    },
+    isBirthdayMonthInvalid() {
+      return (
+        this.shouldShowBirthdayInvalidHint && this.$v.birthdayMonth.$invalid
+      )
+    },
+    isBirthdayDayInvalid() {
+      return this.shouldShowBirthdayInvalidHint && this.$v.birthdayDay.$invalid
+    },
+
+    shouldShowAddressInvalidHint() {
+      return (
+        this.isSubmitButtonClicked &&
+        this.$v.addressGroup.$invalid &&
+        this.$v.addressGroup.$anyDirty
+      )
+    },
+    isAddressCountryInvalid() {
+      return (
+        this.shouldShowAddressInvalidHint && this.$v.addressCountry.$invalid
+      )
+    },
+    isAddressCountyInvalid() {
+      return this.shouldShowAddressInvalidHint && this.$v.addressCounty.$invalid
+    },
+    isAddressDistrictInvalid() {
+      return (
+        this.shouldShowAddressInvalidHint && this.$v.addressDistrict.$invalid
+      )
+    },
+    isAddressInputInvalid() {
+      return this.shouldShowAddressInvalidHint && this.$v.addressInput.$invalid
+    },
   },
   methods: {
     handleDropdownMenuCountryChange(value) {
       this.addressCountry = countriesData.find(function findByTwName(country) {
         return country.Taiwan === value
       })
+      this.$v.addressCountry.$touch()
       this.addressCounty = {}
       this.addressDistrict = {}
     },
@@ -198,6 +327,7 @@ export default {
       this.addressCounty = twDistrictsData.find(function findByName(county) {
         return county.name === value
       })
+      this.$v.addressCounty.$touch()
       this.addressDistrict = {}
     },
     handleDropdownMenuDistrictChange(value) {
@@ -205,6 +335,29 @@ export default {
       this.addressDistrict = district.find(function findByName(district) {
         return district.name === value
       })
+      this.$v.addressDistrict.$touch()
+    },
+    limitNumberWithRange(number, min, max) {
+      return Math.min(Math.max(number, min), max)
+    },
+    handleInputBirthdayYearChange() {
+      this.birthdayYear = this.limitNumberWithRange(
+        this.birthdayYear,
+        1911,
+        new Date().getFullYear()
+      )
+    },
+    handleDropdownMenuBirthdayMonthChange(value) {
+      this.birthdayMonth = value
+      this.$v.birthdayMonth.$touch()
+    },
+    handleInputBirthdayDayChange() {
+      this.birthdayDay = this.limitNumberWithRange(this.birthdayDay, 1, 31)
+    },
+    handleSubmit() {
+      if (!this.isSubmitButtonClicked) {
+        this.isSubmitButtonClicked = true
+      }
     },
   },
 }
@@ -239,6 +392,9 @@ export default {
       margin: 30px 0 0 0;
     }
   }
+  &__submit-button {
+    margin: 30px 0 0 0;
+  }
 }
 .input {
   height: 50px;
@@ -246,8 +402,15 @@ export default {
   padding: 15px 20px;
   font-size: 16px;
   color: #4a4a4a;
+  border: 1px solid transparent;
   &::placeholder {
     color: #888888;
+  }
+  &--invalid {
+    border: 1px solid #d0021b;
+    &::placeholder {
+      color: #d0021b;
+    }
   }
 }
 .input-birthday-year {
@@ -291,5 +454,21 @@ export default {
   &__dropdown-menu {
     margin: 0 0 0 12px;
   }
+}
+
+.invalid-hint {
+  color: #d0021b;
+  margin: 5px 0 0 0;
+}
+
+.submit-button {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #204f74;
+  color: white;
+  font-weight: 900;
 }
 </style>
