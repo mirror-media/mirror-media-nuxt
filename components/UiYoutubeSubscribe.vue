@@ -2,7 +2,7 @@
   Document: https://developers.google.com/youtube/youtube_subscribe_button
 -->
 <template>
-  <lazy-component @show="init">
+  <LazyRenderer @load="init">
     <!-- "g-ytsubscribe" is a required class setting by youtube, do not remove. -->
     <div
       :data-channelid="channelId"
@@ -10,7 +10,7 @@
       data-layout="full"
       data-count="hidden"
     />
-  </lazy-component>
+  </LazyRenderer>
 </template>
 
 <script>

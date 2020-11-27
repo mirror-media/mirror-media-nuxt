@@ -110,15 +110,13 @@
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-if="credit" class="credit" v-html="credit"></div>
 
-      <ClientOnly>
-        <lazy-component v-if="doesHaveAnyRelateds" @show="fetchRelatedImgs">
-          <UiArticleList
-            class="photos__article-list"
-            :items="relateds"
-            :itemImgs="relatedImgs"
-          />
-        </lazy-component>
-      </ClientOnly>
+      <LazyRenderer v-if="doesHaveAnyRelateds" @load="fetchRelatedImgs">
+        <UiArticleList
+          class="photos__article-list"
+          :items="relateds"
+          :itemImgs="relatedImgs"
+        />
+      </LazyRenderer>
     </div>
   </div>
 </template>
@@ -258,9 +256,6 @@ export default {
     doesHaveAnyRelateds() {
       return this.story.relateds.length > 0
     },
-    doesHaveAnyRelatedImgs() {
-      return this.relatedImgs.length > 0
-    },
 
     switchStatus() {
       return {
@@ -329,10 +324,6 @@ export default {
 
   methods: {
     async fetchRelatedImgs() {
-      if (this.doesHaveAnyRelatedImgs) {
-        return
-      }
-
       const imgIds = this.relateds.map(function extractImgId(item) {
         return item.heroImage
       })

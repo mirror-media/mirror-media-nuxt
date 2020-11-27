@@ -98,15 +98,12 @@ export default {
 
           case 'embeddedcode':
             return (
-              <ClientOnly>
-                <lazy-component>
-                  {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-                  <div
-                    class="story__embedded-code"
-                    domPropsInnerHTML={addTitleAndLazyloadToIframe(content)}
-                  ></div>
-                </lazy-component>
-              </ClientOnly>
+              <LazyRenderer class="story__embedded-code">
+                <div
+                  class="story__embedded-code"
+                  domPropsInnerHTML={addTitleAndLazyloadToIframe(content)}
+                ></div>
+              </LazyRenderer>
             )
 
           case 'audio':
@@ -123,16 +120,12 @@ export default {
             const { url, coverPhoto = {} } = content
 
             return url ? (
-              <ClientOnly>
-                <lazy-component>
-                  {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-                  <UiStoryVideo
-                    class="story__video"
-                    src={url}
-                    poster={coverPhoto.mobile?.url || false}
-                  />
-                </lazy-component>
-              </ClientOnly>
+              <LazyRenderer class="story__video">
+                <UiStoryVideo
+                  src={url}
+                  poster={coverPhoto.mobile?.url || false}
+                />
+              </LazyRenderer>
             ) : undefined
           }
 
@@ -161,23 +154,18 @@ export default {
             const { youtubeId, description } = content
 
             return (
-              <ClientOnly>
-                <lazy-component>
-                  {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-                  <div class="story__youtube">
-                    <iframe
-                      width="560"
-                      height="315"
-                      src={`https://www.youtube.com/embed/${youtubeId}`}
-                      frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
-                      allowfullscreen
-                    />
-                  </div>
+              <LazyRenderer class="story__youtube">
+                <iframe
+                  width="560"
+                  height="315"
+                  src={`https://www.youtube.com/embed/${youtubeId}`}
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
+                  allowfullscreen
+                />
 
-                  {description && <p class="g-story-caption">{description}</p>}
-                </lazy-component>
-              </ClientOnly>
+                {description && <p class="g-story-caption">{description}</p>}
+              </LazyRenderer>
             )
           }
 

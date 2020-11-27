@@ -65,7 +65,7 @@
       >。
     </p>
 
-    <lazy-component v-if="doesHaveTags" class="story__tags">
+    <LazyRenderer v-if="doesHaveTags" class="story__tags">
       <p class="title">相關關鍵字：</p>
       <div class="wrapper">
         <a
@@ -78,7 +78,7 @@
           {{ tag.name }}
         </a>
       </div>
-    </lazy-component>
+    </LazyRenderer>
 
     <ClientOnly v-if="canAdvertise">
       <div class="story__ad story__ad--container">
