@@ -92,9 +92,10 @@
             >
               <span class="address-dropdown-menus-item__label">縣市</span>
               <UiMembershipDropdownMenu
+                :key="currentCountryCode"
                 class="address-dropdown-menus-item__dropdown-menu"
-                :options="twCountiesOptions"
                 style="width: 100%"
+                :options="twCountiesOptions"
                 :state="dropdownMenuStateCounty"
                 @change="handleDropdownMenuCountyChange"
               />
@@ -104,9 +105,10 @@
             >
               <span class="address-dropdown-menus-item__label">行政區</span>
               <UiMembershipDropdownMenu
+                :key="currentCountyName"
                 class="address-dropdown-menus-item__dropdown-menu"
-                :options="twDistrictsOptions"
                 style="width: 100%"
+                :options="twDistrictsOptions"
                 :state="dropdownMenuStateDistrict"
                 @change="handleDropdownMenuDistrictChange"
               />
@@ -143,6 +145,7 @@ export default {
     currentMemberEmail() {
       return this.$store.state.membership.user.email
     },
+
     countriesOptions() {
       return countriesData.map(function getTraditionalChineseName(country) {
         return country.Taiwan
@@ -159,6 +162,7 @@ export default {
         return district.name
       })
     },
+
     isCountryNotTw() {
       return this.addressCountry.ISO2 !== 'TW'
     },
@@ -174,17 +178,27 @@ export default {
       }
       return 'normal'
     },
+
+    currentCountryCode() {
+      return this.addressCountry.ISO2 ?? 'countryCode'
+    },
+    currentCountyName() {
+      return this.addressCounty.name ?? 'countyName'
+    },
   },
   methods: {
     handleDropdownMenuCountryChange(value) {
       this.addressCountry = countriesData.find(function findByTwName(country) {
         return country.Taiwan === value
       })
+      this.addressCounty = {}
+      this.addressDistrict = {}
     },
     handleDropdownMenuCountyChange(value) {
       this.addressCounty = twDistrictsData.find(function findByName(county) {
         return county.name === value
       })
+      this.addressDistrict = {}
     },
     handleDropdownMenuDistrictChange(value) {
       const district = this.addressCounty.districts ?? []
