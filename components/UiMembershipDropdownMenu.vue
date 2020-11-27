@@ -1,5 +1,5 @@
 <template>
-  <div v-click-outside="hideOptionList" class="wrapper">
+  <div v-click-outside="hideOptionList" class="dropdown-wrapper">
     <div
       :class="[
         'active-item',
@@ -22,7 +22,7 @@
     </div>
     <ol
       v-show="shouldShowOptionList"
-      class="wrapper__option-list option-list"
+      class="dropdown-wrapper__option-list option-list"
       :style="{
         maxHeight: `${height * 4}px`,
         top: `${height}px`,
@@ -93,7 +93,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
+.dropdown-wrapper {
   position: relative;
   &__option-list {
     position: absolute;

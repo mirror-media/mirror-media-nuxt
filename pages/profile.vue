@@ -71,6 +71,7 @@
                 'birthday-form__input-birthday-day',
                 'input-birthday-day',
               ]"
+              style="width: 104px"
               placeholder="日期"
               min="1"
               max="31"
@@ -378,6 +379,10 @@ export default {
   &__cancel-membership {
     margin: 34px 0 0 0;
   }
+  @include media-breakpoint-up(xl) {
+    max-width: 680px;
+    margin: 0 auto;
+  }
 }
 
 .title,
@@ -400,6 +405,10 @@ export default {
   }
   &__submit-button {
     margin: 30px 0 0 0;
+  }
+  @include media-breakpoint-up(xl) {
+    border: 1px solid #d8d8d8;
+    padding: 40px;
   }
 }
 .input {
@@ -427,11 +436,22 @@ export default {
 }
 
 .birthday-form {
+  display: flex;
+  flex-direction: column;
   &__input-birthday-day {
     margin: 20px 0 0 0;
   }
   &__dropdown-menu-birthday-month {
     margin: 20px 0 0 0;
+  }
+  @include media-breakpoint-up(xl) {
+    flex-direction: row;
+    &__input-birthday-day {
+      margin: 0 0 0 20px;
+    }
+    &__dropdown-menu-birthday-month {
+      margin: 0 0 0 20px;
+    }
   }
 }
 
@@ -476,6 +496,11 @@ export default {
   background-color: #204f74;
   color: white;
   font-weight: 900;
+  @include media-breakpoint-up(xl) {
+    width: 120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .cancel-membership {
