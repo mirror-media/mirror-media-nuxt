@@ -23,26 +23,84 @@ export default {
     },
   },
   render(_, { props }) {
-    const { type, content: contents = [] } = props.paragraph
+    const { type } = props.paragraph
 
+    // 不需要 contents 的 type
+    if (type === 'gpt-ad') {
+      const { pageKey, adKey } = props.paragraph
+
+      return (
+        <ClientOnly>
+          <ContainerGptAd class="story__ad" pageKey={pageKey} adKey={adKey} />
+        </ClientOnly>
+      )
+    }
+
+    // 需要 contents 或 contents[0] 的 type
     {
-      const typesNeedContent = [
-        'header-one',
-        'header-two',
-        'image',
-        'quoteby',
-        'infobox',
-        'embeddedcode',
-        'audio',
-        'video',
-        'blockquote',
-        'annotation',
-        'youtube',
-        'code-block',
-        'unstyled',
-      ]
+      const { content: contents = [] } = props.paragraph
 
-      if (typesNeedContent.includes(type)) {
+      // 需要 contents 的 type
+      if (contents.length <= 0) {
+        return undefined
+      }
+
+      switch (type) {
+        case 'unordered-list-item':
+        case 'ordered-list-item': {
+          const isOrderedListType = type === 'ordered-list-item'
+          const listTag = isOrderedListType ? 'ol' : 'ul'
+
+          return (
+            <listTag
+              class={`g-story-${
+                isOrderedListType ? 'ordered' : 'unordered'
+              }-list`}
+            >
+              {processListItmes(contents).map((item) => (
+                <li domPropsInnerHTML={item} />
+              ))}
+            </listTag>
+          )
+        }
+
+        case 'slideshow': {
+          const Slides = contents.map(function slide(item) {
+            return (
+              <figure key={item.id} class="swiper-slide g-story-figure">
+                <img src={item.mobile.url} />
+                <figcaption>{item.description}</figcaption>
+              </figure>
+            )
+          })
+
+          return (
+            <ClientOnly>
+              <UiSlideshow
+                class="story__slideshow"
+                options={{
+                  navigation: {
+                    nextEl: '.btn-next',
+                    prevEl: '.btn-prev',
+                  },
+                }}
+              >
+                <template slot="default">{Slides}</template>
+
+                <div slot="btnPrev" class="btn-prev">
+                  <SvgArrowPrev class="arrow" />
+                </div>
+                <div slot="btnNext" class="btn-next">
+                  <SvgArrowNext class="arrow" />
+                </div>
+              </UiSlideshow>
+            </ClientOnly>
+          )
+        }
+      }
+
+      // 只需要 contents[0] 的 type
+      {
         const [content] = contents
 
         if (!content) {
@@ -185,84 +243,6 @@ export default {
             )
         }
       }
-    }
-
-    {
-      const typesNeedContents = [
-        'unordered-list-item',
-        'ordered-list-item',
-        'slideshow',
-      ]
-
-      if (typesNeedContents.includes(type)) {
-        if (contents.length <= 0) {
-          return undefined
-        }
-
-        switch (type) {
-          case 'unordered-list-item':
-          case 'ordered-list-item': {
-            const isOrderedListType = type === 'ordered-list-item'
-            const listTag = isOrderedListType ? 'ol' : 'ul'
-
-            return (
-              <listTag
-                class={`g-story-${
-                  isOrderedListType ? 'ordered' : 'unordered'
-                }-list`}
-              >
-                {processListItmes(contents).map((item) => (
-                  <li domPropsInnerHTML={item} />
-                ))}
-              </listTag>
-            )
-          }
-
-          case 'slideshow': {
-            const Slides = contents.map(function slide(item) {
-              return (
-                <figure key={item.id} class="swiper-slide g-story-figure">
-                  <img src={item.mobile.url} />
-                  <figcaption>{item.description}</figcaption>
-                </figure>
-              )
-            })
-
-            return (
-              <ClientOnly>
-                <UiSlideshow
-                  class="story__slideshow"
-                  options={{
-                    navigation: {
-                      nextEl: '.btn-next',
-                      prevEl: '.btn-prev',
-                    },
-                  }}
-                >
-                  <template slot="default">{Slides}</template>
-
-                  <div slot="btnPrev" class="btn-prev">
-                    <SvgArrowPrev class="arrow" />
-                  </div>
-                  <div slot="btnNext" class="btn-next">
-                    <SvgArrowNext class="arrow" />
-                  </div>
-                </UiSlideshow>
-              </ClientOnly>
-            )
-          }
-        }
-      }
-    }
-
-    if (type === 'gpt-ad') {
-      const { pageKey, adKey } = props.paragraph
-
-      return (
-        <ClientOnly>
-          <ContainerGptAd class="story__ad" pageKey={pageKey} adKey={adKey} />
-        </ClientOnly>
-      )
     }
 
     return undefined
