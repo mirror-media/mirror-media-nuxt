@@ -160,7 +160,7 @@
       </div>
 
       <div class="sticky-footer">
-        <AppOpenNotification />
+        <AppOpenNotification v-if="false" />
 
         <UiStickyAd v-if="!hasWineCategory && canAdvertise">
           <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
