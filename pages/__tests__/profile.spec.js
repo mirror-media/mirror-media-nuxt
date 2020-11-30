@@ -1,5 +1,6 @@
-import { createLocalVue, shallowMount } from '@vue/test-utils'
+import { createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import Vuex from 'vuex'
+import createWrapperHelper from '@/test/helpers/createWrapperHelper'
 import page from '../profile.vue'
 import {
   getters as gettersMembership,
@@ -8,6 +9,12 @@ import {
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+
+const createWrapper = createWrapperHelper({
+  stubs: {
+    NuxtLink: RouterLinkStub,
+  },
+})
 
 describe('data bindings with vuex store, and user email exist', function () {
   const mockEmail = 'example@example.com'
@@ -26,7 +33,7 @@ describe('data bindings with vuex store, and user email exist', function () {
   })
 
   test('should show the email of the current member in profile page', function () {
-    const wrapper = shallowMount(page, {
+    const wrapper = createWrapper(page, {
       localVue,
       store: new Vuex.Store(storeOptions),
     })

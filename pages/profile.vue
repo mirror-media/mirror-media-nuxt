@@ -153,9 +153,12 @@
           儲存
         </button>
       </form>
-      <button class="wrapper__cancel-membership cancel-membership">
+      <nuxt-link
+        to="/cancelMembership"
+        class="wrapper__cancel-membership-link cancel-membership-link"
+      >
         刪除會員
-      </button>
+      </nuxt-link>
     </div>
   </section>
 </template>
@@ -376,7 +379,7 @@ export default {
   &__form {
     margin: 30px 0 0 0;
   }
-  &__cancel-membership {
+  &__cancel-membership-link {
     margin: 34px 0 0 0;
   }
   @include media-breakpoint-up(xl) {
@@ -503,7 +506,8 @@ export default {
   }
 }
 
-.cancel-membership {
+.cancel-membership-link {
+  display: inline-block;
   text-decoration: underline;
   color: #d0021b;
   font-size: 18px;
