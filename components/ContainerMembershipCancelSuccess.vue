@@ -39,6 +39,9 @@ export default {}
   letter-spacing: 2px;
   color: #204f74;
   text-align: center;
+  @include media-breakpoint-up(xl) {
+    font-size: 32px;
+  }
 }
 
 .description {

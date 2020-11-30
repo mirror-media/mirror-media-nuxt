@@ -58,6 +58,9 @@ export default {
   letter-spacing: 2px;
   color: #d0021b;
   text-align: center;
+  @include media-breakpoint-up(xl) {
+    font-size: 32px;
+  }
 }
 
 .description {
