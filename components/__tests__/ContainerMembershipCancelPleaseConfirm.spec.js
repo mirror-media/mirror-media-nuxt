@@ -1,6 +1,6 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import Vuex from 'vuex'
-import page from '../cancelMembership.vue'
+import ContainerMembershipCancelPleaseConfirm from '../ContainerMembershipCancelPleaseConfirm.vue'
 import {
   getters as gettersMembership,
   state as stateMembership,
@@ -26,7 +26,7 @@ describe('data bindings with vuex store, and user email exist', function () {
   })
 
   test('should show the email of the current member in profile page', function () {
-    const wrapper = shallowMount(page, {
+    const wrapper = shallowMount(ContainerMembershipCancelPleaseConfirm, {
       localVue,
       store: new Vuex.Store(storeOptions),
     })
@@ -53,7 +53,7 @@ describe('buttons in the page', function () {
     const mockRouter = {
       back: jest.fn(),
     }
-    const wrapper = shallowMount(page, {
+    const wrapper = shallowMount(ContainerMembershipCancelPleaseConfirm, {
       mocks: {
         $router: mockRouter,
       },
