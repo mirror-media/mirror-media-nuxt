@@ -228,13 +228,14 @@ module.exports = {
            * exposed apiKey is not a security risk
            * see: https://stackoverflow.com/a/37484053
            */
-          apiKey: 'AIzaSyDPw2r9nOFqgV70qfRzg0_QXpjCHUB3HGw',
-          authDomain: 'mirrormedia-1470651750304.firebaseapp.com',
-          databaseURL: 'https://mirrormedia-1470651750304.firebaseio.com',
-          projectId: 'mirrormedia-1470651750304',
-          storageBucket: 'mirrormedia-1470651750304.appspot.com',
-          messagingSenderId: '983956931553',
-          appId: '1:983956931553:web:5a12da06616a5bcdab48a0',
+          apiKey: 'AIzaSyDluvbZhIQgcicqXVarLkdP4PG6maZlEMI',
+          authDomain: 'mirromedia-app.firebaseapp.com',
+          databaseURL: 'https://mirromedia-app.firebaseio.com',
+          projectId: 'mirromedia-app',
+          storageBucket: 'mirromedia-app.appspot.com',
+          messagingSenderId: '231032158952',
+          appId: '1:231032158952:web:975862d0b50f8bdd1d275d',
+          measurementId: 'G-Q1GK3C4WNR',
         },
         services: {
           auth: {
