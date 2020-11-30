@@ -64,4 +64,13 @@ describe('buttons in the page', function () {
     await routerBackButton.trigger('click')
     expect(mockRouter.back).toHaveBeenCalled()
   })
+
+  test('should emit success event after confirm cancel button clicked', async function () {
+    const wrapper = shallowMount(ContainerMembershipCancelPleaseConfirm, {
+      localVue,
+      store: new Vuex.Store(storeOptions),
+    })
+    await wrapper.get('.confirm-cancel-button').trigger('click')
+    expect(wrapper.emitted().success).toBeTruthy()
+  })
 })

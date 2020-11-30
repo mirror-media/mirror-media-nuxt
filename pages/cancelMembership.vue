@@ -1,15 +1,31 @@
 <template>
   <section class="page">
-    <ContainerMembershipCancelPleaseConfirm />
+    <ContainerMembershipCancelPleaseConfirm
+      v-if="pageState === 'confirmation'"
+      @success="handleCancelSuccess"
+    />
+    <ContainerMembershipCancelSuccess v-else-if="pageState === 'success'" />
   </section>
 </template>
 
 <script>
 import ContainerMembershipCancelPleaseConfirm from '~/components/ContainerMembershipCancelPleaseConfirm.vue'
+import ContainerMembershipCancelSuccess from '~/components/ContainerMembershipCancelSuccess.vue'
 
 export default {
   components: {
     ContainerMembershipCancelPleaseConfirm,
+    ContainerMembershipCancelSuccess,
+  },
+  data() {
+    return {
+      pageState: 'confirmation',
+    }
+  },
+  methods: {
+    handleCancelSuccess() {
+      this.pageState = 'success'
+    },
   },
 }
 </script>
