@@ -492,8 +492,8 @@ export default {
       ogDescription = '',
       ogImage = {},
       ogTitle = '',
-      publishedDate = '',
-      updatedAt = '',
+      publishedDate = Date.now(),
+      updatedAt = Date.now(),
       title = '',
       topics = {},
       writers = [],
@@ -513,7 +513,6 @@ export default {
       SITE_OG_IMG
     const pageUrl = `https://${DOMAIN_NAME}${this.$route.path}`
 
-    // TODO
     const publishedDateIso = new Date(publishedDate).toISOString()
     const topicId = topics._id ?? ''
     const { name: writerName, id: writerId } = writers[0] || {}
