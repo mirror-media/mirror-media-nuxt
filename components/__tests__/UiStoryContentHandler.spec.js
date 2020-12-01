@@ -8,7 +8,10 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 const localVue = createLocalVue()
 localVue.directive('swiper', swiper)
 
-const createWrapper = createWrapperHelper({ localVue })
+const createWrapper = createWrapperHelper({
+  localVue,
+  stubs: ['ClientOnly', 'LazyRenderer'],
+})
 
 describe('slideshow', () => {
   const mockParagraph = {
@@ -62,7 +65,6 @@ describe('youtube', () => {
           content: [contentMock],
         },
       },
-      stubs: ['ClientOnly', 'lazy-component'],
     })
 
     /* Assert */

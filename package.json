@@ -51,6 +51,7 @@
     "vue-awesome-swiper": "^4.1.1",
     "vue-cookie": "^1.1.4",
     "vue-infinite-loading": "^2.4.5",
+    "vue-lazy-renderer": "^1.0.1",
     "vue-lazyload": "^1.3.3",
     "vue-slider-component": "^3.2.5",
     "vuelidate": "^0.7.6"

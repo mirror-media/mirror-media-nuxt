@@ -124,7 +124,7 @@ describe('latest list', () => {
       },
     })
 
-    wrapper.get('.lazy-latest-list').vm.$emit('show')
+    wrapper.get('.lazy-latest-list').vm.$emit('load')
     await wrapper.vm.$nextTick()
 
     const { items } = wrapper.get('.latest-list').props()

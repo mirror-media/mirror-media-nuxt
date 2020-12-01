@@ -190,7 +190,7 @@ export default {
   background-color: #333;
   width: 100%;
   height: 100vh;
-  z-index: 999;
+  z-index: 539;
   overflow-y: auto;
   color: #fff;
   padding: calc(36px + 2.5%) 5% 5% 5%;

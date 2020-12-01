@@ -1,5 +1,5 @@
 <template>
-  <lazy-component class="iframe-wrapper">
+  <LazyRenderer class="iframe-wrapper">
     <iframe
       :src="`https://www.youtube.com/embed/${videoId}`"
       class="iframe-wrapper__iframe"
@@ -10,7 +10,7 @@
       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
     />
-  </lazy-component>
+  </LazyRenderer>
 </template>
 
 <script>

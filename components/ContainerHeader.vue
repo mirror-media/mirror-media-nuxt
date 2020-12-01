@@ -343,7 +343,7 @@ $search-field-arrow-width: 11px;
 
 header {
   background-color: #f5f5f5;
-  z-index: 99;
+  z-index: 519;
   position: relative;
 
   &.fixed {
@@ -460,7 +460,7 @@ header {
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  z-index: 149;
+  z-index: 529;
 }
 
 .share-wrapper {

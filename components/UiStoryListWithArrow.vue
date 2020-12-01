@@ -1,5 +1,5 @@
 <template>
-  <lazy-component
+  <LazyRenderer
     v-if="hasItems"
     class="story-list-with-arrow"
     :class="[{ single: isSingle }, sectionName]"
@@ -17,7 +17,7 @@
         <span v-text="item.title" />
       </div>
     </a>
-  </lazy-component>
+  </LazyRenderer>
 </template>
 
 <script>

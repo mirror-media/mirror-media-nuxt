@@ -23,26 +23,84 @@ export default {
     },
   },
   render(_, { props }) {
-    const { type, content: contents = [] } = props.paragraph
+    const { type } = props.paragraph
 
+    // 不需要 contents 的 type
+    if (type === 'gpt-ad') {
+      const { pageKey, adKey } = props.paragraph
+
+      return (
+        <ClientOnly>
+          <ContainerGptAd class="story__ad" pageKey={pageKey} adKey={adKey} />
+        </ClientOnly>
+      )
+    }
+
+    // 需要 contents 或 contents[0] 的 type
     {
-      const typesNeedContent = [
-        'header-one',
-        'header-two',
-        'image',
-        'quoteby',
-        'infobox',
-        'embeddedcode',
-        'audio',
-        'video',
-        'blockquote',
-        'annotation',
-        'youtube',
-        'code-block',
-        'unstyled',
-      ]
+      const { content: contents = [] } = props.paragraph
 
-      if (typesNeedContent.includes(type)) {
+      // 需要 contents 的 type
+      if (contents.length <= 0) {
+        return undefined
+      }
+
+      switch (type) {
+        case 'unordered-list-item':
+        case 'ordered-list-item': {
+          const isOrderedListType = type === 'ordered-list-item'
+          const listTag = isOrderedListType ? 'ol' : 'ul'
+
+          return (
+            <listTag
+              class={`g-story-${
+                isOrderedListType ? 'ordered' : 'unordered'
+              }-list`}
+            >
+              {processListItmes(contents).map((item) => (
+                <li domPropsInnerHTML={item} />
+              ))}
+            </listTag>
+          )
+        }
+
+        case 'slideshow': {
+          const Slides = contents.map(function slide(item) {
+            return (
+              <figure key={item.id} class="swiper-slide g-story-figure">
+                <img src={item.mobile.url} />
+                <figcaption>{item.description}</figcaption>
+              </figure>
+            )
+          })
+
+          return (
+            <ClientOnly>
+              <UiSlideshow
+                class="story__slideshow"
+                options={{
+                  navigation: {
+                    nextEl: '.btn-next',
+                    prevEl: '.btn-prev',
+                  },
+                }}
+              >
+                <template slot="default">{Slides}</template>
+
+                <div slot="btnPrev" class="btn-prev">
+                  <SvgArrowPrev class="arrow" />
+                </div>
+                <div slot="btnNext" class="btn-next">
+                  <SvgArrowNext class="arrow" />
+                </div>
+              </UiSlideshow>
+            </ClientOnly>
+          )
+        }
+      }
+
+      // 只需要 contents[0] 的 type
+      {
         const [content] = contents
 
         if (!content) {
@@ -98,15 +156,12 @@ export default {
 
           case 'embeddedcode':
             return (
-              <ClientOnly>
-                <lazy-component>
-                  {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-                  <div
-                    class="story__embedded-code"
-                    domPropsInnerHTML={addTitleAndLazyloadToIframe(content)}
-                  ></div>
-                </lazy-component>
-              </ClientOnly>
+              <LazyRenderer class="story__embedded-code">
+                <div
+                  class="story__embedded-code"
+                  domPropsInnerHTML={addTitleAndLazyloadToIframe(content)}
+                ></div>
+              </LazyRenderer>
             )
 
           case 'audio':
@@ -123,16 +178,12 @@ export default {
             const { url, coverPhoto = {} } = content
 
             return url ? (
-              <ClientOnly>
-                <lazy-component>
-                  {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-                  <UiStoryVideo
-                    class="story__video"
-                    src={url}
-                    poster={coverPhoto.mobile?.url || false}
-                  />
-                </lazy-component>
-              </ClientOnly>
+              <LazyRenderer class="story__video">
+                <UiStoryVideo
+                  src={url}
+                  poster={coverPhoto.mobile?.url || false}
+                />
+              </LazyRenderer>
             ) : undefined
           }
 
@@ -161,23 +212,18 @@ export default {
             const { youtubeId, description } = content
 
             return (
-              <ClientOnly>
-                <lazy-component>
-                  {/* 這裡的 class name 不能放在 <lazy-component>，如此會導致樣式吃不到。原因尚不清楚 */}
-                  <div class="story__youtube">
-                    <iframe
-                      width="560"
-                      height="315"
-                      src={`https://www.youtube.com/embed/${youtubeId}`}
-                      frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
-                      allowfullscreen
-                    />
-                  </div>
+              <LazyRenderer class="story__youtube">
+                <iframe
+                  width="560"
+                  height="315"
+                  src={`https://www.youtube.com/embed/${youtubeId}`}
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
+                  allowfullscreen
+                />
 
-                  {description && <p class="g-story-caption">{description}</p>}
-                </lazy-component>
-              </ClientOnly>
+                {description && <p class="g-story-caption">{description}</p>}
+              </LazyRenderer>
             )
           }
 
@@ -197,84 +243,6 @@ export default {
             )
         }
       }
-    }
-
-    {
-      const typesNeedContents = [
-        'unordered-list-item',
-        'ordered-list-item',
-        'slideshow',
-      ]
-
-      if (typesNeedContents.includes(type)) {
-        if (contents.length <= 0) {
-          return undefined
-        }
-
-        switch (type) {
-          case 'unordered-list-item':
-          case 'ordered-list-item': {
-            const isOrderedListType = type === 'ordered-list-item'
-            const listTag = isOrderedListType ? 'ol' : 'ul'
-
-            return (
-              <listTag
-                class={`g-story-${
-                  isOrderedListType ? 'ordered' : 'unordered'
-                }-list`}
-              >
-                {processListItmes(contents).map((item) => (
-                  <li domPropsInnerHTML={item} />
-                ))}
-              </listTag>
-            )
-          }
-
-          case 'slideshow': {
-            const Slides = contents.map(function slide(item) {
-              return (
-                <figure key={item.id} class="swiper-slide g-story-figure">
-                  <img src={item.mobile.url} />
-                  <figcaption>{item.description}</figcaption>
-                </figure>
-              )
-            })
-
-            return (
-              <ClientOnly>
-                <UiSlideshow
-                  class="story__slideshow"
-                  options={{
-                    navigation: {
-                      nextEl: '.btn-next',
-                      prevEl: '.btn-prev',
-                    },
-                  }}
-                >
-                  <template slot="default">{Slides}</template>
-
-                  <div slot="btnPrev" class="btn-prev">
-                    <SvgArrowPrev class="arrow" />
-                  </div>
-                  <div slot="btnNext" class="btn-next">
-                    <SvgArrowNext class="arrow" />
-                  </div>
-                </UiSlideshow>
-              </ClientOnly>
-            )
-          }
-        }
-      }
-    }
-
-    if (type === 'gpt-ad') {
-      const { pageKey, adKey } = props.paragraph
-
-      return (
-        <ClientOnly>
-          <ContainerGptAd class="story__ad" pageKey={pageKey} adKey={adKey} />
-        </ClientOnly>
-      )
     }
 
     return undefined
@@ -395,7 +363,7 @@ export default {
       background-color: rgba(245, 245, 245, 0.25);
       border-radius: 4px;
       position: absolute;
-      z-index: 10;
+      z-index: 9;
       top: 50%;
       transform: translateY(-50%);
       // 為了盡可能垂直置中，減去 figcaption 最小高度的一半

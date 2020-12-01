@@ -115,7 +115,7 @@ figure img {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1099;
+  z-index: 819;
   display: flex;
   justify-content: center;
   align-items: center;
