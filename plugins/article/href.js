@@ -6,15 +6,15 @@ export function getHref(articleData = {}) {
   const articlesMap = [
     {
       style: 'campaign',
-      href: `/campaigns/${slug}`,
+      href: `/campaigns/${slug}/`,
     },
     {
       style: 'projects',
-      href: `/projects/${slug}`,
+      href: `/projects/${slug}/`,
     },
     {
       style: 'readr',
-      href: `${READR_URL}/project/${slug}`,
+      href: `${READR_URL}/project/${slug}/`,
     },
   ]
 
