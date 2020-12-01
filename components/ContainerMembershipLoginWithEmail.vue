@@ -10,7 +10,8 @@
       保持登入
     </label>
     <button class="form__login-button login-button" @click="handleSubmit">
-      登入
+      <UiMembershipSpinner v-if="isLoading" :color="'white'" />
+      <template v-else>登入</template>
     </button>
   </form>
 </template>
@@ -18,6 +19,7 @@
 <script>
 import localforage from 'localforage'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
+import UiMembershipSpinner from '~/components/UiMembershipSpinner.vue'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.
@@ -28,6 +30,7 @@ import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
 export default {
   components: {
     UiMembershipEmailInput,
+    UiMembershipSpinner,
   },
   data() {
     return {
@@ -35,14 +38,17 @@ export default {
       isEmailInputValid: false,
       emailInput: '',
       shouldRememberMe: false,
+      isLoading: false,
     }
   },
 
   methods: {
-    handleSubmit() {
+    async handleSubmit() {
       this.shouldShowInvalidHint = true
       if (this.isEmailInputValid) {
-        this.sendSignInLinkToEmail()
+        this.isLoading = true
+        await this.sendSignInLinkToEmail()
+        this.isLoading = false
       }
     },
     handleError(e) {
