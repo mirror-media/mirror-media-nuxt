@@ -9,5 +9,6 @@ Vue.use(VueLazyRenderer, {
 })
 
 Vue.use(VueLazyload, {
+  preLoad: 2,
   loading: loadingImg,
 })
