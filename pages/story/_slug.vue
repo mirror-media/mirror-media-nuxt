@@ -742,8 +742,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~/css/micro-ad/story.scss';
-
 $story-max-width: 1160px;
 $story-padding-right-lg: 50px;
 
@@ -904,6 +902,100 @@ aside {
     height: auto;
     cursor: pointer;
     user-select: none;
+  }
+}
+
+.micro-ad {
+  margin-top: 16px;
+  color: #808080;
+
+  &::v-deep {
+    #compass-fit-widget {
+      font-family: inherit !important;
+      margin-bottom: 0 !important;
+    }
+
+    #compass-fit-widget-content {
+      display: flex;
+
+      &::before {
+        content: '';
+        display: block;
+        width: 10px;
+        flex-shrink: 0;
+        background-color: #808080;
+      }
+    }
+
+    .pop_item_title,
+    .popListVert-list__item--text {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+      background-color: #eee !important;
+      padding: 16px;
+      @include media-breakpoint-up(md) {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+    }
+
+    .pop_item_title a,
+    .popListVert-list__item--text h2 {
+      font-size: 18px;
+      line-height: 1.3;
+      display: block;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      // 2.6em = 1em * 1.3 * 2
+      max-height: 2.6em;
+    }
+
+    .pop_item_title a {
+      font-family: inherit !important;
+    }
+
+    figure,
+    .popListVert-list__item--img {
+      position: relative;
+      flex-shrink: 0;
+      order: 1;
+      width: 33%;
+      padding-top: calc(33% * 0.75);
+      @include media-breakpoint-up(md) {
+        width: 25%;
+        padding-top: calc(25% * 0.75);
+      }
+      @include media-breakpoint-up(lg) {
+        width: 20%;
+        padding-top: calc(20% * 0.75);
+      }
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .pop_item--colorBlock,
+    .popListVert-list__item--text > div {
+      display: none;
+    }
+
+    .popListVert-list__item {
+      display: flex;
+      flex-grow: 1;
+    }
+
+    .popListVert-list__item--text a {
+      font-weight: 400 !important;
+    }
   }
 }
 
