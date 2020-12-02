@@ -3,7 +3,17 @@
     <div v-if="pageState === 'form'" class="form-wrapper">
       <h1 class="form-wrapper__title title">登入</h1>
       <div class="form-wrapper__federated-login federated-login">
-        <ContainerMembershipLoginWithGoogle />
+        <div class="google-login-wrapper">
+          <div
+            v-show="isFederatedRedirectResultLoading"
+            class="google-login-loading-wrapper"
+          >
+            <UiMembershipSpinner />
+          </div>
+          <ContainerMembershipLoginWithGoogle
+            v-show="!isFederatedRedirectResultLoading"
+          />
+        </div>
       </div>
       <div class="form-wrapper__separator separator">
         <p>或</p>
@@ -31,6 +41,7 @@ import ContainerMembershipLoginWithGoogle from '~/components/ContainerMembership
 import ContainerMembershipLoginWithEmail from '~/components/ContainerMembershipLoginWithEmail.vue'
 import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
 import UiMembershipError from '~/components/UiMembershipError.vue'
+import UiMembershipSpinner from '~/components/UiMembershipSpinner.vue'
 
 export default {
   components: {
@@ -38,11 +49,13 @@ export default {
     ContainerMembershipLoginWithEmail,
     UiMembershipEmailSuccess,
     UiMembershipError,
+    UiMembershipSpinner,
   },
   data() {
     return {
       pageState: 'form',
       emailShowInSuccess: '',
+      isFederatedRedirectResultLoading: true,
     }
   },
   async beforeMount() {
@@ -53,18 +66,15 @@ export default {
      * for more info: https://firebase.google.com/docs/auth/web/google-signin
      */
     try {
-      /*
-       * TODO: we should implement pending state and layout here
-       * because the async request below may take a moment
-       * cause the page may not been redirect to home page immediately
-       */
       const result = await this.$fire.auth.getRedirectResult()
+      this.isFederatedRedirectResultLoading = false
       if (result.user !== null) {
         this.$router.replace('/')
       }
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e)
+      this.isFederatedRedirectResultLoading = false
       this.handleLoginError()
     }
   },
@@ -92,6 +102,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .form-wrapper {
   width: 100%;
   &__federated-login {
@@ -104,12 +115,23 @@ export default {
     width: 300px;
   }
 }
+
 .title {
   text-align: center;
   font-weight: 900;
   font-size: 18px;
   color: #054f77;
 }
+
+.google-login-loading-wrapper {
+  border: 2px solid #4a4a4a;
+  width: 100%;
+  height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .separator {
   font-size: 16px;
   color: #4a4a4a;
