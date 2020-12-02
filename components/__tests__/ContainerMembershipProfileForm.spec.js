@@ -41,3 +41,27 @@ describe('data bindings with vuex store, and user email exist', function () {
     expect(currentMemberEmail.text()).toBe(mockEmail)
   })
 })
+
+describe('submit button', function () {
+  let storeOptions
+  beforeEach(() => {
+    storeOptions = {
+      modules: {
+        membership: {
+          namespaced: true,
+          state: stateMembership(),
+          getters: gettersMembership,
+        },
+      },
+    }
+  })
+
+  test('should emit success event after we click the submit button', async function () {
+    const wrapper = createWrapper(ContainerMembershipProfileForm, {
+      localVue,
+      store: new Vuex.Store(storeOptions),
+    })
+    await wrapper.get('.submit-button').trigger('click')
+    expect(wrapper.emitted().success[0]).toBeTruthy()
+  })
+})

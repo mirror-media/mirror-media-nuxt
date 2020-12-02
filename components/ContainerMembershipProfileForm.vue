@@ -360,6 +360,13 @@ export default {
       if (!this.isSubmitButtonClicked) {
         this.isSubmitButtonClicked = true
       }
+      if (
+        !this.shouldShowAddressInvalidHint &&
+        !this.shouldShowBirthdayInvalidHint
+      ) {
+        // TODO: send update profile request to the backend
+        this.$emit('success')
+      }
     },
   },
 }
@@ -367,6 +374,7 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
+  width: 100%;
   &__form {
     margin: 30px 0 0 0;
   }
