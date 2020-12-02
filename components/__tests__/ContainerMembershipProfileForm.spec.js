@@ -1,7 +1,7 @@
 import { createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import Vuex from 'vuex'
 import createWrapperHelper from '@/test/helpers/createWrapperHelper'
-import page from '../profile.vue'
+import ContainerMembershipProfileForm from '../ContainerMembershipProfileForm.vue'
 import {
   getters as gettersMembership,
   state as stateMembership,
@@ -33,7 +33,7 @@ describe('data bindings with vuex store, and user email exist', function () {
   })
 
   test('should show the email of the current member in profile page', function () {
-    const wrapper = createWrapper(page, {
+    const wrapper = createWrapper(ContainerMembershipProfileForm, {
       localVue,
       store: new Vuex.Store(storeOptions),
     })
