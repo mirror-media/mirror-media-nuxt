@@ -3,9 +3,14 @@
     <ContainerMembershipProfileForm
       v-if="pageState === 'form'"
       @success="handleFormSuccess"
+      @error="handleFormError"
     />
     <ContainerMembershipProfileSuccess
       v-else-if="pageState === 'success'"
+      @backToForm="handleBackToForm"
+    />
+    <ContainerMembershipProfileError
+      v-else-if="pageState === 'error'"
       @backToForm="handleBackToForm"
     />
   </section>
@@ -14,11 +19,13 @@
 <script>
 import ContainerMembershipProfileForm from '~/components/ContainerMembershipProfileForm.vue'
 import ContainerMembershipProfileSuccess from '~/components/ContainerMembershipProfileSuccess.vue'
+import ContainerMembershipProfileError from '~/components/ContainerMembershipProfileError.vue'
 
 export default {
   components: {
     ContainerMembershipProfileForm,
     ContainerMembershipProfileSuccess,
+    ContainerMembershipProfileError,
   },
   data() {
     return {
@@ -28,6 +35,9 @@ export default {
   methods: {
     handleFormSuccess() {
       this.pageState = 'success'
+    },
+    handleFormError() {
+      this.pageState = 'error'
     },
     handleBackToForm() {
       this.pageState = 'form'
