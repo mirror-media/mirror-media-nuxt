@@ -60,6 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 /**
- * 請把樣式寫在 ~/css/micro-ad/ 資料夾中，再把樣式引入到需要它的元件內
+ * 不該在此處寫上任何特定樣式
+ * 若某類樣式需要在多處地方共用，可把它寫在 ~/css/micro-ad/ 資料夾中，再導進需要它的元件內
  */
 </style>
