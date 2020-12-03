@@ -1,9 +1,9 @@
 <template>
-  <div v-if="isMobile" v-show="isVisible" class="sticky-ad">
-    <client-only>
+  <client-only>
+    <div v-if="isMobile" v-show="isVisible" class="sticky-ad">
       <slot />
-    </client-only>
-  </div>
+    </div>
+  </client-only>
 </template>
 
 <script>
