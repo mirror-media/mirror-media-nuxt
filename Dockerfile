@@ -1,22 +1,24 @@
+FROM node:12.16.2-alpine AS build
+
+WORKDIR /app
+
+RUN apk update \
+    && apk upgrade \
+    && apk add python make g++
+
+COPY . .
+
+RUN yarn install \
+    && yarn build
+
 FROM node:12.16.2-alpine
 
-ENV APP_DIR /app
+WORKDIR /app
 
-RUN mkdir -p $APP_DIR
-
-WORKDIR $APP_DIR
-
-COPY package.json $APP_DIR
-COPY yarn.lock $APP_DIR
-RUN yarn install
+COPY --from=build /app .
 
 ENV NUXT_HOST 0.0.0.0
 ENV NUXT_PORT 3000
 
-COPY . $APP_DIR
-RUN yarn build
-
-RUN yarn cache clean
-
-EXPOSE 3000
+EXPOSE $NUXT_PORT
 CMD [ "yarn", "start" ]
