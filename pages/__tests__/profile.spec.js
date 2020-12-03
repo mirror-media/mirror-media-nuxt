@@ -1,43 +1,33 @@
-import { createLocalVue, RouterLinkStub } from '@vue/test-utils'
-import Vuex from 'vuex'
-import createWrapperHelper from '@/test/helpers/createWrapperHelper'
+import { shallowMount } from '@vue/test-utils'
 import page from '../profile.vue'
-import {
-  getters as gettersMembership,
-  state as stateMembership,
-} from '~/store/membership'
+import ContainerMembershipProfileForm from '~/components/ContainerMembershipProfileForm.vue'
+import ContainerMembershipProfileSuccess from '~/components/ContainerMembershipProfileSuccess.vue'
+import ContainerMembershipProfileError from '~/components/ContainerMembershipProfileError.vue'
 
-const localVue = createLocalVue()
-localVue.use(Vuex)
-
-const createWrapper = createWrapperHelper({
-  stubs: {
-    NuxtLink: RouterLinkStub,
-  },
+test('should show the success layout after form component emit a success event', async function () {
+  const wrapper = shallowMount(page)
+  const form = wrapper.findComponent(ContainerMembershipProfileForm)
+  expect(form.exists()).toBe(true)
+  expect(
+    wrapper.findComponent(ContainerMembershipProfileSuccess).exists()
+  ).toBe(false)
+  await form.vm.$emit('success')
+  expect(form.exists()).toBe(false)
+  expect(
+    wrapper.findComponent(ContainerMembershipProfileSuccess).exists()
+  ).toBe(true)
 })
 
-describe('data bindings with vuex store, and user email exist', function () {
-  const mockEmail = 'example@example.com'
-  let storeOptions
-  beforeEach(() => {
-    storeOptions = {
-      modules: {
-        membership: {
-          namespaced: true,
-          state: stateMembership(),
-          getters: gettersMembership,
-        },
-      },
-    }
-    storeOptions.modules.membership.state.user.email = mockEmail
-  })
-
-  test('should show the email of the current member in profile page', function () {
-    const wrapper = createWrapper(page, {
-      localVue,
-      store: new Vuex.Store(storeOptions),
-    })
-    const currentMemberEmail = wrapper.get('.current-member-email')
-    expect(currentMemberEmail.text()).toBe(mockEmail)
-  })
+test('should show the error layout after form component emit a error event', async function () {
+  const wrapper = shallowMount(page)
+  const form = wrapper.findComponent(ContainerMembershipProfileForm)
+  expect(form.exists()).toBe(true)
+  expect(wrapper.findComponent(ContainerMembershipProfileError).exists()).toBe(
+    false
+  )
+  await form.vm.$emit('error')
+  expect(form.exists()).toBe(false)
+  expect(wrapper.findComponent(ContainerMembershipProfileError).exists()).toBe(
+    true
+  )
 })
