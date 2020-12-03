@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { isTruthy } from '~/utils/index.js'
+
 export default {
   name: 'ContainerParagraphWithAnnotation',
 
@@ -31,11 +33,6 @@ export default {
 
       function isAnnotationOrText(item) {
         return !item.startsWith('<!--')
-      }
-
-      // Example: [0, -0, 0n, '', null, undefined, NaN].filter(isTruthy) will return []
-      function isTruthy(val) {
-        return val
       }
 
       function parseStrAndAddId(str, idx) {

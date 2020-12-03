@@ -31,6 +31,6 @@ export default {
 
 <style lang="scss" scoped>
 .spinner {
-  margin: 20px 0 0 0;
+  margin: 20px auto;
 }
 </style>
