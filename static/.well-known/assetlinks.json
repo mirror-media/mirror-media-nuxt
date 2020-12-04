@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.mirrormedia.news",
+      "sha256_cert_fingerprints": [
+        "A9:6F:9E:4C:66:45:1F:0F:93:2C:36:51:CC:D9:D2:EF:CD:A7:32:E1:CA:3F:15:D9:3E:CA:33:12:A7:93:C2:9E",
+        "A3:2D:F5:04:6B:FB:95:34:E2:FE:51:3D:FD:FB:3D:BB:22:F4:04:74:C7:26:3F:E2:76:A2:B9:FE:2D:23:12:85"
+      ]
+    }
+  }
+]
