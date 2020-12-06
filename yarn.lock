@@ -13667,10 +13667,10 @@ vue-jest@^4.0.0-0:
     source-map "0.5.6"
     ts-jest "26.x"
 
-vue-lazy-renderer@^1.0.1:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/vue-lazy-renderer/-/vue-lazy-renderer-1.0.2.tgz#4827ee9a96b97902a773b1f3c38fa12f8ea06449"
-  integrity sha512-A7whZqrenU/CYcruEzVRNvY4MjnFsujMuQKXu+7kVa8yRRBOSaEXpaAVfT1j7StOHvtCc+cCX1N+RIxTu5kNhA==
+vue-lazy-renderer@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vue-lazy-renderer/-/vue-lazy-renderer-1.1.0.tgz#1a8ad071cb017624c03424e76170ab182f27f209"
+  integrity sha512-qYbQX8A39EBurI0hD7iQeqzns9tFyY8ySNLxRQJI0Cc9ruL+483YVLNdG6EM+NATrFkH1q2CwxAAhs1dqJt1GQ==
 
 vue-lazyload@^1.3.3:
   version "1.3.3"
