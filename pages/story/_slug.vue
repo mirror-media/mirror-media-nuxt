@@ -81,7 +81,11 @@
                 adKey="MB_E1"
               />
 
-              <div v-if="canAdvertise && !isDesktopWidth" class="dable-widget">
+              <div
+                v-if="canAdvertise && !isDesktopWidth"
+                key="dable-widget"
+                class="dable-widget"
+              >
                 <LazyRenderer
                   :id="`dablewidget_${DABLE_WIDGET_IDS.MB}`"
                   :data-widget_id="DABLE_WIDGET_IDS.MB"
@@ -294,7 +298,7 @@ export default {
       viewportHeight: (state) => state.viewport.height,
     }),
     ...mapGetters({
-      isDesktopWidth: 'viewport/isViewportWidthUpLg',
+      isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
 
     isStyleDefault() {
@@ -742,10 +746,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~/css/micro-ad/story.scss';
-
 $story-max-width: 1160px;
-$story-padding-right-lg: 50px;
 
 $aside-width: 300px;
 
@@ -756,7 +757,7 @@ $aside-width: 300px;
     padding-bottom: 20px;
     margin-left: auto;
     margin-right: auto;
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       width: calc(100% - #{$aside-width} - 20px);
       max-width: 695px;
       padding-bottom: 0;
@@ -766,7 +767,7 @@ $aside-width: 300px;
 }
 
 .article {
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     background-color: #414141;
   }
 }
@@ -776,20 +777,19 @@ $aside-width: 300px;
   padding-top: 20px;
   padding-bottom: 40px;
   overflow: hidden;
-  @include media-breakpoint-up(lg) {
-    margin: 0 auto;
-    padding-left: 50px;
-    padding-right: $story-padding-right-lg;
-    background-color: #fff;
-  }
   @include media-breakpoint-up(xl) {
+    padding-left: 50px;
+    padding-right: 50px;
     padding-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
   }
 }
 
 .story-wrapper {
   position: relative;
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     padding-top: 30px;
     padding-bottom: 20px;
     display: flex;
@@ -807,7 +807,7 @@ $aside-width: 300px;
 
   &__fb-page {
     margin-bottom: 20px;
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       margin-bottom: 0;
     }
   }
@@ -828,7 +828,7 @@ aside {
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     width: $aside-width;
     margin-right: 0;
     margin-bottom: 0;
@@ -839,22 +839,19 @@ aside {
     margin-left: auto;
     margin-right: auto;
 
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       width: 100%;
     }
   }
 }
 
 .fixed-container {
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     padding-top: 20px;
 
     &.fixed {
       position: fixed;
       top: 0;
-      right: calc(
-        (100% - #{$story-max-width}) / 2 + #{$story-padding-right-lg}
-      );
       width: $aside-width;
     }
   }
@@ -862,7 +859,7 @@ aside {
 
 .footer-container {
   margin-bottom: 100px;
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     margin-bottom: 0;
     max-width: $story-max-width;
     margin-left: auto;
@@ -885,7 +882,7 @@ aside {
 
 .dable-widget {
   margin-bottom: 20px;
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     margin-top: 1.5em;
     margin-bottom: 0;
   }
@@ -904,6 +901,100 @@ aside {
     height: auto;
     cursor: pointer;
     user-select: none;
+  }
+}
+
+.micro-ad {
+  margin-top: 16px;
+  color: #808080;
+
+  &::v-deep {
+    #compass-fit-widget {
+      font-family: inherit !important;
+      margin-bottom: 0 !important;
+    }
+
+    #compass-fit-widget-content {
+      display: flex;
+
+      &::before {
+        content: '';
+        display: block;
+        width: 10px;
+        flex-shrink: 0;
+        background-color: #808080;
+      }
+    }
+
+    .pop_item_title,
+    .popListVert-list__item--text {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+      background-color: #eee !important;
+      padding: 16px;
+      @include media-breakpoint-up(md) {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+    }
+
+    .pop_item_title a,
+    .popListVert-list__item--text h2 {
+      font-size: 18px;
+      line-height: 1.3;
+      display: block;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      // 2.6em = 1em * 1.3 * 2
+      max-height: 2.6em;
+    }
+
+    .pop_item_title a {
+      font-family: inherit !important;
+    }
+
+    figure,
+    .popListVert-list__item--img {
+      position: relative;
+      flex-shrink: 0;
+      order: 1;
+      width: 33%;
+      padding-top: calc(33% * 0.75);
+      @include media-breakpoint-up(md) {
+        width: 25%;
+        padding-top: calc(25% * 0.75);
+      }
+      @include media-breakpoint-up(xl) {
+        width: 20%;
+        padding-top: calc(20% * 0.75);
+      }
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .pop_item--colorBlock,
+    .popListVert-list__item--text > div {
+      display: none;
+    }
+
+    .popListVert-list__item {
+      display: flex;
+      flex-grow: 1;
+    }
+
+    .popListVert-list__item--text a {
+      font-weight: 400 !important;
+    }
   }
 }
 
@@ -947,7 +1038,7 @@ aside {
         width: 25%;
         padding-top: calc(25% * 0.75);
       }
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         width: 20%;
         padding-top: calc(20% * 0.75);
       }

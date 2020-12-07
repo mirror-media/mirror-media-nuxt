@@ -25,8 +25,6 @@ $offset: 126;
 $duration: 1.4s;
 
 .spinner {
-  position: relative;
-  left: 50%;
   transition: opacity 0.15s ease;
   animation: rotator $duration linear infinite;
   animation-play-state: paused;

@@ -1,0 +1,9 @@
+// TODO: 讓其它地方共用
+@mixin text-truncate($line-clamp, $font-size, $line-height) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line-clamp;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: $font-size * $line-height * $line-clamp;
+}

@@ -37,4 +37,9 @@ function creditHtml({
   }
 }
 
-export { creditHtml }
+// TODO: 讓其它地方共用
+function stripHtmlTag(html = '') {
+  return html.replace(/<\/?[^>]+(>|$)/g, '')
+}
+
+export { creditHtml, stripHtmlTag }

@@ -109,7 +109,7 @@ export default {
         width: 25%;
         padding-top: calc(25% * 0.75);
       }
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         width: 20%;
         padding-top: calc(20% * 0.75);
       }

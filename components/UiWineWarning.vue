@@ -3,8 +3,8 @@
     <picture>
       <source
         type="image/png"
-        media="(min-width: 992px)"
-        srcset="~/assets/wine-warning-lg.png"
+        media="(min-width: 1200px)"
+        srcset="~/assets/wine-warning-xl.png"
       />
       <img src="~/assets/wine-warning.png" alt="飲酒警示" />
     </picture>

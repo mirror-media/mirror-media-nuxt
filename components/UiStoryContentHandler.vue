@@ -304,7 +304,7 @@ export default {
     color: #3a759e;
     font-size: 19px;
     line-height: 1.77;
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       line-height: 1.85;
     }
 
@@ -314,7 +314,7 @@ export default {
       height: auto;
       flex-shrink: 0;
       margin-right: 20px;
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         width: 45px;
       }
     }
@@ -339,7 +339,7 @@ export default {
         @include media-breakpoint-up(md) {
           width: calc(100% - 120px);
         }
-        @include media-breakpoint-up(lg) {
+        @include media-breakpoint-up(xl) {
           width: calc(100% - 152px);
         }
       }
@@ -349,7 +349,7 @@ export default {
         // 1em * 1.7 (line-height) * 2 (行數)
         min-height: 3.4em;
 
-        @include media-breakpoint-up(lg) {
+        @include media-breakpoint-up(xl) {
           // 1em * 1.7 (line-height)
           min-height: 1.7em;
         }
@@ -374,7 +374,7 @@ export default {
       justify-content: center;
       align-items: center;
       outline: none;
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         width: 60px;
         height: 80px;
         // 為了盡可能垂直置中，減去 figcaption 最小高度的一半
@@ -393,7 +393,7 @@ export default {
 
     .btn-prev {
       left: 5px;
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         left: 0;
       }
 
@@ -404,7 +404,7 @@ export default {
 
     .btn-next {
       right: 5px;
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         right: 0;
       }
 
@@ -416,7 +416,7 @@ export default {
     .arrow {
       width: 15px;
       height: auto;
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         width: 28px;
       }
     }

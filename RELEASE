@@ -29,8 +29,10 @@
   - features: 修正 listing 頁在手機版廣告無法出現與無法 loadmore 問題, 新增文章頁功能：credit, 修改、使用文章頁共用樣式, 修正文章頁樣式、文章缺少內容造成頁面錯誤
 2020/11/12
   - release version: master_kwhsiung_789 1.1.10
-  - features: debug listing repeated articles
+  - features: debug listing page repeated articles
 2020/11/12
   - release version: master_yeefun_816 1.1.11
   - features: change logo url 
-  
+2020/12/04
+  - release version: master_kwhsiung_933
+  - features: debug listing page ads no show and loadmore issue and fix header
