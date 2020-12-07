@@ -743,7 +743,6 @@ export default {
 
 <style lang="scss" scoped>
 $story-max-width: 1160px;
-$story-padding-right-lg: 50px;
 
 $aside-width: 300px;
 
@@ -777,7 +776,7 @@ $aside-width: 300px;
   @include media-breakpoint-up(lg) {
     margin: 0 auto;
     padding-left: 50px;
-    padding-right: $story-padding-right-lg;
+    padding-right: 50px;
     background-color: #fff;
   }
   @include media-breakpoint-up(xl) {
@@ -850,9 +849,6 @@ aside {
     &.fixed {
       position: fixed;
       top: 0;
-      right: calc(
-        (100% - #{$story-max-width}) / 2 + #{$story-padding-right-lg}
-      );
       width: $aside-width;
     }
   }
