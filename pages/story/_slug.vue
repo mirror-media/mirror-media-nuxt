@@ -81,7 +81,11 @@
                 adKey="MB_E1"
               />
 
-              <div v-if="canAdvertise && !isDesktopWidth" class="dable-widget">
+              <div
+                v-if="canAdvertise && !isDesktopWidth"
+                key="dable-widget"
+                class="dable-widget"
+              >
                 <LazyRenderer
                   :id="`dablewidget_${DABLE_WIDGET_IDS.MB}`"
                   :data-widget_id="DABLE_WIDGET_IDS.MB"
