@@ -362,7 +362,7 @@ export {
     width: calc(100% - 50px);
     margin-left: auto;
     margin-right: auto;
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       width: 100%;
     }
 
@@ -381,7 +381,7 @@ export {
     @include media-breakpoint-up(md) {
       max-width: 575px;
     }
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       max-width: 625px;
     }
 
@@ -508,7 +508,7 @@ export {
         margin-left: auto;
         margin-right: auto;
       }
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         max-width: none;
       }
     }

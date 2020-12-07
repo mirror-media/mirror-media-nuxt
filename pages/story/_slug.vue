@@ -294,7 +294,7 @@ export default {
       viewportHeight: (state) => state.viewport.height,
     }),
     ...mapGetters({
-      isDesktopWidth: 'viewport/isViewportWidthUpLg',
+      isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
 
     isStyleDefault() {
@@ -753,7 +753,7 @@ $aside-width: 300px;
     padding-bottom: 20px;
     margin-left: auto;
     margin-right: auto;
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       width: calc(100% - #{$aside-width} - 20px);
       max-width: 695px;
       padding-bottom: 0;
@@ -763,7 +763,7 @@ $aside-width: 300px;
 }
 
 .article {
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     background-color: #414141;
   }
 }
@@ -773,20 +773,19 @@ $aside-width: 300px;
   padding-top: 20px;
   padding-bottom: 40px;
   overflow: hidden;
-  @include media-breakpoint-up(lg) {
-    margin: 0 auto;
+  @include media-breakpoint-up(xl) {
     padding-left: 50px;
     padding-right: 50px;
-    background-color: #fff;
-  }
-  @include media-breakpoint-up(xl) {
     padding-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
   }
 }
 
 .story-wrapper {
   position: relative;
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     padding-top: 30px;
     padding-bottom: 20px;
     display: flex;
@@ -804,7 +803,7 @@ $aside-width: 300px;
 
   &__fb-page {
     margin-bottom: 20px;
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       margin-bottom: 0;
     }
   }
@@ -825,7 +824,7 @@ aside {
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     width: $aside-width;
     margin-right: 0;
     margin-bottom: 0;
@@ -836,14 +835,14 @@ aside {
     margin-left: auto;
     margin-right: auto;
 
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       width: 100%;
     }
   }
 }
 
 .fixed-container {
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     padding-top: 20px;
 
     &.fixed {
@@ -856,7 +855,7 @@ aside {
 
 .footer-container {
   margin-bottom: 100px;
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     margin-bottom: 0;
     max-width: $story-max-width;
     margin-left: auto;
@@ -879,7 +878,7 @@ aside {
 
 .dable-widget {
   margin-bottom: 20px;
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     margin-top: 1.5em;
     margin-bottom: 0;
   }
@@ -964,7 +963,7 @@ aside {
         width: 25%;
         padding-top: calc(25% * 0.75);
       }
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         width: 20%;
         padding-top: calc(20% * 0.75);
       }
@@ -1035,7 +1034,7 @@ aside {
         width: 25%;
         padding-top: calc(25% * 0.75);
       }
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         width: 20%;
         padding-top: calc(20% * 0.75);
       }

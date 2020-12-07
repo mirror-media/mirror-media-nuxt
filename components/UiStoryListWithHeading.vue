@@ -84,7 +84,7 @@ export default {
   .heading {
     font-size: 24px;
     font-weight: 700;
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       padding: 6px 18px;
       color: #fff;
       font-size: 18px;
@@ -92,7 +92,7 @@ export default {
     }
     + * {
       margin-top: 20px;
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         margin-top: 0;
       }
     }
@@ -103,7 +103,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
     align-content: flex-start;
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       padding: 18px;
       border-bottom: 1px solid #dedede;
       border-right: 1px solid #dedede;
@@ -113,7 +113,7 @@ export default {
   .item {
     position: relative;
     width: calc(50% - 5px);
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       display: flex;
       width: 100%;
     }
@@ -122,7 +122,7 @@ export default {
       .item__title {
         -webkit-line-clamp: 2;
         max-height: calc(24px * 2);
-        @include media-breakpoint-up(lg) {
+        @include media-breakpoint-up(xl) {
           -webkit-line-clamp: 3;
           max-height: none;
         }
@@ -135,7 +135,7 @@ export default {
       position: relative;
       display: block;
       padding-top: 66.66%;
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         width: 50%;
         margin-right: 10px;
         padding: 0;
@@ -152,18 +152,18 @@ export default {
         object-position: center center;
       }
       .item__section {
-        @include media-breakpoint-up(lg) {
+        @include media-breakpoint-up(xl) {
           display: none;
         }
       }
     }
     &__section-title {
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         flex: 1;
       }
       .item__section {
         display: none;
-        @include media-breakpoint-up(lg) {
+        @include media-breakpoint-up(xl) {
           display: inline-block;
           position: static;
           + * {
@@ -194,7 +194,7 @@ export default {
       -webkit-box-orient: vertical;
       max-height: calc(24px * 3);
       overflow: hidden;
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         margin: 0;
         font-size: 16px;
         font-weight: 700;

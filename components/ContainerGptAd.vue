@@ -34,7 +34,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      isDesktopWidth: 'viewport/isViewportWidthUpLg',
+      isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
     shouldOpenAd() {
       if (!this.adData || !this.$store.state.canAdvertise) {
