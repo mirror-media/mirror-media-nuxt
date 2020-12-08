@@ -504,11 +504,7 @@ test('render the content under the condition that isAdvertised is true', () => {
       isAdvertised: () => true,
       categoryTitle: () => 'test category title',
     },
-    slots: {
-      storyRelateds: '<div class="slot-story-relateds" />',
-    },
   })
 
   expect(sut.find('.story__category').exists()).toBe(false)
-  expect(sut.find('.slot-story-relateds').exists()).toBe(false)
 })

@@ -48,7 +48,7 @@
 
     <slot name="fixedTriggerEnd"></slot>
 
-    <slot v-if="!isAdvertised" name="storyRelateds"></slot>
+    <slot name="storyRelateds"></slot>
 
     <ClientOnly>
       <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="MB_AT3" />
