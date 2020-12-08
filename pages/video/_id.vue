@@ -108,11 +108,17 @@ export default {
   },
   async fetch() {
     const response = await this.$fetchYoutubeVideos({
-      part: 'snippet',
+      part: ['snippet', 'status'],
       maxResults: 1,
       id: this.videoId,
     })
-    this.videoData = response.items?.[0]?.snippet ?? {}
+    const publicVideo = response.items?.find(
+      (item) => item?.status?.privacyStatus === 'public'
+    )
+    if (!publicVideo) {
+      this.$nuxt.error({ statusCode: 404, message: '404' })
+    }
+    this.videoData = publicVideo?.snippet
   },
   data() {
     return {
@@ -129,14 +135,14 @@ export default {
       return this.$ua.isFromPc() ? 'PC' : 'MB'
     },
     channelId() {
-      return this.videoData.channelId
+      return this.videoData?.channelId
     },
     datetime() {
-      return dayjs(this.videoData.publishedAt).format('YYYY/MM/DD HH:mm:ss')
+      return dayjs(this.videoData?.publishedAt).format('YYYY/MM/DD HH:mm:ss')
     },
     descriptionParsed() {
-      const description = this.videoData.description ?? ''
-      return description.replace(/↵|\n/g, '<br>').split('-----')[0]
+      const description = this.videoData?.description ?? ''
+      return description?.replace(/↵|\n/g, '<br>').split('-----')[0]
     },
     hasLatestItems() {
       return this.listDataLatest.length > 0
@@ -154,7 +160,7 @@ export default {
       return '_blank'
     },
     title() {
-      return this.videoData.title
+      return this.videoData?.title
     },
     videoId() {
       return this.$route.params.id

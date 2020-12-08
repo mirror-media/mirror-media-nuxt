@@ -151,7 +151,7 @@ export default {
     fetchYoutubePlaylistItems(nextPageToken = '') {
       return this.$fetchYoutubePlaylistItems({
         playlistId: PLAYLIST_MAPPING[this.categoryName],
-        part: 'snippet',
+        part: ['snippet', 'status'],
         maxResults: MAX_RESULTS,
         pageToken: nextPageToken,
       })
@@ -186,7 +186,9 @@ export default {
     setPlaylistItems(reponse) {
       this.playlistItems = [
         ...this.playlistItems,
-        ...processResponseItems(reponse),
+        ...processResponseItems(reponse)?.filter(
+          (item) => item.privacyStatus === 'public'
+        ),
       ]
     },
   },

@@ -151,7 +151,7 @@ export default {
     fetchYoutubePlaylistItems(playlistId) {
       return this.$fetchYoutubePlaylistItems({
         playlistId,
-        part: 'snippet',
+        part: ['snippet', 'status'],
         maxResults: 15,
       })
     },
@@ -174,7 +174,9 @@ export default {
         this.$set(
           this.categoriesPlaylistData,
           categoryName,
-          processResponseItems(data.value).slice(0, 5)
+          processResponseItems(data.value)
+            ?.filter((item) => item.privacyStatus === 'public')
+            .slice(0, 5)
         )
       }
     },

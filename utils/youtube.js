@@ -9,6 +9,7 @@ function restructureItem(item) {
     videoId: item.id?.videoId || item.snippet?.resourceId?.videoId || item.id,
     title: item.snippet?.title,
     thumbnails: item.snippet?.thumbnails?.high?.url,
+    privacyStatus: item.status?.privacyStatus,
   }
 }
 
