@@ -150,11 +150,12 @@
 
         <UiAdultContentWarning v-if="story.isAdult" />
 
-        <ClientOnly v-if="shouldOpenAdPcFloating">
-          <div class="ad-pc-floating">
+        <ClientOnly>
+          <div v-show="shouldShowAdPcFloating" class="ad-pc-floating">
             <ContainerGptAd
               :pageKey="sectionCarandwatchId"
               adKey="PC_FLOATING"
+              @slotRenderEnded="handleRenderEndedAdPcFloating"
             />
             <SvgCloseIcon @click="doesClickCloseAdPcFloating = true" />
           </div>
@@ -287,6 +288,7 @@ export default {
 
       sectionCarandwatchId: SECTION_IDS.carandwatch,
       doesClickCloseAdPcFloating: false,
+      doesHaveAdPcFloating: false,
 
       shouldFixAside: false,
     }
@@ -369,11 +371,12 @@ export default {
       return this.popularStories.length > 0
     },
 
-    shouldOpenAdPcFloating() {
+    shouldShowAdPcFloating() {
       return (
         this.sectionId === this.sectionCarandwatchId &&
         this.canAdvertise &&
         this.isDesktopWidth &&
+        this.doesHaveAdPcFloating &&
         !this.doesClickCloseAdPcFloating
       )
     },
@@ -486,6 +489,11 @@ export default {
       fixedContainer.style.marginTop = ''
 
       window.removeEventListener('scroll', this.handleFixAside)
+    },
+    handleRenderEndedAdPcFloating({ isEmpty }) {
+      if (!isEmpty) {
+        this.doesHaveAdPcFloating = true
+      }
     },
   },
   head() {
