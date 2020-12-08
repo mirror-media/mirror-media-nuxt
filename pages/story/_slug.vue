@@ -27,7 +27,6 @@
               />
 
               <LazyRenderer
-                v-if="relatedsWithoutFirstTwo.length > 0"
                 class="story__list"
                 @load="handleShowStoryListRelated"
               >
