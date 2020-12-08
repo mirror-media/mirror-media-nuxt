@@ -107,18 +107,24 @@ export default {
     UiYoutubePolicies,
   },
   async fetch() {
-    const response = await this.$fetchYoutubeVideos({
-      part: ['snippet', 'status'],
-      maxResults: 1,
-      id: this.videoId,
-    })
-    const publicVideo = response.items?.find(
-      (item) => item?.status?.privacyStatus === 'public'
-    )
-    if (!publicVideo) {
-      this.$nuxt.error({ statusCode: 404, message: '404' })
+    try {
+      const response = await this.$fetchYoutubeVideos({
+        part: ['snippet', 'status'],
+        maxResults: 1,
+        id: this.videoId,
+      })
+      const publicVideo = response.items?.find(
+        (item) => item?.status?.privacyStatus === 'public'
+      )
+      if (!publicVideo) {
+        throw new Error('404')
+      }
+      this.videoData = publicVideo?.snippet
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('[ERROR] video page fetch failed.', error)
+      this.$nuxt.context.redirect('/section/videohub')
     }
-    this.videoData = publicVideo?.snippet
   },
   data() {
     return {
