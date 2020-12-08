@@ -155,6 +155,7 @@
             <ContainerGptAd
               :pageKey="sectionCarandwatchId"
               adKey="PC_FLOATING"
+              @slotRenderEnded="handleRenderEndedAdPcFloating"
             />
             <SvgCloseIcon @click="doesClickCloseAdPcFloating = true" />
           </div>
@@ -287,6 +288,7 @@ export default {
 
       sectionCarandwatchId: SECTION_IDS.carandwatch,
       doesClickCloseAdPcFloating: false,
+      doesHaveAdPcFloating: true,
 
       shouldFixAside: false,
     }
@@ -374,6 +376,7 @@ export default {
         this.sectionId === this.sectionCarandwatchId &&
         this.canAdvertise &&
         this.isDesktopWidth &&
+        this.doesHaveAdPcFloating &&
         !this.doesClickCloseAdPcFloating
       )
     },
@@ -486,6 +489,11 @@ export default {
       fixedContainer.style.marginTop = ''
 
       window.removeEventListener('scroll', this.handleFixAside)
+    },
+    handleRenderEndedAdPcFloating({ isEmpty }) {
+      if (isEmpty) {
+        this.doesHaveAdPcFloating = false
+      }
     },
   },
   head() {
