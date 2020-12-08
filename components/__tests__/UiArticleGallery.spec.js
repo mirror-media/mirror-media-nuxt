@@ -15,19 +15,18 @@ const createWrapper = createWrapperHelper({
   },
 })
 
-const articleItemMock = {
-  href: 'test/href/',
-  imgSrc: 'test-img-src',
-  label: 'test label',
-  title: 'test title',
-  description: 'test description',
-  sectionName: 'test-section-name',
-}
-
 test('display an article', async () => {
   expect.assertions(7)
 
   /* Arrange */
+  const articleItemMock = {
+    href: '/test-href/',
+    imgSrc: 'test-img-src.png',
+    label: 'test label',
+    title: 'test title',
+    description: 'test description',
+    sectionName: 'test-section-name',
+  }
   const sut = createWrapper(UiArticleGallery, {
     propsData: {
       items: [articleItemMock],
@@ -66,10 +65,10 @@ test('display a Micro AD', () => {
   expect(microAd.props().unitId).toBe(MICRO_AD_UNITS.HOME.MB[adItemMock.idx].id)
 })
 
-test('emit a GA event when users click an item', () => {
+test('emit a sendGa when users click an article', () => {
   const sut = createWrapper(UiArticleGallery, {
     propsData: {
-      items: [articleItemMock],
+      items: [{}],
     },
   })
 
