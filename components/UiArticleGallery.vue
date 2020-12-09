@@ -30,7 +30,9 @@
                 >
                   {{ item.label }}
                 </div>
-                <h1>{{ item.title }}</h1>
+                <h1>
+                  <span>{{ item.title }}</span>
+                </h1>
                 <p class="description">{{ item.description }}</p>
               </div>
             </article>
@@ -250,6 +252,7 @@ img {
 
 $line-height--title: 1.41;
 $line-height--title--sm: 1.3;
+$line-height--title--lg: 1.69;
 $font-size--title--sm: 20.8px;
 $font-size--title--lg: 16px;
 
@@ -257,27 +260,40 @@ h1,
 .micro-ad::v-deep h3 {
   font-weight: 300;
   line-height: $line-height--title;
-  @include text-truncate(3, $font-size--base, $line-height--title);
   @include media-breakpoint-up(sm) {
     font-size: $font-size--title--sm;
     line-height: $line-height--title--sm;
     margin-bottom: 10px;
-    @include text-truncate(2, $font-size--title--sm, $line-height--title--sm);
   }
   @include media-breakpoint-up(lg) {
-    padding: 10px;
     color: #fff;
     font-size: $font-size--title--lg;
-    line-height: 1.69;
+    line-height: $line-height--title--lg;
     margin-bottom: 0;
-    box-sizing: content-box;
-    @include text-truncate(2, $font-size--title--lg, 1.69);
+  }
+}
+
+h1,
+.micro-ad::v-deep .latest-list_item_title a {
+  @include media-breakpoint-up(lg) {
+    padding: 10px;
   }
 }
 
 h1 {
   @include media-breakpoint-up(lg) {
     background-color: rgba(#000, 0.7);
+  }
+}
+
+h1 span,
+.micro-ad::v-deep h3 {
+  @include text-truncate(3, $font-size--base, $line-height--title);
+  @include media-breakpoint-up(sm) {
+    @include text-truncate(2, $font-size--title--sm, $line-height--title--sm);
+  }
+  @include media-breakpoint-up(lg) {
+    @include text-truncate(2, $font-size--title--lg, $line-height--title--lg);
   }
 }
 
@@ -345,6 +361,13 @@ $padding-top--ad-img: 100%;
       @include media-breakpoint-up(lg) {
         padding-left: 0 !important;
       }
+
+      a {
+        @include media-breakpoint-up(lg) {
+          display: block;
+          background-color: #000;
+        }
+      }
     }
 
     .latest-list_item_label {
@@ -370,12 +393,6 @@ $padding-top--ad-img: 100%;
     h3,
     .brief {
       font-family: inherit !important;
-    }
-
-    h3 {
-      @include media-breakpoint-up(lg) {
-        background-color: #000;
-      }
     }
   }
 }
