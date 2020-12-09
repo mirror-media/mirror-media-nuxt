@@ -30,14 +30,7 @@
         <UiArticleGallery
           :items="latestItems"
           @sendGa="sendGaForClick('latest')"
-        >
-          <template v-slot:ad="{ item }">
-            <MicroAd
-              :key="microAdUnits[item.idx].name"
-              :unitId="microAdUnits[item.idx].id"
-            />
-          </template>
-        </UiArticleGallery>
+        />
         <UiInfiniteLoading
           v-if="latestItems.length > 3"
           @infinite="loadMoreLatestList"
