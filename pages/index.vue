@@ -1,21 +1,30 @@
 <template>
   <div>
-    <aside>
-      <section>
-        <UiColumnHeader title="焦點新聞" class="home__column-header" />
-        <div class="article-list-focus-container">
-          <UiArticleListFocus
-            v-for="article in articlesFocus"
-            :key="article.slug"
-            :articleMain="article"
-            :articlesRelated="articlesRelatedFocus(article)"
-            class="home__article-list-focus"
-          />
-        </div>
-      </section>
-    </aside>
-
     <main>
+      <UiColumnHeader
+        title="編輯精選"
+        class="home__column-header home__column-header--editor-choices"
+      />
+      <UiEditorChoices
+        :articles="editorChoicesArticles"
+        @sendGa="sendGaForClick('choice')"
+      />
+
+      <aside>
+        <section>
+          <UiColumnHeader title="焦點新聞" class="home__column-header" />
+          <div class="article-list-focus-container">
+            <UiArticleListFocus
+              v-for="article in articlesFocus"
+              :key="article.slug"
+              :articleMain="article"
+              :articlesRelated="articlesRelatedFocus(article)"
+              class="home__article-list-focus"
+            />
+          </div>
+        </section>
+      </aside>
+
       <ClientOnly>
         <UiColumnHeader title="最新文章" class="home__column-header" />
         <UiArticleGallery
@@ -42,16 +51,20 @@
 import _ from 'lodash'
 
 import UiColumnHeader from '~/components/UiColumnHeader.vue'
+import UiEditorChoices from '~/components/UiEditorChoices.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 
 import { isTruthy } from '~/utils/index.js'
 import { stripHtmlTag } from '~/utils/article.js'
-import { CATEGORY_ID_MARKETING } from '~/constants/index.js'
+import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
+
+const GA_UTM_EDITOR_CHOICES = 'utm_source=mmweb&utm_medium=editorchoice'
 
 // 東森新聞
 const PARTNER_ID_EBC = '5ea7fd55a66f9e0f00a04e9a'
+
 const LATEST_ARTICLES_MIN_NUM = 6
 const MICRO_AD_IDXES_INSERTED = [2, 4, 8]
 const EXTERNALS_IDX_START_INSERTED = 12
@@ -61,6 +74,7 @@ export default {
   name: 'Home',
   components: {
     UiColumnHeader,
+    UiEditorChoices,
     UiArticleListFocus,
     UiArticleGallery,
     UiInfiniteLoading,
@@ -88,6 +102,36 @@ export default {
   },
 
   computed: {
+    editorChoicesArticles() {
+      const { choices: articles = [] } = this.articleGrouped
+
+      return articles.map(function transformContent(article) {
+        const {
+          slug = '',
+          title = '',
+          style = '',
+          heroImage = {},
+          sections = [],
+        } = article
+
+        const { mobile = {}, tablet = {} } =
+          heroImage.image?.resizedTargets || {}
+        const [section = {}] = sections
+
+        return {
+          slug,
+          title,
+          href:
+            style !== 'projects'
+              ? `${getHref(article)}?${GA_UTM_EDITOR_CHOICES}`
+              : getHref(article),
+          imgSrc: tablet.url || SITE_OG_IMG,
+          imgSrcMobile: mobile.url || SITE_OG_IMG,
+          label: section.title,
+          sectionName: section.name,
+        }
+      })
+    },
     doesHaveAnyLatestItemsLeftToLoad() {
       const { total, maxResults, page: currentPage } = this.latestList
       const maxPage = Math.ceil(total / maxResults)
@@ -305,6 +349,7 @@ function getLabel({ sections = [], categories = [], partner } = {}) {
 }
 
 export {
+  GA_UTM_EDITOR_CHOICES,
   LATEST_ARTICLES_MIN_NUM,
   MICRO_AD_IDXES_INSERTED,
   EXTERNALS_IDX_START_INSERTED,
@@ -322,6 +367,12 @@ aside {
 .home {
   &__column-header {
     margin-bottom: 10px;
+
+    &--editor-choices {
+      @include media-breakpoint-up(lg) {
+        display: none;
+      }
+    }
   }
   &__article-list-focus {
     + .home__article-list-focus {

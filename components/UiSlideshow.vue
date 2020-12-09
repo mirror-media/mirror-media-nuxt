@@ -40,6 +40,7 @@ export default {
       swiperOptions: {
         loop: true,
         speed: 1000,
+        centeredSlides: true,
         ...this.options,
       },
     }
