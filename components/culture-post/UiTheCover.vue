@@ -76,7 +76,7 @@ h1 {
   font-weight: 700;
   line-height: 1.44;
   color: #fff;
-  text-shadow: 0 6px 6px rgba(#000, 0.5);
+  text-shadow: 0 6px 8px rgba(#000, 0.6);
   width: 100%;
   max-width: 240px;
   text-align: center;
@@ -89,10 +89,21 @@ h1 {
 }
 
 picture {
+  position: relative;
   display: block;
   position: absolute;
   width: 100%;
   height: 100%;
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15));
+  }
 }
 
 img {
