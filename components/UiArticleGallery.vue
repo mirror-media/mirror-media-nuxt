@@ -15,9 +15,9 @@
               </div>
 
               <div
-                v-if="item.label"
                 class="label label--sm"
                 :class="item.sectionName"
+                :style="{ backgroundColor: !item.label && 'transparent' }"
               >
                 {{ item.label }}
               </div>
@@ -192,7 +192,6 @@ img {
   display: inline-block;
   margin-bottom: 19.2px;
   @include media-breakpoint-up(lg) {
-    line-height: 1;
     padding: 8px;
     margin-bottom: 0;
     font-weight: 300;
@@ -224,6 +223,7 @@ img {
     }
     @include media-breakpoint-up(lg) {
       display: inline-block;
+      line-height: 1;
     }
   }
 
