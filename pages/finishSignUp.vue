@@ -64,6 +64,7 @@ export default {
     }
   },
   async beforeMount() {
+    // TODO: maybe we can move the logics below to the server side to reduce loading time on client side
     const email = await this.getEmail()
     if (email) {
       await this.signInWithEmail(email)
