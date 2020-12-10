@@ -69,7 +69,8 @@ export default {
       const result = await this.$fire.auth.getRedirectResult()
       this.isFederatedRedirectResultLoading = false
       if (result.user !== null) {
-        this.$router.replace('/')
+        // this.$router.replace('/')
+        window.location.replace('/')
       }
     } catch (e) {
       // eslint-disable-next-line no-console

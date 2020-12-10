@@ -85,7 +85,9 @@ export default {
       try {
         await this.$fire.auth.signInWithEmailLink(email, window.location.href)
         await localforage.removeItem('emailForSignIn')
-        this.$router.replace('/')
+
+        // this.$router.replace('/')
+        window.location.replace('/')
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e)

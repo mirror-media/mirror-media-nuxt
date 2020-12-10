@@ -98,13 +98,13 @@ describe('email validations', function () {
     const spyRemoveItem = jest
       .spyOn(localforage, 'removeItem')
       .mockImplementation(() => {})
-    const mockRouter = {
+    delete window.location
+    window.location = {
       replace: jest.fn(),
     }
     const mockSignInWithEmailLink = jest.fn(() => Promise.resolve())
     createWrapper(page, {
       mocks: {
-        $router: mockRouter,
         $route: {
           query: {},
         },
