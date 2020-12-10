@@ -248,18 +248,22 @@ export default {
 
   async fetch() {
     const [postResponse] = await Promise.allSettled([
-      this.$fetchPosts({
-        slug: this.storySlug,
-        isAudioSiteOnly: false,
-        clean: 'content',
-        related: 'article',
-      }),
+      this.$fetchPostsFromMembershipGateway(
+        {
+          slug: this.storySlug,
+          isAudioSiteOnly: false,
+          clean: 'content',
+          related: 'article',
+        },
+        this.$store.state.membership.user.token
+      ),
       this.$store.dispatch('partners/fetchPartnersData'),
       this.$store.dispatch('topics/fetchTopicsData'),
     ])
 
     if (postResponse.status === 'fulfilled') {
       this.story = postResponse.value.items?.[0] ?? {}
+      this.membershipTokenState = postResponse.value.tokenState
 
       this.$store.commit(
         'setCanAdvertise',
@@ -277,6 +281,7 @@ export default {
 
       popularStories: [],
       story: {},
+      membershipTokenState: undefined,
       relatedImages: [],
 
       microAdUnits: MICRO_AD_UNITS.STORY,
@@ -310,7 +315,18 @@ export default {
       return this.story.style === 'photography'
     },
     isStyleWide() {
-      return this.story.style === 'wide'
+      const isStoryCategoryHasMemberOnly = (this.story.categories ?? []).some(
+        function checkMemberProperty(category) {
+          return !!category.isMemberOnly
+        }
+      )
+      const isMemberTokenStateValid = (
+        this.membershipTokenState ?? ''
+      ).startsWith('OK')
+      return (
+        (isStoryCategoryHasMemberOnly && isMemberTokenStateValid) ||
+        this.story.style === 'wide'
+      )
     },
 
     device() {
