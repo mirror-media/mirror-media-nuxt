@@ -294,7 +294,8 @@ module.exports = {
 
     key(route) {
       // We should configure cache pages path right here.
-      const cachePages = ['/']
+      const ignorePages = /^(?!\/story\/|\/login|\/profile|\/finishSignUp|\/cancelMembership).+/
+      const cachePages = [ignorePages]
 
       const shouldCacheCurrentRoute = cachePages.some((pat) =>
         pat instanceof RegExp ? pat.test(route) : route.startsWith(pat)
