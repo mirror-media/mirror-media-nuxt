@@ -66,15 +66,18 @@ export default {
 
         // This must be true.
         handleCodeInApp: true,
-        iOS: {
-          bundleId: 'com.mirrormedia.news',
-        },
-        android: {
-          packageName: 'com.mirrormedia.news',
-          installApp: true,
-          minimumVersion: '12',
-        },
-        dynamicLinkDomain: 'mirrormedia.page.link',
+
+        /*
+         * iOS: {
+         *   bundleId: 'com.mirrormedia.news',
+         * },
+         * android: {
+         *   packageName: 'com.mirrormedia.news',
+         *   installApp: true,
+         *   minimumVersion: '12',
+         * },
+         * dynamicLinkDomain: 'mirrormedia.page.link',
+         */
       }
       try {
         await this.$fire.auth.sendSignInLinkToEmail(
