@@ -22,10 +22,20 @@ function snakeCase(text) {
   return _.snakeCase(text)
 }
 
-async function fetchAPIData(url) {
+async function fetchAPIData(url, fromMembershipGateway = false, token) {
+  const urlFetch = fromMembershipGateway
+    ? `${baseUrl}api/membership${url}`
+    : `${baseUrl}api${url}`
+  const requestConfig = fromMembershipGateway
+    ? {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    : null
   try {
-    const res = await axios.get(`${baseUrl}api${url}`)
-    const data = camelizeKeys(res.data)
+    const res = await axios.get(urlFetch, requestConfig)
+    const data = camelizeKeys(fromMembershipGateway ? res.data.data : res.data)
     const hasData =
       (data.items && data.items.length > 0) ||
       (data.endpoints && Object.keys(data.endpoints).length > 0) ||
@@ -33,7 +43,9 @@ async function fetchAPIData(url) {
       (url.startsWith('/tags') && data.id)
 
     if (hasData) {
-      return data
+      return fromMembershipGateway
+        ? { ...data, tokenState: res.data.tokenState }
+        : data
     }
 
     throw new FetchError('Not Found', 404)
@@ -180,6 +192,9 @@ export default (context, inject) => {
 
   inject('fetchPosts', (params) =>
     fetchAPIData(`/getposts${buildParams(params)}`)
+  )
+  inject('fetchPostsFromMembershipGateway', (params, token) =>
+    fetchAPIData(`/getposts${buildParams(params)}`, true, token)
   )
 
   inject('fetchSearch', (params) =>

@@ -63,14 +63,8 @@ export default {
       doesErrorOccur: false,
     }
   },
-  computed: {
-    authPersistence() {
-      // https://firebase.google.com/docs/auth/web/auth-state-persistence
-      const shouldRememberMe = Boolean(this.$route.query.shouldRememberMe)
-      return shouldRememberMe ? 'local' : 'session'
-    },
-  },
   async beforeMount() {
+    // TODO: maybe we can move the logics below to the server side to reduce loading time on client side
     const email = await this.getEmail()
     if (email) {
       await this.signInWithEmail(email)
@@ -90,10 +84,11 @@ export default {
     },
     async signInWithEmail(email) {
       try {
-        await this.$fire.auth.setPersistence(this.authPersistence)
         await this.$fire.auth.signInWithEmailLink(email, window.location.href)
         await localforage.removeItem('emailForSignIn')
-        this.$router.replace('/')
+
+        // this.$router.replace('/')
+        window.location.replace('/')
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e)

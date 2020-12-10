@@ -65,11 +65,13 @@ export default {
      * so we must get redirect result in the login page too
      * for more info: https://firebase.google.com/docs/auth/web/google-signin
      */
+    // TODO: try to move the logics below to the server side to reduce loading time on client side
     try {
       const result = await this.$fire.auth.getRedirectResult()
       this.isFederatedRedirectResultLoading = false
       if (result.user !== null) {
-        this.$router.replace('/')
+        // this.$router.replace('/')
+        window.location.replace('/')
       }
     } catch (e) {
       // eslint-disable-next-line no-console
