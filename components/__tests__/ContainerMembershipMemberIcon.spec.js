@@ -53,7 +53,7 @@ describe('data bindings with vuex store, and user email exist', function () {
         },
       },
     }
-    storeOptions.modules.membership.state.user.email = 'example@example.com'
+    storeOptions.modules.membership.state.userEmail = 'example@example.com'
   })
 
   test('should show ".logged-in-icon" if current visitor is a member', function () {
