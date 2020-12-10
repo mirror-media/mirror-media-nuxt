@@ -118,46 +118,6 @@ describe('email validations', function () {
     await flushPromises()
     expect(mockSignInWithEmailLink.mock.calls[0][0]).toBe(mockEmail)
     expect(spyRemoveItem).toHaveBeenCalledWith('emailForSignIn')
-    expect(mockRouter.replace).toHaveBeenCalledWith('/')
-  })
-})
-
-describe('firebase auth persistence', function () {
-  test('should set the firebase auth persistence with "local" if "shouldRememberMe" query is "true"', async function () {
-    const mockSetPersistence = jest.fn(() => Promise.resolve())
-    createWrapper(page, {
-      mocks: {
-        $route: {
-          query: {
-            shouldRememberMe: 'true',
-          },
-        },
-        $fire: {
-          auth: {
-            setPersistence: mockSetPersistence,
-          },
-        },
-      },
-    })
-    await flushPromises()
-    expect(mockSetPersistence).toHaveBeenCalledWith('local')
-  })
-
-  test('should set the firebase auth persistence with "session" if "shouldRememberMe" query is missing', async function () {
-    const mockSetPersistence = jest.fn(() => Promise.resolve())
-    createWrapper(page, {
-      mocks: {
-        $route: {
-          query: {},
-        },
-        $fire: {
-          auth: {
-            setPersistence: mockSetPersistence,
-          },
-        },
-      },
-    })
-    await flushPromises()
-    expect(mockSetPersistence).toHaveBeenCalledWith('session')
+    expect(window.location.replace).toHaveBeenCalledWith('/')
   })
 })

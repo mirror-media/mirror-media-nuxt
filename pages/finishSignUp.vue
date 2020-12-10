@@ -63,13 +63,6 @@ export default {
       doesErrorOccur: false,
     }
   },
-  computed: {
-    authPersistence() {
-      // https://firebase.google.com/docs/auth/web/auth-state-persistence
-      const shouldRememberMe = Boolean(this.$route.query.shouldRememberMe)
-      return shouldRememberMe ? 'local' : 'session'
-    },
-  },
   async beforeMount() {
     const email = await this.getEmail()
     if (email) {
@@ -90,7 +83,6 @@ export default {
     },
     async signInWithEmail(email) {
       try {
-        await this.$fire.auth.setPersistence(this.authPersistence)
         await this.$fire.auth.signInWithEmailLink(email, window.location.href)
         await localforage.removeItem('emailForSignIn')
         this.$router.replace('/')
