@@ -255,7 +255,7 @@ export default {
           clean: 'content',
           related: 'article',
         },
-        this.$store.state.membership.user.token
+        this.$store.state.membership.userToken
       ),
       this.$store.dispatch('partners/fetchPartnersData'),
       this.$store.dispatch('topics/fetchTopicsData'),
