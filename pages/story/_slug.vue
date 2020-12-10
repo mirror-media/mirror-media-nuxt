@@ -265,6 +265,8 @@ export default {
         'setCanAdvertise',
         !this.story.hiddenAdvertised ?? true
       )
+    } else if (postResponse?.reason?.code === 404) {
+      this.$nuxt.error({ statusCode: 404, message: postResponse?.reason })
     }
   },
 
