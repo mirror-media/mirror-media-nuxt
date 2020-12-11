@@ -28,6 +28,7 @@
           :imgSrc="item.imgSrc"
           :imgText="item.sectionTitle"
           :infoTitle="item.title"
+          target="_self"
         />
       </div>
     </div>
