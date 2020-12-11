@@ -264,6 +264,9 @@ export default {
     if (postResponse.status === 'fulfilled') {
       this.story = postResponse.value.items?.[0] ?? {}
       this.membershipTokenState = postResponse.value.tokenState
+      if (this.shouldShowPremiumStory) {
+        this.$nuxt.context.redirect(`/premium/${this.storySlug}`)
+      }
 
       this.$store.commit(
         'setCanAdvertise',
@@ -315,6 +318,9 @@ export default {
       return this.story.style === 'photography'
     },
     isStyleWide() {
+      return this.story.style === 'wide'
+    },
+    shouldShowPremiumStory() {
       const isStoryCategoryHasMemberOnly = (this.story.categories ?? []).some(
         function checkMemberProperty(category) {
           return !!category.isMemberOnly
@@ -323,10 +329,7 @@ export default {
       const isMemberTokenStateValid = (
         this.membershipTokenState ?? ''
       ).startsWith('OK')
-      return (
-        (isStoryCategoryHasMemberOnly && isMemberTokenStateValid) ||
-        this.story.style === 'wide'
-      )
+      return isStoryCategoryHasMemberOnly && isMemberTokenStateValid
     },
 
     device() {
