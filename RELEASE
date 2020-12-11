@@ -36,3 +36,6 @@
 2020/12/04
   - release version: master_kwhsiung_933
   - features: debug listing page ads no show and loadmore issue and fix header
+2020/12/08
+  - release version: master_yeefun_966
+  - features: release article page to production
