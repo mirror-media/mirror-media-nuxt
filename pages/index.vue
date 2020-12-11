@@ -1,6 +1,13 @@
 <template>
   <div>
     <main>
+      <UiFlashNews
+        :articles="flashNews"
+        @sendGa:article="sendGaForClick('breakingnews title')"
+        @sendGa:next="sendGaForClick('breakingnews up')"
+        @sendGa:prev="sendGaForClick('breakingnews down')"
+      />
+
       <UiColumnHeader
         title="編輯精選"
         class="home__column-header home__column-header--editor-choices"
@@ -43,6 +50,7 @@
 <script>
 import _ from 'lodash'
 
+import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiColumnHeader from '~/components/UiColumnHeader.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
@@ -52,6 +60,11 @@ import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import { isTruthy } from '~/utils/index.js'
 import { stripHtmlTag } from '~/utils/article.js'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
+
+const CATEGORY_ID_POLITICAL = '5979ac0de531830d00e330a7' // 政治
+const CATEGORY_ID_CITY_NEWS = '5979ac33e531830d00e330a9' // 社會
+const CATEGORY_ID_BUSINESS = '57e1e16dee85930e00cad4ec' // 財經
+const CATEGORY_ID_LATESTNEWS = '57e1e200ee85930e00cad4f3' // 娛樂頭條
 
 const GA_UTM_EDITOR_CHOICES = 'utm_source=mmweb&utm_medium=editorchoice'
 
@@ -66,6 +79,7 @@ const EXTERNALS_MAX_RESULTS = 6
 export default {
   name: 'Home',
   components: {
+    UiFlashNews,
     UiColumnHeader,
     UiEditorChoices,
     UiArticleListFocus,
@@ -74,11 +88,13 @@ export default {
   },
 
   async fetch() {
-    this.articleGrouped = await this.$fetchGrouped()
+    this.articleGrouped = (await this.$fetchGrouped()) || {}
+    this.flashNews = await this.fetchFlashNews()
   },
 
   data() {
     return {
+      flashNews: [],
       articleGrouped: {
         choices: [],
         grouped: [],
@@ -189,13 +205,29 @@ export default {
   },
 
   methods: {
+    async fetchFlashNews() {
+      const { items: articles = [] } =
+        (await this.$fetchPosts({
+          categories: [
+            CATEGORY_ID_POLITICAL,
+            CATEGORY_ID_CITY_NEWS,
+            CATEGORY_ID_BUSINESS,
+            CATEGORY_ID_LATESTNEWS,
+          ],
+          clean: 'content',
+          isAudioSiteOnly: false,
+          maxResults: 10,
+          page: 1,
+          sort: '-publishedDate',
+        })) || {}
+
+      return articles.map(transformContentOfFlashNews)
+    },
     async loadLatestListInitial() {
       const {
         items: articles = [],
         meta = { total: 0 },
       } = await this.fetchLatestList()
-
-      // console.log(this.articlesFocus.flatMap((article) => article.relateds))
 
       const slugsOfChoicesAndFocus = [
         ...this.articleGrouped.choices,
@@ -290,6 +322,16 @@ export default {
   },
 }
 
+function transformContentOfFlashNews(article = {}) {
+  const { slug = '', title = '' } = article
+
+  return {
+    slug,
+    title,
+    href: getHref(article),
+  }
+}
+
 function getHref({ style = '', slug = '', partner, name = '' } = {}) {
   if (partner) {
     return `/external/${name}/`
@@ -347,6 +389,7 @@ export {
   MICRO_AD_IDXES_INSERTED,
   EXTERNALS_IDX_START_INSERTED,
   EXTERNALS_MAX_RESULTS,
+  transformContentOfFlashNews,
   getLabel,
 }
 </script>
