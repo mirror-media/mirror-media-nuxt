@@ -3,14 +3,11 @@ const { API_TIMEOUT } = require('../configs/config')
 
 function createProxy(baseUrl) {
   return async function (req, res, next) {
-    const headers = Object.assign({}, req.headers)
-    delete headers.host
-
     try {
       const response = await axios({
         method: req.method,
         url: `${baseUrl}${req.url}`,
-        headers,
+        headers: req.headers,
         data: req.method === 'GET' ? undefined : req.body,
         timeout: API_TIMEOUT,
       })
