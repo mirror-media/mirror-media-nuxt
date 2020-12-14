@@ -418,7 +418,7 @@ export default {
     margin-bottom: 1em;
   }
 
-  &__embedded-code ::v-deep iframe {
+  &__embedded-code::v-deep iframe {
     max-width: 100%;
     margin-right: auto;
     margin-left: auto;
