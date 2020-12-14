@@ -1,8 +1,8 @@
 <template>
   <a
     :href="href"
+    :target="target"
     class="article"
-    target="_blank"
     rel="noopener noreferrer"
     @click="handleClick"
   >
@@ -40,6 +40,10 @@ export default {
       type: String,
       default: '/',
       required: true,
+    },
+    target: {
+      type: String,
+      default: '_blank',
     },
     imgSrc: {
       type: String,

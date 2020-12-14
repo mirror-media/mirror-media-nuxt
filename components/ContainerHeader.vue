@@ -8,7 +8,7 @@
         @click="handleClickMenuIcon"
       />
 
-      <ClientOnly v-if="false">
+      <ClientOnly>
         <ContainerMembershipMemberIcon class="member-icon-mobile" />
       </ClientOnly>
 
@@ -48,7 +48,7 @@
           @sendGa="handleSendGa"
         />
 
-        <ClientOnly v-if="false">
+        <ClientOnly>
           <ContainerMembershipMemberIcon class="member-icon-desktop" />
         </ClientOnly>
 

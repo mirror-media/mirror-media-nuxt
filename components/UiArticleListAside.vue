@@ -1,30 +1,35 @@
 <template>
-  <div class="story-list-with-heading">
-    <div class="heading" v-text="heading" />
+  <div class="article-list-aside">
+    <div v-if="heading" class="heading">{{ heading }}</div>
+
     <div class="list">
       <div
         v-for="item in items"
         :key="item.slug"
-        :class="[gainSectionName(item), 'item']"
+        class="item"
+        :class="item.sectionName"
       >
         <a
-          :href="gainHref(item)"
+          :href="item.href"
           class="item__image"
           target="_blank"
           rel="noopener noreferrer"
+          @click="$emit('sendGa')"
         >
-          <img :src="gainImgSrc(item)" alt="" />
-          <div class="item__section">{{ extractTitle(item) }}</div>
+          <img :src="item.imgSrc" alt="" />
+          <div class="item__label">{{ item.label }}</div>
         </a>
-        <div class="item__section-title">
-          <div class="item__section">{{ extractTitle(item) }}</div>
+
+        <div class="item__title-wrapper">
+          <div class="item__label">{{ item.label }}</div>
           <a
-            :href="gainHref(item)"
+            :href="item.href"
             class="item__title"
             target="_blank"
             rel="noopener noreferrer"
-            v-text="item.title"
-          />
+            @click="$emit('sendGa')"
+            >{{ item.title }}</a
+          >
         </div>
       </div>
     </div>
@@ -32,53 +37,24 @@
 </template>
 
 <script>
-import { SITE_OG_IMG } from '~/constants/index.js'
-
 export default {
-  name: 'UiStoryListWithHeading',
+  name: 'UiArticleListAside',
   props: {
     heading: {
       type: String,
-      required: true,
-      default: '',
+      default: undefined,
     },
     items: {
       type: Array,
       required: true,
       default: () => [],
     },
-    extractTitle: {
-      type: Function,
-      default(...args) {
-        return this.gainSectionTitle(...args)
-      },
-    },
-  },
-
-  methods: {
-    gainImgSrc(item = {}) {
-      return item.heroImage?.image?.resizedTargets?.mobile?.url || SITE_OG_IMG
-    },
-
-    gainSection({ sections = [] }) {
-      return sections[0] || {}
-    },
-    gainSectionName(item = {}) {
-      return this.gainSection(item).name
-    },
-    gainSectionTitle(item = {}) {
-      return this.gainSection(item).title || '新聞'
-    },
-
-    gainHref({ slug = '' }) {
-      return slug.startsWith('/story/') ? slug : `/story/${slug}/`
-    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.story-list-with-heading {
+.article-list-aside {
   color: #34495e;
 
   .heading {
@@ -151,17 +127,17 @@ export default {
         object-fit: cover;
         object-position: center center;
       }
-      .item__section {
+      .item__label {
         @include media-breakpoint-up(xl) {
           display: none;
         }
       }
     }
-    &__section-title {
+    &__title-wrapper {
       @include media-breakpoint-up(xl) {
         flex: 1;
       }
-      .item__section {
+      .item__label {
         display: none;
         @include media-breakpoint-up(xl) {
           display: inline-block;
@@ -172,7 +148,7 @@ export default {
         }
       }
     }
-    &__section {
+    &__label {
       position: absolute;
       left: 0;
       bottom: 0;
@@ -206,7 +182,7 @@ export default {
     }
     @each $name, $color in $sections-color {
       &.#{$name} {
-        .item__section {
+        .item__label {
           background-color: $color;
         }
       }

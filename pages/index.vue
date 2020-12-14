@@ -1,34 +1,43 @@
 <template>
   <div>
-    <aside>
-      <section>
-        <UiColumnHeader title="焦點新聞" class="home__column-header" />
-        <div class="article-list-focus-container">
-          <UiArticleListFocus
-            v-for="article in articlesFocus"
-            :key="article.slug"
-            :articleMain="article"
-            :articlesRelated="articlesRelatedFocus(article)"
-            class="home__article-list-focus"
-          />
-        </div>
-      </section>
-    </aside>
-
     <main>
+      <UiFlashNews
+        :articles="flashNews"
+        @sendGa:article="sendGaForClick('breakingnews title')"
+        @sendGa:next="sendGaForClick('breakingnews up')"
+        @sendGa:prev="sendGaForClick('breakingnews down')"
+      />
+
+      <UiColumnHeader
+        title="編輯精選"
+        class="home__column-header home__column-header--editor-choices"
+      />
+      <UiEditorChoices
+        :articles="editorChoicesArticles"
+        @sendGa="sendGaForClick('choice')"
+      />
+
+      <aside>
+        <section>
+          <UiColumnHeader title="焦點新聞" class="home__column-header" />
+          <div class="article-list-focus-container">
+            <UiArticleListFocus
+              v-for="article in articlesFocus"
+              :key="article.slug"
+              :articleMain="article"
+              :articlesRelated="articlesRelatedFocus(article)"
+              class="home__article-list-focus"
+            />
+          </div>
+        </section>
+      </aside>
+
       <ClientOnly>
         <UiColumnHeader title="最新文章" class="home__column-header" />
         <UiArticleGallery
           :items="latestItems"
           @sendGa="sendGaForClick('latest')"
-        >
-          <template v-slot:ad="{ item }">
-            <MicroAd
-              :key="microAdUnits[item.idx].name"
-              :unitId="microAdUnits[item.idx].id"
-            />
-          </template>
-        </UiArticleGallery>
+        />
         <UiInfiniteLoading
           v-if="latestItems.length > 3"
           @infinite="loadMoreLatestList"
@@ -41,17 +50,27 @@
 <script>
 import _ from 'lodash'
 
+import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiColumnHeader from '~/components/UiColumnHeader.vue'
+import UiEditorChoices from '~/components/UiEditorChoices.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 
 import { isTruthy } from '~/utils/index.js'
 import { stripHtmlTag } from '~/utils/article.js'
-import { CATEGORY_ID_MARKETING } from '~/constants/index.js'
+import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
+
+const CATEGORY_ID_POLITICAL = '5979ac0de531830d00e330a7' // 政治
+const CATEGORY_ID_CITY_NEWS = '5979ac33e531830d00e330a9' // 社會
+const CATEGORY_ID_BUSINESS = '57e1e16dee85930e00cad4ec' // 財經
+const CATEGORY_ID_LATESTNEWS = '57e1e200ee85930e00cad4f3' // 娛樂頭條
+
+const GA_UTM_EDITOR_CHOICES = 'utm_source=mmweb&utm_medium=editorchoice'
 
 // 東森新聞
 const PARTNER_ID_EBC = '5ea7fd55a66f9e0f00a04e9a'
+
 const LATEST_ARTICLES_MIN_NUM = 6
 const MICRO_AD_IDXES_INSERTED = [2, 4, 8]
 const EXTERNALS_IDX_START_INSERTED = 12
@@ -60,18 +79,22 @@ const EXTERNALS_MAX_RESULTS = 6
 export default {
   name: 'Home',
   components: {
+    UiFlashNews,
     UiColumnHeader,
+    UiEditorChoices,
     UiArticleListFocus,
     UiArticleGallery,
     UiInfiniteLoading,
   },
 
   async fetch() {
-    this.articleGrouped = await this.$fetchGrouped()
+    this.articleGrouped = (await this.$fetchGrouped()) || {}
+    this.flashNews = await this.fetchFlashNews()
   },
 
   data() {
     return {
+      flashNews: [],
       articleGrouped: {
         choices: [],
         grouped: [],
@@ -88,6 +111,36 @@ export default {
   },
 
   computed: {
+    editorChoicesArticles() {
+      const { choices: articles = [] } = this.articleGrouped
+
+      return articles.map(function transformContent(article) {
+        const {
+          slug = '',
+          title = '',
+          style = '',
+          heroImage = {},
+          sections = [],
+        } = article
+
+        const { mobile = {}, tablet = {} } =
+          heroImage.image?.resizedTargets || {}
+        const [section = {}] = sections
+
+        return {
+          slug,
+          title,
+          href:
+            style !== 'projects'
+              ? `${getHref(article)}?${GA_UTM_EDITOR_CHOICES}`
+              : getHref(article),
+          imgSrc: tablet.url || SITE_OG_IMG,
+          imgSrcMobile: mobile.url || SITE_OG_IMG,
+          label: section.title,
+          sectionName: section.name,
+        }
+      })
+    },
     doesHaveAnyLatestItemsLeftToLoad() {
       const { total, maxResults, page: currentPage } = this.latestList
       const maxPage = Math.ceil(total / maxResults)
@@ -152,13 +205,29 @@ export default {
   },
 
   methods: {
+    async fetchFlashNews() {
+      const { items: articles = [] } =
+        (await this.$fetchPosts({
+          categories: [
+            CATEGORY_ID_POLITICAL,
+            CATEGORY_ID_CITY_NEWS,
+            CATEGORY_ID_BUSINESS,
+            CATEGORY_ID_LATESTNEWS,
+          ],
+          clean: 'content',
+          isAudioSiteOnly: false,
+          maxResults: 10,
+          page: 1,
+          sort: '-publishedDate',
+        })) || {}
+
+      return articles.map(transformContentOfFlashNews)
+    },
     async loadLatestListInitial() {
       const {
         items: articles = [],
         meta = { total: 0 },
       } = await this.fetchLatestList()
-
-      // console.log(this.articlesFocus.flatMap((article) => article.relateds))
 
       const slugsOfChoicesAndFocus = [
         ...this.articleGrouped.choices,
@@ -253,6 +322,16 @@ export default {
   },
 }
 
+function transformContentOfFlashNews(article = {}) {
+  const { slug = '', title = '' } = article
+
+  return {
+    slug,
+    title,
+    href: getHref(article),
+  }
+}
+
 function getHref({ style = '', slug = '', partner, name = '' } = {}) {
   if (partner) {
     return `/external/${name}/`
@@ -305,10 +384,12 @@ function getLabel({ sections = [], categories = [], partner } = {}) {
 }
 
 export {
+  GA_UTM_EDITOR_CHOICES,
   LATEST_ARTICLES_MIN_NUM,
   MICRO_AD_IDXES_INSERTED,
   EXTERNALS_IDX_START_INSERTED,
   EXTERNALS_MAX_RESULTS,
+  transformContentOfFlashNews,
   getLabel,
 }
 </script>
@@ -322,6 +403,12 @@ aside {
 .home {
   &__column-header {
     margin-bottom: 10px;
+
+    &--editor-choices {
+      @include media-breakpoint-up(lg) {
+        display: none;
+      }
+    }
   }
   &__article-list-focus {
     + .home__article-list-focus {

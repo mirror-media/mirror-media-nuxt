@@ -62,9 +62,15 @@ export default {
     }
   }
 
-  &::v-deep a {
-    color: rgba(199, 159, 101, 0.87);
-    text-decoration: underline;
+  &::v-deep {
+    a {
+      color: rgba(199, 159, 101, 0.87);
+      text-decoration: underline;
+    }
+    .paragraph-with-annotation {
+      font-size: 15px;
+      line-height: 2;
+    }
   }
 
   .brief {

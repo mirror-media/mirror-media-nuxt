@@ -78,7 +78,7 @@ describe('latest list', () => {
     expect(wrapper.find('.latest-list').exists()).toBe(false)
   })
 
-  test('should render UiStoryListWithHeading when latest stories are loaded', () => {
+  test('should render UiArticleListAside when latest stories are loaded', () => {
     const wrapper = createWrapper(Story, {
       data() {
         return {
@@ -92,7 +92,7 @@ describe('latest list', () => {
     expect(wrapper.find('.latest-list').exists()).toBe(true)
   })
 
-  test('should not render UiStoryListWithHeading when latest stories are not loaded', () => {
+  test('should not render UiArticleListAside when latest stories are not loaded', () => {
     const wrapper = createWrapper(Story, {
       data() {
         return {

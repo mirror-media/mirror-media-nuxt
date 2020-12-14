@@ -133,6 +133,16 @@ module.exports = {
       },
     ],
     script: [
+      // likr 禾多推播
+      ...(ENV !== 'lighthouse'
+        ? [
+            {
+              hid: 'likrNotification',
+              innerHTML: `window.AviviD = window.AviviD || {settings:{},status:{}}; AviviD.web_id = "mirrormedia"; AviviD.category_id = "20180905000003"; AviviD.tracking_platform = 'likr'; (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl+'&timestamp='+new Date().getTime();f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-W9F4QDN'); (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl+'&timestamp='+new Date().getTime();f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-MKB8VFG');`,
+            },
+          ]
+        : []),
+
       // https://developers.google.com/doubleclick-gpt/guides/general-best-practices#load_statically
       {
         hid: 'gptScript',
@@ -140,6 +150,9 @@ module.exports = {
         async: true,
       },
     ],
+    __dangerouslyDisableSanitizersByTagID: {
+      likrNotification: ['innerHTML'],
+    },
   },
 
   /**
@@ -181,6 +194,7 @@ module.exports = {
       path: '/api/tracking',
       handler: '~/api/tracking.js',
     },
+    { path: '/api/membership', handler: '~/api/membership-proxy.js' },
     { path: '/api', handler: '~/api/index.js' },
   ],
 
@@ -228,22 +242,21 @@ module.exports = {
            * exposed apiKey is not a security risk
            * see: https://stackoverflow.com/a/37484053
            */
-          apiKey: 'AIzaSyDluvbZhIQgcicqXVarLkdP4PG6maZlEMI',
-          authDomain: 'mirromedia-app.firebaseapp.com',
-          databaseURL: 'https://mirromedia-app.firebaseio.com',
-          projectId: 'mirromedia-app',
-          storageBucket: 'mirromedia-app.appspot.com',
-          messagingSenderId: '231032158952',
-          appId: '1:231032158952:web:975862d0b50f8bdd1d275d',
-          measurementId: 'G-Q1GK3C4WNR',
+          apiKey: 'AIzaSyAavk46-8OQ4B2cv0TOqxOMjd5Fe4tIauc',
+          authDomain: 'mirrormediaapptest.firebaseapp.com',
+          databaseURL: 'https://mirrormediaapptest.firebaseio.com',
+          projectId: 'mirrormediaapptest',
+          storageBucket: 'mirrormediaapptest.appspot.com',
+          messagingSenderId: '305253456270',
+          appId: '1:305253456270:web:21f9851dd09f60ebfbacdf',
+          measurementId: 'G-EY5CYC602Z',
         },
         services: {
           auth: {
-            persistence: 'session',
+            ssr: true,
             initialize: {
               onAuthStateChangedMutation:
                 'membership/ON_AUTH_STATE_CHANGED_MUTATION',
-              subscribeManually: false,
             },
           },
         },
@@ -254,6 +267,32 @@ module.exports = {
          */
 
         // lazy: true,
+      },
+    ],
+    [
+      '@nuxtjs/pwa',
+      {
+        // disable the modules you don't need
+        meta: false,
+        icon: false,
+
+        /*
+         * if you omit a module key form configuration sensible defaults will be applied
+         * manifest: false,
+         */
+
+        workbox: {
+          importScripts: [
+            // ...
+            '/firebase-auth-sw.js',
+          ],
+
+          /*
+           * by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
+           * only set this true for testing and remember to always clear your browser cache in development
+           */
+          dev: process.env.NODE_ENV !== 'production',
+        },
       },
     ],
   ],
@@ -268,7 +307,8 @@ module.exports = {
 
     key(route) {
       // We should configure cache pages path right here.
-      const cachePages = ['/']
+      const ignorePages = /^(?!\/story\/|\/login|\/profile|\/finishSignUp|\/cancelMembership).+/
+      const cachePages = [ignorePages]
 
       const shouldCacheCurrentRoute = cachePages.some((pat) =>
         pat instanceof RegExp ? pat.test(route) : route.startsWith(pat)

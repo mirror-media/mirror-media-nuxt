@@ -1,18 +1,29 @@
 import flushPromises from 'flush-promises'
 
 import Home, {
+  GA_UTM_EDITOR_CHOICES,
   LATEST_ARTICLES_MIN_NUM,
   MICRO_AD_IDXES_INSERTED,
   EXTERNALS_IDX_START_INSERTED,
   EXTERNALS_MAX_RESULTS,
+  transformContentOfFlashNews,
   getLabel,
 } from '../index.vue'
+import UiFlashNews from '~/components/UiFlashNews.vue'
+import UiEditorChoices from '~/components/UiEditorChoices.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
-import { CATEGORY_ID_MARKETING } from '~/constants/index.js'
+import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
+
+const flashNewsRequiredMock = Array(3).fill({})
 
 const createWrapper = createWrapperHelper({
+  data() {
+    return {
+      flashNews: flashNewsRequiredMock,
+    }
+  },
   mocks: {
     $fetchList: () => Promise.resolve({}),
     $fetchExternals: () => Promise.resolve({}),
@@ -23,6 +34,126 @@ const createWrapper = createWrapperHelper({
 const mockGrouped = [{}, {}, {}, {}]
 const mockGroupedRelateds = [{}, {}, {}, {}]
 
+describe('快訊', () => {
+  test('transform contents of flash news', () => {
+    const articleMock = {
+      slug: 'test-slug',
+      title: 'test title',
+    }
+    expect(transformContentOfFlashNews(articleMock)).toEqual({
+      slug: articleMock.slug,
+      title: articleMock.title,
+      href: `/story/${articleMock.slug}/`,
+    })
+  })
+
+  test('send a GA event when UiFlashNews emits a sendGa:article, sendGa:next or sendGa:prev', () => {
+    /* Arrange */
+    const $ga = { event: jest.fn() }
+    const sut = createWrapper(Home, {
+      mocks: { $ga },
+    })
+
+    /* Act */
+    sut.getComponent(UiFlashNews).vm.$emit('sendGa:article')
+    sut.getComponent(UiFlashNews).vm.$emit('sendGa:next')
+    sut.getComponent(UiFlashNews).vm.$emit('sendGa:prev')
+
+    /* Assert */
+    ;['breakingnews title', 'breakingnews up', 'breakingnews down'].forEach(
+      function assert(eventLabel, idx) {
+        expect($ga.event).toHaveBeenNthCalledWith(idx + 1, {
+          eventCategory: 'home',
+          eventAction: 'click',
+          eventLabel,
+        })
+      }
+    )
+  })
+})
+
+describe('編輯精選', () => {
+  test('pass articles to UiEditorChoices', () => {
+    /* Arrange */
+    const choice1Mock = {
+      slug: 'test-slug',
+      title: 'test title',
+      style: 'test style',
+      heroImage: {
+        image: {
+          resizedTargets: {
+            mobile: { url: 'test-hero-image-mobile.png' },
+            tablet: { url: 'test-hero-image-tablet.png' },
+          },
+        },
+      },
+      sections: [
+        {
+          title: 'test section title',
+          name: 'test-section-name',
+        },
+      ],
+    }
+    const choice2Mock = {
+      slug: 'test-slug',
+      style: 'projects',
+    }
+    const sut = createWrapper(Home, {
+      data() {
+        return {
+          articleGrouped: {
+            choices: [choice1Mock, choice2Mock],
+          },
+          flashNews: flashNewsRequiredMock,
+        }
+      },
+    })
+
+    /* Assert */
+    const {
+      articles: [article1, article2],
+    } = sut.getComponent(UiEditorChoices).props()
+    const { mobile, tablet } = choice1Mock.heroImage.image.resizedTargets
+    const [section] = choice1Mock.sections
+
+    expect(article1.slug).toBe(choice1Mock.slug)
+    expect(article1.title).toBe(choice1Mock.title)
+
+    expect(article1.href).toBe(
+      `/story/${choice1Mock.slug}/?${GA_UTM_EDITOR_CHOICES}`
+    )
+    expect(article2.href).toBe(`/projects/${choice2Mock.slug}/`)
+
+    expect(article1.imgSrc).toBe(tablet.url)
+    expect(article1.imgSrcMobile).toBe(mobile.url)
+    expect(article2.imgSrc).toBe(SITE_OG_IMG)
+    expect(article2.imgSrcMobile).toBe(SITE_OG_IMG)
+
+    expect(article1.label).toBe(section.title)
+    expect(article1.sectionName).toBe(section.name)
+  })
+
+  test('send a GA event when UiEditorChoices emits a sendGa', () => {
+    /* Arrange */
+    const $ga = {
+      event: jest.fn(),
+    }
+    const sut = createWrapper(Home, {
+      mocks: { $ga },
+    })
+
+    /* Act */
+    sut.getComponent(UiEditorChoices).vm.$emit('sendGa')
+
+    /* Assert */
+    expect($ga.event).toBeCalledWith({
+      eventCategory: 'home',
+      eventAction: 'click',
+      eventLabel: 'choice',
+    })
+  })
+})
+
 describe('UiArticleListFocus', () => {
   test('render the correct number', () => {
     const wrapper = createWrapper(Home, {
@@ -31,6 +162,7 @@ describe('UiArticleListFocus', () => {
           articleGrouped: {
             grouped: mockGrouped,
           },
+          flashNews: flashNewsRequiredMock,
         }
       },
     })
@@ -46,6 +178,7 @@ describe('UiArticleListFocus', () => {
           articleGrouped: {
             grouped: [{ relateds: mockGroupedRelateds }],
           },
+          flashNews: flashNewsRequiredMock,
         }
       },
     })
@@ -130,6 +263,7 @@ describe('最新文章', () => {
             choices: [{ slug: '1' }],
             grouped: [{ slug: '2', relateds: [{ slug: '3' }] }],
           },
+          flashNews: flashNewsRequiredMock,
         }
       },
       mocks: {

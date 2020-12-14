@@ -100,11 +100,10 @@
                   }"
                   @load="fetchLatestStories"
                 >
-                  <UiStoryListWithHeading
+                  <UiArticleListAside
                     class="latest-list"
                     heading="最新文章"
                     :items="latestStories"
-                    :extractTitle="sectionCategory"
                   />
                 </LazyRenderer>
               </div>
@@ -124,7 +123,7 @@
                   class="story__popular-list"
                   @load="fetchPopularStories"
                 >
-                  <UiStoryListWithHeading
+                  <UiArticleListAside
                     v-if="doesHavePopularStories"
                     heading="熱門文章"
                     :items="popularStories"
@@ -195,7 +194,7 @@ import UiAdultContentWarning from '~/components/UiAdultContentWarning.vue'
 import UiStoryListRelated from '~/components/UiStoryListRelated.vue'
 import UiStoryListWithArrow from '~/components/UiStoryListWithArrow.vue'
 import FbPage from '~/components/FbPage.vue'
-import UiStoryListWithHeading from '~/components/UiStoryListWithHeading.vue'
+import UiArticleListAside from '~/components/UiArticleListAside.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
@@ -232,7 +231,7 @@ export default {
     UiStoryListRelated,
     UiStoryListWithArrow,
     FbPage,
-    UiStoryListWithHeading,
+    UiArticleListAside,
 
     ContainerGptAd,
     UiStickyAd,
@@ -249,23 +248,32 @@ export default {
 
   async fetch() {
     const [postResponse] = await Promise.allSettled([
-      this.$fetchPosts({
-        slug: this.storySlug,
-        isAudioSiteOnly: false,
-        clean: 'content',
-        related: 'article',
-      }),
+      this.$fetchPostsFromMembershipGateway(
+        {
+          slug: this.storySlug,
+          isAudioSiteOnly: false,
+          clean: 'content',
+          related: 'article',
+        },
+        this.$store.state.membership.userToken
+      ),
       this.$store.dispatch('partners/fetchPartnersData'),
       this.$store.dispatch('topics/fetchTopicsData'),
     ])
 
     if (postResponse.status === 'fulfilled') {
       this.story = postResponse.value.items?.[0] ?? {}
+      this.membershipTokenState = postResponse.value.tokenState
+      if (this.shouldShowPremiumStory) {
+        this.$nuxt.context.redirect(`/premium/${this.storySlug}`)
+      }
 
       this.$store.commit(
         'setCanAdvertise',
         !this.story.hiddenAdvertised ?? true
       )
+    } else if (postResponse?.reason?.code === 404) {
+      this.$nuxt.error({ statusCode: 404, message: postResponse?.reason })
     }
   },
 
@@ -276,6 +284,7 @@ export default {
 
       popularStories: [],
       story: {},
+      membershipTokenState: undefined,
       relatedImages: [],
 
       microAdUnits: MICRO_AD_UNITS.STORY,
@@ -310,6 +319,17 @@ export default {
     },
     isStyleWide() {
       return this.story.style === 'wide'
+    },
+    shouldShowPremiumStory() {
+      const isStoryCategoryHasMemberOnly = (this.story.categories ?? []).some(
+        function checkMemberProperty(category) {
+          return !!category.isMemberOnly
+        }
+      )
+      const isMemberTokenStateValid = (
+        this.membershipTokenState ?? ''
+      ).startsWith('OK')
+      return isStoryCategoryHasMemberOnly && isMemberTokenStateValid
     },
 
     device() {
@@ -422,6 +442,22 @@ export default {
       this.latestStories = items
         .filter(this.doesNotHaveCurrentStorySlug)
         .slice(0, 6)
+        .map(function transformContent({
+          slug = '',
+          title = '',
+          heroImage = {},
+          categories = [],
+          sections = [],
+        }) {
+          return {
+            slug,
+            title,
+            href: `/story/${slug}/`,
+            imgSrc: getImgSrc(heroImage),
+            label: getLabel(categories),
+            sectionName: sections[0]?.name,
+          }
+        })
 
       this.hasLoadedLatestStories = true
     },
@@ -431,10 +467,23 @@ export default {
       }
 
       const { report: items = [] } = await this.$fetchPopular()
-      this.popularStories = items.slice(0, 9)
-    },
-    sectionCategory(item = {}) {
-      return item.categories?.[0]?.title || '新聞'
+      this.popularStories = items
+        .slice(0, 9)
+        .map(function transformContent({
+          slug = '',
+          title = '',
+          heroImage = {},
+          sections = [],
+        }) {
+          return {
+            slug,
+            title,
+            href: slug,
+            imgSrc: getImgSrc(heroImage),
+            label: getLabel(sections),
+            sectionName: sections[0]?.name,
+          }
+        })
     },
     doesNotHaveCurrentStorySlug(item) {
       return item.slug !== this.storySlug
@@ -749,6 +798,14 @@ export default {
       return items
     }
   },
+}
+
+function getImgSrc({ image = {} } = {}) {
+  return image.resizedTargets?.mobile?.url || SITE_OG_IMG
+}
+
+function getLabel([item = {}] = []) {
+  return item.title || '新聞'
 }
 </script>
 
