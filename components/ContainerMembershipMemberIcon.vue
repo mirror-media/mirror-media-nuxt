@@ -47,12 +47,6 @@ export default {
   methods: {
     async handleSignOutButtonClick() {
       await this.$fire.auth.signOut()
-
-      // clear the firebase current user state in the store
-      this.$store.commit('membership/ON_AUTH_STATE_CHANGED_MUTATION', {
-        authUser: {},
-      })
-      this.$router.push('/login')
     },
     handleMemberIconClick() {
       this.shouldShowDropdownMenu = !this.shouldShowDropdownMenu

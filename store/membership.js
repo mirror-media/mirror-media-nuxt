@@ -1,33 +1,25 @@
 export const state = () => ({
   user: {},
-  userUid: undefined,
-  userEmail: undefined,
-  userEmailVerified: undefined,
-  userToken: undefined,
 })
 
 export const mutations = {
-  ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser, token }) {
+  /*
+   * this mutation will be commit by @nuxtjs/firebase automatically
+   * which is setting in service.auth.initialize.onAuthStateChangedMutation of nuxt.config.js
+   * for more info: https://firebase.nuxtjs.org/service-options/auth#onauthstatechangedmutation
+   */
+  ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser }) {
     if (authUser) {
       const { uid, email, emailVerified } = authUser
-
-      state.userUid = uid
-      state.userEmail = email
-      state.userEmailVerified = emailVerified
-      if (token) {
-        state.userToken = token
-      }
+      state.user = { uid, email, emailVerified }
     } else {
-      state.userUid = undefined
-      state.userEmail = undefined
-      state.userEmailVerified = undefined
-      state.userToken = undefined
+      state.user = {}
     }
   },
 }
 
 export const getters = {
   isLoggedIn(state) {
-    return !!state.userEmail
+    return !!state.user.email
   },
 }

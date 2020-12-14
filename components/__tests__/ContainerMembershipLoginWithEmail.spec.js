@@ -108,10 +108,12 @@ describe('handleSubmit method about behaviours after login button clicked', func
     const mockEmail = 'example@example.com'
     await emailInput.vm.$emit('input', mockEmail)
     await emailInput.vm.$emit('inputValidStateChange', true)
+    const rememberMeCheckbox = wrapper.find('.remember-me-checkbox')
+    await rememberMeCheckbox.trigger('click')
     const submitButton = wrapper.find('.login-button')
     await submitButton.trigger('click')
     expect(mockSendSignInLinkToEmail.mock.calls[0][1].url).toBe(
-      `${mockOrigin}/finishSignUp`
+      `${mockOrigin}/finishSignUp?shouldRememberMe=true`
     )
   })
   test('should emit error event if we encounter some error after @nuxjs/firebase auth request', async function () {

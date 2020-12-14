@@ -22,20 +22,10 @@ function snakeCase(text) {
   return _.snakeCase(text)
 }
 
-async function fetchApiData(url, fromMembershipGateway = false, token) {
-  const urlFetch = fromMembershipGateway
-    ? `${baseUrl}api/membership${url}`
-    : `${baseUrl}api${url}`
-  const requestConfig = fromMembershipGateway
-    ? {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    : null
+async function fetchAPIData(url) {
   try {
-    const res = await axios.get(urlFetch, requestConfig)
-    const data = camelizeKeys(fromMembershipGateway ? res.data.data : res.data)
+    const res = await axios.get(`${baseUrl}api${url}`)
+    const data = camelizeKeys(res.data)
     const hasData =
       (data.items && data.items.length > 0) ||
       (data.endpoints && Object.keys(data.endpoints).length > 0) ||
@@ -43,9 +33,7 @@ async function fetchApiData(url, fromMembershipGateway = false, token) {
       (url.startsWith('/tags') && data.id)
 
     if (hasData) {
-      return fromMembershipGateway
-        ? { ...data, tokenState: res.data.tokenState }
-        : data
+      return data
     }
 
     throw new FetchError('Not Found', 404)
@@ -161,72 +149,72 @@ class FetchError extends Error {
 
 export default (context, inject) => {
   inject('fetchActivities', (params) =>
-    fetchApiData(`/activities${buildParams(params)}`)
+    fetchAPIData(`/activities${buildParams(params)}`)
   )
 
-  inject('fetchCombo', (params) => fetchApiData(`/combo${buildParams(params)}`))
+  inject('fetchCombo', (params) => fetchAPIData(`/combo${buildParams(params)}`))
 
   inject('fetchContacts', (params) =>
-    fetchApiData(`/contacts${buildParams(params)}`)
+    fetchAPIData(`/contacts${buildParams(params)}`)
   )
 
-  inject('fetchEvent', (params) => fetchApiData(`/event${buildParams(params)}`))
+  inject('fetchEvent', (params) => fetchAPIData(`/event${buildParams(params)}`))
 
   inject('fetchExternals', (params) =>
-    fetchApiData(`/externals${buildParams(params)}`)
+    fetchAPIData(`/externals${buildParams(params)}`)
   )
 
   inject('fetchImages', (params) =>
-    fetchApiData(`/images${buildParams(params)}`)
+    fetchAPIData(`/images${buildParams(params)}`)
   )
 
   inject('fetchList', (params) =>
-    fetchApiData(`/getlist${buildParams(params)}`)
+    fetchAPIData(`/getlist${buildParams(params)}`)
   )
 
-  inject('fetchNodes', (params) => fetchApiData(`/nodes${buildParams(params)}`))
+  inject('fetchNodes', (params) => fetchAPIData(`/nodes${buildParams(params)}`))
 
   inject('fetchPartners', (params) =>
-    fetchApiData(`/partners${buildParams(params)}`)
+    fetchAPIData(`/partners${buildParams(params)}`)
   )
 
   inject('fetchPosts', (params) =>
-    fetchApiData(`/getposts${buildParams(params)}`)
+    fetchAPIData(`/getposts${buildParams(params)}`)
   )
   inject('fetchPostsFromMembershipGateway', (params, token) =>
-    fetchApiData(`/getposts${buildParams(params)}`, true, token)
+    fetchAPIData(`/getposts${buildParams(params)}`, true, token)
   )
 
   inject('fetchSearch', (params) =>
-    fetchApiData(`/search${buildParams(params)}`)
+    fetchAPIData(`/search${buildParams(params)}`)
   )
 
-  inject('fetchTag', (id) => fetchApiData(`/tags/${id}`))
+  inject('fetchTag', (id) => fetchAPIData(`/tags/${id}`))
 
-  inject('fetchTimeline', (id) => fetchApiData(`/timeline/${id}`))
+  inject('fetchTimeline', (id) => fetchAPIData(`/timeline/${id}`))
 
   inject('fetchTopics', (params) =>
-    fetchApiData(`/topics${buildParams(params)}`)
+    fetchAPIData(`/topics${buildParams(params)}`)
   )
 
   inject('fetchWatches', (params) =>
-    fetchApiData(`/watches${buildParams(params)}`)
+    fetchAPIData(`/watches${buildParams(params)}`)
   )
 
   inject('fetchYoutubeChannels', (params) =>
-    fetchApiData(`/youtube/channels${buildYoutubeParams(params)}`)
+    fetchAPIData(`/youtube/channels${buildYoutubeParams(params)}`)
   )
 
   inject('fetchYoutubePlaylistItems', (params) =>
-    fetchApiData(`/youtube/playlistItems${buildYoutubeParams(params)}`)
+    fetchAPIData(`/youtube/playlistItems${buildYoutubeParams(params)}`)
   )
 
   inject('fetchYoutubeSearch', (params) =>
-    fetchApiData(`/youtube/search${buildYoutubeParams(params)}`)
+    fetchAPIData(`/youtube/search${buildYoutubeParams(params)}`)
   )
 
   inject('fetchYoutubeVideos', (params) =>
-    fetchApiData(`/youtube/videos${buildYoutubeParams(params)}`)
+    fetchAPIData(`/youtube/videos${buildYoutubeParams(params)}`)
   )
 
   inject('fetchGrouped', () => fetchGcsData('grouped'))

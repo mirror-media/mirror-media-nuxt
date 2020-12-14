@@ -248,15 +248,12 @@ export default {
 
   async fetch() {
     const [postResponse] = await Promise.allSettled([
-      this.$fetchPosts(
-        {
-          slug: this.storySlug,
-          isAudioSiteOnly: false,
-          clean: 'content',
-          related: 'article',
-        },
-        this.$store.state.membership.userToken
-      ),
+      this.$fetchPosts({
+        slug: this.storySlug,
+        isAudioSiteOnly: false,
+        clean: 'content',
+        related: 'article',
+      }),
       this.$store.dispatch('partners/fetchPartnersData'),
       this.$store.dispatch('topics/fetchTopicsData'),
     ])
@@ -315,18 +312,7 @@ export default {
       return this.story.style === 'photography'
     },
     isStyleWide() {
-      const isStoryCategoryHasMemberOnly = (this.story.categories ?? []).some(
-        function checkMemberProperty(category) {
-          return !!category.isMemberOnly
-        }
-      )
-      const isMemberTokenStateValid = (
-        this.membershipTokenState ?? ''
-      ).startsWith('OK')
-      return (
-        (isStoryCategoryHasMemberOnly && isMemberTokenStateValid) ||
-        this.story.style === 'wide'
-      )
+      return this.story.style === 'wide'
     },
 
     device() {

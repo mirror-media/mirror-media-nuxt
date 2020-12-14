@@ -40,12 +40,12 @@ describe('email auth', function () {
 
 describe('validations about visitor have been redirect back to login page after Google/Facebook auth', function () {
   test('should redirect to home page before login paged mount, and current visitor come to login page is because they have been redirect by Google/Facebook auth', async function () {
-    delete window.location
-    window.location = {
+    const mockRouter = {
       replace: jest.fn(),
     }
     createWrapper(page, {
       mocks: {
+        $router: mockRouter,
         $fire: {
           auth: {
             getRedirectResult: jest.fn(() => Promise.resolve({ user: {} })),
@@ -54,7 +54,7 @@ describe('validations about visitor have been redirect back to login page after 
       },
     })
     await flushPromises()
-    expect(window.location.replace).toHaveBeenCalledWith('/')
+    expect(mockRouter.replace).toHaveBeenCalledWith('/')
   })
 
   test('should not redirect to home page before login paged mount, because the reason why the current visitor come to login page is not been redirect by Google/Facebook auth', async function () {
