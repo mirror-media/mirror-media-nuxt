@@ -54,7 +54,7 @@
 
             <template v-if="canAdvertise && isDesktopWidth" #dableWidget>
               <ClientOnly>
-                <div class="dable-widget">
+                <div ref="dableWidget" class="dable-widget">
                   <LazyRenderer
                     :id="`dablewidget_${DABLE_WIDGET_IDS.PC}`"
                     :data-widget_id="DABLE_WIDGET_IDS.PC"
@@ -85,6 +85,7 @@
 
               <div
                 v-if="canAdvertise && !isDesktopWidth"
+                ref="dableWidget"
                 key="dable-widget"
                 class="dable-widget"
               >
@@ -124,7 +125,7 @@
                 />
 
                 <LazyRenderer
-                  id="popular-list"
+                  ref="popularList"
                   class="story__popular-list"
                   @load="fetchPopularStories"
                 >
@@ -305,6 +306,8 @@ export default {
       doesHaveAdPcFloating: false,
 
       shouldFixAside: false,
+
+      scrollDepthObserver: undefined,
     }
   },
 
@@ -417,8 +420,16 @@ export default {
     },
   },
 
+  mounted() {
+    if (this.isStyleDefault) {
+      this.observeScrollDepthForGa()
+    }
+  },
+
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleFixAside)
+
+    this.scrollDepthObserver.disconnect()
   },
 
   methods: {
@@ -550,16 +561,64 @@ export default {
       }
     },
 
-    sendGa(eventAction, eventLabel, eventValue = 0, eventCategory = 'article') {
+    sendGa(eventAction, eventLabel, eventCategory = 'article') {
       this.$ga.event({
         eventAction,
         eventLabel,
         eventCategory,
-        eventValue,
       })
     },
     sendGaForClick(eventLabel) {
       this.sendGa('click', eventLabel)
+    },
+    observeScrollDepthForGa() {
+      import('intersection-observer').then(() => {
+        const { dableWidget, popularList } = this.$refs
+
+        const triggers = [
+          {
+            elem: document.getElementById('story-end'),
+            eventLabel: 'end',
+          },
+          {
+            elem: dableWidget,
+            eventLabel: 'matched',
+          },
+          {
+            elem: popularList.$el,
+            eventLabel: 'popular',
+          },
+        ]
+
+        this.scrollDepthObserver = new IntersectionObserver(
+          function handleIntersect(entries) {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const { eventLabel, elem } = triggers.find(isTheSameElem) ?? {}
+
+                // 桌機版的熱門文章不用送 GA
+                if (elem === popularList.$el && this.isDesktopWidth) {
+                  return
+                }
+
+                this.sendGa('visible', eventLabel)
+
+                this.scrollDepthObserver.unobserve(elem)
+              }
+
+              function isTheSameElem({ elem }) {
+                return elem === entry.target
+              }
+            })
+          }.bind(this)
+        )
+
+        triggers.forEach(({ elem }) => {
+          if (elem) {
+            this.scrollDepthObserver.observe(elem)
+          }
+        })
+      })
     },
   },
   head() {

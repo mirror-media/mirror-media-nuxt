@@ -58,7 +58,7 @@
       <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="MB_AT3" />
     </ClientOnly>
 
-    <p class="g-story-paragraph smaller">
+    <p id="story-end" class="g-story-paragraph smaller">
       更多內容，歡迎<a
         :href="SUBSCRIBE_LINK.href"
         target="_blank"
