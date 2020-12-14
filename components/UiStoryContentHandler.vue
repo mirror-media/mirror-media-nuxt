@@ -156,12 +156,10 @@ export default {
 
           case 'embeddedcode':
             return (
-              <LazyRenderer class="story__embedded-code">
-                <div
-                  class="story__embedded-code"
-                  domPropsInnerHTML={addTitleAndLazyloadToIframe(content)}
-                ></div>
-              </LazyRenderer>
+              <div
+                class="story__embedded-code"
+                domPropsInnerHTML={content.embeddedCode}
+              ></div>
             )
 
           case 'audio':
@@ -251,13 +249,6 @@ export default {
       return content.replace(
         'target="_blank"',
         'target="_blank" rel="noopener noreferrer"'
-      )
-    }
-
-    function addTitleAndLazyloadToIframe(content = {}) {
-      return content.embeddedCode.replace(
-        '<iframe',
-        `<iframe title="${content.caption}" loading="lazy"`
       )
     }
 

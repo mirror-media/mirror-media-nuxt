@@ -20,6 +20,9 @@ async function start() {
   app.use(
     helmet({
       contentSecurityPolicy: false,
+      referrerPolicy: false,
+      noSniff: false,
+      frameguard: false,
     })
   )
 
