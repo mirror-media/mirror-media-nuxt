@@ -24,6 +24,8 @@
                 :categoryTitle="categoryTitle"
                 :items="relateds"
                 :sectionName="sectionName"
+                @sendGa:left="sendGaForClick('related news left')"
+                @sendGa:right="sendGaForClick('related news right')"
               />
 
               <LazyRenderer
@@ -33,6 +35,7 @@
                 <UiStoryListRelated
                   :items="relatedsWithoutFirstTwo"
                   :images="relatedImages"
+                  @sendGa="sendGaForClick('related')"
                 >
                   <template v-if="canAdvertise" #ads>
                     <ClientOnly>
@@ -104,6 +107,7 @@
                     class="latest-list"
                     heading="最新文章"
                     :items="latestStories"
+                    @sendGa="sendGaForClick('latest')"
                   />
                 </LazyRenderer>
               </div>
@@ -120,6 +124,7 @@
                 />
 
                 <LazyRenderer
+                  id="popular-list"
                   class="story__popular-list"
                   @load="fetchPopularStories"
                 >
@@ -127,6 +132,7 @@
                     v-if="doesHavePopularStories"
                     heading="熱門文章"
                     :items="popularStories"
+                    @sendGa="sendGaForClick('popular')"
                   />
                 </LazyRenderer>
 
@@ -542,6 +548,18 @@ export default {
       if (!isEmpty) {
         this.doesHaveAdPcFloating = true
       }
+    },
+
+    sendGa(eventAction, eventLabel, eventValue = 0, eventCategory = 'article') {
+      this.$ga.event({
+        eventAction,
+        eventLabel,
+        eventCategory,
+        eventValue,
+      })
+    },
+    sendGaForClick(eventLabel) {
+      this.sendGa('click', eventLabel)
     },
   },
   head() {

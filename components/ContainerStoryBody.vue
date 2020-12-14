@@ -39,7 +39,11 @@
     </div>
 
     <template v-for="paragraph in contents">
-      <UiStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
+      <UiStoryContentHandler
+        :key="paragraph.id"
+        :paragraph="paragraph"
+        @sendGa="handleSendGa({ eventLabel: 'image' })"
+      />
     </template>
 
     <p v-if="isUpdatedAtVisible" class="story__updated-at">

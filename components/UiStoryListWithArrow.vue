@@ -5,12 +5,13 @@
     :class="[{ single: isSingle }, sectionName]"
   >
     <a
-      v-for="item in itemsSliced"
+      v-for="(item, idx) in itemsSliced"
       :key="item.slug"
       :href="`/story/${item.slug}`"
       target="_blank"
       rel="noopener noreferrer"
       class="item"
+      @click="$emit(`sendGa:${idx === 0 ? 'left' : 'right'}`)"
     >
       <div class="item__arrow" />
       <div class="item__info">
