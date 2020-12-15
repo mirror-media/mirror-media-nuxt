@@ -56,12 +56,10 @@
     />
     <ContainerFullScreenAds />
     <UiStickyAd>
-      <client-only>
-        <GptAd
-          :adUnit="videoAdUnits.MB_ST.adUnit"
-          :adSize="videoAdUnits.MB_ST.adSize"
-        />
-      </client-only>
+      <GptAd
+        :adUnit="videoAdUnits.MB_ST.adUnit"
+        :adSize="videoAdUnits.MB_ST.adSize"
+      />
     </UiStickyAd>
   </section>
 </template>
