@@ -8,6 +8,10 @@
         @sendGa:prev="sendGaForClick('breakingnews down')"
       />
 
+      <ClientOnly>
+        <ContainerGptAd class="ad-hd" pageKey="home" adKey="HD" />
+      </ClientOnly>
+
       <UiColumnHeader
         title="編輯精選"
         class="home__column-header home__column-header--editor-choices"
@@ -16,6 +20,10 @@
         :articles="editorChoicesArticles"
         @sendGa="sendGaForClick('choice')"
       />
+
+      <ClientOnly>
+        <ContainerGptAd class="ad-mb-l1" pageKey="home" adKey="MB_L1" />
+      </ClientOnly>
 
       <aside>
         <section>
@@ -33,6 +41,10 @@
       </aside>
 
       <ClientOnly>
+        <ContainerGptAd class="ad-mb-l2" pageKey="home" adKey="MB_L2" />
+
+        <ContainerGptAd class="ad-pc-b1" pageKey="home" adKey="PC_B1" />
+
         <UiColumnHeader title="最新文章" class="home__column-header" />
         <UiArticleGallery
           :items="latestItems"
@@ -43,6 +55,8 @@
           @infinite="loadMoreLatestList"
         />
       </ClientOnly>
+
+      <ContainerFullScreenAds />
     </main>
   </div>
 </template>
@@ -56,6 +70,8 @@ import UiEditorChoices from '~/components/UiEditorChoices.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 import { isTruthy } from '~/utils/index.js'
 import { stripHtmlTag } from '~/utils/article.js'
@@ -85,6 +101,8 @@ export default {
     UiArticleListFocus,
     UiArticleGallery,
     UiInfiniteLoading,
+    ContainerGptAd,
+    ContainerFullScreenAds,
   },
 
   async fetch() {
