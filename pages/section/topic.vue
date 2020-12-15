@@ -39,8 +39,8 @@
           :adUnit="adFixedBottomMobile.adUnit"
           :adSize="adFixedBottomMobile.adSize"
         />
-      </client-only> </UiStickyAd
-    >>
+      </client-only>
+    </UiStickyAd>
     <ContainerFullScreenAds />
   </section>
 </template>
