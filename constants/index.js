@@ -64,6 +64,11 @@ const DOWNLOAD_APP_LINK = {
   title: '下載APP',
   href: 'https://www.mirrormedia.mg/story/20161228corpmkt001/',
 }
+const MEDIA_DISCIPLINE_LINK = {
+  name: 'discipline',
+  title: '新聞自律綱要',
+  href: 'https://www.mirrormedia.mg/story/20200710edi030/',
+}
 const OTHER_LINKS = [
   SUBSCRIBE_LINK,
   MAGAZINE_LINK,
@@ -71,6 +76,7 @@ const OTHER_LINKS = [
   AD_LINK,
   CAMPAIGN_LINK,
   DOWNLOAD_APP_LINK,
+  MEDIA_DISCIPLINE_LINK,
 ]
 
 const MIRRORVOICE_LINK = {
