@@ -2,7 +2,7 @@ import ContainerHeader from '../ContainerHeader.vue'
 import UiEventLogo from '../UiEventLogo.vue'
 import ContainerGptAd from '../ContainerGptAd.vue'
 import UiSearchBarWrapper from '../UiSearchBarWrapper.vue'
-import UiOthersList from '../UiOthersList.vue'
+import UiPromotionList from '../UiPromotionList.vue'
 import UiHeaderNavSection from '../UiHeaderNavSection.vue'
 import UiHeaderNavTopic from '../UiHeaderNavTopic.vue'
 import UiSidebar from '../UiSidebar.vue'
@@ -393,7 +393,7 @@ describe('handleSendGa method', () => {
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 
-  test('call the $ga method when the UiOthersList.vue emits a "sendGa"', () => {
+  test('call the $ga method when the UiPromotionList.vue emits a "sendGa"', () => {
     const $ga = {
       event: jest.fn(),
     }
@@ -408,7 +408,7 @@ describe('handleSendGa method', () => {
       eventAction: 'click',
       eventLabel: 'more subscribe',
     }
-    wrapper.findComponent(UiOthersList).vm.$emit('sendGa', gaArgs)
+    wrapper.findComponent(UiPromotionList).vm.$emit('sendGa', gaArgs)
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 

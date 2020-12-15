@@ -1,7 +1,7 @@
 <template>
-  <div v-click-outside="closeLinkList" class="others-list">
+  <div v-click-outside="closeList" class="promotion-list">
     <button type="button" class="more-icon" @click="handleClickMoreIcon" />
-    <div v-if="shouldOpenLinkList" class="link-list">
+    <div v-if="shouldOpenList" class="wrapper">
       <a
         v-for="link in links"
         :key="link.title"
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'UiOthersList',
+  name: 'UiPromotionList',
   props: {
     links: {
       type: Array,
@@ -32,18 +32,18 @@ export default {
   },
   data() {
     return {
-      shouldOpenLinkList: false,
+      shouldOpenList: false,
     }
   },
   methods: {
-    toggleLinkList() {
-      this.shouldOpenLinkList = !this.shouldOpenLinkList
+    toggleList() {
+      this.shouldOpenList = !this.shouldOpenList
     },
-    closeLinkList() {
-      this.shouldOpenLinkList = false
+    closeList() {
+      this.shouldOpenList = false
     },
     handleClickMoreIcon() {
-      this.toggleLinkList()
+      this.toggleList()
       this.emitGa('more open')
     },
     emitGa(eventLabel) {
@@ -58,7 +58,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.others-list {
+.promotion-list {
   margin-left: 5px;
   position: relative;
 }
@@ -76,7 +76,7 @@ export default {
   cursor: pointer;
   user-select: none;
 }
-.link-list {
+.wrapper {
   text-align: center;
   position: absolute;
   top: 28px;

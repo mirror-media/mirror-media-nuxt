@@ -1,4 +1,4 @@
-import UiOthersList from '../UiOthersList.vue'
+import UiPromotionList from '../UiPromotionList.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -17,14 +17,14 @@ const mockLink = {
 }
 
 describe('link list', () => {
-  test('render the proper other link', () => {
-    const wrapper = createWrapper(UiOthersList, {
+  test('render the proper promotion link', () => {
+    const wrapper = createWrapper(UiPromotionList, {
       propsData: {
         links: [mockLink],
       },
       data() {
         return {
-          shouldOpenLinkList: true,
+          shouldOpenList: true,
         }
       },
     })
@@ -33,44 +33,44 @@ describe('link list', () => {
     expect(link.text()).toBe(mockLink.title)
   })
 
-  test('toggle the link list when users click the more icon', async () => {
-    const wrapper = createWrapper(UiOthersList)
+  test('toggle the list when users click the more icon', async () => {
+    const wrapper = createWrapper(UiPromotionList)
 
     const moreIcon = wrapper.get('.more-icon')
     await moreIcon.trigger('click')
-    expect(wrapper.find('.link-list').exists()).toBe(true)
+    expect(wrapper.find('.wrapper').exists()).toBe(true)
 
     await moreIcon.trigger('click')
-    expect(wrapper.find('.link-list').exists()).toBe(false)
+    expect(wrapper.find('.wrapper').exists()).toBe(false)
   })
 
-  test('close the link list when users click outside', async () => {
-    const wrapper = createWrapper(UiOthersList, {
+  test('close the list when users click outside', async () => {
+    const wrapper = createWrapper(UiPromotionList, {
       data() {
         return {
-          shouldOpenLinkList: true,
+          shouldOpenList: true,
         }
       },
     })
 
     document.body.dispatchEvent(new Event('click'))
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('.link-list').exists()).toBe(false)
+    expect(wrapper.find('.wrapper').exists()).toBe(false)
   })
 })
 
 describe('emitGa method', () => {
   const eventCategory = 'header'
 
-  test('with a proper argument when users click an other link', () => {
-    const wrapper = createWrapper(UiOthersList, {
+  test('with a proper argument when users click a promotion link', () => {
+    const wrapper = createWrapper(UiPromotionList, {
       propsData: {
         links: [mockLink],
         eventCategory,
       },
       data() {
         return {
-          shouldOpenLinkList: true,
+          shouldOpenList: true,
         }
       },
     })
@@ -87,7 +87,7 @@ describe('emitGa method', () => {
   })
 
   test('with a proper argument when users click the more icon', () => {
-    const wrapper = createWrapper(UiOthersList, {
+    const wrapper = createWrapper(UiPromotionList, {
       propsData: {
         eventCategory,
       },

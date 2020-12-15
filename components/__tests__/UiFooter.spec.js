@@ -4,35 +4,36 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper()
 
-describe('other nav', () => {
-  const mockOther = {
+describe('promotion nav', () => {
+  const promotionMock = {
     name: 'subscribe',
     title: '訂閱鏡週刊',
     href:
       'https://docs.google.com/forms/d/1es1wqWfhwJn2sxDLc-6NRVokGn_fU0_M2YffhKMlcyM/viewform',
   }
 
-  test('render the proper other link', () => {
+  test('render the proper promotion link', () => {
     const wrapper = createWrapper(UiFooter, {
       computed: {
-        others() {
-          return [mockOther]
+        promotions() {
+          return [promotionMock]
         },
       },
     })
 
-    const otherLink = wrapper.get(`[href="${mockOther.href}"]`)
-    expect(otherLink.text()).toBe(mockOther.title)
+    expect(wrapper.get(`[href="${promotionMock.href}"]`).text()).toBe(
+      promotionMock.title
+    )
   })
 
-  test('call $ga method when users click an other link', () => {
+  test('call $ga method when users click a promotion link', () => {
     const $ga = {
       event: jest.fn(),
     }
     const wrapper = createWrapper(UiFooter, {
       computed: {
-        others() {
-          return [mockOther]
+        promotions() {
+          return [promotionMock]
         },
       },
       mocks: {
@@ -43,10 +44,9 @@ describe('other nav', () => {
     const gaArgs = {
       eventCategory: 'footer',
       eventAction: 'click',
-      eventLabel: `more ${mockOther.name}`,
+      eventLabel: `more ${promotionMock.name}`,
     }
-    const otherLink = wrapper.get(`[href="${mockOther.href}"]`)
-    otherLink.trigger('click')
+    wrapper.get(`[href="${promotionMock.href}"]`).trigger('click')
     expect($ga.event).toBeCalledWith(gaArgs)
   })
 })

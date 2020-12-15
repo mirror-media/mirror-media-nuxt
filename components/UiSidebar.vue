@@ -86,16 +86,16 @@
       </div>
     </div>
 
-    <div class="others">
+    <div class="promotions">
       <a
-        v-for="other in others"
-        :key="other.name"
-        :href="other.href"
+        v-for="promotion in promotions"
+        :key="promotion.name"
+        :href="promotion.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="emitGa(`more ${other.name}`)"
+        @click="emitGa(`more ${promotion.name}`)"
       >
-        {{ other.title }}
+        {{ promotion.title }}
       </a>
     </div>
 
@@ -142,7 +142,7 @@ export default {
       required: true,
       default: () => [],
     },
-    others: {
+    promotions: {
       type: Array,
       required: true,
       default: () => [],
@@ -278,7 +278,7 @@ a {
     }
   }
 }
-.others {
+.promotions {
   display: flex;
   flex-wrap: wrap;
   text-align: center;

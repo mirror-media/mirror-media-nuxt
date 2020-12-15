@@ -52,9 +52,9 @@
           <ContainerMembershipMemberIcon class="member-icon-desktop" />
         </ClientOnly>
 
-        <UiOthersList
-          class="others-list"
-          :links="OTHER_LINKS"
+        <UiPromotionList
+          class="header__promotion-list"
+          :links="PROMOTION_LINKS"
           eventCategory="header"
           @sendGa="handleSendGa"
         />
@@ -90,7 +90,7 @@
           :sections="sections"
           :partners="partners"
           :subBrands="SUB_BRAND_LINKS"
-          :others="OTHER_LINKS"
+          :promotions="PROMOTION_LINKS"
           :socialMedia="SOCIAL_MEDIA_LINKS"
           @close="handleSidebarClose"
           @sendGa="handleSendGa"
@@ -105,7 +105,7 @@ import { mapGetters } from 'vuex'
 
 import UiEventLogo from './UiEventLogo.vue'
 import UiSearchBarWrapper from './UiSearchBarWrapper.vue'
-import UiOthersList from './UiOthersList.vue'
+import UiPromotionList from './UiPromotionList.vue'
 import UiHeaderNavSection from './UiHeaderNavSection.vue'
 import UiHeaderNavTopic from './UiHeaderNavTopic.vue'
 import UiSidebar from './UiSidebar.vue'
@@ -117,7 +117,7 @@ import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMembe
 import {
   SUB_BRAND_LINKS,
   SOCIAL_MEDIA_LINKS,
-  OTHER_LINKS,
+  PROMOTION_LINKS,
   SITE_TITLE,
 } from '~/constants/index'
 
@@ -128,7 +128,7 @@ export default {
   components: {
     UiEventLogo,
     UiSearchBarWrapper,
-    UiOthersList,
+    UiPromotionList,
     UiHeaderNavSection,
     UiHeaderNavTopic,
     UiSidebar,
@@ -158,7 +158,7 @@ export default {
       defaultOption: { title: '全部類別' },
 
       shouldOpenSidebar: false,
-      OTHER_LINKS,
+      PROMOTION_LINKS,
       SOCIAL_MEDIA_LINKS,
       SUB_BRAND_LINKS,
     }
@@ -475,7 +475,7 @@ header {
   }
 }
 
-.others-list {
+.header__promotion-list {
   display: none;
   @include media-breakpoint-up(xl) {
     display: block;
