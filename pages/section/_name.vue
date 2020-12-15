@@ -33,7 +33,7 @@
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
-    <UiStickyAd v-if="adDevice === 'MB'">
+    <UiStickyAd>
       <client-only>
         <GptAd
           :adUnit="adFixedBottomMobile.adUnit"
