@@ -14,6 +14,7 @@ import {
 } from '~/constants'
 import { DOMAIN_NAME } from '~/configs/config'
 import { DABLE_WIDGET_IDS } from '~/constants/ads'
+import { checkStoryCategoryHasMemberOnly } from '~/utils/article'
 
 export default {
   layout: 'empty',
@@ -54,10 +55,8 @@ export default {
       return this.$route.params.slug
     },
     shouldShowPremiumStory() {
-      const isStoryCategoryHasMemberOnly = (this.story.categories ?? []).some(
-        function checkMemberProperty(category) {
-          return !!category.isMemberOnly
-        }
+      const isStoryCategoryHasMemberOnly = checkStoryCategoryHasMemberOnly(
+        this.story
       )
       const isMemberTokenStateValid = (
         this.membershipTokenState ?? ''

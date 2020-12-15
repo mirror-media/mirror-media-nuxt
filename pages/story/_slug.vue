@@ -221,6 +221,7 @@ import {
   SITE_URL,
 } from '~/constants/index'
 import { DABLE_WIDGET_IDS, MICRO_AD_UNITS } from '~/constants/ads.js'
+import { checkStoryCategoryHasMemberOnly } from '~/utils/article'
 
 export default {
   name: 'Story',
@@ -330,10 +331,8 @@ export default {
       return this.story.style === 'wide'
     },
     shouldShowPremiumStory() {
-      const isStoryCategoryHasMemberOnly = (this.story.categories ?? []).some(
-        function checkMemberProperty(category) {
-          return !!category.isMemberOnly
-        }
+      const isStoryCategoryHasMemberOnly = checkStoryCategoryHasMemberOnly(
+        this.story
       )
       const isMemberTokenStateValid = (
         this.membershipTokenState ?? ''

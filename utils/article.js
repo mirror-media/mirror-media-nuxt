@@ -42,4 +42,10 @@ function stripHtmlTag(html = '') {
   return html.replace(/<\/?[^>]+(>|$)/g, '')
 }
 
-export { creditHtml, stripHtmlTag }
+function checkStoryCategoryHasMemberOnly({ categories = [] } = {}) {
+  return categories.some(function checkMemberProperty(category) {
+    return !!category.isMemberOnly
+  })
+}
+
+export { creditHtml, stripHtmlTag, checkStoryCategoryHasMemberOnly }
