@@ -12,6 +12,7 @@ import Home, {
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
@@ -324,6 +325,30 @@ describe('最新文章', () => {
 
     spyInsertLatestItems.mockClear()
   }
+})
+
+test('display ADs', function () {
+  /* Arrange */
+  const sut = createWrapper(Home)
+
+  /* Assert */
+  expect(sut.get('.ad-hd').props()).toMatchObject({
+    pageKey: 'home',
+    adKey: 'HD',
+  })
+  expect(sut.get('.ad-mb-l1').props()).toMatchObject({
+    pageKey: 'home',
+    adKey: 'MB_L1',
+  })
+  expect(sut.get('.ad-mb-l2').props()).toMatchObject({
+    pageKey: 'home',
+    adKey: 'MB_L2',
+  })
+  expect(sut.get('.ad-pc-b1').props()).toMatchObject({
+    pageKey: 'home',
+    adKey: 'PC_B1',
+  })
+  expect(sut.findComponent(ContainerFullScreenAds).exists()).toBe(true)
 })
 
 describe('getLabel method', () => {
