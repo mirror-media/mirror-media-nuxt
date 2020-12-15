@@ -34,12 +34,10 @@
       @infinite="infiniteHandler"
     />
     <UiStickyAd>
-      <client-only>
-        <GptAd
-          :adUnit="adFixedBottomMobile.adUnit"
-          :adSize="adFixedBottomMobile.adSize"
-        />
-      </client-only>
+      <GptAd
+        :adUnit="adFixedBottomMobile.adUnit"
+        :adSize="adFixedBottomMobile.adSize"
+      />
     </UiStickyAd>
     <ContainerFullScreenAds />
   </section>

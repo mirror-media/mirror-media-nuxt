@@ -37,12 +37,10 @@
     <UiWineWarning v-if="isCategoryWine" />
 
     <UiStickyAd v-if="!isCategoryWine">
-      <client-only>
-        <GptAd
-          :adUnit="adFixedBottomMobile.adUnit"
-          :adSize="adFixedBottomMobile.adSize"
-        />
-      </client-only>
+      <GptAd
+        :adUnit="adFixedBottomMobile.adUnit"
+        :adSize="adFixedBottomMobile.adSize"
+      />
     </UiStickyAd>
 
     <ContainerFullScreenAds v-if="!isCategoryWine" />

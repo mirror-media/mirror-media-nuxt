@@ -68,12 +68,10 @@
     </client-only>
     <ContainerFullScreenAds />
     <UiStickyAd>
-      <client-only>
-        <GptAd
-          :adUnit="getAdUnit('ST').adUnit"
-          :adSize="getAdUnit('ST').adSize"
-        />
-      </client-only>
+      <GptAd
+        :adUnit="getAdUnit('ST').adUnit"
+        :adSize="getAdUnit('ST').adSize"
+      />
     </UiStickyAd>
   </section>
 </template>
