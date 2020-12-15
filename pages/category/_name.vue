@@ -36,7 +36,7 @@
 
     <UiWineWarning v-if="isCategoryWine" />
 
-    <UiStickyAd v-if="adDevice === 'MB' && !isCategoryWine">
+    <UiStickyAd v-if="!isCategoryWine">
       <client-only>
         <GptAd
           :adUnit="adFixedBottomMobile.adUnit"
