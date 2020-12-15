@@ -48,4 +48,15 @@ function checkStoryCategoryHasMemberOnly({ categories = [] } = {}) {
   })
 }
 
-export { creditHtml, stripHtmlTag, checkStoryCategoryHasMemberOnly }
+function getStoryPath(story) {
+  return checkStoryCategoryHasMemberOnly(story)
+    ? `/premium/${story.slug}`
+    : `/story/${story.slug}`
+}
+
+export {
+  creditHtml,
+  stripHtmlTag,
+  checkStoryCategoryHasMemberOnly,
+  getStoryPath,
+}

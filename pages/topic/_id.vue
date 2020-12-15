@@ -17,6 +17,7 @@ import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import styleVariables from '~/scss/_variables.scss'
+import { getStoryPath } from '~/utils/article'
 
 const TOPIC_IDS_WINE = [
   '5c25f9e3315ec51000903a82',
@@ -85,7 +86,7 @@ export default {
       const section = (item.sections ?? [])[0]
       return {
         id: item.id,
-        href: item.slug ? `/story/${item.slug}` : '/',
+        href: getStoryPath(item),
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: section.title ?? '',
         imgTextBackgroundColor: styleVariables[`section-color-${section.name}`],

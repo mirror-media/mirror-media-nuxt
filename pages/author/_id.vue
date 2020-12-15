@@ -56,6 +56,7 @@ import styleVariables from '~/scss/_variables.scss'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
+import { getStoryPath } from '~/utils/article'
 
 export default {
   name: 'Author',
@@ -144,7 +145,7 @@ export default {
       const section = (item.sections ?? [])[0]
       return {
         id: item.id,
-        href: item.slug ? `/story/${item.slug}` : '/',
+        href: getStoryPath(item),
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: section.title ?? '',
         imgTextBackgroundColor: styleVariables[`section-color-${section.name}`],
