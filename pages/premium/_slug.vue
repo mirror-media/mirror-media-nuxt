@@ -37,6 +37,12 @@ export default {
     if (postResponse.status === 'fulfilled') {
       this.story = postResponse.value.items?.[0] ?? {}
       this.membershipTokenState = postResponse.value.tokenState
+
+      // disable cdn cache to prevent caching both regular version and premium version with the same /premium/:slug uri
+      if (process.server && this.isStoryCategoryHasMemberOnly) {
+        this.$nuxt.context.res.setHeader('Cache-Control', 'no-store')
+      }
+
       if (!this.shouldShowPremiumStory) {
         this.$nuxt.context.redirect(`/story/${this.storySlug}`)
       }
@@ -54,14 +60,14 @@ export default {
     storySlug() {
       return this.$route.params.slug
     },
+    isStoryCategoryHasMemberOnly() {
+      return checkStoryCategoryHasMemberOnly(this.story)
+    },
     shouldShowPremiumStory() {
-      const isStoryCategoryHasMemberOnly = checkStoryCategoryHasMemberOnly(
-        this.story
-      )
       const isMemberTokenStateValid = (
         this.membershipTokenState ?? ''
       ).startsWith('OK')
-      return isStoryCategoryHasMemberOnly && isMemberTokenStateValid
+      return this.isStoryCategoryHasMemberOnly && isMemberTokenStateValid
     },
   },
   head() {
