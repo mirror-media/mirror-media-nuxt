@@ -89,7 +89,8 @@ export default {
   }
   .footer-magazine,
   .footer-auth,
-  .footer-download {
+  .footer-download,
+  .footer-discipline {
     display: none;
   }
   @include media-breakpoint-up(xl) {
@@ -106,7 +107,8 @@ export default {
     }
     .footer-magazine,
     .footer-auth,
-    .footer-download {
+    .footer-download,
+    .footer-discipline {
       display: initial;
     }
   }
