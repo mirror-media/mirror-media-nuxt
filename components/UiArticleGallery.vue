@@ -73,7 +73,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      isDesktopWidth: 'viewport/isViewportWidthUpLg',
+      isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
     device() {
       return this.isDesktopWidth ? 'PC' : 'MB'
@@ -87,18 +87,18 @@ export default {
 
 <style lang="scss" scoped>
 $font-size--base: 19.2px;
-$font-size--base--lg: 16px;
+$font-size--base--xl: 16px;
 
 .article-gallery {
   color: #8c8c8c;
   font-size: $font-size--base;
-  @include media-breakpoint-up(lg) {
-    font-size: $font-size--base--lg;
+  @include media-breakpoint-up(xl) {
+    font-size: $font-size--base--xl;
   }
 }
 
 ul {
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     display: flex;
     flex-wrap: wrap;
   }
@@ -114,7 +114,7 @@ li,
   @include media-breakpoint-up(sm) {
     border-bottom: none;
   }
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     width: calc((100% - #{$padding-x--li * 2}) / 3);
     padding-top: 0;
     padding-bottom: 0;
@@ -126,10 +126,6 @@ li,
     }
   }
 
-  &:first-child {
-    padding-top: 0;
-  }
-
   &:last-child {
     border-bottom: none;
   }
@@ -139,7 +135,7 @@ article,
 .micro-ad {
   display: flex;
   align-items: flex-start;
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     position: relative;
   }
 }
@@ -166,7 +162,7 @@ $aspect-ratio--sm: 1.67;
     padding-top: $width--img-wrapper--sm / $aspect-ratio--sm;
     margin-right: 0;
   }
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     width: 100%;
     padding-top: 100%;
     z-index: -1;
@@ -193,7 +189,7 @@ img {
 .micro-ad::v-deep .latest-list_item_label {
   display: inline-block;
   margin-bottom: 19.2px;
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     padding: 8px;
     margin-bottom: 0;
     font-weight: 300;
@@ -223,7 +219,7 @@ img {
     @include media-breakpoint-up(sm) {
       display: none;
     }
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       display: inline-block;
       line-height: 1;
     }
@@ -235,14 +231,14 @@ img {
       display: flex;
       width: 60px;
     }
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       display: none;
     }
   }
 }
 
 .text-wrapper {
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     position: absolute;
     width: 100%;
     left: 0;
@@ -252,9 +248,9 @@ img {
 
 $line-height--title: 1.41;
 $line-height--title--sm: 1.3;
-$line-height--title--lg: 1.69;
+$line-height--title--xl: 1.69;
 $font-size--title--sm: 20.8px;
-$font-size--title--lg: 16px;
+$font-size--title--xl: 16px;
 
 h1,
 .micro-ad::v-deep h3 {
@@ -265,23 +261,23 @@ h1,
     line-height: $line-height--title--sm;
     margin-bottom: 10px;
   }
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     color: #fff;
-    font-size: $font-size--title--lg;
-    line-height: $line-height--title--lg;
+    font-size: $font-size--title--xl;
+    line-height: $line-height--title--xl;
     margin-bottom: 0;
   }
 }
 
 h1,
 .micro-ad::v-deep .latest-list_item_title a {
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     padding: 10px;
   }
 }
 
 h1 {
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     background-color: rgba(#000, 0.7);
   }
 }
@@ -292,8 +288,8 @@ h1 span,
   @include media-breakpoint-up(sm) {
     @include text-truncate(2, $font-size--title--sm, $line-height--title--sm);
   }
-  @include media-breakpoint-up(lg) {
-    @include text-truncate(2, $font-size--title--lg, $line-height--title--lg);
+  @include media-breakpoint-up(xl) {
+    @include text-truncate(2, $font-size--title--xl, $line-height--title--xl);
   }
 }
 
@@ -313,7 +309,7 @@ $line-height--description: 1.4;
     );
   }
 
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     display: none;
   }
 }
@@ -323,7 +319,7 @@ $padding-top--ad-img: 100%;
 .micro-ad {
   &::v-deep {
     .latest-list_item {
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -344,7 +340,7 @@ $padding-top--ad-img: 100%;
       @include media-breakpoint-up(sm) {
         padding-top: $padding-top--ad-img / $aspect-ratio--sm;
       }
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         padding-top: 0;
         height: 100%;
       }
@@ -358,12 +354,12 @@ $padding-top--ad-img: 100%;
         position: relative;
         padding-left: 80px;
       }
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         padding-left: 0 !important;
       }
 
       a {
-        @include media-breakpoint-up(lg) {
+        @include media-breakpoint-up(xl) {
           display: block;
           background-color: #000;
         }
@@ -379,7 +375,7 @@ $padding-top--ad-img: 100%;
         display: flex;
         width: 60px !important;
       }
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         position: absolute;
         top: auto;
         bottom: 0;

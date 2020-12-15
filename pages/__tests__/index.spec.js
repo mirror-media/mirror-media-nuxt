@@ -332,19 +332,19 @@ test('display ADs', function () {
   const sut = createWrapper(Home)
 
   /* Assert */
-  expect(sut.get('.ad-hd').props()).toMatchObject({
+  expect(sut.get('.home__ad--hd').props()).toMatchObject({
     pageKey: 'home',
     adKey: 'HD',
   })
-  expect(sut.get('.ad-mb-l1').props()).toMatchObject({
+  expect(sut.get('.home__ad--mb-l1').props()).toMatchObject({
     pageKey: 'home',
     adKey: 'MB_L1',
   })
-  expect(sut.get('.ad-mb-l2').props()).toMatchObject({
+  expect(sut.get('.home__ad--mb-l2').props()).toMatchObject({
     pageKey: 'home',
     adKey: 'MB_L2',
   })
-  expect(sut.get('.ad-pc-b1').props()).toMatchObject({
+  expect(sut.get('.home__ad--pc-b1').props()).toMatchObject({
     pageKey: 'home',
     adKey: 'PC_B1',
   })

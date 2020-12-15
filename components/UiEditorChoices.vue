@@ -115,7 +115,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      isDesktopWidth: 'viewport/isViewportWidthUpLg',
+      isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
   },
 
@@ -211,13 +211,16 @@ export default {
   }
 
   &__article-list-aside {
-    @include media-breakpoint-between(sm, lg) {
+    @include media-breakpoint-up(sm) {
       display: block;
+    }
+    @include media-breakpoint-up(xl) {
+      display: none;
     }
   }
 
   &__slideshow {
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       display: block;
       position: relative;
       color: #fff;

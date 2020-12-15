@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="home">
     <main>
       <UiFlashNews
+        class="home__flash-news"
         :articles="flashNews"
         @sendGa:article="sendGaForClick('breakingnews title')"
         @sendGa:next="sendGaForClick('breakingnews up')"
@@ -9,52 +10,76 @@
       />
 
       <ClientOnly>
-        <ContainerGptAd class="ad-hd" pageKey="home" adKey="HD" />
+        <ContainerGptAd
+          class="home__ad home__ad--hd"
+          pageKey="home"
+          adKey="HD"
+        />
       </ClientOnly>
 
-      <UiColumnHeader
-        title="編輯精選"
-        class="home__column-header home__column-header--editor-choices"
-      />
-      <UiEditorChoices
-        :articles="editorChoicesArticles"
-        @sendGa="sendGaForClick('choice')"
-      />
+      <section class="editor-choices-container">
+        <UiColumnHeader
+          title="編輯精選"
+          class="home__column-header home__column-header--editor-choices"
+        />
+        <UiEditorChoices
+          :articles="editorChoicesArticles"
+          @sendGa="sendGaForClick('choice')"
+        />
+      </section>
 
       <ClientOnly>
-        <ContainerGptAd class="ad-mb-l1" pageKey="home" adKey="MB_L1" />
+        <ContainerGptAd
+          class="home__ad home__ad--mb-l1"
+          pageKey="home"
+          adKey="MB_L1"
+        />
       </ClientOnly>
 
-      <aside>
-        <section>
-          <UiColumnHeader title="焦點新聞" class="home__column-header" />
-          <div class="article-list-focus-container">
-            <UiArticleListFocus
-              v-for="article in articlesFocus"
-              :key="article.slug"
-              :articleMain="article"
-              :articlesRelated="articlesRelatedFocus(article)"
-              class="home__article-list-focus"
+      <div class="column-container">
+        <aside>
+          <section class="container">
+            <UiColumnHeader title="焦點新聞" class="home__column-header" />
+            <div class="article-list-focus-container">
+              <UiArticleListFocus
+                v-for="article in articlesFocus"
+                :key="article.slug"
+                :articleMain="article"
+                :articlesRelated="articlesRelatedFocus(article)"
+                class="home__article-list-focus"
+              />
+            </div>
+          </section>
+        </aside>
+
+        <div class="gallery-container">
+          <ClientOnly>
+            <ContainerGptAd
+              class="home__ad home__ad--mb-l2"
+              pageKey="home"
+              adKey="MB_L2"
             />
-          </div>
-        </section>
-      </aside>
 
-      <ClientOnly>
-        <ContainerGptAd class="ad-mb-l2" pageKey="home" adKey="MB_L2" />
+            <ContainerGptAd
+              class="home__ad home__ad--pc-b1"
+              pageKey="home"
+              adKey="PC_B1"
+            />
 
-        <ContainerGptAd class="ad-pc-b1" pageKey="home" adKey="PC_B1" />
-
-        <UiColumnHeader title="最新文章" class="home__column-header" />
-        <UiArticleGallery
-          :items="latestItems"
-          @sendGa="sendGaForClick('latest')"
-        />
-        <UiInfiniteLoading
-          v-if="latestItems.length > 3"
-          @infinite="loadMoreLatestList"
-        />
-      </ClientOnly>
+            <section class="container">
+              <UiColumnHeader title="最新文章" class="home__column-header" />
+              <UiArticleGallery
+                :items="latestItems"
+                @sendGa="sendGaForClick('latest')"
+              />
+              <UiInfiniteLoading
+                v-if="latestItems.length > 3"
+                @infinite="loadMoreLatestList"
+              />
+            </section>
+          </ClientOnly>
+        </div>
+      </div>
 
       <ContainerFullScreenAds />
     </main>
@@ -413,21 +438,44 @@ export {
 </script>
 
 <style lang="scss" scoped>
-aside {
-  @include media-breakpoint-up(xl) {
-    width: 25%;
-  }
-}
 .home {
+  padding-top: 8px;
+  overflow: hidden;
+  @include media-breakpoint-up(sm) {
+    padding: 8px 32px 0 32px;
+  }
+  @include media-breakpoint-up(xl) {
+    padding: 10px 0 0 0;
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
   &__column-header {
     margin-bottom: 10px;
 
     &--editor-choices {
-      @include media-breakpoint-up(lg) {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      @include media-breakpoint-up(sm) {
+        width: 100%;
+      }
+      @include media-breakpoint-up(xl) {
         display: none;
       }
     }
   }
+
+  &__flash-news {
+    margin: 0 6px 20px 6px;
+    @include media-breakpoint-up(sm) {
+      margin: 0 0 40px 0;
+    }
+    @include media-breakpoint-up(sm) {
+      margin: 0 0 20px 0;
+    }
+  }
+
   &__article-list-focus {
     + .home__article-list-focus {
       margin-top: 25px;
@@ -436,7 +484,61 @@ aside {
       }
     }
   }
+
+  &__ad {
+    margin: 0 auto 20px auto;
+    @include media-breakpoint-up(sm) {
+      margin: 0 auto 40px auto;
+    }
+    @include media-breakpoint-up(xl) {
+      margin: 0 auto 20px auto;
+    }
+
+    &--pc-b1 {
+      @include media-breakpoint-up(xl) {
+        margin: 0 auto 40px auto;
+      }
+    }
+  }
 }
+
+.container {
+  width: 90%;
+  margin: 0 auto 20px auto;
+  @include media-breakpoint-up(sm) {
+    width: 100%;
+    margin: 0 auto 40px auto;
+  }
+}
+
+.editor-choices-container {
+  margin-bottom: 20px;
+  @include media-breakpoint-up(sm) {
+    margin-bottom: 40px;
+  }
+}
+
+.column-container {
+  @include media-breakpoint-up(xl) {
+    display: flex;
+  }
+}
+
+aside {
+  @include media-breakpoint-up(xl) {
+    order: 1;
+    flex-shrink: 0;
+    width: 226px;
+  }
+}
+
+.gallery-container {
+  @include media-breakpoint-up(xl) {
+    flex-grow: 1;
+    margin-right: 30px;
+  }
+}
+
 .article-list-focus-container {
   border: 2px solid #224f73;
   padding: 14px 18px;
