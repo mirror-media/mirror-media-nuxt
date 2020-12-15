@@ -22,7 +22,7 @@ export default {
       default: () => ({}),
     },
   },
-  render(_, { props }) {
+  render(_, { props, listeners }) {
     const { type } = props.paragraph
 
     // 不需要 contents 的 type
@@ -129,6 +129,7 @@ export default {
               <UiStoryFigure
                 class="g-story-figure story__figure"
                 content={content}
+                onSendGa={listeners.sendGa}
               />
             )
           }
@@ -418,7 +419,7 @@ export default {
     margin-bottom: 1em;
   }
 
-  &__embedded-code ::v-deep iframe {
+  &__embedded-code::v-deep iframe {
     max-width: 100%;
     margin-right: auto;
     margin-left: auto;

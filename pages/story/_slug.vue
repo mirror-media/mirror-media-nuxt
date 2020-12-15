@@ -24,6 +24,8 @@
                 :categoryTitle="categoryTitle"
                 :items="relateds"
                 :sectionName="sectionName"
+                @sendGa:left="sendGaForClick('related news left')"
+                @sendGa:right="sendGaForClick('related news right')"
               />
 
               <LazyRenderer
@@ -33,6 +35,7 @@
                 <UiStoryListRelated
                   :items="relatedsWithoutFirstTwo"
                   :images="relatedImages"
+                  @sendGa="sendGaForClick('related')"
                 >
                   <template v-if="canAdvertise" #ads>
                     <ClientOnly>
@@ -51,7 +54,7 @@
 
             <template v-if="canAdvertise && isDesktopWidth" #dableWidget>
               <ClientOnly>
-                <div class="dable-widget">
+                <div ref="dableWidget" class="dable-widget">
                   <LazyRenderer
                     :id="`dablewidget_${DABLE_WIDGET_IDS.PC}`"
                     :data-widget_id="DABLE_WIDGET_IDS.PC"
@@ -82,6 +85,7 @@
 
               <div
                 v-if="canAdvertise && !isDesktopWidth"
+                ref="dableWidget"
                 key="dable-widget"
                 class="dable-widget"
               >
@@ -104,6 +108,7 @@
                     class="latest-list"
                     heading="最新文章"
                     :items="latestStories"
+                    @sendGa="sendGaForClick('latest')"
                   />
                 </LazyRenderer>
               </div>
@@ -120,6 +125,7 @@
                 />
 
                 <LazyRenderer
+                  ref="popularList"
                   class="story__popular-list"
                   @load="fetchPopularStories"
                 >
@@ -127,6 +133,7 @@
                     v-if="doesHavePopularStories"
                     heading="熱門文章"
                     :items="popularStories"
+                    @sendGa="sendGaForClick('popular')"
                   />
                 </LazyRenderer>
 
@@ -293,6 +300,8 @@ export default {
       doesHaveAdPcFloating: false,
 
       shouldFixAside: false,
+
+      scrollDepthObserver: undefined,
     }
   },
 
@@ -394,8 +403,16 @@ export default {
     },
   },
 
+  mounted() {
+    if (this.isStyleDefault) {
+      this.observeScrollDepthForGa()
+    }
+  },
+
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleFixAside)
+
+    this.scrollDepthObserver.disconnect()
   },
 
   methods: {
@@ -525,6 +542,66 @@ export default {
       if (!isEmpty) {
         this.doesHaveAdPcFloating = true
       }
+    },
+
+    sendGa(eventAction, eventLabel, eventCategory = 'article') {
+      this.$ga.event({
+        eventAction,
+        eventLabel,
+        eventCategory,
+      })
+    },
+    sendGaForClick(eventLabel) {
+      this.sendGa('click', eventLabel)
+    },
+    observeScrollDepthForGa() {
+      import('intersection-observer').then(() => {
+        const { dableWidget, popularList } = this.$refs
+
+        const triggers = [
+          {
+            elem: document.getElementById('story-end'),
+            eventLabel: 'end',
+          },
+          {
+            elem: dableWidget,
+            eventLabel: 'matched',
+          },
+          {
+            elem: popularList.$el,
+            eventLabel: 'popular',
+          },
+        ]
+
+        this.scrollDepthObserver = new IntersectionObserver(
+          function handleIntersect(entries) {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const { eventLabel, elem } = triggers.find(isTheSameElem) ?? {}
+
+                // 桌機版的熱門文章不用送 GA
+                if (elem === popularList.$el && this.isDesktopWidth) {
+                  return
+                }
+
+                this.sendGa('visible', eventLabel)
+
+                this.scrollDepthObserver.unobserve(elem)
+              }
+
+              function isTheSameElem({ elem }) {
+                return elem === entry.target
+              }
+            })
+          }.bind(this)
+        )
+
+        triggers.forEach(({ elem }) => {
+          if (elem) {
+            this.scrollDepthObserver.observe(elem)
+          }
+        })
+      })
     },
   },
   head() {

@@ -1,7 +1,7 @@
 <template>
   <div class="story-figure" :class="alignment">
     <figure>
-      <img v-lazy="imgSrcTablet" alt="" @click="openLightbox" />
+      <img v-lazy="imgSrcTablet" alt="" @click="handleClickImg" />
       <figcaption v-if="description">
         {{ description }}
       </figcaption>
@@ -61,6 +61,10 @@ export default {
   },
 
   methods: {
+    handleClickImg() {
+      this.openLightbox()
+      this.$emit('sendGa')
+    },
     async openLightbox() {
       this.shouldOpenLightbox = true
 

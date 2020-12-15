@@ -39,7 +39,11 @@
     </div>
 
     <template v-for="paragraph in contents">
-      <UiStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
+      <UiStoryContentHandler
+        :key="paragraph.id"
+        :paragraph="paragraph"
+        @sendGa="handleSendGa({ eventLabel: 'image' })"
+      />
     </template>
 
     <p v-if="isUpdatedAtVisible" class="story__updated-at">
@@ -54,7 +58,7 @@
       <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="MB_AT3" />
     </ClientOnly>
 
-    <p class="g-story-paragraph smaller">
+    <p id="story-end" class="g-story-paragraph smaller">
       更多內容，歡迎<a
         :href="SUBSCRIBE_LINK.href"
         target="_blank"

@@ -7,6 +7,7 @@
             :href="`/story/${item.slug}`"
             target="_blank"
             rel="noopener noreferrer"
+            @click="$emit('sendGa')"
             v-text="item.title"
           />
         </div>
@@ -15,6 +16,7 @@
           class="item__image"
           target="_blank"
           rel="noopener noreferrer"
+          @click="$emit('sendGa')"
         >
           <img :src="gainImgSrcById(images, item.heroImage)" alt="" />
         </a>
