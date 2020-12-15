@@ -2,7 +2,7 @@
   <footer class="footer">
     <nav class="footer-promotion-links">
       <a
-        v-for="promotion in promotions"
+        v-for="promotion in PROMOTION_LINKS"
         :key="promotion.name"
         :class="`footer-${promotion.name}`"
         :href="promotion.href"
@@ -16,7 +16,7 @@
 
     <nav class="footer-social-media-links">
       <a
-        v-for="medium in socialMedia"
+        v-for="medium in SOCIAL_MEDIA_LINKS"
         :key="medium.name"
         :class="`footer-${medium.name}`"
         :href="medium.href"
@@ -37,14 +37,13 @@
 import { PROMOTION_LINKS, SOCIAL_MEDIA_LINKS } from '~/constants/index'
 
 export default {
-  computed: {
-    promotions() {
-      return PROMOTION_LINKS
-    },
-    socialMedia() {
-      return SOCIAL_MEDIA_LINKS
-    },
+  data() {
+    return {
+      PROMOTION_LINKS,
+      SOCIAL_MEDIA_LINKS,
+    }
   },
+
   methods: {
     sendGa(eventLabel) {
       this.$ga.event({

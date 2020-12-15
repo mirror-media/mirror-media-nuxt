@@ -14,10 +14,10 @@ describe('promotion nav', () => {
 
   test('render the proper promotion link', () => {
     const wrapper = createWrapper(UiFooter, {
-      computed: {
-        promotions() {
-          return [promotionMock]
-        },
+      data() {
+        return {
+          PROMOTION_LINKS: [promotionMock],
+        }
       },
     })
 
@@ -31,10 +31,10 @@ describe('promotion nav', () => {
       event: jest.fn(),
     }
     const wrapper = createWrapper(UiFooter, {
-      computed: {
-        promotions() {
-          return [promotionMock]
-        },
+      data() {
+        return {
+          PROMOTION_LINKS: [promotionMock],
+        }
       },
       mocks: {
         $ga,
@@ -52,23 +52,23 @@ describe('promotion nav', () => {
 })
 
 describe('social media nav', () => {
-  const mockSocialMedia = {
+  const socialMediaMock = {
     name: 'line',
     href: 'https://line.me/R/ti/p/%40cuk1273e',
   }
 
   test('render the proper social media link', () => {
     const wrapper = createWrapper(UiFooter, {
-      computed: {
-        socialMedia() {
-          return [mockSocialMedia]
-        },
+      data() {
+        return {
+          SOCIAL_MEDIA_LINKS: [socialMediaMock],
+        }
       },
     })
 
-    const socialMediaLink = wrapper.get(`[href="${mockSocialMedia.href}"]`)
+    const socialMediaLink = wrapper.get(`[href="${socialMediaMock.href}"]`)
     expect(socialMediaLink.get('img').attributes().alt).toBe(
-      mockSocialMedia.name
+      socialMediaMock.name
     )
   })
 
@@ -77,10 +77,10 @@ describe('social media nav', () => {
       event: jest.fn(),
     }
     const wrapper = createWrapper(UiFooter, {
-      computed: {
-        socialMedia() {
-          return [mockSocialMedia]
-        },
+      data() {
+        return {
+          SOCIAL_MEDIA_LINKS: [socialMediaMock],
+        }
       },
       mocks: {
         $ga,
@@ -90,9 +90,9 @@ describe('social media nav', () => {
     const gaArgs = {
       eventCategory: 'footer',
       eventAction: 'click',
-      eventLabel: `social ${mockSocialMedia.name}`,
+      eventLabel: `social ${socialMediaMock.name}`,
     }
-    const socialMediaLink = wrapper.get(`[href="${mockSocialMedia.href}"]`)
+    const socialMediaLink = wrapper.get(`[href="${socialMediaMock.href}"]`)
     socialMediaLink.trigger('click')
     expect($ga.event).toBeCalledWith(gaArgs)
   })
