@@ -1,16 +1,16 @@
 <template>
   <footer class="footer">
-    <nav class="footer-other-links">
+    <nav class="footer-promotion-links">
       <a
-        v-for="other in others"
-        :key="other.name"
-        :class="`footer-${other.name}`"
-        :href="other.href"
+        v-for="promotion in promotions"
+        :key="promotion.name"
+        :class="`footer-${promotion.name}`"
+        :href="promotion.href"
         target="_blank"
         rel="noopener noreferrer"
-        @click="sendGa(`more ${other.name}`)"
+        @click="sendGa(`more ${promotion.name}`)"
       >
-        {{ other.title }}
+        {{ promotion.title }}
       </a>
     </nav>
 
@@ -34,12 +34,12 @@
 </template>
 
 <script>
-import { OTHER_LINKS, SOCIAL_MEDIA_LINKS } from '~/constants/index'
+import { PROMOTION_LINKS, SOCIAL_MEDIA_LINKS } from '~/constants/index'
 
 export default {
   computed: {
-    others() {
-      return OTHER_LINKS
+    promotions() {
+      return PROMOTION_LINKS
     },
     socialMedia() {
       return SOCIAL_MEDIA_LINKS
@@ -73,7 +73,7 @@ export default {
   }
 }
 
-.footer-other-links {
+.footer-promotion-links {
   color: rgba(0, 0, 0, 0.4);
   font-size: 19.2px;
   display: flex;

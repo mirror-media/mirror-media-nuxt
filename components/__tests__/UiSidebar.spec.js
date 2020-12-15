@@ -8,7 +8,7 @@ const createWrapper = createWrapperHelper({
     sections: [],
     partners: [],
     subBrands: [],
-    others: [],
+    promotions: [],
     socialMedia: [],
   },
   stubs: ['nuxt-link'],
@@ -34,7 +34,7 @@ const mockSubBrand = {
   title: '鏡好聽',
   href: 'https://voice.mirrorfiction.com/',
 }
-const mockOther = {
+const mockPromotion = {
   name: 'subscribe',
   title: '訂閱鏡週刊',
   href:
@@ -135,16 +135,17 @@ describe('sections', () => {
   })
 })
 
-describe('others', () => {
-  test('render the proper other link', () => {
+describe('promotions', () => {
+  test('render the proper promotion link', () => {
     const wrapper = createWrapper(UiSidebar, {
       propsData: {
-        others: [mockOther],
+        promotions: [mockPromotion],
       },
     })
 
-    const link = wrapper.get(`[href="${mockOther.href}"]`)
-    expect(link.text()).toBe(mockOther.title)
+    expect(wrapper.get(`[href="${mockPromotion.href}"]`).text()).toBe(
+      mockPromotion.title
+    )
   })
 })
 
@@ -272,20 +273,20 @@ describe('emitGa method', () => {
     ])
   })
 
-  test('with a proper argument when users click an other link', () => {
+  test('with a proper argument when users click a promotion link', () => {
     const wrapper = createWrapper(UiSidebar, {
       propsData: {
-        others: [mockOther],
+        promotions: [mockPromotion],
       },
     })
 
-    const otherLink = wrapper.get(`[href="${mockOther.href}"]`)
-    otherLink.trigger('click')
+    wrapper.get(`[href="${mockPromotion.href}"]`).trigger('click')
+
     expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'sidebar',
         eventAction: 'click',
-        eventLabel: `more ${mockOther.name}`,
+        eventLabel: `more ${mockPromotion.name}`,
       },
     ])
   })
