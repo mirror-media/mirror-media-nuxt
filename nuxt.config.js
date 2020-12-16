@@ -194,7 +194,8 @@ module.exports = {
       path: '/api/tracking',
       handler: '~/api/tracking.js',
     },
-    { path: '/api/membership', handler: '~/api/membership-proxy.js' },
+    { path: '/api/membership/v0', handler: '~/api/membership-proxy.js' },
+    { path: '/api/membership/v1', handler: '~/api/membership-proxy-v1.js' },
     { path: '/api', handler: '~/api/index.js' },
   ],
 

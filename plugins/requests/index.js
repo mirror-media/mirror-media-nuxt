@@ -3,7 +3,7 @@ import _ from 'lodash'
 import axios from 'axios'
 import qs from 'qs'
 
-import { ENV, API_TIMEOUT, DOMAIN_NAME } from '~/configs/config.js'
+import { API_TIMEOUT, DOMAIN_NAME, ENV } from '~/configs/config.js'
 
 const baseUrl = process.browser
   ? `//${location.host}/`
@@ -24,7 +24,7 @@ function snakeCase(text) {
 
 async function fetchApiData(url, fromMembershipGateway = false, token) {
   const urlFetch = fromMembershipGateway
-    ? `${baseUrl}api/membership${url}`
+    ? `${baseUrl}api/membership/v0${url}`
     : `${baseUrl}api${url}`
   const requestConfig = fromMembershipGateway
     ? {
