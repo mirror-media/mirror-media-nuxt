@@ -42,3 +42,6 @@
 2020/12/15
   - release version: master_kwhsiung_996
   - features: 404 page, revise article wide style and add GA event (click and visible)
+2020/12/17
+  - release version: master_kwhsiung_1008
+  - features: header add 新聞自律綱要 and debug LazyRenderer 
