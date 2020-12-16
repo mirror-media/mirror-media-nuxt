@@ -17,6 +17,7 @@ export default {
     ContainerMembershipCancelPleaseConfirm,
     ContainerMembershipCancelSuccess,
   },
+  middleware: ['authenticate'],
   data() {
     return {
       pageState: 'confirmation',

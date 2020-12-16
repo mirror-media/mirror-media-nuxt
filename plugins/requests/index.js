@@ -232,4 +232,21 @@ export default (context, inject) => {
   inject('fetchGrouped', () => fetchGcsData('grouped'))
 
   inject('fetchPopular', () => fetchGcsData('popularlist'))
+
+  inject('fetchTokenState', async (token) => {
+    const urlFetch = `${baseUrl}api/membership/v1/tokenState`
+    const requestConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    try {
+      const res = await axios.get(urlFetch, requestConfig)
+      return camelizeKeys(res.data)
+    } catch (err) {
+      const massage = err.massage || err
+      const code = err.code || 500
+      throw new FetchError(massage, code, '/api/membership/v1/tokenState')
+    }
+  })
 }
