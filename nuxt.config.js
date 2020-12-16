@@ -238,20 +238,32 @@ module.exports = {
     [
       '@nuxtjs/firebase',
       {
-        config: {
-          /*
-           * exposed apiKey is not a security risk
-           * see: https://stackoverflow.com/a/37484053
-           */
-          apiKey: 'AIzaSyAavk46-8OQ4B2cv0TOqxOMjd5Fe4tIauc',
-          authDomain: 'mirrormediaapptest.firebaseapp.com',
-          databaseURL: 'https://mirrormediaapptest.firebaseio.com',
-          projectId: 'mirrormediaapptest',
-          storageBucket: 'mirrormediaapptest.appspot.com',
-          messagingSenderId: '305253456270',
-          appId: '1:305253456270:web:21f9851dd09f60ebfbacdf',
-          measurementId: 'G-EY5CYC602Z',
-        },
+        /*
+         * exposed apiKey in config is not a security risk
+         * see: https://stackoverflow.com/a/37484053
+         */
+        config:
+          ENV === 'prod' || ENV === 'staging'
+            ? {
+                apiKey: 'AIzaSyDluvbZhIQgcicqXVarLkdP4PG6maZlEMI',
+                authDomain: 'mirromedia-app.firebaseapp.com',
+                databaseURL: 'https://mirromedia-app.firebaseio.com',
+                projectId: 'mirromedia-app',
+                storageBucket: 'mirromedia-app.appspot.com',
+                messagingSenderId: '231032158952',
+                appId: '1:231032158952:web:975862d0b50f8bdd1d275d',
+                measurementId: 'G-Q1GK3C4WNR',
+              }
+            : {
+                apiKey: 'AIzaSyAavk46-8OQ4B2cv0TOqxOMjd5Fe4tIauc',
+                authDomain: 'mirrormediaapptest.firebaseapp.com',
+                databaseURL: 'https://mirrormediaapptest.firebaseio.com',
+                projectId: 'mirrormediaapptest',
+                storageBucket: 'mirrormediaapptest.appspot.com',
+                messagingSenderId: '305253456270',
+                appId: '1:305253456270:web:21f9851dd09f60ebfbacdf',
+                measurementId: 'G-EY5CYC602Z',
+              },
         services: {
           auth: {
             ssr: true,
