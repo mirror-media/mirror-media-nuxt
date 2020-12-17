@@ -23,7 +23,13 @@
         </button>
       </div>
     </div>
-    <nuxt-link v-else to="/login" class="not-logged-in-link">登入</nuxt-link>
+    <nuxt-link
+      v-else
+      :to="`/login?destination=${$route.path}`"
+      class="not-logged-in-link"
+    >
+      登入
+    </nuxt-link>
   </div>
 </template>
 
