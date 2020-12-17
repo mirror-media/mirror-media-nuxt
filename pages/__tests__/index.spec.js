@@ -11,6 +11,7 @@ import Home, {
 } from '../index.vue'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
+import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
@@ -28,6 +29,7 @@ const createWrapper = createWrapperHelper({
   mocks: {
     $fetchList: () => Promise.resolve({}),
     $fetchExternals: () => Promise.resolve({}),
+    $fetchEvent: () => Promise.resolve({}),
   },
   stubs: ['ClientOnly'],
 })
@@ -153,6 +155,105 @@ describe('編輯精選', () => {
       eventLabel: 'choice',
     })
   })
+})
+
+describe('鏡電視', function () {
+  test('display 鏡電視 when the current date is between the start date and the end date of the mod event', async function () {
+    await assertExistenceByDate(
+      'Thu, 11 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sat, 13 Jun 2020 10:00:00 GMT',
+      true
+    )
+  })
+
+  test('do not display 鏡電視 when the current date is less then the start date of the mod event', async function () {
+    await assertExistenceByDate(
+      'Mon, 01 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sat, 13 Jun 2020 10:00:00 GMT',
+      false
+    )
+  })
+
+  test('do not display 鏡電視 when the current date is greater than or equal to the end date of the mod event', async function () {
+    await assertExistenceByDate(
+      'Sun, 21 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sat, 13 Jun 2020 10:00:00 GMT',
+      false
+    )
+  })
+
+  test('pass the embedded html to UiVideoModal', function () {
+    const eventModMock = {
+      embed: '<iframe src="test-src"></iframe>',
+    }
+    const sut = createWrapper(Home, {
+      data() {
+        return {
+          eventMod: eventModMock,
+          flashNews: flashNewsRequiredMock,
+        }
+      },
+      computed: {
+        shouldOpenMirrorTv: () => true,
+      },
+    })
+
+    expect(sut.getComponent(UiVideoModal).props().embeddedHtml).toBe(
+      eventModMock.embed
+    )
+  })
+
+  test('send the GA event when UiVideoModal emits the "sendGa:open" or "sendGa:close"', function () {
+    /* Arrange */
+    const $ga = { event: jest.fn() }
+    const sut = createWrapper(Home, {
+      computed: {
+        shouldOpenMirrorTv: () => true,
+      },
+      mocks: { $ga },
+    })
+
+    /* Act */
+    sut.getComponent(UiVideoModal).vm.$emit('sendGa:open')
+    sut.getComponent(UiVideoModal).vm.$emit('sendGa:close')
+
+    /* Assert */
+    ;['mod open', 'mod close'].forEach(function assert(eventLabel, idx) {
+      expect($ga.event).nthCalledWith(idx + 1, {
+        eventCategory: 'home',
+        eventAction: 'click',
+        eventLabel,
+      })
+    })
+  })
+
+  async function assertExistenceByDate(
+    now,
+    startDate,
+    endDate,
+    doesMirrorTvExist
+  ) {
+    expect.assertions(1)
+
+    /* Arrange */
+    jest.spyOn(Date, 'now').mockImplementationOnce(() => new Date(now))
+
+    const sut = createWrapper(Home, {
+      mocks: {
+        $fetchEvent: () =>
+          Promise.resolve({
+            items: [{ startDate, endDate }],
+          }),
+      },
+    })
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.findComponent(UiVideoModal).exists()).toBe(doesMirrorTvExist)
+  }
 })
 
 describe('UiArticleListFocus', () => {
