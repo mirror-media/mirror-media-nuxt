@@ -38,6 +38,17 @@
 
       <div class="column-container">
         <aside>
+          <section v-if="shouldOpenMirrorTv" class="container">
+            <UiColumnHeader title="鏡電視" class="home__column-header" />
+            <LazyRenderer>
+              <UiVideoModal
+                :embeddedHtml="eventMod.embed"
+                @sendGa:open="sendGaForClick('mod open')"
+                @sendGa:close="sendGaForClick('mod close')"
+              />
+            </LazyRenderer>
+          </section>
+
           <section class="container">
             <UiColumnHeader title="焦點新聞" class="home__column-header" />
             <div class="article-list-focus-container">
@@ -92,6 +103,7 @@ import _ from 'lodash'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiColumnHeader from '~/components/UiColumnHeader.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
+import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
@@ -123,6 +135,7 @@ export default {
     UiFlashNews,
     UiColumnHeader,
     UiEditorChoices,
+    UiVideoModal,
     UiArticleListFocus,
     UiArticleGallery,
     UiInfiniteLoading,
@@ -150,6 +163,8 @@ export default {
       },
       areMicroAdsInserted: false,
       areExternalsInserted: false,
+
+      eventMod: {},
     }
   },
 
@@ -193,6 +208,23 @@ export default {
     latestItems() {
       return this.latestList.items
     },
+
+    shouldOpenMirrorTv() {
+      if (!this.doesHaveEventMod) {
+        return false
+      }
+
+      const now = Date.now()
+
+      return (
+        now >= new Date(this.eventMod.startDate) &&
+        now < new Date(this.eventMod.endDate)
+      )
+    },
+    doesHaveEventMod() {
+      return !_.isEmpty(this.eventMod)
+    },
+
     articlesFocus() {
       return this.articleGrouped.grouped ?? []
     },
@@ -245,6 +277,7 @@ export default {
 
   mounted() {
     this.loadLatestListInitial()
+    this.loadEventMod()
   },
 
   methods: {
@@ -303,6 +336,16 @@ export default {
           isAudioSiteOnly: false,
         })) || {}
       )
+    },
+    async loadEventMod() {
+      const { items = [] } =
+        (await this.$fetchEvent({
+          isFeatured: true,
+          eventType: 'mod',
+          maxResults: 1,
+        })) || {}
+
+      this.eventMod = Object.freeze(items[0] || {})
     },
     pushLatestItems(items = []) {
       this.latestList.items.push(...items.map(this.transformLatestItemContent))
@@ -508,6 +551,9 @@ export {
   @include media-breakpoint-up(sm) {
     width: 100%;
     margin: 0 auto 40px auto;
+  }
+  @include media-breakpoint-up(sm) {
+    margin: 0 auto 30px auto;
   }
 }
 
