@@ -52,6 +52,8 @@ export default {
       this.$store.commit('membership/ON_AUTH_STATE_CHANGED_MUTATION', {
         authUser: {},
       })
+
+      window.location.reload()
     },
     handleMemberIconClick() {
       this.shouldShowDropdownMenu = !this.shouldShowDropdownMenu
