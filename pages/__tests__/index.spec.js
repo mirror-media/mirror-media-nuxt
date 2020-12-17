@@ -18,12 +18,14 @@ import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
 
-const flashNewsRequiredMock = Array(3).fill({})
+const dataRequiredMock = {
+  flashNews: Array(3).fill({}),
+}
 
 const createWrapper = createWrapperHelper({
   data() {
     return {
-      flashNews: flashNewsRequiredMock,
+      ...dataRequiredMock,
     }
   },
   mocks: {
@@ -104,10 +106,10 @@ describe('編輯精選', () => {
     const sut = createWrapper(Home, {
       data() {
         return {
+          ...dataRequiredMock,
           articleGrouped: {
             choices: [choice1Mock, choice2Mock],
           },
-          flashNews: flashNewsRequiredMock,
         }
       },
     })
@@ -192,8 +194,8 @@ describe('鏡電視', function () {
     const sut = createWrapper(Home, {
       data() {
         return {
+          ...dataRequiredMock,
           eventMod: eventModMock,
-          flashNews: flashNewsRequiredMock,
         }
       },
       computed: {
@@ -261,10 +263,10 @@ describe('UiArticleListFocus', () => {
     const wrapper = createWrapper(Home, {
       data() {
         return {
+          ...dataRequiredMock,
           articleGrouped: {
             grouped: mockGrouped,
           },
-          flashNews: flashNewsRequiredMock,
         }
       },
     })
@@ -277,10 +279,10 @@ describe('UiArticleListFocus', () => {
     const wrapper = createWrapper(Home, {
       data() {
         return {
+          ...dataRequiredMock,
           articleGrouped: {
             grouped: [{ relateds: mockGroupedRelateds }],
           },
-          flashNews: flashNewsRequiredMock,
         }
       },
     })
@@ -361,11 +363,11 @@ describe('最新文章', () => {
     createWrapper(Home, {
       data() {
         return {
+          ...dataRequiredMock,
           articleGrouped: {
             choices: [{ slug: '1' }],
             grouped: [{ slug: '2', relateds: [{ slug: '3' }] }],
           },
-          flashNews: flashNewsRequiredMock,
         }
       },
       mocks: {
