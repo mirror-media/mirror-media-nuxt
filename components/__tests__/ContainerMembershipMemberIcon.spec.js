@@ -73,11 +73,15 @@ describe('data bindings with vuex store, and user email exist', function () {
     expect(wrapper.getComponent(RouterLinkStub).props().to).toBe('/profile')
   })
 
-  test('should call the $fire.auth.signOut after we click the sign out button, if current visitor is a member', async function () {
+  test('should call the $fire.auth.signOut and reload the page after we click the sign out button, if current visitor is a member', async function () {
     const mockFire = {
       auth: {
         signOut: jest.fn(() => Promise.resolve()),
       },
+    }
+    delete window.location
+    window.location = {
+      reload: jest.fn(),
     }
     const wrapper = createWrapper(ContainerMembershipMemberIcon, {
       localVue,
@@ -89,6 +93,7 @@ describe('data bindings with vuex store, and user email exist', function () {
     const signOutButton = wrapper.get('.sign-out-button')
     await signOutButton.trigger('click')
     expect(mockFire.auth.signOut).toHaveBeenCalled()
+    expect(window.location.reload).toHaveBeenCalled()
   })
 
   test('should hide the dropdown menu in the logged in wrapper after mounted', function () {
