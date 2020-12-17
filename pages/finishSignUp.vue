@@ -64,7 +64,6 @@ export default {
     }
   },
   async beforeMount() {
-    // TODO: maybe we can move the logics below to the server side to reduce loading time on client side
     const email = await this.getEmail()
     if (email) {
       await this.signInWithEmail(email)
@@ -87,8 +86,9 @@ export default {
         await this.$fire.auth.signInWithEmailLink(email, window.location.href)
         await localforage.removeItem('emailForSignIn')
 
-        // this.$router.replace('/')
-        window.location.replace('/')
+        const destination = await localforage.getItem('mm-login-destination')
+        await localforage.removeItem('mm-login-destination')
+        window.location.replace(destination)
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e)

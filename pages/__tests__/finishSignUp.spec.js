@@ -92,9 +92,17 @@ describe('email validations', function () {
     expect(mockRouter.replace).toHaveBeenCalledWith('/login')
   })
 
-  test('should sign in with firebase successfully and redirect to home page if we can find email for sign in in the storage of device', async function () {
+  test('should sign in with firebase successfully and redirect to destination if we can find email for sign in in the storage of device', async function () {
     const mockEmail = 'example@example.com'
-    jest.spyOn(localforage, 'getItem').mockImplementation(() => mockEmail)
+    const mockDestination = '/mock/destination'
+    jest.spyOn(localforage, 'getItem').mockImplementation((key) => {
+      switch (key) {
+        case 'emailForSignIn':
+          return mockEmail
+        case 'mm-login-destination':
+          return mockDestination
+      }
+    })
     const spyRemoveItem = jest
       .spyOn(localforage, 'removeItem')
       .mockImplementation(() => {})
@@ -118,6 +126,7 @@ describe('email validations', function () {
     await flushPromises()
     expect(mockSignInWithEmailLink.mock.calls[0][0]).toBe(mockEmail)
     expect(spyRemoveItem).toHaveBeenCalledWith('emailForSignIn')
-    expect(window.location.replace).toHaveBeenCalledWith('/')
+    expect(spyRemoveItem).toHaveBeenCalledWith('mm-login-destination')
+    expect(window.location.replace).toHaveBeenCalledWith(mockDestination)
   })
 })

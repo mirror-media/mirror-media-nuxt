@@ -45,12 +45,18 @@ describe('handleSubmit method about behaviours after login button clicked', func
   test(`should
     show invalid hint in UiMembershipEmailInput,
     after submit button clicked,
-    than
+    then
     send finish-sign-in link to email through @nuxtjs/firebase,
     store the email using localforage,
     if email input is valid and @nuxtjs/firebase auth request send successfully
   `, async function () {
-    expect.assertions(5)
+    expect.assertions(6)
+    const mockDestination = '/mock/destination'
+    const mockRoute = {
+      query: {
+        destination: mockDestination,
+      },
+    }
     const mockSendSignInLinkToEmail = jest.fn(() => Promise.resolve())
     const spySetItem = jest
       .spyOn(localforage, 'setItem')
@@ -63,6 +69,7 @@ describe('handleSubmit method about behaviours after login button clicked', func
     })
     const wrapper = createWrapper(ContainerMembershipLoginWithEmail, {
       mocks: {
+        $route: mockRoute,
         $fire: {
           auth: {
             sendSignInLinkToEmail: mockSendSignInLinkToEmail,
@@ -81,8 +88,12 @@ describe('handleSubmit method about behaviours after login button clicked', func
     expect(mockSendSignInLinkToEmail.mock.calls[0][1].url).toBe(
       `${mockOrigin}/finishSignUp`
     )
-    expect(spySetItem).toHaveBeenCalledWith('emailForSignIn', mockEmail)
     await flushPromises()
+    expect(spySetItem).toHaveBeenCalledWith('emailForSignIn', mockEmail)
+    expect(spySetItem).toHaveBeenCalledWith(
+      'mm-login-destination',
+      mockDestination
+    )
     expect(wrapper.emitted().success[0]).toEqual([mockEmail])
   })
   test('should append "shouldRememberMe=true" query to sign in link to email if .remember-me-checkbox was checked', async function () {
