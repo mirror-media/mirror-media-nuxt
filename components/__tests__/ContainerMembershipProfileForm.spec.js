@@ -29,7 +29,7 @@ describe('data bindings with vuex store, and user email exist', function () {
         },
       },
     }
-    storeOptions.modules.membership.state.user.email = mockEmail
+    storeOptions.modules.membership.state.userEmail = mockEmail
   })
 
   test('should show the email of the current member in profile page', function () {
