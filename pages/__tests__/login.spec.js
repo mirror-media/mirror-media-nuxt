@@ -1,5 +1,6 @@
 import flushPromises from 'flush-promises'
 import createWrapperHelper from '@/test/helpers/createWrapperHelper'
+import localforage from 'localforage'
 import page from '../login.vue'
 import ContainerMembershipLoginWithEmail from '~/components/ContainerMembershipLoginWithEmail.vue'
 import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
@@ -44,6 +45,12 @@ describe('validations about visitor have been redirect back to login page after 
     window.location = {
       replace: jest.fn(),
     }
+    const mockDestination = '/mock/destination'
+    jest.spyOn(localforage, 'getItem').mockImplementation(() => mockDestination)
+    const spyRemoveItem = jest
+      .spyOn(localforage, 'removeItem')
+      .mockImplementation(() => {})
+
     createWrapper(page, {
       mocks: {
         $fire: {
@@ -54,7 +61,8 @@ describe('validations about visitor have been redirect back to login page after 
       },
     })
     await flushPromises()
-    expect(window.location.replace).toHaveBeenCalledWith('/')
+    expect(spyRemoveItem).toHaveBeenCalledWith('mm-login-destination')
+    expect(window.location.replace).toHaveBeenCalledWith(mockDestination)
   })
 
   test('should not redirect to home page before login paged mount, because the reason why the current visitor come to login page is not been redirect by Google/Facebook auth', async function () {

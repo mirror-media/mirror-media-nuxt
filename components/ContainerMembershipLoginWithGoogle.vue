@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import localforage from 'localforage'
 import SvgGoogleIcon from '~/assets/membership-google-icon.svg?inline'
 
 export default {
@@ -13,7 +14,11 @@ export default {
     SvgGoogleIcon,
   },
   methods: {
-    handleClick() {
+    async handleClick() {
+      await localforage.setItem(
+        'mm-login-destination',
+        this.$route.query.destination ?? '/'
+      )
       const provider = new this.$fireModule.auth.GoogleAuthProvider()
       this.$fire.auth.signInWithRedirect(provider)
     },

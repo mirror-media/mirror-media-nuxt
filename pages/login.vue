@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import localforage from 'localforage'
 import ContainerMembershipLoginWithGoogle from '~/components/ContainerMembershipLoginWithGoogle.vue'
 import ContainerMembershipLoginWithEmail from '~/components/ContainerMembershipLoginWithEmail.vue'
 import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
@@ -70,8 +71,9 @@ export default {
       const result = await this.$fire.auth.getRedirectResult()
       this.isFederatedRedirectResultLoading = false
       if (result.user !== null) {
-        // this.$router.replace('/')
-        window.location.replace('/')
+        const destination = await localforage.getItem('mm-login-destination')
+        await localforage.removeItem('mm-login-destination')
+        window.location.replace(destination)
       }
     } catch (e) {
       // eslint-disable-next-line no-console
