@@ -1,4 +1,5 @@
 import localforage from 'localforage'
+import flushPromises from 'flush-promises'
 
 import TheGdpr from '../TheGdpr.vue'
 
@@ -27,19 +28,45 @@ describe('GDPR', () => {
     expect(wrapper.find('.the-gdpr').exists()).toBe(true)
   })
 
-  test('close GDPR when users click close button', async () => {
-    const spyGetItem = jest
+  test('close the GDPR and prevent users from seeing it in the future when users click the close button', async () => {
+    jest
       .spyOn(localforage, 'getItem')
-      .mockImplementation(() => Promise.resolve(JSON.stringify(true)))
+      .mockImplementation((key) =>
+        Promise.resolve(
+          key === 'mmShouldOpenGdpr' ? null : JSON.stringify(false)
+        )
+      )
+    const spySetItem = jest.spyOn(localforage, 'setItem')
 
     const wrapper = createWrapper(TheGdpr)
 
-    await wrapper.vm.$nextTick()
+    await flushPromises()
 
     await wrapper.get('button').trigger('click')
 
     expect(wrapper.find('.the-gdpr').exists()).toBe(false)
+    expect(spySetItem).toBeCalledWith('mmShouldOpenGdpr', JSON.stringify(false))
 
-    spyGetItem.mockRestore()
+    jest.restoreAllMocks()
+  })
+
+  test('do not show the GDPR if users have closed it', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    jest
+      .spyOn(localforage, 'getItem')
+      .mockImplementation((key) =>
+        Promise.resolve(JSON.stringify(key !== 'mmShouldOpenGdpr'))
+      )
+
+    const sut = createWrapper(TheGdpr)
+
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.the-gdpr').exists()).toBe(false)
+
+    jest.restoreAllMocks()
   })
 })
