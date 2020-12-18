@@ -9,46 +9,45 @@ const createWrapper = createWrapperHelper({
   stubs: ['transition'],
 })
 
-describe('GDPR', () => {
-  test('close the GDPR and prevent users from seeing it in the future when users click the close button', async () => {
-    jest
-      .spyOn(localforage, 'getItem')
-      .mockImplementation((key) =>
-        Promise.resolve(
-          key === 'mmShouldOpenGdpr' ? null : JSON.stringify(false)
-        )
-      )
-    const spySetItem = jest.spyOn(localforage, 'setItem')
+test('close the GDPR and prevent users from seeing it in the future when users click the close button', async function () {
+  expect.assertions(2)
 
-    const wrapper = createWrapper(TheGdpr)
+  /* Arrange */
+  jest
+    .spyOn(localforage, 'getItem')
+    .mockImplementation((key) =>
+      Promise.resolve(key === 'mmShouldOpenGdpr' ? null : JSON.stringify(false))
+    )
+  const spySetItem = jest.spyOn(localforage, 'setItem')
 
-    await flushPromises()
+  const sut = createWrapper(TheGdpr)
 
-    await wrapper.get('button').trigger('click')
+  await flushPromises()
 
-    expect(wrapper.find('.the-gdpr').exists()).toBe(false)
-    expect(spySetItem).toBeCalledWith('mmShouldOpenGdpr', JSON.stringify(false))
+  /* Act */
+  await sut.get('button').trigger('click')
 
-    jest.restoreAllMocks()
-  })
+  /* Assert */
+  expect(sut.find('.the-gdpr').exists()).toBe(false)
+  expect(spySetItem).toBeCalledWith('mmShouldOpenGdpr', JSON.stringify(false))
+})
 
-  test('do not show the GDPR if users have closed it', async function () {
-    expect.assertions(1)
+test('do not show the GDPR if users have closed it', async function () {
+  expect.assertions(1)
 
-    /* Arrange */
-    jest
-      .spyOn(localforage, 'getItem')
-      .mockImplementation((key) =>
-        Promise.resolve(JSON.stringify(key !== 'mmShouldOpenGdpr'))
-      )
+  /* Arrange */
+  jest
+    .spyOn(localforage, 'getItem')
+    .mockImplementation((key) =>
+      Promise.resolve(JSON.stringify(key !== 'mmShouldOpenGdpr'))
+    )
 
-    const sut = createWrapper(TheGdpr)
+  const sut = createWrapper(TheGdpr)
 
-    await flushPromises()
+  await flushPromises()
 
-    /* Assert */
-    expect(sut.find('.the-gdpr').exists()).toBe(false)
+  /* Assert */
+  expect(sut.find('.the-gdpr').exists()).toBe(false)
 
-    jest.restoreAllMocks()
-  })
+  jest.restoreAllMocks()
 })
