@@ -39,6 +39,8 @@
     </LazyRenderer>
 
     <div v-if="updatedAt" class="updated-at">更新時間／{{ updatedAt }}</div>
+
+    <UiWineWarning v-if="doesHaveWineCategory" />
   </section>
 </template>
 
@@ -50,6 +52,7 @@ import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
 import UiArticleIndex from './UiArticleIndex.vue'
 import UiListRelated from './UiListRelated.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 
@@ -61,6 +64,7 @@ export default {
     UiArticleBody,
     UiArticleIndex,
     UiListRelated,
+    UiWineWarning,
   },
 
   props: {
@@ -173,6 +177,12 @@ export default {
     },
     doesHaveAnyRelateds() {
       return this.relateds.length > 0
+    },
+
+    doesHaveWineCategory() {
+      return Boolean(
+        this.story.categories?.find((category) => category.name === 'wine')
+      )
     },
   },
 

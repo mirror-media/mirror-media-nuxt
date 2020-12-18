@@ -1,5 +1,6 @@
 import CulturePost from '../ContainerCulturePost.vue'
 import UiArticleIndex from '../UiArticleIndex.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper.js'
 
@@ -22,4 +23,16 @@ describe('article index', () => {
 
     expect(sut.findComponent(UiArticleIndex).exists()).toBe(false)
   })
+})
+
+test('show the wine warning when the category name of a story has "wine"', function () {
+  const sut = createWrapper(CulturePost, {
+    propsData: {
+      story: {
+        categories: [{ name: 'wine' }],
+      },
+    },
+  })
+
+  expect(sut.findComponent(UiWineWarning).exists()).toBe(true)
 })
