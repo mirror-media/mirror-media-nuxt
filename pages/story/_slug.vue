@@ -166,17 +166,17 @@
           </div>
         </ClientOnly>
 
-        <ContainerFullScreenAds v-if="!hasWineCategory && canAdvertise" />
+        <ContainerFullScreenAds v-if="!doesHaveWineCategory && canAdvertise" />
       </div>
 
       <div class="sticky-footer">
         <AppOpenNotification v-if="false" />
 
-        <UiStickyAd v-if="!hasWineCategory && canAdvertise">
+        <UiStickyAd v-if="!doesHaveWineCategory && canAdvertise">
           <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
         </UiStickyAd>
 
-        <UiWineWarning v-if="hasWineCategory" />
+        <UiWineWarning v-if="doesHaveWineCategory" />
       </div>
 
       <div class="footer-container">
@@ -221,7 +221,10 @@ import {
   SITE_URL,
 } from '~/constants/index'
 import { DABLE_WIDGET_IDS, MICRO_AD_UNITS } from '~/constants/ads.js'
-import { checkStoryCategoryHasMemberOnly } from '~/utils/article'
+import {
+  checkStoryCategoryHasMemberOnly,
+  doesContainWineName,
+} from '~/utils/article'
 
 export default {
   name: 'Story',
@@ -361,10 +364,8 @@ export default {
     categoryTitle() {
       return this.category.title ?? ''
     },
-    hasWineCategory() {
-      return Boolean(
-        this.categories.find((category) => category.name === 'wine')
-      )
+    doesHaveWineCategory() {
+      return doesContainWineName(this.categories)
     },
     relateds() {
       return (this.story.relateds ?? []).filter((item) => item.slug)

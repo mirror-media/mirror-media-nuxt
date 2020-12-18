@@ -1,4 +1,19 @@
-import { checkStoryCategoryHasMemberOnly, getStoryPath } from '../article'
+import {
+  doesContainWineName,
+  checkStoryCategoryHasMemberOnly,
+  getStoryPath,
+} from '../article'
+
+test('the "doesContainWineName" function', function () {
+  expect(
+    doesContainWineName([
+      { name: 'test-1' },
+      { name: 'wine' },
+      { name: 'test-2' },
+    ])
+  ).toBe(true)
+  expect(doesContainWineName([{ name: 'test' }])).toBe(false)
+})
 
 describe('checkStoryCategoryHasMemberOnly function', function () {
   test('should return false if there is no truthy isMemberOnly property in the categories of story', function () {

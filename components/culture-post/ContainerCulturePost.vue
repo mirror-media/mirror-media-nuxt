@@ -55,6 +55,7 @@ import UiListRelated from './UiListRelated.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
+import { doesContainWineName } from '~/utils/article.js'
 
 export default {
   name: 'ContainerCulturePost',
@@ -180,9 +181,7 @@ export default {
     },
 
     doesHaveWineCategory() {
-      return Boolean(
-        this.story.categories?.find((category) => category.name === 'wine')
-      )
+      return doesContainWineName(this.story.categories)
     },
   },
 
