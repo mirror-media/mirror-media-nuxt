@@ -5,9 +5,7 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper.js'
 
 const createWrapper = createWrapperHelper({
   propsData: {
-    story: {
-      brief: { apiData: [] },
-    },
+    story: {},
   },
   mocks: {
     $store: {

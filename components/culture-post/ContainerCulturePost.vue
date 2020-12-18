@@ -144,12 +144,16 @@ export default {
       }
 
       function gainBrief() {
-        return brief.apiData
-          .filter((item = {}) => item.type === 'unstyled' && item.content?.[0])
-          .map((item) => ({
-            id: item.id,
-            content: item.content[0],
-          }))
+        return (
+          brief.apiData
+            ?.filter(
+              (item = {}) => item.type === 'unstyled' && item.content?.[0]
+            )
+            .map((item) => ({
+              id: item.id,
+              content: item.content[0],
+            })) || []
+        )
       }
     },
     indexes() {
