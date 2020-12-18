@@ -212,14 +212,16 @@ export default {
 
             return (
               <LazyRenderer class="story__youtube">
-                <iframe
-                  width="560"
-                  height="315"
-                  src={`https://www.youtube.com/embed/${youtubeId}`}
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
-                  allowfullscreen
-                />
+                <div class="wrapper">
+                  <iframe
+                    width="560"
+                    height="315"
+                    src={`https://www.youtube.com/embed/${youtubeId}`}
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  />
+                </div>
 
                 {description && <p class="g-story-caption">{description}</p>}
               </LazyRenderer>
@@ -430,8 +432,12 @@ export default {
   }
 
   &__youtube {
-    position: relative;
-    padding-top: 56.25%; // 315 / 560 * 100%
+    $aspect-ratio--youtube: 315 / 560;
+
+    .wrapper {
+      position: relative;
+      padding-top: $aspect-ratio--youtube * 100%;
+    }
 
     iframe {
       position: absolute;
