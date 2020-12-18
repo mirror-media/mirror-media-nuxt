@@ -59,6 +59,7 @@
                 :articleMain="article"
                 :articlesRelated="articlesRelatedFocus(article)"
                 class="home__article-list-focus"
+                :class="{ fixed: shouldFixLastFocusList }"
               />
             </div>
           </section>
@@ -108,6 +109,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import _ from 'lodash'
 import localforage from 'localforage'
 
@@ -183,10 +185,17 @@ export default {
       hasClosedFixedMirrorTv: false,
       doesUserCloseFixedMirrorTv: false,
       hasScrolled: false,
+
+      observerOfLastSecondFocusList: undefined,
+      shouldFixLastFocusList: false,
     }
   },
 
   computed: {
+    ...mapGetters({
+      isDesktopWidth: 'viewport/isViewportWidthUpXl',
+    }),
+
     editorChoicesArticles() {
       const { choices: articles = [] } = this.articleGrouped
 
@@ -299,6 +308,8 @@ export default {
         this.areExternalsInserted = true
       },
     ],
+
+    isDesktopWidth: ['handleFixLastFocusList'],
   },
 
   mounted() {
@@ -306,6 +317,14 @@ export default {
     this.loadEventMod()
 
     this.checkUserHasClosedFixedMirrorTv()
+
+    if (this.isDesktopWidth) {
+      this.observeToFixLastFocusList()
+    }
+  },
+
+  beforeDestroy() {
+    this.cleanFixedLastFocusList()
   },
 
   methods: {
@@ -457,6 +476,49 @@ export default {
       )
     },
 
+    handleFixLastFocusList() {
+      this.isDesktopWidth
+        ? this.observeToFixLastFocusList()
+        : this.cleanFixedLastFocusList()
+    },
+    observeToFixLastFocusList() {
+      import('intersection-observer').then(() => {
+        this.observerOfLastSecondFocusList = new IntersectionObserver(
+          function handleIntersect(entries) {
+            entries.forEach(({ isIntersecting, boundingClientRect }) => {
+              /**
+               * 當倒數第二個焦點新聞列表結束與視窗相交，且倒數第二個焦點新聞列表底部 <= 視窗頂部
+               * 開始固定倒數第一個焦點新聞列表
+               */
+              if (!isIntersecting && boundingClientRect.bottom <= 0) {
+                this.shouldFixLastFocusList = true
+
+                return
+              }
+
+              /**
+               * 當倒數第二個焦點新聞列表開始與視窗相交，且倒數第二個焦點新聞列表頂部 < 視窗頂部
+               * 結束固定倒數第一個焦點新聞列表
+               */
+              if (isIntersecting && boundingClientRect.top < 0) {
+                this.shouldFixLastFocusList = false
+              }
+            })
+          }.bind(this)
+        )
+
+        const lastSecondFocusList = document.querySelector(
+          '.home__article-list-focus:nth-last-child(2)'
+        )
+
+        this.observerOfLastSecondFocusList.observe(lastSecondFocusList)
+      })
+    },
+    cleanFixedLastFocusList() {
+      this.shouldFixLastFocusList = false
+      this.observerOfLastSecondFocusList.disconnect()
+    },
+
     sendGa(eventAction, eventLabel, eventCategory = 'home') {
       this.$ga.event({
         eventAction,
@@ -543,6 +605,8 @@ export {
 </script>
 
 <style lang="scss" scoped>
+$width--aside: 226px;
+
 .home {
   padding-top: 8px;
   overflow: hidden;
@@ -587,6 +651,12 @@ export {
       @include media-breakpoint-up(xl) {
         margin-top: 30px;
       }
+    }
+
+    &:last-child.fixed {
+      position: fixed;
+      top: 0;
+      width: $width--aside;
     }
   }
 
@@ -636,7 +706,7 @@ aside {
   @include media-breakpoint-up(xl) {
     order: 1;
     flex-shrink: 0;
-    width: 226px;
+    width: $width--aside;
   }
 }
 

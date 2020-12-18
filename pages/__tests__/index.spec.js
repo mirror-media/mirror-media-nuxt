@@ -31,6 +31,9 @@ const createWrapper = createWrapperHelper({
       ...dataRequiredMock,
     }
   },
+  computed: {
+    isDesktopWidth: () => false,
+  },
   mocks: {
     $fetchList: () => Promise.resolve({}),
     $fetchExternals: () => Promise.resolve({}),
