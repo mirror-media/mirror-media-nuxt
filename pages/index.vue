@@ -42,6 +42,7 @@
             <UiColumnHeader title="鏡電視" class="home__column-header" />
             <LazyRenderer>
               <UiVideoModal
+                class="mirror-tv-aside"
                 :embeddedHtml="eventMod.embed"
                 @sendGa:open="sendGaForClick('mod open')"
                 @sendGa:close="sendGaForClick('mod close')"
@@ -92,6 +93,15 @@
         </div>
       </div>
 
+      <div v-if="shouldOpenFixedMirrorTv" class="mirror-tv-fixed">
+        <UiVideoModal
+          :embeddedHtml="eventMod.embed"
+          @sendGa:open="sendGaForClick('mod open')"
+          @sendGa:close="sendGaForClick('mod close')"
+        />
+        <SvgCloseIcon @click="handleCloseFixedMirrorTv" />
+      </div>
+
       <ContainerFullScreenAds />
     </main>
   </div>
@@ -99,6 +109,7 @@
 
 <script>
 import _ from 'lodash'
+import localforage from 'localforage'
 
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiColumnHeader from '~/components/UiColumnHeader.vue'
@@ -109,6 +120,8 @@ import UiArticleGallery from '~/components/UiArticleGallery.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+
+import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
 import { isTruthy } from '~/utils/index.js'
 import { stripHtmlTag } from '~/utils/article.js'
@@ -141,6 +154,8 @@ export default {
     UiInfiniteLoading,
     ContainerGptAd,
     ContainerFullScreenAds,
+
+    SvgCloseIcon,
   },
 
   async fetch() {
@@ -165,6 +180,9 @@ export default {
       areExternalsInserted: false,
 
       eventMod: {},
+      hasClosedFixedMirrorTv: false,
+      doesUserCloseFixedMirrorTv: false,
+      hasScrolled: false,
     }
   },
 
@@ -219,6 +237,14 @@ export default {
       return (
         now >= new Date(this.eventMod.startDate) &&
         now < new Date(this.eventMod.endDate)
+      )
+    },
+    shouldOpenFixedMirrorTv() {
+      return (
+        !this.hasClosedFixedMirrorTv &&
+        this.shouldOpenMirrorTv &&
+        this.hasScrolled &&
+        !this.doesUserCloseFixedMirrorTv
       )
     },
     doesHaveEventMod() {
@@ -278,6 +304,8 @@ export default {
   mounted() {
     this.loadLatestListInitial()
     this.loadEventMod()
+
+    this.checkUserHasClosedFixedMirrorTv()
   },
 
   methods: {
@@ -393,6 +421,40 @@ export default {
 
     articlesRelatedFocus(articleData = {}) {
       return articleData.relateds?.slice(0, 3) || []
+    },
+
+    async checkUserHasClosedFixedMirrorTv() {
+      try {
+        this.hasClosedFixedMirrorTv =
+          JSON.parse(await localforage.getItem('mmHasClosedFixedMirrorTv')) ??
+          false
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err)
+      }
+
+      if (!this.hasClosedFixedMirrorTv) {
+        this.checkScrolled()
+      }
+    },
+    handleCloseFixedMirrorTv() {
+      this.doesUserCloseFixedMirrorTv = true
+
+      localforage
+        .setItem('mmHasClosedFixedMirrorTv', JSON.stringify(true))
+        .catch(function rejected(err) {
+          // eslint-disable-next-line no-console
+          console.error(err)
+        })
+    },
+    checkScrolled() {
+      window.addEventListener(
+        'scroll',
+        () => {
+          this.hasScrolled = true
+        },
+        { once: true }
+      )
     },
 
     sendGa(eventAction, eventLabel, eventCategory = 'home') {
@@ -578,6 +640,10 @@ aside {
   }
 }
 
+.mirror-tv-aside {
+  padding-top: 66.67%;
+}
+
 .gallery-container {
   @include media-breakpoint-up(xl) {
     flex-grow: 1;
@@ -591,6 +657,33 @@ aside {
   @include media-breakpoint-up(xl) {
     border: none;
     padding: 0;
+  }
+}
+
+$right--mirror-tv: 10px;
+
+.mirror-tv-fixed {
+  position: fixed;
+  bottom: 10px;
+  right: $right--mirror-tv;
+  width: calc(50% - #{$right--mirror-tv});
+  z-index: 819;
+  @include media-breakpoint-up(md) {
+    width: 33%;
+  }
+  @include media-breakpoint-up(xl) {
+    width: 25%;
+  }
+
+  svg {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    width: 25px;
+    height: auto;
+    cursor: pointer;
+    user-select: none;
+    z-index: 9;
   }
 }
 </style>

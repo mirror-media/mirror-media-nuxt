@@ -1,3 +1,4 @@
+import localforage from 'localforage'
 import flushPromises from 'flush-promises'
 
 import Home, {
@@ -14,6 +15,8 @@ import UiEditorChoices from '~/components/UiEditorChoices.vue'
 import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+
+import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
@@ -160,34 +163,37 @@ describe('編輯精選', () => {
 })
 
 describe('鏡電視', function () {
-  test('display 鏡電視 when the current date is between the start date and the end date of the mod event', async function () {
+  afterEach(jest.restoreAllMocks)
+
+  test('display 鏡電視s when the current date is between the start date and the end date of the mod event', async function () {
     await assertExistenceByDate(
       'Thu, 11 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sat, 13 Jun 2020 10:00:00 GMT',
-      true
+      2
     )
   })
 
-  test('do not display 鏡電視 when the current date is less then the start date of the mod event', async function () {
+  test('do not display 鏡電視s when the current date is less then the start date of the mod event', async function () {
     await assertExistenceByDate(
       'Mon, 01 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sat, 13 Jun 2020 10:00:00 GMT',
-      false
+      0
     )
   })
 
-  test('do not display 鏡電視 when the current date is greater than or equal to the end date of the mod event', async function () {
+  test('do not display 鏡電視s when the current date is greater than or equal to the end date of the mod event', async function () {
     await assertExistenceByDate(
       'Sun, 21 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sat, 13 Jun 2020 10:00:00 GMT',
-      false
+      0
     )
   })
 
   test('pass the embedded html to UiVideoModal', function () {
+    /* Arrange */
     const eventModMock = {
       embed: '<iframe src="test-src"></iframe>',
     }
@@ -200,12 +206,15 @@ describe('鏡電視', function () {
       },
       computed: {
         shouldOpenMirrorTv: () => true,
+        shouldOpenFixedMirrorTv: () => true,
       },
     })
 
-    expect(sut.getComponent(UiVideoModal).props().embeddedHtml).toBe(
-      eventModMock.embed
-    )
+    /* Assert */
+    const videoModals = sut.findAllComponents(UiVideoModal)
+
+    expect(videoModals.at(0).props().embeddedHtml).toBe(eventModMock.embed)
+    expect(videoModals.at(1).props().embeddedHtml).toBe(eventModMock.embed)
   })
 
   test('send the GA event when UiVideoModal emits the "sendGa:open" or "sendGa:close"', function () {
@@ -214,36 +223,129 @@ describe('鏡電視', function () {
     const sut = createWrapper(Home, {
       computed: {
         shouldOpenMirrorTv: () => true,
+        shouldOpenFixedMirrorTv: () => true,
       },
       mocks: { $ga },
     })
 
-    /* Act */
-    sut.getComponent(UiVideoModal).vm.$emit('sendGa:open')
-    sut.getComponent(UiVideoModal).vm.$emit('sendGa:close')
+    const videoModals = sut.findAllComponents(UiVideoModal)
 
-    /* Assert */
-    ;['mod open', 'mod close'].forEach(function assert(eventLabel, idx) {
-      expect($ga.event).nthCalledWith(idx + 1, {
-        eventCategory: 'home',
-        eventAction: 'click',
-        eventLabel,
+    for (let i = 0; i < videoModals.length; i += 1) {
+      /* Act */
+      videoModals.at(i).vm.$emit('sendGa:open')
+      videoModals.at(i).vm.$emit('sendGa:close')
+
+      /* Assert */
+      ;['mod open', 'mod close'].forEach(function assert(eventLabel, idx) {
+        expect($ga.event).nthCalledWith(idx + 1, {
+          eventCategory: 'home',
+          eventAction: 'click',
+          eventLabel,
+        })
       })
-    })
+    }
   })
 
-  async function assertExistenceByDate(
-    now,
-    startDate,
-    endDate,
-    doesMirrorTvExist
-  ) {
+  test('show the fixed 鏡電視 when users begin to scroll down', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    jest
+      .spyOn(localforage, 'getItem')
+      .mockImplementation((key) =>
+        key === 'mmHasClosedFixedMirrorTv' ? null : true
+      )
+
+    const sut = createWrapper(Home, {
+      computed: {
+        shouldOpenMirrorTv: () => true,
+      },
+    })
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.mirror-tv-fixed').exists()).toBe(true)
+  })
+
+  test('close the fixed 鏡電視 and prevent users from seeing it in the future when they click the close icon', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    const spySetItem = jest.spyOn(localforage, 'setItem')
+
+    const sut = createWrapper(Home, {
+      data() {
+        return {
+          ...dataRequiredMock,
+          hasScrolled: true,
+        }
+      },
+      computed: {
+        shouldOpenMirrorTv: () => true,
+      },
+    })
+
+    /* Act */
+    sut.getComponent(SvgCloseIcon).vm.$emit('click')
+
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
+    expect(spySetItem).toBeCalledWith(
+      'mmHasClosedFixedMirrorTv',
+      JSON.stringify(true)
+    )
+  })
+
+  test('do not show the fixed 鏡電視 if users have closed it', async function () {
     expect.assertions(1)
 
     /* Arrange */
-    jest.spyOn(Date, 'now').mockImplementationOnce(() => new Date(now))
+    jest
+      .spyOn(localforage, 'getItem')
+      .mockImplementation((key) =>
+        JSON.stringify(key === 'mmHasClosedFixedMirrorTv')
+      )
 
     const sut = createWrapper(Home, {
+      data() {
+        return {
+          ...dataRequiredMock,
+          hasScrolled: true,
+        }
+      },
+      computed: {
+        shouldOpenMirrorTv: () => true,
+      },
+    })
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
+  })
+
+  async function assertExistenceByDate(now, startDate, endDate, mirrorTvNum) {
+    expect.assertions(1)
+
+    /* Arrange */
+    jest.spyOn(Date, 'now').mockReturnValueOnce(new Date(now))
+
+    const sut = createWrapper(Home, {
+      data() {
+        return {
+          ...dataRequiredMock,
+          hasScrolled: true,
+        }
+      },
       mocks: {
         $fetchEvent: () =>
           Promise.resolve({
@@ -254,7 +356,7 @@ describe('鏡電視', function () {
     await flushPromises()
 
     /* Assert */
-    expect(sut.findComponent(UiVideoModal).exists()).toBe(doesMirrorTvExist)
+    expect(sut.findAllComponents(UiVideoModal)).toHaveLength(mirrorTvNum)
   }
 })
 
