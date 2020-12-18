@@ -10,24 +10,6 @@ const createWrapper = createWrapperHelper({
 })
 
 describe('GDPR', () => {
-  test('should not render content by default', () => {
-    const wrapper = createWrapper(TheGdpr)
-
-    expect(wrapper.find('.the-gdpr').exists()).toBe(false)
-  })
-
-  test('should render content if data shouldOpenGdpr is true', () => {
-    const wrapper = createWrapper(TheGdpr, {
-      data() {
-        return {
-          shouldOpenGdpr: true,
-        }
-      },
-    })
-
-    expect(wrapper.find('.the-gdpr').exists()).toBe(true)
-  })
-
   test('close the GDPR and prevent users from seeing it in the future when users click the close button', async () => {
     jest
       .spyOn(localforage, 'getItem')
