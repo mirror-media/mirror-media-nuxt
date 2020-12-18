@@ -24,10 +24,9 @@
     }
   },
   "dependencies": {
-    "mirror-media-constants" : "mirror-media/constants#semver:^1.0.0",
     "@google-cloud/logging": "^8.0.6",
     "@mirror-media/nuxt-ssr-cache": "^1.6.1",
-    "@nuxtjs/composition-api": "^0.14.0",
+    "@nuxtjs/composition-api": "^0.17.0",
     "@nuxtjs/firebase": "^7.1.0",
     "@nuxtjs/pwa": "^3.0.2",
     "axios": "^0.21.0",
@@ -41,9 +40,10 @@
     "firebase-admin": "^9.4.1",
     "helmet": "^4.1.1",
     "humps": "^2.0.1",
-    "intersection-observer": "^0.11.0",
+    "intersection-observer": "^0.12.0",
     "localforage": "^1.9.0",
     "lodash": "^4.17.20",
+    "mirror-media-constants": "mirror-media/constants#semver:^1.0.0",
     "nuxt": "^2.14.5",
     "nuxt-user-agent": "^1.2.2",
     "qs": "^6.9.4",
