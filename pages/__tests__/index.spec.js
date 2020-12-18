@@ -253,7 +253,9 @@ describe('鏡電視', function () {
     jest
       .spyOn(localforage, 'getItem')
       .mockImplementation((key) =>
-        key === 'mmHasClosedFixedMirrorTv' ? null : true
+        Promise.resolve(
+          key === 'mmHasClosedFixedMirrorTv' ? null : JSON.stringify(true)
+        )
       )
 
     const sut = createWrapper(Home, {
@@ -313,7 +315,7 @@ describe('鏡電視', function () {
     jest
       .spyOn(localforage, 'getItem')
       .mockImplementation((key) =>
-        JSON.stringify(key === 'mmHasClosedFixedMirrorTv')
+        Promise.resolve(JSON.stringify(key === 'mmHasClosedFixedMirrorTv'))
       )
 
     const sut = createWrapper(Home, {
