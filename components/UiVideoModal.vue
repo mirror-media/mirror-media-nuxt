@@ -47,9 +47,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$aspect-ratio: 9 / 16;
+
 .video-modal {
   position: relative;
-  padding-top: 66.67%;
+  padding-top: $aspect-ratio * 100%;
 }
 
 .curtain,
@@ -66,15 +68,9 @@ export default {
   z-index: 9;
 }
 
-$aspect-ratio: 9 / 16;
-
 .wrapper {
   &.open {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -83,7 +79,7 @@ $aspect-ratio: 9 / 16;
 
     &::v-deep iframe {
       position: relative;
-      height: calc(100vw * #{$aspect-ratio});
+      height: $aspect-ratio * 100vw;
       max-width: 1024px;
       max-height: 576px;
     }
