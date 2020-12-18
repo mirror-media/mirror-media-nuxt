@@ -1593,6 +1593,13 @@
   dependencies:
     "@firebase/app-types" "0.6.1"
 
+"@firebase/database-types@0.6.1", "@firebase/database-types@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@firebase/database-types/-/database-types-0.6.1.tgz#cf1cfc03e617ed4c2561703781f85ba4c707ff65"
+  integrity sha512-JtL3FUbWG+bM59iYuphfx9WOu2Mzf0OZNaqWiQ7lJR8wBe7bS9rIm9jlBFtksB7xcya1lZSQPA/GAy2jIlMIkA==
+  dependencies:
+    "@firebase/app-types" "0.6.1"
+
 "@firebase/database@0.7.1":
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/@firebase/database/-/database-0.7.1.tgz#900d2e6ed734249e65e5f159293830e4f4285d6e"
@@ -1616,6 +1623,19 @@
     "@firebase/database-types" "0.5.2"
     "@firebase/logger" "0.2.6"
     "@firebase/util" "0.3.2"
+    faye-websocket "0.11.3"
+    tslib "^1.11.1"
+
+"@firebase/database@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@firebase/database/-/database-0.8.1.tgz#a7bc1c01052d35817a242c21bfe09ab29ee485a3"
+  integrity sha512-/1HhR4ejpqUaM9Cn3KSeNdQvdlehWIhdfTVWFxS73ZlLYf7ayk9jITwH10H3ZOIm5yNzxF67p/U7Z/0IPhgWaQ==
+  dependencies:
+    "@firebase/auth-interop-types" "0.1.5"
+    "@firebase/component" "0.1.21"
+    "@firebase/database-types" "0.6.1"
+    "@firebase/logger" "0.2.6"
+    "@firebase/util" "0.3.4"
     faye-websocket "0.11.3"
     tslib "^1.11.1"
 
@@ -1810,9 +1830,9 @@
     google-gax "^2.2.0"
 
 "@google-cloud/firestore@^4.5.0":
-  version "4.8.0"
-  resolved "https://registry.yarnpkg.com/@google-cloud/firestore/-/firestore-4.8.0.tgz#e04e15ee8792aa080a5047dc31383d2f275fe4a3"
-  integrity sha512-cBPo7QQG+aUhS7AIr6fDlA9KIX0/U26rKZyL2K/L68LArDQzgBk1/xOiMoflHRNDQARwCQ0PAZmw8V8CXg7vTg==
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/@google-cloud/firestore/-/firestore-4.8.1.tgz#bcba4d45d4d53dd4eaed5b19300ae238e65a3106"
+  integrity sha512-x/8ixlYqQuH9DoluhBj/uj3MqwoQN1lSCT2v+ieOXuh2L+8eoA7H+FF7f+UJ/D6hzo0MMWJd6q7QaBkpzp203Q==
   dependencies:
     fast-deep-equal "^3.1.1"
     functional-red-black-tree "^1.0.1"
@@ -6465,12 +6485,12 @@ firebase-admin@^9.3.0:
     "@google-cloud/storage" "^5.3.0"
 
 firebase-admin@^9.4.1:
-  version "9.4.1"
-  resolved "https://registry.yarnpkg.com/firebase-admin/-/firebase-admin-9.4.1.tgz#9b8704320dd8894dfa4acc70c66237323cba12ed"
-  integrity sha512-y9r2Mz2x1WTr60YrCDqz8Lw70DlwIvRIieVltP+UdRogkVpfnvyd+bi4D0KPlujW3teqcFPmxuzsXB+DP5vGfQ==
+  version "9.4.2"
+  resolved "https://registry.yarnpkg.com/firebase-admin/-/firebase-admin-9.4.2.tgz#190d5d7ca5e3f251d99503feb6e05e7ab1623851"
+  integrity sha512-mRnBJbW6BAz6DJkZ0GOUTkmnmCrwVzMreMc6O+RXWukFydOzi5Xr6TKSiPKxoOQw41r9IluP2AZ3Qzvlx2SR+g==
   dependencies:
-    "@firebase/database" "^0.6.10"
-    "@firebase/database-types" "^0.5.2"
+    "@firebase/database" "^0.8.1"
+    "@firebase/database-types" "^0.6.1"
     "@types/node" "^10.10.0"
     dicer "^0.3.0"
     jsonwebtoken "^8.5.1"
@@ -9507,6 +9527,10 @@ minizlib@^2.1.1:
   dependencies:
     minipass "^3.0.0"
     yallist "^4.0.0"
+
+"mirror-media-constants@mirror-media/constants#semver:^1.0.0":
+  version "0.0.0"
+  resolved "https://codeload.github.com/mirror-media/constants/tar.gz/f368713b55b6f24ecec28eb908c1b71790d6155d"
 
 mississippi@^3.0.0:
   version "3.0.0"

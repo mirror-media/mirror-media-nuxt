@@ -161,9 +161,9 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, requiredIf, between } from 'vuelidate/lib/validators'
+import countriesData from 'mirror-media-constants/countries.json'
+import twDistrictsData from 'mirror-media-constants/taiwan-districts.json'
 import UiMembershipDropdownMenu from '~/components/UiMembershipDropdownMenu.vue'
-import countriesData from '~/constants/countries.json'
-import twDistrictsData from '~/constants/taiwan-districts.json'
 
 export default {
   components: {

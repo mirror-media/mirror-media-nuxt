@@ -24,6 +24,7 @@
     }
   },
   "dependencies": {
+    "mirror-media-constants" : "mirror-media/constants#semver:^1.0.0",
     "@google-cloud/logging": "^8.0.6",
     "@mirror-media/nuxt-ssr-cache": "^1.6.1",
     "@nuxtjs/composition-api": "^0.14.0",
