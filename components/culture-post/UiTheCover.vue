@@ -1,7 +1,9 @@
 <template>
-  <div class="the-cover" :style="{ height: coverHeight }">
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <h1 v-html="title"></h1>
+  <div class="the-cover">
+    <div class="title-wrapper" :style="{ height: coverHeight }">
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <h1 v-html="title"></h1>
+    </div>
 
     <picture>
       <source :srcset="imgSrcLandscape" media="(min-width: 992px)" />
@@ -64,10 +66,16 @@ export default {
 
 <style lang="scss" scoped>
 .the-cover {
+  min-height: 100vh;
+}
+
+.title-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  z-index: 9;
 }
 
 h1 {
@@ -79,8 +87,8 @@ h1 {
   text-shadow: 0 6px 8px rgba(#000, 0.6);
   width: 100%;
   max-width: 240px;
+  margin: 240px auto 0 auto;
   text-align: center;
-  z-index: 1;
   @include media-breakpoint-up(lg) {
     font-size: 60px;
     line-height: 1.4;
@@ -91,9 +99,6 @@ h1 {
 picture {
   position: relative;
   display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
   &::after {
     content: '';
     position: absolute;
@@ -108,7 +113,6 @@ picture {
 
 img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
 }
 </style>
