@@ -29,31 +29,23 @@ export default {
     const shouldOpenGdpr = ref(false)
 
     localforage
-      .getItem('shouldOpenGdpr')
+      .getItem('mmShouldOpenGdpr')
       .then(function fulfilled(value) {
         shouldOpenGdpr.value = JSON.parse(value) ?? true
       })
       .catch(function rejected(err) {
-        /* eslint-disable no-console */
+        // eslint-disable-next-line no-console
         console.error(err)
-        console.error(
-          'Failed to get the "shouldOpenGdpr" item from storage by localForage'
-        )
-        /* eslint-enable no-console */
       })
 
     function closeGdpr() {
       shouldOpenGdpr.value = false
 
       localforage
-        .setItem('shouldOpenGdpr', JSON.stringify(shouldOpenGdpr.value))
+        .setItem('mmShouldOpenGdpr', JSON.stringify(shouldOpenGdpr.value))
         .catch(function rejected(err) {
-          /* eslint-disable no-console */
+          // eslint-disable-next-line no-console
           console.error(err)
-          console.error(
-            'Failed to set the "shouldOpenGdpr" item from storage by localForage'
-          )
-          /* eslint-enable no-console */
         })
     }
 
