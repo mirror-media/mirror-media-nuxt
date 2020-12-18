@@ -139,7 +139,7 @@
             'address-wrapper__address-input',
           ]"
           type="text"
-          placeholder="請輸入地址"
+          placeholder="請輸入街道、門號、巷弄、樓層等資訊"
         />
         <p v-show="shouldShowAddressInvalidHint" class="invalid-hint">
           請填寫完整地址
