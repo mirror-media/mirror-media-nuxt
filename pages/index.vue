@@ -353,7 +353,7 @@ export default {
       } = await this.fetchLatestList()
 
       const slugsOfChoicesAndFocus = [
-        ...this.groupedArticles.choices,
+        ...this.editorChoicesArticles,
         ...this.focusArticles,
         ...this.focusArticles.flatMap((article) => article.relateds),
       ]
