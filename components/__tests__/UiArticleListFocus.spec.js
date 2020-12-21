@@ -1,28 +1,16 @@
 import UiArticleListFocus from '../UiArticleListFocus.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
-import { getHref } from '~/plugins/article/href'
-import { getImage } from '~/plugins/article/image'
 
 const mockAricleMain = {
-  slug: '20200603edi030',
-  style: 'article',
   title: '圓佛洛伊德遺願',
-  heroImage: {
-    image: {
-      resizedTargets: {
-        mobile: {
-          url:
-            'https://www.mirrormedia.com.tw/assets/images/20200603180826-f1a34611e6b587aa9051d51d14bc45f0-mobile.jpg',
-        },
-      },
-    },
-  },
+  href: '/test-href-main/',
+  imgSrc: 'test-src',
 }
 const mockArticlesRelated = {
   slug: '20200603edi031',
-  style: 'article',
   title: '洛杉磯面目全非',
+  href: '/test-href-related/',
 }
 
 const createWrapper = createWrapperHelper({
@@ -30,17 +18,13 @@ const createWrapper = createWrapperHelper({
     articleMain: mockAricleMain,
     articlesRelated: [mockArticlesRelated],
   },
-  mocks: {
-    $getHref: getHref,
-    $getImage: getImage,
-  },
 })
 
 describe('main article', () => {
   test('render the proper content', () => {
     const wrapper = createWrapper(UiArticleListFocus)
 
-    const mainLink = wrapper.get(`[href="/story/${mockAricleMain.slug}/"]`)
+    const mainLink = wrapper.get(`[href="${mockAricleMain.href}"]`)
 
     // expect(mainLink.get('img').attributes().src).toBe(
     //   mockAricleMain.heroImage.image.resizedTargets.mobile.url
@@ -53,9 +37,7 @@ describe('related articles', () => {
   test('render the proper content', () => {
     const wrapper = createWrapper(UiArticleListFocus)
 
-    const relatedLink = wrapper.get(
-      `[href="/story/${mockArticlesRelated.slug}/"]`
-    )
+    const relatedLink = wrapper.get(`[href="${mockArticlesRelated.href}"]`)
     expect(relatedLink.get('h1').text()).toBe(mockArticlesRelated.title)
   })
 })
@@ -69,13 +51,11 @@ describe('emitGa method', () => {
       eventLabel: 'group',
     }
 
-    const mainLink = wrapper.get(`[href="/story/${mockAricleMain.slug}/"]`)
+    const mainLink = wrapper.get(`[href="${mockAricleMain.href}"]`)
     mainLink.trigger('click')
     expect(wrapper.emitted().sendGa[0]).toEqual([gaArgs])
 
-    const relatedLink = wrapper.get(
-      `[href="/story/${mockArticlesRelated.slug}/"]`
-    )
+    const relatedLink = wrapper.get(`[href="${mockArticlesRelated.href}"]`)
     relatedLink.trigger('click')
     expect(wrapper.emitted().sendGa[1]).toEqual([gaArgs])
   })

@@ -42,9 +42,6 @@ const createWrapper = createWrapperHelper({
   stubs: ['ClientOnly'],
 })
 
-const mockGrouped = [{}, {}, {}, {}]
-const mockGroupedRelateds = [{}, {}, {}, {}]
-
 describe('快訊', () => {
   test('transform contents of flash news', () => {
     const articleMock = {
@@ -367,28 +364,35 @@ describe('鏡電視', function () {
 
 describe('UiArticleListFocus', () => {
   test('render the correct number', () => {
+    const focusArticlesMock = [{ slug: 1 }, { slug: 2 }, { slug: 3 }]
     const wrapper = createWrapper(Home, {
       data() {
         return {
           ...dataRequiredMock,
           groupedArticles: {
-            grouped: mockGrouped,
+            grouped: focusArticlesMock,
           },
         }
       },
     })
 
     const focusArticleLists = wrapper.findAllComponents(UiArticleListFocus)
-    expect(focusArticleLists).toHaveLength(mockGrouped.length)
+    expect(focusArticleLists).toHaveLength(focusArticlesMock.length)
   })
 
   test('pass the correct value to prop articlesRelated', () => {
+    const focusArticleRelatedsMock = [
+      { slug: 1 },
+      { slug: 2 },
+      { slug: 3 },
+      { slug: 4 },
+    ]
     const wrapper = createWrapper(Home, {
       data() {
         return {
           ...dataRequiredMock,
           groupedArticles: {
-            grouped: [{ relateds: mockGroupedRelateds }],
+            grouped: [{ relateds: focusArticleRelatedsMock }],
           },
         }
       },
@@ -396,7 +400,7 @@ describe('UiArticleListFocus', () => {
 
     const focusArticleList = wrapper.findComponent(UiArticleListFocus)
     expect(focusArticleList.props().articlesRelated).toHaveLength(
-      mockGroupedRelateds.length - 1
+      focusArticleRelatedsMock.length - 1
     )
   })
 })

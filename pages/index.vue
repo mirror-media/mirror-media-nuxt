@@ -57,7 +57,7 @@
                 v-for="article in focusArticles"
                 :key="article.slug"
                 :articleMain="article"
-                :articlesRelated="focusArticlesRelated(article)"
+                :articlesRelated="article.relateds"
                 class="home__article-list-focus"
                 :class="{ fixed: shouldFixLastFocusList }"
               />
@@ -261,7 +261,31 @@ export default {
     },
 
     focusArticles() {
-      return this.groupedArticles.grouped ?? []
+      const { grouped: articles = [] } = this.groupedArticles
+
+      return articles.map(transformContentOfFocus)
+
+      function transformContentOfFocus(article) {
+        const { slug = '', title = '', relateds = [] } = article
+
+        return {
+          title,
+          slug,
+          href: getHref(article),
+          imgSrc: getImg(article),
+          relateds: relateds.slice(0, 3).map(transformContentOfFocusRelated),
+        }
+      }
+
+      function transformContentOfFocusRelated(article) {
+        const { slug = '', title = '' } = article
+
+        return {
+          slug,
+          title,
+          href: getHref(article),
+        }
+      }
     },
   },
 
@@ -436,10 +460,6 @@ export default {
       } finally {
         this.sendGa('scroll', `loadmore${this.latestList.page}`)
       }
-    },
-
-    focusArticlesRelated(articleData = {}) {
-      return articleData.relateds?.slice(0, 3) || []
     },
 
     async checkUserHasClosedFixedMirrorTv() {
