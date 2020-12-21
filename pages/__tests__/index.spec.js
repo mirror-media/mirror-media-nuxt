@@ -403,6 +403,32 @@ describe('UiArticleListFocus', () => {
       focusArticleRelatedsMock.length - 1
     )
   })
+
+  test('send the GA event when the component emits the "sendGa"', function () {
+    /* Arrange */
+    const $ga = { event: jest.fn() }
+    const sut = createWrapper(Home, {
+      data() {
+        return {
+          ...dataRequiredMock,
+          groupedArticles: {
+            grouped: [{ slug: 1 }],
+          },
+        }
+      },
+      mocks: { $ga },
+    })
+
+    /* Act */
+    sut.getComponent(UiArticleListFocus).vm.$emit('sendGa')
+
+    /* Assert */
+    expect($ga.event).toBeCalledWith({
+      eventCategory: 'home',
+      eventAction: 'click',
+      eventLabel: 'group',
+    })
+  })
 })
 
 describe('最新文章', () => {

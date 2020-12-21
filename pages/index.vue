@@ -60,6 +60,7 @@
                 :articlesRelated="article.relateds"
                 class="home__article-list-focus"
                 :class="{ fixed: shouldFixLastFocusList }"
+                @sendGa="sendGaForClick('group')"
               />
             </div>
           </section>
