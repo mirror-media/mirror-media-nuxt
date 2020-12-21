@@ -173,7 +173,6 @@ module.exports = {
     '~/plugins/vuePluginsGlobal.client.js',
     '~/plugins/vueDirectivesGlobal.js',
     '~/plugins/requests/index.js',
-    '~/plugins/article/index.js',
     '~/plugins/user-behavior-log/index.client.js',
   ],
 
