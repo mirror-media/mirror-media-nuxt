@@ -99,6 +99,7 @@
             <UiMembershipDropdownMenu
               class="address-dropdown-menus-item__dropdown-menu"
               :options="countriesOptions"
+              :defaultIndex="countriesTwIndex"
               :state="isAddressCountryInvalid ? 'invalid' : 'normal'"
               style="width: 100%"
               @change="handleDropdownMenuCountryChange"
@@ -227,6 +228,11 @@ export default {
       return this.$store.state.membership.userEmail
     },
 
+    countriesTwIndex() {
+      return countriesData.findIndex(function findTw(country) {
+        return country.ISO2 === 'TW'
+      })
+    },
     countriesOptions() {
       return countriesData.map(function getTraditionalChineseName(country) {
         return country.Taiwan
