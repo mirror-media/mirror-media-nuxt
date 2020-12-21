@@ -15,7 +15,7 @@
       </p>
     </div>
     <div class="wrapper__button-wrapper button-wrapper">
-      <nuxt-link to="/" replace class="back-to-home-button">回首頁</nuxt-link>
+      <a href="/" class="back-to-home-button">回首頁</a>
     </div>
   </div>
 </template>
