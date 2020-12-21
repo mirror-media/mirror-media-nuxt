@@ -291,10 +291,14 @@ describe('鏡電視', function () {
   }
 })
 
-describe('UiArticleListFocus', () => {
-  test('render the correct number', () => {
-    const focusArticlesMock = [{ slug: 1 }, { slug: 2 }, { slug: 3 }]
-    const wrapper = createWrapper(Home, {
+describe('焦點新聞', () => {
+  test('display the content', function () {
+    /* Arrange */
+    const focusArticlesMock = [
+      { slug: 1, relateds: [{}, {}, {}, {}] },
+      { slug: 2 },
+    ]
+    const sut = createWrapper(Home, {
       data() {
         return {
           ...dataRequiredMock,
@@ -305,32 +309,66 @@ describe('UiArticleListFocus', () => {
       },
     })
 
-    const focusArticleLists = wrapper.findAllComponents(UiArticleListFocus)
-    expect(focusArticleLists).toHaveLength(focusArticlesMock.length)
+    /* Assert */
+    const articleListsFocus = sut.findAllComponents(UiArticleListFocus)
+
+    expect(articleListsFocus).toHaveLength(focusArticlesMock.length)
+    expect(articleListsFocus.at(0).props().articlesRelated).toHaveLength(
+      focusArticlesMock[0].relateds.length - 1
+    )
   })
 
-  test('pass the correct value to prop articlesRelated', () => {
-    const focusArticleRelatedsMock = [
-      { slug: 1 },
-      { slug: 2 },
-      { slug: 3 },
-      { slug: 4 },
-    ]
-    const wrapper = createWrapper(Home, {
+  test('pass the data to the component', function () {
+    /* Arrange */
+    const focusArticleMock = {
+      slug: 'test-slug-main',
+      title: 'test title main',
+      style: 'test style main',
+      heroImage: {
+        image: {
+          resizedTargets: {
+            mobile: { url: 'test-hero-image.png' },
+          },
+        },
+      },
+      relateds: [
+        {
+          slug: 'test-slug-related',
+          title: 'test title related',
+          style: 'test style related',
+        },
+      ],
+    }
+    const sut = createWrapper(Home, {
       data() {
         return {
           ...dataRequiredMock,
           groupedArticles: {
-            grouped: [{ relateds: focusArticleRelatedsMock }],
+            grouped: [focusArticleMock],
           },
         }
       },
     })
 
-    const focusArticleList = wrapper.findComponent(UiArticleListFocus)
-    expect(focusArticleList.props().articlesRelated).toHaveLength(
-      focusArticleRelatedsMock.length - 1
+    /* Assert */
+    const { articleMain, articlesRelated } = sut
+      .getComponent(UiArticleListFocus)
+      .props()
+
+    expect(articleMain.slug).toBe(focusArticleMock.slug)
+    expect(articleMain.title).toBe(focusArticleMock.title)
+    expect(articleMain.href).toBe(`/story/${focusArticleMock.slug}/`)
+    expect(articleMain.imgSrc).toBe(
+      focusArticleMock.heroImage.image.resizedTargets.mobile.url
     )
+
+    const {
+      relateds: [related],
+    } = focusArticleMock
+
+    expect(articlesRelated[0].slug).toBe(related.slug)
+    expect(articlesRelated[0].title).toBe(related.title)
+    expect(articlesRelated[0].href).toBe(`/story/${related.slug}/`)
   })
 })
 
