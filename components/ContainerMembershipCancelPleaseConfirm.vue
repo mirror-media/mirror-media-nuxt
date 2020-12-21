@@ -29,7 +29,7 @@
 export default {
   computed: {
     currentMemberEmail() {
-      return this.$store.state.membership.user.email
+      return this.$store.state.membership.userEmail
     },
   },
   methods: {
