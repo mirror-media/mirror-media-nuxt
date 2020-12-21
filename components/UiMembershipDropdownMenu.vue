@@ -53,6 +53,10 @@ export default {
       type: Array,
       required: true,
     },
+    defaultIndex: {
+      type: Number,
+      default: null,
+    },
     state: {
       type: String,
       default: 'normal',
@@ -72,6 +76,11 @@ export default {
     activeItemText() {
       return this.selectedOption || this.placeholder
     },
+  },
+  beforeMount() {
+    if (typeof this.defaultIndex === 'number') {
+      this.handleOptionListItemClick(this.options[this.defaultIndex])
+    }
   },
   methods: {
     handleActiveItemClick() {
