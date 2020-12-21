@@ -14,6 +14,8 @@ import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
 import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
+import UiArticleGallery from '~/components/UiArticleGallery.vue'
+import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
@@ -53,30 +55,6 @@ describe('快訊', () => {
       title: articleMock.title,
       href: `/story/${articleMock.slug}/`,
     })
-  })
-
-  test('send a GA event when UiFlashNews emits a sendGa:article, sendGa:next or sendGa:prev', () => {
-    /* Arrange */
-    const $ga = { event: jest.fn() }
-    const sut = createWrapper(Home, {
-      mocks: { $ga },
-    })
-
-    /* Act */
-    sut.getComponent(UiFlashNews).vm.$emit('sendGa:article')
-    sut.getComponent(UiFlashNews).vm.$emit('sendGa:next')
-    sut.getComponent(UiFlashNews).vm.$emit('sendGa:prev')
-
-    /* Assert */
-    ;['breakingnews title', 'breakingnews up', 'breakingnews down'].forEach(
-      function assert(eventLabel, idx) {
-        expect($ga.event).toHaveBeenNthCalledWith(idx + 1, {
-          eventCategory: 'home',
-          eventAction: 'click',
-          eventLabel,
-        })
-      }
-    )
   })
 })
 
@@ -140,26 +118,6 @@ describe('編輯精選', () => {
     expect(article1.label).toBe(section.title)
     expect(article1.sectionName).toBe(section.name)
   })
-
-  test('send a GA event when UiEditorChoices emits a sendGa', () => {
-    /* Arrange */
-    const $ga = {
-      event: jest.fn(),
-    }
-    const sut = createWrapper(Home, {
-      mocks: { $ga },
-    })
-
-    /* Act */
-    sut.getComponent(UiEditorChoices).vm.$emit('sendGa')
-
-    /* Assert */
-    expect($ga.event).toBeCalledWith({
-      eventCategory: 'home',
-      eventAction: 'click',
-      eventLabel: 'choice',
-    })
-  })
 })
 
 describe('鏡電視', function () {
@@ -215,35 +173,6 @@ describe('鏡電視', function () {
 
     expect(videoModals.at(0).props().embeddedHtml).toBe(eventModMock.embed)
     expect(videoModals.at(1).props().embeddedHtml).toBe(eventModMock.embed)
-  })
-
-  test('send the GA event when UiVideoModal emits the "sendGa:open" or "sendGa:close"', function () {
-    /* Arrange */
-    const $ga = { event: jest.fn() }
-    const sut = createWrapper(Home, {
-      computed: {
-        shouldOpenMirrorTv: () => true,
-        shouldOpenFixedMirrorTv: () => true,
-      },
-      mocks: { $ga },
-    })
-
-    const videoModals = sut.findAllComponents(UiVideoModal)
-
-    for (let i = 0; i < videoModals.length; i += 1) {
-      /* Act */
-      videoModals.at(i).vm.$emit('sendGa:open')
-      videoModals.at(i).vm.$emit('sendGa:close')
-
-      /* Assert */
-      ;['mod open', 'mod close'].forEach(function assert(eventLabel, idx) {
-        expect($ga.event).nthCalledWith(idx + 1, {
-          eventCategory: 'home',
-          eventAction: 'click',
-          eventLabel,
-        })
-      })
-    }
   })
 
   test('show the fixed 鏡電視 when users begin to scroll down', async function () {
@@ -402,32 +331,6 @@ describe('UiArticleListFocus', () => {
     expect(focusArticleList.props().articlesRelated).toHaveLength(
       focusArticleRelatedsMock.length - 1
     )
-  })
-
-  test('send the GA event when the component emits the "sendGa"', function () {
-    /* Arrange */
-    const $ga = { event: jest.fn() }
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          groupedArticles: {
-            grouped: [{ slug: 1 }],
-          },
-        }
-      },
-      mocks: { $ga },
-    })
-
-    /* Act */
-    sut.getComponent(UiArticleListFocus).vm.$emit('sendGa')
-
-    /* Assert */
-    expect($ga.event).toBeCalledWith({
-      eventCategory: 'home',
-      eventAction: 'click',
-      eventLabel: 'group',
-    })
   })
 })
 
@@ -591,6 +494,114 @@ test('display ADs', function () {
   expect(sut.findComponent(ContainerFullScreenAds).exists()).toBe(true)
 })
 
+test('send GA events', async function () {
+  expect.assertions(10)
+
+  const $ga = { event: jest.fn() }
+  const sut = createWrapper(Home, {
+    computed: {
+      focusArticles: () => [{ slug: 'test-slug' }],
+      latestItems: () => Array(4).fill({}),
+      shouldOpenMirrorTv: () => true,
+      shouldOpenFixedMirrorTv: () => true,
+    },
+    mocks: { $ga },
+  })
+
+  /* 快訊 */
+  const flashNews = sut.getComponent(UiFlashNews)
+
+  flashNews.vm.$emit('sendGa:article')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'breakingnews title',
+  })
+
+  flashNews.vm.$emit('sendGa:next')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'breakingnews up',
+  })
+
+  flashNews.vm.$emit('sendGa:prev')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'breakingnews down',
+  })
+
+  /* 編輯精選 */
+  sut.getComponent(UiEditorChoices).vm.$emit('sendGa')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'choice',
+  })
+
+  /* 鏡電視 */
+  const videoModals = sut.findAllComponents(UiVideoModal)
+
+  videoModals.at(0).vm.$emit('sendGa:open')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'mod open',
+  })
+
+  videoModals.at(1).vm.$emit('sendGa:close')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'mod close',
+  })
+
+  /* 焦點新聞 */
+  sut.getComponent(UiArticleListFocus).vm.$emit('sendGa')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'group',
+  })
+
+  /* 最新文章 */
+  sut.getComponent(UiArticleGallery).vm.$emit('sendGa')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'latest',
+  })
+
+  const infiniteLoading = sut.getComponent(UiInfiniteLoading)
+
+  infiniteLoading.vm.$emit('infinite', {
+    loaded: () => {},
+    complete: () => {},
+    error: () => {},
+  })
+  await flushPromises()
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'scroll',
+    eventLabel: 'loadmore',
+    eventValue: 1,
+  })
+
+  infiniteLoading.vm.$emit('infinite', {
+    loaded: () => {},
+    complete: () => {},
+    error: () => {},
+  })
+  await flushPromises()
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'scroll',
+    eventLabel: 'loadmore',
+    eventValue: 2,
+  })
+})
+
 describe('getLabel method', () => {
   test('return "合作媒體" if the argument has a partner key', () => {
     expect(getLabel({ partner: {} })).toBe('合作媒體')
@@ -628,7 +639,6 @@ describe('getLabel method', () => {
 
 /**
  * TODO: 待補測試
- * GA event
  * load more
  * getImg
  * getLabel
