@@ -4,6 +4,7 @@ import ContainerMembershipCancelPleaseConfirm from '../ContainerMembershipCancel
 import {
   getters as gettersMembership,
   state as stateMembership,
+  mutations as mutationsMembership,
 } from '~/store/membership'
 
 const localVue = createLocalVue()
@@ -43,6 +44,7 @@ describe('buttons in the page', function () {
         membership: {
           namespaced: true,
           state: stateMembership(),
+          mutations: mutationsMembership,
           getters: gettersMembership,
         },
       },
@@ -67,6 +69,16 @@ describe('buttons in the page', function () {
 
   test('should emit success event after confirm cancel button clicked', async function () {
     const wrapper = shallowMount(ContainerMembershipCancelPleaseConfirm, {
+      mocks: {
+        $apollo: {
+          mutate: jest.fn(() => Promise.resolve({ error: null })),
+        },
+        $fire: {
+          auth: {
+            signOut: jest.fn(() => Promise.resolve()),
+          },
+        },
+      },
       localVue,
       store: new Vuex.Store(storeOptions),
     })
