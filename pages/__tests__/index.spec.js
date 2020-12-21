@@ -113,7 +113,7 @@ describe('編輯精選', () => {
       data() {
         return {
           ...dataRequiredMock,
-          articleGrouped: {
+          groupedArticles: {
             choices: [choice1Mock, choice2Mock],
           },
         }
@@ -371,7 +371,7 @@ describe('UiArticleListFocus', () => {
       data() {
         return {
           ...dataRequiredMock,
-          articleGrouped: {
+          groupedArticles: {
             grouped: mockGrouped,
           },
         }
@@ -387,7 +387,7 @@ describe('UiArticleListFocus', () => {
       data() {
         return {
           ...dataRequiredMock,
-          articleGrouped: {
+          groupedArticles: {
             grouped: [{ relateds: mockGroupedRelateds }],
           },
         }
@@ -471,7 +471,7 @@ describe('最新文章', () => {
       data() {
         return {
           ...dataRequiredMock,
-          articleGrouped: {
+          groupedArticles: {
             choices: [{ slug: '1' }],
             grouped: [{ slug: '2', relateds: [{ slug: '3' }] }],
           },

@@ -54,10 +54,10 @@
             <UiColumnHeader title="焦點新聞" class="home__column-header" />
             <div class="article-list-focus-container">
               <UiArticleListFocus
-                v-for="article in articlesFocus"
+                v-for="article in focusArticles"
                 :key="article.slug"
                 :articleMain="article"
-                :articlesRelated="articlesRelatedFocus(article)"
+                :articlesRelated="focusArticlesRelated(article)"
                 class="home__article-list-focus"
                 :class="{ fixed: shouldFixLastFocusList }"
               />
@@ -161,14 +161,14 @@ export default {
   },
 
   async fetch() {
-    this.articleGrouped = (await this.$fetchGrouped()) || {}
+    this.groupedArticles = (await this.$fetchGrouped()) || {}
     this.flashNews = await this.fetchFlashNews()
   },
 
   data() {
     return {
       flashNews: [],
-      articleGrouped: {
+      groupedArticles: {
         choices: [],
         grouped: [],
       },
@@ -197,7 +197,7 @@ export default {
     }),
 
     editorChoicesArticles() {
-      const { choices: articles = [] } = this.articleGrouped
+      const { choices: articles = [] } = this.groupedArticles
 
       return articles.map(function transformContent(article) {
         const {
@@ -260,8 +260,8 @@ export default {
       return !_.isEmpty(this.eventMod)
     },
 
-    articlesFocus() {
-      return this.articleGrouped.grouped ?? []
+    focusArticles() {
+      return this.groupedArticles.grouped ?? []
     },
   },
 
@@ -353,9 +353,9 @@ export default {
       } = await this.fetchLatestList()
 
       const slugsOfChoicesAndFocus = [
-        ...this.articleGrouped.choices,
-        ...this.articlesFocus,
-        ...this.articlesFocus.flatMap((article) => article.relateds),
+        ...this.groupedArticles.choices,
+        ...this.focusArticles,
+        ...this.focusArticles.flatMap((article) => article.relateds),
       ]
         .filter(isTruthy)
         .map((article) => article.slug)
@@ -438,7 +438,7 @@ export default {
       }
     },
 
-    articlesRelatedFocus(articleData = {}) {
+    focusArticlesRelated(articleData = {}) {
       return articleData.relateds?.slice(0, 3) || []
     },
 
