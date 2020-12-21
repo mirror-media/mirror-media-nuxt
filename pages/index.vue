@@ -88,7 +88,7 @@
               />
               <UiInfiniteLoading
                 v-if="latestItems.length > 3"
-                @infinite="loadMoreLatestList"
+                @infinite="loadMoreLatestItems"
               />
             </section>
           </ClientOnly>
@@ -443,7 +443,7 @@ export default {
         sectionName: item.partner ? 'external' : sections[0]?.name,
       }
     },
-    async loadMoreLatestList(state) {
+    async loadMoreLatestItems(state) {
       this.latestList.page += 1
 
       try {
