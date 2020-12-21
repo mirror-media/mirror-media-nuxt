@@ -326,7 +326,7 @@ export default {
 
         this.insertLatestItems(
           EXTERNALS_IDX_START_INSERTED,
-          ...items.map(this.transformLatestItemContent)
+          ...items.map(this.transformContentOfLatestItem)
         )
 
         this.areExternalsInserted = true
@@ -419,7 +419,9 @@ export default {
       this.eventMod = Object.freeze(items[0] || {})
     },
     pushLatestItems(items = []) {
-      this.latestList.items.push(...items.map(this.transformLatestItemContent))
+      this.latestList.items.push(
+        ...items.map(this.transformContentOfLatestItem)
+      )
     },
     insertLatestItems(idxStart, ...items) {
       this.latestList.items.splice(idxStart, 0, ...items)
@@ -427,7 +429,7 @@ export default {
     setLatestTotal(total = 0) {
       this.latestList.total = total
     },
-    transformLatestItemContent(item = {}) {
+    transformContentOfLatestItem(item = {}) {
       const { id = '', title = '', brief, sections = [] } = item
 
       return {
