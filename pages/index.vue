@@ -456,12 +456,12 @@ export default {
         } else {
           state.complete()
         }
+
+        this.sendGa('scroll', 'loadmore', this.latestList.page - 1)
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error(err)
         state.error()
-      } finally {
-        this.sendGa('scroll', `loadmore${this.latestList.page}`)
       }
     },
 
@@ -542,11 +542,12 @@ export default {
       this.observerOfLastSecondFocusList.disconnect()
     },
 
-    sendGa(eventAction, eventLabel, eventCategory = 'home') {
+    sendGa(eventAction, eventLabel, eventValue, eventCategory = 'home') {
       this.$ga.event({
         eventAction,
         eventLabel,
         eventCategory,
+        ...(eventValue === undefined ? {} : { eventValue }),
       })
     },
     sendGaForClick(eventLabel) {
