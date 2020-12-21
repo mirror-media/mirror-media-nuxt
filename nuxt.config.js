@@ -307,6 +307,7 @@ module.exports = {
         },
       },
     ],
+    '@nuxtjs/apollo',
   ],
 
   // config for @mirror-media/nuxt-ssr-cache
@@ -350,6 +351,16 @@ module.exports = {
 
   styleResources: {
     scss: '~/scss/*.scss',
+  },
+
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'http://localhost:3000/api/membership/v1/graphql',
+        browserHttpEndpoint: '/api/membership/v1/graphql',
+      },
+      userClient: '~/apollo-config-user-client.js',
+    },
   },
 
   /**
