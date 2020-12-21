@@ -177,7 +177,7 @@ export default {
         items: [],
         total: 0,
         maxResults: 20,
-        page: 1,
+        page: 0,
       },
       areMicroAdsInserted: false,
       areExternalsInserted: false,
@@ -398,6 +398,8 @@ export default {
       this.setLatestTotal(meta.total)
     },
     async fetchLatestList() {
+      this.latestList.page += 1
+
       const { page, maxResults } = this.latestList
 
       return (
@@ -444,8 +446,6 @@ export default {
       }
     },
     async loadMoreLatestItems(state) {
-      this.latestList.page += 1
-
       try {
         const { items = [] } = await this.fetchLatestList()
 
