@@ -70,6 +70,7 @@ export default {
       function handleError(e) {
         // eslint-disable-next-line no-console
         console.error(e)
+        this.$emit('error')
       }
     },
   },
