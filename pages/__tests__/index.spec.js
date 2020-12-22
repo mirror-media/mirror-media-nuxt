@@ -122,7 +122,7 @@ describe('鏡電視', function () {
   afterEach(jest.restoreAllMocks)
 
   test('display 鏡電視s when the current date is between the start date and the end date of the mod event', async function () {
-    await assertExistenceByDate(
+    await assertExistsByDate(
       'Thu, 11 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sat, 13 Jun 2020 10:00:00 GMT',
@@ -131,7 +131,7 @@ describe('鏡電視', function () {
   })
 
   test('do not display 鏡電視s when the current date is less then the start date of the mod event', async function () {
-    await assertExistenceByDate(
+    await assertExistsByDate(
       'Mon, 01 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sat, 13 Jun 2020 10:00:00 GMT',
@@ -140,7 +140,7 @@ describe('鏡電視', function () {
   })
 
   test('do not display 鏡電視s when the current date is greater than or equal to the end date of the mod event', async function () {
-    await assertExistenceByDate(
+    await assertExistsByDate(
       'Sun, 21 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sat, 13 Jun 2020 10:00:00 GMT',
@@ -161,8 +161,8 @@ describe('鏡電視', function () {
         }
       },
       computed: {
-        shouldOpenMirrorTv: () => true,
-        shouldOpenFixedMirrorTv: () => true,
+        doesHaveEventMod: () => true,
+        shouldOpenEventMod: () => true,
       },
     })
 
@@ -181,13 +181,13 @@ describe('鏡電視', function () {
       .spyOn(localforage, 'getItem')
       .mockImplementation((key) =>
         Promise.resolve(
-          key === 'mmHasClosedFixedMirrorTv' ? null : JSON.stringify(true)
+          key === 'mmHasClosedEventMod' ? null : JSON.stringify(true)
         )
       )
 
     const sut = createWrapper(Home, {
       computed: {
-        shouldOpenMirrorTv: () => true,
+        doesHaveEventMod: () => true,
       },
     })
     await flushPromises()
@@ -218,7 +218,7 @@ describe('鏡電視', function () {
         }
       },
       computed: {
-        shouldOpenMirrorTv: () => true,
+        doesHaveEventMod: () => true,
       },
     })
 
@@ -230,7 +230,7 @@ describe('鏡電視', function () {
     /* Assert */
     expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
     expect(spySetItem).toBeCalledWith(
-      'mmHasClosedFixedMirrorTv',
+      'mmHasClosedEventMod',
       JSON.stringify(true)
     )
   })
@@ -242,7 +242,7 @@ describe('鏡電視', function () {
     jest
       .spyOn(localforage, 'getItem')
       .mockImplementation((key) =>
-        Promise.resolve(JSON.stringify(key === 'mmHasClosedFixedMirrorTv'))
+        Promise.resolve(JSON.stringify(key === 'mmHasClosedEventMod'))
       )
 
     const sut = createWrapper(Home, {
@@ -253,7 +253,7 @@ describe('鏡電視', function () {
         }
       },
       computed: {
-        shouldOpenMirrorTv: () => true,
+        doesHaveEventMod: () => true,
       },
     })
     await flushPromises()
@@ -262,7 +262,7 @@ describe('鏡電視', function () {
     expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
   })
 
-  async function assertExistenceByDate(now, startDate, endDate, mirrorTvNum) {
+  async function assertExistsByDate(now, startDate, endDate, mirrorTvNum) {
     expect.assertions(1)
 
     /* Arrange */
@@ -709,8 +709,8 @@ test('send GA events', async function () {
     computed: {
       focusArticles: () => [{ slug: 'test-slug' }],
       latestItems: () => Array(4).fill({}),
-      shouldOpenMirrorTv: () => true,
-      shouldOpenFixedMirrorTv: () => true,
+      doesHaveEventMod: () => true,
+      shouldOpenEventMod: () => true,
     },
     mocks: { $ga },
   })

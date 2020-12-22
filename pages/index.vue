@@ -38,7 +38,7 @@
 
       <div class="column-container">
         <aside>
-          <section v-if="shouldOpenMirrorTv" class="container">
+          <section v-if="doesHaveEventMod" class="container">
             <UiColumnHeader title="鏡電視" class="home__column-header" />
             <LazyRenderer>
               <UiVideoModal
@@ -106,11 +106,7 @@
           />
         </div>
 
-        <div
-          v-if="shouldOpenFixedMirrorTv"
-          class="event"
-          data-testid="event-mod"
-        >
+        <div v-if="shouldOpenEventMod" class="event" data-testid="event-mod">
           <UiVideoModal
             :embeddedHtml="eventMod.embed"
             @sendGa:open="sendGaForClick('mod open')"
@@ -118,7 +114,7 @@
           />
           <SvgCloseIcon
             data-testid="close-icon-mod"
-            @click="handleCloseFixedMirrorTv"
+            @click="handleCloseEventMod"
           />
         </div>
       </div>
@@ -202,8 +198,8 @@ export default {
       areExternalsInserted: false,
 
       eventMod: {},
-      hasClosedFixedMirrorTv: false,
-      doesUserCloseFixedMirrorTv: false,
+      hasClosedEventMod: false,
+      doesUserCloseEventMod: false,
       hasScrolled: false,
 
       eventEmbedded: {},
@@ -259,23 +255,20 @@ export default {
       return this.latestList.items
     },
 
-    shouldOpenMirrorTv() {
-      if (!this.doesHaveEventMod) {
+    doesHaveEventMod() {
+      if (_.isEmpty(this.eventMod)) {
         return false
       }
 
       return inThePeriodBetween(this.eventMod.startDate, this.eventMod.endDate)
     },
-    shouldOpenFixedMirrorTv() {
+    shouldOpenEventMod() {
       return (
-        !this.hasClosedFixedMirrorTv &&
-        this.shouldOpenMirrorTv &&
+        !this.hasClosedEventMod &&
+        this.doesHaveEventMod &&
         this.hasScrolled &&
-        !this.doesUserCloseFixedMirrorTv
+        !this.doesUserCloseEventMod
       )
-    },
-    doesHaveEventMod() {
-      return !_.isEmpty(this.eventMod)
     },
     shouldOpenEventEmbedded() {
       return (
@@ -376,7 +369,7 @@ export default {
     this.loadEvent('mod')
     this.handleLoadEventEmbedded()
 
-    this.checkUserHasClosedFixedMirrorTv()
+    this.checkUserHasClosedEventMod()
 
     if (this.isDesktopWidth) {
       this.observeToFixLastFocusList()
@@ -500,25 +493,24 @@ export default {
 
       this[`event${_.capitalize(eventType)}`] = Object.freeze(items[0] || {})
     },
-    async checkUserHasClosedFixedMirrorTv() {
+    async checkUserHasClosedEventMod() {
       try {
-        this.hasClosedFixedMirrorTv =
-          JSON.parse(await localforage.getItem('mmHasClosedFixedMirrorTv')) ??
-          false
+        this.hasClosedEventMod =
+          JSON.parse(await localforage.getItem('mmHasClosedEventMod')) ?? false
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error(err)
       }
 
-      if (!this.hasClosedFixedMirrorTv) {
+      if (!this.hasClosedEventMod) {
         this.checkScrolled()
       }
     },
-    handleCloseFixedMirrorTv() {
-      this.doesUserCloseFixedMirrorTv = true
+    handleCloseEventMod() {
+      this.doesUserCloseEventMod = true
 
       localforage
-        .setItem('mmHasClosedFixedMirrorTv', JSON.stringify(true))
+        .setItem('mmHasClosedEventMod', JSON.stringify(true))
         .catch(function rejected(err) {
           // eslint-disable-next-line no-console
           console.error(err)
