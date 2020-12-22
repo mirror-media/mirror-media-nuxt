@@ -120,29 +120,44 @@ describe('編輯精選', () => {
 
 describe('鏡電視 & mod event', function () {
   test('show them if the current date is between their start date and end date', async function () {
+    expect.assertions(2)
+
     await assertExistsByDate(
       'Thu, 11 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sun, 14 Jun 2020 10:00:00 GMT',
-      2
+      function assert(sut) {
+        expect(sut.find('.mirror-tv-aside').exists()).toBe(true)
+        expect(sut.find('[data-testid="event-mod"]').exists()).toBe(true)
+      }
     )
   })
 
   test('do not show them if the current date is less then their start date', async function () {
+    expect.assertions(2)
+
     await assertExistsByDate(
       'Mon, 01 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sun, 14 Jun 2020 10:00:00 GMT',
-      0
+      function assert(sut) {
+        expect(sut.find('.mirror-tv-aside').exists()).toBe(false)
+        expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+      }
     )
   })
 
   test('do not show them if the current date is greater than or equal to their end date', async function () {
+    expect.assertions(2)
+
     await assertExistsByDate(
       'Sun, 21 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sun, 14 Jun 2020 10:00:00 GMT',
-      0
+      function assert(sut) {
+        expect(sut.find('.mirror-tv-aside').exists()).toBe(false)
+        expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+      }
     )
   })
 
@@ -170,34 +185,6 @@ describe('鏡電視 & mod event', function () {
     expect(videoModals.at(0).props().embeddedHtml).toBe(eventModMock.embed)
     expect(videoModals.at(1).props().embeddedHtml).toBe(eventModMock.embed)
   })
-
-  async function assertExistsByDate(now, startDate, endDate, mirrorTvNum) {
-    expect.assertions(1)
-
-    /* Arrange */
-    jest.spyOn(Date, 'now').mockReturnValueOnce(new Date(now))
-
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          hasScrolled: true,
-        }
-      },
-      mocks: {
-        $fetchEvent: () =>
-          Promise.resolve({
-            items: [{ startDate, endDate }],
-          }),
-      },
-    })
-    await flushPromises()
-
-    /* Assert */
-    expect(sut.findAllComponents(UiVideoModal)).toHaveLength(mirrorTvNum)
-
-    jest.restoreAllMocks()
-  }
 })
 
 describe('mod event', function () {
@@ -575,29 +562,41 @@ describe('embedded event', function () {
   })
 
   test('show it if the current date is between its start date and end date', async function () {
+    expect.assertions(1)
+
     await assertExistsByDate(
-      true,
       'Thu, 11 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sun, 14 Jun 2020 10:00:00 GMT'
+      'Sun, 14 Jun 2020 10:00:00 GMT',
+      function assert(sut) {
+        expect(sut.find('.event--embedded').exists()).toBe(true)
+      }
     )
   })
 
   test('do not show it if the current date is less then its start date', async function () {
+    expect.assertions(1)
+
     await assertExistsByDate(
-      false,
       'Mon, 01 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sun, 14 Jun 2020 10:00:00 GMT'
+      'Sun, 14 Jun 2020 10:00:00 GMT',
+      function assert(sut) {
+        expect(sut.find('.event--embedded').exists()).toBe(false)
+      }
     )
   })
 
   test('do not show it if the current date is greater than or equal to its end date', async function () {
+    expect.assertions(1)
+
     await assertExistsByDate(
-      false,
       'Sun, 21 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sun, 14 Jun 2020 10:00:00 GMT'
+      'Sun, 14 Jun 2020 10:00:00 GMT',
+      function assert(sut) {
+        expect(sut.find('.event--embedded').exists()).toBe(false)
+      }
     )
   })
 
@@ -651,34 +650,6 @@ describe('embedded event', function () {
       JSON.stringify(true)
     )
   })
-
-  async function assertExistsByDate(shouldExist, now, startDate, endDate) {
-    expect.assertions(1)
-
-    /* Arrange */
-    jest.spyOn(Date, 'now').mockReturnValue(new Date(now))
-
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          hasScrolled: true,
-        }
-      },
-      mocks: {
-        $fetchEvent: () =>
-          Promise.resolve({
-            items: [{ startDate, endDate }],
-          }),
-      },
-    })
-    await flushPromises()
-
-    /* Assert */
-    expect(sut.find('.event--embedded').exists()).toBe(shouldExist)
-
-    jest.restoreAllMocks()
-  }
 })
 
 test('display ADs', function () {
@@ -847,6 +818,32 @@ describe('getLabel method', () => {
     ).toBe(categoryTitleMock)
   })
 })
+
+async function assertExistsByDate(now, startDate, endDate, assert) {
+  /* Arrange */
+  jest.spyOn(Date, 'now').mockReturnValue(new Date(now))
+
+  const sut = createWrapper(Home, {
+    data() {
+      return {
+        ...dataRequiredMock,
+        hasScrolled: true,
+      }
+    },
+    mocks: {
+      $fetchEvent: () =>
+        Promise.resolve({
+          items: [{ startDate, endDate }],
+        }),
+    },
+  })
+  await flushPromises()
+
+  /* Assert */
+  assert(sut)
+
+  jest.restoreAllMocks()
+}
 
 /**
  * TODO: 待補測試
