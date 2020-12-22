@@ -34,6 +34,7 @@
 import localforage from 'localforage'
 import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
+import userCreate from '~/apollo/mutations/userCreate.gql'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.
@@ -42,6 +43,9 @@ import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
  * For more info: https://firebase.google.com/docs/auth/web/email-link-auth#complete_sign_in_with_the_email_link
  */
 export default {
+  apollo: {
+    $client: 'saleorClient',
+  },
   components: {
     UiMembershipEmailInput,
     UiMembershipError,
@@ -86,6 +90,15 @@ export default {
         await this.$fire.auth.signInWithEmailLink(email, window.location.href)
         await localforage.removeItem('emailForSignIn')
 
+        await this.$apollo.mutate({
+          mutation: userCreate,
+          variables: {
+            email: this.$store.state.membership.userEmail,
+            firebaseId: this.$store.state.membership.userUid,
+          },
+        })
+
+        // redirect to page where use try to login
         const destination = await localforage.getItem('mm-login-destination')
         await localforage.removeItem('mm-login-destination')
         window.location.replace(destination)

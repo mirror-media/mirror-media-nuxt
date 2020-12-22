@@ -1,0 +1,5 @@
+mutation ($email: String!, $firebaseId: String!, $nickname: String){
+  createMember(email: $email, firebaseId: $firebaseId, nickname: $nickname){
+    success
+  }
+}

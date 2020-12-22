@@ -113,6 +113,17 @@ describe('email validations', function () {
     const mockSignInWithEmailLink = jest.fn(() => Promise.resolve())
     createWrapper(page, {
       mocks: {
+        $store: {
+          state: {
+            membership: {
+              userEmail: '',
+              userUid: '',
+            },
+          },
+        },
+        $apollo: {
+          mutate: jest.fn(() => Promise.resolve()),
+        },
         $route: {
           query: {},
         },

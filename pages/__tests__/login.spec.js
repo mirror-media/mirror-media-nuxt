@@ -53,6 +53,17 @@ describe('validations about visitor have been redirect back to login page after 
 
     createWrapper(page, {
       mocks: {
+        $store: {
+          state: {
+            membership: {
+              userEmail: '',
+              userUid: '',
+            },
+          },
+        },
+        $apollo: {
+          mutate: jest.fn(() => Promise.resolve()),
+        },
         $fire: {
           auth: {
             getRedirectResult: jest.fn(() => Promise.resolve({ user: {} })),

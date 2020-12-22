@@ -55,8 +55,12 @@ import ContainerMembershipLoginWithEmail from '~/components/ContainerMembershipL
 import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
 import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipSpinner from '~/components/UiMembershipSpinner.vue'
+import userCreate from '~/apollo/mutations/userCreate.gql'
 
 export default {
+  apollo: {
+    $client: 'saleorClient',
+  },
   components: {
     ContainerMembershipLoginWithGoogle,
     ContainerMembershipLoginWithFacebook,
@@ -84,6 +88,15 @@ export default {
       const result = await this.$fire.auth.getRedirectResult()
       this.isFederatedRedirectResultLoading = false
       if (result.user !== null) {
+        await this.$apollo.mutate({
+          mutation: userCreate,
+          variables: {
+            email: this.$store.state.membership.userEmail,
+            firebaseId: this.$store.state.membership.userUid,
+          },
+        })
+
+        // redirect to page where use try to login
         const destination = await localforage.getItem('mm-login-destination')
         await localforage.removeItem('mm-login-destination')
         window.location.replace(destination)

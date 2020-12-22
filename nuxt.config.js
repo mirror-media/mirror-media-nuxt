@@ -193,6 +193,7 @@ module.exports = {
       path: '/api/tracking',
       handler: '~/api/tracking.js',
     },
+    { path: '/api/saleor', handler: '~/api/saleor-proxy.js' },
     { path: '/api/membership/v0', handler: '~/api/membership-proxy.js' },
     { path: '/api/membership/v1', handler: '~/api/membership-proxy-v1.js' },
     { path: '/api', handler: '~/api/index.js' },
@@ -360,6 +361,10 @@ module.exports = {
         browserHttpEndpoint: '/api/membership/v1/graphql',
       },
       userClient: '~/apollo-config-user-client.js',
+      saleorClient: {
+        httpEndpoint: 'http://localhost:3000/api/saleor/graphql/',
+        browserHttpEndpoint: '/api/saleor/graphql/',
+      },
     },
   },
 
