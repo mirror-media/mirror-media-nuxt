@@ -18,8 +18,6 @@ import UiArticleGallery from '~/components/UiArticleGallery.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
-import SvgCloseIcon from '~/assets/close-black.svg?inline'
-
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
 
@@ -195,7 +193,7 @@ describe('鏡電視', function () {
     await flushPromises()
 
     /* Assert */
-    expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
 
     /* Act */
     window.dispatchEvent(new Event('scroll'))
@@ -203,7 +201,7 @@ describe('鏡電視', function () {
     await flushPromises()
 
     /* Assert */
-    expect(sut.find('.mirror-tv-fixed').exists()).toBe(true)
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(true)
   })
 
   test('close the fixed 鏡電視 and prevent users from seeing it in the future when they click the close icon', async function () {
@@ -225,7 +223,7 @@ describe('鏡電視', function () {
     })
 
     /* Act */
-    sut.getComponent(SvgCloseIcon).vm.$emit('click')
+    sut.get('[data-testid="close-icon-mod"]').vm.$emit('click')
 
     await flushPromises()
 
@@ -505,6 +503,177 @@ describe('最新文章', () => {
     assert(spyInsertLatestItems)
 
     spyInsertLatestItems.mockClear()
+  }
+})
+
+describe('embedded event', function () {
+  test('do not fetch and show it if users have closed it', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    jest
+      .spyOn(localforage, 'getItem')
+      .mockImplementation((key) =>
+        Promise.resolve(JSON.stringify(key === 'mmHasClosedEventEmbedded'))
+      )
+    jest
+      .spyOn(Date, 'now')
+      .mockReturnValueOnce(new Date('Thu, 11 Jun 2020 10:00:00 GMT'))
+
+    const fetchEventMock = jest.fn().mockResolvedValue({
+      items: [
+        {
+          startDate: 'Mon, 08 Jun 2020 10:00:00 GMT',
+          endDate: 'Sun, 14 Jun 2020 10:00:00 GMT',
+        },
+      ],
+    })
+    const sut = createWrapper(Home, {
+      data() {
+        return {
+          ...dataRequiredMock,
+          hasScrolled: true,
+        }
+      },
+      mocks: {
+        $fetchEvent: fetchEventMock,
+      },
+    })
+    await flushPromises()
+
+    /* Assert */
+    expect(fetchEventMock).not.toBeCalledWith(
+      expect.objectContaining({
+        eventType: 'embedded',
+      })
+    )
+    expect(sut.find('.event--embedded').exists()).toBe(false)
+
+    jest.restoreAllMocks()
+  })
+
+  test('do not show it if there are no embedded events', function () {
+    /* Arrange */
+    const sut = createWrapper(Home, {
+      data() {
+        return {
+          ...dataRequiredMock,
+          hasScrolled: true,
+        }
+      },
+      mocks: {
+        $fetchEvent: () => Promise.resolve({ items: [] }),
+      },
+    })
+
+    /* Assert */
+    expect(sut.find('.event--embedded').exists()).toBe(false)
+  })
+
+  test('show it if the current date is between its start date and end date', async function () {
+    await assertExistsByDate(
+      true,
+      'Thu, 11 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+  })
+
+  test('do not show it if the current date is less then its start date', async function () {
+    await assertExistsByDate(
+      false,
+      'Mon, 01 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+  })
+
+  test('do not show it if the current date is greater than or equal to its end date', async function () {
+    await assertExistsByDate(
+      false,
+      'Sun, 21 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+  })
+
+  test('show it when users begin to scroll down', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    const sut = createWrapper(Home, {
+      computed: {
+        doesHaveEventEmbedded: () => true,
+      },
+    })
+    await flushPromises()
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.event--embedded').exists()).toBe(true)
+  })
+
+  test('close it and prevent users from seeing it in the future when they click the close icon', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    jest.spyOn(localforage, 'setItem')
+
+    const sut = createWrapper(Home, {
+      data() {
+        return {
+          ...dataRequiredMock,
+          hasScrolled: true,
+        }
+      },
+      computed: {
+        doesHaveEventEmbedded: () => true,
+      },
+    })
+
+    /* Act */
+    sut.get('[data-testid="close-icon-embedded"]').vm.$emit('click')
+
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.event--embedded').exists()).toBe(false)
+    expect(localforage.setItem).toBeCalledWith(
+      'mmHasClosedEventEmbedded',
+      JSON.stringify(true)
+    )
+  })
+
+  async function assertExistsByDate(shouldExist, now, startDate, endDate) {
+    expect.assertions(1)
+
+    /* Arrange */
+    jest.spyOn(Date, 'now').mockReturnValue(new Date(now))
+
+    const sut = createWrapper(Home, {
+      data() {
+        return {
+          ...dataRequiredMock,
+          hasScrolled: true,
+        }
+      },
+      mocks: {
+        $fetchEvent: () =>
+          Promise.resolve({
+            items: [{ startDate, endDate }],
+          }),
+      },
+    })
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.event--embedded').exists()).toBe(shouldExist)
+
+    jest.restoreAllMocks()
   }
 })
 

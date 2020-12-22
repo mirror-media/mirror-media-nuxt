@@ -95,13 +95,32 @@
         </div>
       </div>
 
-      <div v-if="shouldOpenFixedMirrorTv" class="mirror-tv-fixed">
-        <UiVideoModal
-          :embeddedHtml="eventMod.embed"
-          @sendGa:open="sendGaForClick('mod open')"
-          @sendGa:close="sendGaForClick('mod close')"
-        />
-        <SvgCloseIcon @click="handleCloseFixedMirrorTv" />
+      <div class="events-container">
+        <div v-if="shouldOpenEventEmbedded" class="event event--embedded">
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <div v-html="eventEmbedded.embed"></div>
+
+          <SvgCloseIcon
+            data-testid="close-icon-embedded"
+            @click="handleCloseEventEmbedded"
+          />
+        </div>
+
+        <div
+          v-if="shouldOpenFixedMirrorTv"
+          class="event"
+          data-testid="event-mod"
+        >
+          <UiVideoModal
+            :embeddedHtml="eventMod.embed"
+            @sendGa:open="sendGaForClick('mod open')"
+            @sendGa:close="sendGaForClick('mod close')"
+          />
+          <SvgCloseIcon
+            data-testid="close-icon-mod"
+            @click="handleCloseFixedMirrorTv"
+          />
+        </div>
       </div>
 
       <ContainerFullScreenAds />
@@ -187,6 +206,9 @@ export default {
       doesUserCloseFixedMirrorTv: false,
       hasScrolled: false,
 
+      eventEmbedded: {},
+      doesUserCloseEventEmbedded: false,
+
       observerOfLastSecondFocusList: undefined,
       shouldFixLastFocusList: false,
     }
@@ -259,6 +281,23 @@ export default {
     },
     doesHaveEventMod() {
       return !_.isEmpty(this.eventMod)
+    },
+    shouldOpenEventEmbedded() {
+      return (
+        this.doesHaveEventEmbedded &&
+        this.hasScrolled &&
+        !this.doesUserCloseEventEmbedded
+      )
+    },
+    doesHaveEventEmbedded() {
+      if (_.isEmpty(this.eventEmbedded)) {
+        return false
+      }
+
+      return inThePeriodBetween(
+        this.eventEmbedded.startDate,
+        this.eventEmbedded.endDate
+      )
     },
 
     focusArticles() {
@@ -340,6 +379,7 @@ export default {
   mounted() {
     this.loadLatestListInitial()
     this.loadEventMod()
+    this.handleLoadEventEmbedded()
 
     this.checkUserHasClosedFixedMirrorTv()
 
@@ -465,6 +505,16 @@ export default {
       }
     },
 
+    async loadEvent(eventType) {
+      const { items = [] } =
+        (await this.$fetchEvent({
+          isFeatured: true,
+          eventType,
+          maxResults: 1,
+        })) || {}
+
+      this[`event${_.capitalize(eventType)}`] = Object.freeze(items[0] || {})
+    },
     async checkUserHasClosedFixedMirrorTv() {
       try {
         this.hasClosedFixedMirrorTv =
@@ -484,6 +534,36 @@ export default {
 
       localforage
         .setItem('mmHasClosedFixedMirrorTv', JSON.stringify(true))
+        .catch(function rejected(err) {
+          // eslint-disable-next-line no-console
+          console.error(err)
+        })
+    },
+    async handleLoadEventEmbedded() {
+      if (!(await this.checkUserHasClosedEventEmbedded())) {
+        this.loadEvent('embedded')
+        this.checkScrolled()
+      }
+    },
+    async checkUserHasClosedEventEmbedded() {
+      let hasClosedEventEmbedded = false
+
+      try {
+        hasClosedEventEmbedded =
+          JSON.parse(await localforage.getItem('mmHasClosedEventEmbedded')) ??
+          false
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err)
+      }
+
+      return hasClosedEventEmbedded
+    },
+    handleCloseEventEmbedded() {
+      this.doesUserCloseEventEmbedded = true
+
+      localforage
+        .setItem('mmHasClosedEventEmbedded', JSON.stringify(true))
         .catch(function rejected(err) {
           // eslint-disable-next-line no-console
           console.error(err)
@@ -615,6 +695,16 @@ function getLabel({ sections = [], categories = [], partner } = {}) {
   }
 
   return firstCategory.title
+}
+
+function inThePeriodBetween(startDate, endDate) {
+  if (startDate === undefined || endDate === undefined) {
+    return false
+  }
+
+  const now = Date.now()
+
+  return now >= new Date(startDate) && now < new Date(endDate)
 }
 
 export {
@@ -754,19 +844,39 @@ aside {
   }
 }
 
-$right--mirror-tv: 10px;
+$right--events: 10px;
 
-.mirror-tv-fixed {
+.events-container {
   position: fixed;
   bottom: 10px;
-  right: $right--mirror-tv;
-  width: calc(50% - #{$right--mirror-tv});
+  right: $right--events;
+  width: calc(50% - #{$right--events});
   z-index: 819;
   @include media-breakpoint-up(md) {
     width: 33%;
   }
   @include media-breakpoint-up(xl) {
     width: 25%;
+  }
+}
+
+.event {
+  position: relative;
+
+  &--embedded {
+    padding-top: 9 / 16 * 100%;
+
+    div {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  + .event {
+    margin-top: 10px;
   }
 
   svg {
