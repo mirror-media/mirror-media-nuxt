@@ -264,12 +264,7 @@ export default {
         return false
       }
 
-      const now = Date.now()
-
-      return (
-        now >= new Date(this.eventMod.startDate) &&
-        now < new Date(this.eventMod.endDate)
-      )
+      return inThePeriodBetween(this.eventMod.startDate, this.eventMod.endDate)
     },
     shouldOpenFixedMirrorTv() {
       return (
@@ -378,7 +373,7 @@ export default {
 
   mounted() {
     this.loadLatestListInitial()
-    this.loadEventMod()
+    this.loadEvent('mod')
     this.handleLoadEventEmbedded()
 
     this.checkUserHasClosedFixedMirrorTv()
@@ -450,16 +445,6 @@ export default {
           isAudioSiteOnly: false,
         })) || {}
       )
-    },
-    async loadEventMod() {
-      const { items = [] } =
-        (await this.$fetchEvent({
-          isFeatured: true,
-          eventType: 'mod',
-          maxResults: 1,
-        })) || {}
-
-      this.eventMod = Object.freeze(items[0] || {})
     },
     pushLatestItems(items = []) {
       this.latestList.items.push(
