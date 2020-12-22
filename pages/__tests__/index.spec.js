@@ -57,7 +57,7 @@ describe('快訊', () => {
 })
 
 describe('編輯精選', () => {
-  test('pass articles to UiEditorChoices', () => {
+  test('pass the data to the component', () => {
     /* Arrange */
     const choice1Mock = {
       slug: 'test-slug',
@@ -118,37 +118,35 @@ describe('編輯精選', () => {
   })
 })
 
-describe('鏡電視', function () {
-  afterEach(jest.restoreAllMocks)
-
-  test('display 鏡電視s when the current date is between the start date and the end date of the mod event', async function () {
+describe('鏡電視 & mod event', function () {
+  test('show them if the current date is between their start date and end date', async function () {
     await assertExistsByDate(
       'Thu, 11 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sat, 13 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT',
       2
     )
   })
 
-  test('do not display 鏡電視s when the current date is less then the start date of the mod event', async function () {
+  test('do not show them if the current date is less then their start date', async function () {
     await assertExistsByDate(
       'Mon, 01 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sat, 13 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT',
       0
     )
   })
 
-  test('do not display 鏡電視s when the current date is greater than or equal to the end date of the mod event', async function () {
+  test('do not show them if the current date is greater than or equal to their end date', async function () {
     await assertExistsByDate(
       'Sun, 21 Jun 2020 10:00:00 GMT',
       'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sat, 13 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT',
       0
     )
   })
 
-  test('pass the embedded html to UiVideoModal', function () {
+  test('pass the data to the components', function () {
     /* Arrange */
     const eventModMock = {
       embed: '<iframe src="test-src"></iframe>',
@@ -173,7 +171,66 @@ describe('鏡電視', function () {
     expect(videoModals.at(1).props().embeddedHtml).toBe(eventModMock.embed)
   })
 
-  test('show the fixed 鏡電視 when users begin to scroll down', async function () {
+  async function assertExistsByDate(now, startDate, endDate, mirrorTvNum) {
+    expect.assertions(1)
+
+    /* Arrange */
+    jest.spyOn(Date, 'now').mockReturnValueOnce(new Date(now))
+
+    const sut = createWrapper(Home, {
+      data() {
+        return {
+          ...dataRequiredMock,
+          hasScrolled: true,
+        }
+      },
+      mocks: {
+        $fetchEvent: () =>
+          Promise.resolve({
+            items: [{ startDate, endDate }],
+          }),
+      },
+    })
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.findAllComponents(UiVideoModal)).toHaveLength(mirrorTvNum)
+
+    jest.restoreAllMocks()
+  }
+})
+
+describe('mod event', function () {
+  afterEach(jest.restoreAllMocks)
+
+  test('do not show it if users have closed it', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    jest
+      .spyOn(localforage, 'getItem')
+      .mockImplementation((key) =>
+        Promise.resolve(JSON.stringify(key === 'mmHasClosedEventMod'))
+      )
+
+    const sut = createWrapper(Home, {
+      data() {
+        return {
+          ...dataRequiredMock,
+          hasScrolled: true,
+        }
+      },
+      computed: {
+        doesHaveEventMod: () => true,
+      },
+    })
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
+  })
+
+  test('show it when users begin to scroll down', async function () {
     expect.assertions(2)
 
     /* Arrange */
@@ -204,7 +261,7 @@ describe('鏡電視', function () {
     expect(sut.find('[data-testid="event-mod"]').exists()).toBe(true)
   })
 
-  test('close the fixed 鏡電視 and prevent users from seeing it in the future when they click the close icon', async function () {
+  test('close it and prevent users from seeing it in the future when they click the close icon', async function () {
     expect.assertions(2)
 
     /* Arrange */
@@ -234,59 +291,6 @@ describe('鏡電視', function () {
       JSON.stringify(true)
     )
   })
-
-  test('do not show the fixed 鏡電視 if users have closed it', async function () {
-    expect.assertions(1)
-
-    /* Arrange */
-    jest
-      .spyOn(localforage, 'getItem')
-      .mockImplementation((key) =>
-        Promise.resolve(JSON.stringify(key === 'mmHasClosedEventMod'))
-      )
-
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          hasScrolled: true,
-        }
-      },
-      computed: {
-        doesHaveEventMod: () => true,
-      },
-    })
-    await flushPromises()
-
-    /* Assert */
-    expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
-  })
-
-  async function assertExistsByDate(now, startDate, endDate, mirrorTvNum) {
-    expect.assertions(1)
-
-    /* Arrange */
-    jest.spyOn(Date, 'now').mockReturnValueOnce(new Date(now))
-
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          hasScrolled: true,
-        }
-      },
-      mocks: {
-        $fetchEvent: () =>
-          Promise.resolve({
-            items: [{ startDate, endDate }],
-          }),
-      },
-    })
-    await flushPromises()
-
-    /* Assert */
-    expect(sut.findAllComponents(UiVideoModal)).toHaveLength(mirrorTvNum)
-  }
 })
 
 describe('焦點新聞', () => {
