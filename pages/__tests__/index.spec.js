@@ -188,8 +188,6 @@ describe('鏡電視 & mod event', function () {
 })
 
 describe('mod event', function () {
-  afterEach(jest.restoreAllMocks)
-
   test('do not show it if users have closed it', async function () {
     expect.assertions(1)
 
@@ -215,20 +213,14 @@ describe('mod event', function () {
 
     /* Assert */
     expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
+
+    jest.restoreAllMocks()
   })
 
   test('show it when users begin to scroll down', async function () {
     expect.assertions(2)
 
     /* Arrange */
-    jest
-      .spyOn(localforage, 'getItem')
-      .mockImplementation((key) =>
-        Promise.resolve(
-          key === 'mmHasClosedEventMod' ? null : JSON.stringify(true)
-        )
-      )
-
     const sut = createWrapper(Home, {
       computed: {
         doesHaveEventMod: () => true,
@@ -252,7 +244,7 @@ describe('mod event', function () {
     expect.assertions(2)
 
     /* Arrange */
-    const spySetItem = jest.spyOn(localforage, 'setItem')
+    jest.spyOn(localforage, 'setItem')
 
     const sut = createWrapper(Home, {
       data() {
@@ -273,10 +265,12 @@ describe('mod event', function () {
 
     /* Assert */
     expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
-    expect(spySetItem).toBeCalledWith(
+    expect(localforage.setItem).toBeCalledWith(
       'mmHasClosedEventMod',
       JSON.stringify(true)
     )
+
+    jest.restoreAllMocks()
   })
 })
 
@@ -425,7 +419,7 @@ describe('最新文章', () => {
     expect.assertions(1)
 
     /* Arrange */
-    const spyPushLatestItems = jest.spyOn(Home.methods, 'pushLatestItems')
+    jest.spyOn(Home.methods, 'pushLatestItems')
 
     createWrapper(Home, {
       data() {
@@ -451,14 +445,15 @@ describe('最新文章', () => {
     await flushPromises()
 
     /* Assert */
-    assert(spyPushLatestItems)
+    assert(Home.methods.pushLatestItems)
 
-    spyPushLatestItems.mockClear()
+    jest.restoreAllMocks()
   }
 
   async function testMicroAds(latestItemsNum, assert) {
     /* Arrange */
-    const spyInsertLatestItems = jest.spyOn(Home.methods, 'insertLatestItems')
+    jest.spyOn(Home.methods, 'insertLatestItems')
+
     const sut = createWrapper(Home)
 
     /* Act */
@@ -470,16 +465,17 @@ describe('最新文章', () => {
     await flushPromises()
 
     /* Assert */
-    assert(spyInsertLatestItems)
+    assert(Home.methods.insertLatestItems)
 
-    spyInsertLatestItems.mockClear()
+    jest.restoreAllMocks()
   }
 
   async function testExternals(latestItemsNum, assert) {
     expect.assertions(1)
 
     /* Arrange */
-    const spyInsertLatestItems = jest.spyOn(Home.methods, 'insertLatestItems')
+    jest.spyOn(Home.methods, 'insertLatestItems')
+
     const sut = createWrapper(Home)
 
     /* Act */
@@ -491,9 +487,9 @@ describe('最新文章', () => {
     await flushPromises()
 
     /* Assert */
-    assert(spyInsertLatestItems)
+    assert(Home.methods.insertLatestItems)
 
-    spyInsertLatestItems.mockClear()
+    jest.restoreAllMocks()
   }
 })
 
@@ -507,18 +503,8 @@ describe('embedded event', function () {
       .mockImplementation((key) =>
         Promise.resolve(JSON.stringify(key === 'mmHasClosedEventEmbedded'))
       )
-    jest
-      .spyOn(Date, 'now')
-      .mockReturnValueOnce(new Date('Thu, 11 Jun 2020 10:00:00 GMT'))
 
-    const fetchEventMock = jest.fn().mockResolvedValue({
-      items: [
-        {
-          startDate: 'Mon, 08 Jun 2020 10:00:00 GMT',
-          endDate: 'Sun, 14 Jun 2020 10:00:00 GMT',
-        },
-      ],
-    })
+    const fetchEventMock = jest.fn()
     const sut = createWrapper(Home, {
       data() {
         return {
@@ -649,6 +635,8 @@ describe('embedded event', function () {
       'mmHasClosedEventEmbedded',
       JSON.stringify(true)
     )
+
+    jest.restoreAllMocks()
   })
 })
 
