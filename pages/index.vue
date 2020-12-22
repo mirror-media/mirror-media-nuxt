@@ -547,6 +547,10 @@ export default {
         })
     },
     checkScrolled() {
+      if (this.hasScrolled) {
+        return
+      }
+
       window.addEventListener(
         'scroll',
         () => {
