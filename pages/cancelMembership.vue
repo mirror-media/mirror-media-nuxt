@@ -24,7 +24,7 @@ export default {
   middleware: ['authenticate'],
   data() {
     return {
-      pageState: 'error',
+      pageState: 'confirmation',
     }
   },
   methods: {
