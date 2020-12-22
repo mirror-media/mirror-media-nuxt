@@ -503,19 +503,18 @@ describe('embedded event', function () {
       .mockImplementation((key) =>
         Promise.resolve(JSON.stringify(key === 'mmHasClosedEventEmbedded'))
       )
-
     const fetchEventMock = jest.fn()
+
     const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          hasScrolled: true,
-        }
-      },
       mocks: {
         $fetchEvent: fetchEventMock,
       },
     })
+    await flushPromises()
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+
     await flushPromises()
 
     /* Assert */
@@ -529,19 +528,21 @@ describe('embedded event', function () {
     jest.restoreAllMocks()
   })
 
-  test('do not show it if there are no embedded events', function () {
+  test('do not show it if there are no embedded events', async function () {
+    expect.assertions(1)
+
     /* Arrange */
     const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          hasScrolled: true,
-        }
-      },
       mocks: {
         $fetchEvent: () => Promise.resolve({ items: [] }),
       },
     })
+    await flushPromises()
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+
+    await flushPromises()
 
     /* Assert */
     expect(sut.find('.event--embedded').exists()).toBe(false)
@@ -586,13 +587,27 @@ describe('embedded event', function () {
     )
   })
 
-  test('show it when users begin to scroll down', async function () {
-    expect.assertions(1)
+  test('fetch and show it when users begin to scroll down', async function () {
+    expect.assertions(2)
 
     /* Arrange */
+    jest
+      .spyOn(Date, 'now')
+      .mockReturnValue(new Date('Thu, 11 Jun 2020 10:00:00 GMT'))
+    const embeddedHtmlMock = '<iframe src="test-src"></iframe>'
+    const fetchEventMock = jest.fn().mockResolvedValue({
+      items: [
+        {
+          startDate: 'Mon, 08 Jun 2020 10:00:00 GMT',
+          endDate: 'Sun, 14 Jun 2020 10:00:00 GMT',
+          embed: embeddedHtmlMock,
+        },
+      ],
+    })
+
     const sut = createWrapper(Home, {
-      computed: {
-        doesHaveEventEmbedded: () => true,
+      mocks: {
+        $fetchEvent: fetchEventMock,
       },
     })
     await flushPromises()
@@ -603,7 +618,14 @@ describe('embedded event', function () {
     await flushPromises()
 
     /* Assert */
-    expect(sut.find('.event--embedded').exists()).toBe(true)
+    expect(fetchEventMock).toBeCalledWith(
+      expect.objectContaining({
+        eventType: 'embedded',
+      })
+    )
+    expect(sut.html()).toContain(embeddedHtmlMock)
+
+    jest.restoreAllMocks()
   })
 
   test('close it and prevent users from seeing it in the future when they click the close icon', async function () {
@@ -812,12 +834,6 @@ async function assertExistsByDate(now, startDate, endDate, assert) {
   jest.spyOn(Date, 'now').mockReturnValue(new Date(now))
 
   const sut = createWrapper(Home, {
-    data() {
-      return {
-        ...dataRequiredMock,
-        hasScrolled: true,
-      }
-    },
     mocks: {
       $fetchEvent: () =>
         Promise.resolve({
@@ -825,6 +841,11 @@ async function assertExistsByDate(now, startDate, endDate, assert) {
         }),
     },
   })
+  await flushPromises()
+
+  /* Act */
+  window.dispatchEvent(new Event('scroll'))
+
   await flushPromises()
 
   /* Assert */

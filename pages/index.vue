@@ -200,10 +200,12 @@ export default {
       eventMod: {},
       hasClosedEventMod: false,
       doesUserCloseEventMod: false,
-      hasScrolled: false,
 
       eventEmbedded: {},
+      hasClosedEventEmbedded: false,
       doesUserCloseEventEmbedded: false,
+
+      hasScrolled: false,
 
       observerOfLastSecondFocusList: undefined,
       shouldFixLastFocusList: false,
@@ -271,11 +273,7 @@ export default {
       )
     },
     shouldOpenEventEmbedded() {
-      return (
-        this.doesHaveEventEmbedded &&
-        this.hasScrolled &&
-        !this.doesUserCloseEventEmbedded
-      )
+      return this.doesHaveEventEmbedded && !this.doesUserCloseEventEmbedded
     },
     doesHaveEventEmbedded() {
       if (_.isEmpty(this.eventEmbedded)) {
@@ -362,14 +360,17 @@ export default {
     ],
 
     isDesktopWidth: ['handleFixLastFocusList'],
+
+    hasScrolled: ['loadEventEmbedded'],
   },
 
   mounted() {
     this.loadLatestListInitial()
-    this.loadEvent('mod')
-    this.handleLoadEventEmbedded()
 
+    this.loadEvent('mod')
     this.checkUserHasClosedEventMod()
+
+    this.handleLoadEventEmbedded()
 
     if (this.isDesktopWidth) {
       this.observeToFixLastFocusList()
@@ -493,6 +494,11 @@ export default {
 
       this[`event${_.capitalize(eventType)}`] = Object.freeze(items[0] || {})
     },
+    loadEventEmbedded() {
+      if (!this.hasClosedEventEmbedded && this.hasScrolled) {
+        this.loadEvent('embedded')
+      }
+    },
     async checkUserHasClosedEventMod() {
       try {
         this.hasClosedEventMod =
@@ -518,15 +524,12 @@ export default {
     },
     async handleLoadEventEmbedded() {
       if (!(await this.checkUserHasClosedEventEmbedded())) {
-        this.loadEvent('embedded')
         this.checkScrolled()
       }
     },
     async checkUserHasClosedEventEmbedded() {
-      let hasClosedEventEmbedded = false
-
       try {
-        hasClosedEventEmbedded =
+        this.hasClosedEventEmbedded =
           JSON.parse(await localforage.getItem('mmHasClosedEventEmbedded')) ??
           false
       } catch (err) {
@@ -534,7 +537,7 @@ export default {
         console.error(err)
       }
 
-      return hasClosedEventEmbedded
+      return this.hasClosedEventEmbedded
     },
     handleCloseEventEmbedded() {
       this.doesUserCloseEventEmbedded = true
