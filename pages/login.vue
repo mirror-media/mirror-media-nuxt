@@ -3,10 +3,21 @@
     <div v-if="pageState === 'form'" class="form-wrapper">
       <h1 class="form-wrapper__title title">登入</h1>
       <div class="form-wrapper__federated-login federated-login">
-        <div class="google-login-wrapper">
+        <div class="facebook-login-wrapper">
           <div
             v-show="isFederatedRedirectResultLoading"
-            class="google-login-loading-wrapper"
+            class="federated-login-loading-wrapper"
+          >
+            <UiMembershipSpinner />
+          </div>
+          <ContainerMembershipLoginWithFacebook
+            v-show="!isFederatedRedirectResultLoading"
+          />
+        </div>
+        <div class="federated-login__login-wrapper google-login-wrapper">
+          <div
+            v-show="isFederatedRedirectResultLoading"
+            class="federated-login-loading-wrapper"
           >
             <UiMembershipSpinner />
           </div>
@@ -39,6 +50,7 @@
 <script>
 import localforage from 'localforage'
 import ContainerMembershipLoginWithGoogle from '~/components/ContainerMembershipLoginWithGoogle.vue'
+import ContainerMembershipLoginWithFacebook from '~/components/ContainerMembershipLoginWithFacebook.vue'
 import ContainerMembershipLoginWithEmail from '~/components/ContainerMembershipLoginWithEmail.vue'
 import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
 import UiMembershipError from '~/components/UiMembershipError.vue'
@@ -47,6 +59,7 @@ import UiMembershipSpinner from '~/components/UiMembershipSpinner.vue'
 export default {
   components: {
     ContainerMembershipLoginWithGoogle,
+    ContainerMembershipLoginWithFacebook,
     ContainerMembershipLoginWithEmail,
     UiMembershipEmailSuccess,
     UiMembershipError,
@@ -127,7 +140,12 @@ export default {
   color: #054f77;
 }
 
-.google-login-loading-wrapper {
+.federated-login {
+  &__login-wrapper {
+    margin: 10px 0 0 0;
+  }
+}
+.federated-login-loading-wrapper {
   border: 2px solid #4a4a4a;
   width: 100%;
   height: 38px;
