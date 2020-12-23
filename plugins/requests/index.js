@@ -50,9 +50,9 @@ async function fetchApiData(url, fromMembershipGateway = false, token) {
 
     throw new FetchError('Not Found', 404)
   } catch (err) {
-    const massage = err.massage || err
+    const message = err.message || err
     const code = err.code || 500
-    throw new FetchError(massage, code, url)
+    throw new FetchError(message, code, url)
   }
 }
 
@@ -244,9 +244,9 @@ export default (context, inject) => {
       const res = await axios.get(urlFetch, requestConfig)
       return camelizeKeys(res.data)
     } catch (err) {
-      const massage = err.massage || err
+      const message = err.message || err
       const code = err.code || 500
-      throw new FetchError(massage, code, '/api/membership/v1/tokenState')
+      throw new FetchError(message, code, '/api/membership/v1/tokenState')
     }
   })
 }
