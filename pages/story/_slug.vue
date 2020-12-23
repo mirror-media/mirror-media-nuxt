@@ -19,21 +19,12 @@
             </template>
 
             <template #storyRelateds>
-              <UiStoryListWithArrow
-                class="story__list"
-                :categoryTitle="categoryTitle"
-                :items="relateds"
-                :sectionName="sectionName"
-                @sendGa:left="sendGaForClick('related news left')"
-                @sendGa:right="sendGaForClick('related news right')"
-              />
-
               <LazyRenderer
                 class="story__list"
                 @load="handleShowStoryListRelated"
               >
                 <UiStoryListRelated
-                  :items="relatedsWithoutFirstTwo"
+                  :items="relateds"
                   :images="relatedImages"
                   @sendGa="sendGaForClick('related')"
                 >
@@ -199,7 +190,6 @@ import ContainerCulturePost from '~/components/culture-post/ContainerCulturePost
 import ContainerStoryBody from '~/components/ContainerStoryBody.vue'
 import UiAdultContentWarning from '~/components/UiAdultContentWarning.vue'
 import UiStoryListRelated from '~/components/UiStoryListRelated.vue'
-import UiStoryListWithArrow from '~/components/UiStoryListWithArrow.vue'
 import FbPage from '~/components/FbPage.vue'
 import UiArticleListAside from '~/components/UiArticleListAside.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
@@ -240,7 +230,6 @@ export default {
     ContainerStoryBody,
     UiAdultContentWarning,
     UiStoryListRelated,
-    UiStoryListWithArrow,
     FbPage,
     UiArticleListAside,
 
@@ -370,9 +359,6 @@ export default {
     relateds() {
       return (this.story.relateds ?? []).filter((item) => item.slug)
     },
-    relatedsWithoutFirstTwo() {
-      return this.relateds.slice(2)
-    },
     section() {
       return this.story.sections?.[0] || {}
     },
@@ -445,9 +431,7 @@ export default {
       this.shouldLoadPopinScript = true
     },
     async fetchRelatedImages() {
-      const imageIds = this.relatedsWithoutFirstTwo.map(
-        (item) => item.heroImage
-      )
+      const imageIds = this.relateds.map((item) => item.heroImage)
 
       const { items = [] } = await this.$fetchImages({ id: imageIds })
       this.relatedImages = items
