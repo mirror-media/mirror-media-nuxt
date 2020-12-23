@@ -28,7 +28,7 @@
     <UiStickyAd>
       <ContainerGptAd :pageKey="currentSectionId" adKey="MB_ST" />
     </UiStickyAd>
-    <ContainerFullScreenAds />
+    <ContainerFullScreenAds v-if="!isSectionMember" />
   </section>
 </template>
 
@@ -68,7 +68,6 @@ export default {
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
-      microAdUnits: MICRO_AD_UNITS.LISTING.RWD,
     }
   },
   computed: {
@@ -94,6 +93,9 @@ export default {
     currentSectionThemeColor() {
       const key = `section-color-${this.currentSectionName}`
       return styleVariables[key]
+    },
+    isSectionMember() {
+      return this.currentSectionName === 'member'
     },
     listDataPageLimit() {
       if (this.listDataTotal === undefined) {
@@ -126,6 +128,10 @@ export default {
     },
     showListDataLoadmorePage() {
       return this.listDataLoadmorePage.length > 0
+    },
+
+    microAdUnits() {
+      return !this.isSectionMember ? MICRO_AD_UNITS.LISTING.RWD : []
     },
   },
   methods: {

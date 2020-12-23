@@ -12,6 +12,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import { SECTION_IDS } from '~/constants/index.js'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 export default {
@@ -52,7 +53,7 @@ export default {
     adData() {
       const data = gptAdUnits[this.pageKey]?.[this.adKeyFull]
 
-      if (!data) {
+      if (!data && this.pageKey !== SECTION_IDS.member) {
         // eslint-disable-next-line no-console
         console.error(
           `Unable to find the AD data. Got the pageKey "${this.pageKey}" and adKey "${this.adKeyFull}". Please provide a vaild pageKey or adKey.`
