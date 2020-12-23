@@ -52,7 +52,7 @@
 
           <section class="container">
             <UiColumnHeader title="焦點新聞" class="home__column-header" />
-            <LazyRenderer>
+            <LazyRenderer @load="canFixLastFocusList = true">
               <div class="article-list-focus-container">
                 <UiArticleListFocus
                   v-for="article in focusArticles"
@@ -215,6 +215,7 @@ export default {
       hasScrolled: false,
 
       observerOfLastSecondFocusList: undefined,
+      canFixLastFocusList: false,
       shouldFixLastFocusList: false,
     }
   },
@@ -367,6 +368,7 @@ export default {
     ],
 
     isDesktopWidth: ['handleFixLastFocusList'],
+    canFixLastFocusList: ['handleFixLastFocusList'],
 
     hasScrolled: ['loadEventEmbedded'],
   },
@@ -376,10 +378,6 @@ export default {
     this.checkUserHasClosedEventMod()
 
     this.handleLoadEventEmbedded()
-
-    if (this.isDesktopWidth) {
-      this.observeToFixLastFocusList()
-    }
   },
 
   beforeDestroy() {
@@ -573,7 +571,7 @@ export default {
     },
 
     handleFixLastFocusList() {
-      this.isDesktopWidth
+      this.isDesktopWidth && this.canFixLastFocusList
         ? this.observeToFixLastFocusList()
         : this.cleanFixedLastFocusList()
     },
@@ -612,7 +610,7 @@ export default {
     },
     cleanFixedLastFocusList() {
       this.shouldFixLastFocusList = false
-      this.observerOfLastSecondFocusList.disconnect()
+      this.observerOfLastSecondFocusList?.disconnect()
     },
 
     sendGa(eventAction, eventLabel, eventValue, eventCategory = 'home') {
