@@ -87,16 +87,21 @@ export default {
     },
     async signInWithEmail(email) {
       try {
-        await this.$fire.auth.signInWithEmailLink(email, window.location.href)
+        const result = await this.$fire.auth.signInWithEmailLink(
+          email,
+          window.location.href
+        )
         await localforage.removeItem('emailForSignIn')
 
-        await this.$apollo.mutate({
-          mutation: userCreate,
-          variables: {
-            email: this.$store.state.membership.userEmail,
-            firebaseId: this.$store.state.membership.userUid,
-          },
-        })
+        if (result.user !== null) {
+          await this.$apollo.mutate({
+            mutation: userCreate,
+            variables: {
+              email: result.user.email,
+              firebaseId: result.user.uid,
+            },
+          })
+        }
 
         // redirect to page where use try to login
         const destination = await localforage.getItem('mm-login-destination')

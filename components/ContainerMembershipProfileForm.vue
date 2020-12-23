@@ -15,6 +15,7 @@
         </label>
         <input
           id="profile-name-input"
+          v-model="name"
           type="text"
           class="input"
           placeholder="請輸入姓名"
@@ -29,8 +30,10 @@
         </label>
         <UiMembershipDropdownMenu
           id="profile-gender-dropdown"
-          :options="['男', '女', '不透露']"
+          :defaultIndex="genderDefaultIndex"
+          :options="['不透露', '男', '女']"
           style="width: 90px"
+          @change="handleDropdownMenuGenderChange"
         />
       </div>
       <div class="form__item-wrapper birthday-wrapper">
@@ -52,6 +55,7 @@
           <UiMembershipDropdownMenu
             class="birthday-form__dropdown-menu-birthday-month"
             :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+            :defaultIndex="birthdayMonthDefaultIndex"
             :height="50"
             style="width: 104px"
             :state="isBirthdayMonthInvalid ? 'invalid' : 'normal'"
@@ -82,6 +86,7 @@
         <label class="subtitle" for="profile-phone-input">電話</label>
         <input
           id="profile-phone-input"
+          v-model="phone"
           type="tel"
           class="input"
           placeholder="請輸入電話"
@@ -99,7 +104,7 @@
             <UiMembershipDropdownMenu
               class="address-dropdown-menus-item__dropdown-menu"
               :options="countriesOptions"
-              :defaultIndex="countriesTwIndex"
+              :defaultIndex="addressCountryDefaultIndex"
               :state="isAddressCountryInvalid ? 'invalid' : 'normal'"
               style="width: 100%"
               @change="handleDropdownMenuCountryChange"
@@ -114,6 +119,7 @@
               class="address-dropdown-menus-item__dropdown-menu"
               style="width: 100%"
               :options="twCountiesOptions"
+              :defaultIndex="addressCountyDefaultIndex"
               :state="dropdownMenuStateCounty"
               @change="handleDropdownMenuCountyChange"
             />
@@ -127,6 +133,7 @@
               class="address-dropdown-menus-item__dropdown-menu"
               style="width: 100%"
               :options="twDistrictsOptions"
+              :defaultIndex="addressDistrictDefaultIndex"
               :state="dropdownMenuStateDistrict"
               @change="handleDropdownMenuDistrictChange"
             />
@@ -164,9 +171,77 @@ import { validationMixin } from 'vuelidate'
 import { required, requiredIf, between } from 'vuelidate/lib/validators'
 import countriesData from 'mirror-media-constants/countries.json'
 import twDistrictsData from 'mirror-media-constants/taiwan-districts.json'
+import dayjs from 'dayjs'
 import UiMembershipDropdownMenu from '~/components/UiMembershipDropdownMenu.vue'
+import userUpdate from '~/apollo/mutations/userUpdate.gql'
+import userQuery from '~/apollo/queries/userQuery.gql'
 
 export default {
+  apollo: {
+    $client: 'saleorClient',
+    member: {
+      query: userQuery,
+      fetchPolicy: 'no-cache',
+      variables() {
+        return {
+          firebaseId: this.$store.state.membership.userUid,
+        }
+      },
+      result({ data }) {
+        const getGender = (gender) => {
+          switch (gender) {
+            case 'A_1':
+              return '男'
+            case 'A_2':
+              return '女'
+            case 'A_3':
+              return '不透露'
+            default:
+              return null
+          }
+        }
+
+        this.name = data?.member?.nickname
+
+        const gender = getGender(data?.member?.gender)
+        this.gender = gender
+        this.genderDefaultIndex = ['不透露', '男', '女'].indexOf(gender)
+
+        this.birthdayYear = dayjs(data?.member.birthday).year()
+        const month = dayjs(data?.member.birthday).month()
+        this.birthdayMonth = month + 1
+        this.birthdayMonthDefaultIndex = month
+        this.birthdayDay = dayjs(data?.member.birthday).date()
+
+        this.phone = data?.member?.phone
+
+        const countryIndex = countriesData.findIndex((country) => {
+          return country.Taiwan === data?.member?.country
+        })
+        this.addressCountry = countriesData?.[countryIndex] ?? {}
+        this.addressCountryDefaultIndex = countryIndex
+
+        const countyIndex = twDistrictsData.findIndex(function findByName(
+          county
+        ) {
+          return county.name === data?.member?.city
+        })
+
+        this.addressCounty = twDistrictsData?.[countyIndex] ?? {}
+        this.addressCountyDefaultIndex = countyIndex
+
+        const districtIndex = (this.addressCounty?.districts ?? []).findIndex(
+          (district) => {
+            return district?.name === data?.member?.district
+          }
+        )
+        this.addressDistrict = this.addressCounty?.districts?.[districtIndex]
+        this.addressDistrictDefaultIndex = districtIndex
+
+        this.addressInput = data?.member?.address
+      },
+    },
+  },
   components: {
     UiMembershipDropdownMenu,
   },
@@ -211,13 +286,23 @@ export default {
   },
   data() {
     return {
+      name: undefined,
+      gender: undefined,
+      genderDefaultIndex: undefined,
+
       birthdayYear: undefined,
       birthdayMonth: undefined,
+      birthdayMonthDefaultIndex: undefined,
       birthdayDay: undefined,
 
+      phone: undefined,
+
       addressCountry: {},
+      addressCountryDefaultIndex: undefined,
       addressCounty: {},
+      addressCountyDefaultIndex: undefined,
       addressDistrict: {},
+      addressDistrictDefaultIndex: undefined,
       addressInput: '',
 
       isSubmitButtonClicked: false,
@@ -244,14 +329,14 @@ export default {
       })
     },
     twDistrictsOptions() {
-      const districts = this.addressCounty.districts ?? []
+      const districts = this.addressCounty?.districts ?? []
       return districts.map(function getDistrictsName(district) {
         return district.name
       })
     },
 
     isCountryNotTw() {
-      return this.addressCountry.ISO2 !== 'TW'
+      return this.addressCountry?.ISO2 !== 'TW'
     },
     dropdownMenuStateCounty() {
       if (this.isCountryNotTw) {
@@ -273,10 +358,10 @@ export default {
     },
 
     currentCountryCode() {
-      return this.addressCountry.ISO2 ?? 'countryCode'
+      return this.addressCountry?.ISO2 ?? 'countryCode'
     },
     currentCountyName() {
-      return this.addressCounty.name ?? 'countyName'
+      return this.addressCounty?.name ?? 'countyName'
     },
 
     shouldShowBirthdayInvalidHint() {
@@ -323,13 +408,19 @@ export default {
     },
   },
   methods: {
+    handleDropdownMenuGenderChange(value) {
+      this.gender = value
+    },
+
     handleDropdownMenuCountryChange(value) {
       this.addressCountry = countriesData.find(function findByTwName(country) {
         return country.Taiwan === value
       })
       this.$v.addressCountry.$touch()
       this.addressCounty = {}
+      this.addressCountyDefaultIndex = null
       this.addressDistrict = {}
+      this.addressDistrictDefaultIndex = null
     },
     handleDropdownMenuCountyChange(value) {
       this.addressCounty = twDistrictsData.find(function findByName(county) {
@@ -337,14 +428,16 @@ export default {
       })
       this.$v.addressCounty.$touch()
       this.addressDistrict = {}
+      this.addressDistrictDefaultIndex = null
     },
     handleDropdownMenuDistrictChange(value) {
-      const district = this.addressCounty.districts ?? []
+      const district = this.addressCounty?.districts ?? []
       this.addressDistrict = district.find(function findByName(district) {
         return district.name === value
       })
       this.$v.addressDistrict.$touch()
     },
+
     limitNumberWithRange(number, min, max) {
       return Math.min(Math.max(number, min), max)
     },
@@ -362,7 +455,72 @@ export default {
     handleInputBirthdayDayChange() {
       this.birthdayDay = this.limitNumberWithRange(this.birthdayDay, 1, 31)
     },
-    handleSubmit() {
+
+    createProfilePayload() {
+      const getGender = () => {
+        switch (this.gender) {
+          case '不透露':
+            return 3
+          case '男':
+            return 1
+          case '女':
+            return 2
+          default:
+            return 0
+        }
+      }
+
+      const getBirthday = () => {
+        if (!this.birthdayYear || !this.birthdayMonth || !this.birthdayDay) {
+          return null
+        }
+        const date = `${this.birthdayYear}-${this.birthdayMonth}-${this.birthdayDay}`
+        return dayjs(date).format('YYYY-MM-DD')
+      }
+
+      const getAddress = () => {
+        /*
+         * if (
+         *   !getTraditionalChineseName(this.addressCountry) ||
+         *   !getCountyName(this.addressCounty) ||
+         *   !getDistrictsName(this.addressDistrict) ||
+         *   !this.addressInput
+         * ) {
+         *   return null
+         * }
+         */
+        return {
+          country: getTraditionalChineseName(this.addressCountry),
+          city: getCountyName(this.addressCounty),
+          district: getDistrictsName(this.addressDistrict),
+          address: this.addressInput,
+        }
+
+        // TODO: duplicated usage function, should refactor
+        function getTraditionalChineseName(country) {
+          return country?.Taiwan ?? ''
+        }
+        function getCountyName(county) {
+          return county?.name ?? ''
+        }
+        function getDistrictsName(district) {
+          return district?.name ?? ''
+        }
+      }
+
+      return {
+        firebaseId: this.$store.state.membership.userUid,
+        nickname: this.name,
+        gender: getGender(),
+        birthday: getBirthday(),
+        phone: this.phone,
+        country: getAddress().country,
+        city: getAddress().city,
+        district: getAddress().district,
+        address: getAddress().address,
+      }
+    },
+    async handleSubmit() {
       if (!this.isSubmitButtonClicked) {
         this.isSubmitButtonClicked = true
       }
@@ -370,8 +528,17 @@ export default {
         !this.shouldShowAddressInvalidHint &&
         !this.shouldShowBirthdayInvalidHint
       ) {
-        // TODO: send update profile request to the backend
-        this.$emit('success')
+        try {
+          await this.$apollo.mutate({
+            mutation: userUpdate,
+            variables: this.createProfilePayload(),
+          })
+          this.$emit('success')
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.error(e)
+          this.$emit('error')
+        }
       }
     },
   },

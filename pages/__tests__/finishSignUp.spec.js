@@ -110,7 +110,14 @@ describe('email validations', function () {
     window.location = {
       replace: jest.fn(),
     }
-    const mockSignInWithEmailLink = jest.fn(() => Promise.resolve())
+    const mockSignInWithEmailLink = jest.fn(() =>
+      Promise.resolve({
+        user: {
+          email: '',
+          uid: '',
+        },
+      })
+    )
     createWrapper(page, {
       mocks: {
         $store: {

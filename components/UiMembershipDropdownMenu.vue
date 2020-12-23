@@ -77,11 +77,25 @@ export default {
       return this.selectedOption || this.placeholder
     },
   },
-  beforeMount() {
-    if (typeof this.defaultIndex === 'number') {
-      this.handleOptionListItemClick(this.options[this.defaultIndex])
-    }
+  watch: {
+    defaultIndex: {
+      handler() {
+        if (typeof this.defaultIndex === 'number') {
+          // this.handleOptionListItemClick(this.options[this.defaultIndex])
+          this.selectedOption = this.options[this.defaultIndex]
+        }
+      },
+      immediate: true,
+    },
   },
+
+  /*
+   * beforeMount() {
+   *   if (typeof this.defaultIndex === 'number') {
+   *     this.handleOptionListItemClick(this.options[this.defaultIndex])
+   *   }
+   * },
+   */
   methods: {
     handleActiveItemClick() {
       if (this.state === 'disable') {

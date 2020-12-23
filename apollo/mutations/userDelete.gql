@@ -1,6 +1,5 @@
-mutation ($id: String!){
- deleteAccount(id: $id){
-   success
-   errors
- }
+mutation ($firebaseId: String!){
+  deleteMember(firebaseId: $firebaseId){
+    success
+  }
 }

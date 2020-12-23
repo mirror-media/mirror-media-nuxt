@@ -46,7 +46,7 @@ export default {
         const response = await this.$apollo.mutate({
           mutation: userDelete,
           variables: {
-            id: this.$store.state.membership.userUid,
+            firebaseId: this.$store.state.membership.userUid,
           },
         })
 
