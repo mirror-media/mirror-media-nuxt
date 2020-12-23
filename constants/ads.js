@@ -28,11 +28,13 @@ const MICRO_AD_UNITS = {
       { name: 'NA1_PC_AP', id: '4276377' },
       { name: 'NA2_PC_AP', id: '4276378' },
       { name: 'NA3_PC_AP', id: '4276379' },
+      { name: 'NA4_PC_AP', id: '4297298' },
     ],
     MB: [
       { name: 'NA1_MB_AP', id: '4273365' },
       { name: 'NA2_MB_AP', id: '4273369' },
       { name: 'NA3_MB_AP', id: '4273373' },
+      { name: 'NA4_MB_AP', id: '4297297' },
     ],
   },
 }
