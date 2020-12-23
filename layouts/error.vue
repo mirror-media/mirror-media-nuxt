@@ -14,7 +14,7 @@
           media="(min-width: 768px)"
           srcset="~/assets/404-md.png"
         />
-        <img src="~/assets/404-sm.png" alt="抱歉！找不到這個網址" />
+        <img src="~/assets/404-sm.png" alt="" />
       </picture>
     </div>
     <div v-if="hasLatestStories" class="latest-container">

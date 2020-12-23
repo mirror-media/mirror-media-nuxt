@@ -34,11 +34,6 @@ describe('title', () => {
     const titleWrapper = wrapper.get('.linked-item__title')
     expect(titleWrapper.text()).toBe(title)
   })
-
-  test('render the proper img alt', () => {
-    const image = wrapper.get('img')
-    expect(image.attributes().alt).toBe(title)
-  })
 })
 
 describe('image src', () => {

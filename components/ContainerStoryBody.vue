@@ -26,7 +26,7 @@
     </div>
 
     <figure v-else class="g-story-figure story__hero">
-      <img :src="heroImg" :alt="heroCaption" />
+      <img :src="heroImg" alt="" />
       <figcaption v-if="heroCaption" v-text="heroCaption" />
     </figure>
 
