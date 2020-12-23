@@ -18,7 +18,7 @@
           rel="noopener noreferrer"
           @click="$emit('sendGa')"
         >
-          <img :src="gainImgSrcById(images, item.heroImage)" alt="" />
+          <img :src="getImgById(images, item.heroImage)" alt="" />
         </a>
       </div>
     </template>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { gainImgSrcById } from '~/utils/img.js'
+import { getImgById } from '~/utils/img.js'
 
 export default {
   name: 'UiStoryListRelated',
@@ -52,7 +52,7 @@ export default {
   },
 
   methods: {
-    gainImgSrcById,
+    getImgById,
   },
 }
 </script>

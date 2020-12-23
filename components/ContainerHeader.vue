@@ -166,7 +166,7 @@ export default {
   computed: {
     ...mapGetters({
       sections: 'sections/displayedSections',
-      gainSectionByCategoryName: 'sections/gainSectionByCategoryName',
+      getSectionByCategoryName: 'sections/getSectionByCategoryName',
       partners: 'partners/displayedPartners',
       topics: 'topics/displayedTopics',
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
@@ -197,7 +197,7 @@ export default {
           } else if (path.startsWith(cat)) {
             const categoryName = removePrefix(path, cat)
 
-            sectionName = this.gainSectionByCategoryName(categoryName).name
+            sectionName = this.getSectionByCategoryName(categoryName).name
           }
         }
       }

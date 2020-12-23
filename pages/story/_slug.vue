@@ -21,7 +21,7 @@
             <template #storyRelateds>
               <LazyRenderer
                 class="story__list"
-                @load="handleShowStoryListRelated"
+                @load="handleLoadStoryListRelated"
               >
                 <UiStoryListRelated
                   :items="relateds"
@@ -49,7 +49,7 @@
                   <LazyRenderer
                     :id="`dablewidget_${DABLE_WIDGET_IDS.PC}`"
                     :data-widget_id="DABLE_WIDGET_IDS.PC"
-                    @load="handleShowDableWidget"
+                    @load="handleLoadDableWidget"
                   ></LazyRenderer>
                 </div>
               </ClientOnly>
@@ -83,7 +83,7 @@
                 <LazyRenderer
                   :id="`dablewidget_${DABLE_WIDGET_IDS.MB}`"
                   :data-widget_id="DABLE_WIDGET_IDS.MB"
-                  @load="handleShowDableWidget"
+                  @load="handleLoadDableWidget"
                 ></LazyRenderer>
               </div>
 
@@ -425,7 +425,7 @@ export default {
   },
 
   methods: {
-    handleShowStoryListRelated() {
+    handleLoadStoryListRelated() {
       this.fetchRelatedImages()
 
       this.shouldLoadPopinScript = true
@@ -495,7 +495,7 @@ export default {
     doesNotHaveCurrentStorySlug(item) {
       return item.slug !== this.storySlug
     },
-    handleShowDableWidget() {
+    handleLoadDableWidget() {
       this.shouldLoadDableScript = true
     },
     handleFixAside: _.throttle(function () {

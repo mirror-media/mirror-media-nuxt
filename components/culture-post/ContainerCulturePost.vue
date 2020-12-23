@@ -112,8 +112,8 @@ export default {
 
       return {
         title,
-        credits: gainCredits(),
-        brief: gainBrief(),
+        credits: getCredits(),
+        brief: getBrief(),
         content: content.apiData || [],
         heroImage: heroImgsResized,
         coverPicture: {
@@ -125,7 +125,7 @@ export default {
         relateds,
       }
 
-      function gainCredits() {
+      function getCredits() {
         return [
           [writers, '記者'],
           [photographers, '攝影'],
@@ -148,7 +148,7 @@ export default {
         }
       }
 
-      function gainBrief() {
+      function getBrief() {
         return (
           brief.apiData
             ?.filter(

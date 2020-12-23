@@ -10,7 +10,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img :src="gainImgSrcById(imgs, item.heroImage)" alt="" />
+          <img :src="getImgById(imgs, item.heroImage)" alt="" />
         </a>
 
         <a
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { gainImgSrcById } from '~/utils/img.js'
+import { getImgById } from '~/utils/img.js'
 
 export default {
   name: 'UiListRelated',
@@ -45,7 +45,7 @@ export default {
   },
 
   methods: {
-    gainImgSrcById,
+    getImgById,
   },
 }
 </script>
