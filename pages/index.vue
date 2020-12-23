@@ -521,6 +521,8 @@ export default {
           // eslint-disable-next-line no-console
           console.error(err)
         })
+
+      this.sendGaForClick('mod close')
     },
     async handleLoadEventEmbedded() {
       if (!(await this.checkUserHasClosedEventEmbedded())) {
@@ -548,6 +550,8 @@ export default {
           // eslint-disable-next-line no-console
           console.error(err)
         })
+
+      this.sendGaForClick('embedded close')
     },
     checkScrolled() {
       if (this.hasScrolled) {

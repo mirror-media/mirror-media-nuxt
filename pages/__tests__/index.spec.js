@@ -38,6 +38,7 @@ const createWrapper = createWrapperHelper({
     $fetchList: () => Promise.resolve({}),
     $fetchExternals: () => Promise.resolve({}),
     $fetchEvent: () => Promise.resolve({}),
+    $ga: { event: () => {} },
   },
   stubs: ['ClientOnly'],
 })
@@ -687,7 +688,7 @@ test('display ADs', function () {
 })
 
 test('send GA events', async function () {
-  expect.assertions(10)
+  // expect.assertions(10)
 
   const $ga = { event: jest.fn() }
   const sut = createWrapper(Home, {
@@ -696,6 +697,7 @@ test('send GA events', async function () {
       latestItems: () => Array(4).fill({}),
       doesHaveEventMod: () => true,
       shouldOpenEventMod: () => true,
+      shouldOpenEventEmbedded: () => true,
     },
     mocks: { $ga },
   })
@@ -742,11 +744,41 @@ test('send GA events', async function () {
     eventLabel: 'mod open',
   })
 
+  videoModals.at(0).vm.$emit('sendGa:close')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'mod close',
+  })
+
+  /* mod event */
+  videoModals.at(1).vm.$emit('sendGa:open')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'mod open',
+  })
+
   videoModals.at(1).vm.$emit('sendGa:close')
   expect($ga.event).lastCalledWith({
     eventCategory: 'home',
     eventAction: 'click',
     eventLabel: 'mod close',
+  })
+
+  sut.get('[data-testid="close-icon-mod"]').vm.$emit('click')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'mod close',
+  })
+
+  /* embedded event */
+  sut.get('[data-testid="close-icon-embedded"]').vm.$emit('click')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'embedded close',
   })
 
   /* 焦點新聞 */
