@@ -128,7 +128,7 @@ describe('鏡電視 & mod event', function () {
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sun, 14 Jun 2020 10:00:00 GMT',
       function assert(sut) {
-        expect(sut.find('.mirror-tv-aside').exists()).toBe(true)
+        expect(sut.find('.mirror-tv').exists()).toBe(true)
         expect(sut.find('[data-testid="event-mod"]').exists()).toBe(true)
       }
     )
@@ -142,7 +142,7 @@ describe('鏡電視 & mod event', function () {
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sun, 14 Jun 2020 10:00:00 GMT',
       function assert(sut) {
-        expect(sut.find('.mirror-tv-aside').exists()).toBe(false)
+        expect(sut.find('.mirror-tv').exists()).toBe(false)
         expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
       }
     )
@@ -156,7 +156,7 @@ describe('鏡電視 & mod event', function () {
       'Mon, 08 Jun 2020 10:00:00 GMT',
       'Sun, 14 Jun 2020 10:00:00 GMT',
       function assert(sut) {
-        expect(sut.find('.mirror-tv-aside').exists()).toBe(false)
+        expect(sut.find('.mirror-tv').exists()).toBe(false)
         expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
       }
     )

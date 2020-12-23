@@ -42,7 +42,7 @@
             <UiColumnHeader title="鏡電視" class="home__column-header" />
             <LazyRenderer>
               <UiVideoModal
-                class="mirror-tv-aside"
+                class="mirror-tv"
                 :embeddedHtml="eventMod.embed"
                 @sendGa:open="sendGaForClick('mod open')"
                 @sendGa:close="sendGaForClick('mod close')"
@@ -812,7 +812,7 @@ aside {
   }
 }
 
-.mirror-tv-aside {
+.mirror-tv {
   padding-top: 66.67%;
 }
 
