@@ -422,7 +422,7 @@ describe('最新文章', () => {
     /* Arrange */
     jest.spyOn(Home.methods, 'pushLatestItems')
 
-    createWrapper(Home, {
+    const sut = createWrapper(Home, {
       data() {
         return {
           ...dataRequiredMock,
@@ -443,6 +443,10 @@ describe('最新文章', () => {
           }),
       },
     })
+
+    /* Act */
+    sut.get('[data-testid="article-gallery"]').vm.$emit('load')
+
     await flushPromises()
 
     /* Assert */
@@ -688,7 +692,7 @@ test('display ADs', function () {
 })
 
 test('send GA events', async function () {
-  // expect.assertions(10)
+  expect.assertions(14)
 
   const $ga = { event: jest.fn() }
   const sut = createWrapper(Home, {
@@ -790,6 +794,8 @@ test('send GA events', async function () {
   })
 
   /* 最新文章 */
+  sut.get('[data-testid="article-gallery"]').vm.$emit('load')
+
   sut.getComponent(UiArticleGallery).vm.$emit('sendGa')
   expect($ga.event).lastCalledWith({
     eventCategory: 'home',

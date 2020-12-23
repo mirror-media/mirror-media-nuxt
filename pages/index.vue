@@ -52,17 +52,19 @@
 
           <section class="container">
             <UiColumnHeader title="焦點新聞" class="home__column-header" />
-            <div class="article-list-focus-container">
-              <UiArticleListFocus
-                v-for="article in focusArticles"
-                :key="article.slug"
-                :articleMain="article"
-                :articlesRelated="article.relateds"
-                class="home__article-list-focus"
-                :class="{ fixed: shouldFixLastFocusList }"
-                @sendGa="sendGaForClick('group')"
-              />
-            </div>
+            <LazyRenderer>
+              <div class="article-list-focus-container">
+                <UiArticleListFocus
+                  v-for="article in focusArticles"
+                  :key="article.slug"
+                  :articleMain="article"
+                  :articlesRelated="article.relateds"
+                  class="home__article-list-focus"
+                  :class="{ fixed: shouldFixLastFocusList }"
+                  @sendGa="sendGaForClick('group')"
+                />
+              </div>
+            </LazyRenderer>
           </section>
         </aside>
 
@@ -82,14 +84,19 @@
 
             <section class="container">
               <UiColumnHeader title="最新文章" class="home__column-header" />
-              <UiArticleGallery
-                :items="latestItems"
-                @sendGa="sendGaForClick('latest')"
-              />
-              <UiInfiniteLoading
-                v-if="latestItems.length > 3"
-                @infinite="loadMoreLatestItems"
-              />
+              <LazyRenderer
+                data-testid="article-gallery"
+                @load="loadLatestListInitial"
+              >
+                <UiArticleGallery
+                  :items="latestItems"
+                  @sendGa="sendGaForClick('latest')"
+                />
+                <UiInfiniteLoading
+                  v-if="latestItems.length > 3"
+                  @infinite="loadMoreLatestItems"
+                />
+              </LazyRenderer>
             </section>
           </ClientOnly>
         </div>
@@ -365,8 +372,6 @@ export default {
   },
 
   mounted() {
-    this.loadLatestListInitial()
-
     this.loadEvent('mod')
     this.checkUserHasClosedEventMod()
 
