@@ -52,6 +52,7 @@ test('show a next artcile when users click the next arrow', async () => {
 
   /* Act */
   sut.get('.next').trigger('click')
+  sut.get('.next').trigger('click')
   sut.get('.titles').trigger('transitionend')
 
   /* Assert */
@@ -75,6 +76,7 @@ test('show a previous artcile when users click the previous arrow', async () => 
   const sut = createWrapper(UiFlashNews)
 
   /* Act */
+  sut.get('.prev').trigger('click')
   sut.get('.prev').trigger('click')
   sut.get('.titles').trigger('transitionend')
 

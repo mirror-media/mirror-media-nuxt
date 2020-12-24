@@ -82,6 +82,10 @@ export default {
       this.$emit('sendGa:next')
     },
     toNext() {
+      if (this.shouldTransition) {
+        return
+      }
+
       this.cancelAutoToNext()
       this.shouldTransition = true
       this.move -= 1
@@ -91,6 +95,10 @@ export default {
       this.$emit('sendGa:prev')
     },
     toPrev() {
+      if (this.shouldTransition) {
+        return
+      }
+
       this.cancelAutoToNext()
       this.shouldTransition = true
       this.move += 1
