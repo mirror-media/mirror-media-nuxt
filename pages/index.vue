@@ -38,12 +38,13 @@
 
       <div class="column-container">
         <aside>
-          <section v-if="doesHaveEventMod" class="container">
+          <section class="container">
             <UiColumnHeader title="鏡電視" class="home__column-header" />
-            <LazyRenderer>
+            <LazyRenderer data-testid="mirror-tv" @load="loadEventMod">
               <UiVideoModal
+                v-if="isValidEventModItem"
                 class="mirror-tv"
-                :embeddedHtml="eventMod.embed"
+                :embeddedHtml="eventMod.item.embed"
                 @sendGa:open="sendGaForClick('mod open')"
                 @sendGa:close="sendGaForClick('mod close')"
               />
@@ -105,7 +106,7 @@
       <div class="events-container">
         <div v-if="shouldOpenEventEmbedded" class="event event--embedded">
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <div v-html="eventEmbedded.embed"></div>
+          <div v-html="eventEmbedded.item.embed"></div>
 
           <SvgCloseIcon
             data-testid="close-icon-embedded"
@@ -113,9 +114,10 @@
           />
         </div>
 
-        <div v-if="shouldOpenEventMod" class="event" data-testid="event-mod">
+        <div v-if="shouldOpenEventMod" class="event">
           <UiVideoModal
-            :embeddedHtml="eventMod.embed"
+            data-testid="event-mod"
+            :embeddedHtml="eventMod.item.embed"
             @sendGa:open="sendGaForClick('mod open')"
             @sendGa:close="sendGaForClick('mod close')"
           />
@@ -204,13 +206,17 @@ export default {
       areMicroAdsInserted: false,
       areExternalsInserted: false,
 
-      eventMod: {},
-      hasClosedEventMod: false,
-      doesUserCloseEventMod: false,
+      eventMod: {
+        item: {},
+        isLoading: false,
+        hasClosed: true,
+        doesUserClose: false,
+      },
 
-      eventEmbedded: {},
-      hasClosedEventEmbedded: false,
-      doesUserCloseEventEmbedded: false,
+      eventEmbedded: {
+        item: {},
+        doesUserClose: false,
+      },
 
       hasScrolled: false,
 
@@ -265,33 +271,36 @@ export default {
       return this.latestList.items
     },
 
-    doesHaveEventMod() {
-      if (_.isEmpty(this.eventMod)) {
+    isValidEventModItem() {
+      if (!this.doesHaveEventModItem) {
         return false
       }
 
-      return inThePeriodBetween(this.eventMod.startDate, this.eventMod.endDate)
+      const { startDate, endDate } = this.eventMod.item
+
+      return inThePeriodBetween(startDate, endDate)
+    },
+    doesHaveEventModItem() {
+      return !_.isEmpty(this.eventMod.item)
     },
     shouldOpenEventMod() {
       return (
-        !this.hasClosedEventMod &&
-        this.doesHaveEventMod &&
-        this.hasScrolled &&
-        !this.doesUserCloseEventMod
+        this.isValidEventModItem &&
+        !this.eventMod.hasClosed &&
+        !this.eventMod.doesUserClose
       )
     },
     shouldOpenEventEmbedded() {
-      return this.doesHaveEventEmbedded && !this.doesUserCloseEventEmbedded
+      return this.isValidEventEmbeddedItem && !this.eventEmbedded.doesUserClose
     },
-    doesHaveEventEmbedded() {
-      if (_.isEmpty(this.eventEmbedded)) {
+    isValidEventEmbeddedItem() {
+      const { item: eventEmbedded } = this.eventEmbedded
+
+      if (_.isEmpty(eventEmbedded)) {
         return false
       }
 
-      return inThePeriodBetween(
-        this.eventEmbedded.startDate,
-        this.eventEmbedded.endDate
-      )
+      return inThePeriodBetween(eventEmbedded.startDate, eventEmbedded.endDate)
     },
 
     focusArticles() {
@@ -370,14 +379,11 @@ export default {
     isDesktopWidth: ['handleFixLastFocusList'],
     canFixLastFocusList: ['handleFixLastFocusList'],
 
-    hasScrolled: ['loadEventEmbedded'],
+    hasScrolled: ['loadFixedEventMod', 'loadEventEmbedded'],
   },
 
-  mounted() {
-    this.loadEvent('mod')
-    this.checkUserHasClosedEventMod()
-
-    this.handleLoadEventEmbedded()
+  beforeMount() {
+    this.checkScrolled()
   },
 
   beforeDestroy() {
@@ -487,36 +493,50 @@ export default {
       }
     },
 
-    async loadEvent(eventType) {
-      const { items = [] } =
-        (await this.$fetchEvent({
-          isFeatured: true,
-          eventType,
-          maxResults: 1,
-        })) || {}
-
-      this[`event${_.capitalize(eventType)}`] = Object.freeze(items[0] || {})
+    async loadFixedEventMod() {
+      if (this.hasScrolled && !(await this.checkUserHasClosedEventMod())) {
+        this.loadEventMod()
+      }
     },
-    loadEventEmbedded() {
-      if (!this.hasClosedEventEmbedded && this.hasScrolled) {
-        this.loadEvent('embedded')
+    async loadEventMod() {
+      if (!this.doesHaveEventModItem && !this.eventMod.isLoading) {
+        this.eventMod.isLoading = true
+
+        const { items = [] } =
+          (await this.$fetchEvent({
+            isFeatured: true,
+            eventType: 'mod',
+            maxResults: 1,
+          })) || {}
+        this.eventMod.item = items[0] || {}
+
+        this.eventMod.isLoading = false
+      }
+    },
+    async loadEventEmbedded() {
+      if (this.hasScrolled && !(await this.checkUserHasClosedEventEmbedded())) {
+        const { items = [] } =
+          (await this.$fetchEvent({
+            isFeatured: true,
+            eventType: 'embedded',
+            maxResults: 1,
+          })) || {}
+        this.eventEmbedded.item = Object.freeze(items[0] || {})
       }
     },
     async checkUserHasClosedEventMod() {
       try {
-        this.hasClosedEventMod =
+        this.eventMod.hasClosed =
           JSON.parse(await localforage.getItem('mmHasClosedEventMod')) ?? false
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error(err)
       }
 
-      if (!this.hasClosedEventMod) {
-        this.checkScrolled()
-      }
+      return this.eventMod.hasClosed
     },
     handleCloseEventMod() {
-      this.doesUserCloseEventMod = true
+      this.eventMod.doesUserClose = true
 
       localforage
         .setItem('mmHasClosedEventMod', JSON.stringify(true))
@@ -527,14 +547,11 @@ export default {
 
       this.sendGaForClick('mod close')
     },
-    async handleLoadEventEmbedded() {
-      if (!(await this.checkUserHasClosedEventEmbedded())) {
-        this.checkScrolled()
-      }
-    },
     async checkUserHasClosedEventEmbedded() {
+      let hasClosedEventEmbedded = true
+
       try {
-        this.hasClosedEventEmbedded =
+        hasClosedEventEmbedded =
           JSON.parse(await localforage.getItem('mmHasClosedEventEmbedded')) ??
           false
       } catch (err) {
@@ -542,10 +559,10 @@ export default {
         console.error(err)
       }
 
-      return this.hasClosedEventEmbedded
+      return hasClosedEventEmbedded
     },
     handleCloseEventEmbedded() {
-      this.doesUserCloseEventEmbedded = true
+      this.eventEmbedded.doesUserClose = true
 
       localforage
         .setItem('mmHasClosedEventEmbedded', JSON.stringify(true))
@@ -557,10 +574,6 @@ export default {
       this.sendGaForClick('embedded close')
     },
     checkScrolled() {
-      if (this.hasScrolled) {
-        return
-      }
-
       window.addEventListener(
         'scroll',
         () => {

@@ -12,7 +12,6 @@ import Home, {
 } from '../index.vue'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
-import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
@@ -119,78 +118,100 @@ describe('編輯精選', () => {
   })
 })
 
-describe('鏡電視 & mod event', function () {
-  test('show them if the current date is between their start date and end date', async function () {
-    expect.assertions(2)
+describe('鏡電視', function () {
+  test('fetch and show it', async function () {
+    expect.assertions(4)
 
-    await assertExistsByDate(
-      'Thu, 11 Jun 2020 10:00:00 GMT',
-      'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sun, 14 Jun 2020 10:00:00 GMT',
-      function assert(sut) {
-        expect(sut.find('.mirror-tv').exists()).toBe(true)
-        expect(sut.find('[data-testid="event-mod"]').exists()).toBe(true)
-      }
-    )
-  })
-
-  test('do not show them if the current date is less then their start date', async function () {
-    expect.assertions(2)
-
-    await assertExistsByDate(
-      'Mon, 01 Jun 2020 10:00:00 GMT',
-      'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sun, 14 Jun 2020 10:00:00 GMT',
-      function assert(sut) {
-        expect(sut.find('.mirror-tv').exists()).toBe(false)
-        expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
-      }
-    )
-  })
-
-  test('do not show them if the current date is greater than or equal to their end date', async function () {
-    expect.assertions(2)
-
-    await assertExistsByDate(
-      'Sun, 21 Jun 2020 10:00:00 GMT',
-      'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sun, 14 Jun 2020 10:00:00 GMT',
-      function assert(sut) {
-        expect(sut.find('.mirror-tv').exists()).toBe(false)
-        expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
-      }
-    )
-  })
-
-  test('pass the data to the components', function () {
     /* Arrange */
-    const eventModMock = {
-      embed: '<iframe src="test-src"></iframe>',
-    }
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          eventMod: eventModMock,
-        }
-      },
-      computed: {
-        doesHaveEventMod: () => true,
-        shouldOpenEventMod: () => true,
-      },
-    })
+    const { sut, eventItemMock, fetchEventMock, cleanup } = setupEvent()
 
     /* Assert */
-    const videoModals = sut.findAllComponents(UiVideoModal)
+    expect(fetchEventMock).not.toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+    expect(sut.find('.mirror-tv').exists()).toBe(false)
 
-    expect(videoModals.at(0).props().embeddedHtml).toBe(eventModMock.embed)
-    expect(videoModals.at(1).props().embeddedHtml).toBe(eventModMock.embed)
+    /* Act */
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    /* Assert */
+    expect(fetchEventMock).toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+    expect(sut.get('.mirror-tv').props().embeddedHtml).toBe(eventItemMock.embed)
+
+    cleanup()
   })
+
+  test('do not fetch it again if it has had content', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    const { sut, cleanup } = setupEvent()
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    sut.vm.$fetchEvent = jest.fn()
+
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.vm.$fetchEvent).not.toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+
+    cleanup()
+  })
+
+  // test('do not show it if users have not scolled to its proximity')
+
+  // test('do not fetch it again if a browser is loading it')
 })
 
 describe('mod event', function () {
-  test('do not show it if users have closed it', async function () {
-    expect.assertions(1)
+  test('fetch and show it when users begin to scroll down', async function () {
+    expect.assertions(4)
+
+    /* Arrange */
+    const { sut, eventItemMock, fetchEventMock, cleanup } = setupEvent()
+
+    /* Assert */
+    expect(fetchEventMock).not.toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(fetchEventMock).toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+    expect(sut.get('[data-testid="event-mod"]').props().embeddedHtml).toBe(
+      eventItemMock.embed
+    )
+
+    cleanup()
+  })
+
+  test('do not fetch and show it if users have closed it', async function () {
+    expect.assertions(2)
 
     /* Arrange */
     jest
@@ -199,79 +220,167 @@ describe('mod event', function () {
         Promise.resolve(JSON.stringify(key === 'mmHasClosedEventMod'))
       )
 
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          hasScrolled: true,
-        }
-      },
-      computed: {
-        doesHaveEventMod: () => true,
-      },
-    })
-    await flushPromises()
-
-    /* Assert */
-    expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
-
-    jest.restoreAllMocks()
-  })
-
-  test('show it when users begin to scroll down', async function () {
-    expect.assertions(2)
-
-    /* Arrange */
-    const sut = createWrapper(Home, {
-      computed: {
-        doesHaveEventMod: () => true,
-      },
-    })
-    await flushPromises()
-
-    /* Assert */
-    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+    const { sut, fetchEventMock, cleanup } = setupEvent()
 
     /* Act */
     window.dispatchEvent(new Event('scroll'))
-
     await flushPromises()
 
     /* Assert */
-    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(true)
+    expect(fetchEventMock).not.toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+
+    cleanup()
+  })
+
+  test('do not fetch it again if it has had content', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    const { sut, cleanup } = setupEvent()
+
+    /* Act */
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    sut.vm.$fetchEvent = jest.fn()
+
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.vm.$fetchEvent).not.toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+
+    cleanup()
   })
 
   test('close it and prevent users from seeing it in the future when they click the close icon', async function () {
-    expect.assertions(2)
+    expect.assertions(3)
 
     /* Arrange */
     jest.spyOn(localforage, 'setItem')
 
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          hasScrolled: true,
-        }
-      },
-      computed: {
-        doesHaveEventMod: () => true,
-      },
-    })
+    const { sut, eventItemMock, cleanup } = setupEvent()
 
     /* Act */
-    sut.get('[data-testid="close-icon-mod"]').vm.$emit('click')
-
+    window.dispatchEvent(new Event('scroll'))
     await flushPromises()
 
     /* Assert */
-    expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
+    expect(sut.get('[data-testid="event-mod"]').props().embeddedHtml).toBe(
+      eventItemMock.embed
+    )
+
+    /* Act */
+    sut.get('[data-testid="close-icon-mod"]').vm.$emit('click')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('[data-testid="event-mod"').exists()).toBe(false)
     expect(localforage.setItem).toBeCalledWith(
       'mmHasClosedEventMod',
       JSON.stringify(true)
     )
 
-    jest.restoreAllMocks()
+    cleanup()
+    await localforage.removeItem('mmHasClosedEventMod')
+  })
+
+  // test('do not fetch it again if a browser is loading it')
+})
+
+describe('鏡電視 & mod event', function () {
+  test('show them if the current date is between their start date and end date', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    const { sut, eventItemMock, cleanup } = setupEventByDate(
+      'Thu, 11 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.get('.mirror-tv').props().embeddedHtml).toBe(eventItemMock.embed)
+    expect(sut.get('[data-testid="event-mod"]').props().embeddedHtml).toBe(
+      eventItemMock.embed
+    )
+
+    cleanup()
+  })
+
+  test('do not show them if the current date is less then their start date', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    const { sut, cleanup } = setupEventByDate(
+      'Mon, 01 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.mirror-tv').exists()).toBe(false)
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+
+    cleanup()
+  })
+
+  test('do not show them if the current date is greater than or equal to their end date', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    const { sut, cleanup } = setupEventByDate(
+      'Sun, 21 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.mirror-tv').exists()).toBe(false)
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+
+    cleanup()
+  })
+
+  test('do not show them if they have no content', async function () {
+    /* Arrange */
+    const sut = createWrapper(Home, {
+      mocks: {
+        $fetchEvent: () => Promise.resolve({ items: [] }),
+      },
+    })
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
   })
 })
 
@@ -499,6 +608,27 @@ describe('最新文章', () => {
 })
 
 describe('embedded event', function () {
+  test('fetch and show it when users begin to scroll down', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    const { sut, eventItemMock, fetchEventMock, cleanup } = setupEvent()
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(fetchEventMock).toBeCalledWith({
+      isFeatured: true,
+      eventType: 'embedded',
+      maxResults: 1,
+    })
+    expect(sut.html()).toContain(eventItemMock.embed)
+
+    cleanup()
+  })
+
   test('do not fetch and show it if users have closed it', async function () {
     expect.assertions(2)
 
@@ -508,18 +638,11 @@ describe('embedded event', function () {
       .mockImplementation((key) =>
         Promise.resolve(JSON.stringify(key === 'mmHasClosedEventEmbedded'))
       )
-    const fetchEventMock = jest.fn()
 
-    const sut = createWrapper(Home, {
-      mocks: {
-        $fetchEvent: fetchEventMock,
-      },
-    })
-    await flushPromises()
+    const { sut, fetchEventMock } = setupEvent()
 
     /* Act */
     window.dispatchEvent(new Event('scroll'))
-
     await flushPromises()
 
     /* Assert */
@@ -533,7 +656,67 @@ describe('embedded event', function () {
     jest.restoreAllMocks()
   })
 
-  test('do not show it if there are no embedded events', async function () {
+  test('show it if the current date is between its start date and end date', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    const { sut, eventItemMock, cleanup } = setupEventByDate(
+      'Thu, 11 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.get('.event--embedded').html()).toContain(eventItemMock.embed)
+
+    cleanup()
+  })
+
+  test('do not show it if the current date is less then its start date', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    const { sut, cleanup } = setupEventByDate(
+      'Mon, 01 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.event--embedded').exists()).toBe(false)
+
+    cleanup()
+  })
+
+  test('do not show it if the current date is greater than or equal to its end date', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    const { sut, cleanup } = setupEventByDate(
+      'Sun, 21 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.event--embedded').exists()).toBe(false)
+
+    cleanup()
+  })
+
+  test('do not show it if it has no content', async function () {
     expect.assertions(1)
 
     /* Arrange */
@@ -542,118 +725,32 @@ describe('embedded event', function () {
         $fetchEvent: () => Promise.resolve({ items: [] }),
       },
     })
-    await flushPromises()
 
     /* Act */
     window.dispatchEvent(new Event('scroll'))
-
     await flushPromises()
 
     /* Assert */
     expect(sut.find('.event--embedded').exists()).toBe(false)
   })
 
-  test('show it if the current date is between its start date and end date', async function () {
-    expect.assertions(1)
-
-    await assertExistsByDate(
-      'Thu, 11 Jun 2020 10:00:00 GMT',
-      'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sun, 14 Jun 2020 10:00:00 GMT',
-      function assert(sut) {
-        expect(sut.find('.event--embedded').exists()).toBe(true)
-      }
-    )
-  })
-
-  test('do not show it if the current date is less then its start date', async function () {
-    expect.assertions(1)
-
-    await assertExistsByDate(
-      'Mon, 01 Jun 2020 10:00:00 GMT',
-      'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sun, 14 Jun 2020 10:00:00 GMT',
-      function assert(sut) {
-        expect(sut.find('.event--embedded').exists()).toBe(false)
-      }
-    )
-  })
-
-  test('do not show it if the current date is greater than or equal to its end date', async function () {
-    expect.assertions(1)
-
-    await assertExistsByDate(
-      'Sun, 21 Jun 2020 10:00:00 GMT',
-      'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sun, 14 Jun 2020 10:00:00 GMT',
-      function assert(sut) {
-        expect(sut.find('.event--embedded').exists()).toBe(false)
-      }
-    )
-  })
-
-  test('fetch and show it when users begin to scroll down', async function () {
-    expect.assertions(2)
-
-    /* Arrange */
-    jest
-      .spyOn(Date, 'now')
-      .mockReturnValue(new Date('Thu, 11 Jun 2020 10:00:00 GMT'))
-    const embeddedHtmlMock = '<iframe src="test-src"></iframe>'
-    const fetchEventMock = jest.fn().mockResolvedValue({
-      items: [
-        {
-          startDate: 'Mon, 08 Jun 2020 10:00:00 GMT',
-          endDate: 'Sun, 14 Jun 2020 10:00:00 GMT',
-          embed: embeddedHtmlMock,
-        },
-      ],
-    })
-
-    const sut = createWrapper(Home, {
-      mocks: {
-        $fetchEvent: fetchEventMock,
-      },
-    })
-    await flushPromises()
-
-    /* Act */
-    window.dispatchEvent(new Event('scroll'))
-
-    await flushPromises()
-
-    /* Assert */
-    expect(fetchEventMock).toBeCalledWith(
-      expect.objectContaining({
-        eventType: 'embedded',
-      })
-    )
-    expect(sut.html()).toContain(embeddedHtmlMock)
-
-    jest.restoreAllMocks()
-  })
-
   test('close it and prevent users from seeing it in the future when they click the close icon', async function () {
-    expect.assertions(2)
+    expect.assertions(3)
 
     /* Arrange */
     jest.spyOn(localforage, 'setItem')
 
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          hasScrolled: true,
-        }
-      },
-      computed: {
-        doesHaveEventEmbedded: () => true,
-      },
-    })
+    const { sut, eventItemMock, cleanup } = setupEvent()
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.get('.event--embedded').html()).toContain(eventItemMock.embed)
 
     /* Act */
     sut.get('[data-testid="close-icon-embedded"]').vm.$emit('click')
-
     await flushPromises()
 
     /* Assert */
@@ -663,7 +760,8 @@ describe('embedded event', function () {
       JSON.stringify(true)
     )
 
-    jest.restoreAllMocks()
+    cleanup()
+    await localforage.removeItem('mmHasClosedEventEmbedded')
   })
 })
 
@@ -694,17 +792,34 @@ test('display ADs', function () {
 test('send GA events', async function () {
   expect.assertions(14)
 
+  /* Arrange */
   const $ga = { event: jest.fn() }
+  jest
+    .spyOn(Date, 'now')
+    .mockReturnValue(new Date('Thu, 11 Jun 2020 10:00:00 GMT'))
   const sut = createWrapper(Home, {
     computed: {
       focusArticles: () => [{ slug: 'test-slug' }],
       latestItems: () => Array(4).fill({}),
-      doesHaveEventMod: () => true,
-      shouldOpenEventMod: () => true,
-      shouldOpenEventEmbedded: () => true,
     },
-    mocks: { $ga },
+    mocks: {
+      $ga,
+      $fetchEvent: () =>
+        Promise.resolve({
+          items: [
+            {
+              startDate: 'Mon, 08 Jun 2020 10:00:00 GMT',
+              endDate: 'Sun, 14 Jun 2020 10:00:00 GMT',
+            },
+          ],
+        }),
+    },
   })
+  await flushPromises()
+
+  window.dispatchEvent(new Event('scroll'))
+  sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+  await flushPromises()
 
   /* 快訊 */
   const flashNews = sut.getComponent(UiFlashNews)
@@ -739,16 +854,16 @@ test('send GA events', async function () {
   })
 
   /* 鏡電視 */
-  const videoModals = sut.findAllComponents(UiVideoModal)
+  const mirrorTv = sut.get('.mirror-tv')
 
-  videoModals.at(0).vm.$emit('sendGa:open')
+  mirrorTv.vm.$emit('sendGa:open')
   expect($ga.event).lastCalledWith({
     eventCategory: 'home',
     eventAction: 'click',
     eventLabel: 'mod open',
   })
 
-  videoModals.at(0).vm.$emit('sendGa:close')
+  mirrorTv.vm.$emit('sendGa:close')
   expect($ga.event).lastCalledWith({
     eventCategory: 'home',
     eventAction: 'click',
@@ -756,14 +871,16 @@ test('send GA events', async function () {
   })
 
   /* mod event */
-  videoModals.at(1).vm.$emit('sendGa:open')
+  const modEvent = sut.get('[data-testid="event-mod"]')
+
+  modEvent.vm.$emit('sendGa:open')
   expect($ga.event).lastCalledWith({
     eventCategory: 'home',
     eventAction: 'click',
     eventLabel: 'mod open',
   })
 
-  videoModals.at(1).vm.$emit('sendGa:close')
+  modEvent.vm.$emit('sendGa:close')
   expect($ga.event).lastCalledWith({
     eventCategory: 'home',
     eventAction: 'click',
@@ -867,34 +984,66 @@ describe('getLabel method', () => {
   })
 })
 
-async function assertExistsByDate(now, startDate, endDate, assert) {
+function setupEvent() {
+  jest
+    .spyOn(Date, 'now')
+    .mockReturnValue(new Date('Thu, 11 Jun 2020 10:00:00 GMT'))
+  const eventItemMock = {
+    startDate: 'Mon, 08 Jun 2020 10:00:00 GMT',
+    endDate: 'Sun, 14 Jun 2020 10:00:00 GMT',
+    embed: '<iframe src="test-src"></iframe>',
+  }
+
+  const fetchEventMock = jest.fn().mockResolvedValue({
+    items: [eventItemMock],
+  })
+  const sut = createWrapper(Home, {
+    mocks: {
+      $fetchEvent: fetchEventMock,
+    },
+  })
+
+  function cleanup() {
+    jest.restoreAllMocks()
+  }
+
+  return {
+    sut,
+    eventItemMock,
+    fetchEventMock,
+    cleanup,
+  }
+}
+
+function setupEventByDate(now, startDate, endDate) {
   /* Arrange */
   jest.spyOn(Date, 'now').mockReturnValue(new Date(now))
+  const eventItemMock = {
+    startDate,
+    endDate,
+    embed: '<iframe src="test-src"></iframe>',
+  }
 
   const sut = createWrapper(Home, {
     mocks: {
-      $fetchEvent: () =>
-        Promise.resolve({
-          items: [{ startDate, endDate }],
-        }),
+      $fetchEvent: () => Promise.resolve({ items: [eventItemMock] }),
     },
   })
-  await flushPromises()
 
-  /* Act */
-  window.dispatchEvent(new Event('scroll'))
+  function cleanup() {
+    jest.restoreAllMocks()
+  }
 
-  await flushPromises()
-
-  /* Assert */
-  assert(sut)
-
-  jest.restoreAllMocks()
+  return {
+    sut,
+    eventItemMock,
+    cleanup,
+  }
 }
 
 /**
  * TODO: 待補測試
  * load more
  * getImg
- * getLabel
+ * getHref
  */
