@@ -641,7 +641,7 @@ export default {
     const pageUrl = `https://${DOMAIN_NAME}${this.$route.path}`
 
     const publishedDateIso = new Date(publishedDate).toISOString()
-    const topicId = topics._id ?? ''
+    const topicId = topics?.id ?? ''
     const { name: writerName, id: writerId } = writers[0] || {}
     const tagNamesStr = tags.map((tag) => tag.name).join(', ')
 
