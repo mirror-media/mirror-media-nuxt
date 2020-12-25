@@ -189,31 +189,46 @@ export default {
       },
       result({ data }) {
         const getGender = (gender) => {
-          switch (gender) {
-            case 'A_1':
-              return '男'
-            case 'A_2':
-              return '女'
-            case 'A_3':
-              return '不透露'
-            default:
-              return null
+          if (typeof gender === 'number') {
+            switch (gender) {
+              case 1:
+                return '男'
+              case 2:
+                return '女'
+              case 3:
+                return '不透露'
+              default:
+                return null
+            }
+          } else {
+            switch (gender) {
+              case 'A_1':
+                return '男'
+              case 'A_2':
+                return '女'
+              case 'A_3':
+                return '不透露'
+              default:
+                return null
+            }
           }
         }
 
-        this.name = data?.member?.nickname
+        this.name = data?.member?.name ?? null
 
         const gender = getGender(data?.member?.gender)
         this.gender = gender
         this.genderDefaultIndex = ['不透露', '男', '女'].indexOf(gender)
 
-        this.birthdayYear = dayjs(data?.member.birthday).year()
-        const month = dayjs(data?.member.birthday).month()
-        this.birthdayMonth = month + 1
-        this.birthdayMonthDefaultIndex = month
-        this.birthdayDay = dayjs(data?.member.birthday).date()
+        const birthday = data?.member?.birthday ?? null
+        this.birthdayYear = dayjs(birthday).year()
+        const month = dayjs(birthday).month()
+        this.birthdayMonth = typeof month === 'number' ? month + 1 : null
+        this.birthdayMonthDefaultIndex =
+          typeof month === 'number' ? month : null
+        this.birthdayDay = dayjs(birthday).date()
 
-        this.phone = data?.member?.phone
+        this.phone = data?.member?.phone ?? null
 
         const countryIndex = countriesData.findIndex((country) => {
           return country.Taiwan === data?.member?.country
@@ -466,7 +481,7 @@ export default {
           case '女':
             return 2
           default:
-            return 0
+            return null
         }
       }
 
@@ -510,7 +525,7 @@ export default {
 
       return {
         firebaseId: this.$store.state.membership.userUid,
-        nickname: this.name,
+        name: this.name,
         gender: getGender(),
         birthday: getBirthday(),
         phone: this.phone,

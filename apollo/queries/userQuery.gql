@@ -2,7 +2,7 @@ query ($firebaseId: String!){
   member(firebaseId: $firebaseId) {
     firebaseId
     email
-    nickname
+    name
     gender
     birthday
     phone
