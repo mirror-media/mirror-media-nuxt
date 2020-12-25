@@ -4,9 +4,9 @@
     <div class="wrapper__description description">
       <p class="description__paragraph">請重新登入，或是聯繫客服</p>
       <p class="description__paragraph description__paragraph--blue">
-        service@mirrormedia.mg
+        MM-onlineservice@mirrormedia.mg
       </p>
-      <p class="description__paragraph">02-6333-3085</p>
+      <p class="description__paragraph">02-6333-3966</p>
       <p class="description__paragraph">我們將有專人為你服務</p>
     </div>
     <div class="wrapper__button-wrapper button-wrapper">
