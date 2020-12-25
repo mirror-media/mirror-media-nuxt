@@ -50,6 +50,13 @@
       更新時間｜<span v-text="updatedAt" />
     </p>
 
+    <div class="story__member-info">
+      鏡週刊4年了，讀者的建議與批評我們都虛心聆聽。為提供讀者最好的閱讀空間，我們成立了會員區，提供會員高質量、無廣告、一文到底的純淨閱讀體驗，邀您<nuxt-link
+        to="/login"
+        >立即體驗</nuxt-link
+      >。
+    </div>
+
     <slot name="fixedTriggerEnd"></slot>
 
     <slot name="storyRelateds"></slot>
@@ -523,6 +530,20 @@ export {
 
     span {
       color: #61a4cd;
+    }
+  }
+
+  &__member-info {
+    margin: 30px auto 0;
+    padding: 32px;
+    color: #fff;
+    font-size: 19.2px;
+    line-height: 36px;
+    text-align: justify;
+    background-color: #054f77;
+    a {
+      font-weight: 600px;
+      text-decoration: underline;
     }
   }
 
