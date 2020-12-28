@@ -38,18 +38,17 @@
 
       <div class="column-container">
         <aside>
-          <section class="container">
-            <UiColumnHeader title="鏡電視" class="home__column-header" />
-            <LazyRenderer data-testid="mirror-tv" @load="loadEventMod">
+          <LazyRenderer data-testid="mirror-tv" @load="loadEventMod">
+            <section v-if="isValidEventModItem" class="container">
+              <UiColumnHeader title="鏡電視" class="home__column-header" />
               <UiVideoModal
-                v-if="isValidEventModItem"
                 class="mirror-tv"
                 :embeddedHtml="eventMod.item.embed"
                 @sendGa:open="sendGaForClick('mod open')"
                 @sendGa:close="sendGaForClick('mod close')"
               />
-            </LazyRenderer>
-          </section>
+            </section>
+          </LazyRenderer>
 
           <section class="container">
             <UiColumnHeader title="焦點新聞" class="home__column-header" />

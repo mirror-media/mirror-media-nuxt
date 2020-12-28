@@ -120,7 +120,7 @@ describe('編輯精選', () => {
 
 describe('鏡電視', function () {
   test('fetch and show it', async function () {
-    expect.assertions(4)
+    expect.assertions(6)
 
     /* Arrange */
     const { sut, eventItemMock, fetchEventMock, cleanup } = setupEvent()
@@ -131,6 +131,7 @@ describe('鏡電視', function () {
       eventType: 'mod',
       maxResults: 1,
     })
+    expect(sut.get('[data-testid="mirror-tv"]').html()).not.toContain('鏡電視')
     expect(sut.find('.mirror-tv').exists()).toBe(false)
 
     /* Act */
@@ -143,6 +144,7 @@ describe('鏡電視', function () {
       eventType: 'mod',
       maxResults: 1,
     })
+    expect(sut.get('[data-testid="mirror-tv"]').html()).toContain('鏡電視')
     expect(sut.get('.mirror-tv').props().embeddedHtml).toBe(eventItemMock.embed)
 
     cleanup()
@@ -299,7 +301,7 @@ describe('mod event', function () {
 
 describe('鏡電視 & mod event', function () {
   test('show them if the current date is between their start date and end date', async function () {
-    expect.assertions(2)
+    expect.assertions(3)
 
     /* Arrange */
     const { sut, eventItemMock, cleanup } = setupEventByDate(
@@ -314,6 +316,7 @@ describe('鏡電視 & mod event', function () {
     await flushPromises()
 
     /* Assert */
+    expect(sut.get('[data-testid="mirror-tv"]').html()).toContain('鏡電視')
     expect(sut.get('.mirror-tv').props().embeddedHtml).toBe(eventItemMock.embed)
     expect(sut.get('[data-testid="event-mod"]').props().embeddedHtml).toBe(
       eventItemMock.embed
@@ -323,7 +326,7 @@ describe('鏡電視 & mod event', function () {
   })
 
   test('do not show them if the current date is less then their start date', async function () {
-    expect.assertions(2)
+    expect.assertions(3)
 
     /* Arrange */
     const { sut, cleanup } = setupEventByDate(
@@ -338,6 +341,7 @@ describe('鏡電視 & mod event', function () {
     await flushPromises()
 
     /* Assert */
+    expect(sut.get('[data-testid="mirror-tv"]').html()).not.toContain('鏡電視')
     expect(sut.find('.mirror-tv').exists()).toBe(false)
     expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
 
@@ -345,7 +349,7 @@ describe('鏡電視 & mod event', function () {
   })
 
   test('do not show them if the current date is greater than or equal to their end date', async function () {
-    expect.assertions(2)
+    expect.assertions(3)
 
     /* Arrange */
     const { sut, cleanup } = setupEventByDate(
@@ -360,6 +364,7 @@ describe('鏡電視 & mod event', function () {
     await flushPromises()
 
     /* Assert */
+    expect(sut.get('[data-testid="mirror-tv"]').html()).not.toContain('鏡電視')
     expect(sut.find('.mirror-tv').exists()).toBe(false)
     expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
 
