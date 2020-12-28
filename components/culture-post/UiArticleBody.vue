@@ -1,7 +1,8 @@
 <template>
   <article class="article-body">
     <div v-if="doesHaveBrief" class="brief">
-      <p v-for="item in brief" :key="item.id">{{ item.content }}</p>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <p v-for="item in brief" :key="item.id" v-html="item.content" />
     </div>
 
     <ContentHandler v-for="item in content" :key="item.id" :item="item" />
