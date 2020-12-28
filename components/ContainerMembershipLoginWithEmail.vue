@@ -5,10 +5,6 @@
       @input="handleEmailInput"
       @inputValidStateChange="handleInputValidStateChange"
     />
-    <label class="form__remember-me-checkbox remember-me-checkbox">
-      <input v-model="shouldRememberMe" type="checkbox" />
-      保持登入
-    </label>
     <button class="form__login-button login-button" @click="handleSubmit">
       <UiMembershipSpinner v-if="isLoading" :color="'white'" />
       <template v-else>登入</template>
@@ -58,9 +54,7 @@ export default {
     createSignInLinkToEmail() {
       const origin = window.location.origin
       const path = '/finishSignUp'
-      return this.shouldRememberMe
-        ? `${origin}${path}?shouldRememberMe=true`
-        : `${origin}${path}`
+      return `${origin}${path}`
     },
     async sendSignInLinkToEmail() {
       const actionCodeSettings = {
@@ -72,15 +66,18 @@ export default {
 
         // This must be true.
         handleCodeInApp: true,
-        iOS: {
-          bundleId: 'com.mirrormedia.news',
-        },
-        android: {
-          packageName: 'com.mirrormedia.news',
-          installApp: true,
-          minimumVersion: '12',
-        },
-        dynamicLinkDomain: 'mirrormedia.page.link',
+
+        /*
+         * iOS: {
+         *   bundleId: 'com.mirrormedia.news',
+         * },
+         * android: {
+         *   packageName: 'com.mirrormedia.news',
+         *   installApp: true,
+         *   minimumVersion: '12',
+         * },
+         * dynamicLinkDomain: 'mirrormedia.page.link',
+         */
       }
       try {
         await this.$fire.auth.sendSignInLinkToEmail(
@@ -110,19 +107,8 @@ export default {
 
 <style lang="scss" scoped>
 .form {
-  &__remember-me-checkbox {
-    margin: 10px 0 0 0;
-  }
   &__login-button {
     margin: 20px 0 0 0;
-  }
-}
-.remember-me-checkbox {
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  input {
-    margin: 0 10px 0 0;
   }
 }
 .login-button {
