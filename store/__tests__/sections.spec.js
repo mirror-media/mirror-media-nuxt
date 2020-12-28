@@ -12,9 +12,9 @@ test('return section by category name', () => {
   ]
 
   expect(
-    getters.gainSectionByCategoryName(state, { sections })('somebody')
+    getters.getSectionByCategoryName(state, { sections })('somebody')
   ).toEqual(sections[1])
   expect(
-    getters.gainSectionByCategoryName(state, { sections })('political')
+    getters.getSectionByCategoryName(state, { sections })('political')
   ).toEqual({})
 })

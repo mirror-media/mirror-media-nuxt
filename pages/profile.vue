@@ -27,6 +27,7 @@ export default {
     ContainerMembershipProfileSuccess,
     ContainerMembershipProfileError,
   },
+  middleware: ['authenticate'],
   data() {
     return {
       pageState: 'form',

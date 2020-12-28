@@ -11,6 +11,11 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 const createWrapper = createWrapperHelper({
+  mocks: {
+    $route: {
+      path: '/',
+    },
+  },
   stubs: {
     NuxtLink: RouterLinkStub,
   },
@@ -36,7 +41,6 @@ describe('default data bindings with vuex store', function () {
       store: new Vuex.Store(storeOptions),
     })
     expect(wrapper.find('.not-logged-in-link').exists()).toBe(true)
-    expect(wrapper.getComponent(RouterLinkStub).props().to).toBe('/login')
     expect(wrapper.find('.logged-in-wrapper').exists()).toBe(false)
   })
 })
@@ -73,11 +77,15 @@ describe('data bindings with vuex store, and user email exist', function () {
     expect(wrapper.getComponent(RouterLinkStub).props().to).toBe('/profile')
   })
 
-  test('should call the $fire.auth.signOut after we click the sign out button, if current visitor is a member', async function () {
+  test('should call the $fire.auth.signOut and reload the page after we click the sign out button, if current visitor is a member', async function () {
     const mockFire = {
       auth: {
         signOut: jest.fn(() => Promise.resolve()),
       },
+    }
+    delete window.location
+    window.location = {
+      reload: jest.fn(),
     }
     const wrapper = createWrapper(ContainerMembershipMemberIcon, {
       localVue,
@@ -89,6 +97,7 @@ describe('data bindings with vuex store, and user email exist', function () {
     const signOutButton = wrapper.get('.sign-out-button')
     await signOutButton.trigger('click')
     expect(mockFire.auth.signOut).toHaveBeenCalled()
+    expect(window.location.reload).toHaveBeenCalled()
   })
 
   test('should hide the dropdown menu in the logged in wrapper after mounted', function () {
@@ -109,5 +118,36 @@ describe('data bindings with vuex store, and user email exist', function () {
     expect(wrapper.get('.dropdown-menu').element.style.display).not.toBe('none')
     await memberIcon.trigger('click')
     expect(wrapper.get('.dropdown-menu').element.style.display).toBe('none')
+  })
+})
+
+describe('pass the current route path to the destination query in the login url', function () {
+  let storeOptions
+  beforeEach(() => {
+    storeOptions = {
+      modules: {
+        membership: {
+          namespaced: true,
+          state: stateMembership(),
+          getters: gettersMembership,
+        },
+      },
+    }
+  })
+
+  test('should pass the current route path to the destination query in the login url', function () {
+    const mockPath = '/mock/path'
+    const wrapper = createWrapper(ContainerMembershipMemberIcon, {
+      localVue,
+      store: new Vuex.Store(storeOptions),
+      mocks: {
+        $route: {
+          path: mockPath,
+        },
+      },
+    })
+    expect(wrapper.getComponent(RouterLinkStub).props().to).toBe(
+      `/login?destination=${mockPath}`
+    )
   })
 })

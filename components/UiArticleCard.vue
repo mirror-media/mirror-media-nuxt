@@ -8,7 +8,7 @@
   >
     <div class="article__top-wrapper top-wrapper">
       <div v-lazy-container="{ selector: 'img' }" class="top-wrapper__img img">
-        <img :data-src="imgSrc" alt="article hero image" />
+        <img :data-src="imgSrc" alt="" />
       </div>
       <span
         v-if="showImgText"

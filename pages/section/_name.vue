@@ -1,11 +1,7 @@
 <template>
   <section class="section">
     <client-only>
-      <GptAd
-        class="section__ad"
-        :adUnit="adTop.adUnit"
-        :adSize="adTop.adSize"
-      />
+      <ContainerGptAd :pageKey="currentSectionId" adKey="HD" />
     </client-only>
     <UiArticleList
       class="section__list"
@@ -18,11 +14,7 @@
       </template>
     </UiArticleList>
     <client-only>
-      <GptAd
-        class="section__ad"
-        :adUnit="adBottom.adUnit"
-        :adSize="adBottom.adSize"
-      />
+      <ContainerGptAd :pageKey="currentSectionId" adKey="FT" />
     </client-only>
     <UiArticleList
       v-show="showListDataLoadmorePage"
@@ -34,12 +26,9 @@
       @infinite="infiniteHandler"
     />
     <UiStickyAd>
-      <GptAd
-        :adUnit="adFixedBottomMobile.adUnit"
-        :adSize="adFixedBottomMobile.adSize"
-      />
+      <ContainerGptAd :pageKey="currentSectionId" adKey="MB_ST" />
     </UiStickyAd>
-    <ContainerFullScreenAds />
+    <ContainerFullScreenAds v-if="!isSectionMember" />
   </section>
 </template>
 
@@ -49,12 +38,13 @@ import _ from 'lodash'
 import MicroAd from '~/components/MicroAd.vue'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import styleVariables from '~/scss/_variables.scss'
-import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '~/constants'
+import { getStoryPath } from '~/utils/article'
 
 export default {
   name: 'Section',
@@ -62,6 +52,7 @@ export default {
     MicroAd,
     UiArticleList,
     UiInfiniteLoading,
+    ContainerGptAd,
     ContainerFullScreenAds,
     UiStickyAd,
   },
@@ -77,7 +68,6 @@ export default {
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
-      microAdUnits: MICRO_AD_UNITS.LISTING.RWD,
     }
   },
   computed: {
@@ -103,6 +93,9 @@ export default {
     currentSectionThemeColor() {
       const key = `section-color-${this.currentSectionName}`
       return styleVariables[key]
+    },
+    isSectionMember() {
+      return this.currentSectionName === 'member'
     },
     listDataPageLimit() {
       if (this.listDataTotal === undefined) {
@@ -137,17 +130,8 @@ export default {
       return this.listDataLoadmorePage.length > 0
     },
 
-    adDevice() {
-      return this.$ua.isFromPc() ? 'PC' : 'MB'
-    },
-    adTop() {
-      return gptAdUnits?.[this.currentSectionId]?.[`${this.adDevice}_HD`] ?? {}
-    },
-    adBottom() {
-      return gptAdUnits?.[this.currentSectionId]?.[`${this.adDevice}_FT`] ?? {}
-    },
-    adFixedBottomMobile() {
-      return gptAdUnits?.[this.currentSectionId]?.['MB_ST'] ?? {}
+    microAdUnits() {
+      return !this.isSectionMember ? MICRO_AD_UNITS.LISTING.RWD : []
     },
   },
   methods: {
@@ -157,7 +141,7 @@ export default {
     mapDataToComponentProps(item) {
       return {
         id: item.id,
-        href: item.slug ? `/story/${item.slug}` : '/',
+        href: getStoryPath(item),
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: this.currentSectionTitle,
         imgTextBackgroundColor: this.currentSectionThemeColor,

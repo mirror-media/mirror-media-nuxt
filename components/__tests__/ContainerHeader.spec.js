@@ -12,7 +12,7 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 const createWrapper = createWrapperHelper({
   computed: {
     sections: () => [],
-    gainSectionByCategoryName: () => () => ({
+    getSectionByCategoryName: () => () => ({
       name: undefined,
     }),
     partners: () => [],
@@ -274,7 +274,7 @@ describe('hightlight a navbar item', () => {
     const sectionNameMock = 'people'
     const sut = createWrapper(ContainerHeader, {
       computed: {
-        gainSectionByCategoryName: () => () => ({
+        getSectionByCategoryName: () => () => ({
           name: sectionNameMock,
         }),
       },

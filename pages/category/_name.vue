@@ -61,6 +61,7 @@ import styleVariables from '~/scss/_variables.scss'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
+import { getStoryPath } from '~/utils/article'
 
 export default {
   name: 'Category',
@@ -89,11 +90,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      gainSectionByCategoryName: 'sections/gainSectionByCategoryName',
+      getSectionByCategoryName: 'sections/getSectionByCategoryName',
     }),
 
     sectionData() {
-      return this.gainSectionByCategoryName(this.categoryName)
+      return this.getSectionByCategoryName(this.categoryName)
     },
     sectionName() {
       return this.sectionData.name
@@ -182,7 +183,7 @@ export default {
     mapDataToComponentProps(item) {
       return {
         id: item.id,
-        href: item.slug ? `/story/${item.slug}` : '/',
+        href: getStoryPath(item),
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: this.sectionTitle,
         imgTextBackgroundColor: this.sectionThemeColor,

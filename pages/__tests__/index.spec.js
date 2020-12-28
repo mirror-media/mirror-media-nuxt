@@ -12,11 +12,10 @@ import Home, {
 } from '../index.vue'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
-import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
+import UiArticleGallery from '~/components/UiArticleGallery.vue'
+import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
-
-import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
@@ -31,16 +30,17 @@ const createWrapper = createWrapperHelper({
       ...dataRequiredMock,
     }
   },
+  computed: {
+    isDesktopWidth: () => false,
+  },
   mocks: {
     $fetchList: () => Promise.resolve({}),
     $fetchExternals: () => Promise.resolve({}),
     $fetchEvent: () => Promise.resolve({}),
+    $ga: { event: () => {} },
   },
   stubs: ['ClientOnly'],
 })
-
-const mockGrouped = [{}, {}, {}, {}]
-const mockGroupedRelateds = [{}, {}, {}, {}]
 
 describe('快訊', () => {
   test('transform contents of flash news', () => {
@@ -54,34 +54,10 @@ describe('快訊', () => {
       href: `/story/${articleMock.slug}/`,
     })
   })
-
-  test('send a GA event when UiFlashNews emits a sendGa:article, sendGa:next or sendGa:prev', () => {
-    /* Arrange */
-    const $ga = { event: jest.fn() }
-    const sut = createWrapper(Home, {
-      mocks: { $ga },
-    })
-
-    /* Act */
-    sut.getComponent(UiFlashNews).vm.$emit('sendGa:article')
-    sut.getComponent(UiFlashNews).vm.$emit('sendGa:next')
-    sut.getComponent(UiFlashNews).vm.$emit('sendGa:prev')
-
-    /* Assert */
-    ;['breakingnews title', 'breakingnews up', 'breakingnews down'].forEach(
-      function assert(eventLabel, idx) {
-        expect($ga.event).toHaveBeenNthCalledWith(idx + 1, {
-          eventCategory: 'home',
-          eventAction: 'click',
-          eventLabel,
-        })
-      }
-    )
-  })
 })
 
 describe('編輯精選', () => {
-  test('pass articles to UiEditorChoices', () => {
+  test('pass the data to the component', () => {
     /* Arrange */
     const choice1Mock = {
       slug: 'test-slug',
@@ -110,7 +86,7 @@ describe('編輯精選', () => {
       data() {
         return {
           ...dataRequiredMock,
-          articleGrouped: {
+          groupedArticles: {
             choices: [choice1Mock, choice2Mock],
           },
         }
@@ -140,261 +116,352 @@ describe('編輯精選', () => {
     expect(article1.label).toBe(section.title)
     expect(article1.sectionName).toBe(section.name)
   })
-
-  test('send a GA event when UiEditorChoices emits a sendGa', () => {
-    /* Arrange */
-    const $ga = {
-      event: jest.fn(),
-    }
-    const sut = createWrapper(Home, {
-      mocks: { $ga },
-    })
-
-    /* Act */
-    sut.getComponent(UiEditorChoices).vm.$emit('sendGa')
-
-    /* Assert */
-    expect($ga.event).toBeCalledWith({
-      eventCategory: 'home',
-      eventAction: 'click',
-      eventLabel: 'choice',
-    })
-  })
 })
 
 describe('鏡電視', function () {
-  afterEach(jest.restoreAllMocks)
+  test('fetch and show it', async function () {
+    expect.assertions(4)
 
-  test('display 鏡電視s when the current date is between the start date and the end date of the mod event', async function () {
-    await assertExistenceByDate(
-      'Thu, 11 Jun 2020 10:00:00 GMT',
-      'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sat, 13 Jun 2020 10:00:00 GMT',
-      2
-    )
-  })
-
-  test('do not display 鏡電視s when the current date is less then the start date of the mod event', async function () {
-    await assertExistenceByDate(
-      'Mon, 01 Jun 2020 10:00:00 GMT',
-      'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sat, 13 Jun 2020 10:00:00 GMT',
-      0
-    )
-  })
-
-  test('do not display 鏡電視s when the current date is greater than or equal to the end date of the mod event', async function () {
-    await assertExistenceByDate(
-      'Sun, 21 Jun 2020 10:00:00 GMT',
-      'Mon, 08 Jun 2020 10:00:00 GMT',
-      'Sat, 13 Jun 2020 10:00:00 GMT',
-      0
-    )
-  })
-
-  test('pass the embedded html to UiVideoModal', function () {
     /* Arrange */
-    const eventModMock = {
-      embed: '<iframe src="test-src"></iframe>',
-    }
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          eventMod: eventModMock,
-        }
-      },
-      computed: {
-        shouldOpenMirrorTv: () => true,
-        shouldOpenFixedMirrorTv: () => true,
-      },
-    })
+    const { sut, eventItemMock, fetchEventMock, cleanup } = setupEvent()
 
     /* Assert */
-    const videoModals = sut.findAllComponents(UiVideoModal)
-
-    expect(videoModals.at(0).props().embeddedHtml).toBe(eventModMock.embed)
-    expect(videoModals.at(1).props().embeddedHtml).toBe(eventModMock.embed)
-  })
-
-  test('send the GA event when UiVideoModal emits the "sendGa:open" or "sendGa:close"', function () {
-    /* Arrange */
-    const $ga = { event: jest.fn() }
-    const sut = createWrapper(Home, {
-      computed: {
-        shouldOpenMirrorTv: () => true,
-        shouldOpenFixedMirrorTv: () => true,
-      },
-      mocks: { $ga },
+    expect(fetchEventMock).not.toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
     })
+    expect(sut.find('.mirror-tv').exists()).toBe(false)
 
-    const videoModals = sut.findAllComponents(UiVideoModal)
-
-    for (let i = 0; i < videoModals.length; i += 1) {
-      /* Act */
-      videoModals.at(i).vm.$emit('sendGa:open')
-      videoModals.at(i).vm.$emit('sendGa:close')
-
-      /* Assert */
-      ;['mod open', 'mod close'].forEach(function assert(eventLabel, idx) {
-        expect($ga.event).nthCalledWith(idx + 1, {
-          eventCategory: 'home',
-          eventAction: 'click',
-          eventLabel,
-        })
-      })
-    }
-  })
-
-  test('show the fixed 鏡電視 when users begin to scroll down', async function () {
-    expect.assertions(2)
-
-    /* Arrange */
-    jest
-      .spyOn(localforage, 'getItem')
-      .mockImplementation((key) =>
-        Promise.resolve(
-          key === 'mmHasClosedFixedMirrorTv' ? null : JSON.stringify(true)
-        )
-      )
-
-    const sut = createWrapper(Home, {
-      computed: {
-        shouldOpenMirrorTv: () => true,
-      },
-    })
+    /* Act */
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
     await flushPromises()
 
     /* Assert */
-    expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
+    expect(fetchEventMock).toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+    expect(sut.get('.mirror-tv').props().embeddedHtml).toBe(eventItemMock.embed)
+
+    cleanup()
+  })
+
+  test('do not fetch it again if it has had content', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    const { sut, cleanup } = setupEvent()
 
     /* Act */
     window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
 
+    sut.vm.$fetchEvent = jest.fn()
+
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
     await flushPromises()
 
     /* Assert */
-    expect(sut.find('.mirror-tv-fixed').exists()).toBe(true)
-  })
-
-  test('close the fixed 鏡電視 and prevent users from seeing it in the future when they click the close icon', async function () {
-    expect.assertions(2)
-
-    /* Arrange */
-    const spySetItem = jest.spyOn(localforage, 'setItem')
-
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          hasScrolled: true,
-        }
-      },
-      computed: {
-        shouldOpenMirrorTv: () => true,
-      },
+    expect(sut.vm.$fetchEvent).not.toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
     })
 
-    /* Act */
-    sut.getComponent(SvgCloseIcon).vm.$emit('click')
+    cleanup()
+  })
 
+  // test('do not show it if users have not scolled to its proximity')
+
+  // test('do not fetch it again if a browser is loading it')
+})
+
+describe('mod event', function () {
+  test('fetch and show it when users begin to scroll down', async function () {
+    expect.assertions(4)
+
+    /* Arrange */
+    const { sut, eventItemMock, fetchEventMock, cleanup } = setupEvent()
+
+    /* Assert */
+    expect(fetchEventMock).not.toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
     await flushPromises()
 
     /* Assert */
-    expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
-    expect(spySetItem).toBeCalledWith(
-      'mmHasClosedFixedMirrorTv',
-      JSON.stringify(true)
+    expect(fetchEventMock).toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+    expect(sut.get('[data-testid="event-mod"]').props().embeddedHtml).toBe(
+      eventItemMock.embed
     )
+
+    cleanup()
   })
 
-  test('do not show the fixed 鏡電視 if users have closed it', async function () {
-    expect.assertions(1)
+  test('do not fetch and show it if users have closed it', async function () {
+    expect.assertions(2)
 
     /* Arrange */
     jest
       .spyOn(localforage, 'getItem')
       .mockImplementation((key) =>
-        Promise.resolve(JSON.stringify(key === 'mmHasClosedFixedMirrorTv'))
+        Promise.resolve(JSON.stringify(key === 'mmHasClosedEventMod'))
       )
 
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          hasScrolled: true,
-        }
-      },
-      computed: {
-        shouldOpenMirrorTv: () => true,
-      },
-    })
+    const { sut, fetchEventMock, cleanup } = setupEvent()
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
     await flushPromises()
 
     /* Assert */
-    expect(sut.find('.mirror-tv-fixed').exists()).toBe(false)
+    expect(fetchEventMock).not.toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+
+    cleanup()
   })
 
-  async function assertExistenceByDate(now, startDate, endDate, mirrorTvNum) {
+  test('do not fetch it again if it has had content', async function () {
     expect.assertions(1)
 
     /* Arrange */
-    jest.spyOn(Date, 'now').mockReturnValueOnce(new Date(now))
+    const { sut, cleanup } = setupEvent()
 
+    /* Act */
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    sut.vm.$fetchEvent = jest.fn()
+
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.vm.$fetchEvent).not.toBeCalledWith({
+      isFeatured: true,
+      eventType: 'mod',
+      maxResults: 1,
+    })
+
+    cleanup()
+  })
+
+  test('close it and prevent users from seeing it in the future when they click the close icon', async function () {
+    expect.assertions(3)
+
+    /* Arrange */
+    jest.spyOn(localforage, 'setItem')
+
+    const { sut, eventItemMock, cleanup } = setupEvent()
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.get('[data-testid="event-mod"]').props().embeddedHtml).toBe(
+      eventItemMock.embed
+    )
+
+    /* Act */
+    sut.get('[data-testid="close-icon-mod"]').vm.$emit('click')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('[data-testid="event-mod"').exists()).toBe(false)
+    expect(localforage.setItem).toBeCalledWith(
+      'mmHasClosedEventMod',
+      JSON.stringify(true)
+    )
+
+    cleanup()
+    await localforage.removeItem('mmHasClosedEventMod')
+  })
+
+  // test('do not fetch it again if a browser is loading it')
+})
+
+describe('鏡電視 & mod event', function () {
+  test('show them if the current date is between their start date and end date', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    const { sut, eventItemMock, cleanup } = setupEventByDate(
+      'Thu, 11 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.get('.mirror-tv').props().embeddedHtml).toBe(eventItemMock.embed)
+    expect(sut.get('[data-testid="event-mod"]').props().embeddedHtml).toBe(
+      eventItemMock.embed
+    )
+
+    cleanup()
+  })
+
+  test('do not show them if the current date is less then their start date', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    const { sut, cleanup } = setupEventByDate(
+      'Mon, 01 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.mirror-tv').exists()).toBe(false)
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+
+    cleanup()
+  })
+
+  test('do not show them if the current date is greater than or equal to their end date', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    const { sut, cleanup } = setupEventByDate(
+      'Sun, 21 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.mirror-tv').exists()).toBe(false)
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+
+    cleanup()
+  })
+
+  test('do not show them if they have no content', async function () {
+    /* Arrange */
+    const sut = createWrapper(Home, {
+      mocks: {
+        $fetchEvent: () => Promise.resolve({ items: [] }),
+      },
+    })
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
+  })
+})
+
+describe('焦點新聞', () => {
+  test('display the content', function () {
+    /* Arrange */
+    const focusArticlesMock = [
+      { slug: 1, relateds: [{}, {}, {}, {}] },
+      { slug: 2 },
+    ]
     const sut = createWrapper(Home, {
       data() {
         return {
           ...dataRequiredMock,
-          hasScrolled: true,
+          groupedArticles: {
+            grouped: focusArticlesMock,
+          },
         }
       },
-      mocks: {
-        $fetchEvent: () =>
-          Promise.resolve({
-            items: [{ startDate, endDate }],
-          }),
-      },
     })
-    await flushPromises()
 
     /* Assert */
-    expect(sut.findAllComponents(UiVideoModal)).toHaveLength(mirrorTvNum)
-  }
-})
+    const articleListsFocus = sut.findAllComponents(UiArticleListFocus)
 
-describe('UiArticleListFocus', () => {
-  test('render the correct number', () => {
-    const wrapper = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          articleGrouped: {
-            grouped: mockGrouped,
-          },
-        }
-      },
-    })
-
-    const focusArticleLists = wrapper.findAllComponents(UiArticleListFocus)
-    expect(focusArticleLists).toHaveLength(mockGrouped.length)
+    expect(articleListsFocus).toHaveLength(focusArticlesMock.length)
+    expect(articleListsFocus.at(0).props().articlesRelated).toHaveLength(
+      focusArticlesMock[0].relateds.length - 1
+    )
   })
 
-  test('pass the correct value to prop articlesRelated', () => {
-    const wrapper = createWrapper(Home, {
+  test('pass the data to the component', function () {
+    /* Arrange */
+    const focusArticleMock = {
+      slug: 'test-slug-main',
+      title: 'test title main',
+      style: 'test style main',
+      heroImage: {
+        image: {
+          resizedTargets: {
+            mobile: { url: 'test-hero-image.png' },
+          },
+        },
+      },
+      relateds: [
+        {
+          slug: 'test-slug-related',
+          title: 'test title related',
+          style: 'test style related',
+        },
+      ],
+    }
+    const sut = createWrapper(Home, {
       data() {
         return {
           ...dataRequiredMock,
-          articleGrouped: {
-            grouped: [{ relateds: mockGroupedRelateds }],
+          groupedArticles: {
+            grouped: [focusArticleMock],
           },
         }
       },
     })
 
-    const focusArticleList = wrapper.findComponent(UiArticleListFocus)
-    expect(focusArticleList.props().articlesRelated).toHaveLength(
-      mockGroupedRelateds.length - 1
+    /* Assert */
+    const { articleMain, articlesRelated } = sut
+      .getComponent(UiArticleListFocus)
+      .props()
+
+    expect(articleMain.slug).toBe(focusArticleMock.slug)
+    expect(articleMain.title).toBe(focusArticleMock.title)
+    expect(articleMain.href).toBe(`/story/${focusArticleMock.slug}/`)
+    expect(articleMain.imgSrc).toBe(
+      focusArticleMock.heroImage.image.resizedTargets.mobile.url
     )
+
+    const {
+      relateds: [related],
+    } = focusArticleMock
+
+    expect(articlesRelated[0].slug).toBe(related.slug)
+    expect(articlesRelated[0].title).toBe(related.title)
+    expect(articlesRelated[0].href).toBe(`/story/${related.slug}/`)
   })
 })
 
@@ -462,13 +529,13 @@ describe('最新文章', () => {
     expect.assertions(1)
 
     /* Arrange */
-    const spyPushLatestItems = jest.spyOn(Home.methods, 'pushLatestItems')
+    jest.spyOn(Home.methods, 'pushLatestItems')
 
-    createWrapper(Home, {
+    const sut = createWrapper(Home, {
       data() {
         return {
           ...dataRequiredMock,
-          articleGrouped: {
+          groupedArticles: {
             choices: [{ slug: '1' }],
             grouped: [{ slug: '2', relateds: [{ slug: '3' }] }],
           },
@@ -485,17 +552,22 @@ describe('最新文章', () => {
           }),
       },
     })
+
+    /* Act */
+    sut.get('[data-testid="article-gallery"]').vm.$emit('load')
+
     await flushPromises()
 
     /* Assert */
-    assert(spyPushLatestItems)
+    assert(Home.methods.pushLatestItems)
 
-    spyPushLatestItems.mockClear()
+    jest.restoreAllMocks()
   }
 
   async function testMicroAds(latestItemsNum, assert) {
     /* Arrange */
-    const spyInsertLatestItems = jest.spyOn(Home.methods, 'insertLatestItems')
+    jest.spyOn(Home.methods, 'insertLatestItems')
+
     const sut = createWrapper(Home)
 
     /* Act */
@@ -507,16 +579,17 @@ describe('最新文章', () => {
     await flushPromises()
 
     /* Assert */
-    assert(spyInsertLatestItems)
+    assert(Home.methods.insertLatestItems)
 
-    spyInsertLatestItems.mockClear()
+    jest.restoreAllMocks()
   }
 
   async function testExternals(latestItemsNum, assert) {
     expect.assertions(1)
 
     /* Arrange */
-    const spyInsertLatestItems = jest.spyOn(Home.methods, 'insertLatestItems')
+    jest.spyOn(Home.methods, 'insertLatestItems')
+
     const sut = createWrapper(Home)
 
     /* Act */
@@ -528,10 +601,168 @@ describe('最新文章', () => {
     await flushPromises()
 
     /* Assert */
-    assert(spyInsertLatestItems)
+    assert(Home.methods.insertLatestItems)
 
-    spyInsertLatestItems.mockClear()
+    jest.restoreAllMocks()
   }
+})
+
+describe('embedded event', function () {
+  test('fetch and show it when users begin to scroll down', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    const { sut, eventItemMock, fetchEventMock, cleanup } = setupEvent()
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(fetchEventMock).toBeCalledWith({
+      isFeatured: true,
+      eventType: 'embedded',
+      maxResults: 1,
+    })
+    expect(sut.html()).toContain(eventItemMock.embed)
+
+    cleanup()
+  })
+
+  test('do not fetch and show it if users have closed it', async function () {
+    expect.assertions(2)
+
+    /* Arrange */
+    jest
+      .spyOn(localforage, 'getItem')
+      .mockImplementation((key) =>
+        Promise.resolve(JSON.stringify(key === 'mmHasClosedEventEmbedded'))
+      )
+
+    const { sut, fetchEventMock } = setupEvent()
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(fetchEventMock).not.toBeCalledWith(
+      expect.objectContaining({
+        eventType: 'embedded',
+      })
+    )
+    expect(sut.find('.event--embedded').exists()).toBe(false)
+
+    jest.restoreAllMocks()
+  })
+
+  test('show it if the current date is between its start date and end date', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    const { sut, eventItemMock, cleanup } = setupEventByDate(
+      'Thu, 11 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.get('.event--embedded').html()).toContain(eventItemMock.embed)
+
+    cleanup()
+  })
+
+  test('do not show it if the current date is less then its start date', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    const { sut, cleanup } = setupEventByDate(
+      'Mon, 01 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.event--embedded').exists()).toBe(false)
+
+    cleanup()
+  })
+
+  test('do not show it if the current date is greater than or equal to its end date', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    const { sut, cleanup } = setupEventByDate(
+      'Sun, 21 Jun 2020 10:00:00 GMT',
+      'Mon, 08 Jun 2020 10:00:00 GMT',
+      'Sun, 14 Jun 2020 10:00:00 GMT'
+    )
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.event--embedded').exists()).toBe(false)
+
+    cleanup()
+  })
+
+  test('do not show it if it has no content', async function () {
+    expect.assertions(1)
+
+    /* Arrange */
+    const sut = createWrapper(Home, {
+      mocks: {
+        $fetchEvent: () => Promise.resolve({ items: [] }),
+      },
+    })
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.event--embedded').exists()).toBe(false)
+  })
+
+  test('close it and prevent users from seeing it in the future when they click the close icon', async function () {
+    expect.assertions(3)
+
+    /* Arrange */
+    jest.spyOn(localforage, 'setItem')
+
+    const { sut, eventItemMock, cleanup } = setupEvent()
+
+    /* Act */
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.get('.event--embedded').html()).toContain(eventItemMock.embed)
+
+    /* Act */
+    sut.get('[data-testid="close-icon-embedded"]').vm.$emit('click')
+    await flushPromises()
+
+    /* Assert */
+    expect(sut.find('.event--embedded').exists()).toBe(false)
+    expect(localforage.setItem).toBeCalledWith(
+      'mmHasClosedEventEmbedded',
+      JSON.stringify(true)
+    )
+
+    cleanup()
+    await localforage.removeItem('mmHasClosedEventEmbedded')
+  })
 })
 
 test('display ADs', function () {
@@ -556,6 +787,166 @@ test('display ADs', function () {
     adKey: 'PC_B1',
   })
   expect(sut.findComponent(ContainerFullScreenAds).exists()).toBe(true)
+})
+
+test('send GA events', async function () {
+  expect.assertions(14)
+
+  /* Arrange */
+  const $ga = { event: jest.fn() }
+  jest
+    .spyOn(Date, 'now')
+    .mockReturnValue(new Date('Thu, 11 Jun 2020 10:00:00 GMT'))
+  const sut = createWrapper(Home, {
+    computed: {
+      focusArticles: () => [{ slug: 'test-slug' }],
+      latestItems: () => Array(4).fill({}),
+    },
+    mocks: {
+      $ga,
+      $fetchEvent: () =>
+        Promise.resolve({
+          items: [
+            {
+              startDate: 'Mon, 08 Jun 2020 10:00:00 GMT',
+              endDate: 'Sun, 14 Jun 2020 10:00:00 GMT',
+            },
+          ],
+        }),
+    },
+  })
+  await flushPromises()
+
+  window.dispatchEvent(new Event('scroll'))
+  sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+  await flushPromises()
+
+  /* 快訊 */
+  const flashNews = sut.getComponent(UiFlashNews)
+
+  flashNews.vm.$emit('sendGa:article')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'breakingnews title',
+  })
+
+  flashNews.vm.$emit('sendGa:next')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'breakingnews up',
+  })
+
+  flashNews.vm.$emit('sendGa:prev')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'breakingnews down',
+  })
+
+  /* 編輯精選 */
+  sut.getComponent(UiEditorChoices).vm.$emit('sendGa')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'choice',
+  })
+
+  /* 鏡電視 */
+  const mirrorTv = sut.get('.mirror-tv')
+
+  mirrorTv.vm.$emit('sendGa:open')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'mod open',
+  })
+
+  mirrorTv.vm.$emit('sendGa:close')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'mod close',
+  })
+
+  /* mod event */
+  const modEvent = sut.get('[data-testid="event-mod"]')
+
+  modEvent.vm.$emit('sendGa:open')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'mod open',
+  })
+
+  modEvent.vm.$emit('sendGa:close')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'mod close',
+  })
+
+  sut.get('[data-testid="close-icon-mod"]').vm.$emit('click')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'mod close',
+  })
+
+  /* embedded event */
+  sut.get('[data-testid="close-icon-embedded"]').vm.$emit('click')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'embedded close',
+  })
+
+  /* 焦點新聞 */
+  sut.getComponent(UiArticleListFocus).vm.$emit('sendGa')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'group',
+  })
+
+  /* 最新文章 */
+  sut.get('[data-testid="article-gallery"]').vm.$emit('load')
+
+  sut.getComponent(UiArticleGallery).vm.$emit('sendGa')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'latest',
+  })
+
+  const infiniteLoading = sut.getComponent(UiInfiniteLoading)
+
+  infiniteLoading.vm.$emit('infinite', {
+    loaded: () => {},
+    complete: () => {},
+    error: () => {},
+  })
+  await flushPromises()
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'scroll',
+    eventLabel: 'loadmore',
+    eventValue: 1,
+  })
+
+  infiniteLoading.vm.$emit('infinite', {
+    loaded: () => {},
+    complete: () => {},
+    error: () => {},
+  })
+  await flushPromises()
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'scroll',
+    eventLabel: 'loadmore',
+    eventValue: 2,
+  })
 })
 
 describe('getLabel method', () => {
@@ -593,10 +984,66 @@ describe('getLabel method', () => {
   })
 })
 
+function setupEvent() {
+  jest
+    .spyOn(Date, 'now')
+    .mockReturnValue(new Date('Thu, 11 Jun 2020 10:00:00 GMT'))
+  const eventItemMock = {
+    startDate: 'Mon, 08 Jun 2020 10:00:00 GMT',
+    endDate: 'Sun, 14 Jun 2020 10:00:00 GMT',
+    embed: '<iframe src="test-src"></iframe>',
+  }
+
+  const fetchEventMock = jest.fn().mockResolvedValue({
+    items: [eventItemMock],
+  })
+  const sut = createWrapper(Home, {
+    mocks: {
+      $fetchEvent: fetchEventMock,
+    },
+  })
+
+  function cleanup() {
+    jest.restoreAllMocks()
+  }
+
+  return {
+    sut,
+    eventItemMock,
+    fetchEventMock,
+    cleanup,
+  }
+}
+
+function setupEventByDate(now, startDate, endDate) {
+  /* Arrange */
+  jest.spyOn(Date, 'now').mockReturnValue(new Date(now))
+  const eventItemMock = {
+    startDate,
+    endDate,
+    embed: '<iframe src="test-src"></iframe>',
+  }
+
+  const sut = createWrapper(Home, {
+    mocks: {
+      $fetchEvent: () => Promise.resolve({ items: [eventItemMock] }),
+    },
+  })
+
+  function cleanup() {
+    jest.restoreAllMocks()
+  }
+
+  return {
+    sut,
+    eventItemMock,
+    cleanup,
+  }
+}
+
 /**
  * TODO: 待補測試
- * GA event
  * load more
  * getImg
- * getLabel
+ * getHref
  */

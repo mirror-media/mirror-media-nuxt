@@ -7,7 +7,7 @@
       rel="noopener noreferrer"
       @click="handleClick"
     >
-      <img v-lazy="imgSrc" :alt="title" />
+      <img v-lazy="imgSrc" alt="" />
     </a>
     <a
       :href="href"

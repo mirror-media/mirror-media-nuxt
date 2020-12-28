@@ -38,12 +38,13 @@
 
       <div class="column-container">
         <aside>
-          <section v-if="shouldOpenMirrorTv" class="container">
+          <section class="container">
             <UiColumnHeader title="鏡電視" class="home__column-header" />
-            <LazyRenderer>
+            <LazyRenderer data-testid="mirror-tv" @load="loadEventMod">
               <UiVideoModal
-                class="mirror-tv-aside"
-                :embeddedHtml="eventMod.embed"
+                v-if="isValidEventModItem"
+                class="mirror-tv"
+                :embeddedHtml="eventMod.item.embed"
                 @sendGa:open="sendGaForClick('mod open')"
                 @sendGa:close="sendGaForClick('mod close')"
               />
@@ -52,15 +53,19 @@
 
           <section class="container">
             <UiColumnHeader title="焦點新聞" class="home__column-header" />
-            <div class="article-list-focus-container">
-              <UiArticleListFocus
-                v-for="article in articlesFocus"
-                :key="article.slug"
-                :articleMain="article"
-                :articlesRelated="articlesRelatedFocus(article)"
-                class="home__article-list-focus"
-              />
-            </div>
+            <LazyRenderer @load="canFixLastFocusList = true">
+              <div class="article-list-focus-container">
+                <UiArticleListFocus
+                  v-for="article in focusArticles"
+                  :key="article.slug"
+                  :articleMain="article"
+                  :articlesRelated="article.relateds"
+                  class="home__article-list-focus"
+                  :class="{ fixed: shouldFixLastFocusList }"
+                  @sendGa="sendGaForClick('group')"
+                />
+              </div>
+            </LazyRenderer>
           </section>
         </aside>
 
@@ -80,26 +85,47 @@
 
             <section class="container">
               <UiColumnHeader title="最新文章" class="home__column-header" />
-              <UiArticleGallery
-                :items="latestItems"
-                @sendGa="sendGaForClick('latest')"
-              />
-              <UiInfiniteLoading
-                v-if="latestItems.length > 3"
-                @infinite="loadMoreLatestList"
-              />
+              <LazyRenderer
+                data-testid="article-gallery"
+                @load="loadLatestListInitial"
+              >
+                <UiArticleGallery
+                  :items="latestItems"
+                  @sendGa="sendGaForClick('latest')"
+                />
+                <UiInfiniteLoading
+                  v-if="latestItems.length > 3"
+                  @infinite="loadMoreLatestItems"
+                />
+              </LazyRenderer>
             </section>
           </ClientOnly>
         </div>
       </div>
 
-      <div v-if="shouldOpenFixedMirrorTv" class="mirror-tv-fixed">
-        <UiVideoModal
-          :embeddedHtml="eventMod.embed"
-          @sendGa:open="sendGaForClick('mod open')"
-          @sendGa:close="sendGaForClick('mod close')"
-        />
-        <SvgCloseIcon @click="handleCloseFixedMirrorTv" />
+      <div class="events-container">
+        <div v-if="shouldOpenEventEmbedded" class="event event--embedded">
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <div v-html="eventEmbedded.item.embed"></div>
+
+          <SvgCloseIcon
+            data-testid="close-icon-embedded"
+            @click="handleCloseEventEmbedded"
+          />
+        </div>
+
+        <div v-if="shouldOpenEventMod" class="event">
+          <UiVideoModal
+            data-testid="event-mod"
+            :embeddedHtml="eventMod.item.embed"
+            @sendGa:open="sendGaForClick('mod open')"
+            @sendGa:close="sendGaForClick('mod close')"
+          />
+          <SvgCloseIcon
+            data-testid="close-icon-mod"
+            @click="handleCloseEventMod"
+          />
+        </div>
       </div>
 
       <ContainerFullScreenAds />
@@ -108,6 +134,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import _ from 'lodash'
 import localforage from 'localforage'
 
@@ -159,14 +186,14 @@ export default {
   },
 
   async fetch() {
-    this.articleGrouped = (await this.$fetchGrouped()) || {}
+    this.groupedArticles = (await this.$fetchGrouped()) || {}
     this.flashNews = await this.fetchFlashNews()
   },
 
   data() {
     return {
       flashNews: [],
-      articleGrouped: {
+      groupedArticles: {
         choices: [],
         grouped: [],
       },
@@ -174,21 +201,38 @@ export default {
         items: [],
         total: 0,
         maxResults: 20,
-        page: 1,
+        page: 0,
       },
       areMicroAdsInserted: false,
       areExternalsInserted: false,
 
-      eventMod: {},
-      hasClosedFixedMirrorTv: false,
-      doesUserCloseFixedMirrorTv: false,
+      eventMod: {
+        item: {},
+        isLoading: false,
+        hasClosed: true,
+        doesUserClose: false,
+      },
+
+      eventEmbedded: {
+        item: {},
+        doesUserClose: false,
+      },
+
       hasScrolled: false,
+
+      observerOfLastSecondFocusList: undefined,
+      canFixLastFocusList: false,
+      shouldFixLastFocusList: false,
     }
   },
 
   computed: {
+    ...mapGetters({
+      isDesktopWidth: 'viewport/isViewportWidthUpXl',
+    }),
+
     editorChoicesArticles() {
-      const { choices: articles = [] } = this.articleGrouped
+      const { choices: articles = [] } = this.groupedArticles
 
       return articles.map(function transformContent(article) {
         const {
@@ -227,32 +271,64 @@ export default {
       return this.latestList.items
     },
 
-    shouldOpenMirrorTv() {
-      if (!this.doesHaveEventMod) {
+    isValidEventModItem() {
+      if (!this.doesHaveEventModItem) {
         return false
       }
 
-      const now = Date.now()
+      const { startDate, endDate } = this.eventMod.item
 
+      return inThePeriodBetween(startDate, endDate)
+    },
+    doesHaveEventModItem() {
+      return !_.isEmpty(this.eventMod.item)
+    },
+    shouldOpenEventMod() {
       return (
-        now >= new Date(this.eventMod.startDate) &&
-        now < new Date(this.eventMod.endDate)
+        this.isValidEventModItem &&
+        !this.eventMod.hasClosed &&
+        !this.eventMod.doesUserClose
       )
     },
-    shouldOpenFixedMirrorTv() {
-      return (
-        !this.hasClosedFixedMirrorTv &&
-        this.shouldOpenMirrorTv &&
-        this.hasScrolled &&
-        !this.doesUserCloseFixedMirrorTv
-      )
+    shouldOpenEventEmbedded() {
+      return this.isValidEventEmbeddedItem && !this.eventEmbedded.doesUserClose
     },
-    doesHaveEventMod() {
-      return !_.isEmpty(this.eventMod)
+    isValidEventEmbeddedItem() {
+      const { item: eventEmbedded } = this.eventEmbedded
+
+      if (_.isEmpty(eventEmbedded)) {
+        return false
+      }
+
+      return inThePeriodBetween(eventEmbedded.startDate, eventEmbedded.endDate)
     },
 
-    articlesFocus() {
-      return this.articleGrouped.grouped ?? []
+    focusArticles() {
+      const { grouped: articles = [] } = this.groupedArticles
+
+      return articles.map(transformContentOfFocus)
+
+      function transformContentOfFocus(article) {
+        const { slug = '', title = '', relateds = [] } = article
+
+        return {
+          title,
+          slug,
+          href: getHref(article),
+          imgSrc: getImg(article),
+          relateds: relateds.slice(0, 3).map(transformContentOfFocusRelated),
+        }
+      }
+
+      function transformContentOfFocusRelated(article) {
+        const { slug = '', title = '' } = article
+
+        return {
+          slug,
+          title,
+          href: getHref(article),
+        }
+      }
     },
   },
 
@@ -293,19 +369,25 @@ export default {
 
         this.insertLatestItems(
           EXTERNALS_IDX_START_INSERTED,
-          ...items.map(this.transformLatestItemContent)
+          ...items.map(this.transformContentOfLatestItem)
         )
 
         this.areExternalsInserted = true
       },
     ],
+
+    isDesktopWidth: ['handleFixLastFocusList'],
+    canFixLastFocusList: ['handleFixLastFocusList'],
+
+    hasScrolled: ['loadFixedEventMod', 'loadEventEmbedded'],
   },
 
-  mounted() {
-    this.loadLatestListInitial()
-    this.loadEventMod()
+  beforeMount() {
+    this.checkScrolled()
+  },
 
-    this.checkUserHasClosedFixedMirrorTv()
+  beforeDestroy() {
+    this.cleanFixedLastFocusList()
   },
 
   methods: {
@@ -334,9 +416,9 @@ export default {
       } = await this.fetchLatestList()
 
       const slugsOfChoicesAndFocus = [
-        ...this.articleGrouped.choices,
-        ...this.articlesFocus,
-        ...this.articlesFocus.flatMap((article) => article.relateds),
+        ...this.editorChoicesArticles,
+        ...this.focusArticles,
+        ...this.focusArticles.flatMap((article) => article.relateds),
       ]
         .filter(isTruthy)
         .map((article) => article.slug)
@@ -354,6 +436,8 @@ export default {
       this.setLatestTotal(meta.total)
     },
     async fetchLatestList() {
+      this.latestList.page += 1
+
       const { page, maxResults } = this.latestList
 
       return (
@@ -365,18 +449,10 @@ export default {
         })) || {}
       )
     },
-    async loadEventMod() {
-      const { items = [] } =
-        (await this.$fetchEvent({
-          isFeatured: true,
-          eventType: 'mod',
-          maxResults: 1,
-        })) || {}
-
-      this.eventMod = Object.freeze(items[0] || {})
-    },
     pushLatestItems(items = []) {
-      this.latestList.items.push(...items.map(this.transformLatestItemContent))
+      this.latestList.items.push(
+        ...items.map(this.transformContentOfLatestItem)
+      )
     },
     insertLatestItems(idxStart, ...items) {
       this.latestList.items.splice(idxStart, 0, ...items)
@@ -384,7 +460,7 @@ export default {
     setLatestTotal(total = 0) {
       this.latestList.total = total
     },
-    transformLatestItemContent(item = {}) {
+    transformContentOfLatestItem(item = {}) {
       const { id = '', title = '', brief, sections = [] } = item
 
       return {
@@ -397,9 +473,7 @@ export default {
         sectionName: item.partner ? 'external' : sections[0]?.name,
       }
     },
-    async loadMoreLatestList(state) {
-      this.latestList.page += 1
-
+    async loadMoreLatestItems(state) {
       try {
         const { items = [] } = await this.fetchLatestList()
 
@@ -410,42 +484,94 @@ export default {
         } else {
           state.complete()
         }
+
+        this.sendGa('scroll', 'loadmore', this.latestList.page - 1)
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error(err)
         state.error()
-      } finally {
-        this.sendGa('scroll', `loadmore${this.latestList.page}`)
       }
     },
 
-    articlesRelatedFocus(articleData = {}) {
-      return articleData.relateds?.slice(0, 3) || []
+    async loadFixedEventMod() {
+      if (this.hasScrolled && !(await this.checkUserHasClosedEventMod())) {
+        this.loadEventMod()
+      }
     },
+    async loadEventMod() {
+      if (!this.doesHaveEventModItem && !this.eventMod.isLoading) {
+        this.eventMod.isLoading = true
 
-    async checkUserHasClosedFixedMirrorTv() {
+        const { items = [] } =
+          (await this.$fetchEvent({
+            isFeatured: true,
+            eventType: 'mod',
+            maxResults: 1,
+          })) || {}
+        this.eventMod.item = items[0] || {}
+
+        this.eventMod.isLoading = false
+      }
+    },
+    async loadEventEmbedded() {
+      if (this.hasScrolled && !(await this.checkUserHasClosedEventEmbedded())) {
+        const { items = [] } =
+          (await this.$fetchEvent({
+            isFeatured: true,
+            eventType: 'embedded',
+            maxResults: 1,
+          })) || {}
+        this.eventEmbedded.item = Object.freeze(items[0] || {})
+      }
+    },
+    async checkUserHasClosedEventMod() {
       try {
-        this.hasClosedFixedMirrorTv =
-          JSON.parse(await localforage.getItem('mmHasClosedFixedMirrorTv')) ??
+        this.eventMod.hasClosed =
+          JSON.parse(await localforage.getItem('mmHasClosedEventMod')) ?? false
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err)
+      }
+
+      return this.eventMod.hasClosed
+    },
+    handleCloseEventMod() {
+      this.eventMod.doesUserClose = true
+
+      localforage
+        .setItem('mmHasClosedEventMod', JSON.stringify(true))
+        .catch(function rejected(err) {
+          // eslint-disable-next-line no-console
+          console.error(err)
+        })
+
+      this.sendGaForClick('mod close')
+    },
+    async checkUserHasClosedEventEmbedded() {
+      let hasClosedEventEmbedded = true
+
+      try {
+        hasClosedEventEmbedded =
+          JSON.parse(await localforage.getItem('mmHasClosedEventEmbedded')) ??
           false
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error(err)
       }
 
-      if (!this.hasClosedFixedMirrorTv) {
-        this.checkScrolled()
-      }
+      return hasClosedEventEmbedded
     },
-    handleCloseFixedMirrorTv() {
-      this.doesUserCloseFixedMirrorTv = true
+    handleCloseEventEmbedded() {
+      this.eventEmbedded.doesUserClose = true
 
       localforage
-        .setItem('mmHasClosedFixedMirrorTv', JSON.stringify(true))
+        .setItem('mmHasClosedEventEmbedded', JSON.stringify(true))
         .catch(function rejected(err) {
           // eslint-disable-next-line no-console
           console.error(err)
         })
+
+      this.sendGaForClick('embedded close')
     },
     checkScrolled() {
       window.addEventListener(
@@ -457,11 +583,55 @@ export default {
       )
     },
 
-    sendGa(eventAction, eventLabel, eventCategory = 'home') {
+    handleFixLastFocusList() {
+      this.isDesktopWidth && this.canFixLastFocusList
+        ? this.observeToFixLastFocusList()
+        : this.cleanFixedLastFocusList()
+    },
+    observeToFixLastFocusList() {
+      import('intersection-observer').then(() => {
+        this.observerOfLastSecondFocusList = new IntersectionObserver(
+          function handleIntersect(entries) {
+            entries.forEach(({ isIntersecting, boundingClientRect }) => {
+              /**
+               * 當倒數第二個焦點新聞列表結束與視窗相交，且倒數第二個焦點新聞列表底部 <= 視窗頂部
+               * 開始固定倒數第一個焦點新聞列表
+               */
+              if (!isIntersecting && boundingClientRect.bottom <= 0) {
+                this.shouldFixLastFocusList = true
+
+                return
+              }
+
+              /**
+               * 當倒數第二個焦點新聞列表開始與視窗相交，且倒數第二個焦點新聞列表頂部 < 視窗頂部
+               * 結束固定倒數第一個焦點新聞列表
+               */
+              if (isIntersecting && boundingClientRect.top < 0) {
+                this.shouldFixLastFocusList = false
+              }
+            })
+          }.bind(this)
+        )
+
+        const lastSecondFocusList = document.querySelector(
+          '.home__article-list-focus:nth-last-child(2)'
+        )
+
+        this.observerOfLastSecondFocusList.observe(lastSecondFocusList)
+      })
+    },
+    cleanFixedLastFocusList() {
+      this.shouldFixLastFocusList = false
+      this.observerOfLastSecondFocusList?.disconnect()
+    },
+
+    sendGa(eventAction, eventLabel, eventValue, eventCategory = 'home') {
       this.$ga.event({
         eventAction,
         eventLabel,
         eventCategory,
+        ...(eventValue === undefined ? {} : { eventValue }),
       })
     },
     sendGaForClick(eventLabel) {
@@ -531,6 +701,16 @@ function getLabel({ sections = [], categories = [], partner } = {}) {
   return firstCategory.title
 }
 
+function inThePeriodBetween(startDate, endDate) {
+  if (startDate === undefined || endDate === undefined) {
+    return false
+  }
+
+  const now = Date.now()
+
+  return now >= new Date(startDate) && now < new Date(endDate)
+}
+
 export {
   GA_UTM_EDITOR_CHOICES,
   LATEST_ARTICLES_MIN_NUM,
@@ -543,6 +723,8 @@ export {
 </script>
 
 <style lang="scss" scoped>
+$width--aside: 226px;
+
 .home {
   padding-top: 8px;
   overflow: hidden;
@@ -587,6 +769,12 @@ export {
       @include media-breakpoint-up(xl) {
         margin-top: 30px;
       }
+    }
+
+    &:last-child.fixed {
+      position: fixed;
+      top: 0;
+      width: $width--aside;
     }
   }
 
@@ -636,11 +824,11 @@ aside {
   @include media-breakpoint-up(xl) {
     order: 1;
     flex-shrink: 0;
-    width: 226px;
+    width: $width--aside;
   }
 }
 
-.mirror-tv-aside {
+.mirror-tv {
   padding-top: 66.67%;
 }
 
@@ -660,19 +848,39 @@ aside {
   }
 }
 
-$right--mirror-tv: 10px;
+$right--events: 10px;
 
-.mirror-tv-fixed {
+.events-container {
   position: fixed;
   bottom: 10px;
-  right: $right--mirror-tv;
-  width: calc(50% - #{$right--mirror-tv});
+  right: $right--events;
+  width: calc(50% - #{$right--events});
   z-index: 819;
   @include media-breakpoint-up(md) {
     width: 33%;
   }
   @include media-breakpoint-up(xl) {
     width: 25%;
+  }
+}
+
+.event {
+  position: relative;
+
+  &--embedded {
+    padding-top: 9 / 16 * 100%;
+
+    div {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  + .event {
+    margin-top: 10px;
   }
 
   svg {

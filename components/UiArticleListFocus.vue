@@ -4,24 +4,24 @@
       <li>
         <article>
           <a
-            :href="$getHref(articleMain)"
+            :href="articleMain.href"
             target="_blank"
             rel="noopener noreferrer"
-            @click="emitGa"
+            @click="$emit('sendGa')"
           >
-            <img v-lazy="$getImage(articleMain, 'mobile')" alt="" />
+            <img v-lazy="articleMain.imgSrc" alt="" />
             <h1 class="main-title">{{ articleMain.title }}</h1>
           </a>
         </article>
       </li>
 
-      <li v-for="related in articlesRelated" :key="related.id">
+      <li v-for="related in articlesRelated" :key="related.slug">
         <article>
           <a
-            :href="$getHref(related)"
+            :href="related.href"
             target="_blank"
             rel="noopener noreferrer"
-            @click="emitGa"
+            @click="$emit('sendGa')"
           >
             <h1>{{ related.title }}</h1>
           </a>
@@ -44,20 +44,6 @@ export default {
       type: Array,
       default: () => [],
       required: true,
-    },
-  },
-  data() {
-    return {
-      ga: {
-        eventCategory: 'home',
-        eventAction: 'click',
-        eventLabel: 'group',
-      },
-    }
-  },
-  methods: {
-    emitGa() {
-      this.$emit('sendGa', this.ga)
     },
   },
 }

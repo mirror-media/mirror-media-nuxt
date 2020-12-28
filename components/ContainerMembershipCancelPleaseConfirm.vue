@@ -26,18 +26,52 @@
 </template>
 
 <script>
+import userDelete from '~/apollo/mutations/userDelete.gql'
+
 export default {
+  apollo: {
+    $client: 'userClient',
+  },
   computed: {
     currentMemberEmail() {
-      return this.$store.state.membership.user.email
+      return this.$store.state.membership.userEmail
     },
   },
   methods: {
     handleRouterBackClick() {
       this.$router.back()
     },
-    handleConfirmCancelButtonClick() {
-      this.$emit('success')
+    async handleConfirmCancelButtonClick() {
+      try {
+        const response = await this.$apollo.mutate({
+          mutation: userDelete,
+          variables: {
+            firebaseId: this.$store.state.membership.userUid,
+          },
+        })
+
+        await this.$fire.auth.signOut()
+
+        // clear the firebase current user state in the store
+        this.$store.commit('membership/ON_AUTH_STATE_CHANGED_MUTATION', {
+          authUser: {},
+        })
+
+        if (response.error) {
+          handleError(response.error)
+          return
+        }
+
+        this.$emit('success')
+      } catch (e) {
+        handleError(e)
+      }
+
+      function handleError(e) {
+        // eslint-disable-next-line no-console
+        console.error(e)
+        this.$emit('error')
+      }
     },
   },
 }

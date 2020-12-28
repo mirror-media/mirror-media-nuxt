@@ -88,6 +88,10 @@ export default {
           actionCodeSettings
         )
         await localforage.setItem('emailForSignIn', this.emailInput)
+        await localforage.setItem(
+          'mm-login-destination',
+          this.$route.query.destination ?? '/'
+        )
         this.$emit('success', this.emailInput)
       } catch (e) {
         this.handleError(e)

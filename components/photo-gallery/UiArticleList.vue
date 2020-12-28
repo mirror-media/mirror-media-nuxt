@@ -60,6 +60,7 @@ ul {
 }
 
 li {
+  width: 100%;
   max-width: 320px;
   margin: 30px auto;
   box-shadow: 3px 4px 15px rgba(#000, 0.72);

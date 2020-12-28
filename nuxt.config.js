@@ -173,7 +173,6 @@ module.exports = {
     '~/plugins/vuePluginsGlobal.client.js',
     '~/plugins/vueDirectivesGlobal.js',
     '~/plugins/requests/index.js',
-    '~/plugins/article/index.js',
     '~/plugins/user-behavior-log/index.client.js',
   ],
 
@@ -194,6 +193,9 @@ module.exports = {
       path: '/api/tracking',
       handler: '~/api/tracking.js',
     },
+    { path: '/api/saleor', handler: '~/api/saleor-proxy.js' },
+    { path: '/api/membership/v0', handler: '~/api/membership-proxy.js' },
+    { path: '/api/membership/v1', handler: '~/api/membership-proxy-v1.js' },
     { path: '/api', handler: '~/api/index.js' },
   ],
 
@@ -229,34 +231,47 @@ module.exports = {
    */
   modules: [
     'nuxt-user-agent',
+
     ...(process.env.NODE_ENV === 'production' &&
     (ENV === 'prod' || ENV === 'staging')
       ? ['@mirror-media/nuxt-ssr-cache']
       : []),
+
     [
       '@nuxtjs/firebase',
       {
-        config: {
-          /*
-           * exposed apiKey is not a security risk
-           * see: https://stackoverflow.com/a/37484053
-           */
-          apiKey: 'AIzaSyDluvbZhIQgcicqXVarLkdP4PG6maZlEMI',
-          authDomain: 'mirromedia-app.firebaseapp.com',
-          databaseURL: 'https://mirromedia-app.firebaseio.com',
-          projectId: 'mirromedia-app',
-          storageBucket: 'mirromedia-app.appspot.com',
-          messagingSenderId: '231032158952',
-          appId: '1:231032158952:web:975862d0b50f8bdd1d275d',
-          measurementId: 'G-Q1GK3C4WNR',
-        },
+        /*
+         * exposed apiKey in config is not a security risk
+         * see: https://stackoverflow.com/a/37484053
+         */
+        config:
+          ENV === 'prod' || ENV === 'staging'
+            ? {
+                apiKey: 'AIzaSyDluvbZhIQgcicqXVarLkdP4PG6maZlEMI',
+                authDomain: 'mirromedia-app.firebaseapp.com',
+                databaseURL: 'https://mirromedia-app.firebaseio.com',
+                projectId: 'mirromedia-app',
+                storageBucket: 'mirromedia-app.appspot.com',
+                messagingSenderId: '231032158952',
+                appId: '1:231032158952:web:975862d0b50f8bdd1d275d',
+                measurementId: 'G-Q1GK3C4WNR',
+              }
+            : {
+                apiKey: 'AIzaSyAavk46-8OQ4B2cv0TOqxOMjd5Fe4tIauc',
+                authDomain: 'mirrormediaapptest.firebaseapp.com',
+                databaseURL: 'https://mirrormediaapptest.firebaseio.com',
+                projectId: 'mirrormediaapptest',
+                storageBucket: 'mirrormediaapptest.appspot.com',
+                messagingSenderId: '305253456270',
+                appId: '1:305253456270:web:21f9851dd09f60ebfbacdf',
+                measurementId: 'G-EY5CYC602Z',
+              },
         services: {
           auth: {
-            persistence: 'session',
+            ssr: true,
             initialize: {
               onAuthStateChangedMutation:
                 'membership/ON_AUTH_STATE_CHANGED_MUTATION',
-              subscribeManually: false,
             },
           },
         },
@@ -269,6 +284,33 @@ module.exports = {
         // lazy: true,
       },
     ],
+    [
+      '@nuxtjs/pwa',
+      {
+        // disable the modules you don't need
+        meta: false,
+        icon: false,
+
+        /*
+         * if you omit a module key form configuration sensible defaults will be applied
+         * manifest: false,
+         */
+
+        workbox: {
+          importScripts: [
+            // ...
+            '/firebase-auth-sw.js',
+          ],
+
+          /*
+           * by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
+           * only set this true for testing and remember to always clear your browser cache in development
+           */
+          dev: process.env.NODE_ENV !== 'production',
+        },
+      },
+    ],
+    '@nuxtjs/apollo',
   ],
 
   // config for @mirror-media/nuxt-ssr-cache
@@ -281,7 +323,8 @@ module.exports = {
 
     key(route) {
       // We should configure cache pages path right here.
-      const cachePages = ['/']
+      const ignorePages = /^(?!\/login|\/profile|\/finishSignUp|\/cancelMembership).+/
+      const cachePages = [ignorePages]
 
       const shouldCacheCurrentRoute = cachePages.some((pat) =>
         pat instanceof RegExp ? pat.test(route) : route.startsWith(pat)
@@ -311,6 +354,20 @@ module.exports = {
 
   styleResources: {
     scss: '~/scss/*.scss',
+  },
+
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'http://localhost:3000/api/membership/v1/graphql',
+        browserHttpEndpoint: '/api/membership/v1/graphql',
+      },
+      userClient: '~/apollo-config-user-client.js',
+      saleorClient: {
+        httpEndpoint: 'http://localhost:3000/api/saleor/graphql/',
+        browserHttpEndpoint: '/api/saleor/graphql/',
+      },
+    },
   },
 
   /**

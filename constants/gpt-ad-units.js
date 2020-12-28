@@ -7,6 +7,7 @@
 import { SECTION_IDS } from './index.js'
 
 const {
+  member,
   news,
   entertainment,
   businessmoney,
@@ -224,6 +225,27 @@ export default {
     },
     PC_FT: {
       adUnit: 'mirror_pc_oth_970x250_FT',
+      adSize: [
+        [970, 250],
+        [970, 90],
+        [1, 1],
+      ],
+    },
+  },
+
+  // page key: 會員, member
+  [member]: {
+    MB_HD: {
+      adUnit: 'mirror_m_member_300x250_HD',
+      adSize: [
+        [336, 280],
+        [300, 250],
+        [320, 100],
+        [1, 1],
+      ],
+    },
+    PC_HD: {
+      adUnit: 'mirror_pc_member_970x250_HD',
       adSize: [
         [970, 250],
         [970, 90],

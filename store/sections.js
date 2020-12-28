@@ -9,7 +9,7 @@ export const getters = {
   displayedSections(state, getters) {
     return getters.sections.filter((section) => section.isFeatured) ?? []
   },
-  gainSectionByCategoryName: (state, getters) => (categoryName) => {
+  getSectionByCategoryName: (state, getters) => (categoryName) => {
     return (
       getters.sections.find(function findCategory(section) {
         return section.categories.find(function doesNameMatch(category) {

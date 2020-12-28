@@ -1,0 +1,27 @@
+mutation (
+  $firebaseId: String!,
+  $address: String,
+  $country: String,
+  $city: String,
+  $district: String,
+  $birthday: Date,
+  $gender: Int,
+  $name: String,
+  $nickname: String,
+  $phone: String
+) {
+  updateMember(
+    firebaseId: $firebaseId,
+    address: $address,
+    country: $country,
+    city: $city,
+    district: $district,
+    birthday: $birthday,
+    gender: $gender,
+    name: $name,
+    nickname: $nickname,
+    phone: $phone
+  ) {
+    success
+  }
+}

@@ -1,0 +1,5 @@
+mutation ($firebaseId: String!){
+  deleteMember(firebaseId: $firebaseId){
+    success
+  }
+}

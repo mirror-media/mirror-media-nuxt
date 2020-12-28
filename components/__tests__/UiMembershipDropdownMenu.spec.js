@@ -149,3 +149,16 @@ describe('height props', function () {
     )
   })
 })
+
+test('should select the default option if defaultIndex props was provided', function () {
+  const mockDefaultSelectedOptionIndex = 1
+  const mockDefaultValue = 'default'
+  const mockOptions = ['0', mockDefaultValue, '2']
+  const wrapper = createWrapper(UiMembershipDropdownMenu, {
+    propsData: {
+      options: mockOptions,
+      defaultIndex: mockDefaultSelectedOptionIndex,
+    },
+  })
+  expect(wrapper.get('.active-item__placeholder').text()).toBe(mockDefaultValue)
+})

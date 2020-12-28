@@ -39,6 +39,8 @@
     </LazyRenderer>
 
     <div v-if="updatedAt" class="updated-at">更新時間／{{ updatedAt }}</div>
+
+    <UiWineWarning v-if="doesHaveWineCategory" />
   </section>
 </template>
 
@@ -50,8 +52,10 @@ import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
 import UiArticleIndex from './UiArticleIndex.vue'
 import UiListRelated from './UiListRelated.vue'
+import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
+import { doesContainWineName } from '~/utils/article.js'
 
 export default {
   name: 'ContainerCulturePost',
@@ -61,6 +65,7 @@ export default {
     UiArticleBody,
     UiArticleIndex,
     UiListRelated,
+    UiWineWarning,
   },
 
   props: {
@@ -107,8 +112,8 @@ export default {
 
       return {
         title,
-        credits: gainCredits(),
-        brief: gainBrief(),
+        credits: getCredits(),
+        brief: getBrief(),
         content: content.apiData || [],
         heroImage: heroImgsResized,
         coverPicture: {
@@ -120,7 +125,7 @@ export default {
         relateds,
       }
 
-      function gainCredits() {
+      function getCredits() {
         return [
           [writers, '記者'],
           [photographers, '攝影'],
@@ -143,13 +148,17 @@ export default {
         }
       }
 
-      function gainBrief() {
-        return brief.apiData
-          .filter((item = {}) => item.type === 'unstyled' && item.content?.[0])
-          .map((item) => ({
-            id: item.id,
-            content: item.content[0],
-          }))
+      function getBrief() {
+        return (
+          brief.apiData
+            ?.filter(
+              (item = {}) => item.type === 'unstyled' && item.content?.[0]
+            )
+            .map((item) => ({
+              id: item.id,
+              content: item.content[0],
+            })) || []
+        )
       }
     },
     indexes() {
@@ -169,6 +178,10 @@ export default {
     },
     doesHaveAnyRelateds() {
       return this.relateds.length > 0
+    },
+
+    doesHaveWineCategory() {
+      return doesContainWineName(this.story.categories)
     },
   },
 

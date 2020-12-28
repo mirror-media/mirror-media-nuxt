@@ -1,0 +1,14 @@
+query ($firebaseId: String!){
+  member(firebaseId: $firebaseId) {
+    firebaseId
+    email
+    name
+    gender
+    birthday
+    phone
+    country
+    city
+    district
+    address
+  }
+}

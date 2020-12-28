@@ -1,5 +1,6 @@
 import flushPromises from 'flush-promises'
 import createWrapperHelper from '@/test/helpers/createWrapperHelper'
+import localforage from 'localforage'
 import page from '../login.vue'
 import ContainerMembershipLoginWithEmail from '~/components/ContainerMembershipLoginWithEmail.vue'
 import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
@@ -40,12 +41,29 @@ describe('email auth', function () {
 
 describe('validations about visitor have been redirect back to login page after Google/Facebook auth', function () {
   test('should redirect to home page before login paged mount, and current visitor come to login page is because they have been redirect by Google/Facebook auth', async function () {
-    const mockRouter = {
+    delete window.location
+    window.location = {
       replace: jest.fn(),
     }
+    const mockDestination = '/mock/destination'
+    jest.spyOn(localforage, 'getItem').mockImplementation(() => mockDestination)
+    const spyRemoveItem = jest
+      .spyOn(localforage, 'removeItem')
+      .mockImplementation(() => {})
+
     createWrapper(page, {
       mocks: {
-        $router: mockRouter,
+        $store: {
+          state: {
+            membership: {
+              userEmail: '',
+              userUid: '',
+            },
+          },
+        },
+        $apollo: {
+          mutate: jest.fn(() => Promise.resolve()),
+        },
         $fire: {
           auth: {
             getRedirectResult: jest.fn(() => Promise.resolve({ user: {} })),
@@ -54,7 +72,8 @@ describe('validations about visitor have been redirect back to login page after 
       },
     })
     await flushPromises()
-    expect(mockRouter.replace).toHaveBeenCalledWith('/')
+    expect(spyRemoveItem).toHaveBeenCalledWith('mm-login-destination')
+    expect(window.location.replace).toHaveBeenCalledWith(mockDestination)
   })
 
   test('should not redirect to home page before login paged mount, because the reason why the current visitor come to login page is not been redirect by Google/Facebook auth', async function () {

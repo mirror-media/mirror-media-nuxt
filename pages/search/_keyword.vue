@@ -15,6 +15,7 @@ import _ from 'lodash'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
+import { getStoryPath } from '~/utils/article'
 
 export default {
   name: 'Search',
@@ -88,7 +89,7 @@ export default {
       const item = dataFromES.source ?? {}
       return {
         id: item.objectID,
-        href: item.slug ? `/story/${item.slug}` : '/',
+        href: getStoryPath(item),
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: (item.sections ?? [])[0]?.title,
         imgTextBackgroundColor:

@@ -53,6 +53,10 @@ export default {
       type: Array,
       required: true,
     },
+    defaultIndex: {
+      type: Number,
+      default: null,
+    },
     state: {
       type: String,
       default: 'normal',
@@ -73,6 +77,25 @@ export default {
       return this.selectedOption || this.placeholder
     },
   },
+  watch: {
+    defaultIndex: {
+      handler() {
+        if (typeof this.defaultIndex === 'number') {
+          // this.handleOptionListItemClick(this.options[this.defaultIndex])
+          this.selectedOption = this.options[this.defaultIndex]
+        }
+      },
+      immediate: true,
+    },
+  },
+
+  /*
+   * beforeMount() {
+   *   if (typeof this.defaultIndex === 'number') {
+   *     this.handleOptionListItemClick(this.options[this.defaultIndex])
+   *   }
+   * },
+   */
   methods: {
     handleActiveItemClick() {
       if (this.state === 'disable') {

@@ -92,19 +92,45 @@ describe('email validations', function () {
     expect(mockRouter.replace).toHaveBeenCalledWith('/login')
   })
 
-  test('should sign in with firebase successfully and redirect to home page if we can find email for sign in in the storage of device', async function () {
+  test('should sign in with firebase successfully and redirect to destination if we can find email for sign in in the storage of device', async function () {
     const mockEmail = 'example@example.com'
-    jest.spyOn(localforage, 'getItem').mockImplementation(() => mockEmail)
+    const mockDestination = '/mock/destination'
+    jest.spyOn(localforage, 'getItem').mockImplementation((key) => {
+      switch (key) {
+        case 'emailForSignIn':
+          return mockEmail
+        case 'mm-login-destination':
+          return mockDestination
+      }
+    })
     const spyRemoveItem = jest
       .spyOn(localforage, 'removeItem')
       .mockImplementation(() => {})
-    const mockRouter = {
+    delete window.location
+    window.location = {
       replace: jest.fn(),
     }
-    const mockSignInWithEmailLink = jest.fn(() => Promise.resolve())
+    const mockSignInWithEmailLink = jest.fn(() =>
+      Promise.resolve({
+        user: {
+          email: '',
+          uid: '',
+        },
+      })
+    )
     createWrapper(page, {
       mocks: {
-        $router: mockRouter,
+        $store: {
+          state: {
+            membership: {
+              userEmail: '',
+              userUid: '',
+            },
+          },
+        },
+        $apollo: {
+          mutate: jest.fn(() => Promise.resolve()),
+        },
         $route: {
           query: {},
         },
@@ -118,46 +144,7 @@ describe('email validations', function () {
     await flushPromises()
     expect(mockSignInWithEmailLink.mock.calls[0][0]).toBe(mockEmail)
     expect(spyRemoveItem).toHaveBeenCalledWith('emailForSignIn')
-    expect(mockRouter.replace).toHaveBeenCalledWith('/')
-  })
-})
-
-describe('firebase auth persistence', function () {
-  test('should set the firebase auth persistence with "local" if "shouldRememberMe" query is "true"', async function () {
-    const mockSetPersistence = jest.fn(() => Promise.resolve())
-    createWrapper(page, {
-      mocks: {
-        $route: {
-          query: {
-            shouldRememberMe: 'true',
-          },
-        },
-        $fire: {
-          auth: {
-            setPersistence: mockSetPersistence,
-          },
-        },
-      },
-    })
-    await flushPromises()
-    expect(mockSetPersistence).toHaveBeenCalledWith('local')
-  })
-
-  test('should set the firebase auth persistence with "session" if "shouldRememberMe" query is missing', async function () {
-    const mockSetPersistence = jest.fn(() => Promise.resolve())
-    createWrapper(page, {
-      mocks: {
-        $route: {
-          query: {},
-        },
-        $fire: {
-          auth: {
-            setPersistence: mockSetPersistence,
-          },
-        },
-      },
-    })
-    await flushPromises()
-    expect(mockSetPersistence).toHaveBeenCalledWith('session')
+    expect(spyRemoveItem).toHaveBeenCalledWith('mm-login-destination')
+    expect(window.location.replace).toHaveBeenCalledWith(mockDestination)
   })
 })

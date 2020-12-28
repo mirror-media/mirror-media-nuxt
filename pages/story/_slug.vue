@@ -19,21 +19,12 @@
             </template>
 
             <template #storyRelateds>
-              <UiStoryListWithArrow
-                class="story__list"
-                :categoryTitle="categoryTitle"
-                :items="relateds"
-                :sectionName="sectionName"
-                @sendGa:left="sendGaForClick('related news left')"
-                @sendGa:right="sendGaForClick('related news right')"
-              />
-
               <LazyRenderer
                 class="story__list"
-                @load="handleShowStoryListRelated"
+                @load="handleLoadStoryListRelated"
               >
                 <UiStoryListRelated
-                  :items="relatedsWithoutFirstTwo"
+                  :items="relateds"
                   :images="relatedImages"
                   @sendGa="sendGaForClick('related')"
                 >
@@ -58,7 +49,7 @@
                   <LazyRenderer
                     :id="`dablewidget_${DABLE_WIDGET_IDS.PC}`"
                     :data-widget_id="DABLE_WIDGET_IDS.PC"
-                    @load="handleShowDableWidget"
+                    @load="handleLoadDableWidget"
                   ></LazyRenderer>
                 </div>
               </ClientOnly>
@@ -92,7 +83,7 @@
                 <LazyRenderer
                   :id="`dablewidget_${DABLE_WIDGET_IDS.MB}`"
                   :data-widget_id="DABLE_WIDGET_IDS.MB"
-                  @load="handleShowDableWidget"
+                  @load="handleLoadDableWidget"
                 ></LazyRenderer>
               </div>
 
@@ -166,17 +157,17 @@
           </div>
         </ClientOnly>
 
-        <ContainerFullScreenAds v-if="!hasWineCategory && canAdvertise" />
+        <ContainerFullScreenAds v-if="!doesHaveWineCategory && canAdvertise" />
       </div>
 
       <div class="sticky-footer">
         <AppOpenNotification v-if="false" />
 
-        <UiStickyAd v-if="!hasWineCategory && canAdvertise">
+        <UiStickyAd v-if="!doesHaveWineCategory && canAdvertise">
           <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
         </UiStickyAd>
 
-        <UiWineWarning v-if="hasWineCategory" />
+        <UiWineWarning v-if="doesHaveWineCategory" />
       </div>
 
       <div class="footer-container">
@@ -199,7 +190,6 @@ import ContainerCulturePost from '~/components/culture-post/ContainerCulturePost
 import ContainerStoryBody from '~/components/ContainerStoryBody.vue'
 import UiAdultContentWarning from '~/components/UiAdultContentWarning.vue'
 import UiStoryListRelated from '~/components/UiStoryListRelated.vue'
-import UiStoryListWithArrow from '~/components/UiStoryListWithArrow.vue'
 import FbPage from '~/components/FbPage.vue'
 import UiArticleListAside from '~/components/UiArticleListAside.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
@@ -221,6 +211,10 @@ import {
   SITE_URL,
 } from '~/constants/index'
 import { DABLE_WIDGET_IDS, MICRO_AD_UNITS } from '~/constants/ads.js'
+import {
+  checkStoryCategoryHasMemberOnly,
+  doesContainWineName,
+} from '~/utils/article'
 
 export default {
   name: 'Story',
@@ -236,7 +230,6 @@ export default {
     ContainerStoryBody,
     UiAdultContentWarning,
     UiStoryListRelated,
-    UiStoryListWithArrow,
     FbPage,
     UiArticleListAside,
 
@@ -255,12 +248,15 @@ export default {
 
   async fetch() {
     const [postResponse] = await Promise.allSettled([
-      this.$fetchPosts({
-        slug: this.storySlug,
-        isAudioSiteOnly: false,
-        clean: 'content',
-        related: 'article',
-      }),
+      this.$fetchPostsFromMembershipGateway(
+        {
+          slug: this.storySlug,
+          isAudioSiteOnly: false,
+          clean: 'content',
+          related: 'article',
+        },
+        this.$store.state.membership.userToken
+      ),
       this.$store.dispatch('partners/fetchPartnersData'),
       this.$store.dispatch('topics/fetchTopicsData'),
     ])
@@ -268,6 +264,15 @@ export default {
     if (postResponse.status === 'fulfilled') {
       this.story = postResponse.value.items?.[0] ?? {}
       this.membershipTokenState = postResponse.value.tokenState
+
+      // disable cdn cache to prevent caching both regular version and premium version with the same /story/:slug uri
+      if (process.server && this.isStoryCategoryHasMemberOnly) {
+        this.$nuxt.context.res.setHeader('Cache-Control', 'no-store')
+      }
+
+      if (this.shouldShowPremiumStory) {
+        this.$nuxt.context.redirect(`/premium/${this.storySlug}`)
+      }
 
       this.$store.commit(
         'setCanAdvertise',
@@ -323,6 +328,15 @@ export default {
     isStyleWide() {
       return this.story.style === 'wide'
     },
+    isStoryCategoryHasMemberOnly() {
+      return checkStoryCategoryHasMemberOnly(this.story)
+    },
+    shouldShowPremiumStory() {
+      const isMemberTokenStateValid = (
+        this.membershipTokenState ?? ''
+      ).startsWith('OK')
+      return this.isStoryCategoryHasMemberOnly && isMemberTokenStateValid
+    },
 
     device() {
       return this.isDesktopWidth ? 'PC' : 'MB'
@@ -339,16 +353,11 @@ export default {
     categoryTitle() {
       return this.category.title ?? ''
     },
-    hasWineCategory() {
-      return Boolean(
-        this.categories.find((category) => category.name === 'wine')
-      )
+    doesHaveWineCategory() {
+      return doesContainWineName(this.categories)
     },
     relateds() {
       return (this.story.relateds ?? []).filter((item) => item.slug)
-    },
-    relatedsWithoutFirstTwo() {
-      return this.relateds.slice(2)
     },
     section() {
       return this.story.sections?.[0] || {}
@@ -416,15 +425,13 @@ export default {
   },
 
   methods: {
-    handleShowStoryListRelated() {
+    handleLoadStoryListRelated() {
       this.fetchRelatedImages()
 
       this.shouldLoadPopinScript = true
     },
     async fetchRelatedImages() {
-      const imageIds = this.relatedsWithoutFirstTwo.map(
-        (item) => item.heroImage
-      )
+      const imageIds = this.relateds.map((item) => item.heroImage)
 
       const { items = [] } = await this.$fetchImages({ id: imageIds })
       this.relatedImages = items
@@ -488,7 +495,7 @@ export default {
     doesNotHaveCurrentStorySlug(item) {
       return item.slug !== this.storySlug
     },
-    handleShowDableWidget() {
+    handleLoadDableWidget() {
       this.shouldLoadDableScript = true
     },
     handleFixAside: _.throttle(function () {
@@ -634,7 +641,7 @@ export default {
     const pageUrl = `https://${DOMAIN_NAME}${this.$route.path}`
 
     const publishedDateIso = new Date(publishedDate).toISOString()
-    const topicId = topics._id ?? ''
+    const topicId = topics?.id ?? ''
     const { name: writerName, id: writerId } = writers[0] || {}
     const tagNamesStr = tags.map((tag) => tag.name).join(', ')
 

@@ -34,6 +34,7 @@
 import localforage from 'localforage'
 import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
+import userCreate from '~/apollo/mutations/userCreate.gql'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.
@@ -42,6 +43,9 @@ import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
  * For more info: https://firebase.google.com/docs/auth/web/email-link-auth#complete_sign_in_with_the_email_link
  */
 export default {
+  apollo: {
+    $client: 'saleorClient',
+  },
   components: {
     UiMembershipEmailInput,
     UiMembershipError,
@@ -63,13 +67,6 @@ export default {
       doesErrorOccur: false,
     }
   },
-  computed: {
-    authPersistence() {
-      // https://firebase.google.com/docs/auth/web/auth-state-persistence
-      const shouldRememberMe = Boolean(this.$route.query.shouldRememberMe)
-      return shouldRememberMe ? 'local' : 'session'
-    },
-  },
   async beforeMount() {
     const email = await this.getEmail()
     if (email) {
@@ -90,10 +87,26 @@ export default {
     },
     async signInWithEmail(email) {
       try {
-        await this.$fire.auth.setPersistence(this.authPersistence)
-        await this.$fire.auth.signInWithEmailLink(email, window.location.href)
+        const result = await this.$fire.auth.signInWithEmailLink(
+          email,
+          window.location.href
+        )
         await localforage.removeItem('emailForSignIn')
-        this.$router.replace('/')
+
+        if (result.user !== null) {
+          await this.$apollo.mutate({
+            mutation: userCreate,
+            variables: {
+              email: result.user.email,
+              firebaseId: result.user.uid,
+            },
+          })
+        }
+
+        // redirect to page where use try to login
+        const destination = await localforage.getItem('mm-login-destination')
+        await localforage.removeItem('mm-login-destination')
+        window.location.replace(destination)
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e)

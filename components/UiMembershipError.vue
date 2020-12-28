@@ -13,15 +13,15 @@
         <span>或是聯繫客服 &nbsp;</span>
         <span>
           <a
-            href="mailto:service@mirrormedia.mg"
+            href="mailto:MM-onlineservice@mirrormedia.mg"
             target="_blank"
             rel="noopener noreferrer"
           >
-            service@mirrormedia.mg
+            MM-onlineservice@mirrormedia.mg
           </a>
           &nbsp; / &nbsp;
         </span>
-        <span>02-6633-3805 &nbsp;</span>
+        <span>02-6633-3966 &nbsp;</span>
         <span>我們將有專人為你服務。</span>
       </p>
     </div>

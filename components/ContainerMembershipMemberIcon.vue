@@ -23,7 +23,13 @@
         </button>
       </div>
     </div>
-    <nuxt-link v-else to="/login" class="not-logged-in-link">登入</nuxt-link>
+    <nuxt-link
+      v-else
+      :to="`/login?destination=${$route.path}`"
+      class="not-logged-in-link"
+    >
+      登入
+    </nuxt-link>
   </div>
 </template>
 
@@ -47,6 +53,13 @@ export default {
   methods: {
     async handleSignOutButtonClick() {
       await this.$fire.auth.signOut()
+
+      // clear the firebase current user state in the store
+      this.$store.commit('membership/ON_AUTH_STATE_CHANGED_MUTATION', {
+        authUser: {},
+      })
+
+      window.location.reload()
     },
     handleMemberIconClick() {
       this.shouldShowDropdownMenu = !this.shouldShowDropdownMenu

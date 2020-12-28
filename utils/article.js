@@ -42,4 +42,26 @@ function stripHtmlTag(html = '') {
   return html.replace(/<\/?[^>]+(>|$)/g, '')
 }
 
-export { creditHtml, stripHtmlTag }
+function doesContainWineName(categories = []) {
+  return Boolean(categories.find((category) => category.name === 'wine'))
+}
+
+function checkStoryCategoryHasMemberOnly({ categories = [] } = {}) {
+  return categories.some(function checkMemberProperty(category) {
+    return !!category.isMemberOnly
+  })
+}
+
+function getStoryPath(story) {
+  return checkStoryCategoryHasMemberOnly(story)
+    ? `/premium/${story.slug}`
+    : `/story/${story.slug}`
+}
+
+export {
+  creditHtml,
+  stripHtmlTag,
+  doesContainWineName,
+  checkStoryCategoryHasMemberOnly,
+  getStoryPath,
+}
