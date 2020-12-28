@@ -542,6 +542,7 @@ export {
     text-align: justify;
     background-color: #054f77;
     a {
+      color: #eac151;
       font-weight: 600px;
       text-decoration: underline;
     }
