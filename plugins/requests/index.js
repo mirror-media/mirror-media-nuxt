@@ -3,7 +3,12 @@ import _ from 'lodash'
 import axios from 'axios'
 import qs from 'qs'
 
-import { API_TIMEOUT, DOMAIN_NAME, ENV } from '~/configs/config.js'
+import {
+  API_TIMEOUT,
+  DOMAIN_NAME,
+  ENV,
+  API_PATH_FRONTEND,
+} from '~/configs/config.js'
 
 const baseUrl = process.browser
   ? `//${location.host}/`
@@ -24,8 +29,8 @@ function snakeCase(text) {
 
 async function fetchApiData(url, fromMembershipGateway = false, token) {
   const urlFetch = fromMembershipGateway
-    ? `${baseUrl}api/membership/v0${url}`
-    : `${baseUrl}api${url}`
+    ? `${baseUrl}${API_PATH_FRONTEND}/membership/v0${url}`
+    : `${baseUrl}${API_PATH_FRONTEND}${url}`
   const requestConfig = fromMembershipGateway
     ? {
         headers: {
@@ -137,7 +142,7 @@ async function fetchGcsData(filename) {
       ;({ data = {} } = await axios.get(apiUrl, { timeout: API_TIMEOUT }))
     } else {
       // 由於 CORS 的問題，不能直接在 browser 端打 api（除了生產環境），而是必須透過前端 server 去打
-      apiUrl = `${baseUrl}api/gcs/${filename}`
+      apiUrl = `${baseUrl}${API_PATH_FRONTEND}/gcs/${filename}`
       ;({ data = {} } = await axios.get(apiUrl))
     }
 
@@ -234,7 +239,7 @@ export default (context, inject) => {
   inject('fetchPopular', () => fetchGcsData('popularlist'))
 
   inject('fetchTokenState', async (token) => {
-    const urlFetch = `${baseUrl}api/membership/v1/tokenState`
+    const urlFetch = `${baseUrl}${API_PATH_FRONTEND}/membership/v1/tokenState`
     const requestConfig = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -246,7 +251,11 @@ export default (context, inject) => {
     } catch (err) {
       const message = err.message || err
       const code = err.code || 500
-      throw new FetchError(message, code, '/api/membership/v1/tokenState')
+      throw new FetchError(
+        message,
+        code,
+        `/${API_PATH_FRONTEND}/membership/v1/tokenState`
+      )
     }
   })
 }
