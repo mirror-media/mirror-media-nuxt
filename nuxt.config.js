@@ -6,7 +6,7 @@ const SITE_URL = 'https://www.mirrormedia.mg'
 const SITE_OG_IMG = `${SITE_URL}/assets/mirrormedia/notImage.png` // 來自 plate-vue
 const FB_APP_ID = '175313259598308'
 const FB_PAGE_ID = '1855418728011324'
-const { ENV = 'dev' } = require('./configs/config')
+const { ENV = 'dev', API_PATH_FRONTEND } = require('./configs/config')
 
 module.exports = {
   /**
@@ -182,21 +182,27 @@ module.exports = {
   serverMiddleware: [
     '~/api/headers.js',
     {
-      path: '/api/gcs',
+      path: `/${API_PATH_FRONTEND}/gcs`,
       handler: '~/api/gcs.js',
     },
     {
-      path: '/api/combo',
+      path: `/${API_PATH_FRONTEND}/combo`,
       handler: '~/api/combo.js',
     },
     {
-      path: '/api/tracking',
+      path: `/${API_PATH_FRONTEND}/tracking`,
       handler: '~/api/tracking.js',
     },
-    { path: '/api/saleor', handler: '~/api/saleor-proxy.js' },
-    { path: '/api/membership/v0', handler: '~/api/membership-proxy.js' },
-    { path: '/api/membership/v1', handler: '~/api/membership-proxy-v1.js' },
-    { path: '/api', handler: '~/api/index.js' },
+    { path: `/${API_PATH_FRONTEND}/saleor`, handler: '~/api/saleor-proxy.js' },
+    {
+      path: `/${API_PATH_FRONTEND}/membership/v0`,
+      handler: '~/api/membership-proxy.js',
+    },
+    {
+      path: `/${API_PATH_FRONTEND}/membership/v1`,
+      handler: '~/api/membership-proxy-v1.js',
+    },
+    { path: `/${API_PATH_FRONTEND}`, handler: '~/api/index.js' },
   ],
 
   /**
@@ -359,13 +365,13 @@ module.exports = {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: 'http://localhost:3000/api/membership/v1/graphql',
-        browserHttpEndpoint: '/api/membership/v1/graphql',
+        httpEndpoint: 'http://localhost:3000/api/v2/membership/v1/graphql',
+        browserHttpEndpoint: '/api/v2/membership/v1/graphql',
       },
       userClient: '~/apollo-config-user-client.js',
       saleorClient: {
-        httpEndpoint: 'http://localhost:3000/api/saleor/graphql/',
-        browserHttpEndpoint: '/api/saleor/graphql/',
+        httpEndpoint: 'http://localhost:3000/api/v2/saleor/graphql/',
+        browserHttpEndpoint: '/api/v2/saleor/graphql/',
       },
     },
   },

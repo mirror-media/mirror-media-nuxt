@@ -39,7 +39,7 @@ describe('pageview event', function () {
       type: 'application/json; charset=UTF-8',
     })
     expect(window.navigator.sendBeacon).toHaveBeenCalledWith(
-      '/api/tracking',
+      '/api/v2/tracking',
       new Blob()
     )
   })
@@ -81,7 +81,7 @@ describe('pageview event', function () {
       type: 'application/json; charset=UTF-8',
     })
     expect(window.navigator.sendBeacon).toHaveBeenCalledWith(
-      '/api/tracking',
+      '/api/v2/tracking',
       new Blob()
     )
   })
@@ -112,7 +112,7 @@ describe('click event', function () {
       type: 'application/json; charset=UTF-8',
     })
     expect(window.navigator.sendBeacon).toHaveBeenCalledWith(
-      '/api/tracking',
+      '/api/v2/tracking',
       new Blob()
     )
   })
@@ -149,7 +149,7 @@ describe('exit event', function () {
       type: 'application/json; charset=UTF-8',
     })
     expect(window.navigator.sendBeacon).toHaveBeenCalledWith(
-      '/api/tracking',
+      '/api/v2/tracking',
       new Blob()
     )
   })
