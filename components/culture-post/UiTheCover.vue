@@ -1,6 +1,5 @@
 <template>
   <div class="the-cover" :style="{ height: coverHeight }">
-    <!-- eslint-disable-next-line vue/no-v-html -->
     <h1 v-html="title"></h1>
 
     <picture>
