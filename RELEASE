@@ -48,3 +48,6 @@
 2020/12/18
   - release version: master_kwhsiung_1025
   - features: revise article wide heroimage stype and debug LazyRenderer
+2020/12/29
+  - release version: master_kwhsiung_1085 
+  - features: home page, revise article wide style, member section, login page, Cancelmembership page, profile page, Microad Ad on article page, revise related article style on article page, add drinking notice on article page with wide style.
