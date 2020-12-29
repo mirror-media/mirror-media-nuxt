@@ -69,13 +69,15 @@ describe('data bindings with vuex store, and user email exist', function () {
     expect(wrapper.find('.logged-in-wrapper').exists()).toBe(true)
   })
 
-  test('should show a nuxt-link to profile page if current visitor is a member', function () {
-    const wrapper = createWrapper(ContainerMembershipMemberIcon, {
-      localVue,
-      store: new Vuex.Store(storeOptions),
-    })
-    expect(wrapper.getComponent(RouterLinkStub).props().to).toBe('/profile')
-  })
+  /*
+   * test('should show a nuxt-link to profile page if current visitor is a member', function () {
+   *   const wrapper = createWrapper(ContainerMembershipMemberIcon, {
+   *     localVue,
+   *     store: new Vuex.Store(storeOptions),
+   *   })
+   *   expect(wrapper.getComponent(RouterLinkStub).props().to).toBe('/profile')
+   * })
+   */
 
   test('should call the $fire.auth.signOut and reload the page after we click the sign out button, if current visitor is a member', async function () {
     const mockFire = {

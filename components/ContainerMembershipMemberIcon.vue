@@ -12,9 +12,7 @@
         v-show="shouldShowDropdownMenu"
         class="logged-in-wrapper__dropdown-menu dropdown-menu"
       >
-        <nuxt-link class="dropdown-menu__profile-link" to="/profile">
-          個人資料
-        </nuxt-link>
+        <a href="/profile" class="dropdown-menu__profile-link">個人資料</a>
         <button
           class="dropdown-menu__sign-out-button sign-out-button"
           @click="handleSignOutButtonClick"
