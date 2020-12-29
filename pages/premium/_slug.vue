@@ -38,12 +38,22 @@ export default {
       this.story = postResponse.value.items?.[0] ?? {}
       this.membershipTokenState = postResponse.value.tokenState
 
+      console.log('[DEBUG]' + ` ${this.storySlug}`)
+      console.log(JSON.stringify(this.story.categories))
+      console.log('process.server: ' + process.server)
+      console.log(
+        'isStoryCategoryHasMemberOnly: ' + this.isStoryCategoryHasMemberOnly
+      )
+      console.log('shouldShowPremiumStory: ' + this.shouldShowPremiumStory)
+
       // disable cdn cache to prevent caching both regular version and premium version with the same /premium/:slug uri
       if (process.server && this.isStoryCategoryHasMemberOnly) {
+        console.log('this premium should not cache')
         this.$nuxt.context.res.setHeader('Cache-Control', 'no-store')
       }
 
       if (!this.shouldShowPremiumStory) {
+        console.log('this premium should redirect to story')
         this.$nuxt.context.redirect(`/story/${this.storySlug}`)
       }
     } else if (postResponse?.reason?.code === 404) {
