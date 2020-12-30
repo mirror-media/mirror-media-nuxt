@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@google-cloud/logging": "^8.0.6",
-    "@mirror-media/nuxt-ssr-cache": "^1.6.1",
+    "@mirror-media/nuxt-ssr-cache": "^1.7.0",
     "@nuxtjs/apollo": "^4.0.1-rc.5",
     "@nuxtjs/composition-api": "^0.17.0",
     "@nuxtjs/firebase": "^7.1.0",
