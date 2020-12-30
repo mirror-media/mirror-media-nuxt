@@ -265,8 +265,8 @@ export default {
       this.story = postResponse.value.items?.[0] ?? {}
       this.membershipTokenState = postResponse.value.tokenState
 
-      console.log('[DEBUG]' + ` ${this.storySlug}`)
-      console.log(JSON.stringify(this.story.categories))
+      console.log('[DEBUG] ' + `${this.$nuxt.context.req.url}`)
+      console.log('categories: ' + JSON.stringify(this.story.categories))
       console.log('process.server: ' + process.server)
       console.log(
         'isStoryCategoryHasMemberOnly: ' + this.isStoryCategoryHasMemberOnly
@@ -279,8 +279,12 @@ export default {
         this.$nuxt.context.res.setHeader('Cache-Control', 'no-store')
       }
 
+      console.log(`token: ${this.$store.state.membership.userToken}`)
+      console.log(`email: ${this.$store.state.membership.userEmail}`)
       if (this.shouldShowPremiumStory) {
-        console.log('this story should redirect to story')
+        console.log(
+          `this ${this.$nuxt.context.req.url} should redirect to premium`
+        )
         this.$nuxt.context.redirect(`/premium/${this.storySlug}`)
       }
 
