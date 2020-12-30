@@ -238,13 +238,10 @@ module.exports = {
   modules: [
     'nuxt-user-agent',
 
-    /*
-     * ...(process.env.NODE_ENV === 'production' &&
-     * (ENV === 'prod' || ENV === 'staging')
-     *   ? ['@mirror-media/nuxt-ssr-cache']
-     *   : []),
-     */
-    '@mirror-media/nuxt-ssr-cache',
+    ...(process.env.NODE_ENV === 'production' &&
+    (ENV === 'prod' || ENV === 'staging')
+      ? ['@mirror-media/nuxt-ssr-cache']
+      : []),
 
     [
       '@nuxtjs/firebase',
