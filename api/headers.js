@@ -9,7 +9,7 @@ module.exports = function handleHeaders(req, res, next) {
     /^\/(video_category|externals)\//gs.test(url) ||
     new RegExp(PREVIEW_QUERY, 'gs').test(url) ||
     // membership page paths
-    /(login|finishSignUp|profile|cancelMembership)/gs.test(url) ||
+    /(login|finishSignUp|profile|cancelMembership|premium)/gs.test(url) ||
     // membership api paths
     new RegExp(`/${API_PATH_FRONTEND}/membership`, 'gs').test(url) ||
     new RegExp(`/${API_PATH_FRONTEND}/saleor`, 'gs').test(url)

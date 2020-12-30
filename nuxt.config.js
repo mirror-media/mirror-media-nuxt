@@ -238,10 +238,13 @@ module.exports = {
   modules: [
     'nuxt-user-agent',
 
-    ...(process.env.NODE_ENV === 'production' &&
-    (ENV === 'prod' || ENV === 'staging')
-      ? ['@mirror-media/nuxt-ssr-cache']
-      : []),
+    /*
+     * ...(process.env.NODE_ENV === 'production' &&
+     * (ENV === 'prod' || ENV === 'staging')
+     *   ? ['@mirror-media/nuxt-ssr-cache']
+     *   : []),
+     */
+    '@mirror-media/nuxt-ssr-cache',
 
     [
       '@nuxtjs/firebase',
@@ -329,7 +332,7 @@ module.exports = {
 
     key(route) {
       // We should configure cache pages path right here.
-      const ignorePages = /^(?!\/login|\/profile|\/finishSignUp|\/cancelMembership).+/
+      const ignorePages = /^(?!\/login|\/profile|\/finishSignUp|\/cancelMembership|\/premium).+/
       const cachePages = [ignorePages]
 
       const shouldCacheCurrentRoute = cachePages.some((pat) =>
