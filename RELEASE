@@ -51,3 +51,6 @@
 2020/12/29
   - release version: master_kwhsiung_1085 
   - features: home page, revise article wide style, member section, login page, Cancelmembership page, profile page, Microad Ad on article page, revise related article style on article page, add drinking notice on article page with wide style.
+2020/12/31
+  - release version: master_kwhsiung_1095
+  - features: revise cache control on member-related post

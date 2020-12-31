@@ -72,6 +72,19 @@
           @success="handleEmailLoginSuccess"
           @error="handleLoginError"
         />
+        <p class="form-wrapper__rights rights">
+          <span>繼續使用代表您同意與接受</span>
+          <span>
+            鏡傳媒的
+            <a href="https://www.mirrormedia.mg/story/service-rule">
+              《服務條款》
+            </a>
+            以及
+            <a href="https://www.mirrormedia.mg/story/privacy/">
+              《隱私政策》
+            </a>
+          </span>
+        </p>
       </div>
       <UiMembershipEmailSuccess
         v-else-if="pageState === 'success'"
@@ -248,6 +261,9 @@ h1 {
   &__separator {
     margin: 20px 0;
   }
+  &__rights {
+    margin: 20px 0 0 0;
+  }
   @include media-breakpoint-up(xl) {
     width: 300px;
   }
@@ -288,6 +304,19 @@ h1 {
     flex: 1 1 auto;
     height: 1px;
     background-color: #4a4a4a;
+  }
+}
+
+.rights {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.66);
+  line-height: 18px;
+  a {
+    color: skyblue;
   }
 }
 </style>
