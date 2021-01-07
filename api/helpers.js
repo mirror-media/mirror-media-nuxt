@@ -24,7 +24,7 @@ function createProxy(baseUrl) {
       res.status(500).send(error.message)
 
       // eslint-disable-next-line no-console
-      console.error(`[API] url: ${req.url}`, error)
+      console.error(`[API] url: ${req.url}`, JSON.stringify(error))
     }
   }
 }
