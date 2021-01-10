@@ -243,7 +243,7 @@ export default {
         } = article
 
         const { mobile = {}, tablet = {} } =
-          heroImage.image?.resizedTargets || {}
+          heroImage?.image?.resizedTargets || {}
         const [section = {}] = sections
 
         return {
