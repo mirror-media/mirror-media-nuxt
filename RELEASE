@@ -54,3 +54,6 @@
 2020/12/31
   - release version: master_kwhsiung_1095
   - features: revise cache control on member-related post
+2021/01/07
+  - release version: master_hcchien_1107 
+  - features: add comscore tag and revise recommendation wording on aritcle page
