@@ -57,3 +57,6 @@
 2021/01/07
   - release version: master_hcchien_1107 
   - features: add comscore tag and revise recommendation wording on aritcle page
+2021/01/13
+  - release version: master_hsuehyungtan_1115
+  - features: add /campaigns and /projects to firevase-auth-sw js, add wine-warning banner on topic page
