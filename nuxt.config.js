@@ -282,7 +282,7 @@ module.exports = {
         services: {
           auth: {
             ssr: {
-              ignorePaths: ['/campaigns'],
+              ignorePaths: ['/campaigns', '/projects'],
             },
             initialize: {
               onAuthStateChangedMutation:
