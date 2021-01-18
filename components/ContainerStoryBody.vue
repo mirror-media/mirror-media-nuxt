@@ -83,6 +83,11 @@
       >。
     </p>
 
+    <div class="magazine">
+      <div>下載鏡週刊電子雜誌</div>
+      <button type="button" @click="enterMagazinePage">立即下載</button>
+    </div>
+
     <LazyRenderer v-if="doesHaveTags" class="story__tags">
       <p class="title">相關關鍵字：</p>
       <div class="wrapper">
@@ -338,12 +343,16 @@ export default {
 
   methods: {
     enterMemberSectionPage() {
-      const memberSectionPage = '/section/member/'
-
+      this.enterPageAfterLoggedIn('/section/member/')
+    },
+    enterMagazinePage() {
+      this.enterPageAfterLoggedIn('/magazine/')
+    },
+    enterPageAfterLoggedIn(pagePath) {
       if (this.isLoggedIn) {
-        window.location.href = memberSectionPage
+        window.location.href = pagePath
       } else {
-        window.location.href = `/login/?destination=${memberSectionPage}`
+        window.location.href = `/login/?destination=${pagePath}`
       }
     },
     handleSendGa(param = {}) {
@@ -627,6 +636,38 @@ export {
     &--container {
       display: flex;
       justify-content: space-around;
+    }
+  }
+}
+
+.magazine {
+  margin-top: 24px;
+  background-color: #1d9fb8;
+  padding: 16px;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: center;
+  @include media-breakpoint-up(xl) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 16px 16px 40px;
+    font-size: 20px;
+  }
+
+  button {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 2px;
+    line-height: 1.38;
+    color: #1d9fb8;
+    padding: 12px 4px;
+    margin-top: 16px;
+    font-size: 18px;
+    @include media-breakpoint-up(xl) {
+      margin-top: 0;
+      max-width: 179px;
     }
   }
 }
