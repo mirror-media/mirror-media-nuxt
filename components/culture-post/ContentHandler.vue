@@ -164,7 +164,7 @@ export default {
         return <h2 id={`header-${id}`} domPropsInnerHTML={content} />
 
       case 'header-two':
-        return <h3 domPropsInnerHTML={content} />
+        return <h3 id={`header-${id}`} domPropsInnerHTML={content} />
 
       case 'image': {
         const { alignment, tablet = {}, description } = content

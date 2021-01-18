@@ -163,7 +163,11 @@ export default {
     },
     indexes() {
       return this.post.content
-        .filter((item) => item.type === 'header-one' && item.content?.[0])
+        .filter(
+          (item) =>
+            (item.type === 'header-one' || item.type === 'header-two') &&
+            item.content?.[0]
+        )
         .map((item) => ({
           id: item.id,
           content: item.content[0],
