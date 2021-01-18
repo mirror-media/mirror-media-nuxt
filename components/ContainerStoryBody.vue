@@ -543,7 +543,7 @@ export {
     background-color: #054f77;
     a {
       color: #eac151;
-      font-weight: 600px;
+      font-weight: 600;
       text-decoration: underline;
     }
   }
