@@ -185,8 +185,18 @@ export default {
   },
 
   async fetch() {
-    this.groupedArticles = (await this.$fetchGrouped()) || {}
-    this.flashNews = await this.fetchFlashNews()
+    const [groupedResponse, flashNewsResponse] = await Promise.allSettled([
+      this.$fetchGrouped(),
+      this.fetchFlashNews(),
+    ])
+
+    if (groupedResponse.status === 'fulfilled') {
+      this.groupedArticles = groupedResponse.value || {}
+    }
+
+    if (flashNewsResponse.status === 'fulfilled') {
+      this.flashNews = flashNewsResponse.value || []
+    }
   },
 
   data() {
