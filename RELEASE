@@ -60,3 +60,6 @@
 2021/01/13
   - release version: master_hsuehyungtan_1115
   - features: add /campaigns and /projects to firevase-auth-sw js, add wine-warning banner on topic page
+2021/01/18
+  - release version: master_hsuehyungtan_1121
+  - features: index supports header-two type on article page with wide style, and revise /section/foodtravel
