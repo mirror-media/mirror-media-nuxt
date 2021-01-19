@@ -14,7 +14,7 @@ import {
 } from '~/constants'
 import { DOMAIN_NAME } from '~/configs/config'
 import { DABLE_WIDGET_IDS } from '~/constants/ads'
-import { checkStoryCategoryHasMemberOnly } from '~/utils/article'
+import { checkCategoryHasMemberOnly } from '~/utils/article'
 
 export default {
   layout: 'empty',
@@ -42,12 +42,12 @@ export default {
       console.log('categories: ' + JSON.stringify(this.story.categories))
       console.log('process.server: ' + process.server)
       console.log(
-        'isStoryCategoryHasMemberOnly: ' + this.isStoryCategoryHasMemberOnly
+        'doesCategoryHaveMemberOnly: ' + this.doesCategoryHaveMemberOnly
       )
       console.log('shouldShowPremiumStory: ' + this.shouldShowPremiumStory)
 
       // disable cdn cache to prevent caching both regular version and premium version with the same /premium/:slug uri
-      if (process.server && this.isStoryCategoryHasMemberOnly) {
+      if (process.server && this.doesCategoryHaveMemberOnly) {
         console.log('this premium should not cache')
         this.$nuxt.context.res.setHeader('Cache-Control', 'no-store')
       }
@@ -75,14 +75,14 @@ export default {
     storySlug() {
       return this.$route.params.slug
     },
-    isStoryCategoryHasMemberOnly() {
-      return checkStoryCategoryHasMemberOnly(this.story)
+    doesCategoryHaveMemberOnly() {
+      return checkCategoryHasMemberOnly(this.story)
     },
     shouldShowPremiumStory() {
       const isMemberTokenStateValid = (
         this.membershipTokenState ?? ''
       ).startsWith('OK')
-      return this.isStoryCategoryHasMemberOnly && isMemberTokenStateValid
+      return this.doesCategoryHaveMemberOnly && isMemberTokenStateValid
     },
   },
   head() {
