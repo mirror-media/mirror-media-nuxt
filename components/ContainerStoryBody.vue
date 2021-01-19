@@ -31,19 +31,31 @@
     </figure>
 
     <div v-if="hasBrief" class="story__brief">
-      <UiStoryContentHandler
-        v-for="paragraph in brief"
-        :key="paragraph.id"
-        :paragraph="paragraph"
-      />
+      <!-- external(合作媒體) 的 brief -->
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div v-if="isString(brief)" v-html="brief" />
+      <template v-else>
+        <UiStoryContentHandler
+          v-for="paragraph in brief"
+          :key="paragraph.id"
+          :paragraph="paragraph"
+        />
+      </template>
     </div>
 
-    <template v-for="paragraph in contents">
-      <UiStoryContentHandler
-        :key="paragraph.id"
-        :paragraph="paragraph"
-        @sendGa="handleSendGa({ eventLabel: 'image' })"
-      />
+    <!-- external(合作媒體) 的 content -->
+    <template v-if="isString(content)">
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div class="story__external-content" v-html="content" />
+    </template>
+    <template v-else>
+      <template v-for="paragraph in contents">
+        <UiStoryContentHandler
+          :key="paragraph.id"
+          :paragraph="paragraph"
+          @sendGa="handleSendGa({ eventLabel: 'image' })"
+        />
+      </template>
     </template>
 
     <p v-if="isUpdatedAtVisible" class="story__updated-at">
@@ -167,6 +179,10 @@ export default {
     }),
 
     brief() {
+      if (this.isString(this.story.brief)) {
+        // external(合作媒體) 的 brief
+        return this.story.brief
+      }
       const data = this.story.brief?.apiData ?? []
       return data.filter((paragraph) => paragraph.type === 'unstyled')
     },
@@ -179,6 +195,9 @@ export default {
 
     apiData() {
       return this.story.content?.apiData ?? []
+    },
+    content() {
+      return this.story.content
     },
     contents() {
       const {
@@ -268,7 +287,10 @@ export default {
     },
     hasBrief() {
       const rawBrief = this.brief
-      return Array.isArray(rawBrief) && rawBrief.length > 0
+      return (
+        (this.isString(rawBrief) || Array.isArray(rawBrief)) &&
+        rawBrief.length > 0
+      )
     },
 
     heroVideo() {
@@ -285,7 +307,9 @@ export default {
 
     heroImg() {
       return (
-        this.story.heroImage?.image?.resizedTargets?.mobile?.url ?? SITE_OG_IMG
+        (this.story.heroImage?.image?.resizedTargets?.mobile?.url ||
+          this.story.thumb) ??
+        SITE_OG_IMG
       )
     },
     heroCaption() {
@@ -337,6 +361,9 @@ export default {
         eventAction: 'click',
         ...param,
       })
+    },
+    isString(value) {
+      return typeof value === 'string'
     },
   },
 }
@@ -467,7 +494,9 @@ export {
     padding: 1em 2em;
     margin-top: 30px;
     color: #fff;
+    font-size: 19.2px; // 1.2rem
     font-weight: 700;
+    line-height: 36px;
     background-color: #000;
     &::v-deep {
       .g-story-paragraph {
