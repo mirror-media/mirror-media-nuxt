@@ -89,12 +89,19 @@ export default {
   &__download-link {
     margin: 16px 0 0 0;
   }
+  @include media-breakpoint-up(xl) {
+    min-width: 240px;
+    width: 240px;
+  }
 }
 
 .cover-img {
   width: 100%;
   height: 212px;
   object-fit: cover;
+  @include media-breakpoint-up(xl) {
+    height: 318px;
+  }
 }
 
 .info-wrapper {
@@ -150,8 +157,17 @@ export default {
   color: white;
   width: 100%;
   height: 48px;
-  background-color: #1d9fb8;
+  background: #1d9fb8;
   border-radius: 2px;
+  &:hover,
+  &:active {
+    background: linear-gradient(
+        0deg,
+        rgba(5, 79, 119, 0.5),
+        rgba(5, 79, 119, 0.5)
+      ),
+      #1d9fb8;
+  }
 }
 
 .mobile {
