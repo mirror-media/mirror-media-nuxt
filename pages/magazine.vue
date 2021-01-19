@@ -5,14 +5,11 @@
       class="page__current-featured-magazine-wrapper current-featured-magazine-wrapper"
     >
       <UiMagazineFeatured
-        :coverImgUrl="'https://a.ecimg.tw/items/DJAG27A9008VZDJ/000001_1523442734.jpg'"
-        :label="'第 222 期'"
-        :title="'半夜遛狗洩戀情 邱鋒澤祕密同居采子sdfsfsdf sfklsdfjlkjsf'"
-        :descriptions="[
-          '內文簡介 作者簡介 作者序 推薦序 目錄 電子書試閱by readmoo.com 內文簡介》 回TOP↑ 作者簡介》 作者序》 推薦序》 目錄 》',
-          '內文簡介 作者簡介 作者序 推薦序 目錄 電子書試閱by readmoo.com 內文簡介》 回TOP↑ 作者簡介》 作者序》 推薦序》 目錄',
-        ]"
-        :downloadLink="'https://storage.googleapis.com/mirrormedia-files/assets/magazine/20210104134945-4751666ed64428f1c2e109e0f7eadc80.pdf'"
+        :coverImgUrl="magazineFeatured.coverImgUrl"
+        :label="magazineFeatured.issue"
+        :title="magazineFeatured.title"
+        :descriptions="magazineFeatured.descriptions"
+        :downloadLink="magazineFeatured.pdfLink"
       />
     </div>
     <section
@@ -23,15 +20,15 @@
         class="magazine-showcase-list-wrapper__magazine-showcase-list magazine-showcase-list"
       >
         <li
-          v-for="item in 30"
-          :key="item"
+          v-for="item in magazineShowcases"
+          :key="item.id"
           class="magazine-showcase-list__list-item magazine-showcase-list-item"
         >
           <UiMagazineShowcaseItem
-            :coverImgUrl="'https://a.ecimg.tw/items/DJAG27A9008VZDJ/000001_1523442734.jpg'"
-            :label="'2021/01/01'"
-            :title="'第 222 期'"
-            :downloadLink="'https://storage.googleapis.com/mirrormedia-files/assets/magazine/20210104134945-4751666ed64428f1c2e109e0f7eadc80.pdf'"
+            :coverImgUrl="item.coverImgUrl"
+            :label="item.publishedDate"
+            :title="item.issue"
+            :downloadLink="item.pdfLink"
           />
         </li>
       </ol>
@@ -40,6 +37,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
+import dayjs from 'dayjs'
 import UiMagazineFeatured from '~/components/UiMagazineFeatured.vue'
 import UiMagazineShowcaseItem from '~/components/UiMagazineShowcaseItem.vue'
 
@@ -47,6 +46,51 @@ export default {
   components: {
     UiMagazineFeatured,
     UiMagazineShowcaseItem,
+  },
+  async fetch() {
+    const response = await this.$fetchMagazines({
+      maxResults: 25,
+      sort: '-publishedDate',
+    })
+    this.setListData(response)
+  },
+  data() {
+    return {
+      listData: [],
+    }
+  },
+  computed: {
+    magazineFeatured() {
+      return this.listData[0]
+    },
+    magazineShowcases() {
+      return _.drop(this.listData)
+    },
+  },
+  methods: {
+    mapDataToComponentProps(item) {
+      return {
+        id: item.id,
+        title: item.title,
+        issue: item.issue,
+        publishedDate: dayjs(item.publishedDate).format('YYYY/MM/DD'),
+        descriptions: getDescriptionsUnstyled(item),
+        coverImgUrl: item.coverPhoto?.image?.resizedTargets?.mobile?.url,
+        pdfLink: item?.magazine?.url,
+      }
+
+      function getDescriptionsUnstyled(item) {
+        const data = item?.description?.apiData ?? []
+        return data
+          .filter((paragraph) => paragraph.type === 'unstyled')
+          .map((paragraph) => paragraph?.content?.[0] ?? '')
+      }
+    },
+    setListData(response = {}) {
+      let listData = response.items ?? []
+      listData = listData.map(this.mapDataToComponentProps)
+      this.listData.push(...listData)
+    },
   },
 }
 </script>

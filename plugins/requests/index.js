@@ -257,6 +257,10 @@ export default (context, inject) => {
     fetchApiData(`/youtube/videos${buildYoutubeParams(params)}`)
   )
 
+  inject('fetchMagazines', (params) =>
+    fetchApiData(`/magazines${buildParams(params)}`)
+  )
+
   inject('fetchGrouped', () => fetchGcsData('grouped'))
 
   inject('fetchPopular', () => fetchGcsData('popularlist'))
