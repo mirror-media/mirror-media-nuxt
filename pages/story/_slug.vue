@@ -257,14 +257,12 @@ export default {
 
         return true
       } else {
-        const { code, message } = response.reason
+        const { message, statusCode } = response.reason
 
         this.$nuxt.error({
-          statusCode: code,
           message,
+          statusCode,
         })
-
-        throw new Error(message)
       }
     }
 

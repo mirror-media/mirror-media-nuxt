@@ -61,8 +61,13 @@ export default {
         )
         this.$nuxt.context.redirect(`/story/${this.storySlug}`)
       }
-    } else if (postResponse?.reason?.code === 404) {
-      this.$nuxt.error({ statusCode: 404, message: postResponse?.reason })
+    } else {
+      const { message, statusCode } = postResponse.reason
+
+      this.$nuxt.error({
+        message,
+        statusCode,
+      })
     }
   },
   data() {
