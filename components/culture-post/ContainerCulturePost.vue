@@ -204,7 +204,10 @@ export default {
   methods: {
     detectCurrentIndex() {
       import('intersection-observer').then(() => {
-        const targets = [...this.$refs.articleBody.$el.querySelectorAll('h2')]
+        const targets = [
+          ...this.$refs.articleBody.$el.querySelectorAll('h2'),
+          ...this.$refs.articleBody.$el.querySelectorAll('h3'),
+        ]
         let observer
 
         {

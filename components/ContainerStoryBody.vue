@@ -51,9 +51,9 @@
     </p>
 
     <div class="story__member-info">
-      鏡週刊4年了，讀者的建議與批評我們都虛心聆聽。為提供讀者最好的閱讀空間，我們成立了會員區，提供會員高品質、無廣告、一文到底的純淨閱讀體驗，邀您<a
-        href="/login"
-        >立即體驗</a
+      鏡週刊4年了，讀者的建議與批評我們都虛心聆聽。為提供讀者最好的閱讀空間，我們成立了會員區，提供會員高品質、無廣告、一文到底的純淨閱讀體驗，邀您<strong
+        @click="enterMemberSectionPage"
+        >立即體驗</strong
       >。
     </div>
 
@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { ref, computed, onMounted, useContext } from '@nuxtjs/composition-api'
 import dayjs from 'dayjs'
 
@@ -162,6 +162,9 @@ export default {
   },
   computed: {
     ...mapState(['canAdvertise']),
+    ...mapGetters({
+      isLoggedIn: 'membership/isLoggedIn',
+    }),
 
     brief() {
       const data = this.story.brief?.apiData ?? []
@@ -319,6 +322,15 @@ export default {
   },
 
   methods: {
+    enterMemberSectionPage() {
+      const memberSectionPage = '/section/member/'
+
+      if (this.isLoggedIn) {
+        window.location.href = memberSectionPage
+      } else {
+        window.location.href = `/login/?destination=${memberSectionPage}`
+      }
+    },
     handleSendGa(param = {}) {
       this.$ga.event({
         eventCategory: 'article',
@@ -541,10 +553,12 @@ export {
     line-height: 36px;
     text-align: justify;
     background-color: #054f77;
-    a {
+
+    strong {
+      cursor: pointer;
       color: #eac151;
       font-weight: 600;
-      text-decoration: underline;
+      border-bottom: 1px solid #eac151;
     }
   }
 
