@@ -77,6 +77,9 @@ export default {
     flex-direction: row;
     align-items: flex-start;
   }
+  @include media-breakpoint-up(xl) {
+    width: 840px;
+  }
 }
 
 .cover-wrapper {
