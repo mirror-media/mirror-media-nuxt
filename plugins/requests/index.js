@@ -201,6 +201,9 @@ export default (context, inject) => {
   inject('fetchPostsFromMembershipGateway', (params, token) =>
     fetchApiData(`/getposts${buildParams(params)}`, true, token)
   )
+  inject('fetchDrafts', (params) =>
+    fetchApiData(`/drafts${buildParams(params)}`)
+  )
 
   inject('fetchSearch', (params) =>
     fetchApiData(`/search${buildParams(params)}`)

@@ -202,7 +202,7 @@ import UiFooter from '~/components/UiFooter.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
-import { DOMAIN_NAME, ENV } from '~/configs/config'
+import { DOMAIN_NAME, ENV, PREVIEW_QUERY } from '~/configs/config'
 import {
   SECTION_IDS,
   SITE_OG_IMG,
@@ -247,53 +247,97 @@ export default {
   },
 
   async fetch() {
-    const [postResponse] = await Promise.allSettled([
-      this.$fetchPostsFromMembershipGateway(
-        {
+    const processPostResponse = (response) => {
+      if (response.status === 'fulfilled') {
+        this.story = response.value.items?.[0] ?? {}
+        this.$store.commit(
+          'setCanAdvertise',
+          !this.story.hiddenAdvertised ?? true
+        )
+
+        return true
+      } else {
+        const { code, message } = response.reason
+
+        this.$nuxt.error({
+          statusCode: code,
+          message,
+        })
+
+        throw new Error(message)
+      }
+    }
+
+    let isPreviewMode = false
+    {
+      const [name, value] = PREVIEW_QUERY.split('=')
+
+      isPreviewMode = this.$route.query[name] === value
+    }
+
+    const fetchPartnersAndTopicsData = async () => {
+      await Promise.all([
+        this.$store.dispatch('partners/fetchPartnersData'),
+        this.$store.dispatch('topics/fetchTopicsData'),
+      ])
+    }
+
+    if (!isPreviewMode) {
+      const [postResponse] = await Promise.allSettled([
+        this.$fetchPostsFromMembershipGateway(
+          {
+            slug: this.storySlug,
+            isAudioSiteOnly: false,
+            clean: 'content',
+            related: 'article',
+          },
+          this.$store.state.membership.userToken
+        ),
+        fetchPartnersAndTopicsData(),
+      ])
+      const canContinueProcessing = processPostResponse(postResponse)
+
+      if (canContinueProcessing) {
+        this.membershipTokenState = postResponse.value.tokenState
+
+        console.log(`[DEBUG] ${this.$nuxt.context.req.url}`)
+        console.log(`categories: ${JSON.stringify(this.story.categories)}`)
+        console.log(`process.server: ${process.server}`)
+        console.log(
+          `isStoryCategoryHasMemberOnly: ${this.isStoryCategoryHasMemberOnly}`
+        )
+        console.log(`shouldShowPremiumStory: ${this.shouldShowPremiumStory}`)
+
+        // disable cdn cache to prevent caching both regular version and premium version with the same /story/:slug uri
+        if (process.server && this.isStoryCategoryHasMemberOnly) {
+          console.log('this story should not cache')
+
+          this.$nuxt.context.res.setHeader('Cache-Control', 'no-store')
+        }
+
+        console.log(`token: ${this.$store.state.membership.userToken}`)
+        console.log(`email: ${this.$store.state.membership.userEmail}`)
+
+        if (this.shouldShowPremiumStory) {
+          console.log(
+            `this ${this.$nuxt.context.req.url} should redirect to premium`
+          )
+
+          this.$nuxt.context.redirect(`/premium/${this.storySlug}`)
+        }
+      }
+    } else {
+      const [postResponse] = await Promise.allSettled([
+        this.$fetchDrafts({
           slug: this.storySlug,
           isAudioSiteOnly: false,
           clean: 'content',
           related: 'article',
-        },
-        this.$store.state.membership.userToken
-      ),
-      this.$store.dispatch('partners/fetchPartnersData'),
-      this.$store.dispatch('topics/fetchTopicsData'),
-    ])
+        }),
+        fetchPartnersAndTopicsData(),
+      ])
 
-    if (postResponse.status === 'fulfilled') {
-      this.story = postResponse.value.items?.[0] ?? {}
-      this.membershipTokenState = postResponse.value.tokenState
-
-      console.log('[DEBUG] ' + `${this.$nuxt.context.req.url}`)
-      console.log('categories: ' + JSON.stringify(this.story.categories))
-      console.log('process.server: ' + process.server)
-      console.log(
-        'isStoryCategoryHasMemberOnly: ' + this.isStoryCategoryHasMemberOnly
-      )
-      console.log('shouldShowPremiumStory: ' + this.shouldShowPremiumStory)
-
-      // disable cdn cache to prevent caching both regular version and premium version with the same /story/:slug uri
-      if (process.server && this.isStoryCategoryHasMemberOnly) {
-        console.log('this story should not cache')
-        this.$nuxt.context.res.setHeader('Cache-Control', 'no-store')
-      }
-
-      console.log(`token: ${this.$store.state.membership.userToken}`)
-      console.log(`email: ${this.$store.state.membership.userEmail}`)
-      if (this.shouldShowPremiumStory) {
-        console.log(
-          `this ${this.$nuxt.context.req.url} should redirect to premium`
-        )
-        this.$nuxt.context.redirect(`/premium/${this.storySlug}`)
-      }
-
-      this.$store.commit(
-        'setCanAdvertise',
-        !this.story.hiddenAdvertised ?? true
-      )
-    } else if (postResponse?.reason?.code === 404) {
-      this.$nuxt.error({ statusCode: 404, message: postResponse?.reason })
+      processPostResponse(postResponse)
     }
   },
 
