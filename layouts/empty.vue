@@ -21,6 +21,9 @@ export default {
   mounted() {
     if (window.dataLayer) {
       window.dataLayer.push({ event: 'optimize.activate' })
+      this.$nextTick(() => {
+        window.dataLayer.push({ event: 'optimize.test' })
+      })
     }
   },
 }
