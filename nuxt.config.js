@@ -156,6 +156,10 @@ module.exports = {
         src: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
         async: true,
       },
+      {
+        hid: 'googleOptimize',
+        src: 'https://www.googleoptimize.com/optimize.js?id=OPT-NHZNB2Z',
+      },
     ],
     __dangerouslyDisableSanitizersByTagID: {
       likrNotification: ['innerHTML'],
