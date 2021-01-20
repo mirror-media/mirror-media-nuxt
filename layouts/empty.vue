@@ -20,9 +20,9 @@ export default {
 
   mounted() {
     if (window.dataLayer) {
-      window.dataLayer.push({ event: 'optimize.activate' })
+      window.dataLayer.push({ event: 'optimize.test' })
       this.$nextTick(() => {
-        window.dataLayer.push({ event: 'optimize.test' })
+        window.dataLayer.push({ event: 'optimize.activate' })
       })
     }
   },
