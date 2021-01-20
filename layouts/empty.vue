@@ -17,5 +17,11 @@ export default {
   components: {
     TheGdpr,
   },
+
+  mounted() {
+    if (window.dataLayer) {
+      window.dataLayer.push({ event: 'optimize.activate' })
+    }
+  },
 }
 </script>
