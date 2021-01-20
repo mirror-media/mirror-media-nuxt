@@ -6,7 +6,11 @@ const SITE_URL = 'https://www.mirrormedia.mg'
 const SITE_OG_IMG = `${SITE_URL}/assets/mirrormedia/notImage.png` // 來自 plate-vue
 const FB_APP_ID = '175313259598308'
 const FB_PAGE_ID = '1855418728011324'
-const { ENV = 'dev', API_PATH_FRONTEND } = require('./configs/config')
+const {
+  ENV = 'dev',
+  API_PATH_FRONTEND,
+  GOOGLE_OPT_CONTAINER_ID,
+} = require('./configs/config')
 
 module.exports = {
   /**
@@ -146,6 +150,12 @@ module.exports = {
               hid: 'comScore',
               src: 'https://sb.scorecardresearch.com/beacon.js',
               async: true,
+            },
+
+            // https://support.google.com/optimize/answer/7513085
+            {
+              hid: 'googleOptimize',
+              src: `https://www.googleoptimize.com/optimize.js?id=${GOOGLE_OPT_CONTAINER_ID}`,
             },
           ]
         : []),
