@@ -14,6 +14,7 @@
 
 <script>
 import localforage from 'localforage'
+import loginDestination from '~/utils/login-destination'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
 import UiMembershipSpinner from '~/components/UiMembershipSpinner.vue'
 
@@ -85,10 +86,7 @@ export default {
           actionCodeSettings
         )
         await localforage.setItem('emailForSignIn', this.emailInput)
-        await localforage.setItem(
-          'mm-login-destination',
-          this.$route.query.destination ?? '/'
-        )
+        await loginDestination.set(this.$route)
         this.$emit('success', this.emailInput)
       } catch (e) {
         this.handleError(e)

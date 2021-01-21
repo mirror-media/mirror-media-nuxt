@@ -101,7 +101,6 @@
 </template>
 
 <script>
-import localforage from 'localforage'
 import ContainerMembershipLoginWithGoogle from '~/components/ContainerMembershipLoginWithGoogle.vue'
 import ContainerMembershipLoginWithFacebook from '~/components/ContainerMembershipLoginWithFacebook.vue'
 import ContainerMembershipLoginWithEmail from '~/components/ContainerMembershipLoginWithEmail.vue'
@@ -109,6 +108,7 @@ import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
 import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipSpinner from '~/components/UiMembershipSpinner.vue'
 import userCreate from '~/apollo/mutations/userCreate.gql'
+import loginDestination from '~/utils/login-destination'
 
 export default {
   apollo: {
@@ -149,10 +149,8 @@ export default {
           },
         })
 
-        // redirect to page where use try to login
-        const destination = await localforage.getItem('mm-login-destination')
-        await localforage.removeItem('mm-login-destination')
-        window.location.replace(destination)
+        // redirect to page where user try to login
+        await loginDestination.redirect()
       }
     } catch (e) {
       // eslint-disable-next-line no-console
