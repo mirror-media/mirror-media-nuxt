@@ -31,31 +31,26 @@
     </figure>
 
     <div v-if="hasBrief" class="story__brief">
-      <!-- external(合作媒體) 的 brief -->
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-if="isString(brief)" v-html="brief" />
-      <template v-else>
-        <UiStoryContentHandler
-          v-for="paragraph in brief"
-          :key="paragraph.id"
-          :paragraph="paragraph"
-        />
-      </template>
+      <UiStoryContentHandler
+        v-for="paragraph in brief"
+        v-else
+        :key="paragraph.id"
+        :paragraph="paragraph"
+      />
     </div>
 
-    <!-- external(合作媒體) 的 content -->
     <template v-if="isString(content)">
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="story__external-content" v-html="content" />
     </template>
-    <template v-else>
-      <template v-for="paragraph in contents">
-        <UiStoryContentHandler
-          :key="paragraph.id"
-          :paragraph="paragraph"
-          @sendGa="handleSendGa({ eventLabel: 'image' })"
-        />
-      </template>
+    <template v-for="paragraph in contents" v-else>
+      <UiStoryContentHandler
+        :key="paragraph.id"
+        :paragraph="paragraph"
+        @sendGa="handleSendGa({ eventLabel: 'image' })"
+      />
     </template>
 
     <p v-if="isUpdatedAtVisible" class="story__updated-at">
@@ -180,9 +175,9 @@ export default {
 
     brief() {
       if (this.isString(this.story.brief)) {
-        // external(合作媒體) 的 brief
         return this.story.brief
       }
+
       const data = this.story.brief?.apiData ?? []
       return data.filter((paragraph) => paragraph.type === 'unstyled')
     },
@@ -194,7 +189,7 @@ export default {
     },
 
     apiData() {
-      return this.story.content?.apiData ?? []
+      return this.content?.apiData ?? []
     },
     content() {
       return this.story.content
@@ -286,11 +281,7 @@ export default {
       return idxes
     },
     hasBrief() {
-      const rawBrief = this.brief
-      return (
-        (this.isString(rawBrief) || Array.isArray(rawBrief)) &&
-        rawBrief.length > 0
-      )
+      return this.brief.length > 0
     },
 
     heroVideo() {
