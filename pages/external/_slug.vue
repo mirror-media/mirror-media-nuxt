@@ -151,8 +151,8 @@ import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiFooter from '~/components/UiFooter.vue'
 
-import { ENV } from '~/configs/config'
-import { SITE_OG_IMG } from '~/constants/index'
+import { DOMAIN_NAME, ENV } from '~/configs/config'
+import { SITE_OG_IMG, SITE_TITLE } from '~/constants/index'
 import { DABLE_WIDGET_IDS } from '~/constants/ads.js'
 
 export default {
@@ -176,16 +176,22 @@ export default {
   },
 
   async fetch() {
-    try {
-      const response = await this.$fetchExternals({
+    const [externalResponse] = await Promise.allSettled([
+      this.$fetchExternals({
         name: [this.$route.params.slug],
-      })
-      this.story = response.items?.[0] ?? {}
-      this.story.extendByline = `文｜${this.story.extendByline}`
-      this.story.categories = [{ title: '合作媒體' }]
-    } catch (error) {
-      this.$nuxt.error({ statusCode: error.code, message: error.message })
+      }),
+      this.$store.dispatch('partners/fetchPartnersData'),
+      this.$store.dispatch('topics/fetchTopicsData'),
+    ])
+
+    if (externalResponse.status === 'rejected') {
+      const { message, statusCode } = externalResponse.reason
+      this.$nuxt.error({ statusCode, message })
     }
+
+    this.story = externalResponse.value?.items?.[0] ?? {}
+    this.story.extendByline = `文｜${this.story.extendByline}`
+    this.story.categories = [{ title: '合作媒體' }]
   },
 
   data() {
@@ -212,7 +218,11 @@ export default {
     }),
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
+      displayedPartners: 'partners/displayedPartners',
     }),
+    storySlug() {
+      return this.$route.params.slug
+    },
     shouldOpenLatestList() {
       return (
         this.isDesktopWidth &&
@@ -224,6 +234,10 @@ export default {
     },
     doesHavePopularStories() {
       return this.popularStories.length > 0
+    },
+    partner() {
+      const partnerName = this.storySlug.split('_')[0]
+      return this.displayedPartners.find((item) => item.name === partnerName)
     },
   },
 
@@ -402,6 +416,58 @@ export default {
         })
       })
     },
+  },
+  head() {
+    const {
+      brief = '',
+      publishedDate = Date.now(),
+      thumb = SITE_OG_IMG,
+      title = '',
+    } = this.story
+
+    const metaTitle = title || SITE_TITLE
+    const pageUrl = `https://${DOMAIN_NAME}${this.$route.path}`
+
+    const publishedDateIso = new Date(publishedDate).toISOString()
+    const partnerDisplay = this.partner?.display
+    return {
+      title,
+      meta: [
+        { hid: 'robots', name: 'robots', content: 'index' },
+        { hid: 'description', name: 'description', content: brief },
+        { hid: 'og:title', property: 'og:title', content: metaTitle },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: brief,
+        },
+        { hid: 'og:image', property: 'og:image', content: thumb },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: pageUrl,
+        },
+        { hid: 'section-name', name: 'section-name', content: 'externals' },
+        {
+          hid: 'category-name',
+          name: 'category-name',
+          content: this.partner?.name,
+        },
+        { hid: 'twitter:title', name: 'twitter:title', content: metaTitle },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: brief,
+        },
+        { hid: 'twitter:image', name: 'twitter:image', content: thumb },
+        { property: 'dable:item_id', content: this.storySlug },
+        { property: 'dable:author', content: partnerDisplay },
+        { property: 'article:section', content: '合作媒體' },
+        { property: 'article:section2', content: partnerDisplay },
+        { property: 'article:published_time', content: publishedDateIso },
+      ],
+      link: [{ rel: 'canonical', href: pageUrl }],
+    }
   },
 }
 
