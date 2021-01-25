@@ -70,7 +70,7 @@ pipeline:
       - export CHROME_PATH=$(which google-chrome-stable)
       - export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
       - apt-get update && apt-get -y install procps
-      - npm install -g @lhci/cli@0.4.x
+      - npm install -g @lhci/cli@0.6.x
       - lhci autorun
     when:
       event: [push, pull_request]
