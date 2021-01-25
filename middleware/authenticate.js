@@ -1,4 +1,7 @@
 export default async function ({ req, store, app, redirect }) {
+  if (process.server && app.$ua.browser() === 'Webview') {
+    return
+  }
   const token = store.state.membership.userToken
   const email = store.state.membership.userEmail
   try {
