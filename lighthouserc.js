@@ -4,6 +4,7 @@ module.exports = {
       url: ['http://localhost:3000/story/test-story-slug'],
       startServerCommand: 'npm run start',
       settings: {
+        preset: 'desktop',
         chromeFlags: '--no-sandbox',
         throttling: {
           cpuSlowdownMultiplier: 1,
