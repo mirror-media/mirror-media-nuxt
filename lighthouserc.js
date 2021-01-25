@@ -4,11 +4,8 @@ module.exports = {
       url: ['http://localhost:3000/story/test-story-slug'],
       startServerCommand: 'npm run start',
       settings: {
-        emulatedFormFactor: 'desktop',
         chromeFlags: '--no-sandbox',
         throttling: {
-          rttMs: 40,
-          throughputKbps: 10240,
           cpuSlowdownMultiplier: 1,
         },
       },
