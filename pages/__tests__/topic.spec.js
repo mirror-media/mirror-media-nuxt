@@ -100,9 +100,9 @@ describe('component methods', () => {
     }
     const wrapper = createWrapper(page)
     wrapper.vm.setListDataTotal(responseMock)
-    expect(wrapper.vm.listDataTotal).toBe(totalMock)
+    expect(wrapper.vm.list.total).toBe(totalMock)
     expect(wrapper.vm.listDataPageLimit).toBe(
-      Math.ceil(totalMock / wrapper.vm.listDataMaxResults)
+      Math.ceil(totalMock / wrapper.vm.list.maxResults)
     )
   })
 })

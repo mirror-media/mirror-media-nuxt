@@ -37,14 +37,16 @@ export default {
     const response = await this.fetchTopicListing({ page: 1 })
     this.setListData(response)
     this.setListDataTotal(response)
-    this.listDataCurrentPage += 1
+    this.list.page += 1
   },
   data() {
     return {
-      listData_: [],
-      listDataCurrentPage: 0,
-      listDataMaxResults: 9,
-      listDataTotal: undefined,
+      list: {
+        items: [],
+        page: 0,
+        maxResults: 9,
+        total: undefined,
+      },
     }
   },
   computed: {
@@ -56,10 +58,10 @@ export default {
     },
 
     listDataPageLimit() {
-      if (this.listDataTotal === undefined) {
+      if (this.list.total === undefined) {
         return undefined
       }
-      return Math.ceil(this.listDataTotal / this.listDataMaxResults)
+      return Math.ceil(this.list.total / this.list.maxResults)
     },
 
     /**
@@ -68,11 +70,11 @@ export default {
      * due to the list data of the first page has not been loaded.
      */
     shouldMountInfiniteLoading() {
-      return this.listDataCurrentPage >= 1
+      return this.list.page >= 1
     },
 
     listData() {
-      return _.uniqBy(this.listData_, function identifyDuplicatedItemById(
+      return _.uniqBy(this.list.items, function identifyDuplicatedItemById(
         listItem
       ) {
         return listItem.id
@@ -97,7 +99,7 @@ export default {
     },
     async fetchTopicListing({ page = 1 } = {}) {
       const response = await this.$fetchList({
-        maxResults: this.listDataMaxResults,
+        maxResults: this.list.maxResults,
         sort: '-publishedDate',
         topics: [this.currentTopicId],
         page,
@@ -107,20 +109,20 @@ export default {
     setListData(response = {}) {
       let listData = response.items ?? []
       listData = listData.map(this.mapDataToComponentProps)
-      this.listData_.push(...listData)
+      this.list.items.push(...listData)
     },
     setListDataTotal(response = {}) {
-      this.listDataTotal = response.meta?.total ?? 0
+      this.list.total = response.meta?.total ?? 0
     },
     async infiniteHandler($state) {
-      this.listDataCurrentPage += 1
+      this.list.page += 1
       try {
         const response = await this.fetchTopicListing({
-          page: this.listDataCurrentPage,
+          page: this.list.page,
         })
         this.setListData(response)
 
-        if (this.listDataCurrentPage >= this.listDataPageLimit) {
+        if (this.list.page >= this.listDataPageLimit) {
           $state.complete()
         } else {
           $state.loaded()
