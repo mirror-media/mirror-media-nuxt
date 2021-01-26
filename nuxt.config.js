@@ -292,7 +292,20 @@ module.exports = {
         services: {
           auth: {
             ssr: {
-              ignorePaths: ['/campaigns', '/projects'],
+              ignorePaths: [
+                '/campaigns',
+                '/projects',
+                '/dist',
+                '/assets',
+                '/json',
+                '/rss',
+                '/questionnaire',
+                '/robots.txt',
+                '/manifest.json',
+                '/firebase-messaging-sw.js',
+                '/ads.txt',
+                '/hodo_adject.php',
+              ],
             },
             initialize: {
               onAuthStateChangedMutation:
