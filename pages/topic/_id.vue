@@ -79,18 +79,6 @@ export default {
     },
   },
   methods: {
-    mapDataToComponentProps(item) {
-      const section = (item.sections ?? [])[0]
-      return {
-        id: item.id,
-        href: getStoryPath(item),
-        imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
-        imgText: section.title ?? '',
-        imgTextBackgroundColor: styleVariables[`section-color-${section.name}`],
-        infoTitle: item.title ?? '',
-        infoDescription: stripHtmlTags(item.brief?.html ?? ''),
-      }
-    },
     async loadListInitial() {
       const response = await this.loadList()
 
@@ -99,21 +87,37 @@ export default {
     async loadList() {
       this.list.page += 1
 
-      const response = await this.$fetchList({
-        maxResults: this.list.maxResults,
-        sort: '-publishedDate',
-        topics: [this.currentTopicId],
-        page: this.list.page,
-      })
+      const response =
+        (await this.$fetchList({
+          maxResults: this.list.maxResults,
+          sort: '-publishedDate',
+          topics: [this.currentTopicId],
+          page: this.list.page,
+        })) || {}
 
       this.setListItems(response)
 
       return response
     },
     setListItems(response = {}) {
-      let listData = response.items ?? []
-      listData = listData.map(this.mapDataToComponentProps)
-      this.list.items.push(...listData)
+      const items = (response.items ?? []).map(function transformContent(
+        item = {}
+      ) {
+        const [section = {}] = item?.sections || []
+
+        return {
+          id: item?.id,
+          href: getStoryPath(item || {}),
+          imgSrc: item?.heroImage?.image?.resizedTargets?.mobile?.url,
+          imgText: section.title ?? '',
+          imgTextBackgroundColor:
+            styleVariables[`section-color-${section.name}`],
+          infoTitle: item?.title ?? '',
+          infoDescription: stripHtmlTags(item?.brief?.html ?? ''),
+        }
+      })
+
+      this.list.items.push(...items)
     },
     setListTotal(response = {}) {
       this.list.total = response.meta?.total ?? 0

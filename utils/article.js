@@ -51,7 +51,7 @@ function checkCategoryHasMemberOnly({ categories = [] } = {}) {
   })
 }
 
-function getStoryPath(story) {
+function getStoryPath(story = {}) {
   return checkCategoryHasMemberOnly(story)
     ? `/premium/${story.slug}`
     : `/story/${story.slug}`
