@@ -34,9 +34,7 @@ export default {
     UiWineWarning,
   },
   async fetch() {
-    const response = await this.fetchTopicListing()
-    this.setListData(response)
-    this.setListDataTotal(response)
+    await this.loadListInitial()
   },
   data() {
     return {
@@ -93,7 +91,12 @@ export default {
         infoDescription: stripHtmlTags(item.brief?.html ?? ''),
       }
     },
-    async fetchTopicListing() {
+    async loadListInitial() {
+      const response = await this.loadList()
+
+      this.setListDataTotal(response)
+    },
+    async loadList() {
       this.list.page += 1
 
       const response = await this.$fetchList({
@@ -102,6 +105,9 @@ export default {
         topics: [this.currentTopicId],
         page: this.list.page,
       })
+
+      this.setListData(response)
+
       return response
     },
     setListData(response = {}) {
@@ -114,8 +120,7 @@ export default {
     },
     async infiniteHandler($state) {
       try {
-        const response = await this.fetchTopicListing()
-        this.setListData(response)
+        await this.loadList()
 
         if (this.list.page >= this.maxListPage) {
           $state.complete()
