@@ -57,7 +57,7 @@ export default {
       return TOPIC_IDS_WINE.includes(this.currentTopicId)
     },
 
-    listDataPageLimit() {
+    maxListPage() {
       if (this.list.total === undefined) {
         return undefined
       }
@@ -119,7 +119,7 @@ export default {
         })
         this.setListData(response)
 
-        if (this.list.page >= this.listDataPageLimit) {
+        if (this.list.page >= this.maxListPage) {
           $state.complete()
         } else {
           $state.loaded()

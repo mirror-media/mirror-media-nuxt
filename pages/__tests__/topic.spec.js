@@ -78,7 +78,7 @@ describe('component methods', () => {
       },
     ])
   })
-  test('setListDataTotal and listDataPageLimit computed by total', () => {
+  test('setListDataTotal and maxListPage computed by total', () => {
     const totalMock = 1234
     const responseMock = {
       meta: {
@@ -88,7 +88,7 @@ describe('component methods', () => {
     const wrapper = createWrapper(page)
     wrapper.vm.setListDataTotal(responseMock)
     expect(wrapper.vm.list.total).toBe(totalMock)
-    expect(wrapper.vm.listDataPageLimit).toBe(
+    expect(wrapper.vm.maxListPage).toBe(
       Math.ceil(totalMock / wrapper.vm.list.maxResults)
     )
   })
