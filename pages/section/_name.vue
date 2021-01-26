@@ -44,7 +44,7 @@ import UiStickyAd from '~/components/UiStickyAd.vue'
 import styleVariables from '~/scss/_variables.scss'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '~/constants'
-import { getStoryPath } from '~/utils/article'
+import { stripHtmlTags, getStoryPath } from '~/utils/article'
 
 export default {
   name: 'Section',
@@ -135,9 +135,6 @@ export default {
     },
   },
   methods: {
-    stripHtmlTag(html = '') {
-      return html.replace(/<\/?[^>]+(>|$)/g, '')
-    },
     mapDataToComponentProps(item) {
       return {
         id: item.id,
@@ -146,7 +143,7 @@ export default {
         imgText: this.currentSectionTitle,
         imgTextBackgroundColor: this.currentSectionThemeColor,
         infoTitle: item.title ?? '',
-        infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
+        infoDescription: stripHtmlTags(item.brief?.html ?? ''),
       }
     },
     async fetchSectionListing({ page = 1 } = {}) {

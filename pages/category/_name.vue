@@ -61,7 +61,7 @@ import styleVariables from '~/scss/_variables.scss'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
-import { getStoryPath } from '~/utils/article'
+import { stripHtmlTags, getStoryPath } from '~/utils/article'
 
 export default {
   name: 'Category',
@@ -177,9 +177,6 @@ export default {
     },
   },
   methods: {
-    stripHtmlTag(html = '') {
-      return html.replace(/<\/?[^>]+(>|$)/g, '')
-    },
     mapDataToComponentProps(item) {
       return {
         id: item.id,
@@ -188,7 +185,7 @@ export default {
         imgText: this.sectionTitle,
         imgTextBackgroundColor: this.sectionThemeColor,
         infoTitle: item.title ?? '',
-        infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
+        infoDescription: stripHtmlTags(item.brief?.html ?? ''),
       }
     },
     async fetchCategoryListing({ page = 1 } = {}) {

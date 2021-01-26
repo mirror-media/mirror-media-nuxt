@@ -13,19 +13,6 @@ const createWrapper = createWrapperHelper({
   stubs: ['client-only', 'GptAd'],
 })
 
-describe('stripHtmlTag method', () => {
-  test('should strip html tags successfully', () => {
-    const wrapper = createWrapper(page)
-    const html = '<div><script></script><p>foo</p><p>bar</p><p>123</p></div>'
-    expect(wrapper.vm.stripHtmlTag(html)).toBe('foobar123')
-  })
-  test('should return the same result if there is not html tags', () => {
-    const wrapper = createWrapper(page)
-    const html = 'foobar123'
-    expect(wrapper.vm.stripHtmlTag(html)).toBe('foobar123')
-  })
-})
-
 describe('component methods', () => {
   test('setListData when brief property exist in response', () => {
     const idMock = 'id'

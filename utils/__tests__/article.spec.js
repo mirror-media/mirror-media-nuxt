@@ -1,8 +1,23 @@
 import {
+  stripHtmlTags,
   doesContainWineName,
   checkCategoryHasMemberOnly,
   getStoryPath,
 } from '../article'
+
+describe('the "stripHtmlTags" function', function () {
+  it('strips html tags', function () {
+    expect(
+      stripHtmlTags(
+        '<div><script></script><p>foo</p><p>bar</p><p>123</p></div>'
+      )
+    ).toBe('foobar123')
+  })
+
+  it('returns the same result if there are no html tags', function () {
+    expect(stripHtmlTags('foobar123')).toBe('foobar123')
+  })
+})
 
 test('the "doesContainWineName" function', function () {
   expect(

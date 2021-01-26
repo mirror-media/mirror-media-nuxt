@@ -15,7 +15,7 @@ import _ from 'lodash'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import styleVariables from '~/scss/_variables.scss'
-import { getStoryPath } from '~/utils/article'
+import { stripHtmlTags, getStoryPath } from '~/utils/article'
 
 export default {
   name: 'Search',
@@ -79,9 +79,6 @@ export default {
     },
   },
   methods: {
-    stripHtmlTag(html = '') {
-      return html.replace(/<\/?[^>]+(>|$)/g, '')
-    },
     getFirstSectionName(article = {}) {
       return (article.sections ?? [])[0]?.name
     },
@@ -95,7 +92,7 @@ export default {
         imgTextBackgroundColor:
           styleVariables[`section-color-${this.getFirstSectionName(item)}`],
         infoTitle: item.title ?? '',
-        infoDescription: this.stripHtmlTag(item.brief ?? ''),
+        infoDescription: stripHtmlTags(item.brief ?? ''),
       }
     },
     async fetchSearchListing({ page = 1 } = {}) {

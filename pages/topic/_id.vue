@@ -17,7 +17,7 @@ import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import styleVariables from '~/scss/_variables.scss'
-import { getStoryPath } from '~/utils/article'
+import { stripHtmlTags, getStoryPath } from '~/utils/article'
 
 const TOPIC_IDS_WINE = [
   '5c25f9e3315ec51000903a82',
@@ -82,9 +82,6 @@ export default {
     },
   },
   methods: {
-    stripHtmlTag(html = '') {
-      return html.replace(/<\/?[^>]+(>|$)/g, '')
-    },
     mapDataToComponentProps(item) {
       const section = (item.sections ?? [])[0]
       return {
@@ -94,7 +91,7 @@ export default {
         imgText: section.title ?? '',
         imgTextBackgroundColor: styleVariables[`section-color-${section.name}`],
         infoTitle: item.title ?? '',
-        infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
+        infoDescription: stripHtmlTags(item.brief?.html ?? ''),
       }
     },
     async fetchTopicListing({ page = 1 } = {}) {
