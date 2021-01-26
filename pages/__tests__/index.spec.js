@@ -989,6 +989,41 @@ describe('getLabel method', () => {
   })
 })
 
+describe('unique the latestItems computed property', function () {
+  test('should unique the normal items by their id', function () {
+    const wrapper = createWrapper(Home, {
+      data() {
+        return {
+          latestList: {
+            items: [{ id: '1' }, { id: '1' }, { id: '2' }],
+          },
+        }
+      },
+    })
+    expect(wrapper.vm.latestItems).toEqual([{ id: '1' }, { id: '2' }])
+  })
+
+  test('should unique the micro ad items by their idx', function () {
+    const wrapper = createWrapper(Home, {
+      data() {
+        return {
+          latestList: {
+            items: [
+              { idx: 0, isMicroAd: true },
+              { idx: 0, isMicroAd: true },
+              { idx: 1, isMicroAd: true },
+            ],
+          },
+        }
+      },
+    })
+    expect(wrapper.vm.latestItems).toEqual([
+      { idx: 0, isMicroAd: true },
+      { idx: 1, isMicroAd: true },
+    ])
+  })
+})
+
 function setupEvent() {
   jest
     .spyOn(Date, 'now')
