@@ -578,7 +578,13 @@ describe('最新文章', () => {
     /* Act */
     sut.setData({
       latestList: {
-        items: Array(latestItemsNum).fill({}),
+        items: Array(latestItemsNum)
+          .fill({})
+
+          // fill the items with id property due to we will unique it
+          .map((element) => {
+            return { id: Math.random() }
+          }),
       },
     })
     await flushPromises()
@@ -600,7 +606,13 @@ describe('最新文章', () => {
     /* Act */
     sut.setData({
       latestList: {
-        items: Array(latestItemsNum).fill({}),
+        items: Array(latestItemsNum)
+          .fill({})
+
+          // fill the items with id property due to we will unique it
+          .map((element) => {
+            return { id: Math.random() }
+          }),
       },
     })
     await flushPromises()
