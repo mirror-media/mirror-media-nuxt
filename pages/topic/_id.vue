@@ -94,7 +94,7 @@ export default {
     async loadListInitial() {
       const response = await this.loadList()
 
-      this.setListDataTotal(response)
+      this.setListTotal(response)
     },
     async loadList() {
       this.list.page += 1
@@ -106,16 +106,16 @@ export default {
         page: this.list.page,
       })
 
-      this.setListData(response)
+      this.setListItems(response)
 
       return response
     },
-    setListData(response = {}) {
+    setListItems(response = {}) {
       let listData = response.items ?? []
       listData = listData.map(this.mapDataToComponentProps)
       this.list.items.push(...listData)
     },
-    setListDataTotal(response = {}) {
+    setListTotal(response = {}) {
       this.list.total = response.meta?.total ?? 0
     },
     async infiniteHandler($state) {

@@ -25,7 +25,7 @@ const createWrapper = createWrapperHelper({
 })
 
 describe('component methods', () => {
-  test('setListData', async () => {
+  test('setListItems', async () => {
     expect.assertions(1)
 
     const idMock = 'id'
@@ -63,7 +63,7 @@ describe('component methods', () => {
     }
 
     const wrapper = createWrapper(page)
-    wrapper.vm.setListData(responseMock)
+    wrapper.vm.setListItems(responseMock)
     await wrapper.vm.$nextTick()
     const list = wrapper.findComponent(UiArticleList)
     expect(list.props().listData).toEqual([
@@ -78,7 +78,7 @@ describe('component methods', () => {
       },
     ])
   })
-  test('setListDataTotal and maxListPage computed by total', () => {
+  test('setListTotal and maxListPage computed by total', () => {
     const totalMock = 1234
     const responseMock = {
       meta: {
@@ -86,7 +86,7 @@ describe('component methods', () => {
       },
     }
     const wrapper = createWrapper(page)
-    wrapper.vm.setListDataTotal(responseMock)
+    wrapper.vm.setListTotal(responseMock)
     expect(wrapper.vm.list.total).toBe(totalMock)
     expect(wrapper.vm.maxListPage).toBe(
       Math.ceil(totalMock / wrapper.vm.list.maxResults)
