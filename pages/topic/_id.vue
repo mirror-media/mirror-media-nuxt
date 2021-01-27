@@ -130,6 +130,8 @@ export default {
           state.loaded()
         }
       } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err)
         state.error()
       }
     },
