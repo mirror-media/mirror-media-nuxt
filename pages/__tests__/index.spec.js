@@ -581,7 +581,7 @@ describe('最新文章', () => {
         items: Array(latestItemsNum)
           .fill({})
 
-          // fill the items with id property due to we will unique it
+          // fill the items with id properties because they need to be unique.
           .map((_, idx) => ({ id: idx })),
       },
     })
@@ -607,7 +607,7 @@ describe('最新文章', () => {
         items: Array(latestItemsNum)
           .fill({})
 
-          // fill the items with id property due to we will unique it
+          // fill the items with id properties because they need to be unique.
           .map((_, idx) => ({ id: idx })),
       },
     })
