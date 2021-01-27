@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <UiArticleList class="section__list" :listData="listData" />
+    <UiArticleList class="section__list" :listData="listItems" />
     <UiInfiniteLoading
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
@@ -47,11 +47,11 @@ export default {
     }
   },
   computed: {
-    currentTopicId() {
+    topicId() {
       return this.$route.params.id
     },
     isTopicWine() {
-      return TOPIC_IDS_WINE.includes(this.currentTopicId)
+      return TOPIC_IDS_WINE.includes(this.topicId)
     },
 
     maxListPage() {
@@ -70,11 +70,9 @@ export default {
       return this.list.page >= 1
     },
 
-    listData() {
-      return _.uniqBy(this.list.items, function identifyDuplicatedItemById(
-        listItem
-      ) {
-        return listItem.id
+    listItems() {
+      return _.uniqBy(this.list.items, function identifyDuplicateById(item) {
+        return item.id
       })
     },
   },
@@ -91,7 +89,7 @@ export default {
         (await this.$fetchList({
           maxResults: this.list.maxResults,
           sort: '-publishedDate',
-          topics: [this.currentTopicId],
+          topics: [this.topicId],
           page: this.list.page,
         })) || {}
 
@@ -122,17 +120,17 @@ export default {
     setListTotal(response = {}) {
       this.list.total = response.meta?.total ?? 0
     },
-    async infiniteHandler($state) {
+    async infiniteHandler(state) {
       try {
         await this.loadList()
 
         if (this.list.page >= this.maxListPage) {
-          $state.complete()
+          state.complete()
         } else {
-          $state.loaded()
+          state.loaded()
         }
-      } catch (e) {
-        $state.error()
+      } catch (err) {
+        state.error()
       }
     },
   },
