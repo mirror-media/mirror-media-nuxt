@@ -31,14 +31,21 @@
     </figure>
 
     <div v-if="hasBrief" class="story__brief">
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div v-if="isString(brief)" v-html="brief" />
       <UiStoryContentHandler
         v-for="paragraph in brief"
+        v-else
         :key="paragraph.id"
         :paragraph="paragraph"
       />
     </div>
 
-    <template v-for="paragraph in contents">
+    <template v-if="isString(content)">
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div class="story__external-content" v-html="content" />
+    </template>
+    <template v-for="paragraph in contents" v-else>
       <UiStoryContentHandler
         :key="paragraph.id"
         :paragraph="paragraph"
@@ -75,6 +82,11 @@
         >了解內容授權資訊</a
       >。
     </p>
+
+    <div class="magazine">
+      <div>下載鏡週刊電子雜誌</div>
+      <button type="button" @click="enterMagazinePage">立即下載</button>
+    </div>
 
     <LazyRenderer v-if="doesHaveTags" class="story__tags">
       <p class="title">相關關鍵字：</p>
@@ -167,6 +179,10 @@ export default {
     }),
 
     brief() {
+      if (this.isString(this.story.brief)) {
+        return this.story.brief
+      }
+
       const data = this.story.brief?.apiData ?? []
       return data.filter((paragraph) => paragraph.type === 'unstyled')
     },
@@ -178,7 +194,10 @@ export default {
     },
 
     apiData() {
-      return this.story.content?.apiData ?? []
+      return this.content?.apiData ?? []
+    },
+    content() {
+      return this.story.content
     },
     contents() {
       const {
@@ -267,8 +286,7 @@ export default {
       return idxes
     },
     hasBrief() {
-      const rawBrief = this.brief
-      return Array.isArray(rawBrief) && rawBrief.length > 0
+      return this.brief.length > 0
     },
 
     heroVideo() {
@@ -285,7 +303,9 @@ export default {
 
     heroImg() {
       return (
-        this.story.heroImage?.image?.resizedTargets?.mobile?.url ?? SITE_OG_IMG
+        (this.story.heroImage?.image?.resizedTargets?.mobile?.url ||
+          this.story.thumb) ??
+        SITE_OG_IMG
       )
     },
     heroCaption() {
@@ -323,12 +343,16 @@ export default {
 
   methods: {
     enterMemberSectionPage() {
-      const memberSectionPage = '/section/member/'
-
+      this.enterPageAfterLoggedIn('/section/member/')
+    },
+    enterMagazinePage() {
+      this.enterPageAfterLoggedIn('/magazine/')
+    },
+    enterPageAfterLoggedIn(pagePath) {
       if (this.isLoggedIn) {
-        window.location.href = memberSectionPage
+        window.location.href = pagePath
       } else {
-        window.location.href = `/login/?destination=${memberSectionPage}`
+        window.location.href = `/login/?destination=${pagePath}`
       }
     },
     handleSendGa(param = {}) {
@@ -337,6 +361,9 @@ export default {
         eventAction: 'click',
         ...param,
       })
+    },
+    isString(value) {
+      return typeof value === 'string'
     },
   },
 }
@@ -467,7 +494,9 @@ export {
     padding: 1em 2em;
     margin-top: 30px;
     color: #fff;
+    font-size: 19.2px; // 1.2rem
     font-weight: 700;
+    line-height: 36px;
     background-color: #000;
     &::v-deep {
       .g-story-paragraph {
@@ -607,6 +636,38 @@ export {
     &--container {
       display: flex;
       justify-content: space-around;
+    }
+  }
+}
+
+.magazine {
+  margin-top: 24px;
+  background-color: #1d9fb8;
+  padding: 16px;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: center;
+  @include media-breakpoint-up(xl) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 16px 16px 40px;
+    font-size: 20px;
+  }
+
+  button {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 2px;
+    line-height: 1.38;
+    color: #1d9fb8;
+    padding: 12px 4px;
+    margin-top: 16px;
+    font-size: 18px;
+    @include media-breakpoint-up(xl) {
+      margin-top: 0;
+      max-width: 179px;
     }
   }
 }

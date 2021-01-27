@@ -28,7 +28,7 @@ function snakeCase(text) {
 }
 
 async function fetchApiData(url, fromMembershipGateway = false, token) {
-  const urlFetch = fromMembershipGateway
+  const urlFetched = fromMembershipGateway
     ? `${baseUrl}${API_PATH_FRONTEND}/membership/v0${url}`
     : `${baseUrl}${API_PATH_FRONTEND}${url}`
   const requestConfig = fromMembershipGateway
@@ -38,26 +38,39 @@ async function fetchApiData(url, fromMembershipGateway = false, token) {
         },
       }
     : null
+
+  let res = {}
+
   try {
-    const res = await axios.get(urlFetch, requestConfig)
-    const data = camelizeKeys(fromMembershipGateway ? res.data.data : res.data)
-    const hasData =
-      (data.items && data.items.length > 0) ||
-      (data.endpoints && Object.keys(data.endpoints).length > 0) ||
-      (data.hits && data.hits.total > 0) || // properties responsed by /search api
-      (url.startsWith('/tags') && data.id)
-
-    if (hasData) {
-      return fromMembershipGateway
-        ? { ...data, tokenState: res.data.tokenState }
-        : data
-    }
-
-    throw new FetchError('Not Found', 404)
+    res = (await axios.get(urlFetched, requestConfig)) || {}
   } catch (err) {
-    const message = err.message || err
-    const code = err.code || 500
-    throw new FetchError(message, code, url)
+    const { statusText = 'Internal Server Error', status = 500 } =
+      err.response || {}
+
+    throw new FetchError({
+      message: statusText,
+      statusCode: status,
+      url: urlFetched,
+    })
+  }
+
+  const data = camelizeKeys(fromMembershipGateway ? res?.data?.data : res?.data)
+  const hasData =
+    data.items?.length > 0 ||
+    Object.keys(data.endpoints || {}).length > 0 ||
+    data.hits?.total > 0 || // properties responsed by /search api
+    (url.startsWith('/tags') && data.id)
+
+  if (hasData) {
+    return fromMembershipGateway
+      ? { ...data, tokenState: res?.data?.tokenState }
+      : data
+  } else {
+    throw new FetchError({
+      message: 'Not Found',
+      statusCode: 404,
+      url: urlFetched,
+    })
   }
 }
 
@@ -148,19 +161,26 @@ async function fetchGcsData(filename) {
 
     return camelizeKeys(data)
   } catch (err) {
-    const message = err.response?.statusText ?? 'Not Found'
-    const code = err.response?.status ?? 404
+    const { statusText = 'Internal Server Error', status = 500 } =
+      err.response || {}
 
-    throw new FetchError(message, code, apiUrl)
+    throw new FetchError({
+      message: statusText,
+      statusCode: status,
+      url: apiUrl,
+    })
   }
 }
 
 class FetchError extends Error {
-  constructor(message = 'Not Found', code = 404, url) {
-    const errorMessage = `${message}, url: ${url}`
-    super(errorMessage)
-    this.name = this.constructor.name
-    this.code = code
+  constructor({ message = 'Not Found', statusCode = 404, url }) {
+    super(`${message}; statusCode=${statusCode}, url=${url}`)
+
+    Error.captureStackTrace?.(this, FetchError)
+
+    this.name = 'FetchError'
+    this.statusCode = statusCode
+    this.url = url
   }
 }
 
@@ -201,6 +221,9 @@ export default (context, inject) => {
   inject('fetchPostsFromMembershipGateway', (params, token) =>
     fetchApiData(`/getposts${buildParams(params)}`, true, token)
   )
+  inject('fetchDrafts', (params) =>
+    fetchApiData(`/drafts${buildParams(params)}`)
+  )
 
   inject('fetchSearch', (params) =>
     fetchApiData(`/search${buildParams(params)}`)
@@ -234,28 +257,33 @@ export default (context, inject) => {
     fetchApiData(`/youtube/videos${buildYoutubeParams(params)}`)
   )
 
+  inject('fetchMagazines', (params) =>
+    fetchApiData(`/magazines${buildParams(params)}`)
+  )
+
   inject('fetchGrouped', () => fetchGcsData('grouped'))
 
   inject('fetchPopular', () => fetchGcsData('popularlist'))
 
   inject('fetchTokenState', async (token) => {
-    const urlFetch = `${baseUrl}${API_PATH_FRONTEND}/membership/v1/tokenState`
+    const urlFetched = `${baseUrl}${API_PATH_FRONTEND}/membership/v1/tokenState`
     const requestConfig = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }
     try {
-      const res = await axios.get(urlFetch, requestConfig)
+      const res = await axios.get(urlFetched, requestConfig)
       return camelizeKeys(res.data)
     } catch (err) {
-      const message = err.message || err
-      const code = err.code || 500
-      throw new FetchError(
-        message,
-        code,
-        `/${API_PATH_FRONTEND}/membership/v1/tokenState`
-      )
+      const { statusText = 'Internal Server Error', status = 500 } =
+        err.response || {}
+
+      throw new FetchError({
+        message: statusText,
+        statusCode: status,
+        url: urlFetched,
+      })
     }
   })
 }

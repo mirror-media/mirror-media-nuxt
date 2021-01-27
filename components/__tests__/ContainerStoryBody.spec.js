@@ -184,6 +184,21 @@ describe('render the proper content from props "story"', () => {
     )
   })
 
+  test('should render hero img from story.thumb for external story spec', () => {
+    const thumbUrlMock = 'https://image.jpg'
+    const wrapper = createWrapper(ContainerStoryBody, {
+      propsData: {
+        story: {
+          thumb: thumbUrlMock,
+        },
+      },
+    })
+    expect(wrapper.findComponent(UiStoryVideo).exists()).toBe(false)
+    expect(wrapper.get('figure.story__hero img').attributes().src).toBe(
+      thumbUrlMock
+    )
+  })
+
   test('should not render hero caption when no hero caption', async () => {
     const wrapper = createWrapper(ContainerStoryBody, {
       propsData: {
@@ -323,6 +338,22 @@ describe('UiShareSidebox.vue', () => {
     })
 
     expect(wrapper.findComponent(UiShareSidebox).exists()).toBe(false)
+  })
+})
+
+describe('computed "content" for external story', () => {
+  test('should have content', () => {
+    const contentMock = '<p>test content</p>'
+    const wrapper = createWrapper(ContainerStoryBody, {
+      propsData: {
+        story: {
+          content: contentMock,
+        },
+      },
+    })
+    expect(wrapper.get('.story__external-content').html()).toContain(
+      contentMock
+    )
   })
 })
 

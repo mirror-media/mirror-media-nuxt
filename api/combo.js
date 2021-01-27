@@ -12,12 +12,23 @@ module.exports = async function (req, res, next) {
       })
 
       res.send({ endpoints: { sections: response.data } })
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(
-        '[API](/combo?endpoint=sections) fetch data from static json fail: ',
-        JSON.stringify(error)
-      )
+    } catch (err) {
+      if (err.response) {
+        const { status, statusText, headers, data } = err.response
+
+        // eslint-disable-next-line no-console
+        console.error(
+          `[API Combo Error] statusCode=${status}, statusText=${statusText}, url=${URL_STATIC_COMBO_SECTIONS}, headers=${JSON.stringify(
+            headers
+          )}, data=${JSON.stringify(data)}`
+        )
+      } else {
+        // eslint-disable-next-line no-console
+        console.error(
+          `[API Combo Error] message=${err.message}, url=${URL_STATIC_COMBO_SECTIONS}`
+        )
+      }
+
       next()
     }
   } else {

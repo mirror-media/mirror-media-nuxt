@@ -1,6 +1,6 @@
 import {
   doesContainWineName,
-  checkStoryCategoryHasMemberOnly,
+  checkCategoryHasMemberOnly,
   getStoryPath,
 } from '../article'
 
@@ -15,12 +15,12 @@ test('the "doesContainWineName" function', function () {
   expect(doesContainWineName([{ name: 'test' }])).toBe(false)
 })
 
-describe('checkStoryCategoryHasMemberOnly function', function () {
+describe('checkCategoryHasMemberOnly function', function () {
   test('should return false if there is no truthy isMemberOnly property in the categories of story', function () {
     const mockStory = {
       categories: [{}],
     }
-    expect(checkStoryCategoryHasMemberOnly(mockStory)).toBe(false)
+    expect(checkCategoryHasMemberOnly(mockStory)).toBe(false)
   })
   test('should return true if there is at least one truthy isMemberOnly property in the categories of story', function () {
     const mockStory = {
@@ -31,7 +31,7 @@ describe('checkStoryCategoryHasMemberOnly function', function () {
         },
       ],
     }
-    expect(checkStoryCategoryHasMemberOnly(mockStory)).toBe(true)
+    expect(checkCategoryHasMemberOnly(mockStory)).toBe(true)
   })
 })
 

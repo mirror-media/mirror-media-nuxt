@@ -46,14 +46,14 @@ function doesContainWineName(categories = []) {
   return Boolean(categories.find((category) => category.name === 'wine'))
 }
 
-function checkStoryCategoryHasMemberOnly({ categories = [] } = {}) {
+function checkCategoryHasMemberOnly({ categories = [] } = {}) {
   return categories.some(function checkMemberProperty(category) {
     return !!category.isMemberOnly
   })
 }
 
 function getStoryPath(story) {
-  return checkStoryCategoryHasMemberOnly(story)
+  return checkCategoryHasMemberOnly(story)
     ? `/premium/${story.slug}`
     : `/story/${story.slug}`
 }
@@ -62,6 +62,6 @@ export {
   creditHtml,
   stripHtmlTag,
   doesContainWineName,
-  checkStoryCategoryHasMemberOnly,
+  checkCategoryHasMemberOnly,
   getStoryPath,
 }

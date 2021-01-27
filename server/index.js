@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const requestIp = require('request-ip')
 const consola = require('consola')
+const { createHttpTerminator } = require('http-terminator')
 const { loadNuxt, build } = require('nuxt')
 const app = express()
 
@@ -33,10 +34,21 @@ async function start() {
   app.use(nuxt.render)
 
   // Listen the server
-  app.listen(port, host)
+  const server = app.listen(port, host)
+
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
     badge: true,
   })
+
+  /**
+   * Graceful shutdown
+   * https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
+   */
+  process.on('SIGTERM', async function gracefulShutdown() {
+    const httpTerminator = createHttpTerminator({ server })
+    await httpTerminator.terminate()
+  })
 }
+
 start()

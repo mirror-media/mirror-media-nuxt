@@ -1,6 +1,6 @@
 {
   "name": "mirror-media-nuxt",
-  "version": "1.10.5",
+  "version": "1.11.0",
   "description": "My gnarly Nuxt.js project",
   "author": "mirror-media",
   "private": true,
@@ -40,6 +40,7 @@
     "firebase": "^8.0.1",
     "firebase-admin": "^9.4.1",
     "helmet": "^4.1.1",
+    "http-terminator": "^2.0.3",
     "humps": "^2.0.1",
     "intersection-observer": "^0.12.0",
     "jest-transform-graphql": "^2.1.0",

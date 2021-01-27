@@ -255,6 +255,7 @@ export default {
 
         this.addressInput = data?.member?.address
       },
+      prefetch: false,
     },
   },
   components: {

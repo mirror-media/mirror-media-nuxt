@@ -23,6 +23,7 @@ import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
 
 import { useViewport } from '~/composition/viewport.js'
+import { fireActivationEvent } from '~/utils/google-optimize.js'
 
 export default {
   components: {
@@ -51,12 +52,17 @@ export default {
         'search-keyword',
         'topic-id',
         'tag-id',
+        'externals-name',
       ]
       return listingRouteNames.includes(this.$route.name)
     },
     isSearchPage() {
       return this.$route.name === 'search-keyword'
     },
+  },
+
+  mounted() {
+    fireActivationEvent.bind(this)()
   },
 }
 </script>

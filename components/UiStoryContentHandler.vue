@@ -155,13 +155,17 @@ export default {
           case 'infobox':
             return <UiInfobox class="story__infobox" content={content} />
 
-          case 'embeddedcode':
+          case 'embeddedcode': {
+            const { embeddedCode = '', caption = '' } = content
+
             return (
-              <div
-                class="story__embedded-code"
-                domPropsInnerHTML={content.embeddedCode}
-              ></div>
+              <div class="story__embedded-code">
+                <div domPropsInnerHTML={embeddedCode}></div>
+
+                {caption && <p class="g-story-caption">{caption}</p>}
+              </div>
             )
+          }
 
           case 'audio':
             return (

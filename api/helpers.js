@@ -2,7 +2,7 @@ const axios = require('axios')
 const { API_TIMEOUT } = require('../configs/config')
 
 function createProxy(baseUrl) {
-  return async function (req, res, next) {
+  return async function (req, res) {
     const headers = Object.assign({}, req.headers)
     delete headers.host
 
@@ -19,12 +19,26 @@ function createProxy(baseUrl) {
         res.setHeader('Cache-Control', 'no-store')
       }
       res.send(response.data)
-    } catch (error) {
+    } catch (err) {
       res.setHeader('Cache-Control', 'no-store')
-      res.status(500).send(error.message)
 
-      // eslint-disable-next-line no-console
-      console.error(`[API] url: ${req.url}`, JSON.stringify(error))
+      if (err.response) {
+        const { status, statusText, headers, data } = err.response
+
+        res.status(status).send(err.message)
+
+        // eslint-disable-next-line no-console
+        console.error(
+          `[API Error] statusCode=${status}, statusText=${statusText}, url=${
+            req.url
+          }, headers=${JSON.stringify(headers)}, data=${JSON.stringify(data)}`
+        )
+      } else {
+        res.status(500).send(err.message)
+
+        // eslint-disable-next-line no-console
+        console.error(`[API Error] message=${err.message}, url=${req.url}`)
+      }
     }
   }
 }

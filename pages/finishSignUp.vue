@@ -32,6 +32,7 @@
 
 <script>
 import localforage from 'localforage'
+import loginDestination from '~/utils/login-destination'
 import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
 import userCreate from '~/apollo/mutations/userCreate.gql'
@@ -103,10 +104,8 @@ export default {
           })
         }
 
-        // redirect to page where use try to login
-        const destination = await localforage.getItem('mm-login-destination')
-        await localforage.removeItem('mm-login-destination')
-        window.location.replace(destination)
+        // redirect to page where user try to login
+        await loginDestination.redirect()
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e)
