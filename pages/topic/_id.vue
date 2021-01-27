@@ -42,7 +42,7 @@ export default {
         items: [],
         page: 0,
         maxResults: 9,
-        total: undefined,
+        total: 0,
       },
     }
   },
@@ -55,9 +55,6 @@ export default {
     },
 
     maxListPage() {
-      if (this.list.total === undefined) {
-        return undefined
-      }
       return Math.ceil(this.list.total / this.list.maxResults)
     },
 
