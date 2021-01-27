@@ -321,7 +321,10 @@ export default {
             `this ${this.$nuxt.context.req.url} should redirect to premium`
           )
 
-          this.$nuxt.context.redirect(`/premium/${this.storySlug}`)
+          const qs = require('querystring')
+          this.$nuxt.context.redirect(
+            `/premium/${this.storySlug}?${qs.stringify(this.$route.query)}`
+          )
         }
       }
     } else {
