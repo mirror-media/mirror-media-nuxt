@@ -530,6 +530,31 @@ describe('最新文章', () => {
     )
   })
 
+  test('should make the normal items unique by their ids', function () {
+    const wrapper = createWrapper(Home, {
+      data() {
+        return {
+          latestList: {
+            items: [
+              // normal items
+              { id: '1' },
+              { id: '1' },
+              { id: '2' },
+
+              // micro ad item, not the item we care about
+              { idx: 3, isMicroAd: true },
+            ],
+          },
+        }
+      },
+    })
+    expect(wrapper.vm.latestItems).toEqual([
+      { id: '1' },
+      { id: '2' },
+      { idx: 3, isMicroAd: true },
+    ])
+  })
+
   async function testDuplicate(latestItemsNum, assert) {
     expect.assertions(1)
 
@@ -994,41 +1019,6 @@ describe('getLabel method', () => {
         ],
       })
     ).toBe(categoryTitleMock)
-  })
-})
-
-describe('unique the latestItems computed property', function () {
-  test('should unique the normal items by their id', function () {
-    const wrapper = createWrapper(Home, {
-      data() {
-        return {
-          latestList: {
-            items: [{ id: '1' }, { id: '1' }, { id: '2' }],
-          },
-        }
-      },
-    })
-    expect(wrapper.vm.latestItems).toEqual([{ id: '1' }, { id: '2' }])
-  })
-
-  test('should unique the micro ad items by their idx', function () {
-    const wrapper = createWrapper(Home, {
-      data() {
-        return {
-          latestList: {
-            items: [
-              { idx: 0, isMicroAd: true },
-              { idx: 0, isMicroAd: true },
-              { idx: 1, isMicroAd: true },
-            ],
-          },
-        }
-      },
-    })
-    expect(wrapper.vm.latestItems).toEqual([
-      { idx: 0, isMicroAd: true },
-      { idx: 1, isMicroAd: true },
-    ])
   })
 })
 
