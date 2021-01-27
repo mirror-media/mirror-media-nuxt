@@ -47,6 +47,7 @@ export default {
     UiMagazineFeatured,
     UiMagazineShowcaseItem,
   },
+  middleware: ['authenticate'],
   async fetch() {
     const response = await this.$fetchMagazines({
       maxResults: 25,
