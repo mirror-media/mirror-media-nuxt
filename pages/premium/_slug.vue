@@ -59,7 +59,11 @@ export default {
         console.log(
           `this ${this.$nuxt.context.req.url} should redirect to story`
         )
-        this.$nuxt.context.redirect(`/story/${this.storySlug}`)
+
+        const qs = require('querystring')
+        this.$nuxt.context.redirect(
+          `/story/${this.storySlug}?${qs.stringify(this.$route.query)}`
+        )
       }
     } else {
       const { message, statusCode } = postResponse.reason

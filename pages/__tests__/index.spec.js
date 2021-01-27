@@ -530,6 +530,31 @@ describe('最新文章', () => {
     )
   })
 
+  test('should make the normal items unique by their ids', function () {
+    const wrapper = createWrapper(Home, {
+      data() {
+        return {
+          latestList: {
+            items: [
+              // normal items
+              { id: '1' },
+              { id: '1' },
+              { id: '2' },
+
+              // micro ad item, not the item we care about
+              { idx: 3, isMicroAd: true },
+            ],
+          },
+        }
+      },
+    })
+    expect(wrapper.vm.latestItems).toEqual([
+      { id: '1' },
+      { id: '2' },
+      { idx: 3, isMicroAd: true },
+    ])
+  })
+
   async function testDuplicate(latestItemsNum, assert) {
     expect.assertions(1)
 
@@ -578,7 +603,11 @@ describe('最新文章', () => {
     /* Act */
     sut.setData({
       latestList: {
-        items: Array(latestItemsNum).fill({}),
+        items: Array(latestItemsNum)
+          .fill({})
+
+          // fill the items with id properties because they need to be unique.
+          .map((_, idx) => ({ id: idx })),
       },
     })
     await flushPromises()
@@ -600,7 +629,11 @@ describe('最新文章', () => {
     /* Act */
     sut.setData({
       latestList: {
-        items: Array(latestItemsNum).fill({}),
+        items: Array(latestItemsNum)
+          .fill({})
+
+          // fill the items with id properties because they need to be unique.
+          .map((_, idx) => ({ id: idx })),
       },
     })
     await flushPromises()
