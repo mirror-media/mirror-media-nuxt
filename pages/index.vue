@@ -277,15 +277,14 @@ export default {
       return currentPage < maxPage
     },
     latestItems() {
-      return _.uniqBy(
-        this.latestList.items,
-        function identifyDuplicatedItemById(listItem) {
-          if (listItem.isMicroAd) {
-            return listItem.idx
-          }
-          return listItem.id
+      return _.uniqBy(this.latestList.items, function identifyDuplicateById(
+        item
+      ) {
+        if (item.isMicroAd) {
+          return `microId-${item.idx}`
         }
-      )
+        return item.id
+      })
     },
 
     isValidEventModItem() {
