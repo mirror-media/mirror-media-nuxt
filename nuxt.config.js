@@ -361,7 +361,7 @@ module.exports = {
 
     key(route) {
       // We should configure cache pages path right here.
-      const ignorePages = /^(?!\/login|\/profile|\/finishSignUp|\/cancelMembership).+/
+      const ignorePages = /^(?!\/login|\/profile|\/finishSignUp|\/cancelMembership|\/magazine).+/
       const cachePages = [ignorePages]
 
       const shouldCacheCurrentRoute = cachePages.some((pat) =>
