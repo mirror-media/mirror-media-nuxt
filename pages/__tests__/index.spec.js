@@ -582,9 +582,7 @@ describe('最新文章', () => {
           .fill({})
 
           // fill the items with id property due to we will unique it
-          .map((element) => {
-            return { id: Math.random() }
-          }),
+          .map((_, idx) => ({ id: idx })),
       },
     })
     await flushPromises()
@@ -610,9 +608,7 @@ describe('最新文章', () => {
           .fill({})
 
           // fill the items with id property due to we will unique it
-          .map((element) => {
-            return { id: Math.random() }
-          }),
+          .map((_, idx) => ({ id: idx })),
       },
     })
     await flushPromises()
