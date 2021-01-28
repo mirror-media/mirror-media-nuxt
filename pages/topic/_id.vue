@@ -34,10 +34,18 @@ export default {
     UiWineWarning,
   },
   async fetch() {
-    await this.loadListInitial()
+    await Promise.all([this.loadTopic(), this.loadListInitial()])
+    await this.loadTopicImgsInitial()
   },
   data() {
     return {
+      topic: {},
+      topicImgs: {
+        items: [],
+        page: 0,
+        maxPage: 0,
+        maxResults: 25,
+      },
       list: {
         items: [],
         page: 0,
@@ -64,7 +72,60 @@ export default {
     },
   },
 
+  mounted() {
+    this.continueLoadingTopicImgs()
+  },
+
   methods: {
+    async loadTopic() {
+      this.topic =
+        (
+          await this.$fetchTopics({
+            id: this.topicId,
+          })
+        )?.items?.[0] || {}
+    },
+
+    async loadTopicImgsInitial() {
+      if (this.topic.leading === undefined) {
+        return
+      }
+
+      const response = await this.loadTopicImgs()
+
+      this.setTopicImgsMaxPage(response)
+    },
+    async loadTopicImgs() {
+      this.topicImgs.page += 1
+
+      const response =
+        (await this.$fetchImages({
+          topics: this.topicId,
+          maxResults: this.topicImgs.maxResults,
+          page: this.topicImgs.page,
+        })) || {}
+
+      this.setTopicImgsItems(response)
+
+      return response
+    },
+    async continueLoadingTopicImgs() {
+      if (this.topicImgs.page >= this.topicImgs.maxPage) {
+        return
+      }
+
+      await this.loadTopicImgs()
+      this.continueLoadingTopicImgs()
+    },
+    setTopicImgsItems(response = {}) {
+      this.topicImgs.items.push(...(response.items || []))
+    },
+    setTopicImgsMaxPage(response = {}) {
+      const imgsTotal = response.meta?.total ?? 0
+
+      this.topicImgs.maxPage = Math.ceil(imgsTotal / this.topicImgs.maxResults)
+    },
+
     async loadListInitial() {
       const response = await this.loadList()
 
@@ -86,7 +147,7 @@ export default {
       return response
     },
     setListItems(response = {}) {
-      const items = (response.items ?? []).map(function transformContent(
+      const items = (response.items || []).map(function transformContent(
         item = {}
       ) {
         const [section = {}] = item?.sections || []
