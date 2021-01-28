@@ -78,20 +78,6 @@ describe('component methods', () => {
       },
     ])
   })
-  test('setListTotal and maxListPage computed by total', () => {
-    const totalMock = 1234
-    const responseMock = {
-      meta: {
-        total: totalMock,
-      },
-    }
-    const wrapper = createWrapper(page)
-    wrapper.vm.setListTotal(responseMock)
-    expect(wrapper.vm.list.total).toBe(totalMock)
-    expect(wrapper.vm.maxListPage).toBe(
-      Math.ceil(totalMock / wrapper.vm.list.maxResults)
-    )
-  })
 })
 
 describe('wine warning', () => {

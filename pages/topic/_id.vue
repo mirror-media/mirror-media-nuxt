@@ -1,7 +1,10 @@
 <template>
   <section class="section">
     <UiArticleList class="section__list" :listData="listItems" />
-    <UiInfiniteLoading @infinite="infiniteHandler" />
+    <UiInfiniteLoading
+      v-if="shouldMountInfiniteLoading"
+      @infinite="infiniteHandler"
+    />
 
     <UiWineWarning v-if="isTopicWine" />
   </section>
@@ -38,8 +41,8 @@ export default {
       list: {
         items: [],
         page: 0,
+        maxPage: 0,
         maxResults: 9,
-        total: 0,
       },
     }
   },
@@ -51,21 +54,21 @@ export default {
       return TOPIC_IDS_WINE.includes(this.topicId)
     },
 
-    maxListPage() {
-      return Math.ceil(this.list.total / this.list.maxResults)
-    },
-
     listItems() {
       return _.uniqBy(this.list.items, function identifyDuplicateById(item) {
         return item.id
       })
     },
+    shouldMountInfiniteLoading() {
+      return this.list.maxPage >= 2
+    },
   },
+
   methods: {
     async loadListInitial() {
       const response = await this.loadList()
 
-      this.setListTotal(response)
+      this.setListMaxPage(response)
     },
     async loadList() {
       this.list.page += 1
@@ -102,14 +105,16 @@ export default {
 
       this.list.items.push(...items)
     },
-    setListTotal(response = {}) {
-      this.list.total = response.meta?.total ?? 0
+    setListMaxPage(response = {}) {
+      const listTotal = response.meta?.total ?? 0
+
+      this.list.maxPage = Math.ceil(listTotal / this.list.maxResults)
     },
     async infiniteHandler(state) {
       try {
         await this.loadList()
 
-        if (this.list.page >= this.maxListPage) {
+        if (this.list.page >= this.list.maxPage) {
           state.complete()
         } else {
           state.loaded()
