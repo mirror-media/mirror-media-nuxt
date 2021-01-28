@@ -1,10 +1,7 @@
 <template>
   <section class="section">
     <UiArticleList class="section__list" :listData="listItems" />
-    <UiInfiniteLoading
-      v-if="shouldMountInfiniteLoading"
-      @infinite="infiniteHandler"
-    />
+    <UiInfiniteLoading @infinite="infiniteHandler" />
 
     <UiWineWarning v-if="isTopicWine" />
   </section>
@@ -56,15 +53,6 @@ export default {
 
     maxListPage() {
       return Math.ceil(this.list.total / this.list.maxResults)
-    },
-
-    /**
-     * Constraint which prevent loadmore unexpectly
-     * if we navigating on client-side
-     * due to the list data of the first page has not been loaded.
-     */
-    shouldMountInfiniteLoading() {
-      return this.list.page >= 1
     },
 
     listItems() {
