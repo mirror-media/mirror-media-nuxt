@@ -26,7 +26,7 @@
   - features: add videohub section
 2020/09/18
   - release version: master_kwhsiung_706 1.1.9
-  - features: 修正 listing 頁在手機版廣告無法出現與無法 loadmore 問題, 新增文章頁功能：credit, 修改、使用文章頁共用樣式, 修正文章頁樣式、文章缺少內容造成頁面錯誤
+  - features: debug Ad showing on listing pages, add article features (credit/layout)
 2020/11/12
   - release version: master_kwhsiung_789 1.1.10
   - features: debug listing page repeated articles
@@ -63,3 +63,6 @@
 2021/01/18
   - release version: master_hsuehyungtan_1121
   - features: index supports header-two type on article page with wide style, and revise /section/foodtravel
+2021/01/28
+  - release version: master_kwhsiung_1168
+  - features: add /magazine page, debug login issue on inapp browser, add google optimizer for A/B testing, and debug repeated posts on home page. 
