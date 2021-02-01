@@ -112,7 +112,7 @@ import loginDestination from '~/utils/login-destination'
 
 export default {
   apollo: {
-    $client: 'saleorClient',
+    $client: 'userClient',
   },
   components: {
     ContainerMembershipLoginWithGoogle,

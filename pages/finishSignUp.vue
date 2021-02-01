@@ -45,7 +45,7 @@ import userCreate from '~/apollo/mutations/userCreate.gql'
  */
 export default {
   apollo: {
-    $client: 'saleorClient',
+    $client: 'userClient',
   },
   components: {
     UiMembershipEmailInput,
