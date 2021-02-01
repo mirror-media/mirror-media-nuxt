@@ -127,6 +127,7 @@ describe('email validations', function () {
               userUid: '',
             },
           },
+          dispatch: jest.fn(),
         },
         $apollo: {
           mutate: jest.fn(() => Promise.resolve()),

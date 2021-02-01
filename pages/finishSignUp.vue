@@ -95,6 +95,18 @@ export default {
         await localforage.removeItem('emailForSignIn')
 
         if (result.user !== null) {
+          /*
+           * different to federated login like Facebook and Google using $fire.auth.getRedirectResult()
+           * $fire.auth.signInWithEmailLink is verification with email, not log in with email
+           * so onAuthStateChanged will not trigger automatically, we need to dispatch it manually
+           * to ensure that user info is store in vuex
+           * maybe this is a info: https://stackoverflow.com/questions/54591187/onauthstatechanged-doesnt-get-called-when-email-is-verified-in-flutter
+           */
+          await this.$store.dispatch(
+            'membership/ON_AUTH_STATE_CHANGED_ACTION',
+            { authUser: result.user }
+          )
+
           await this.$apollo.mutate({
             mutation: userCreate,
             variables: {
