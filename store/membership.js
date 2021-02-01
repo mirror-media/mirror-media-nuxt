@@ -26,6 +26,13 @@ export const mutations = {
   },
 }
 
+export const actions = {
+  async ON_AUTH_STATE_CHANGED_ACTION({ commit }, { authUser }) {
+    const token = authUser && (await authUser.getIdToken())
+    commit('ON_AUTH_STATE_CHANGED_MUTATION', { authUser, token })
+  },
+}
+
 export const getters = {
   isLoggedIn(state) {
     return !!state.userEmail

@@ -343,8 +343,8 @@ module.exports = {
               ],
             },
             initialize: {
-              onAuthStateChangedMutation:
-                'membership/ON_AUTH_STATE_CHANGED_MUTATION',
+              onAuthStateChangedAction:
+                'membership/ON_AUTH_STATE_CHANGED_ACTION',
             },
           },
         },
