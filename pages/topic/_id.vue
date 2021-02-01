@@ -1,6 +1,8 @@
 <template>
-  <section class="section">
-    <UiArticleList class="section__list" :listData="listItems" />
+  <section class="topic-id">
+    <UiTopicCover :type="coverType" :imgItems="topicImgs.items" />
+
+    <UiArticleList class="topic-id__list" :listData="listItems" />
     <UiInfiniteLoading
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
@@ -12,6 +14,7 @@
 
 <script>
 import _ from 'lodash'
+import UiTopicCover from '~/components/topic/UiTopicCover.vue'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
@@ -29,6 +32,7 @@ const TOPIC_IDS_WINE = [
 export default {
   name: 'Topic',
   components: {
+    UiTopicCover,
     UiArticleList,
     UiInfiniteLoading,
     UiWineWarning,
@@ -62,6 +66,10 @@ export default {
       return TOPIC_IDS_WINE.includes(this.topicId)
     },
 
+    coverType() {
+      return this.topic.leading
+    },
+
     listItems() {
       return _.uniqBy(this.list.items, function identifyDuplicateById(item) {
         return item.id
@@ -87,7 +95,7 @@ export default {
     },
 
     async loadTopicImgsInitial() {
-      if (this.topic.leading === undefined) {
+      if (this.coverType === undefined) {
         return
       }
 
@@ -118,7 +126,24 @@ export default {
       this.continueLoadingTopicImgs()
     },
     setTopicImgsItems(response = {}) {
-      this.topicImgs.items.push(...(response.items || []))
+      const items = (response.items || []).map(function transformContent(
+        item = {}
+      ) {
+        const { id, keywords = '', image = {}, description } = item || {}
+
+        return {
+          id,
+          href: keywords.startsWith('@-') && keywords.slice(2),
+          srcs: {
+            mobile: image?.resizedTargets?.mobile?.url,
+            tablet: image?.resizedTargets?.tablet?.url,
+            desktop: image?.resizedTargets?.desktop?.url,
+          },
+          alt: description,
+        }
+      })
+
+      this.topicImgs.items.push(...items)
     },
     setTopicImgsMaxPage(response = {}) {
       const imgsTotal = response.meta?.total ?? 0
@@ -191,20 +216,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.section {
+.topic-id {
   background-color: #f2f2f2;
-  padding: 36px 0;
-  @include media-breakpoint-up(md) {
-    padding: 36px 25px 72px 25px;
-  }
-  @include media-breakpoint-up(xl) {
-    max-width: 1024px;
-    padding: 0;
-    margin: auto;
-  }
+
   &__list {
+    padding: 0 0 36px 0;
     @include media-breakpoint-up(md) {
-      margin: 8px 0 0 0;
+      padding: 0 25px 72px 25px;
+    }
+    @include media-breakpoint-up(xl) {
+      max-width: 1024px;
+      padding: 0;
+      margin: 0 auto;
     }
   }
 }

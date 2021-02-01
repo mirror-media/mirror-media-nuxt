@@ -300,7 +300,6 @@ export default {
 
 .swiper-pagination {
   line-height: 1.15;
-  bottom: 10px;
 
   &::v-deep {
     .swiper-pagination-bullet {
