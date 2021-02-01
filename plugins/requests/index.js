@@ -58,7 +58,7 @@ async function fetchApiData(url, fromMembershipGateway = false, token) {
   const hasData =
     data.items?.length > 0 ||
     Object.keys(data.endpoints || {}).length > 0 ||
-    data.hits?.total > 0 || // properties responsed by /search api
+    data.hits?.total?.value > 0 || // properties response by /search api
     (url.startsWith('/tags') && data.id)
 
   if (hasData) {
