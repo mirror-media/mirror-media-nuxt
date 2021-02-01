@@ -60,21 +60,24 @@ export default {
           )
         })
 
+        const btnPrevClass = 'btn-prev'
+        const btnNextClass = 'btn-next'
+
         return (
           <ClientOnly>
             <UiSlideshow
               class="slideshow"
               options={{
                 navigation: {
-                  nextEl: '.btn-next',
-                  prevEl: '.btn-prev',
+                  prevEl: `.${btnPrevClass}`,
+                  nextEl: `.${btnNextClass}`,
                 },
               }}
             >
               <template slot="default">{Slides}</template>
 
-              <UiSlideshowButtonPrev slot="btnPrev" class="btn-prev" />
-              <UiSlideshowButtonNext slot="btnNext" class="btn-next" />
+              <UiSlideshowButtonPrev slot="btnPrev" class={btnPrevClass} />
+              <UiSlideshowButtonNext slot="btnNext" class={btnNextClass} />
             </UiSlideshow>
           </ClientOnly>
         )
