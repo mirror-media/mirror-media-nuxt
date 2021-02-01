@@ -73,12 +73,6 @@ test('pass articles to UiArticleListAside', () => {
   expect(sut.getComponent(UiArticleListAside).props().items).toBe(articlesMock)
 })
 
-describe('slideshow', () => {
-  test.todo(
-    "initialize the slideshow when screens of users' devices are desktop width"
-  )
-})
-
 describe('GA event', () => {
   test('emit a sendGa when users click an article', () => {
     /* Arrange */
