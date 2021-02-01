@@ -56,12 +56,14 @@
               </picture>
             </template>
 
-            <div slot="btnPrev" :class="slideshow.btnPrevClass">
-              <SvgArrowPrev class="arrow" />
-            </div>
-            <div slot="btnNext" :class="slideshow.btnNextClass">
-              <SvgArrowNext class="arrow" />
-            </div>
+            <UiSlideshowButtonPrev
+              slot="btnPrev"
+              :class="slideshow.btnPrevClass"
+            />
+            <UiSlideshowButtonNext
+              slot="btnNext"
+              :class="slideshow.btnNextClass"
+            />
 
             <div slot="pagination" :class="slideshow.paginationClass" />
           </UiSlideshow>
@@ -73,18 +75,16 @@
 
 <script>
 import UiSlideshow from '~/components/UiSlideshow.vue'
-
-import SvgArrowPrev from '~/assets/arrow-prev-slideshow.svg?inline'
-import SvgArrowNext from '~/assets/arrow-next-slideshow.svg?inline'
+import UiSlideshowButtonPrev from '~/components/slideshow/UiSlideshowButtonPrev.vue'
+import UiSlideshowButtonNext from '~/components/slideshow/UiSlideshowButtonNext.vue'
 
 export default {
   name: 'UiTheCover',
 
   components: {
     UiSlideshow,
-
-    SvgArrowPrev,
-    SvgArrowNext,
+    UiSlideshowButtonPrev,
+    UiSlideshowButtonNext,
   },
 
   props: {
@@ -176,51 +176,6 @@ export default {
         width: 100%;
         height: 100%;
         object-fit: contain;
-      }
-
-      .btn-prev,
-      .btn-next {
-        width: 30px;
-        height: 40px;
-        background-color: rgba(245, 245, 245, 0.25);
-        border-radius: 4px;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 9;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        outline: none;
-
-        &:hover {
-          background-color: #084f77;
-
-          .arrow {
-            fill: #fff;
-          }
-        }
-      }
-
-      .btn-prev {
-        left: 5px;
-
-        .arrow {
-          transform: translateX(-1px);
-        }
-      }
-
-      .btn-next {
-        right: 5px;
-
-        .arrow {
-          transform: translateX(1px);
-        }
-      }
-
-      .arrow {
-        width: 15px;
-        height: auto;
       }
 
       .swiper-pagination {
