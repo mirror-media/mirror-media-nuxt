@@ -436,10 +436,6 @@ module.exports = {
         browserHttpEndpoint: '/api/v2/membership/v1/graphql',
       },
       userClient: '~/apollo-config-user-client.js',
-      saleorClient: {
-        httpEndpoint: 'http://localhost:3000/api/v2/saleor/graphql/',
-        browserHttpEndpoint: '/api/v2/saleor/graphql/',
-      },
     },
   },
 
