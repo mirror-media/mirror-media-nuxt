@@ -1,7 +1,11 @@
 <template>
   <section class="section">
     <client-only>
-      <ContainerGptAd :pageKey="currentSectionId" adKey="HD" />
+      <ContainerGptAd
+        class="section__ad"
+        :pageKey="currentSectionId"
+        adKey="HD"
+      />
     </client-only>
     <UiArticleList
       class="section__list"
@@ -14,7 +18,11 @@
       </template>
     </UiArticleList>
     <client-only>
-      <ContainerGptAd :pageKey="currentSectionId" adKey="FT" />
+      <ContainerGptAd
+        class="section__ad"
+        :pageKey="currentSectionId"
+        adKey="FT"
+      />
     </client-only>
     <UiArticleList
       v-show="showListDataLoadmorePage"
