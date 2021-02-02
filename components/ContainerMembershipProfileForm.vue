@@ -526,14 +526,14 @@ export default {
 
       return {
         firebaseId: this.$store.state.membership.userUid,
-        name: this.name,
-        gender: getGender(),
-        birthday: getBirthday(),
-        phone: this.phone,
-        country: getAddress().country,
-        city: getAddress().city,
-        district: getAddress().district,
-        address: getAddress().address,
+        name: this.name || '',
+        gender: getGender() || '',
+        birthday: getBirthday() || '',
+        phone: this.phone || '',
+        country: getAddress().country || '',
+        city: getAddress().city || '',
+        district: getAddress().district || '',
+        address: getAddress().address || '',
       }
     },
     async handleSubmit() {
