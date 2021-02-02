@@ -47,6 +47,7 @@ export default {
       const listingRouteNames = [
         'section-name',
         'category-name',
+        'category-marketing',
         'author-id',
         'section-topic',
         'search-keyword',
