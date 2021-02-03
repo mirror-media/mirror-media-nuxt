@@ -2,10 +2,7 @@
   <section class="section">
     <h1 class="section__title" v-text="currentKeyword" />
     <UiArticleList class="section__list" :listData="listData" />
-    <UiInfiniteLoading
-      v-if="shouldMountInfiniteLoading"
-      @infinite="infiniteHandler"
-    />
+    <UiInfiniteLoading @infinite="infiniteHandler" />
   </section>
 </template>
 
@@ -59,15 +56,6 @@ export default {
         return undefined
       }
       return Math.ceil(this.listDataTotal / this.listDataMaxResults)
-    },
-
-    /**
-     * Constraint which prevent loadmore unexpectedly
-     * if we navigating on client-side
-     * due to the list data of the first page has not been loaded.
-     */
-    shouldMountInfiniteLoading() {
-      return this.listDataCurrentPage >= 1
     },
 
     listData() {
