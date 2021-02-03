@@ -27,7 +27,7 @@
     "@google-cloud/logging": "^8.0.6",
     "@mirror-media/nuxt-ssr-cache": "^1.8.0",
     "@nuxtjs/apollo": "^4.0.1-rc.5",
-    "@nuxtjs/composition-api": "^0.17.0",
+    "@nuxtjs/composition-api": "^0.19.0",
     "@nuxtjs/firebase": "^7.1.0",
     "@nuxtjs/pwa": "^3.0.2",
     "axios": "^0.21.0",

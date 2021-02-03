@@ -3115,14 +3115,14 @@
     vue-cli-plugin-apollo "^0.22.2"
     webpack-node-externals "^2.5.2"
 
-"@nuxtjs/composition-api@^0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/composition-api/-/composition-api-0.17.0.tgz#533402f82dc860cbed17d9612ac8b41333789b26"
-  integrity sha512-hc/1amRpu1sr4/0jkb4T0N37YgvM00jcBTQeur5ymdUd52eJExKiOu+EwbWvTPRFz8IU29x6PhdLZ5LcJT6FgA==
+"@nuxtjs/composition-api@^0.19.0":
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/composition-api/-/composition-api-0.19.0.tgz#06ed97e70e4c5522bad151aa1890d85afb252b49"
+  integrity sha512-eej0MNm2KE4BSzAq+iZ2NrL8abDBfZoFrbBHV/GxuOVOQce2aKOEVZ3HB7UgEvdJywKmhM1/RajkGNG+YvT4CA==
   dependencies:
-    "@vue/composition-api" "1.0.0-beta.21"
+    "@vue/composition-api" "1.0.0-rc.1"
     defu "^3.2.2"
-    normalize-path "^3.0.0"
+    upath "^2.0.1"
 
 "@nuxtjs/eslint-config@^4.0.0":
   version "4.0.0"
@@ -4003,12 +4003,12 @@
   optionalDependencies:
     prettier "^1.18.2"
 
-"@vue/composition-api@1.0.0-beta.21":
-  version "1.0.0-beta.21"
-  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-beta.21.tgz#d5a3c68afc8b569dfc3eccd69998388bb7f6a16c"
-  integrity sha512-tgbvDpLvKQ1GrII424wsoyzPCsG0oTFf38emMq495SfLY7RmUqhVIl81pvnC5489PPrCxDkbauJHJrhlcXfbTQ==
+"@vue/composition-api@1.0.0-rc.1":
+  version "1.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-rc.1.tgz#d5286bbaffcd1987e56d5e3a9f26bfb6023e7c41"
+  integrity sha512-6I5LkfA+VvVOLZufRugzQ5sWKQH81/Cr9gRLidDSeUmjRPolEEWgG4MAnWtBR5zgP5qbRMwZJ4IEYtKhnadMQQ==
   dependencies:
-    tslib "^2.0.1"
+    tslib "^2.0.3"
 
 "@vue/test-utils@^1.1.0":
   version "1.1.2"
@@ -15848,10 +15848,15 @@ tslib@^1.8.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.11.1.tgz#eb15d128827fbee2841549e171f45ed338ac7e35"
   integrity sha512-aZW88SY8kQbU7gpV19lN24LtXh/yD4ZZg6qieAJDDg+YBsJcSmLGK9QpnUjAKVG/xefmvJGd1WUmfpT/g6AJGA==
 
-tslib@^2.0.0, tslib@^2.0.1, tslib@^2.0.3, tslib@~2.0.1:
+tslib@^2.0.0, tslib@^2.0.3, tslib@~2.0.1:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.3.tgz#8e0741ac45fc0c226e58a17bfc3e64b9bc6ca61c"
   integrity sha512-uZtkfKblCEQtZKBF6EBXVZeQNl82yqtDQdv+eck8u7tdPxjLu2/lp5/uPW+um2tpuxINHWy3GhiccY7QgEaVHQ==
+
+tslib@^2.0.1:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
+  integrity sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
 
 tsutils@^3.17.1:
   version "3.17.1"
