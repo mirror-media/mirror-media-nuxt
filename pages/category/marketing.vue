@@ -61,6 +61,7 @@ import {
   CATEGORY_ID_MARKETING,
 } from '~/constants/index.js'
 import { stripHtmlTags, getStoryPath } from '~/utils/article.js'
+import styleVariables from '~/scss/_variables.scss'
 
 export default {
   name: 'Category',
@@ -92,9 +93,6 @@ export default {
     },
     sectionThemeColor() {
       return '#bcbcbc'
-    },
-    sectionTitle() {
-      return this.categoryTitle
     },
 
     categoryTitle() {
@@ -143,12 +141,21 @@ export default {
   },
   methods: {
     mapDataToComponentProps(item) {
+      item = item || {}
+
+      const categories = item.categories?.filter(
+        (category) => category && category?.title !== this.categoryTitle
+      )
+      const [section = {}] = item.sections || []
+
       return {
         id: item.id,
         href: getStoryPath(item),
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
-        imgText: this.sectionTitle,
-        imgTextBackgroundColor: this.sectionThemeColor,
+        imgText: section?.title ?? categories?.[0]?.title ?? this.categoryTitle,
+        imgTextBackgroundColor:
+          styleVariables[`section-color-${section?.name}`] ||
+          this.sectionThemeColor,
         infoTitle: item.title ?? '',
         infoDescription: stripHtmlTags(item.brief?.html ?? ''),
       }

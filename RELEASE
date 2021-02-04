@@ -72,3 +72,7 @@
 2021/02/01
   - release version: master_hsuehyungtan_1179
   - features: debug search feed, and adjust comscore tracking code
+2021/02/04
+  - release version: master_hsuehyungtan_1185 1.2.1
+  - features: chanege create/read/update member from direct requesting form Saleor to gateway, debug /category/marketing, and debug FT ads on listing page
+  
