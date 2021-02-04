@@ -2,13 +2,13 @@
 import UiAnnotation from './UiAnnotation.vue'
 import UiInfobox from '~/components/UiInfobox.vue'
 import UiSlideshow from '~/components/UiSlideshow.vue'
+import UiSlideshowButtonPrev from '~/components/slideshow/UiSlideshowButtonPrev.vue'
+import UiSlideshowButtonNext from '~/components/slideshow/UiSlideshowButtonNext.vue'
 import UiStoryVideo from '~/components/UiStoryVideo.vue'
 import ContainerAudioPlayer from '~/components/audio-player/ContainerAudioPlayer.vue'
 import ContainerParagraphWithAnnotation from '~/components/ContainerParagraphWithAnnotation.vue'
 
 import SvgQuotationMark from '~/assets/quotation-mark-culture-post.svg?inline'
-import SvgArrowPrev from '~/assets/arrow-prev-slideshow.svg?inline'
-import SvgArrowNext from '~/assets/arrow-next-slideshow.svg?inline'
 
 export default {
   name: 'ContentHandler',
@@ -60,25 +60,24 @@ export default {
           )
         })
 
+        const btnPrevClass = 'btn-prev'
+        const btnNextClass = 'btn-next'
+
         return (
           <ClientOnly>
             <UiSlideshow
               class="slideshow"
               options={{
                 navigation: {
-                  nextEl: '.btn-next',
-                  prevEl: '.btn-prev',
+                  prevEl: `.${btnPrevClass}`,
+                  nextEl: `.${btnNextClass}`,
                 },
               }}
             >
               <template slot="default">{Slides}</template>
 
-              <div slot="btnPrev" class="btn-prev">
-                <SvgArrowPrev class="arrow" />
-              </div>
-              <div slot="btnNext" class="btn-next">
-                <SvgArrowNext class="arrow" />
-              </div>
+              <UiSlideshowButtonPrev slot="btnPrev" class={btnPrevClass} />
+              <UiSlideshowButtonNext slot="btnNext" class={btnNextClass} />
             </UiSlideshow>
           </ClientOnly>
         )
@@ -396,66 +395,34 @@ $quote-color: #4a90e2;
 
     .btn-prev,
     .btn-next {
-      width: 30px;
-      height: 40px;
-      background-color: rgba(245, 245, 245, 0.25);
-      border-radius: 4px;
-      position: absolute;
-      z-index: 9;
-      top: 50%;
-      transform: translateY(-50%);
-      // 為了盡可能垂直置中，減去 figcaption 最小高度的一半
-      // 3.4em / 2
+      /**
+       * 為了盡可能垂直置中，減去 figcaption 最小高度的一半
+       * 3.4em / 2
+       */
       margin-top: -1.7em;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      outline: none;
       @include media-breakpoint-up(lg) {
         width: 60px;
         height: 80px;
-        // 為了盡可能垂直置中，減去 figcaption 最小高度的一半
-        // 1.7em / 2
+
+        /**
+         * 為了盡可能垂直置中，減去 figcaption 最小高度的一半
+         * 1.7em / 2
+         */
         margin-top: -0.85em;
-      }
 
-      &:hover {
-        background-color: #084f77;
-
-        .arrow {
-          fill: #fff;
+        &::v-deep .arrow {
+          width: 28px;
         }
       }
     }
 
-    .btn-prev {
-      left: 5px;
-      @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(lg) {
+      .btn-prev {
         left: 0;
       }
 
-      .arrow {
-        transform: translateX(-1px);
-      }
-    }
-
-    .btn-next {
-      right: 5px;
-      @include media-breakpoint-up(lg) {
+      .btn-next {
         right: 0;
-      }
-
-      .arrow {
-        transform: translateX(1px);
-      }
-    }
-
-    .arrow {
-      width: 15px;
-      height: auto;
-      @include media-breakpoint-up(lg) {
-        width: 28px;
       }
     }
   }

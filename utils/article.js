@@ -37,8 +37,7 @@ function creditHtml({
   }
 }
 
-// TODO: 讓其它地方共用
-function stripHtmlTag(html = '') {
+function stripHtmlTags(html = '') {
   return html.replace(/<\/?[^>]+(>|$)/g, '')
 }
 
@@ -52,7 +51,7 @@ function checkCategoryHasMemberOnly({ categories = [] } = {}) {
   })
 }
 
-function getStoryPath(story) {
+function getStoryPath(story = {}) {
   return checkCategoryHasMemberOnly(story)
     ? `/premium/${story.slug}`
     : `/story/${story.slug}`
@@ -60,7 +59,7 @@ function getStoryPath(story) {
 
 export {
   creditHtml,
-  stripHtmlTag,
+  stripHtmlTags,
   doesContainWineName,
   checkCategoryHasMemberOnly,
   getStoryPath,

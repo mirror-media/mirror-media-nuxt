@@ -3,7 +3,6 @@ import { directive as swiper } from 'vue-awesome-swiper'
 
 import UiEditorChoices from '../UiEditorChoices.vue'
 import UiArticleListAside from '../UiArticleListAside.vue'
-import UiSlideshow from '../UiSlideshow.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper.js'
 
@@ -72,31 +71,6 @@ test('pass articles to UiArticleListAside', () => {
 
   /* Assert */
   expect(sut.getComponent(UiArticleListAside).props().items).toBe(articlesMock)
-})
-
-describe('slideshow', () => {
-  test('the class name of the btnPrev slot is equal to options.navigation.prevEl, the class name of the btnNext slot is equal to options.navigation.nextEl, and the class name of the pagination slot is equal to options.pagination.el', () => {
-    /* Arrange */
-    const localVue = createLocalVue()
-    localVue.directive('swiper', swiper)
-
-    const sut = createWrapper(UiEditorChoices, {
-      localVue,
-    })
-
-    /* Assert */
-    const { navigation, pagination } = sut
-      .getComponent(UiSlideshow)
-      .props().options
-
-    expect(sut.find(navigation.prevEl).exists()).toBe(true)
-    expect(sut.find(navigation.nextEl).exists()).toBe(true)
-    expect(sut.find(pagination.el).exists()).toBe(true)
-  })
-
-  test.todo(
-    "initialize the slideshow when screens of users' devices are desktop width"
-  )
 })
 
 describe('GA event', () => {

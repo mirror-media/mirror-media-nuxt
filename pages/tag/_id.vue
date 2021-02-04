@@ -54,7 +54,7 @@ import styleVariables from '~/scss/_variables.scss'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
-import { getStoryPath } from '~/utils/article'
+import { stripHtmlTags, getStoryPath } from '~/utils/article'
 
 export default {
   name: 'Tag',
@@ -136,9 +136,6 @@ export default {
     },
   },
   methods: {
-    stripHtmlTag(html = '') {
-      return html.replace(/<\/?[^>]+(>|$)/g, '')
-    },
     mapDataToComponentProps(item) {
       const section = (item.sections ?? [])[0]
       return {
@@ -148,7 +145,7 @@ export default {
         imgText: section.title ?? '',
         imgTextBackgroundColor: styleVariables[`section-color-${section.name}`],
         infoTitle: item.title ?? '',
-        infoDescription: this.stripHtmlTag(item.brief?.html ?? ''),
+        infoDescription: stripHtmlTags(item.brief?.html ?? ''),
       }
     },
     async fetchTagListing({ page = 1 } = {}) {

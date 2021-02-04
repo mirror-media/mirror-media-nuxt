@@ -53,6 +53,7 @@ import MicroAd from '~/components/MicroAd.vue'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
+import { stripHtmlTags } from '~/utils/article.js'
 
 export default {
   name: 'SectionTopic',
@@ -126,9 +127,6 @@ export default {
     },
   },
   methods: {
-    stripHtmlTag(html = '') {
-      return html.replace(/<\/?[^>]+(>|$)/g, '')
-    },
     mapDataToComponentProps(item) {
       return {
         id: item.id,
@@ -138,7 +136,7 @@ export default {
         imgTextBackgroundColor: undefined,
         infoTitle: item.name ?? '',
         infoDescription: item.brief?.html
-          ? this.stripHtmlTag(item.brief?.html)
+          ? stripHtmlTags(item.brief?.html)
           : item.ogDescription,
       }
     },

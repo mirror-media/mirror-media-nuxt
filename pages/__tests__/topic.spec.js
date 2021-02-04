@@ -1,3 +1,7 @@
+import { mount, createLocalVue } from '@vue/test-utils'
+import { directive as swiper } from 'vue-awesome-swiper'
+import flushPromises from 'flush-promises'
+
 import page from '../topic/_id.vue'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
@@ -5,6 +9,13 @@ import UiWineWarning from '~/components/UiWineWarning.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
+  data() {
+    return {
+      topic: {
+        leading: 'slideshow',
+      },
+    }
+  },
   mocks: {
     $route: {
       params: {
@@ -24,21 +35,69 @@ const createWrapper = createWrapperHelper({
   stubs: ['client-only'],
 })
 
-describe('stripHtmlTag method', () => {
-  test('should strip html tags successfully', () => {
-    const wrapper = createWrapper(page)
-    const html = '<div><script></script><p>foo</p><p>bar</p><p>123</p></div>'
-    expect(wrapper.vm.stripHtmlTag(html)).toBe('foobar123')
+test('display a slideshow', async function () {
+  expect.assertions(5)
+
+  /* Arrange */
+  const localVue = createLocalVue()
+  localVue.directive('swiper', swiper)
+
+  const sut = mount(page, {
+    localVue,
+    data() {
+      return {
+        topic: {
+          leading: 'slideshow',
+        },
+      }
+    },
+    mocks: {
+      $route: {
+        params: { id: 'testid' },
+      },
+    },
+    stubs: ['SvgArrowPrev', 'SvgArrowNext'],
   })
-  test('should return the same result if there is not html tags', () => {
-    const wrapper = createWrapper(page)
-    const html = 'foobar123'
-    expect(wrapper.vm.stripHtmlTag(html)).toBe('foobar123')
+
+  /* Act */
+  const imgItemMock = {
+    id: 'test-id',
+    image: {
+      resizedTargets: {
+        mobile: { url: 'test-img-mobile.png' },
+        tablet: { url: 'test-img-tablet.png' },
+        desktop: { url: 'test-img-desktop.png' },
+      },
+    },
+    description: 'test-description',
+    keywords: '@-/test-href',
+  }
+  sut.vm.setTopicImgsItems({
+    items: [imgItemMock],
   })
+  await flushPromises()
+
+  /* Assert */
+  const slideshow = sut.get('[data-testid="slideshow"]')
+  const pictureSources = slideshow.findAll('source')
+  const slideImg = slideshow.get('img')
+  const {
+    keywords,
+    image: {
+      resizedTargets: { mobile, tablet, desktop },
+    },
+    description,
+  } = imgItemMock
+
+  expect(slideshow.get('a').attributes().href).toBe(keywords.slice(2))
+  expect(pictureSources.at(0).attributes().srcset).toBe(desktop.url)
+  expect(pictureSources.at(1).attributes().srcset).toBe(tablet.url)
+  expect(slideImg.attributes().src).toBe(mobile.url)
+  expect(slideImg.attributes().alt).toBe(description)
 })
 
 describe('component methods', () => {
-  test('setListData', async () => {
+  test('setListItems', async () => {
     expect.assertions(1)
 
     const idMock = 'id'
@@ -76,7 +135,7 @@ describe('component methods', () => {
     }
 
     const wrapper = createWrapper(page)
-    wrapper.vm.setListData(responseMock)
+    wrapper.vm.setListItems(responseMock)
     await wrapper.vm.$nextTick()
     const list = wrapper.findComponent(UiArticleList)
     expect(list.props().listData).toEqual([
@@ -90,20 +149,6 @@ describe('component methods', () => {
         infoDescription: briefMock,
       },
     ])
-  })
-  test('setListDataTotal and listDataPageLimit computed by total', () => {
-    const totalMock = 1234
-    const responseMock = {
-      meta: {
-        total: totalMock,
-      },
-    }
-    const wrapper = createWrapper(page)
-    wrapper.vm.setListDataTotal(responseMock)
-    expect(wrapper.vm.listDataTotal).toBe(totalMock)
-    expect(wrapper.vm.listDataPageLimit).toBe(
-      Math.ceil(totalMock / wrapper.vm.listDataMaxResults)
-    )
   })
 })
 

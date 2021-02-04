@@ -150,7 +150,7 @@ import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
 import { isTruthy } from '~/utils/index.js'
-import { stripHtmlTag } from '~/utils/article.js'
+import { stripHtmlTags } from '~/utils/article.js'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
 
 const CATEGORY_ID_POLITICAL = '5979ac0de531830d00e330a7' // 政治
@@ -482,7 +482,9 @@ export default {
       return {
         id,
         title,
-        description: _.isObject(brief) ? stripHtmlTag(brief.html ?? '') : brief,
+        description: _.isObject(brief)
+          ? stripHtmlTags(brief.html ?? '')
+          : brief,
         href: getHref(item),
         imgSrc: getImg(item),
         label: getLabel(item),

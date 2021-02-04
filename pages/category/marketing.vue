@@ -1,14 +1,15 @@
 <template>
-  <section class="section">
-    <client-only>
+  <section class="category">
+    <ClientOnly>
       <GptAd
-        class="section__ad"
+        class="category__ad"
         :adUnit="adTop.adUnit"
         :adSize="adTop.adSize"
       />
-    </client-only>
+    </ClientOnly>
+
     <UiArticleList
-      class="section__list"
+      class="category__list"
       :listTitle="categoryTitle"
       :listTitleColor="sectionThemeColor"
       :listData="listDataFirstPage"
@@ -17,51 +18,49 @@
         <MicroAd :key="unit.name" :unitId="unit.id" />
       </template>
     </UiArticleList>
-    <client-only>
+
+    <ClientOnly>
       <GptAd
-        class="section__ad"
+        class="category__ad"
         :adUnit="adBottom.adUnit"
         :adSize="adBottom.adSize"
       />
-    </client-only>
+    </ClientOnly>
+
     <UiArticleList
       v-show="showListDataLoadmorePage"
-      class="section__list"
+      class="category__list"
       :listData="listDataLoadmorePage"
     />
-    <UiInfiniteLoading
-      v-if="shouldMountInfiniteLoading"
-      @infinite="infiniteHandler"
-    />
+    <UiInfiniteLoading @infinite="infiniteHandler" />
 
-    <UiWineWarning v-if="isCategoryWine" />
-
-    <UiStickyAd v-if="!isCategoryWine">
+    <UiStickyAd>
       <GptAd
         :adUnit="adFixedBottomMobile.adUnit"
         :adSize="adFixedBottomMobile.adSize"
       />
     </UiStickyAd>
 
-    <ContainerFullScreenAds v-if="!isCategoryWine" />
+    <ContainerFullScreenAds />
   </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import _ from 'lodash'
 import MicroAd from '~/components/MicroAd.vue'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
-import UiWineWarning from '~/components/UiWineWarning.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
-import styleVariables from '~/scss/_variables.scss'
 import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
-import { SITE_TITLE, SITE_URL } from '~/constants'
-import { stripHtmlTags, getStoryPath } from '~/utils/article'
+import {
+  SITE_TITLE,
+  SITE_URL,
+  CATEGORY_ID_MARKETING,
+} from '~/constants/index.js'
+import { stripHtmlTags, getStoryPath } from '~/utils/article.js'
 
 export default {
   name: 'Category',
@@ -69,7 +68,6 @@ export default {
     MicroAd,
     UiArticleList,
     UiInfiniteLoading,
-    UiWineWarning,
     ContainerFullScreenAds,
     UiStickyAd,
   },
@@ -89,45 +87,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      getSectionByCategoryName: 'sections/getSectionByCategoryName',
-    }),
-
-    sectionData() {
-      return this.getSectionByCategoryName(this.categoryName)
-    },
     sectionName() {
-      return this.sectionData.name
+      return 'other'
     },
     sectionThemeColor() {
-      const key = `section-color-${this.sectionName}`
-      return styleVariables[key]
-    },
-    sectionId() {
-      return this.sectionData.id
+      return '#bcbcbc'
     },
     sectionTitle() {
-      return this.sectionData.title
+      return this.categoryTitle
     },
 
-    categoryName() {
-      return this.$route.params.name
-    },
-    categoryData() {
-      return (
-        this.sectionData.categories.find((category) => {
-          return this.categoryName === category.name
-        }) ?? {}
-      )
-    },
     categoryTitle() {
-      return this.categoryData.title
+      return '企劃特輯'
     },
     categoryId() {
-      return this.categoryData.id
-    },
-    isCategoryWine() {
-      return this.categoryName === 'wine'
+      return CATEGORY_ID_MARKETING
     },
 
     listDataPageLimit() {
@@ -135,15 +109,6 @@ export default {
         return undefined
       }
       return Math.ceil(this.listDataTotal / this.listDataMaxResults)
-    },
-
-    /**
-     * Constraint which prevent loadmore unexpectly
-     * if we navigating on client-side
-     * due to the list data of the first page has not been loaded.
-     */
-    shouldMountInfiniteLoading() {
-      return this.listDataCurrentPage >= 1
     },
 
     listData() {
@@ -167,13 +132,13 @@ export default {
       return this.$ua.isFromPc() ? 'PC' : 'MB'
     },
     adTop() {
-      return gptAdUnits?.[this.sectionId]?.[`${this.adDevice}_HD`] ?? {}
+      return gptAdUnits[this.sectionName][`${this.adDevice}_HD`] ?? {}
     },
     adBottom() {
-      return gptAdUnits?.[this.sectionId]?.[`${this.adDevice}_FT`] ?? {}
+      return gptAdUnits[this.sectionName][`${this.adDevice}_FT`] ?? {}
     },
     adFixedBottomMobile() {
-      return gptAdUnits?.[this.sectionId]?.['MB_ST'] ?? {}
+      return gptAdUnits[this.sectionName].MB_ST ?? {}
     },
   },
   methods: {
@@ -257,9 +222,10 @@ export default {
 <style lang="scss" scoped>
 @import '~/css/micro-ad/listing.scss';
 
-.section {
+.category {
   background-color: #f2f2f2;
   padding: 36px 0;
+  overflow: hidden;
   @include media-breakpoint-up(md) {
     padding: 36px 25px 72px 25px;
   }

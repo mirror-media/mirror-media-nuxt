@@ -178,7 +178,7 @@ import userQuery from '~/apollo/queries/userQuery.gql'
 
 export default {
   apollo: {
-    $client: 'saleorClient',
+    $client: 'userClient',
     member: {
       query: userQuery,
       fetchPolicy: 'no-cache',

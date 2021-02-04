@@ -38,11 +38,11 @@
           init: false,
 
           navigation: {
-            prevEl: '.btn-prev',
-            nextEl: '.btn-next',
+            prevEl: `.${slideshow.btnPrevClass}`,
+            nextEl: `.${slideshow.btnNextClass}`,
           },
           pagination: {
-            el: '.swiper-pagination',
+            el: `.${slideshow.paginationClass}`,
           },
           autoplay: {
             delay: 5000,
@@ -68,17 +68,17 @@
           </a>
         </template>
 
-        <div slot="pagination" class="swiper-pagination" />
+        <div slot="pagination" :class="slideshow.paginationClass" />
 
         <img
           slot="btnPrev"
           src="~/assets/arrow-prev-editor-choices.png"
-          class="btn-prev"
+          :class="slideshow.btnPrevClass"
         />
         <img
           slot="btnNext"
           src="~/assets/arrow-next-editor-choices.png"
-          class="btn-next"
+          :class="slideshow.btnNextClass"
         />
       </UiSlideshow>
     </div>
@@ -110,6 +110,11 @@ export default {
   data() {
     return {
       stopWatcher: undefined,
+      slideshow: {
+        btnPrevClass: 'btn-prev',
+        btnNextClass: 'btn-next',
+        paginationClass: 'swiper-pagination',
+      },
     }
   },
 
@@ -300,7 +305,6 @@ export default {
 
 .swiper-pagination {
   line-height: 1.15;
-  bottom: 10px;
 
   &::v-deep {
     .swiper-pagination-bullet {
