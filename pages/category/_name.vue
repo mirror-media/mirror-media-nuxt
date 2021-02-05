@@ -6,7 +6,7 @@
       class="section__list"
       :listTitle="categoryTitle"
       :listTitleColor="sectionThemeColor"
-      :listData="listDataFirstPage"
+      :listData="listItemsInFirstPage"
     >
       <template v-for="unit in microAdUnits" v-slot:[unit.name]>
         <MicroAd :key="unit.name" :unitId="unit.id" />
@@ -16,9 +16,9 @@
     <ContainerGptAd class="section__ad" :pageKey="sectionId" adKey="FT" />
 
     <UiArticleList
-      v-show="showListDataLoadmorePage"
+      v-show="shouldMountLoadmoreList"
       class="section__list"
-      :listData="listDataLoadmorePage"
+      :listData="listItemsInLoadmorePage"
     />
     <UiInfiniteLoading @infinite="infiniteHandler" />
 
@@ -32,7 +32,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import _ from 'lodash'
+
 import MicroAd from '~/components/MicroAd.vue'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
@@ -41,10 +41,14 @@ import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
+import { processTwoList } from '~/mixins/list.js'
+
 import styleVariables from '~/scss/_variables.scss'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
 import { stripHtmlTags, getStoryPath } from '~/utils/article'
+
+const LIST_MAX_RESULTS = 9
 
 export default {
   name: 'Category',
@@ -57,18 +61,38 @@ export default {
     ContainerFullScreenAds,
     UiStickyAd,
   },
-  async fetch() {
-    const response = await this.fetchCategoryListing({ page: 1 })
-    this.setListData(response)
-    this.setListDataTotal(response)
-    this.listDataCurrentPage += 1
-  },
+
+  mixins: [
+    processTwoList({
+      maxResults: LIST_MAX_RESULTS,
+
+      async fetchList(page) {
+        return await this.$fetchList({
+          maxResults: LIST_MAX_RESULTS,
+          sort: '-publishedDate',
+          categories: [this.categoryId],
+          page,
+        })
+      },
+
+      transformListItemContent(item) {
+        item = item || {}
+
+        return {
+          id: item.id,
+          href: getStoryPath(item),
+          imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
+          imgText: this.sectionTitle,
+          imgTextBackgroundColor: this.sectionThemeColor,
+          infoTitle: item.title ?? '',
+          infoDescription: stripHtmlTags(item.brief?.html ?? ''),
+        }
+      },
+    }),
+  ],
+
   data() {
     return {
-      listData_: [],
-      listDataCurrentPage: 0,
-      listDataMaxResults: 9,
-      listDataTotal: undefined,
       microAdUnits: MICRO_AD_UNITS.LISTING.RWD,
     }
   },
@@ -113,78 +137,8 @@ export default {
     isCategoryWine() {
       return this.categoryName === 'wine'
     },
-
-    listDataPageLimit() {
-      if (this.listDataTotal === undefined) {
-        return undefined
-      }
-      return Math.ceil(this.listDataTotal / this.listDataMaxResults)
-    },
-
-    listData() {
-      return _.uniqBy(this.listData_, function identifyDuplicatedItemById(
-        listItem
-      ) {
-        return listItem.id
-      })
-    },
-    listDataFirstPage() {
-      return this.listData.slice(0, this.listDataMaxResults)
-    },
-    listDataLoadmorePage() {
-      return this.listData.slice(this.listDataMaxResults, Infinity)
-    },
-    showListDataLoadmorePage() {
-      return this.listDataLoadmorePage.length > 0
-    },
   },
-  methods: {
-    mapDataToComponentProps(item) {
-      return {
-        id: item.id,
-        href: getStoryPath(item),
-        imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
-        imgText: this.sectionTitle,
-        imgTextBackgroundColor: this.sectionThemeColor,
-        infoTitle: item.title ?? '',
-        infoDescription: stripHtmlTags(item.brief?.html ?? ''),
-      }
-    },
-    async fetchCategoryListing({ page = 1 } = {}) {
-      const response = await this.$fetchList({
-        maxResults: this.listDataMaxResults,
-        sort: '-publishedDate',
-        categories: [this.categoryId],
-        page,
-      })
-      return response
-    },
-    setListData(response = {}) {
-      let listData = response.items ?? []
-      listData = listData.map(this.mapDataToComponentProps)
-      this.listData_.push(...listData)
-    },
-    setListDataTotal(response = {}) {
-      this.listDataTotal = response.meta?.total ?? 0
-    },
-    async infiniteHandler($state) {
-      this.listDataCurrentPage += 1
-      try {
-        const response = await this.fetchCategoryListing({
-          page: this.listDataCurrentPage,
-        })
-        this.setListData(response)
 
-        if (this.listDataCurrentPage >= this.listDataPageLimit) {
-          $state.complete()
-        } else {
-          $state.loaded()
-        }
-      } catch (e) {
-        $state.error()
-      }
-    },
-  },
   head() {
     const title = `${this.categoryTitle} - ${SITE_TITLE}`
     return {
