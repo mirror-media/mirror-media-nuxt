@@ -12,7 +12,7 @@ function processList({
 
     data() {
       return {
-        processList_list: {
+        $_processList_list: {
           items: [],
           page: 0,
           maxPage: 0,
@@ -23,7 +23,7 @@ function processList({
     computed: {
       listItems() {
         return _.uniqBy(
-          this.processList_list.items,
+          this.$data.$_processList_list.items,
           function identifyDuplicateById(item) {
             return item.id
           }
@@ -38,10 +38,10 @@ function processList({
         this.$_processList_setListMaxPage(response)
       },
       async $_processList_loadList() {
-        this.processList_list.page += 1
+        this.$data.$_processList_list.page += 1
 
         const response =
-          (await fetchList.call(this, this.processList_list.page)) || {}
+          (await fetchList.call(this, this.$data.$_processList_list.page)) || {}
 
         this.$_processList_setListItems(response)
 
@@ -50,21 +50,26 @@ function processList({
       $_processList_setListMaxPage(response = {}) {
         const listTotal = response.meta?.total ?? 0
 
-        this.processList_list.maxPage = Math.ceil(listTotal / maxResults)
+        this.$data.$_processList_list.maxPage = Math.ceil(
+          listTotal / maxResults
+        )
       },
       $_processList_setListItems(response) {
         const items = (response.items || []).map(
           transformListItemContent.bind(this)
         )
 
-        this.processList_list.items.push(...items)
+        this.$data.$_processList_list.items.push(...items)
       },
 
       async infiniteHandler(state) {
         try {
           await this.$_processList_loadList()
 
-          if (this.processList_list.page >= this.processList_list.maxPage) {
+          if (
+            this.$data.$_processList_list.page >=
+            this.$data.$_processList_list.maxPage
+          ) {
             state.complete()
           } else {
             state.loaded()
