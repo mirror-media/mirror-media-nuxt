@@ -3,7 +3,6 @@ import { directive as swiper } from 'vue-awesome-swiper'
 import flushPromises from 'flush-promises'
 
 import page from '../topic/_id.vue'
-import UiArticleList from '~/components/UiArticleList.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
@@ -32,7 +31,6 @@ const createWrapper = createWrapperHelper({
       },
     },
   },
-  stubs: ['client-only'],
 })
 
 test('display a slideshow', async function () {
@@ -94,62 +92,6 @@ test('display a slideshow', async function () {
   expect(pictureSources.at(1).attributes().srcset).toBe(tablet.url)
   expect(slideImg.attributes().src).toBe(mobile.url)
   expect(slideImg.attributes().alt).toBe(description)
-})
-
-describe('component methods', () => {
-  test('setListItems', async () => {
-    expect.assertions(1)
-
-    const idMock = 'id'
-    const slugMock = 'slug'
-    const imageUrlMock = 'imageurl'
-    const titleMock = 'title'
-    const briefMock = 'brief'
-    const briefHtmlMock = `<div>${briefMock}</div>`
-    const sectionTitleMock = 'section-title'
-    const responseMock = {
-      items: [
-        {
-          id: idMock,
-          slug: slugMock,
-          heroImage: {
-            image: {
-              resizedTargets: {
-                mobile: {
-                  url: imageUrlMock,
-                },
-              },
-            },
-          },
-          title: titleMock,
-          brief: {
-            html: briefHtmlMock,
-          },
-          sections: [
-            {
-              title: sectionTitleMock,
-            },
-          ],
-        },
-      ],
-    }
-
-    const wrapper = createWrapper(page)
-    wrapper.vm.setListItems(responseMock)
-    await wrapper.vm.$nextTick()
-    const list = wrapper.findComponent(UiArticleList)
-    expect(list.props().listData).toEqual([
-      {
-        id: idMock,
-        href: `/story/${slugMock}`,
-        imgSrc: imageUrlMock,
-        imgText: sectionTitleMock,
-        imgTextBackgroundColor: undefined, // value from scss variable not available in jest
-        infoTitle: titleMock,
-        infoDescription: briefMock,
-      },
-    ])
-  })
 })
 
 describe('wine warning', () => {

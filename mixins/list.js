@@ -30,6 +30,9 @@ function processList({
           }
         )
       },
+      shouldMountInfiniteLoading() {
+        return this.$data.$_processList_list.maxPage >= 2
+      },
     },
 
     methods: {

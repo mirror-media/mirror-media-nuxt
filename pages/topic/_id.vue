@@ -13,15 +13,16 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import UiTopicCover from '~/components/topic/UiTopicCover.vue'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 
-import styleVariables from '~/scss/_variables.scss'
-import { stripHtmlTags, getStoryPath } from '~/utils/article'
+import { processList } from '~/mixins/list.js'
 
+import styleVariables from '~/scss/_variables.scss'
+
+const LIST_MAX_RESULTS = 9
 const TOPIC_IDS_WINE = [
   '5c25f9e3315ec51000903a82',
   '5d22bb9fe311f3925c49396c',
@@ -37,8 +38,33 @@ export default {
     UiInfiniteLoading,
     UiWineWarning,
   },
+
+  mixins: [
+    processList({
+      maxResults: LIST_MAX_RESULTS,
+
+      async fetchList(page) {
+        return await this.$fetchList({
+          maxResults: LIST_MAX_RESULTS,
+          sort: '-publishedDate',
+          topics: [this.topicId],
+          page,
+        })
+      },
+
+      transformListItemContent(item = {}) {
+        const section = item.sections?.[0] || {}
+
+        return {
+          imgText: section.title ?? '',
+          imgTextBackgroundColor:
+            styleVariables[`section-color-${section.name}`],
+        }
+      },
+    }),
+  ],
   async fetch() {
-    await Promise.all([this.loadTopic(), this.loadListInitial()])
+    await Promise.all([this.loadTopic(), this.initList()])
     await this.loadTopicImgsInitial()
   },
   data() {
@@ -49,12 +75,6 @@ export default {
         page: 0,
         maxPage: 0,
         maxResults: 25,
-      },
-      list: {
-        items: [],
-        page: 0,
-        maxPage: 0,
-        maxResults: 9,
       },
     }
   },
@@ -68,15 +88,6 @@ export default {
 
     coverType() {
       return this.topic.leading
-    },
-
-    listItems() {
-      return _.uniqBy(this.list.items, function identifyDuplicateById(item) {
-        return item.id
-      })
-    },
-    shouldMountInfiniteLoading() {
-      return this.list.maxPage >= 2
     },
   },
 
@@ -149,67 +160,6 @@ export default {
       const imgsTotal = response.meta?.total ?? 0
 
       this.topicImgs.maxPage = Math.ceil(imgsTotal / this.topicImgs.maxResults)
-    },
-
-    async loadListInitial() {
-      const response = await this.loadList()
-
-      this.setListMaxPage(response)
-    },
-    async loadList() {
-      this.list.page += 1
-
-      const response =
-        (await this.$fetchList({
-          maxResults: this.list.maxResults,
-          sort: '-publishedDate',
-          topics: [this.topicId],
-          page: this.list.page,
-        })) || {}
-
-      this.setListItems(response)
-
-      return response
-    },
-    setListItems(response = {}) {
-      const items = (response.items || []).map(function transformContent(
-        item = {}
-      ) {
-        const [section = {}] = item?.sections || []
-
-        return {
-          id: item?.id,
-          href: getStoryPath(item || {}),
-          imgSrc: item?.heroImage?.image?.resizedTargets?.mobile?.url,
-          imgText: section.title ?? '',
-          imgTextBackgroundColor:
-            styleVariables[`section-color-${section.name}`],
-          infoTitle: item?.title ?? '',
-          infoDescription: stripHtmlTags(item?.brief?.html ?? ''),
-        }
-      })
-
-      this.list.items.push(...items)
-    },
-    setListMaxPage(response = {}) {
-      const listTotal = response.meta?.total ?? 0
-
-      this.list.maxPage = Math.ceil(listTotal / this.list.maxResults)
-    },
-    async infiniteHandler(state) {
-      try {
-        await this.loadList()
-
-        if (this.list.page >= this.list.maxPage) {
-          state.complete()
-        } else {
-          state.loaded()
-        }
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err)
-        state.error()
-      }
     },
   },
 }
