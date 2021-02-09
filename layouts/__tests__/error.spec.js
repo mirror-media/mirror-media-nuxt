@@ -3,7 +3,13 @@ import UiArticleCard from '../../components/UiArticleCard.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
-const createWrapper = createWrapperHelper()
+const createWrapper = createWrapperHelper({
+  propsData: {
+    error: {
+      statusCode: 404,
+    },
+  },
+})
 
 describe('page information', () => {
   const wrapper = createWrapper(Page)
