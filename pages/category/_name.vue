@@ -41,7 +41,7 @@ import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
-import { processTwoList } from '~/mixins/list.js'
+import { processTwoLists } from '~/mixins/list.js'
 
 import styleVariables from '~/scss/_variables.scss'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
@@ -63,7 +63,7 @@ export default {
   },
 
   mixins: [
-    processTwoList({
+    processTwoLists({
       maxResults: LIST_MAX_RESULTS,
 
       async fetchList(page) {

@@ -84,7 +84,7 @@ function processList({
   }
 }
 
-function processTwoList({
+function processTwoLists({
   maxResults = 0,
   fetchList,
   transformListItemContent,
@@ -106,4 +106,4 @@ function processTwoList({
   }
 }
 
-export { processList, processTwoList }
+export { processList, processTwoLists }
