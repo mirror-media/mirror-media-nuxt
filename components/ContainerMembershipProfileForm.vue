@@ -169,8 +169,8 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, requiredIf, between } from 'vuelidate/lib/validators'
-import countriesData from 'mirror-media-constants/countries.json'
-import twDistrictsData from 'mirror-media-constants/taiwan-districts.json'
+import countriesData from 'mirror-media-constants/lib/countries.json'
+import twDistrictsData from 'mirror-media-constants/lib/taiwan-districts.json'
 import dayjs from 'dayjs'
 import UiMembershipDropdownMenu from '~/components/UiMembershipDropdownMenu.vue'
 import userUpdate from '~/apollo/mutations/userUpdate.gql'

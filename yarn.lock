@@ -11729,9 +11729,9 @@ minizlib@^2.1.1:
     minipass "^3.0.0"
     yallist "^4.0.0"
 
-"mirror-media-constants@mirror-media/constants#semver:^1.1.0":
+"mirror-media-constants@mirror-media/constants#semver:^2.0.0":
   version "0.0.0"
-  resolved "https://codeload.github.com/mirror-media/constants/tar.gz/acf18a90b26ed438d2ad05e8ac59b685708c954b"
+  resolved "https://codeload.github.com/mirror-media/constants/tar.gz/691672f39fc7269fdac42776e9c916a42386e464"
 
 mississippi@^3.0.0:
   version "3.0.0"
