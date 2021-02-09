@@ -68,9 +68,7 @@
 
     <slot name="storyRelateds"></slot>
 
-    <ClientOnly>
-      <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="MB_AT3" />
-    </ClientOnly>
+    <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="MB_AT3" />
 
     <p id="story-end" class="g-story-paragraph smaller">
       更多內容，歡迎<a
@@ -103,12 +101,10 @@
       </div>
     </LazyRenderer>
 
-    <ClientOnly v-if="canAdvertise">
-      <div class="story__ad story__ad--container">
-        <ContainerGptAd :pageKey="sectionId" adKey="PC_E1" />
-        <ContainerGptAd :pageKey="sectionId" adKey="PC_E2" />
-      </div>
-    </ClientOnly>
+    <div v-if="canAdvertise" class="story__ad story__ad--container">
+      <ContainerGptAd :pageKey="sectionId" adKey="PC_E1" />
+      <ContainerGptAd :pageKey="sectionId" adKey="PC_E2" />
+    </div>
 
     <slot name="dableWidget"></slot>
 

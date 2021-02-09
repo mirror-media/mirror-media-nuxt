@@ -1,12 +1,14 @@
 <template>
-  <div v-if="shouldOpenAd" class="container-gpt-ad">
-    <GptAd
-      :adUnit="adData.adUnit"
-      :adSize="adData.adSize"
-      :adNetwork="adNetwork"
-      v-on="$listeners"
-    />
-  </div>
+  <ClientOnly>
+    <div v-if="shouldOpenAd" class="container-gpt-ad">
+      <GptAd
+        :adUnit="adData.adUnit"
+        :adSize="adData.adSize"
+        :adNetwork="adNetwork"
+        v-on="$listeners"
+      />
+    </div>
+  </ClientOnly>
 </template>
 
 <script>

@@ -29,10 +29,7 @@
       class="section__list"
       :listData="listDataLoadmorePage"
     />
-    <UiInfiniteLoading
-      v-if="shouldMountInfiniteLoading"
-      @infinite="infiniteHandler"
-    />
+    <UiInfiniteLoading @infinite="infiniteHandler" />
 
     <UiWineWarning v-if="isCategoryWine" />
 
@@ -135,15 +132,6 @@ export default {
         return undefined
       }
       return Math.ceil(this.listDataTotal / this.listDataMaxResults)
-    },
-
-    /**
-     * Constraint which prevent loadmore unexpectly
-     * if we navigating on client-side
-     * due to the list data of the first page has not been loaded.
-     */
-    shouldMountInfiniteLoading() {
-      return this.listDataCurrentPage >= 1
     },
 
     listData() {

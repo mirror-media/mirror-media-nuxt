@@ -30,9 +30,7 @@ export default {
       const { pageKey, adKey } = props.paragraph
 
       return (
-        <ClientOnly>
-          <ContainerGptAd class="story__ad" pageKey={pageKey} adKey={adKey} />
-        </ClientOnly>
+        <ContainerGptAd class="story__ad" pageKey={pageKey} adKey={adKey} />
       )
     }
 

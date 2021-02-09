@@ -9,13 +9,7 @@
         @sendGa:prev="sendGaForClick('breakingnews down')"
       />
 
-      <ClientOnly>
-        <ContainerGptAd
-          class="home__ad home__ad--hd"
-          pageKey="home"
-          adKey="HD"
-        />
-      </ClientOnly>
+      <ContainerGptAd class="home__ad home__ad--hd" pageKey="home" adKey="HD" />
 
       <section class="editor-choices-container">
         <UiColumnHeader
@@ -28,13 +22,11 @@
         />
       </section>
 
-      <ClientOnly>
-        <ContainerGptAd
-          class="home__ad home__ad--mb-l1"
-          pageKey="home"
-          adKey="MB_L1"
-        />
-      </ClientOnly>
+      <ContainerGptAd
+        class="home__ad home__ad--mb-l1"
+        pageKey="home"
+        adKey="MB_L1"
+      />
 
       <div class="column-container">
         <aside>
