@@ -33,6 +33,11 @@ function processList({
     },
 
     methods: {
+      async initList() {
+        const response = await this.$_processList_loadList()
+
+        this.$_processList_setListMaxPage(response)
+      },
       async $_processList_loadListInitial() {
         const response = await this.$_processList_loadList()
 
