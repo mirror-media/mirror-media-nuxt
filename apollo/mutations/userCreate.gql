@@ -1,4 +1,4 @@
-mutation ($email: String!, $firebaseId: String!){
+mutation ($email: String, $firebaseId: String!){
   createMember(email: $email, firebaseId: $firebaseId){
     success
   }
