@@ -8,9 +8,7 @@
       <ContainerHeader :currentSectionName="sectionName" />
 
       <div class="story-container">
-        <ClientOnly>
-          <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="HD" />
-        </ClientOnly>
+        <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="HD" />
 
         <div class="story-wrapper">
           <ContainerStoryBody :story="story" class="story-slug__story-body">
@@ -136,26 +134,22 @@
           </aside>
         </div>
 
-        <ClientOnly>
-          <ContainerGptAd
-            class="story__ad story__ad--ft"
-            :pageKey="sectionId"
-            adKey="FT"
-          />
-        </ClientOnly>
+        <ContainerGptAd
+          class="story__ad story__ad--ft"
+          :pageKey="sectionId"
+          adKey="FT"
+        />
 
         <UiAdultContentWarning v-if="story.isAdult" />
 
-        <ClientOnly>
-          <div v-show="shouldShowAdPcFloating" class="ad-pc-floating">
-            <ContainerGptAd
-              :pageKey="sectionCarandwatchId"
-              adKey="PC_FLOATING"
-              @slotRenderEnded="handleRenderEndedAdPcFloating"
-            />
-            <SvgCloseIcon @click="doesClickCloseAdPcFloating = true" />
-          </div>
-        </ClientOnly>
+        <div v-show="shouldShowAdPcFloating" class="ad-pc-floating">
+          <ContainerGptAd
+            :pageKey="sectionCarandwatchId"
+            adKey="PC_FLOATING"
+            @slotRenderEnded="handleRenderEndedAdPcFloating"
+          />
+          <SvgCloseIcon @click="doesClickCloseAdPcFloating = true" />
+        </div>
 
         <ContainerFullScreenAds v-if="!doesHaveWineCategory && canAdvertise" />
       </div>

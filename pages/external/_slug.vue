@@ -5,9 +5,7 @@
       <ContainerHeader />
 
       <div class="story-container">
-        <ClientOnly>
-          <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="HD" />
-        </ClientOnly>
+        <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="HD" />
 
         <div class="story-wrapper">
           <ContainerStoryBody
@@ -111,13 +109,11 @@
           </aside>
         </div>
 
-        <ClientOnly>
-          <ContainerGptAd
-            class="story__ad story__ad--ft"
-            :pageKey="sectionId"
-            adKey="FT"
-          />
-        </ClientOnly>
+        <ContainerGptAd
+          class="story__ad story__ad--ft"
+          :pageKey="sectionId"
+          adKey="FT"
+        />
 
         <ContainerFullScreenAds />
       </div>

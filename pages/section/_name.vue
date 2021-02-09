@@ -1,12 +1,11 @@
 <template>
   <section class="section">
-    <client-only>
-      <ContainerGptAd
-        class="section__ad"
-        :pageKey="currentSectionId"
-        adKey="HD"
-      />
-    </client-only>
+    <ContainerGptAd
+      class="section__ad"
+      :pageKey="currentSectionId"
+      adKey="HD"
+    />
+
     <UiArticleList
       class="section__list"
       :listTitle="currentSectionTitle"
@@ -17,13 +16,13 @@
         <MicroAd :key="unit.name" :unitId="unit.id" />
       </template>
     </UiArticleList>
-    <client-only>
-      <ContainerGptAd
-        class="section__ad"
-        :pageKey="currentSectionId"
-        adKey="FT"
-      />
-    </client-only>
+
+    <ContainerGptAd
+      class="section__ad"
+      :pageKey="currentSectionId"
+      adKey="FT"
+    />
+
     <UiArticleList
       v-show="showListDataLoadmorePage"
       class="section__list"
