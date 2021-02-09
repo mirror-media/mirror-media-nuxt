@@ -1,5 +1,4 @@
 import page from '../category/_name.vue'
-import UiArticleList from '~/components/UiArticleList.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
@@ -54,39 +53,6 @@ describe('section data', () => {
     expect(wrapper.vm.sectionName).toBe(sectionNameMock)
     expect(wrapper.vm.sectionId).toBe(sectionIdMock)
     expect(wrapper.vm.sectionTitle).toBe(sectionTitleMock)
-  })
-})
-
-describe('category data', () => {
-  test('should get proper categories properties from store by route params', () => {
-    const categoryNameMock = 'test-category-name'
-    const categoryIdMock = 'test-id'
-    const categoryTitleMock = 'test-title'
-    const sectionDataMock = {
-      categories: [
-        {
-          name: categoryNameMock,
-          id: categoryIdMock,
-          title: categoryTitleMock,
-        },
-      ],
-    }
-    const wrapper = createWrapper(page, {
-      computed: {
-        getSectionByCategoryName: () => () => sectionDataMock,
-      },
-      mocks: {
-        $route: {
-          params: {
-            name: categoryNameMock,
-          },
-        },
-      },
-    })
-
-    const list = wrapper.findComponent(UiArticleList)
-    expect(wrapper.vm.categoryId).toBe(categoryIdMock)
-    expect(list.props().listTitle).toBe(categoryTitleMock)
   })
 })
 

@@ -2,7 +2,8 @@ import _ from 'lodash'
 import { stripHtmlTags, getStoryPath } from '~/utils/article.js'
 
 function processList({
-  maxResults = 0,
+  maxResults,
+  getMaxResults,
   fetchList,
   transformListItemContent,
 } = {}) {
@@ -29,6 +30,10 @@ function processList({
       shouldMountInfiniteLoading() {
         return this.$data.$_processList_list.maxPage >= 2
       },
+
+      $_processList_maxResults() {
+        return getMaxResults?.call(this) ?? maxResults
+      },
     },
 
     methods: {
@@ -52,7 +57,7 @@ function processList({
         const listTotal = response.meta?.total ?? 0
 
         this.$data.$_processList_list.maxPage = Math.ceil(
-          listTotal / maxResults
+          listTotal / this.$_processList_maxResults
         )
       },
       $_processList_setListItems(response) {
@@ -100,19 +105,27 @@ function processList({
 }
 
 function processTwoLists({
-  maxResults = 0,
+  maxResults,
+  getMaxResults,
   fetchList,
   transformListItemContent,
 } = {}) {
   return {
-    mixins: [processList({ maxResults, fetchList, transformListItemContent })],
+    mixins: [
+      processList({
+        maxResults,
+        getMaxResults,
+        fetchList,
+        transformListItemContent,
+      }),
+    ],
 
     computed: {
       listItemsInFirstPage() {
-        return this.listItems.slice(0, maxResults)
+        return this.listItems.slice(0, this.$_processList_maxResults)
       },
       listItemsInLoadmorePage() {
-        return this.listItems.slice(maxResults, Infinity)
+        return this.listItems.slice(this.$_processList_maxResults, Infinity)
       },
       shouldMountLoadmoreList() {
         return this.listItemsInLoadmorePage.length > 0

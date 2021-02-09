@@ -1,11 +1,10 @@
 <template>
-  <section class="topic-id">
+  <section class="topic-_id">
     <UiTopicCover :type="coverType" :imgItems="topicImgs.items" />
 
-    <UiArticleList class="topic-id__list" :listData="listItems" />
-    <UiInfiniteLoading
-      v-if="shouldMountInfiniteLoading"
-      @infinite="infiniteHandler"
+    <ContainerList
+      :fetchList="fetchList"
+      :transformListItemContent="transformListItemContent"
     />
 
     <UiWineWarning v-if="isTopicWine" />
@@ -13,16 +12,12 @@
 </template>
 
 <script>
+import ContainerList from '~/components/list/ContainerList.vue'
 import UiTopicCover from '~/components/topic/UiTopicCover.vue'
-import UiArticleList from '~/components/UiArticleList.vue'
-import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
-
-import { processList } from '~/mixins/list.js'
 
 import styleVariables from '~/scss/_variables.scss'
 
-const LIST_MAX_RESULTS = 9
 const TOPIC_IDS_WINE = [
   '5c25f9e3315ec51000903a82',
   '5d22bb9fe311f3925c49396c',
@@ -33,38 +28,13 @@ const TOPIC_IDS_WINE = [
 export default {
   name: 'Topic',
   components: {
+    ContainerList,
     UiTopicCover,
-    UiArticleList,
-    UiInfiniteLoading,
     UiWineWarning,
   },
 
-  mixins: [
-    processList({
-      maxResults: LIST_MAX_RESULTS,
-
-      async fetchList(page) {
-        return await this.$fetchList({
-          maxResults: LIST_MAX_RESULTS,
-          sort: '-publishedDate',
-          topics: [this.topicId],
-          page,
-        })
-      },
-
-      transformListItemContent(item = {}) {
-        const section = item.sections?.[0] || {}
-
-        return {
-          imgText: section.title ?? '',
-          imgTextBackgroundColor:
-            styleVariables[`section-color-${section.name}`],
-        }
-      },
-    }),
-  ],
   async fetch() {
-    await Promise.all([this.loadTopic(), this.initList()])
+    await this.loadTopic()
     await this.loadTopicImgsInitial()
   },
   data() {
@@ -103,6 +73,23 @@ export default {
             id: this.topicId,
           })
         )?.items?.[0] || {}
+    },
+
+    async fetchList(page) {
+      return await this.$fetchList({
+        maxResults: 9,
+        sort: '-publishedDate',
+        topics: [this.topicId],
+        page,
+      })
+    },
+    transformListItemContent(item = {}) {
+      const section = item.sections?.[0] || {}
+
+      return {
+        imgText: section.title ?? '',
+        imgTextBackgroundColor: styleVariables[`section-color-${section.name}`],
+      }
     },
 
     async loadTopicImgsInitial() {
@@ -164,21 +151,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.topic-id {
-  background-color: #f2f2f2;
-
-  &__list {
-    padding: 0 0 36px 0;
-    @include media-breakpoint-up(md) {
-      padding: 0 25px 72px 25px;
-    }
-    @include media-breakpoint-up(xl) {
-      max-width: 1024px;
-      padding: 0;
-      margin: 0 auto;
-    }
-  }
-}
-</style>
