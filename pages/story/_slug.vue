@@ -157,9 +157,10 @@
       <div class="sticky-footer">
         <AppOpenNotification v-if="false" />
 
-        <UiStickyAd v-if="!doesHaveWineCategory && canAdvertise">
-          <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
-        </UiStickyAd>
+        <UiStickyAd
+          v-if="!doesHaveWineCategory && canAdvertise"
+          :pageKey="sectionId"
+        />
 
         <UiWineWarning v-if="doesHaveWineCategory" />
       </div>

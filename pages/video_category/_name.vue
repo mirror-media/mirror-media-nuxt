@@ -54,10 +54,9 @@
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
+
+    <UiStickyAd pageKey="videohub" />
     <ContainerFullScreenAds />
-    <UiStickyAd>
-      <ContainerGptAd pageKey="videohub" adKey="MB_ST" />
-    </UiStickyAd>
   </section>
 </template>
 

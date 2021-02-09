@@ -32,10 +32,9 @@
       </div>
       <UiYoutubePolicies class="section__policies" />
     </div>
+
+    <UiStickyAd pageKey="videohub" />
     <ContainerFullScreenAds />
-    <UiStickyAd>
-      <ContainerGptAd pageKey="videohub" adKey="MB_ST" />
-    </UiStickyAd>
   </section>
 </template>
 

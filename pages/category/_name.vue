@@ -23,12 +23,10 @@
     <UiInfiniteLoading @infinite="infiniteHandler" />
 
     <UiWineWarning v-if="isCategoryWine" />
-
-    <UiStickyAd v-if="!isCategoryWine">
-      <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
-    </UiStickyAd>
-
-    <ContainerFullScreenAds v-if="!isCategoryWine" />
+    <template v-else>
+      <UiStickyAd :pageKey="sectionId" />
+      <ContainerFullScreenAds />
+    </template>
   </section>
 </template>
 

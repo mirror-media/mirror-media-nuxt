@@ -43,11 +43,8 @@
     <UiYoutubePolicies class="video__policies" />
 
     <ContainerGptAd class="video__ad" pageKey="videohub" adKey="FT" />
-
+    <UiStickyAd pageKey="videohub" />
     <ContainerFullScreenAds />
-    <UiStickyAd>
-      <ContainerGptAd pageKey="videohub" adKey="MB_ST" />
-    </UiStickyAd>
   </section>
 </template>
 

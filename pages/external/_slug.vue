@@ -119,9 +119,7 @@
       </div>
 
       <div class="sticky-footer">
-        <UiStickyAd>
-          <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
-        </UiStickyAd>
+        <UiStickyAd :pageKey="sectionId" />
       </div>
 
       <div class="footer-container">

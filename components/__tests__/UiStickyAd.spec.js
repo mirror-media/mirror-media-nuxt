@@ -2,16 +2,7 @@ import UiStickyAd from '../UiStickyAd.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
-const createWrapper = createWrapperHelper({
-  mocks: {
-    $ua: {
-      isFromPc() {
-        return false
-      },
-    },
-  },
-  stubs: ['client-only'],
-})
+const createWrapper = createWrapperHelper()
 
 describe('visible', () => {
   const wrapper = createWrapper(UiStickyAd)

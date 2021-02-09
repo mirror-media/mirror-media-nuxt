@@ -22,10 +22,7 @@
     />
     <UiInfiniteLoading @infinite="infiniteHandler" />
 
-    <UiStickyAd>
-      <ContainerGptAd :pageKey="sectionName" adKey="MB_ST" />
-    </UiStickyAd>
-
+    <UiStickyAd :pageKey="sectionName" />
     <ContainerFullScreenAds />
   </section>
 </template>

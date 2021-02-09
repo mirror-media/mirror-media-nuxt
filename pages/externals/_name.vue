@@ -29,9 +29,8 @@
       :listData="listDataLoadmorePage"
     />
     <UiInfiniteLoading @infinite="infiniteHandler" />
-    <UiStickyAd>
-      <ContainerGptAd :pageKey="currentSectionId" adKey="MB_ST" />
-    </UiStickyAd>
+
+    <UiStickyAd :pageKey="currentSectionId" />
     <ContainerFullScreenAds />
   </section>
 </template>
