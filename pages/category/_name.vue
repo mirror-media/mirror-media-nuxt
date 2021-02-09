@@ -83,6 +83,10 @@ export default {
     }),
   ],
 
+  async fetch() {
+    await this.initList()
+  },
+
   data() {
     return {
       microAdUnits: MICRO_AD_UNITS.LISTING.RWD,

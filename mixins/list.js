@@ -7,10 +7,6 @@ function processList({
   transformListItemContent,
 } = {}) {
   return {
-    async fetch() {
-      await this.$_processList_loadListInitial()
-    },
-
     data() {
       return {
         $_processList_list: {
@@ -41,11 +37,7 @@ function processList({
 
         this.$_processList_setListMaxPage(response)
       },
-      async $_processList_loadListInitial() {
-        const response = await this.$_processList_loadList()
 
-        this.$_processList_setListMaxPage(response)
-      },
       async $_processList_loadList() {
         this.$data.$_processList_list.page += 1
 

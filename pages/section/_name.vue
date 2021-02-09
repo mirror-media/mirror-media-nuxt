@@ -86,6 +86,10 @@ export default {
     }),
   ],
 
+  async fetch() {
+    await this.initList()
+  },
+
   computed: {
     ...mapState({
       sections: (state) => state.sections.data.items ?? [],
