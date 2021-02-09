@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { stripHtmlTags, getStoryPath } from '~/utils/article.js'
 
 function processList({
   maxResults = 0,
@@ -56,10 +57,24 @@ function processList({
       },
       $_processList_setListItems(response) {
         const items = (response.items || []).map(
-          transformListItemContent.bind(this)
+          this.$_processList_transformListItemContent
         )
 
         this.$data.$_processList_list.items.push(...items)
+      },
+      $_processList_transformListItemContent(item = {}) {
+        item = item || {}
+
+        return {
+          id: item.id,
+          href: getStoryPath(item),
+          imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
+          imgText: undefined,
+          imgTextBackgroundColor: undefined,
+          infoTitle: item.title ?? '',
+          infoDescription: stripHtmlTags(item.brief?.html ?? ''),
+          ...transformListItemContent.call(this, item),
+        }
       },
 
       async infiniteHandler(state) {

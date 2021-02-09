@@ -50,7 +50,6 @@ import { processTwoLists } from '~/mixins/list.js'
 import styleVariables from '~/scss/_variables.scss'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '~/constants'
-import { stripHtmlTags, getStoryPath } from '~/utils/article'
 
 const LIST_MAX_RESULTS = 9
 
@@ -78,17 +77,10 @@ export default {
         })
       },
 
-      transformListItemContent(item = {}) {
-        item = item || {}
-
+      transformListItemContent() {
         return {
-          id: item.id,
-          href: getStoryPath(item),
-          imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
           imgText: this.currentSectionTitle,
           imgTextBackgroundColor: this.currentSectionThemeColor,
-          infoTitle: item.title ?? '',
-          infoDescription: stripHtmlTags(item.brief?.html ?? ''),
         }
       },
     }),
