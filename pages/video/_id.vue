@@ -1,21 +1,12 @@
 <template>
   <section class="video">
-    <client-only v-if="!isMobile">
-      <GptAd
-        class="video__ad"
-        :adUnit="getAdUnit('HD').adUnit"
-        :adSize="getAdUnit('HD').adSize"
-      />
-    </client-only>
+    <ContainerGptAd class="video__ad" pageKey="videohub" adKey="PC_HD" />
+
     <article class="video__content-wrapper">
       <UiYoutubeIframe :videoId="videoId" class="video__iframe" />
-      <client-only v-if="isMobile">
-        <GptAd
-          class="video__ad"
-          :adUnit="getAdUnit('HD').adUnit"
-          :adSize="getAdUnit('HD').adSize"
-        />
-      </client-only>
+
+      <ContainerGptAd class="video__ad" pageKey="videohub" adKey="MB_HD" />
+
       <h1 class="video__title" v-text="title" />
       <div class="video__data-share">
         <p class="video__datetime" v-text="datetime" />
@@ -28,21 +19,12 @@
       <!-- eslint-disable-next-line vue/no-v-html -->
       <p class="video__description" v-html="descriptionParsed" />
     </article>
-    <client-only v-if="isMobile">
-      <GptAd
-        class="video__ad"
-        :adUnit="getAdUnit('E1').adUnit"
-        :adSize="getAdUnit('E1').adSize"
-      />
-    </client-only>
+
+    <ContainerGptAd class="video__ad" pageKey="videohub" adKey="MB_E1" />
+
     <div class="video__latest-wrapper">
-      <client-only v-if="!isMobile">
-        <GptAd
-          class="video__ad"
-          :adUnit="getAdUnit('R1').adUnit"
-          :adSize="getAdUnit('R1').adSize"
-        />
-      </client-only>
+      <ContainerGptAd class="video__ad" pageKey="videohub" adKey="PC_R1" />
+
       <template v-if="hasLatestItems">
         <h2 class="video__heading">最新影音</h2>
         <UiLinkedItemWithTitle
@@ -59,19 +41,12 @@
       </template>
     </div>
     <UiYoutubePolicies class="video__policies" />
-    <client-only>
-      <GptAd
-        class="video__ad"
-        :adUnit="getAdUnit('FT').adUnit"
-        :adSize="getAdUnit('FT').adSize"
-      />
-    </client-only>
+
+    <ContainerGptAd class="video__ad" pageKey="videohub" adKey="FT" />
+
     <ContainerFullScreenAds />
     <UiStickyAd>
-      <GptAd
-        :adUnit="getAdUnit('ST').adUnit"
-        :adSize="getAdUnit('ST').adSize"
-      />
+      <ContainerGptAd pageKey="videohub" adKey="MB_ST" />
     </UiStickyAd>
   </section>
 </template>
@@ -81,6 +56,7 @@ import dayjs from 'dayjs'
 
 import { SITE_OG_IMG, SITE_URL } from '~/constants/index'
 import { processResponseItems } from '~/utils/youtube'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import UiLinkedItemWithTitle from '~/components/UiLinkedItemWithTitle.vue'
@@ -88,7 +64,6 @@ import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
 import UiYoutubeIframe from '~/components/UiYoutubeIframe.vue'
 import UiYoutubePolicies from '~/components/UiYoutubePolicies.vue'
-import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 export default {
   name: 'Video',
@@ -96,6 +71,7 @@ export default {
     return context.route.query.layout
   },
   components: {
+    ContainerGptAd,
     ContainerFullScreenAds,
     UiStickyAd,
     UiLinkedItemWithTitle,
@@ -126,18 +102,11 @@ export default {
   },
   data() {
     return {
-      videoAdUnits: gptAdUnits.videohub ?? {},
       videoData: {},
       listDataLatest: [],
     }
   },
   computed: {
-    adDevice() {
-      if (this.isApp) {
-        return 'APP'
-      }
-      return this.$ua.isFromPc() ? 'PC' : 'MB'
-    },
     channelId() {
       return this.videoData?.channelId
     },
@@ -153,9 +122,6 @@ export default {
     },
     isApp() {
       return this.$route.query.layout === 'app'
-    },
-    isMobile() {
-      return this.adDevice === 'MB' || this.adDevice === 'APP'
     },
     linkedTarget() {
       if (this.isApp) {
@@ -184,9 +150,6 @@ export default {
         channelId,
       })
       this.listDataLatest = processResponseItems(response)
-    },
-    getAdUnit(position) {
-      return this.videoAdUnits[`${this.adDevice}_${position}`] ?? {}
     },
     getHref(videoId) {
       if (this.isApp) {

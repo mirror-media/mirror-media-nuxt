@@ -11,13 +11,13 @@
         v-text="theFirstItem.title"
       />
     </div>
-    <client-only>
-      <GptAd
-        class="video-iframe-items__ad"
-        :adUnit="ad.adUnit"
-        :adSize="ad.adSize"
-      />
-    </client-only>
+
+    <ContainerGptAd
+      class="video-iframe-items__ad"
+      pageKey="videohub"
+      adKey="HD"
+    />
+
     <slot name="heading" />
     <div class="video-iframe-items__remaining">
       <UiLinkedItemWithTitle
@@ -37,13 +37,14 @@
 <script>
 import UiLinkedItemWithTitle from './UiLinkedItemWithTitle.vue'
 import UiYoutubeIframe from './UiYoutubeIframe.vue'
-import gptAdUnits from '~/constants/gpt-ad-units.js'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 export default {
   name: 'UiVideoIframeWithItems',
   components: {
     UiLinkedItemWithTitle,
     UiYoutubeIframe,
+    ContainerGptAd,
   },
   props: {
     items: {
@@ -55,18 +56,8 @@ export default {
       default: 'bottom',
     },
   },
-  data() {
-    return {
-      videoAdUnits: gptAdUnits.videohub ?? {},
-    }
-  },
+
   computed: {
-    ad() {
-      return this.videoAdUnits[`${this.adDevice}_HD`] ?? {}
-    },
-    adDevice() {
-      return this.$ua.isFromPc() ? 'PC' : 'MB'
-    },
     hasItmes() {
       return this.items.length > 0
     },

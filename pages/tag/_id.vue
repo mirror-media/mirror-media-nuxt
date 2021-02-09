@@ -1,12 +1,7 @@
 <template>
   <section class="section">
-    <client-only>
-      <GptAd
-        class="section__ad"
-        :adUnit="adTop.adUnit"
-        :adSize="adTop.adSize"
-      />
-    </client-only>
+    <ContainerGptAd class="section__ad" pageKey="other" adKey="HD" />
+
     <UiArticleList
       class="section__list"
       :listTitle="tagName"
@@ -17,13 +12,9 @@
         <MicroAd :key="unit.name" :unitId="unit.id" />
       </template>
     </UiArticleList>
-    <client-only>
-      <GptAd
-        class="section__ad"
-        :adUnit="adBottom.adUnit"
-        :adSize="adBottom.adSize"
-      />
-    </client-only>
+
+    <ContainerGptAd class="section__ad" pageKey="other" adKey="FT" />
+
     <UiArticleList
       v-show="showListDataLoadmorePage"
       class="section__list"
@@ -31,10 +22,7 @@
     />
     <UiInfiniteLoading @infinite="infiniteHandler" />
     <UiStickyAd>
-      <GptAd
-        :adUnit="adFixedBottomMobile.adUnit"
-        :adSize="adFixedBottomMobile.adSize"
-      />
+      <ContainerGptAd pageKey="other" adKey="MB_ST" />
     </UiStickyAd>
     <ContainerFullScreenAds />
   </section>
@@ -45,10 +33,10 @@ import _ from 'lodash'
 import MicroAd from '~/components/MicroAd.vue'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import styleVariables from '~/scss/_variables.scss'
-import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
 import { stripHtmlTags, getStoryPath } from '~/utils/article'
@@ -59,6 +47,7 @@ export default {
     MicroAd,
     UiArticleList,
     UiInfiniteLoading,
+    ContainerGptAd,
     ContainerFullScreenAds,
     UiStickyAd,
   },
@@ -108,19 +97,6 @@ export default {
     },
     showListDataLoadmorePage() {
       return this.listDataLoadmorePage.length > 0
-    },
-
-    adDevice() {
-      return this.$ua.isFromPc() ? 'PC' : 'MB'
-    },
-    adTop() {
-      return gptAdUnits.other[`${this.adDevice}_HD`]
-    },
-    adBottom() {
-      return gptAdUnits.other[`${this.adDevice}_FT`]
-    },
-    adFixedBottomMobile() {
-      return gptAdUnits.other.MB_ST ?? {}
     },
   },
   methods: {

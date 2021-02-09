@@ -17,13 +17,9 @@
         @sendGa="handleSendGa"
       />
       <UiVideoSubscriptions class="section__subscriptions" />
-      <client-only>
-        <GptAd
-          class="section__ad"
-          :adUnit="adBottom.adUnit"
-          :adSize="adBottom.adSize"
-        />
-      </client-only>
+
+      <ContainerGptAd class="section__ad" pageKey="videohub" adKey="FT" />
+
       <div class="section__categories-wrapper">
         <UiVideoCategory
           v-for="category in categories"
@@ -38,10 +34,7 @@
     </div>
     <ContainerFullScreenAds />
     <UiStickyAd>
-      <GptAd
-        :adUnit="videoAdUnits.MB_ST.adUnit"
-        :adSize="videoAdUnits.MB_ST.adSize"
-      />
+      <ContainerGptAd pageKey="videohub" adKey="MB_ST" />
     </UiStickyAd>
   </section>
 </template>
@@ -55,6 +48,7 @@ import {
   VIDEOHUB_CATEGORIES_PLAYLIST_MAPPING as PLAYLIST_MAPPING,
 } from '~/constants/index'
 import { processResponseItems } from '~/utils/youtube'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import UiVideoCategory from '~/components/UiVideoCategory.vue'
@@ -62,13 +56,13 @@ import UiVideoIframeWithItems from '~/components/UiVideoIframeWithItems.vue'
 import UiVideoPopular from '~/components/UiVideoPopular.vue'
 import UiVideoSubscriptions from '~/components/UiVideoSubscriptions.vue'
 import UiYoutubePolicies from '~/components/UiYoutubePolicies.vue'
-import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 const INVERTED_PLAYLIST_MAPPING = _.invert(PLAYLIST_MAPPING)
 
 export default {
   name: 'SectionVideohub',
   components: {
+    ContainerGptAd,
     ContainerFullScreenAds,
     UiStickyAd,
     UiVideoCategory,
@@ -86,7 +80,6 @@ export default {
       latestData: [],
       popularData: [],
       categoriesPlaylistData: {},
-      videoAdUnits: gptAdUnits.videohub ?? {},
     }
   },
   computed: {
@@ -95,12 +88,6 @@ export default {
         return state.sections.data.items.find(this.isThisSection) ?? {}
       },
     }),
-    adBottom() {
-      return this.videoAdUnits[`${this.adDevice}_FT`] ?? {}
-    },
-    adDevice() {
-      return this.$ua.isFromPc() ? 'PC' : 'MB'
-    },
     categories() {
       return this.section.categories ?? []
     },

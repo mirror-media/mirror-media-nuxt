@@ -1,12 +1,7 @@
 <template>
   <section class="section">
-    <client-only>
-      <GptAd
-        class="section__ad"
-        :adUnit="adTop.adUnit"
-        :adSize="adTop.adSize"
-      />
-    </client-only>
+    <ContainerGptAd class="section__ad" :pageKey="sectionId" adKey="HD" />
+
     <UiArticleList
       class="section__list"
       :listTitle="categoryTitle"
@@ -17,13 +12,9 @@
         <MicroAd :key="unit.name" :unitId="unit.id" />
       </template>
     </UiArticleList>
-    <client-only>
-      <GptAd
-        class="section__ad"
-        :adUnit="adBottom.adUnit"
-        :adSize="adBottom.adSize"
-      />
-    </client-only>
+
+    <ContainerGptAd class="section__ad" :pageKey="sectionId" adKey="FT" />
+
     <UiArticleList
       v-show="showListDataLoadmorePage"
       class="section__list"
@@ -34,10 +25,7 @@
     <UiWineWarning v-if="isCategoryWine" />
 
     <UiStickyAd v-if="!isCategoryWine">
-      <GptAd
-        :adUnit="adFixedBottomMobile.adUnit"
-        :adSize="adFixedBottomMobile.adSize"
-      />
+      <ContainerGptAd :pageKey="sectionId" adKey="MB_ST" />
     </UiStickyAd>
 
     <ContainerFullScreenAds v-if="!isCategoryWine" />
@@ -51,11 +39,11 @@ import MicroAd from '~/components/MicroAd.vue'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
 import styleVariables from '~/scss/_variables.scss'
-import gptAdUnits from '~/constants/gpt-ad-units.js'
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_URL } from '~/constants'
 import { stripHtmlTags, getStoryPath } from '~/utils/article'
@@ -67,6 +55,7 @@ export default {
     UiArticleList,
     UiInfiniteLoading,
     UiWineWarning,
+    ContainerGptAd,
     ContainerFullScreenAds,
     UiStickyAd,
   },
@@ -149,19 +138,6 @@ export default {
     },
     showListDataLoadmorePage() {
       return this.listDataLoadmorePage.length > 0
-    },
-
-    adDevice() {
-      return this.$ua.isFromPc() ? 'PC' : 'MB'
-    },
-    adTop() {
-      return gptAdUnits?.[this.sectionId]?.[`${this.adDevice}_HD`] ?? {}
-    },
-    adBottom() {
-      return gptAdUnits?.[this.sectionId]?.[`${this.adDevice}_FT`] ?? {}
-    },
-    adFixedBottomMobile() {
-      return gptAdUnits?.[this.sectionId]?.['MB_ST'] ?? {}
     },
   },
   methods: {

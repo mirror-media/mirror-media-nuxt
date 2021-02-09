@@ -4,16 +4,7 @@ import UiYoutubeIframe from '../UiYoutubeIframe.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
-const createWrapper = createWrapperHelper({
-  mocks: {
-    $ua: {
-      isFromPc() {
-        return true
-      },
-    },
-  },
-  stubs: ['client-only', 'GptAd'],
-})
+const createWrapper = createWrapperHelper()
 
 describe('the first item link', () => {
   test('should have proper link href', () => {

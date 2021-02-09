@@ -19,13 +19,7 @@ const createWrapper = createWrapperHelper({
         name: '',
       },
     },
-    $ua: {
-      isFromPc() {
-        return true
-      },
-    },
   },
-  stubs: ['client-only', 'GptAd'],
 })
 
 describe('section data', () => {

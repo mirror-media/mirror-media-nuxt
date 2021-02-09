@@ -2,16 +2,7 @@ import page from '../section/topic.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import { SITE_TITLE } from '~/constants'
 
-const createWrapper = createWrapperHelper({
-  mocks: {
-    $ua: {
-      isFromPc() {
-        return true
-      },
-    },
-  },
-  stubs: ['client-only', 'GptAd'],
-})
+const createWrapper = createWrapperHelper()
 
 describe('component methods', () => {
   test('setListData when brief property exist in response', () => {
