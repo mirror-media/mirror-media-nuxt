@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="tag">
     <ContainerTwoLists
       :fetchList="fetchList"
       :transformListItemContent="transformListItemContent"
@@ -29,7 +29,7 @@ export default {
   },
 
   async fetch() {
-    const tagResponse = await this.$fetchTag(this.currentTagId)
+    const tagResponse = await this.$fetchTag(this.tagId)
     this.setTagName(tagResponse)
   },
   data() {
@@ -38,7 +38,7 @@ export default {
     }
   },
   computed: {
-    currentTagId() {
+    tagId() {
       return this.$route.params.id
     },
   },
@@ -51,7 +51,7 @@ export default {
       return await this.$fetchList({
         maxResults: 9,
         sort: '-publishedDate',
-        tags: [this.currentTagId],
+        tags: [this.tagId],
         page,
       })
     },
@@ -78,7 +78,7 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: `${SITE_URL}/tag/${this.$route.params.id}`,
+          content: `${SITE_URL}/tag/${this.tagId}`,
         },
       ],
     }

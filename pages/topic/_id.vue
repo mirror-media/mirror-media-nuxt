@@ -1,5 +1,5 @@
 <template>
-  <section class="topic-_id">
+  <section class="topic">
     <UiTopicCover :type="coverType" :imgItems="topicImgs.items" />
 
     <ContainerList

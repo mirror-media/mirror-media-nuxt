@@ -3,13 +3,13 @@
     <ContainerTwoLists
       :fetchList="fetchList"
       :transformListItemContent="transformListItemContent"
-      :gptAdPageKey="currentSectionId"
-      :listTitle="currentSectionTitle"
-      :listTitleColor="currentSectionThemeColor"
+      :gptAdPageKey="sectionId"
+      :listTitle="sectionTitle"
+      :listTitleColor="sectionThemeColor"
       :shouldMountMicroAds="!isSectionMember"
     />
 
-    <UiStickyAd :pageKey="currentSectionId" />
+    <UiStickyAd :pageKey="sectionId" />
     <ContainerFullScreenAds v-if="!isSectionMember" />
   </section>
 </template>
@@ -36,28 +36,26 @@ export default {
     ...mapState({
       sections: (state) => state.sections.data.items ?? [],
     }),
-    currentSectionName() {
+    sectionName() {
       return this.$route.params.name
     },
-    currentSectionData() {
+    sectionData() {
       return (
-        this.sections.find(
-          (section) => section.name === this.currentSectionName
-        ) ?? {}
+        this.sections.find((section) => section.name === this.sectionName) ?? {}
       )
     },
-    currentSectionId() {
-      return this.currentSectionData.id
+    sectionId() {
+      return this.sectionData.id
     },
-    currentSectionTitle() {
-      return this.currentSectionData.title
+    sectionTitle() {
+      return this.sectionData.title
     },
-    currentSectionThemeColor() {
-      const key = `section-color-${this.currentSectionName}`
+    sectionThemeColor() {
+      const key = `section-color-${this.sectionName}`
       return styleVariables[key]
     },
     isSectionMember() {
-      return this.currentSectionName === 'member'
+      return this.sectionName === 'member'
     },
   },
 
@@ -66,21 +64,21 @@ export default {
       return await this.$fetchList({
         maxResults: 9,
         sort: '-publishedDate',
-        sections: [this.currentSectionId],
+        sections: [this.sectionId],
         page,
       })
     },
     transformListItemContent() {
       return {
-        imgText: this.currentSectionTitle,
-        imgTextBackgroundColor: this.currentSectionThemeColor,
+        imgText: this.sectionTitle,
+        imgTextBackgroundColor: this.sectionThemeColor,
       }
     },
   },
 
   head() {
-    const title = `${this.currentSectionTitle} - ${SITE_TITLE}`
-    const description = this.currentSectionData?.description || SITE_DESCRIPTION
+    const title = `${this.sectionTitle} - ${SITE_TITLE}`
+    const description = this.sectionData?.description || SITE_DESCRIPTION
 
     return {
       title,
@@ -103,12 +101,12 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: `${SITE_URL}/section/${this.$route.params.name}`,
+          content: `${SITE_URL}/section/${this.sectionName}`,
         },
         {
           hid: 'section-name',
           name: 'section-name',
-          content: this.currentSectionName,
+          content: this.sectionName,
         },
       ],
     }

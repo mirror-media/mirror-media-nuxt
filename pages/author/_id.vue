@@ -1,5 +1,5 @@
 <template>
-  <section class="author-_id">
+  <section class="author">
     <ContainerTwoLists
       :fetchList="fetchList"
       :transformListItemContent="transformListItemContent"
@@ -39,7 +39,7 @@ export default {
     }
   },
   computed: {
-    currentAuthorId() {
+    authorId() {
       return this.$route.params.id
     },
   },
@@ -49,11 +49,11 @@ export default {
         maxResults: 9,
         sort: '-publishedDate',
         $or: [
-          { writers: this.currentAuthorId },
-          { photographers: this.currentAuthorId },
-          { camera_man: this.currentAuthorId },
-          { designers: this.currentAuthorId },
-          { engineers: this.currentAuthorId },
+          { writers: this.authorId },
+          { photographers: this.authorId },
+          { camera_man: this.authorId },
+          { designers: this.authorId },
+          { engineers: this.authorId },
         ],
         page,
       })
@@ -69,12 +69,12 @@ export default {
 
     async fetchAuthor() {
       const response = await this.$fetchContacts({
-        id: this.currentAuthorId,
+        id: this.authorId,
       })
       return response
     },
     setAuthorName(response = {}) {
-      this.authorName = (response.items ?? [])[0]?.name
+      this.authorName = response.items?.[0]?.name
     },
   },
   head() {
@@ -90,7 +90,7 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: `${SITE_URL}/author/${this.$route.params.id}`,
+          content: `${SITE_URL}/author/${this.authorId}`,
         },
       ],
     }

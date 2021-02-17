@@ -1,7 +1,7 @@
 <template>
-  <section class="section">
-    <h1 class="section__title" v-text="currentKeyword" />
-    <UiArticleList class="section__list" :listData="listData" />
+  <section class="search">
+    <h1 class="search__title" v-text="keyword" />
+    <UiArticleList class="search__list" :listData="listData" />
     <UiInfiniteLoading @infinite="infiniteHandler" />
   </section>
 </template>
@@ -35,7 +35,7 @@ export default {
     }
   },
   computed: {
-    currentKeyword() {
+    keyword() {
       return this.$route.params.keyword
     },
     ...mapState({
@@ -86,7 +86,7 @@ export default {
     async fetchSearchListing({ page = 1 } = {}) {
       const response = await this.$fetchSearch({
         maxResults: this.listDataMaxResults,
-        keywords: this.currentKeyword,
+        keywords: this.keyword,
 
         // add a section property conditonally
         ...(this.sectionQueryTitle && {
@@ -126,7 +126,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.section {
+.search {
   background-color: white;
   padding: 36px 0;
   @include media-breakpoint-up(md) {
