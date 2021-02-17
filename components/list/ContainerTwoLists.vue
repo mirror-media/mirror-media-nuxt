@@ -111,6 +111,7 @@ export default {
 .two-lists {
   background-color: #f2f2f2;
   padding: 36px 0;
+  overflow: hidden;
   @include media-breakpoint-up(md) {
     padding: 36px 25px 72px 25px;
   }
