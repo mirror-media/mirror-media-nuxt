@@ -1,5 +1,4 @@
 import page from '../section/_name.vue'
-import UiArticleList from '~/components/UiArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import { SITE_TITLE, SITE_DESCRIPTION } from '~/constants'
 
@@ -20,42 +19,6 @@ const createWrapper = createWrapperHelper({
       },
     },
   },
-})
-
-describe('section data', () => {
-  test('should get proper section properties from store by route params', () => {
-    const sectionNameMock = 'test-name'
-    const sectionIdMock = 'test-id'
-    const sectionTitleMock = 'test-title'
-    const sectionStoreMock = {
-      data: {
-        items: [
-          {
-            name: sectionNameMock,
-            id: sectionIdMock,
-            title: sectionTitleMock,
-          },
-        ],
-      },
-    }
-    const wrapper = createWrapper(page, {
-      mocks: {
-        $route: {
-          params: {
-            name: sectionNameMock,
-          },
-        },
-        $store: {
-          state: {
-            sections: sectionStoreMock,
-          },
-        },
-      },
-    })
-    const list = wrapper.findComponent(UiArticleList)
-    expect(wrapper.vm.currentSectionId).toBe(sectionIdMock)
-    expect(list.props().listTitle).toBe(sectionTitleMock)
-  })
 })
 
 describe('meta', function () {
