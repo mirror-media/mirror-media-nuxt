@@ -2,7 +2,6 @@
   <section class="tag">
     <ContainerTwoLists
       :fetchList="fetchList"
-      :transformListItemContent="transformListItemContent"
       :listTitle="tagName"
       listTitleColor="#bcbcbc"
     />
@@ -18,7 +17,6 @@ import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
 import { SITE_TITLE, SITE_URL } from '~/constants'
-import { getSectionColor } from '~/utils/index.js'
 
 export default {
   name: 'Tag',
@@ -54,15 +52,6 @@ export default {
         tags: [this.tagId],
         page,
       })
-    },
-
-    transformListItemContent(item = {}) {
-      const section = item.sections?.[0] || {}
-
-      return {
-        imgText: section.title ?? '',
-        imgTextBackgroundColor: getSectionColor(section.name),
-      }
     },
   },
   head() {

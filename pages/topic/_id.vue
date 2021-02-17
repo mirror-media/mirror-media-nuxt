@@ -2,10 +2,7 @@
   <section class="topic">
     <UiTopicCover :type="coverType" :imgItems="topicImgs.items" />
 
-    <ContainerList
-      :fetchList="fetchList"
-      :transformListItemContent="transformListItemContent"
-    />
+    <ContainerList :fetchList="fetchList" />
 
     <UiWineWarning v-if="isTopicWine" />
   </section>
@@ -15,8 +12,6 @@
 import ContainerList from '~/components/list/ContainerList.vue'
 import UiTopicCover from '~/components/topic/UiTopicCover.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
-
-import { getSectionColor } from '~/utils/index.js'
 
 const TOPIC_IDS_WINE = [
   '5c25f9e3315ec51000903a82',
@@ -82,14 +77,6 @@ export default {
         topics: [this.topicId],
         page,
       })
-    },
-    transformListItemContent(item = {}) {
-      const section = item.sections?.[0] || {}
-
-      return {
-        imgText: section.title ?? '',
-        imgTextBackgroundColor: getSectionColor(section.name),
-      }
     },
 
     async loadTopicImgsInitial() {

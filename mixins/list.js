@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { getSectionColor } from '~/utils/index.js'
 import { stripHtmlTags, getStoryPath } from '~/utils/article.js'
 
 function processList({
@@ -69,16 +70,17 @@ function processList({
       },
       $_processList_transformListItemContent(item = {}) {
         item = item || {}
+        const section = item.sections?.[0] || {}
 
         return {
           id: item.id,
           href: getStoryPath(item),
           imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
-          imgText: undefined,
-          imgTextBackgroundColor: undefined,
+          imgText: section.title ?? '',
+          imgTextBackgroundColor: getSectionColor(section.name),
           infoTitle: item.title ?? '',
           infoDescription: stripHtmlTags(item.brief?.html ?? ''),
-          ...transformListItemContent.call(this, item),
+          ...transformListItemContent?.call(this, item),
         }
       },
 

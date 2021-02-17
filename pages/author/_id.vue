@@ -2,7 +2,6 @@
   <section class="author">
     <ContainerTwoLists
       :fetchList="fetchList"
-      :transformListItemContent="transformListItemContent"
       :listTitle="authorName"
       listTitleColor="#bcbcbc"
     />
@@ -19,7 +18,6 @@ import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
 import { SITE_TITLE, SITE_URL } from '~/constants'
-import { getSectionColor } from '~/utils/index.js'
 
 export default {
   name: 'Author',
@@ -57,14 +55,6 @@ export default {
         ],
         page,
       })
-    },
-    transformListItemContent(item) {
-      const section = item.sections?.[0] || {}
-
-      return {
-        imgText: section.title ?? '',
-        imgTextBackgroundColor: getSectionColor(section.name),
-      }
     },
 
     async fetchAuthor() {

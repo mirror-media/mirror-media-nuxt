@@ -55,7 +55,7 @@ export default {
       },
 
       transformListItemContent(item) {
-        return this.transformListItemContent(item)
+        return this.transformListItemContent?.(item) || {}
       },
     }),
   ],
