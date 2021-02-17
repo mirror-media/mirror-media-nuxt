@@ -91,11 +91,6 @@ export default {
           content: title,
         },
         {
-          hid: 'twitter:title',
-          name: 'twitter:title',
-          content: title,
-        },
-        {
           hid: 'description',
           name: 'description',
           content: description,
@@ -103,11 +98,6 @@ export default {
         {
           hid: 'og:description',
           name: 'og:description',
-          content: description,
-        },
-        {
-          hid: 'twitter:description',
-          name: 'twitter:description',
           content: description,
         },
         {

@@ -57,11 +57,6 @@ export default {
           content: title,
         },
         {
-          hid: 'twitter:title',
-          name: 'twitter:title',
-          content: title,
-        },
-        {
           hid: 'og:url',
           property: 'og:url',
           content: `${SITE_URL}/section/topic`,

@@ -12,7 +12,7 @@ describe('meta', function () {
     const metaResults = head()
 
     // titles
-    const titleMetas = ['og:title', 'twitter:title']
+    const titleMetas = ['og:title']
     const titleExpected = `Topic - ${SITE_TITLE}`
     expect(metaResults.title).toBe(titleExpected)
     titleMetas.forEach(function assertion(metaName) {

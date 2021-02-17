@@ -57,7 +57,7 @@ describe('meta', function () {
     const metaResults = head()
 
     // titles
-    const titleMetas = ['og:title', 'twitter:title']
+    const titleMetas = ['og:title']
     const titleExpected = `${sectionTitleMock} - ${SITE_TITLE}`
     expect(metaResults.title).toBe(titleExpected)
     titleMetas.forEach(function assertion(metaName) {
@@ -66,11 +66,7 @@ describe('meta', function () {
     })
 
     // descriptions
-    const descriptionMetas = [
-      'description',
-      'og:description',
-      'twitter:description',
-    ]
+    const descriptionMetas = ['description', 'og:description']
     descriptionMetas.forEach(function assertion(metaName) {
       const metaObject = metaResults.meta.find((d) => d.hid === metaName)
       expect(metaObject.content).toBe(sectionDescriptionMock)
@@ -118,11 +114,7 @@ describe('meta', function () {
     const metaResults = head()
 
     // descriptions
-    const descriptionMetas = [
-      'description',
-      'og:description',
-      'twitter:description',
-    ]
+    const descriptionMetas = ['description', 'og:description']
     descriptionMetas.forEach(function assertion(metaName) {
       const metaObject = metaResults.meta.find((d) => d.hid === metaName)
       expect(metaObject.content).toBe(SITE_DESCRIPTION)
