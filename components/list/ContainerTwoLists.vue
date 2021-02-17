@@ -87,16 +87,20 @@ export default {
       type: String,
       default: '#000',
     },
+    shouldMountMicroAds: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   async fetch() {
     await this.initList()
   },
 
-  data() {
-    return {
-      microAdUnits: MICRO_AD_UNITS.LISTING.RWD,
-    }
+  computed: {
+    microAdUnits() {
+      return this.shouldMountMicroAds ? MICRO_AD_UNITS.LISTING.RWD : []
+    },
   },
 }
 </script>
