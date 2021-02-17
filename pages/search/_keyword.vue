@@ -11,7 +11,8 @@ import { mapState } from 'vuex'
 import _ from 'lodash'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
-import styleVariables from '~/scss/_variables.scss'
+
+import { getSectionColor } from '~/utils/index.js'
 import { stripHtmlTags, getStoryPath } from '~/utils/article'
 
 export default {
@@ -77,8 +78,7 @@ export default {
         href: getStoryPath(item),
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: (item.sections ?? [])[0]?.title,
-        imgTextBackgroundColor:
-          styleVariables[`section-color-${this.getFirstSectionName(item)}`],
+        imgTextBackgroundColor: getSectionColor(this.getFirstSectionName(item)),
         infoTitle: item.title ?? '',
         infoDescription: stripHtmlTags(item.brief ?? ''),
       }

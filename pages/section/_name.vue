@@ -21,8 +21,8 @@ import ContainerTwoLists from '~/components/list/ContainerTwoLists.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
-import styleVariables from '~/scss/_variables.scss'
 import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '~/constants'
+import { getSectionColor } from '~/utils/index.js'
 
 export default {
   name: 'Section',
@@ -51,8 +51,7 @@ export default {
       return this.sectionData.title
     },
     sectionThemeColor() {
-      const key = `section-color-${this.sectionName}`
-      return styleVariables[key]
+      return getSectionColor(this.sectionName)
     },
     isSectionMember() {
       return this.sectionName === 'member'

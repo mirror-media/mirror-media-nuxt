@@ -16,7 +16,7 @@ import ContainerList from '~/components/list/ContainerList.vue'
 import UiTopicCover from '~/components/topic/UiTopicCover.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 
-import styleVariables from '~/scss/_variables.scss'
+import { getSectionColor } from '~/utils/index.js'
 
 const TOPIC_IDS_WINE = [
   '5c25f9e3315ec51000903a82',
@@ -88,7 +88,7 @@ export default {
 
       return {
         imgText: section.title ?? '',
-        imgTextBackgroundColor: styleVariables[`section-color-${section.name}`],
+        imgTextBackgroundColor: getSectionColor(section.name),
       }
     },
 

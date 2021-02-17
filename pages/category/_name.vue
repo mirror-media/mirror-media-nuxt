@@ -24,8 +24,8 @@ import UiWineWarning from '~/components/UiWineWarning.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
-import styleVariables from '~/scss/_variables.scss'
 import { SITE_TITLE, SITE_URL } from '~/constants'
+import { getSectionColor } from '~/utils/index.js'
 
 export default {
   name: 'Category',
@@ -48,8 +48,7 @@ export default {
       return this.sectionData.name
     },
     sectionThemeColor() {
-      const key = `section-color-${this.sectionName}`
-      return styleVariables[key]
+      return getSectionColor(this.sectionName)
     },
     sectionId() {
       return this.sectionData.id

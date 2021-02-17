@@ -223,7 +223,7 @@ describe('component methods', () => {
         href: `/story/${slugMock}`,
         imgSrc: imageUrlMock,
         imgText: sectionTitleMock,
-        imgTextBackgroundColor: undefined, // value from scss variable not available in jest
+        imgTextBackgroundColor: '#bcbcbc', // value from scss variable not available in jest
         infoTitle: titleMock,
         infoDescription: briefMock,
       },

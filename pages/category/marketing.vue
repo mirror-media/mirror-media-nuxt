@@ -43,7 +43,7 @@ import {
   CATEGORY_ID_MARKETING,
 } from '~/constants/index.js'
 import { stripHtmlTags, getStoryPath } from '~/utils/article.js'
-import styleVariables from '~/scss/_variables.scss'
+import { getSectionColor } from '~/utils/index.js'
 
 export default {
   name: 'Category',
@@ -124,8 +124,7 @@ export default {
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: section?.title ?? categories?.[0]?.title ?? this.categoryTitle,
         imgTextBackgroundColor:
-          styleVariables[`section-color-${section?.name}`] ||
-          this.sectionThemeColor,
+          getSectionColor(section?.name) || this.sectionThemeColor,
         infoTitle: item.title ?? '',
         infoDescription: stripHtmlTags(item.brief?.html ?? ''),
       }

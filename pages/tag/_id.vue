@@ -17,8 +17,8 @@ import ContainerTwoLists from '~/components/list/ContainerTwoLists.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
-import styleVariables from '~/scss/_variables.scss'
 import { SITE_TITLE, SITE_URL } from '~/constants'
+import { getSectionColor } from '~/utils/index.js'
 
 export default {
   name: 'Tag',
@@ -61,7 +61,7 @@ export default {
 
       return {
         imgText: section.title ?? '',
-        imgTextBackgroundColor: styleVariables[`section-color-${section.name}`],
+        imgTextBackgroundColor: getSectionColor(section.name),
       }
     },
   },

@@ -43,9 +43,10 @@ import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
-import styleVariables from '~/scss/_variables.scss'
+
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '~/constants'
+import { getSectionColor } from '~/utils/index.js'
 
 export default {
   name: 'Externals',
@@ -69,15 +70,13 @@ export default {
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
+
+      currentSectionThemeColor: getSectionColor('external'),
     }
   },
   computed: {
     currentSectionId() {
       return 'other'
-    },
-    currentSectionThemeColor() {
-      const key = 'section-color-external'
-      return styleVariables[key]
     },
     partnerName() {
       return this.$route.params.name
