@@ -5,7 +5,7 @@
       :transformListItemContent="transformListItemContent"
       :gptAdPageKey="sectionId"
       :listTitle="sectionTitle"
-      :listTitleColor="sectionThemeColor"
+      :listTitleColor="sectionColor"
       :shouldMountMicroAds="!isSectionMember"
     />
 
@@ -50,7 +50,7 @@ export default {
     sectionTitle() {
       return this.sectionData.title
     },
-    sectionThemeColor() {
+    sectionColor() {
       return getSectionColor(this.sectionName)
     },
     isSectionMember() {
@@ -70,14 +70,14 @@ export default {
     transformListItemContent() {
       return {
         imgText: this.sectionTitle,
-        imgTextBackgroundColor: this.sectionThemeColor,
+        imgTextBackgroundColor: this.sectionColor,
       }
     },
   },
 
   head() {
     const title = `${this.sectionTitle} - ${SITE_TITLE}`
-    const description = this.sectionData?.description || SITE_DESCRIPTION
+    const description = this.sectionData.description || SITE_DESCRIPTION
 
     return {
       title,

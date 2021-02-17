@@ -5,7 +5,7 @@
       :transformListItemContent="transformListItemContent"
       :gptAdPageKey="sectionId"
       :listTitle="categoryTitle"
-      :listTitleColor="sectionThemeColor"
+      :listTitleColor="sectionColor"
     />
 
     <UiWineWarning v-if="isCategoryWine" />
@@ -47,7 +47,7 @@ export default {
     sectionName() {
       return this.sectionData.name
     },
-    sectionThemeColor() {
+    sectionColor() {
       return getSectionColor(this.sectionName)
     },
     sectionId() {
@@ -90,7 +90,7 @@ export default {
     transformListItemContent() {
       return {
         imgText: this.sectionTitle,
-        imgTextBackgroundColor: this.sectionThemeColor,
+        imgTextBackgroundColor: this.sectionColor,
       }
     },
   },
@@ -108,7 +108,7 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: `${SITE_URL}/category/${this.$route.params.name}`,
+          content: `${SITE_URL}/category/${this.categoryName}`,
         },
         {
           hid: 'section-name',
