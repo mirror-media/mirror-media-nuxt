@@ -86,6 +86,8 @@ export default function fetchListAndLoadmore({
       $_processList_transformListItemContent(item = {}) {
         item = item || {}
         const section = item.sections?.[0] || {}
+        const brief =
+          (typeof item.brief === 'string' ? item.brief : item.brief?.html) ?? ''
 
         return {
           id: item.id,
@@ -94,7 +96,7 @@ export default function fetchListAndLoadmore({
           imgText: section.title ?? '',
           imgTextBackgroundColor: getSectionColor(section.name),
           infoTitle: item.title ?? '',
-          infoDescription: stripHtmlTags(item.brief?.html ?? ''),
+          infoDescription: stripHtmlTags(brief),
           ...transformListItemContent?.call(this, item),
         }
       },

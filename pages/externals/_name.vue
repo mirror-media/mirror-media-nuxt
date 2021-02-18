@@ -22,7 +22,6 @@ import UiStickyAd from '~/components/UiStickyAd.vue'
 
 import { SITE_TITLE, SITE_URL } from '~/constants'
 import { getSectionColor } from '~/utils/index.js'
-import { stripHtmlTags } from '~/utils/article.js'
 
 export default {
   name: 'Externals',
@@ -74,7 +73,6 @@ export default {
         imgSrc: item.thumb,
         imgText: '合作媒體',
         imgTextBackgroundColor: '#fd9b18',
-        infoDescription: stripHtmlTags(item.brief ?? ''),
       }
     },
   },

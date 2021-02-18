@@ -15,8 +15,6 @@ import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 
 import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore.js'
 
-import { stripHtmlTags } from '~/utils/article'
-
 const LIST_MAX_RESULTS = 9
 
 export default {
@@ -57,7 +55,6 @@ export default {
       transformListItemContent(item = {}) {
         return {
           id: item.objectID,
-          infoDescription: stripHtmlTags(item.brief ?? ''),
         }
       },
     }),
