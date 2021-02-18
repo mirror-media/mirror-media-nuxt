@@ -1,6 +1,6 @@
 <template>
   <section class="tag">
-    <ContainerTwoLists
+    <ContainerList
       :fetchList="fetchList"
       :listTitle="tagName"
       listTitleColor="#bcbcbc"
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import ContainerTwoLists from '~/components/list/ContainerTwoLists.vue'
+import ContainerList from '~/components/ContainerList.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
@@ -21,7 +21,7 @@ import { SITE_TITLE, SITE_URL } from '~/constants'
 export default {
   name: 'Tag',
   components: {
-    ContainerTwoLists,
+    ContainerList,
     ContainerFullScreenAds,
     UiStickyAd,
   },

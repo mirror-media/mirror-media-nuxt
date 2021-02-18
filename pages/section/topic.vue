@@ -1,6 +1,6 @@
 <template>
   <section class="section-topic">
-    <ContainerTwoLists
+    <ContainerList
       :fetchList="fetchList"
       :transformListItemContent="transformListItemContent"
       listTitle="Topic"
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import ContainerTwoLists from '~/components/list/ContainerTwoLists.vue'
+import ContainerList from '~/components/ContainerList.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
@@ -23,7 +23,7 @@ import { stripHtmlTags } from '~/utils/article.js'
 export default {
   name: 'SectionTopic',
   components: {
-    ContainerTwoLists,
+    ContainerList,
     ContainerFullScreenAds,
     UiStickyAd,
   },

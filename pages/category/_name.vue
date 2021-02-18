@@ -1,6 +1,6 @@
 <template>
   <section class="category-_name">
-    <ContainerTwoLists
+    <ContainerList
       :fetchList="fetchList"
       :transformListItemContent="transformListItemContent"
       :gptAdPageKey="sectionId"
@@ -19,7 +19,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import ContainerTwoLists from '~/components/list/ContainerTwoLists.vue'
+import ContainerList from '~/components/ContainerList.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
@@ -30,7 +30,7 @@ import { getSectionColor } from '~/utils/index.js'
 export default {
   name: 'Category',
   components: {
-    ContainerTwoLists,
+    ContainerList,
     UiWineWarning,
     ContainerFullScreenAds,
     UiStickyAd,

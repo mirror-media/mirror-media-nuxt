@@ -1,9 +1,9 @@
 <template>
-  <div class="two-lists">
-    <ContainerGptAd class="two-lists__ad" :pageKey="gptAdPageKey" adKey="HD" />
+  <div class="list">
+    <ContainerGptAd class="ad" :pageKey="gptAdPageKey" adKey="HD" />
 
     <UiArticleList
-      class="two-lists__list"
+      class="article-list"
       :listTitle="listTitle"
       :listTitleColor="listTitleColor"
       :listData="listItemsInFirstPage"
@@ -13,13 +13,10 @@
       </template>
     </UiArticleList>
 
-    <ContainerGptAd class="two-lists__ad" :pageKey="gptAdPageKey" adKey="FT" />
+    <ContainerGptAd class="ad" :pageKey="gptAdPageKey" adKey="FT" />
 
     <template v-if="shouldLoadmore">
-      <UiArticleList
-        class="two-lists__list"
-        :listData="listItemsInLoadmorePage"
-      />
+      <UiArticleList class="article-list" :listData="listItemsInLoadmorePage" />
       <UiInfiniteLoading @infinite="infiniteHandler" />
     </template>
   </div>
@@ -36,7 +33,7 @@ import { MICRO_AD_UNITS } from '~/constants/ads.js'
 import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore.js'
 
 export default {
-  name: 'ContainerTwoLists',
+  name: 'ContainerList',
 
   components: {
     UiArticleList,
@@ -116,7 +113,7 @@ export default {
 <style lang="scss" scoped>
 @import '~/css/micro-ad/listing.scss';
 
-.two-lists {
+.list {
   background-color: #f2f2f2;
   padding: 36px 0;
   overflow: hidden;
@@ -128,15 +125,15 @@ export default {
     padding: 0;
     margin: 0 auto;
   }
+}
 
-  &__ad {
-    margin: 20px auto;
-  }
+.ad {
+  margin: 20px auto;
+}
 
-  &__list {
-    @include media-breakpoint-up(md) {
-      margin: 8px 0 0 0;
-    }
+.article-list {
+  @include media-breakpoint-up(md) {
+    margin: 8px 0 0 0;
   }
 }
 </style>

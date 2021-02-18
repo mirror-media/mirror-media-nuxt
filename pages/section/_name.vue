@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <ContainerTwoLists
+    <ContainerList
       :fetchList="fetchList"
       :transformListItemContent="transformListItemContent"
       :gptAdPageKey="sectionId"
@@ -17,7 +17,7 @@
 <script>
 import { mapState } from 'vuex'
 
-import ContainerTwoLists from '~/components/list/ContainerTwoLists.vue'
+import ContainerList from '~/components/ContainerList.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
@@ -27,7 +27,7 @@ import { getSectionColor } from '~/utils/index.js'
 export default {
   name: 'Section',
   components: {
-    ContainerTwoLists,
+    ContainerList,
     ContainerFullScreenAds,
     UiStickyAd,
   },
