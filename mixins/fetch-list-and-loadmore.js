@@ -94,9 +94,10 @@ export default function fetchListAndLoadmore({
           href: getStoryPath(item),
           imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
           imgText: section.title ?? '',
-          imgTextBackgroundColor: getSectionColor(section.name),
+          imgTextBackgroundColor: section.name && getSectionColor(section.name),
           infoTitle: item.title ?? '',
           infoDescription: stripHtmlTags(brief),
+
           ...transformListItemContent?.call(this, item),
         }
       },
