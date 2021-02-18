@@ -23,11 +23,11 @@
         class="section__remaining-item"
         @click="handleClick"
       />
-      <client-only>
-        <div class="section__ad dfp-ft">
-          <GptAd :adUnit="adBottom.adUnit" :adSize="adBottom.adSize" />
-        </div>
-      </client-only>
+
+      <div class="section__ad dfp-ft">
+        <ContainerGptAd pageKey="videohub" adKey="FT" />
+      </div>
+
       <UiLinkedItemWithTitle
         v-for="item in remainingItemsAfterMobileAdBeforeDesktopAd"
         :key="item.videoId"
@@ -54,13 +54,9 @@
       v-if="shouldMountInfiniteLoading"
       @infinite="infiniteHandler"
     />
+
+    <UiStickyAd pageKey="videohub" />
     <ContainerFullScreenAds />
-    <UiStickyAd>
-      <GptAd
-        :adUnit="videoAdUnits.MB_ST.adUnit"
-        :adSize="videoAdUnits.MB_ST.adSize"
-      />
-    </UiStickyAd>
   </section>
 </template>
 
@@ -72,13 +68,13 @@ import {
   VIDEOHUB_CATEGORIES_PLAYLIST_MAPPING as PLAYLIST_MAPPING,
 } from '~/constants/index'
 import { processResponseItems } from '~/utils/youtube'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import UiLinkedItemWithTitle from '~/components/UiLinkedItemWithTitle.vue'
 import UiVideoIframeWithItems from '~/components/UiVideoIframeWithItems.vue'
 import UiYoutubePolicies from '~/components/UiYoutubePolicies.vue'
-import gptAdUnits from '~/constants/gpt-ad-units.js'
 
 const VIDEO_CATEGORIES_NAME = Object.keys(PLAYLIST_MAPPING)
 const MAX_RESULTS = 25
@@ -86,6 +82,7 @@ const MAX_RESULTS = 25
 export default {
   name: 'VideoCategory',
   components: {
+    ContainerGptAd,
     ContainerFullScreenAds,
     UiStickyAd,
     UiInfiniteLoading,
@@ -103,7 +100,6 @@ export default {
       VIDEO_CATEGORIES_NAME,
       nextPageToken: '',
       playlistItems: [],
-      videoAdUnits: gptAdUnits.videohub ?? {},
     }
   },
   computed: {
@@ -112,12 +108,6 @@ export default {
         state.sections.data.items.find((section) => section.name === 'videohub')
           ?.categories ?? [],
     }),
-    adBottom() {
-      return this.videoAdUnits[`${this.adDevice}_FT`] ?? {}
-    },
-    adDevice() {
-      return this.$ua.isFromPc() ? 'PC' : 'MB'
-    },
     categoryName() {
       return this.$route.path.split('/video_category/')[1]
     },

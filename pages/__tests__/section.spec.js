@@ -1,5 +1,4 @@
 import page from '../section/_name.vue'
-import UiArticleList from '~/components/UiArticleList.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import { SITE_TITLE, SITE_DESCRIPTION } from '~/constants'
 
@@ -19,138 +18,7 @@ const createWrapper = createWrapperHelper({
         },
       },
     },
-    $ua: {
-      isFromPc() {
-        return true
-      },
-    },
   },
-  stubs: ['client-only', 'GptAd'],
-})
-
-describe('section data', () => {
-  test('should get proper section properties from store by route params', () => {
-    const sectionNameMock = 'test-name'
-    const sectionIdMock = 'test-id'
-    const sectionTitleMock = 'test-title'
-    const sectionStoreMock = {
-      data: {
-        items: [
-          {
-            name: sectionNameMock,
-            id: sectionIdMock,
-            title: sectionTitleMock,
-          },
-        ],
-      },
-    }
-    const wrapper = createWrapper(page, {
-      mocks: {
-        $route: {
-          params: {
-            name: sectionNameMock,
-          },
-        },
-        $store: {
-          state: {
-            sections: sectionStoreMock,
-          },
-        },
-      },
-    })
-    const list = wrapper.findComponent(UiArticleList)
-    expect(wrapper.vm.currentSectionId).toBe(sectionIdMock)
-    expect(list.props().listTitle).toBe(sectionTitleMock)
-  })
-})
-
-describe('component methods', () => {
-  test('setListData', () => {
-    const sectionNameMock = 'test-name'
-    const sectionIdMock = 'test-id'
-    const sectionTitleMock = 'test-title'
-    const sectionStoreMock = {
-      data: {
-        items: [
-          {
-            name: sectionNameMock,
-            id: sectionIdMock,
-            title: sectionTitleMock,
-          },
-        ],
-      },
-    }
-
-    const idMock = 'id'
-    const slugMock = 'slug'
-    const imageUrlMock = 'imageurl'
-    const titleMock = 'title'
-    const briefMock = 'brief'
-    const briefHtmlMock = `<div>${briefMock}</div>`
-    const responseMock = {
-      items: [
-        {
-          id: idMock,
-          slug: slugMock,
-          heroImage: {
-            image: {
-              resizedTargets: {
-                mobile: {
-                  url: imageUrlMock,
-                },
-              },
-            },
-          },
-          title: titleMock,
-          brief: {
-            html: briefHtmlMock,
-          },
-        },
-      ],
-    }
-
-    const wrapper = createWrapper(page, {
-      mocks: {
-        $route: {
-          params: {
-            name: sectionNameMock,
-          },
-        },
-        $store: {
-          state: {
-            sections: sectionStoreMock,
-          },
-        },
-      },
-    })
-
-    wrapper.vm.setListData(responseMock)
-    expect(wrapper.vm.listData).toEqual([
-      {
-        id: idMock,
-        href: `/story/${slugMock}`,
-        imgSrc: imageUrlMock,
-        imgText: sectionTitleMock,
-        imgTextBackgroundColor: undefined, // value from scss variable not available in jest
-        infoTitle: titleMock,
-        infoDescription: briefMock,
-      },
-    ])
-  })
-  test('setListDataTotal and listDataPageLimit computed by total', () => {
-    const totalMock = 1234
-    const responseMock = {
-      meta: {
-        total: totalMock,
-      },
-    }
-    const wrapper = createWrapper(page)
-    wrapper.vm.setListDataTotal(responseMock)
-    expect(wrapper.vm.listDataTotal).toBe(totalMock)
-    expect(wrapper.vm.listDataPageLimit).toBe(
-      Math.ceil(totalMock / wrapper.vm.listDataMaxResults)
-    )
-  })
 })
 
 describe('meta', function () {
@@ -189,7 +57,7 @@ describe('meta', function () {
     const metaResults = head()
 
     // titles
-    const titleMetas = ['og:title', 'twitter:title']
+    const titleMetas = ['og:title']
     const titleExpected = `${sectionTitleMock} - ${SITE_TITLE}`
     expect(metaResults.title).toBe(titleExpected)
     titleMetas.forEach(function assertion(metaName) {
@@ -198,11 +66,7 @@ describe('meta', function () {
     })
 
     // descriptions
-    const descriptionMetas = [
-      'description',
-      'og:description',
-      'twitter:description',
-    ]
+    const descriptionMetas = ['description', 'og:description']
     descriptionMetas.forEach(function assertion(metaName) {
       const metaObject = metaResults.meta.find((d) => d.hid === metaName)
       expect(metaObject.content).toBe(sectionDescriptionMock)
@@ -250,11 +114,7 @@ describe('meta', function () {
     const metaResults = head()
 
     // descriptions
-    const descriptionMetas = [
-      'description',
-      'og:description',
-      'twitter:description',
-    ]
+    const descriptionMetas = ['description', 'og:description']
     descriptionMetas.forEach(function assertion(metaName) {
       const metaObject = metaResults.meta.find((d) => d.hid === metaName)
       expect(metaObject.content).toBe(SITE_DESCRIPTION)

@@ -57,7 +57,7 @@ export default {
     },
     imgTextBackgroundColor: {
       type: String,
-      default: 'white',
+      default: '#bcbcbc',
       required: true,
     },
     infoTitle: {

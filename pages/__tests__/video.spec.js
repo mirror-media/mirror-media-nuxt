@@ -14,13 +14,7 @@ const createWrapper = createWrapperHelper({
       },
       query: {},
     },
-    $ua: {
-      isFromPc() {
-        return true
-      },
-    },
   },
-  stubs: ['client-only', 'GptAd'],
 })
 
 describe('video id', () => {

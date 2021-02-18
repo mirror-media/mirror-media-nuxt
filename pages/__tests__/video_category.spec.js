@@ -18,14 +18,8 @@ const createWrapper = createWrapperHelper({
         },
       },
     },
-    $ua: {
-      isFromPc() {
-        return true
-      },
-    },
     $ga,
   },
-  stubs: ['client-only', 'GptAd'],
 })
 
 const sectionNameMock = 'video_coverstory'

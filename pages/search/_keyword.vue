@@ -1,7 +1,7 @@
 <template>
-  <section class="section">
-    <h1 class="section__title" v-text="currentKeyword" />
-    <UiArticleList class="section__list" :listData="listData" />
+  <section class="search">
+    <h1 class="search__title" v-text="keyword" />
+    <UiArticleList class="search__list" :listData="listData" />
     <UiInfiniteLoading @infinite="infiniteHandler" />
   </section>
 </template>
@@ -11,7 +11,8 @@ import { mapState } from 'vuex'
 import _ from 'lodash'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
-import styleVariables from '~/scss/_variables.scss'
+
+import { getSectionColor } from '~/utils/index.js'
 import { stripHtmlTags, getStoryPath } from '~/utils/article'
 
 export default {
@@ -35,7 +36,7 @@ export default {
     }
   },
   computed: {
-    currentKeyword() {
+    keyword() {
       return this.$route.params.keyword
     },
     ...mapState({
@@ -77,8 +78,7 @@ export default {
         href: getStoryPath(item),
         imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
         imgText: (item.sections ?? [])[0]?.title,
-        imgTextBackgroundColor:
-          styleVariables[`section-color-${this.getFirstSectionName(item)}`],
+        imgTextBackgroundColor: getSectionColor(this.getFirstSectionName(item)),
         infoTitle: item.title ?? '',
         infoDescription: stripHtmlTags(item.brief ?? ''),
       }
@@ -86,7 +86,7 @@ export default {
     async fetchSearchListing({ page = 1 } = {}) {
       const response = await this.$fetchSearch({
         maxResults: this.listDataMaxResults,
-        keywords: this.currentKeyword,
+        keywords: this.keyword,
 
         // add a section property conditonally
         ...(this.sectionQueryTitle && {
@@ -126,7 +126,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.section {
+.search {
   background-color: white;
   padding: 36px 0;
   @include media-breakpoint-up(md) {
