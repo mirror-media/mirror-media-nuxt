@@ -3,7 +3,6 @@ import { getSectionColor } from '~/utils/index.js'
 import { stripHtmlTags, getStoryPath } from '~/utils/article.js'
 
 function processList({
-  maxResults,
   getMaxResults,
   fetchList,
   transformListItemContent,
@@ -33,7 +32,7 @@ function processList({
       },
 
       $_processList_maxResults() {
-        return getMaxResults?.call(this) ?? maxResults
+        return getMaxResults.call(this)
       },
     },
 
@@ -107,7 +106,6 @@ function processList({
 }
 
 function processTwoLists({
-  maxResults,
   getMaxResults,
   fetchList,
   transformListItemContent,
@@ -115,7 +113,6 @@ function processTwoLists({
   return {
     mixins: [
       processList({
-        maxResults,
         getMaxResults,
         fetchList,
         transformListItemContent,
