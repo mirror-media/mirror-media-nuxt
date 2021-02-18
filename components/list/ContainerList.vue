@@ -12,7 +12,7 @@
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 
-import { processList } from '~/mixins/list.js'
+import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore.js'
 
 export default {
   name: 'ContainerList',
@@ -23,7 +23,7 @@ export default {
   },
 
   mixins: [
-    processList({
+    fetchListAndLoadmore({
       getMaxResults() {
         return this.listMaxResults
       },

@@ -32,7 +32,7 @@ import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 
-import { processTwoLists } from '~/mixins/list.js'
+import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore.js'
 
 export default {
   name: 'ContainerTwoLists',
@@ -45,7 +45,7 @@ export default {
   },
 
   mixins: [
-    processTwoLists({
+    fetchListAndLoadmore({
       getMaxResults() {
         return this.listMaxResults
       },
@@ -98,6 +98,16 @@ export default {
   },
 
   computed: {
+    listItemsInFirstPage() {
+      return this.listItems.slice(0, this.$_processList_maxResults)
+    },
+    listItemsInLoadmorePage() {
+      return this.listItems.slice(this.$_processList_maxResults, Infinity)
+    },
+    shouldMountLoadmoreList() {
+      return this.listItemsInLoadmorePage.length > 0
+    },
+
     microAdUnits() {
       return this.shouldMountMicroAds ? MICRO_AD_UNITS.LISTING.RWD : []
     },

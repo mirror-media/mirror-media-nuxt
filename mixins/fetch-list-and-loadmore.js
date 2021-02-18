@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { getSectionColor } from '~/utils/index.js'
 import { stripHtmlTags, getStoryPath } from '~/utils/article.js'
 
-function processList({
+export default function fetchListAndLoadmore({
   getMaxResults,
   fetchList,
   transformListItemContent,
@@ -104,33 +104,3 @@ function processList({
     },
   }
 }
-
-function processTwoLists({
-  getMaxResults,
-  fetchList,
-  transformListItemContent,
-} = {}) {
-  return {
-    mixins: [
-      processList({
-        getMaxResults,
-        fetchList,
-        transformListItemContent,
-      }),
-    ],
-
-    computed: {
-      listItemsInFirstPage() {
-        return this.listItems.slice(0, this.$_processList_maxResults)
-      },
-      listItemsInLoadmorePage() {
-        return this.listItems.slice(this.$_processList_maxResults, Infinity)
-      },
-      shouldMountLoadmoreList() {
-        return this.listItemsInLoadmorePage.length > 0
-      },
-    },
-  }
-}
-
-export { processList, processTwoLists }
