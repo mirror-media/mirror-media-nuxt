@@ -528,7 +528,7 @@ export default {
         firebaseId: this.$store.state.membership.userUid,
         name: this.name || '',
         gender: getGender() || 0,
-        birthday: getBirthday() || '',
+        birthday: getBirthday(),
         phone: this.phone || '',
         country: getAddress().country || '',
         city: getAddress().city || '',
