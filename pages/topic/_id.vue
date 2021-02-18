@@ -2,7 +2,7 @@
   <section class="topic">
     <UiTopicCover :type="coverType" :imgItems="topicImgs.items" />
 
-    <UiArticleList class="topic__list" :listData="listItems" />
+    <UiArticleList class="topic__list" :listItems="listItems" />
     <UiInfiniteLoading v-if="shouldLoadmore" @infinite="infiniteHandler" />
 
     <UiWineWarning v-if="isTopicWine" />

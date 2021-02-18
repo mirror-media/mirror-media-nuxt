@@ -6,7 +6,7 @@
       class="article-list"
       :listTitle="listTitle"
       :listTitleColor="listTitleColor"
-      :listData="listItemsInFirstPage"
+      :listItems="listItemsInFirstPage"
     >
       <template v-for="unit in microAdUnits" v-slot:[unit.name]>
         <MicroAd :key="unit.name" :unitId="unit.id" />
@@ -16,7 +16,10 @@
     <ContainerGptAd class="ad" :pageKey="gptAdPageKey" adKey="FT" />
 
     <template v-if="shouldLoadmore">
-      <UiArticleList class="article-list" :listData="listItemsInLoadmorePage" />
+      <UiArticleList
+        class="article-list"
+        :listItems="listItemsInLoadmorePage"
+      />
       <UiInfiniteLoading @infinite="infiniteHandler" />
     </template>
   </div>

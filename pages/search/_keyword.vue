@@ -2,7 +2,7 @@
   <section class="search">
     <h1 class="search__title" v-text="keyword" />
 
-    <UiArticleList class="search__list" :listData="listItems" />
+    <UiArticleList class="search__list" :listItems="listItems" />
     <UiInfiniteLoading v-if="shouldLoadmore" @infinite="infiniteHandler" />
   </section>
 </template>

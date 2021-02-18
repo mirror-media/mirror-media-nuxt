@@ -9,7 +9,7 @@
       v-text="listTitle"
     />
     <ol v-if="showList" class="list-wrapper__list list">
-      <template v-for="(item, index) in listData">
+      <template v-for="(item, index) in listItems">
         <li :key="item.id" class="list__list-item">
           <UiArticleCard
             :href="item.href"
@@ -54,7 +54,7 @@ export default {
       type: String,
       default: 'black',
     },
-    listData: {
+    listItems: {
       type: Array,
       default: () => [],
       required: true,
@@ -74,7 +74,7 @@ export default {
       return this.listTitle !== ''
     },
     showList() {
-      return this.listData.length > 0
+      return this.listItems.length > 0
     },
   },
   methods: {
