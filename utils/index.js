@@ -10,7 +10,7 @@ function getSectionColor(name) {
 
   if (!color) {
     // eslint-disable-next-line no-console
-    console.error(
+    console.warn(
       'Unable to find the section color. Please provide a vaild section name.'
     )
 
