@@ -17,6 +17,8 @@ import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore.js'
 
 import { stripHtmlTags } from '~/utils/article'
 
+const LIST_MAX_RESULTS = 9
+
 export default {
   name: 'Search',
   components: {
@@ -26,13 +28,11 @@ export default {
 
   mixins: [
     fetchListAndLoadmore({
-      getMaxResults() {
-        return 9
-      },
+      maxResults: LIST_MAX_RESULTS,
 
       async fetchList(page) {
         return await this.$fetchSearch({
-          maxResults: 9,
+          maxResults: LIST_MAX_RESULTS,
           keywords: this.keyword,
 
           // add a section property conditonally

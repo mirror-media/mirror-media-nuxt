@@ -3,7 +3,7 @@ import { getSectionColor } from '~/utils/index.js'
 import { stripHtmlTags, getStoryPath } from '~/utils/article.js'
 
 export default function fetchListAndLoadmore({
-  getMaxResults,
+  maxResults,
   fetchList,
   getListItems = function (response = {}) {
     return response.items || []
@@ -38,7 +38,17 @@ export default function fetchListAndLoadmore({
       },
 
       $_processList_maxResults() {
-        return getMaxResults.call(this)
+        if (!maxResults) {
+          throw new TypeError(
+            'Invalid argument: type check failed for argument "maxResults".'
+          )
+        }
+
+        if (typeof maxResults === 'function') {
+          return maxResults.call(this)
+        }
+
+        return maxResults
       },
     },
 

@@ -47,7 +47,7 @@ export default {
 
   mixins: [
     fetchListAndLoadmore({
-      getMaxResults() {
+      maxResults() {
         return this.listMaxResults
       },
 

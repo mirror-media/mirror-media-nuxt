@@ -17,6 +17,7 @@ import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore.js'
 
+const LIST_MAX_RESULTS = 9
 const TOPIC_IDS_WINE = [
   '5c25f9e3315ec51000903a82',
   '5d22bb9fe311f3925c49396c',
@@ -35,13 +36,11 @@ export default {
 
   mixins: [
     fetchListAndLoadmore({
-      getMaxResults() {
-        return 9
-      },
+      maxResults: LIST_MAX_RESULTS,
 
       async fetchList(page) {
         return await this.$fetchList({
-          maxResults: 9,
+          maxResults: LIST_MAX_RESULTS,
           sort: '-publishedDate',
           topics: [this.topicId],
           page,
