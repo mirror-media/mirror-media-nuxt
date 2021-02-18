@@ -50,9 +50,6 @@ export default {
 
 <style lang="scss" scoped>
 .full-screen-ad {
-  @include media-breakpoint-up(md) {
-    display: none !important;
-  }
   &.default {
     position: fixed;
     top: 0;
