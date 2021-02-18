@@ -15,12 +15,13 @@
 
     <ContainerGptAd class="two-lists__ad" :pageKey="gptAdPageKey" adKey="FT" />
 
-    <UiArticleList
-      v-if="shouldMountLoadmoreList"
-      class="two-lists__list"
-      :listData="listItemsInLoadmorePage"
-    />
-    <UiInfiniteLoading @infinite="infiniteHandler" />
+    <template v-if="shouldLoadmore">
+      <UiArticleList
+        class="two-lists__list"
+        :listData="listItemsInLoadmorePage"
+      />
+      <UiInfiniteLoading @infinite="infiniteHandler" />
+    </template>
   </div>
 </template>
 
@@ -103,9 +104,6 @@ export default {
     },
     listItemsInLoadmorePage() {
       return this.listItems.slice(this.$_processList_maxResults, Infinity)
-    },
-    shouldMountLoadmoreList() {
-      return this.listItemsInLoadmorePage.length > 0
     },
 
     microAdUnits() {

@@ -1,10 +1,7 @@
 <template>
   <div class="list">
     <UiArticleList class="list__list" :listData="listItems" />
-    <UiInfiniteLoading
-      v-if="shouldMountInfiniteLoading"
-      @infinite="infiniteHandler"
-    />
+    <UiInfiniteLoading v-if="shouldLoadmore" @infinite="infiniteHandler" />
   </div>
 </template>
 

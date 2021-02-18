@@ -27,7 +27,7 @@ export default function fetchListAndLoadmore({
           }
         )
       },
-      shouldMountInfiniteLoading() {
+      shouldLoadmore() {
         return this.$data.$_processList_list.maxPage >= 2
       },
 
