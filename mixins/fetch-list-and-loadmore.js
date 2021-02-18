@@ -5,6 +5,12 @@ import { stripHtmlTags, getStoryPath } from '~/utils/article.js'
 export default function fetchListAndLoadmore({
   getMaxResults,
   fetchList,
+  getListItems = function (response = {}) {
+    return response.items || []
+  },
+  getListTotal = function (response = {}) {
+    return response.meta?.total ?? 0
+  },
   transformListItemContent,
 } = {}) {
   return {
@@ -54,14 +60,14 @@ export default function fetchListAndLoadmore({
         return response
       },
       $_processList_setListMaxPage(response = {}) {
-        const listTotal = response.meta?.total ?? 0
+        const listTotal = getListTotal(response)
 
         this.$data.$_processList_list.maxPage = Math.ceil(
           listTotal / this.$_processList_maxResults
         )
       },
       $_processList_setListItems(response) {
-        const items = (response.items || []).map(
+        const items = getListItems(response).map(
           this.$_processList_transformListItemContent
         )
 
