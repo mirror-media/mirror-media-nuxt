@@ -122,6 +122,11 @@ export default {
     UiMembershipError,
     UiMembershipSpinner,
   },
+  middleware({ store, redirect }) {
+    if (store.getters['membership/isLoggedIn']) {
+      redirect('/section/member')
+    }
+  },
   data() {
     return {
       pageState: 'form',
