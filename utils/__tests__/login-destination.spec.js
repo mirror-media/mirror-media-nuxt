@@ -2,12 +2,15 @@ import localforage from 'localforage'
 import loginDestination from '../login-destination'
 
 describe('set method', function () {
-  test('should set destination by "/" with localforage setItem if route parameter is missing', async function () {
+  test('should set destination by "/section/member" with localforage setItem if route parameter is missing', async function () {
     const spySetItem = jest
       .spyOn(localforage, 'setItem')
       .mockImplementation(() => {})
     await loginDestination.set()
-    expect(spySetItem).toHaveBeenCalledWith('mm-login-destination', '/')
+    expect(spySetItem).toHaveBeenCalledWith(
+      'mm-login-destination',
+      '/section/member'
+    )
   })
   test('should set destination by route parameter with localforage setItem', async function () {
     const spySetItem = jest
@@ -47,7 +50,7 @@ describe('redirect method', function () {
     await loginDestination.redirect()
     expect(spyRemoveItem).toHaveBeenCalledWith('mm-login-destination')
   })
-  test('should redirect to "/" if destination from storage is missing', async function () {
+  test('should redirect to "/section/member" if destination from storage is missing', async function () {
     jest
       .spyOn(localforage, 'getItem')
       .mockImplementation(() => Promise.resolve(undefined))
@@ -56,6 +59,6 @@ describe('redirect method', function () {
       replace: jest.fn(),
     }
     await loginDestination.redirect()
-    expect(window.location.replace).toHaveBeenCalledWith('/')
+    expect(window.location.replace).toHaveBeenCalledWith('/section/member')
   })
 })
