@@ -1,4 +1,5 @@
 export default async function ({ req, store, app, redirect }) {
+  // workaround of bypass the auth, in the iOS in-app browser environment
   if (process.server && app.$ua.browser() === 'Webview') {
     return
   }
