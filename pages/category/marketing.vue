@@ -1,6 +1,6 @@
 <template>
   <section class="category">
-    <ContainerTwoLists
+    <ContainerList
       :fetchList="fetchList"
       :transformListItemContent="transformListItemContent"
       :gptAdPageKey="sectionName"
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ContainerTwoLists from '~/components/list/ContainerTwoLists.vue'
+import ContainerList from '~/components/ContainerList.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
@@ -27,7 +27,7 @@ import {
 export default {
   name: 'CategoryMarketing',
   components: {
-    ContainerTwoLists,
+    ContainerList,
     ContainerFullScreenAds,
     UiStickyAd,
   },

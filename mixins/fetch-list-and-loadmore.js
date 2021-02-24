@@ -2,10 +2,15 @@ import _ from 'lodash'
 import { getSectionColor } from '~/utils/index.js'
 import { stripHtmlTags, getStoryPath } from '~/utils/article.js'
 
-function processList({
+export default function fetchListAndLoadmore({
   maxResults,
-  getMaxResults,
   fetchList,
+  getListItems = function (response = {}) {
+    return response.items || []
+  },
+  getListTotal = function (response = {}) {
+    return response.meta?.total ?? 0
+  },
   transformListItemContent,
 } = {}) {
   return {
@@ -28,12 +33,22 @@ function processList({
           }
         )
       },
-      shouldMountInfiniteLoading() {
+      shouldLoadmore() {
         return this.$data.$_processList_list.maxPage >= 2
       },
 
       $_processList_maxResults() {
-        return getMaxResults?.call(this) ?? maxResults
+        if (!maxResults) {
+          throw new TypeError(
+            'Invalid argument: type check failed for argument "maxResults".'
+          )
+        }
+
+        if (typeof maxResults === 'function') {
+          return maxResults.call(this)
+        }
+
+        return maxResults
       },
     },
 
@@ -55,14 +70,14 @@ function processList({
         return response
       },
       $_processList_setListMaxPage(response = {}) {
-        const listTotal = response.meta?.total ?? 0
+        const listTotal = getListTotal(response)
 
         this.$data.$_processList_list.maxPage = Math.ceil(
           listTotal / this.$_processList_maxResults
         )
       },
       $_processList_setListItems(response) {
-        const items = (response.items || []).map(
+        const items = getListItems(response).map(
           this.$_processList_transformListItemContent
         )
 
@@ -71,15 +86,18 @@ function processList({
       $_processList_transformListItemContent(item = {}) {
         item = item || {}
         const section = item.sections?.[0] || {}
+        const brief =
+          (typeof item.brief === 'string' ? item.brief : item.brief?.html) ?? ''
 
         return {
           id: item.id,
           href: getStoryPath(item),
           imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
           imgText: section.title ?? '',
-          imgTextBackgroundColor: getSectionColor(section.name),
+          imgTextBackgroundColor: section.name && getSectionColor(section.name),
           infoTitle: item.title ?? '',
-          infoDescription: stripHtmlTags(item.brief?.html ?? ''),
+          infoDescription: stripHtmlTags(brief),
+
           ...transformListItemContent?.call(this, item),
         }
       },
@@ -105,35 +123,3 @@ function processList({
     },
   }
 }
-
-function processTwoLists({
-  maxResults,
-  getMaxResults,
-  fetchList,
-  transformListItemContent,
-} = {}) {
-  return {
-    mixins: [
-      processList({
-        maxResults,
-        getMaxResults,
-        fetchList,
-        transformListItemContent,
-      }),
-    ],
-
-    computed: {
-      listItemsInFirstPage() {
-        return this.listItems.slice(0, this.$_processList_maxResults)
-      },
-      listItemsInLoadmorePage() {
-        return this.listItems.slice(this.$_processList_maxResults, Infinity)
-      },
-      shouldMountLoadmoreList() {
-        return this.listItemsInLoadmorePage.length > 0
-      },
-    },
-  }
-}
-
-export { processList, processTwoLists }

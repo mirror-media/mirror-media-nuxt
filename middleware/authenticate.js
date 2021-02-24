@@ -1,4 +1,5 @@
 export default async function ({ req, store, app, redirect }) {
+  // workaround of bypass the auth, in the iOS in-app browser environment
   if (process.server && app.$ua.browser() === 'Webview') {
     return
   }
@@ -8,11 +9,13 @@ export default async function ({ req, store, app, redirect }) {
     const response = await app.$fetchTokenState(token)
 
     const tokenState = response.tokenState ?? ''
+    const from = req.url
     if (!tokenState.startsWith('OK')) {
       console.log(
-        `[authenticate] ${req.url} with token: ${token}, email: ${email} is not OK, redirect to login page`
+        `[authenticate] ${from} with token: ${token}, email: ${email} is not OK, redirect to login page`
       )
-      redirect('/login')
+      const query = from ? `?destination=${from}` : ''
+      redirect(`/login${query}`)
     }
   } catch (e) {
     console.log(

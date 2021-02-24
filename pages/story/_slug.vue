@@ -211,6 +211,8 @@ import {
   doesContainWineName,
 } from '~/utils/article'
 
+const DEFAULT_SECTION_ID = 'other'
+
 export default {
   name: 'Story',
   layout: 'empty',
@@ -420,7 +422,7 @@ export default {
       return !_.isEmpty(this.section)
     },
     sectionId() {
-      return this.section.id ?? 'other'
+      return this.section.id ?? DEFAULT_SECTION_ID
     },
     storySlug() {
       return this.$route.params.slug
@@ -434,7 +436,7 @@ export default {
     shouldOpenLatestList() {
       return (
         this.isDesktopWidth &&
-        this.sectionId !== 'other' &&
+        this.sectionId !== DEFAULT_SECTION_ID &&
         (this.hasLoadedLatestStories ? this.doesHaveLatestStories : true)
       )
     },
@@ -491,7 +493,7 @@ export default {
       this.relatedImages = items
     },
     async fetchLatestStories() {
-      if (this.sectionId === 'other') {
+      if (this.sectionId === DEFAULT_SECTION_ID) {
         return
       }
 

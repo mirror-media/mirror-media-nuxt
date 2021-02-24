@@ -1,26 +1,27 @@
 <template>
-  <div class="two-lists">
-    <ContainerGptAd class="two-lists__ad" :pageKey="gptAdPageKey" adKey="HD" />
+  <div class="list">
+    <ContainerGptAd class="ad" :pageKey="gptAdPageKey" adKey="HD" />
 
     <UiArticleList
-      class="two-lists__list"
+      class="article-list"
       :listTitle="listTitle"
       :listTitleColor="listTitleColor"
-      :listData="listItemsInFirstPage"
+      :listItems="listItemsInFirstPage"
     >
       <template v-for="unit in microAdUnits" v-slot:[unit.name]>
         <MicroAd :key="unit.name" :unitId="unit.id" />
       </template>
     </UiArticleList>
 
-    <ContainerGptAd class="two-lists__ad" :pageKey="gptAdPageKey" adKey="FT" />
+    <ContainerGptAd class="ad" :pageKey="gptAdPageKey" adKey="FT" />
 
-    <UiArticleList
-      v-if="shouldMountLoadmoreList"
-      class="two-lists__list"
-      :listData="listItemsInLoadmorePage"
-    />
-    <UiInfiniteLoading @infinite="infiniteHandler" />
+    <template v-if="shouldLoadmore">
+      <UiArticleList
+        class="article-list"
+        :listItems="listItemsInLoadmorePage"
+      />
+      <UiInfiniteLoading @infinite="infiniteHandler" />
+    </template>
   </div>
 </template>
 
@@ -32,10 +33,10 @@ import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
 
-import { processTwoLists } from '~/mixins/list.js'
+import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore.js'
 
 export default {
-  name: 'ContainerTwoLists',
+  name: 'ContainerList',
 
   components: {
     UiArticleList,
@@ -45,8 +46,8 @@ export default {
   },
 
   mixins: [
-    processTwoLists({
-      getMaxResults() {
+    fetchListAndLoadmore({
+      maxResults() {
         return this.listMaxResults
       },
 
@@ -98,6 +99,13 @@ export default {
   },
 
   computed: {
+    listItemsInFirstPage() {
+      return this.listItems.slice(0, this.$_processList_maxResults)
+    },
+    listItemsInLoadmorePage() {
+      return this.listItems.slice(this.$_processList_maxResults, Infinity)
+    },
+
     microAdUnits() {
       return this.shouldMountMicroAds ? MICRO_AD_UNITS.LISTING.RWD : []
     },
@@ -108,7 +116,7 @@ export default {
 <style lang="scss" scoped>
 @import '~/css/micro-ad/listing.scss';
 
-.two-lists {
+.list {
   background-color: #f2f2f2;
   padding: 36px 0;
   overflow: hidden;
@@ -120,15 +128,15 @@ export default {
     padding: 0;
     margin: 0 auto;
   }
+}
 
-  &__ad {
-    margin: 20px auto;
-  }
+.ad {
+  margin: 20px auto;
+}
 
-  &__list {
-    @include media-breakpoint-up(md) {
-      margin: 8px 0 0 0;
-    }
+.article-list {
+  @include media-breakpoint-up(md) {
+    margin: 8px 0 0 0;
   }
 }
 </style>

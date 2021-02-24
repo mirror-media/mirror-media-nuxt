@@ -9,7 +9,7 @@ describe('list title', () => {
     const wrapper = shallowMount(UiArticleList, {
       propsData: {
         listTitle,
-        listData: [],
+        listItems: [],
       },
     })
     const h1 = wrapper.get('h1')
@@ -21,7 +21,7 @@ describe('list title', () => {
       propsData: {
         listTitle: 'test title',
         listTitleColor,
-        listData: [],
+        listItems: [],
       },
     })
     const h1 = wrapper.get('h1')
@@ -32,7 +32,7 @@ describe('list title', () => {
     const wrapper = shallowMount(UiArticleList, {
       propsData: {
         listTitle,
-        listData: [],
+        listItems: [],
       },
     })
     const h1 = wrapper.find('h1')
@@ -41,18 +41,18 @@ describe('list title', () => {
 })
 
 describe('render list items', () => {
-  test('should render proper number of UiArticleCard that we provide from "listData" props', () => {
-    const listData = [{}, {}]
+  test('should render proper number of UiArticleCard that we provide from "listItems" props', () => {
+    const listItems = [{}, {}]
     const wrapper = shallowMount(UiArticleList, {
       propsData: {
-        listData,
+        listItems,
       },
     })
     const articles = wrapper.findAllComponents(UiArticleCard)
-    expect(articles).toHaveLength(listData.length)
+    expect(articles).toHaveLength(listItems.length)
   })
-  test('should deliver proper props to UiArticleCard that we provide from "listData" props', () => {
-    const listData = [
+  test('should deliver proper props to UiArticleCard that we provide from "listItems" props', () => {
+    const listItems = [
       {
         href: '/',
         imgSrc: 'test imgSrc',
@@ -64,22 +64,21 @@ describe('render list items', () => {
     ]
     const wrapper = shallowMount(UiArticleList, {
       propsData: {
-        listData,
+        listItems,
       },
     })
     const article = wrapper.findComponent(UiArticleCard)
-    const listItemMock = listData[0]
+    const listItemMock = listItems[0]
     Object.entries(listItemMock).forEach((tuple) => {
       const key = tuple[0]
       const value = tuple[1]
       expect(article.props()[key]).toBe(value)
     })
   })
-  test('do not render list if "listData" props is empty array', () => {
-    const listData = []
+  test('do not render list if "listItems" props is empty array', () => {
     const wrapper = shallowMount(UiArticleList, {
       propsData: {
-        listData,
+        listItems: [],
       },
     })
     const list = wrapper.find('ol')
@@ -89,19 +88,18 @@ describe('render list items', () => {
 
 describe('MicroAd slot', function () {
   test('Should not render list item of MicroAd if there are non of any slots exist', function () {
-    const listData = _.fill(Array(9), [
-      {
-        href: '/',
-        imgSrc: 'test imgSrc',
-        imgText: 'test imgText',
-        imgTextBackgroundColor: 'test imgTextBackgroundColor',
-        infoTitle: 'test infoTitle',
-        infoDescription: 'test infoDescription',
-      },
-    ])
     const wrapper = shallowMount(UiArticleList, {
       propsData: {
-        listData,
+        listItems: _.fill(Array(9), [
+          {
+            href: '/',
+            imgSrc: 'test imgSrc',
+            imgText: 'test imgText',
+            imgTextBackgroundColor: 'test imgTextBackgroundColor',
+            infoTitle: 'test infoTitle',
+            infoDescription: 'test infoDescription',
+          },
+        ]),
       },
       slots: {
         RANDOM_SLOT_NAME_NO_MATCH_ANY_MICROAD: { template: '<div></div>' },
@@ -111,19 +109,18 @@ describe('MicroAd slot', function () {
     expect(listItemAds).toHaveLength(0)
   })
   test('Should render list item of MicroAd if we use UiArticleList with MicroAd slot', function () {
-    const listData = _.fill(Array(9), [
-      {
-        href: '/',
-        imgSrc: 'test imgSrc',
-        imgText: 'test imgText',
-        imgTextBackgroundColor: 'test imgTextBackgroundColor',
-        infoTitle: 'test infoTitle',
-        infoDescription: 'test infoDescription',
-      },
-    ])
     const wrapper = shallowMount(UiArticleList, {
       propsData: {
-        listData,
+        listItems: _.fill(Array(9), [
+          {
+            href: '/',
+            imgSrc: 'test imgSrc',
+            imgText: 'test imgText',
+            imgTextBackgroundColor: 'test imgTextBackgroundColor',
+            infoTitle: 'test infoTitle',
+            infoDescription: 'test infoDescription',
+          },
+        ]),
       },
       slots: {
         NA1_RWD_SP: '<div id="na1-rwd-sp" />',

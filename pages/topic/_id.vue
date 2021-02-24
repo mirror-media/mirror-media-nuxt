@@ -2,17 +2,22 @@
   <section class="topic">
     <UiTopicCover :type="coverType" :imgItems="topicImgs.items" />
 
-    <ContainerList :fetchList="fetchList" />
+    <UiArticleList class="topic__list" :listItems="listItems" />
+    <UiInfiniteLoading v-if="shouldLoadmore" @infinite="infiniteHandler" />
 
     <UiWineWarning v-if="isTopicWine" />
   </section>
 </template>
 
 <script>
-import ContainerList from '~/components/list/ContainerList.vue'
 import UiTopicCover from '~/components/topic/UiTopicCover.vue'
+import UiArticleList from '~/components/UiArticleList.vue'
+import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 
+import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore.js'
+
+const LIST_MAX_RESULTS = 9
 const TOPIC_IDS_WINE = [
   '5c25f9e3315ec51000903a82',
   '5d22bb9fe311f3925c49396c',
@@ -23,13 +28,29 @@ const TOPIC_IDS_WINE = [
 export default {
   name: 'Topic',
   components: {
-    ContainerList,
     UiTopicCover,
+    UiArticleList,
+    UiInfiniteLoading,
     UiWineWarning,
   },
 
+  mixins: [
+    fetchListAndLoadmore({
+      maxResults: LIST_MAX_RESULTS,
+
+      async fetchList(page) {
+        return await this.$fetchList({
+          maxResults: LIST_MAX_RESULTS,
+          sort: '-publishedDate',
+          topics: [this.topicId],
+          page,
+        })
+      },
+    }),
+  ],
+
   async fetch() {
-    await this.loadTopic()
+    await Promise.all([this.loadTopic(), this.initList()])
     await this.loadTopicImgsInitial()
   },
   data() {
@@ -68,15 +89,6 @@ export default {
             id: this.topicId,
           })
         )?.items?.[0] || {}
-    },
-
-    async fetchList(page) {
-      return await this.$fetchList({
-        maxResults: 9,
-        sort: '-publishedDate',
-        topics: [this.topicId],
-        page,
-      })
     },
 
     async loadTopicImgsInitial() {
@@ -138,3 +150,21 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.topic {
+  background-color: #f2f2f2;
+
+  &__list {
+    padding: 0 0 36px 0;
+    @include media-breakpoint-up(md) {
+      padding: 0 25px 72px 25px;
+    }
+    @include media-breakpoint-up(xl) {
+      max-width: 1024px;
+      padding: 0;
+      margin: 0 auto;
+    }
+  }
+}
+</style>

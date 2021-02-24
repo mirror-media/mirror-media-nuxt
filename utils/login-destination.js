@@ -1,15 +1,17 @@
 import localforage from 'localforage'
 
-const key = 'mm-login-destination'
+const localStorageKey = 'mm-login-destination'
+const defaultDestination = '/section/member'
 
 export default {
   async set(route) {
-    const destination = route?.query?.destination ?? '/'
-    await localforage.setItem(key, destination)
+    const destination = route?.query?.destination ?? defaultDestination
+    await localforage.setItem(localStorageKey, destination)
   },
   async redirect() {
-    const destination = (await localforage.getItem(key)) ?? '/'
-    await localforage.removeItem(key)
+    const destination =
+      (await localforage.getItem(localStorageKey)) ?? defaultDestination
+    await localforage.removeItem(localStorageKey)
     window.location.replace(destination)
   },
 }

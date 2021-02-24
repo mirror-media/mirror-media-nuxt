@@ -1,19 +1,21 @@
 <template>
   <section class="search">
     <h1 class="search__title" v-text="keyword" />
-    <UiArticleList class="search__list" :listData="listData" />
-    <UiInfiniteLoading @infinite="infiniteHandler" />
+
+    <UiArticleList class="search__list" :listItems="listItems" />
+    <UiInfiniteLoading v-if="shouldLoadmore" @infinite="infiniteHandler" />
   </section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import _ from 'lodash'
+
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 
-import { getSectionColor } from '~/utils/index.js'
-import { stripHtmlTags, getStoryPath } from '~/utils/article'
+import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore.js'
+
+const LIST_MAX_RESULTS = 9
 
 export default {
   name: 'Search',
@@ -21,20 +23,47 @@ export default {
     UiArticleList,
     UiInfiniteLoading,
   },
+
+  mixins: [
+    fetchListAndLoadmore({
+      maxResults: LIST_MAX_RESULTS,
+
+      async fetchList(page) {
+        return await this.$fetchSearch({
+          maxResults: LIST_MAX_RESULTS,
+          keywords: this.keyword,
+
+          // add a section property conditonally
+          ...(this.sectionTitle && {
+            section: this.sectionTitle,
+          }),
+          page,
+        })
+      },
+
+      getListItems(response = {}) {
+        return (
+          response.hits?.hits?.map(function getSource(hit = {}) {
+            return hit.source || {}
+          }) || []
+        )
+      },
+      getListTotal(response = {}) {
+        return response.hits?.total?.value ?? 0
+      },
+
+      transformListItemContent(item = {}) {
+        return {
+          id: item.objectID,
+        }
+      },
+    }),
+  ],
+
   async fetch() {
-    const response = await this.fetchSearchListing({ page: 1 })
-    this.setListData(response)
-    this.setListDataTotal(response)
-    this.listDataCurrentPage += 1
+    await this.initList()
   },
-  data() {
-    return {
-      listData_: [],
-      listDataCurrentPage: 0,
-      listDataMaxResults: 9,
-      listDataTotal: undefined,
-    }
-  },
+
   computed: {
     keyword() {
       return this.$route.params.keyword
@@ -42,84 +71,16 @@ export default {
     ...mapState({
       sections: (state) => state.sections.data.items ?? [],
     }),
-    sectionQueryTitle() {
-      const sectionIdFromUrlQuery = this.$route.query?.section ?? ''
-      if (sectionIdFromUrlQuery === '') {
+    sectionTitle() {
+      const sectionIdFromUrlQuery = this.$route.query?.section
+      if (sectionIdFromUrlQuery === undefined) {
         return null
       }
+
       return (
         this.sections.find((section) => section.id === sectionIdFromUrlQuery)
           ?.title ?? null
       )
-    },
-    listDataPageLimit() {
-      if (this.listDataTotal === undefined) {
-        return undefined
-      }
-      return Math.ceil(this.listDataTotal / this.listDataMaxResults)
-    },
-
-    listData() {
-      return _.uniqBy(this.listData_, function identifyDuplicatedItemById(
-        listItem
-      ) {
-        return listItem.id
-      })
-    },
-  },
-  methods: {
-    getFirstSectionName(article = {}) {
-      return (article.sections ?? [])[0]?.name
-    },
-    mapDataToComponentProps(dataFromES) {
-      const item = dataFromES.source ?? {}
-      return {
-        id: item.objectID,
-        href: getStoryPath(item),
-        imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
-        imgText: (item.sections ?? [])[0]?.title,
-        imgTextBackgroundColor: getSectionColor(this.getFirstSectionName(item)),
-        infoTitle: item.title ?? '',
-        infoDescription: stripHtmlTags(item.brief ?? ''),
-      }
-    },
-    async fetchSearchListing({ page = 1 } = {}) {
-      const response = await this.$fetchSearch({
-        maxResults: this.listDataMaxResults,
-        keywords: this.keyword,
-
-        // add a section property conditonally
-        ...(this.sectionQueryTitle && {
-          section: this.sectionQueryTitle,
-        }),
-        page,
-      })
-      return response
-    },
-    setListData(response = {}) {
-      let listData = response.hits?.hits ?? []
-      listData = listData.map(this.mapDataToComponentProps)
-      this.listData_.push(...listData)
-    },
-    setListDataTotal(response = {}) {
-      this.listDataTotal = response.hits?.total ?? 0
-    },
-    async infiniteHandler($state) {
-      this.listDataCurrentPage += 1
-      try {
-        const response = await this.fetchSearchListing({
-          page: this.listDataCurrentPage,
-        })
-        this.setListData(response)
-
-        if (this.listDataCurrentPage >= this.listDataPageLimit) {
-          $state.complete()
-        } else {
-          $state.loaded()
-        }
-      } catch (e) {
-        $state.error()
-      }
     },
   },
 }
@@ -135,7 +96,7 @@ export default {
   @include media-breakpoint-up(xl) {
     max-width: 1024px;
     padding: 36px 0 0 0;
-    margin: auto;
+    margin: 0 auto;
   }
   &__title {
     font-size: 48px;

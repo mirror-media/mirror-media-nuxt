@@ -58,20 +58,19 @@ export default {
         })
 
         if (response.error) {
-          handleError(response.error)
+          this.handleConfirmCancelError(response.error)
           return
         }
 
         this.$emit('success')
-      } catch (e) {
-        handleError(e)
+      } catch (err) {
+        this.handleConfirmCancelError(err)
       }
-
-      function handleError(e) {
-        // eslint-disable-next-line no-console
-        console.error(e)
-        this.$emit('error')
-      }
+    },
+    handleConfirmCancelError(err) {
+      // eslint-disable-next-line no-console
+      console.error(err)
+      this.$emit('error')
     },
   },
 }

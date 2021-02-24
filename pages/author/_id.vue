@@ -1,6 +1,6 @@
 <template>
   <section class="author">
-    <ContainerTwoLists
+    <ContainerList
       :fetchList="fetchList"
       :listTitle="authorName"
       listTitleColor="#bcbcbc"
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import ContainerTwoLists from '~/components/list/ContainerTwoLists.vue'
+import ContainerList from '~/components/ContainerList.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 
@@ -22,7 +22,7 @@ import { SITE_TITLE, SITE_URL } from '~/constants'
 export default {
   name: 'Author',
   components: {
-    ContainerTwoLists,
+    ContainerList,
     ContainerFullScreenAds,
     UiStickyAd,
   },
