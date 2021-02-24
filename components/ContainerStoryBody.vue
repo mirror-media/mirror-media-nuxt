@@ -31,14 +31,13 @@
     </figure>
 
     <div v-if="hasBrief" class="story__brief">
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <div v-if="isString(brief)" v-html="brief" />
-      <UiStoryContentHandler
-        v-for="paragraph in brief"
-        v-else
-        :key="paragraph.id"
-        :paragraph="paragraph"
-      />
+      <template v-if="isString(brief)">
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div v-html="brief" />
+      </template>
+      <template v-for="paragraph in brief" v-else>
+        <UiStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
+      </template>
     </div>
 
     <template v-if="isString(content)">
