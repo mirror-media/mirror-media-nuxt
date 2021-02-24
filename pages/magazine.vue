@@ -10,6 +10,7 @@
         :title="magazineFeatured.title"
         :descriptions="magazineFeatured.descriptions"
         :downloadLink="magazineFeatured.pdfLink"
+        @downloadLinkClick="handleDownloadLinkClick"
       />
     </div>
     <section
@@ -29,6 +30,7 @@
             :label="item.publishedDate"
             :title="item.issue"
             :downloadLink="item.pdfLink"
+            @downloadLinkClick="handleDownloadLinkClick"
           />
         </li>
       </ol>
@@ -91,6 +93,13 @@ export default {
       let listData = response.items ?? []
       listData = listData.map(this.mapDataToComponentProps)
       this.listData.push(...listData)
+    },
+    handleDownloadLinkClick() {
+      this.$ga.event({
+        eventCategory: 'magazine',
+        eventAction: 'click',
+        eventLabel: 'download magazine',
+      })
     },
   },
 }

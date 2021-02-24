@@ -41,3 +41,11 @@ describe('props', function () {
     expect(wrapper.attributes().href).toBe(downloadLinkMock)
   })
 })
+
+describe('events', function () {
+  test('downloadLinkClick', function () {
+    const wrapper = shallowMount(UiMagazineShowcaseItem)
+    wrapper.trigger('click')
+    expect(wrapper.emitted().downloadLinkClick).toBeTruthy()
+  })
+})

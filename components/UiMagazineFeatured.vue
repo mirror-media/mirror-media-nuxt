@@ -6,6 +6,7 @@
         :href="downloadLink"
         target="_blank"
         class="cover-wrapper__download-link download-link desktop"
+        @click="$emit('downloadLinkClick')"
       >
         立即下載
       </a>

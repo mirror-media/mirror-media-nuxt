@@ -1,5 +1,10 @@
 <template>
-  <a :href="downloadLink" target="_blank" class="magazine">
+  <a
+    :href="downloadLink"
+    target="_blank"
+    class="magazine"
+    @click="$emit('downloadLinkClick')"
+  >
     <img v-lazy="coverImgUrl" class="cover-img" alt="magazine-cover-img" />
     <p class="magazine__label label" v-text="label" />
     <h1 class="magazine__title title" v-text="title" />

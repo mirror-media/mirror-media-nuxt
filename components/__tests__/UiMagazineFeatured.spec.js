@@ -56,3 +56,11 @@ describe('props', function () {
     })
   })
 })
+
+describe('events', function () {
+  test('downloadLinkClick', function () {
+    const wrapper = shallowMount(UiMagazineFeatured)
+    wrapper.get('.download-link').trigger('click')
+    expect(wrapper.emitted().downloadLinkClick).toBeTruthy()
+  })
+})
