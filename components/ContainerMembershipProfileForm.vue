@@ -157,12 +157,12 @@
         儲存
       </button>
     </form>
-    <nuxt-link
-      to="/cancelMembership"
+    <a
+      href="/cancelMembership"
       class="wrapper__cancel-membership-link cancel-membership-link"
     >
       刪除會員
-    </nuxt-link>
+    </a>
   </div>
 </template>
 
