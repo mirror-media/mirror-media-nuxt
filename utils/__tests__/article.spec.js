@@ -27,6 +27,13 @@ test('the "doesContainWineName" function', function () {
       { name: 'test-2' },
     ])
   ).toBe(true)
+  expect(
+    doesContainWineName([
+      { name: 'test-1' },
+      { name: 'wine1' },
+      { name: 'test-2' },
+    ])
+  ).toBe(true)
   expect(doesContainWineName([{ name: 'test' }])).toBe(false)
 })
 

@@ -77,5 +77,8 @@
   - features: change create/read/update member from direct requesting form Saleor to gateway, debug /category/marketing, and debug FT ads on listing page
 2021/02/04
   - release version: master_yeefun_1189 1.2.2
-  - features: change /category/marketing label display logic 
+  - features: change /category/marketing label display logic
+2021/02/25
+  - release version: master_kwhsiung_1227 1.2.4
+  - features: add redirect function after login on /magazine and /login, add GA event on magazine page.   
   
