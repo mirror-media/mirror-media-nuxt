@@ -42,7 +42,11 @@ function stripHtmlTags(html = '') {
 }
 
 function doesContainWineName(categories = []) {
-  return Boolean(categories.find((category) => category.name === 'wine'))
+  return Boolean(
+    categories.find(
+      (category) => category.name === 'wine' || category.name === 'wine1'
+    )
+  )
 }
 
 function checkCategoryHasMemberOnly({ categories = [] } = {}) {

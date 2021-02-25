@@ -74,7 +74,7 @@ export default {
       return this.categoryData.id
     },
     isCategoryWine() {
-      return this.categoryName === 'wine'
+      return this.categoryName === 'wine' || this.categoryName === 'wine1'
     },
   },
 
