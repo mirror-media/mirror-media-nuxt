@@ -17,6 +17,7 @@ import localforage from 'localforage'
 import loginDestination from '~/utils/login-destination'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
 import UiMembershipSpinner from '~/components/UiMembershipSpinner.vue'
+import { ENV } from '~/configs/config'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.
@@ -58,6 +59,30 @@ export default {
       return `${origin}${path}`
     },
     async sendSignInLinkToEmail() {
+      const actionCodeSettingsAppConfig =
+        ENV === 'prod' || ENV === 'staging'
+          ? {
+              iOS: {
+                bundleId: 'com.mirrormedia.news',
+              },
+              android: {
+                packageName: 'com.mirrormedia.news',
+                installApp: true,
+                minimumVersion: '12',
+              },
+              dynamicLinkDomain: 'mirrormedia.page.link',
+            }
+          : {
+              iOS: {
+                bundleId: 'com.mirrormedia.news.dev',
+              },
+              android: {
+                packageName: 'com.mirrormedia.news.dev',
+                installApp: true,
+                minimumVersion: '12',
+              },
+              dynamicLinkDomain: 'mirrormediadev.page.link',
+            }
       const actionCodeSettings = {
         /*
          * URL you want to redirect back to. The domain (www.example.com) for this
@@ -68,17 +93,7 @@ export default {
         // This must be true.
         handleCodeInApp: true,
 
-        /*
-         * iOS: {
-         *   bundleId: 'com.mirrormedia.news',
-         * },
-         * android: {
-         *   packageName: 'com.mirrormedia.news',
-         *   installApp: true,
-         *   minimumVersion: '12',
-         * },
-         * dynamicLinkDomain: 'mirrormedia.page.link',
-         */
+        ...actionCodeSettingsAppConfig,
       }
       try {
         await this.$fire.auth.sendSignInLinkToEmail(
