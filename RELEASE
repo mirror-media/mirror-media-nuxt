@@ -80,5 +80,8 @@
   - features: change /category/marketing label display logic
 2021/02/25
   - release version: master_kwhsiung_1227 1.2.4
-  - features: add redirect function after login on /magazine and /login, add GA event on magazine page.   
+  - features: add redirect function after login on /magazine and /login, add GA event on magazine page. (release gateway and saleor to production)
+2021/02/26
+  - release version: master_kwhsiung_1230 1.2.6
+  - features: add wine-warning banner on "wine1" category page and post page. 
   
