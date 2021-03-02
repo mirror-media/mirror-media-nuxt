@@ -193,6 +193,11 @@ export default {
         }
       }
     }
+    &--member {
+      @include media-breakpoint-up(xl) {
+        background-color: #e51731;
+      }
+    }
     &--external {
       display: none;
       @include media-breakpoint-up(xl) {
