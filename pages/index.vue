@@ -182,6 +182,13 @@ export default {
       this.fetchFlashNews(),
     ])
 
+    if (
+      groupedResponse.status === 'rejected' ||
+      flashNewsResponse.status === 'rejected'
+    ) {
+      this.$nuxt.context.error({ statusCode: 500 })
+    }
+
     if (groupedResponse.status === 'fulfilled') {
       this.groupedArticles = groupedResponse.value || {}
     }
