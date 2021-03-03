@@ -15,9 +15,8 @@
 
     <UiTheCover
       :title="post.title"
+      :video="post.coverVideo"
       :picture="post.coverPicture"
-      :src="heroVideoSrc"
-      :poster="heroVideoPoster"
     />
 
     <div class="info">
@@ -106,19 +105,29 @@ export default {
         cameraMan = [],
         extendByline = '',
         content = {},
+        heroVideo = {},
         heroImage = {},
         mobileImage = {},
         publishedDate = '',
         updatedAt = '',
         relateds = [],
       } = this.story
+
+      const heroVideoSrc = heroVideo.video?.url || false
+      const heroVideoPoster =
+        heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
       const heroImgsResized = heroImage.image?.resizedTargets || {}
+
       return {
         title,
         credits: getCredits(),
         brief: getBrief(),
         content: content.apiData || [],
         heroImage: heroImgsResized,
+        coverVideo: {
+          heroVideoSrc,
+          heroVideoPoster,
+        },
         coverPicture: {
           heroImage: heroImgsResized,
           mobileImage: mobileImage.image?.resizedTargets || {},
@@ -175,17 +184,6 @@ export default {
           id: item.id,
           content: item.content[0],
         }))
-    },
-    heroVideo() {
-      return this.story.heroVideo || {}
-    },
-    heroVideoSrc() {
-      return this.heroVideo.video?.url || false
-    },
-    heroVideoPoster() {
-      return (
-        this.heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
-      )
     },
     updatedAt() {
       return this.post.updatedAt

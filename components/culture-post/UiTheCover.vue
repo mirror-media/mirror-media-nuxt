@@ -4,9 +4,9 @@
     <h1 v-html="title"></h1>
 
     <video
-      v-if="src"
-      :src="src"
-      :poster="poster"
+      v-if="videoSrc"
+      :src="videoSrc"
+      :poster="videoPoster"
       preload="metadata"
       controlsList="nodownload"
       controls
@@ -40,18 +40,14 @@ export default {
       default: '',
       required: true,
     },
+    video: {
+      type: Object,
+      default: () => ({}),
+    },
     picture: {
       type: Object,
       default: () => ({}),
       required: true,
-    },
-    src: {
-      type: String,
-      required: true,
-    },
-    poster: {
-      type: [String, Boolean],
-      default: false,
     },
   },
 
@@ -67,6 +63,12 @@ export default {
       return `${this.viewportHeight}px`
     },
 
+    videoSrc() {
+      return this.video.heroVideoSrc
+    },
+    videoPoster() {
+      return this.video.heroVideoPoster
+    },
     imgSrcLandscape() {
       return this.picture.heroImage.desktop?.url
     },
