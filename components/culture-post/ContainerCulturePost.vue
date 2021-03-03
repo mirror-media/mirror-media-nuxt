@@ -13,7 +13,12 @@
       @openIndex="handleIndexActive(true)"
     />
 
-    <UiTheCover :title="post.title" :picture="post.coverPicture" />
+    <UiTheCover
+      :title="post.title"
+      :picture="post.coverPicture"
+      :src="heroVideoSrc"
+      :poster="heroVideoPoster"
+    />
 
     <div class="info">
       <div>發布時間 {{ post.publishedDate }}</div>
@@ -107,9 +112,7 @@ export default {
         updatedAt = '',
         relateds = [],
       } = this.story
-
       const heroImgsResized = heroImage.image?.resizedTargets || {}
-
       return {
         title,
         credits: getCredits(),
@@ -172,6 +175,17 @@ export default {
           id: item.id,
           content: item.content[0],
         }))
+    },
+    heroVideo() {
+      return this.story.heroVideo || {}
+    },
+    heroVideoSrc() {
+      return this.heroVideo.video?.url || false
+    },
+    heroVideoPoster() {
+      return (
+        this.heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
+      )
     },
     updatedAt() {
       return this.post.updatedAt

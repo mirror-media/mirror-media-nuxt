@@ -3,7 +3,17 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <h1 v-html="title"></h1>
 
-    <picture>
+    <video
+      v-if="src"
+      :src="src"
+      :poster="poster"
+      preload="metadata"
+      controlsList="nodownload"
+      controls
+      playsinline
+    />
+
+    <picture v-else>
       <source :srcset="imgSrcLandscape" media="(min-width: 992px)" />
       <source
         :srcset="imgSrcLandscape"
@@ -34,6 +44,14 @@ export default {
       type: Object,
       default: () => ({}),
       required: true,
+    },
+    src: {
+      type: String,
+      required: true,
+    },
+    poster: {
+      type: [String, Boolean],
+      default: false,
     },
   },
 
@@ -104,6 +122,14 @@ picture {
     bottom: 0;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15));
   }
+}
+
+video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  object-fit: cover;
 }
 
 img {
