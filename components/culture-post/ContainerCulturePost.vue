@@ -113,8 +113,8 @@ export default {
         relateds = [],
       } = this.story
 
-      const heroVideoSrc = heroVideo.video?.url || false
-      const heroVideoPoster =
+      const src = heroVideo.video?.url || false
+      const poster =
         heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
       const heroImgsResized = heroImage.image?.resizedTargets || {}
 
@@ -125,8 +125,8 @@ export default {
         content: content.apiData || [],
         heroImage: heroImgsResized,
         coverVideo: {
-          heroVideoSrc,
-          heroVideoPoster,
+          src,
+          poster,
         },
         coverPicture: {
           heroImage: heroImgsResized,
