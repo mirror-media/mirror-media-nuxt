@@ -3,7 +3,12 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <h1 v-html="title"></h1>
 
-    <UiStoryVideo v-if="src" :src="src" :poster="poster" class="video" />
+    <UiStoryVideo
+      v-if="videoSrc"
+      :src="videoSrc"
+      :poster="videoPoster"
+      class="video"
+    />
 
     <picture v-else>
       <source :srcset="imgSrcLandscape" media="(min-width: 992px)" />
@@ -59,10 +64,10 @@ export default {
       return `${this.viewportHeight}px`
     },
 
-    src() {
+    videoSrc() {
       return this.video.src
     },
-    poster() {
+    videoPoster() {
       return this.video.poster
     },
     imgSrcLandscape() {
