@@ -3,15 +3,7 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <h1 v-html="title"></h1>
 
-    <video
-      v-if="src"
-      :src="src"
-      :poster="poster"
-      preload="metadata"
-      controlsList="nodownload"
-      controls
-      playsinline
-    />
+    <UiStoryVideo v-if="src" :src="src" :poster="poster" class="video" />
 
     <picture v-else>
       <source :srcset="imgSrcLandscape" media="(min-width: 992px)" />
@@ -30,9 +22,13 @@
 
 <script>
 import { mapState } from 'vuex'
+import UiStoryVideo from '~/components/UiStoryVideo.vue'
 
 export default {
   name: 'UiTheCover',
+  components: {
+    UiStoryVideo,
+  },
 
   props: {
     title: {
@@ -108,6 +104,11 @@ h1 {
   }
 }
 
+.video {
+  position: absolute;
+  height: 100%;
+}
+
 picture {
   position: relative;
   display: block;
@@ -124,14 +125,6 @@ picture {
     bottom: 0;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15));
   }
-}
-
-video {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  outline: none;
-  object-fit: cover;
 }
 
 img {
