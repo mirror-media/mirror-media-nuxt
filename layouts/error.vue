@@ -2,8 +2,8 @@
   <div class="page">
     <div class="message-container">
       <div class="page__info">
-        <h1>404</h1>
-        <h2>抱歉！<br />找不到這個網址</h2>
+        <h1 v-text="error.statusCode" />
+        <h2>抱歉！<br />{{ subtitle }}</h2>
         <!-- 首頁改用 nuxt 後可以改成 NuxtLink -->
         <a href="/">| 回首頁 |</a>
         <!-- <NuxtLink to="/">| 回首頁 |</NuxtLink> -->
@@ -44,6 +44,12 @@ export default {
   components: {
     UiArticleCard,
   },
+  props: {
+    error: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       latestStories: [],
@@ -52,6 +58,14 @@ export default {
   computed: {
     hasLatestStories() {
       return this.latestStories?.length > 0
+    },
+    subtitle() {
+      switch (this.error.statusCode) {
+        case 404:
+          return '找不到這個網址'
+        default:
+          return '系統忙碌中'
+      }
     },
   },
   mounted() {

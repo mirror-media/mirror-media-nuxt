@@ -13,7 +13,11 @@
       @openIndex="handleIndexActive(true)"
     />
 
-    <UiTheCover :title="post.title" :picture="post.coverPicture" />
+    <UiTheCover
+      :title="post.title"
+      :video="post.coverVideo"
+      :picture="post.coverPicture"
+    />
 
     <div class="info">
       <div>發布時間 {{ post.publishedDate }}</div>
@@ -101,6 +105,7 @@ export default {
         cameraMan = [],
         extendByline = '',
         content = {},
+        heroVideo = {},
         heroImage = {},
         mobileImage = {},
         publishedDate = '',
@@ -108,6 +113,9 @@ export default {
         relateds = [],
       } = this.story
 
+      const heroVideoSrc = heroVideo.video?.url || ''
+      const heroVideoPoster =
+        heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
       const heroImgsResized = heroImage.image?.resizedTargets || {}
 
       return {
@@ -116,6 +124,10 @@ export default {
         brief: getBrief(),
         content: content.apiData || [],
         heroImage: heroImgsResized,
+        coverVideo: {
+          src: heroVideoSrc,
+          poster: heroVideoPoster,
+        },
         coverPicture: {
           heroImage: heroImgsResized,
           mobileImage: mobileImage.image?.resizedTargets || {},

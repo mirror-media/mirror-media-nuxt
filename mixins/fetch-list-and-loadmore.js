@@ -16,7 +16,7 @@ export default function fetchListAndLoadmore({
   return {
     data() {
       return {
-        $_processList_list: {
+        $_fetchListAndLoadmore_list: {
           items: [],
           page: 0,
           maxPage: 0,
@@ -27,17 +27,17 @@ export default function fetchListAndLoadmore({
     computed: {
       listItems() {
         return _.uniqBy(
-          this.$data.$_processList_list.items,
+          this.$data.$_fetchListAndLoadmore_list.items,
           function identifyDuplicateById(item) {
             return item.id
           }
         )
       },
       shouldLoadmore() {
-        return this.$data.$_processList_list.maxPage >= 2
+        return this.$data.$_fetchListAndLoadmore_list.maxPage >= 2
       },
 
-      $_processList_maxResults() {
+      maxResults() {
         if (!maxResults) {
           throw new TypeError(
             'Invalid argument: type check failed for argument "maxResults".'
@@ -54,36 +54,39 @@ export default function fetchListAndLoadmore({
 
     methods: {
       async initList() {
-        const response = await this.$_processList_loadList()
+        const response = await this.$_fetchListAndLoadmore_loadList()
 
-        this.$_processList_setListMaxPage(response)
+        this.$_fetchListAndLoadmore_setListMaxPage(response)
       },
 
-      async $_processList_loadList() {
-        this.$data.$_processList_list.page += 1
+      async $_fetchListAndLoadmore_loadList() {
+        this.$data.$_fetchListAndLoadmore_list.page += 1
 
         const response =
-          (await fetchList.call(this, this.$data.$_processList_list.page)) || {}
+          (await fetchList.call(
+            this,
+            this.$data.$_fetchListAndLoadmore_list.page
+          )) || {}
 
-        this.$_processList_setListItems(response)
+        this.$_fetchListAndLoadmore_setListItems(response)
 
         return response
       },
-      $_processList_setListMaxPage(response = {}) {
+      $_fetchListAndLoadmore_setListMaxPage(response = {}) {
         const listTotal = getListTotal(response)
 
-        this.$data.$_processList_list.maxPage = Math.ceil(
-          listTotal / this.$_processList_maxResults
+        this.$data.$_fetchListAndLoadmore_list.maxPage = Math.ceil(
+          listTotal / this.maxResults
         )
       },
-      $_processList_setListItems(response) {
+      $_fetchListAndLoadmore_setListItems(response) {
         const items = getListItems(response).map(
-          this.$_processList_transformListItemContent
+          this.$_fetchListAndLoadmore_transformListItemContent
         )
 
-        this.$data.$_processList_list.items.push(...items)
+        this.$data.$_fetchListAndLoadmore_list.items.push(...items)
       },
-      $_processList_transformListItemContent(item = {}) {
+      $_fetchListAndLoadmore_transformListItemContent(item = {}) {
         item = item || {}
         const section = item.sections?.[0] || {}
         const brief =
@@ -104,11 +107,11 @@ export default function fetchListAndLoadmore({
 
       async infiniteHandler(state) {
         try {
-          await this.$_processList_loadList()
+          await this.$_fetchListAndLoadmore_loadList()
 
           if (
-            this.$data.$_processList_list.page >=
-            this.$data.$_processList_list.maxPage
+            this.$data.$_fetchListAndLoadmore_list.page >=
+            this.$data.$_fetchListAndLoadmore_list.maxPage
           ) {
             state.complete()
           } else {

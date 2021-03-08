@@ -100,10 +100,10 @@ export default {
 
   computed: {
     listItemsInFirstPage() {
-      return this.listItems.slice(0, this.$_processList_maxResults)
+      return this.listItems.slice(0, this.maxResults)
     },
     listItemsInLoadmorePage() {
-      return this.listItems.slice(this.$_processList_maxResults, Infinity)
+      return this.listItems.slice(this.maxResults, Infinity)
     },
 
     microAdUnits() {
