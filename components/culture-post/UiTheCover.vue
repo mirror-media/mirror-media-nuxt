@@ -3,12 +3,15 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <h1 v-html="title"></h1>
 
-    <UiStoryVideo
-      v-if="videoSrc"
-      :src="videoSrc"
-      :poster="videoPoster"
-      class="video"
-    />
+    <ClientOnly v-if="videoSrc">
+      <UiStoryVideo
+        :src="videoSrc"
+        :poster="videoPoster"
+        :isMuted="true"
+        :isAutoplay="true"
+        class="video"
+      />
+    </ClientOnly>
 
     <picture v-else>
       <source :srcset="imgSrcLandscape" media="(min-width: 992px)" />

@@ -2,6 +2,8 @@
   <video
     :src="src"
     :poster="poster"
+    :muted="isMuted"
+    :autoplay="isAutoplay"
     preload="metadata"
     controlsList="nodownload"
     controls
@@ -20,6 +22,14 @@ export default {
     },
     poster: {
       type: [String, Boolean],
+      default: false,
+    },
+    isMuted: {
+      type: Boolean,
+      default: false,
+    },
+    isAutoplay: {
+      type: Boolean,
       default: false,
     },
   },
