@@ -3,7 +3,7 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <h1 v-html="title"></h1>
 
-    <client-only v-if="videoSrc">
+    <ClientOnly v-if="videoSrc">
       <UiStoryVideo
         :src="videoSrc"
         :poster="videoPoster"
@@ -11,7 +11,7 @@
         :isAutoplay="true"
         class="video"
       />
-    </client-only>
+    </ClientOnly>
 
     <picture v-else>
       <source :srcset="imgSrcLandscape" media="(min-width: 992px)" />
