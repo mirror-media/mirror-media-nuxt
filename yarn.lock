@@ -6328,6 +6328,10 @@ constants-browserify@^1.0.0:
   resolved "https://registry.yarnpkg.com/constants-browserify/-/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
   integrity sha1-wguW2MYXdIqvHBYCF2DNJ/y4y3U=
 
+"constants@https://github.com/mirror-media/constants#semver:^2.0.0", "mirror-media-constants@https://github.com/mirror-media/constants#semver:^2.0.0":
+  version "0.0.0"
+  resolved "https://github.com/mirror-media/constants#691672f39fc7269fdac42776e9c916a42386e464"
+
 contains-path@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/contains-path/-/contains-path-0.1.0.tgz#fe8cf184ff6670b6baef01a9d4861a5cbec4120a"
@@ -11728,10 +11732,6 @@ minizlib@^2.1.1:
   dependencies:
     minipass "^3.0.0"
     yallist "^4.0.0"
-
-"mirror-media-constants@mirror-media/constants#semver:^2.0.0":
-  version "0.0.0"
-  resolved "https://codeload.github.com/mirror-media/constants/tar.gz/691672f39fc7269fdac42776e9c916a42386e464"
 
 mississippi@^3.0.0:
   version "3.0.0"
