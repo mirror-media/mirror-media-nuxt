@@ -35,18 +35,35 @@
           </div>
         </div>
         <div class="bottom">
-          <ul class="bottom__member-section-list member-section-list">
-            <li v-if="memberSectionExist" class="member-section-list__section">
+          <ul
+            v-if="sectionsMember.length > 0"
+            class="bottom__member-section-list member-section-list"
+          >
+            <li
+              v-for="section in sectionsMember"
+              :key="section.id"
+              class="member-section-list__section"
+            >
               <div class="section">
-                <h1 class="section__title">
+                <h1
+                  :class="[
+                    'section__title',
+                    {
+                      'section__title--small':
+                        section.customPath === 'category',
+                    },
+                  ]"
+                >
                   <a
-                    :href="`/section/${memberSection.name}`"
-                    v-text="memberSection.title"
+                    :href="`/${section.customPath || 'section'}/${
+                      section.name
+                    }`"
+                    v-text="section.title"
                   />
                 </h1>
                 <ul class="section__member-category-list member-category-list">
                   <li
-                    v-for="category in memberSectionCategories"
+                    v-for="category in section.categories"
                     :key="category.id"
                     class="member-category-list__category"
                   >
@@ -104,20 +121,8 @@ export default {
   },
 
   computed: {
-    memberSection() {
-      return (
-        (this.$store.state?.sections?.data?.items ?? []).find(
-          function findSectionMemberByName(section) {
-            return section?.name === 'member'
-          }
-        ) ?? {}
-      )
-    },
-    memberSectionExist() {
-      return Object.entries(this.memberSection).length > 0
-    },
-    memberSectionCategories() {
-      return this.memberSection?.categories ?? []
+    sectionsMember() {
+      return this.$store.getters['sections/sectionsMember']
     },
   },
 
@@ -331,6 +336,9 @@ export default {
 .section {
   &__title {
     font-size: 20px;
+    &--small {
+      font-size: 18px;
+    }
   }
 }
 
