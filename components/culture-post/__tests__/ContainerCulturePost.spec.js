@@ -8,6 +8,9 @@ const createWrapper = createWrapperHelper({
     story: {},
   },
   mocks: {
+    $route: {
+      name: 'premium-slug',
+    },
     $store: {
       getters: {
         'viewport/isViewportWidthUpXl': false,

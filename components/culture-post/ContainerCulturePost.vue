@@ -1,9 +1,19 @@
 <template>
   <section class="culture-post">
     <ContainerHeaderSectionMember
+      v-if="isCurrentPagePremium"
       class="header"
       @sidebarToggle="handleIndexActive(!isIndexActive)"
     />
+    <a
+      v-else
+      :href="SITE_URL"
+      class="logo"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />
+    </a>
 
     <UiArticleIndex
       :items="indexes"
@@ -200,6 +210,10 @@ export default {
     doesHaveWineCategory() {
       return doesContainWineName(this.story.categories)
     },
+
+    isCurrentPagePremium() {
+      return this.$route.name === 'premium-slug'
+    },
   },
 
   watch: {
@@ -318,6 +332,17 @@ export default {
   position: fixed !important;
   top: 0;
   right: 0;
+}
+.logo {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 900;
+  width: 44px;
+
+  img {
+    width: 100%;
+  }
 }
 
 .info,
