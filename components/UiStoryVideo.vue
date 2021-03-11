@@ -7,6 +7,7 @@
     preload="metadata"
     controlsList="nodownload"
     :controls="isShowControl"
+    :loop="isLoop"
     playsinline
   />
 </template>
@@ -35,6 +36,10 @@ export default {
     isShowControl: {
       type: Boolean,
       default: true,
+    },
+    isLoop: {
+      type: Boolean,
+      default: false,
     },
   },
 }

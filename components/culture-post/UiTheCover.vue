@@ -10,6 +10,7 @@
         :isMuted="true"
         :isAutoplay="true"
         :isShowControl="false"
+        :isLoop="true"
         class="video"
       />
     </ClientOnly>
