@@ -9,6 +9,7 @@
         :poster="videoPoster"
         :isMuted="true"
         :isAutoplay="true"
+        :isShowControl="false"
         class="video"
       />
     </ClientOnly>
