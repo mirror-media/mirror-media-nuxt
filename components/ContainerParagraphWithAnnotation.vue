@@ -50,3 +50,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.paragraph-with-annotation {
+  text-align: left; /* Do not use “justify”; otherwise it will break the layout when an annotation is open */
+}
+</style>

@@ -96,9 +96,9 @@ export default {
 
 h1 {
   font-family: source-han-serif-tc, 'Songti TC', serif;
-  font-size: 34px;
+  font-size: 36px;
   font-weight: 700;
-  line-height: 1.44;
+  line-height: 50px;
   color: #fff;
   text-shadow: 0 6px 8px rgba(#000, 0.6);
   width: 100%;
@@ -107,7 +107,7 @@ h1 {
   z-index: 1;
   @include media-breakpoint-up(lg) {
     font-size: 60px;
-    line-height: 1.4;
+    line-height: 84px;
     max-width: 960px;
   }
 }

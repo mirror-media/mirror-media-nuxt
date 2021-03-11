@@ -322,8 +322,8 @@ export default {
 
 .info,
 .updated-at {
-  font-size: 13px;
-  line-height: 2.31;
+  font-size: 14px;
+  line-height: 25px;
   text-align: center;
   color: rgba(#000, 0.66);
 }

@@ -43,8 +43,9 @@ export default {
 <style lang="scss" scoped>
 .article-body {
   padding-bottom: 60px;
-  font-size: 15px;
-  line-height: 2;
+  font-size: 18px;
+  line-height: 36px;
+  text-align: justify;
   @include media-breakpoint-up(md) {
     padding-bottom: 50px;
   }
@@ -67,10 +68,6 @@ export default {
     a {
       color: rgba(199, 159, 101, 0.87);
       text-decoration: underline;
-    }
-    .paragraph-with-annotation {
-      font-size: 15px;
-      line-height: 2;
     }
   }
 

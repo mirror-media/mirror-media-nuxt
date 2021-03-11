@@ -231,15 +231,13 @@ export default {
   &-container {
     display: flex;
     flex-direction: column;
-    //justify-content: center;
     position: absolute;
     top: 0;
     right: 0;
     width: 244px;
     height: 100%;
-    //padding: 0 12px;
     background-color: #fff;
-    overflow-y: scroll;
+    overflow-y: auto;
     @include media-breakpoint-up(xl) {
       position: static;
       padding: 0;
@@ -277,6 +275,7 @@ export default {
       display: inline;
       font-family: source-han-serif-tc, 'Songti TC', serif;
       font-size: 18px;
+      line-height: 27px;
       font-weight: 700;
       cursor: pointer;
 

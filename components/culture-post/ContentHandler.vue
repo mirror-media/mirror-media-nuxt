@@ -193,7 +193,6 @@ export default {
       case 'annotation':
         return (
           <ContainerParagraphWithAnnotation
-            class="g-story-paragraph"
             content={content}
             scopedSlots={{
               default: ({ data }) => (
@@ -241,20 +240,27 @@ $quote-color: #4a90e2;
   h2,
   h3 {
     font-family: source-han-serif-tc, 'Songti TC', serif;
-    font-weight: 700;
-    line-height: 1.5;
     margin-top: 60px;
   }
 
   h2 {
     font-size: 28px;
+    line-height: 42px;
+    font-weight: 700;
     @include media-breakpoint-up(lg) {
-      font-size: 30px;
+      font-size: 36px;
+      line-height: 54px;
     }
   }
 
   h3 {
-    font-size: 18px;
+    font-size: 24px;
+    line-height: 36px;
+    font-weight: 400;
+    @include media-breakpoint-up(lg) {
+      font-size: 32px;
+      line-height: 48px;
+    }
   }
 
   figure {
