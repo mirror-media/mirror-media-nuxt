@@ -299,19 +299,15 @@ $quote-color: #4a90e2;
     }
 
     figcaption {
-      padding-top: 10px;
-      margin-top: 12px;
-      margin-left: 17px;
-      margin-right: 17px;
+      padding-top: 8px;
+      margin: 12px 17px 0 17px;
       color: rgba(#000, 0.66);
-      font-size: 13px;
-      line-height: 1.5;
-      letter-spacing: 1px;
+      font-size: 14px;
+      line-height: 25px;
       border-top: 1px solid #979797;
       @include media-breakpoint-up(lg) {
-        margin-top: 16px;
-        margin-left: 33px;
-        margin-right: 33px;
+        padding-top: 12px;
+        margin: 16px 33px 0 33px;
       }
     }
   }
