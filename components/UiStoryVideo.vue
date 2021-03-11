@@ -6,7 +6,7 @@
     :autoplay="isAutoplay"
     preload="metadata"
     controlsList="nodownload"
-    :controls="isShowControl"
+    :controls="shouldShowControl"
     :loop="isLoop"
     playsinline
   />
@@ -33,7 +33,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    isShowControl: {
+    shouldShowControl: {
       type: Boolean,
       default: true,
     },

@@ -9,7 +9,7 @@
         :poster="videoPoster"
         :isMuted="true"
         :isAutoplay="true"
-        :isShowControl="false"
+        :shouldShowControl="false"
         :isLoop="true"
         class="video"
       />
