@@ -338,12 +338,12 @@ export default {
 
   methods: {
     enterMemberSectionPage() {
+      this.enterPageAfterLoggedIn('/section/member/')
       this.$ga.event({
         eventCategory: 'article',
         eventAction: 'click',
         eventLabel: 'member section',
       })
-      this.enterPageAfterLoggedIn('/section/member/')
     },
     enterMagazinePage() {
       this.enterPageAfterLoggedIn('/magazine/')
