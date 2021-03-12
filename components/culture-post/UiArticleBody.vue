@@ -46,6 +46,19 @@ export default {
   font-size: 18px;
   line-height: 36px;
   text-align: justify;
+  position: relative;
+  &--fade-out-bottom {
+    &:after {
+      position: absolute;
+      bottom: 0;
+      content: '';
+      display: block;
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(180deg, transparent 0%, white 80%);
+      pointer-events: none;
+    }
+  }
   @include media-breakpoint-up(md) {
     padding-bottom: 50px;
   }
