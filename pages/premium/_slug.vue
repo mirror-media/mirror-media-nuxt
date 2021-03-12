@@ -88,10 +88,7 @@ export default {
       return checkCategoryHasMemberOnly(this.story)
     },
     shouldShowPremiumStory() {
-      const isMemberTokenStateValid = (
-        this.membershipTokenState ?? ''
-      ).startsWith('OK')
-      return this.doesCategoryHaveMemberOnly && isMemberTokenStateValid
+      return this.doesCategoryHaveMemberOnly
     },
   },
   head() {
