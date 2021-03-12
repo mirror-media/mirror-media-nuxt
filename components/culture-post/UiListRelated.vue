@@ -69,9 +69,14 @@ h2 {
   max-width: 266px;
   font-family: source-han-serif-tc, 'Songti TC', serif;
   font-size: 28px;
+  line-height: 42px;
   font-weight: 700;
   @include media-breakpoint-up(md) {
     max-width: 634px;
+  }
+  @include media-breakpoint-up(lg) {
+    font-size: 36px;
+    line-height: 54px;
   }
 }
 
@@ -126,13 +131,13 @@ a {
   &__title {
     flex-grow: 1;
     flex-basis: 0%;
-    margin-left: 10px;
+    margin: 0 0 0 10px;
     font-family: source-han-serif-tc, 'Songti TC', serif;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
-    line-height: 1.73;
+    line-height: 27px;
     @include media-breakpoint-up(md) {
-      margin-top: 10px;
+      margin: 10px 0 0 0;
     }
   }
 }

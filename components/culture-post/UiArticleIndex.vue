@@ -1,40 +1,81 @@
 <template>
   <section class="index" :class="{ active: isIndexActive }">
-    <button class="index__btn open" @click="$emit('openIndex')">
-      <!-- TODO: inline svg -->
-      <img src="~/assets/hamburger.svg" alt="開啟" />
-    </button>
-
     <div class="index__curtain">
       <div ref="indexContainer" class="index-container">
         <button class="index__btn close" @click="$emit('closeIndex')">
-          <!-- TODO: inline svg -->
-          <img src="~/assets/close-1.svg" alt="關閉" />
+          <SvgClose />
         </button>
 
-        <div v-if="items.length > 0" class="index-list">
-          <ul>
+        <div class="top">
+          <div v-if="items.length > 0" class="index-list">
+            <ul>
+              <li
+                v-for="(item, index) in items"
+                :key="item.id"
+                :class="{ active: currentIndex === index + 1 }"
+              >
+                <!-- eslint-disable vue/no-v-html -->
+                <a
+                  :href="`#header-${item.id}`"
+                  data-scroll
+                  @click="$emit('closeIndex')"
+                  v-html="item.content"
+                />
+                <!-- eslint-enable vue/no-v-html -->
+              </li>
+            </ul>
+          </div>
+
+          <div
+            :class="['share', { 'share--hide-on-desktop': items.length <= 0 }]"
+          >
+            <p>分享到：</p>
+            <UiShareFb />
+            <UiShareLine />
+          </div>
+        </div>
+        <div class="bottom">
+          <ul
+            v-if="sectionsMember.length > 0"
+            class="bottom__member-section-list member-section-list"
+          >
             <li
-              v-for="(item, index) in items"
-              :key="item.id"
-              :class="{ active: currentIndex === index + 1 }"
+              v-for="section in sectionsMember"
+              :key="section.id"
+              class="member-section-list__section"
             >
-              <!-- eslint-disable vue/no-v-html -->
-              <a
-                :href="`#header-${item.id}`"
-                data-scroll
-                @click="$emit('closeIndex')"
-                v-html="item.content"
-              />
-              <!-- eslint-enable vue/no-v-html -->
+              <div class="section">
+                <h1
+                  :class="[
+                    'section__title',
+                    {
+                      'section__title--small':
+                        section.customPath === 'category',
+                    },
+                  ]"
+                >
+                  <a
+                    :href="`/${section.customPath || 'section'}/${
+                      section.name
+                    }`"
+                    v-text="section.title"
+                  />
+                </h1>
+                <ul class="section__member-category-list member-category-list">
+                  <li
+                    v-for="category in section.categories"
+                    :key="category.id"
+                    class="member-category-list__category"
+                  >
+                    <a
+                      :href="`/category/${category.name}`"
+                      v-text="category.title"
+                    />
+                  </li>
+                </ul>
+              </div>
             </li>
           </ul>
-        </div>
-
-        <div class="share">
-          <p>分享到：</p>
-          <UiShareFb />
-          <UiShareLine />
         </div>
       </div>
     </div>
@@ -46,6 +87,7 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 
 import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
+import SvgClose from '~/assets/premium-header-sidebar-hide.svg?inline'
 
 export default {
   name: 'UiArticleIndex',
@@ -53,6 +95,7 @@ export default {
   components: {
     UiShareFb,
     UiShareLine,
+    SvgClose,
   },
 
   props: {
@@ -75,6 +118,12 @@ export default {
     return {
       smoothScroll: undefined,
     }
+  },
+
+  computed: {
+    sectionsMember() {
+      return this.$store.getters['sections/sectionsMember']
+    },
   },
 
   watch: {
@@ -180,21 +229,27 @@ export default {
   }
 
   &-container {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
-    justify-content: center;
     position: absolute;
     top: 0;
     right: 0;
-    width: auto;
+    width: 244px;
     height: 100%;
-    padding: 0 12px;
     background-color: #fff;
+    overflow-y: auto;
     @include media-breakpoint-up(xl) {
       position: static;
       padding: 0;
       background-color: transparent;
     }
+  }
+}
+
+.top {
+  padding: 98px 24px 24px 24px;
+  @include media-breakpoint-up(xl) {
+    padding: 0;
   }
 }
 
@@ -209,7 +264,7 @@ export default {
     display: inline-flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 190px;
+    width: 100%;
     margin: 0;
     padding: 0;
     @include media-breakpoint-up(xl) {
@@ -220,6 +275,7 @@ export default {
       display: inline;
       font-family: source-han-serif-tc, 'Songti TC', serif;
       font-size: 18px;
+      line-height: 27px;
       font-weight: 700;
       cursor: pointer;
 
@@ -249,6 +305,49 @@ export default {
     + a {
       margin-left: 17px;
     }
+  }
+
+  &--hide-on-desktop {
+    @include media-breakpoint-up(xl) {
+      display: none;
+    }
+  }
+}
+
+.bottom {
+  flex: 1 1 auto;
+  background-color: #054f77;
+  padding: 24px;
+  color: white;
+  @include media-breakpoint-up(xl) {
+    display: none;
+  }
+}
+
+.member-section-list {
+  display: flex;
+  flex-direction: column;
+  &__section + &__section {
+    margin: 26px 0 0 0;
+  }
+}
+
+.section {
+  &__title {
+    font-size: 20px;
+    &--small {
+      font-size: 18px;
+    }
+  }
+}
+
+.member-category-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 0 -16px;
+  &__category {
+    margin: 16px 0 0 16px;
+    font-size: 18px;
   }
 }
 </style>

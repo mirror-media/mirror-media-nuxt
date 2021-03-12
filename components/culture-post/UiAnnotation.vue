@@ -59,11 +59,10 @@ export default {
     width: 100%;
     margin-top: 20px;
     margin-bottom: 20px;
-    padding: 23px 27px;
+    padding: 24px 32px;
     color: rgba(0, 0, 0, 0.87);
-    font-size: 15px;
-    line-height: 1.5;
-    letter-spacing: 1px;
+    font-size: 16px;
+    line-height: 29px;
     text-align: justify;
     background-color: rgba(216, 216, 216, 0.3);
     border-radius: 2px;

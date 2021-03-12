@@ -57,9 +57,9 @@
     </p>
 
     <div class="story__member-info">
-      鏡週刊4年了，讀者的建議與批評我們都虛心聆聽。為提供讀者最好的閱讀空間，我們成立了會員區，提供會員高品質、無廣告、一文到底的純淨閱讀體驗，邀您<strong
+      4/1起會員獨享15類專屬內容，現在加入會員立刻免費解鎖，在無廣告的閱讀環境下，享受突破同溫層的深入報導，邀您<strong
         @click="enterMemberSectionPage"
-        >立即體驗</strong
+        >立即加入</strong
       >。
     </div>
 
@@ -338,12 +338,12 @@ export default {
 
   methods: {
     enterMemberSectionPage() {
+      this.enterPageAfterLoggedIn('/section/member/')
       this.$ga.event({
         eventCategory: 'article',
         eventAction: 'click',
         eventLabel: 'member section',
       })
-      this.enterPageAfterLoggedIn('/section/member/')
     },
     enterMagazinePage() {
       this.enterPageAfterLoggedIn('/magazine/')

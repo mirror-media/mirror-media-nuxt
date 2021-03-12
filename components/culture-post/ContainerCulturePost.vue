@@ -1,16 +1,25 @@
 <template>
   <section class="culture-post">
-    <a :href="SITE_URL" class="logo" target="_blank" rel="noopener noreferrer">
+    <ContainerHeaderSectionMember
+      v-if="isCurrentPagePremium"
+      class="header"
+      @sidebarToggle="handleIndexActive(!isIndexActive)"
+    />
+    <a
+      v-else
+      :href="SITE_URL"
+      class="logo"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />
     </a>
 
     <UiArticleIndex
-      v-if="indexes.length > 0"
       :items="indexes"
       :currentIndex="currentIndex"
       :isIndexActive="isIndexActive"
       @closeIndex="handleIndexActive(false)"
-      @openIndex="handleIndexActive(true)"
     />
 
     <UiTheCover
@@ -56,6 +65,7 @@ import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
 import UiArticleIndex from './UiArticleIndex.vue'
 import UiListRelated from './UiListRelated.vue'
+import ContainerHeaderSectionMember from '~/components/ContainerHeaderSectionMember.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
@@ -65,6 +75,7 @@ export default {
   name: 'ContainerCulturePost',
 
   components: {
+    ContainerHeaderSectionMember,
     UiTheCover,
     UiArticleBody,
     UiArticleIndex,
@@ -199,6 +210,10 @@ export default {
     doesHaveWineCategory() {
       return doesContainWineName(this.story.categories)
     },
+
+    isCurrentPagePremium() {
+      return this.$route.name === 'premium-slug'
+    },
   },
 
   watch: {
@@ -313,6 +328,11 @@ export default {
   }
 }
 
+.header {
+  position: fixed !important;
+  top: 0;
+  right: 0;
+}
 .logo {
   position: fixed;
   top: 10px;
@@ -327,8 +347,8 @@ export default {
 
 .info,
 .updated-at {
-  font-size: 13px;
-  line-height: 2.31;
+  font-size: 14px;
+  line-height: 25px;
   text-align: center;
   color: rgba(#000, 0.66);
 }

@@ -3,12 +3,17 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <h1 v-html="title"></h1>
 
-    <UiStoryVideo
-      v-if="videoSrc"
-      :src="videoSrc"
-      :poster="videoPoster"
-      class="video"
-    />
+    <ClientOnly v-if="videoSrc">
+      <UiStoryVideo
+        :src="videoSrc"
+        :poster="videoPoster"
+        :isMuted="true"
+        :isAutoplay="true"
+        :shouldShowControl="false"
+        :isLoop="true"
+        class="video"
+      />
+    </ClientOnly>
 
     <picture v-else>
       <source :srcset="imgSrcLandscape" media="(min-width: 992px)" />
@@ -93,9 +98,9 @@ export default {
 
 h1 {
   font-family: source-han-serif-tc, 'Songti TC', serif;
-  font-size: 34px;
+  font-size: 36px;
   font-weight: 700;
-  line-height: 1.44;
+  line-height: 50px;
   color: #fff;
   text-shadow: 0 6px 8px rgba(#000, 0.6);
   width: 100%;
@@ -104,7 +109,7 @@ h1 {
   z-index: 1;
   @include media-breakpoint-up(lg) {
     font-size: 60px;
-    line-height: 1.4;
+    line-height: 84px;
     max-width: 960px;
   }
 }

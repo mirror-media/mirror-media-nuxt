@@ -2,9 +2,12 @@
   <video
     :src="src"
     :poster="poster"
+    :muted="isMuted"
+    :autoplay="isAutoplay"
     preload="metadata"
     controlsList="nodownload"
-    controls
+    :controls="shouldShowControl"
+    :loop="isLoop"
     playsinline
   />
 </template>
@@ -20,6 +23,22 @@ export default {
     },
     poster: {
       type: [String, Boolean],
+      default: false,
+    },
+    isMuted: {
+      type: Boolean,
+      default: false,
+    },
+    isAutoplay: {
+      type: Boolean,
+      default: false,
+    },
+    shouldShowControl: {
+      type: Boolean,
+      default: true,
+    },
+    isLoop: {
+      type: Boolean,
       default: false,
     },
   },
