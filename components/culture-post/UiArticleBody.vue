@@ -1,22 +1,34 @@
 <template>
-  <article class="article-body">
-    <div v-if="doesHaveBrief" class="brief">
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p v-for="item in brief" :key="item.id" v-html="item.content" />
-    </div>
+  <div class="wrapper">
+    <article
+      :class="[
+        'article-body',
+        {
+          'article-body--fade-out-bottom': shouldInviteVisitorToJoinMembership,
+        },
+      ]"
+    >
+      <div v-if="doesHaveBrief" class="brief">
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <p v-for="item in brief" :key="item.id" v-html="item.content" />
+      </div>
 
-    <ContentHandler v-for="item in content" :key="item.id" :item="item" />
-  </article>
+      <ContentHandler v-for="item in content" :key="item.id" :item="item" />
+    </article>
+    <UiPremiumInviteToLogin v-if="shouldInviteVisitorToJoinMembership" />
+  </div>
 </template>
 
 <script>
 import ContentHandler from './ContentHandler.vue'
+import UiPremiumInviteToLogin from '~/components/UiPremiumInviteToLogin.vue'
 
 export default {
   name: 'UiArticleBody',
 
   components: {
     ContentHandler,
+    UiPremiumInviteToLogin,
   },
 
   props: {
@@ -36,13 +48,25 @@ export default {
     doesHaveBrief() {
       return this.brief.length > 0
     },
+    isCurrentPagePremium() {
+      return this.$route.name === 'premium-slug'
+    },
+    shouldInviteVisitorToJoinMembership() {
+      return (
+        this.isCurrentPagePremium &&
+        !this.$store.getters['membership/isLoggedIn']
+      )
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.article-body {
+.wrapper {
   padding-bottom: 60px;
+}
+
+.article-body {
   font-size: 18px;
   line-height: 36px;
   text-align: justify;
