@@ -153,14 +153,19 @@ export default {
             return <UiInfobox class="story__infobox" content={content} />
 
           case 'embeddedcode': {
-            const { embeddedCode = '', caption = '' } = content
-
+            const {
+              caption = '',
+              scripts = [],
+              embeddedCodeWithoutScript = '',
+            } = content
             return (
-              <div class="story__embedded-code">
-                <div domPropsInnerHTML={embeddedCode}></div>
-
+              <LazyRenderer
+                class="story__embedded-code"
+                onLoad={() => renderScriptInbody(scripts)}
+              >
+                <div domPropsInnerHTML={embeddedCodeWithoutScript}></div>
                 {caption && <p class="g-story-caption">{caption}</p>}
-              </div>
+              </LazyRenderer>
             )
           }
 
@@ -248,6 +253,17 @@ export default {
     }
 
     return undefined
+
+    function renderScriptInbody(scripts) {
+      if (process.browser) {
+        scripts?.forEach((item) => {
+          const src = item.attribs?.src ?? ''
+          const s = document.createElement('script')
+          s.setAttribute('src', src)
+          document.body.appendChild(s)
+        })
+      }
+    }
 
     function addRelToExternalLink(content = '') {
       return content.replace(
