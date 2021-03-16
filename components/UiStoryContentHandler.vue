@@ -2,6 +2,7 @@
 import UiSlideshow from './UiSlideshow.vue'
 import UiInfobox from './UiInfobox.vue'
 import UiStoryVideo from './UiStoryVideo.vue'
+import UiEmbeddedCode from './UiEmbeddedCode.vue'
 import ContainerAudioPlayer from './audio-player/ContainerAudioPlayer.vue'
 import ContainerParagraphWithAnnotation from './ContainerParagraphWithAnnotation.vue'
 import UiSlideshowButtonPrev from '~/components/slideshow/UiSlideshowButtonPrev.vue'
@@ -152,22 +153,10 @@ export default {
           case 'infobox':
             return <UiInfobox class="story__infobox" content={content} />
 
-          case 'embeddedcode': {
-            const {
-              caption = '',
-              scripts = [],
-              embeddedCodeWithoutScript = '',
-            } = content
+          case 'embeddedcode':
             return (
-              <LazyRenderer
-                class="story__embedded-code"
-                onLoad={() => renderScriptInbody(scripts)}
-              >
-                <div domPropsInnerHTML={embeddedCodeWithoutScript}></div>
-                {caption && <p class="g-story-caption">{caption}</p>}
-              </LazyRenderer>
+              <UiEmbeddedCode class="story__embedded-code" content={content} />
             )
-          }
 
           case 'audio':
             return (
@@ -253,17 +242,6 @@ export default {
     }
 
     return undefined
-
-    function renderScriptInbody(scripts) {
-      if (process.browser) {
-        scripts?.forEach((item) => {
-          const src = item.attribs?.src ?? ''
-          const s = document.createElement('script')
-          s.setAttribute('src', src)
-          document.body.appendChild(s)
-        })
-      }
-    }
 
     function addRelToExternalLink(content = '') {
       return content.replace(
