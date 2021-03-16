@@ -20,6 +20,7 @@
       :currentIndex="currentIndex"
       :isIndexActive="isIndexActive"
       @closeIndex="handleIndexActive(false)"
+      @openIndex="handleIndexActive(true)"
     />
 
     <UiTheCover

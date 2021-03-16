@@ -1,5 +1,15 @@
 <template>
   <section class="index" :class="{ active: isIndexActive }">
+    <button class="index__btn open" @click="$emit('openIndex')">
+      <!-- TODO: inline svg -->
+      <img
+        v-if="isCurrentPagePremium"
+        src="~/assets/premium-header-sidebar-toggle.svg"
+        alt="開啟"
+      />
+      <img v-else src="~/assets/hamburger.svg" alt="開啟" />
+    </button>
+
     <div class="index__curtain">
       <div ref="indexContainer" class="index-container">
         <button class="index__btn close" @click="$emit('closeIndex')">
@@ -34,7 +44,7 @@
             <UiShareLine />
           </div>
         </div>
-        <div class="bottom">
+        <div v-if="isCurrentPagePremium" class="bottom">
           <ul
             v-if="sectionsMember.length > 0"
             class="bottom__member-section-list member-section-list"
@@ -123,6 +133,10 @@ export default {
   computed: {
     sectionsMember() {
       return this.$store.getters['sections/sectionsMember']
+    },
+
+    isCurrentPagePremium() {
+      return this.$route.name === 'premium-slug'
     },
   },
 
@@ -312,6 +326,10 @@ export default {
       display: none;
     }
   }
+}
+
+.top {
+  margin: auto 0;
 }
 
 .bottom {
