@@ -25,7 +25,17 @@ function createProxy(baseUrl) {
       if (err.response) {
         const { status, statusText, headers, data } = err.response
 
-        res.status(status).send(err.message)
+        /*
+         * When userDelete's error occurs,
+         * need to return detail error message
+         * (which is located in err.response.data)
+         */
+        if (req.url === '/graphql/user') {
+          const userErrorDetailMessage = err.response.data
+          res.send(userErrorDetailMessage)
+        } else {
+          res.status(status).send(err.message)
+        }
 
         // eslint-disable-next-line no-console
         console.error(

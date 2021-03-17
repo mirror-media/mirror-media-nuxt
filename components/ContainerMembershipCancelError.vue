@@ -8,6 +8,11 @@
       </p>
       <p class="description__paragraph">02-6333-3966</p>
       <p class="description__paragraph">我們將有專人為你服務</p>
+
+      <div v-if="isNeededToShowDetail" class="description__detail">
+        <p class="description__detail_paragraph">{{ getErrorTitleText }}</p>
+        <p class="description__detail_paragraph">{{ getErrorDetailText }}</p>
+      </div>
     </div>
     <div class="wrapper__button-wrapper button-wrapper">
       <a href="/" class="back-to-home-button">回首頁</a>
@@ -16,10 +21,60 @@
 </template>
 
 <script>
+import {
+  CERTIFICATE_FETCH_FAILED,
+  EXPIRED_ID_TOKEN,
+  INVALID_ID_TOKEN,
+  REVOKED_ID_TOKEN,
+  USER_NOT_FOUND,
+} from '~/constants/authErr'
+
 export default {
+  props: {
+    errorResponse: {
+      type: Error,
+      isRequired: true,
+      default: () => {
+        return new Error([{ message: CERTIFICATE_FETCH_FAILED }])
+      },
+    },
+  },
+  computed: {
+    isNeededToShowDetail() {
+      const errorMessage = this.errorResponse.message
+      if (errorMessage === CERTIFICATE_FETCH_FAILED) {
+        return false
+      } else {
+        return true
+      }
+    },
+    getErrorDetailText() {
+      return this.errorResponse.message
+    },
+    getErrorTitleText() {
+      if (this.isErrMessageHasKeyword(EXPIRED_ID_TOKEN)) {
+        return '登入逾時，刪除失敗'
+      } else if (this.isErrMessageHasKeyword(INVALID_ID_TOKEN)) {
+        return '登入無效，刪除失敗'
+      } else if (this.isErrMessageHasKeyword(REVOKED_ID_TOKEN)) {
+        return '尚未登入，刪除失敗'
+      } else if (this.isErrMessageHasKeyword(USER_NOT_FOUND)) {
+        return '查無使用者資料，刪除失敗'
+      } else {
+        return '刪除失敗'
+      }
+    },
+  },
   methods: {
     handleBackToForm() {
       this.$emit('backToForm')
+    },
+    isErrMessageHasKeyword(keyword) {
+      /*
+       * mainString.match(substring)!==null: mainString contains substring
+       */
+      const mainString = this.errorResponse.message
+      return mainString.match(keyword) !== null
     },
   },
 }
@@ -53,6 +108,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   &__paragraph {
     display: flex;
     flex-direction: column;
@@ -64,6 +120,18 @@ export default {
       flex-direction: row;
       justify-content: center;
     }
+  }
+
+  &__detail {
+    font-size: 12px;
+    line-height: 20px;
+    font-style: normal;
+    font-weight: normal;
+
+    text-align: center;
+    color: #888888;
+
+    margin-top: 20px;
   }
 }
 

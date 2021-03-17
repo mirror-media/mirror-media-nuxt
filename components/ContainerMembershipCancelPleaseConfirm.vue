@@ -70,7 +70,7 @@ export default {
     handleConfirmCancelError(err) {
       // eslint-disable-next-line no-console
       console.error(err)
-      this.$emit('error')
+      this.$emit('error', err)
     },
   },
 }
