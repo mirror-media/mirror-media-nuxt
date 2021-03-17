@@ -232,9 +232,11 @@ export default {
   methods: {
     detectCurrentIndex() {
       import('intersection-observer').then(() => {
+        const selectorIdBeginWithHeader = '[id^=header]'
         const targets = [
-          ...this.$refs.articleBody.$el.querySelectorAll('h2'),
-          ...this.$refs.articleBody.$el.querySelectorAll('h3'),
+          ...this.$refs.articleBody.$el.querySelectorAll(
+            selectorIdBeginWithHeader
+          ),
         ]
         let observer
 
