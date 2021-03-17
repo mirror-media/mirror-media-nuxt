@@ -27,8 +27,7 @@
                 <!-- eslint-disable vue/no-v-html -->
                 <a
                   :href="`#header-${item.id}`"
-                  data-scroll
-                  @click="$emit('closeIndex')"
+                  @click="handleIndexClick(item.id)"
                   v-html="item.content"
                 />
                 <!-- eslint-enable vue/no-v-html -->
@@ -124,12 +123,6 @@ export default {
     },
   },
 
-  data() {
-    return {
-      smoothScroll: undefined,
-    }
-  },
-
   computed: {
     sectionsMember() {
       return this.$store.getters['sections/sectionsMember']
@@ -148,34 +141,12 @@ export default {
     },
   },
 
-  mounted() {
-    this.enableSmoothScroll()
-  },
-
-  beforeDestroy() {
-    this.disableSmoothScroll()
-  },
-
   methods: {
-    async enableSmoothScroll() {
-      const htmlElem = document.documentElement
-
-      htmlElem.style.scrollBehavior = 'smooth'
-
-      if (!('scrollBehavior' in htmlElem.style)) {
-        const { default: SmoothScroll } = await import('smooth-scroll')
-
-        this.smoothScroll = new SmoothScroll('a[href*="#"]')
-      }
-    },
-    disableSmoothScroll() {
-      const htmlElem = document.documentElement
-
-      htmlElem.style.scrollBehavior = ''
-
-      if (!('scrollBehavior' in htmlElem.style) && this.smoothScroll) {
-        this.smoothScroll.destroy()
-      }
+    handleIndexClick(id) {
+      this.$emit('closeIndex')
+      this.$scrollTo(`#header-${id}`, 500, {
+        lazy: false,
+      })
     },
   },
 }
