@@ -278,6 +278,7 @@ export default {
     const { title = '', brief = '', heroImage = {} } = this.post
     const description = brief.map((item) => item.content).join('')
     const image = heroImage.desktop?.url || SITE_OG_IMG
+    const dableImgUrl = heroImage.tiny?.url || SITE_OG_IMG
 
     return {
       title,
@@ -299,6 +300,7 @@ export default {
           content: `${SITE_URL}${this.$route.path}`,
         },
         { hid: 'og:image', property: 'og:image', content: image },
+        { property: 'dable:image', content: dableImgUrl },
         { hid: 'twitter:title', name: 'twitter:title', content: title },
         {
           hid: 'twitter:description',
