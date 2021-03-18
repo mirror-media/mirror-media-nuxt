@@ -167,6 +167,10 @@ export default {
       this.videoData?.thumbnails?.maxres?.url ||
       this.videoData?.thumbnails?.standard?.url ||
       SITE_OG_IMG
+    const dableImgUrl =
+      this.videoData?.thumbnails?.medium?.url ||
+      this.videoData?.thumbnails?.standard?.url ||
+      SITE_OG_IMG
     return {
       title: this.title,
       meta: [
@@ -187,6 +191,7 @@ export default {
           content: `${SITE_URL}${this.$route.path}`,
         },
         { hid: 'og:image', property: 'og:image', content: image },
+        { property: 'dable:image', content: dableImgUrl },
         { hid: 'twitter:title', name: 'twitter:title', content: this.title },
         {
           hid: 'twitter:description',

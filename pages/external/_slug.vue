@@ -456,6 +456,7 @@ export default {
         { hid: 'twitter:image', name: 'twitter:image', content: thumb },
         { property: 'dable:item_id', content: this.storySlug },
         { property: 'dable:author', content: partnerDisplay },
+        { property: 'dable:image', content: thumb },
         { property: 'article:section', content: '合作媒體' },
         { property: 'article:section2', content: partnerDisplay },
         { property: 'article:published_time', content: publishedDateIso },
