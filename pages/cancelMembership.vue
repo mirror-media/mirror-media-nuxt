@@ -6,7 +6,10 @@
       @error="handleCancelError"
     />
     <ContainerMembershipCancelSuccess v-else-if="pageState === 'success'" />
-    <ContainerMembershipCancelError v-else-if="pageState === 'error'" />
+    <ContainerMembershipCancelError
+      v-else-if="pageState === 'error'"
+      :errorResponse="errorResponse"
+    />
   </section>
 </template>
 
@@ -25,13 +28,15 @@ export default {
   data() {
     return {
       pageState: 'confirmation',
+      errorResponse: {},
     }
   },
   methods: {
     handleCancelSuccess() {
       this.pageState = 'success'
     },
-    handleCancelError() {
+    handleCancelError(err) {
+      this.errorResponse = err
       this.pageState = 'error'
     },
   },

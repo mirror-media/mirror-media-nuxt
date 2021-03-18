@@ -87,4 +87,6 @@
 2021/03/08
   - release version: master_yeefun_1248 1.2.8
   - features: home page and article page direct to 500 page, add leading video on wide style article page, add click event on article page member promotion section, and change the color of member section to red. 
-  
+2021/03/12 
+  - release version: master_kjwen310_1271 1.2.10
+  - features: add premium page categories, enlarge wide story font size, add wide story herovideo autoplay functions, change membership promotion wording 

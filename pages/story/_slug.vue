@@ -694,6 +694,10 @@ export default {
       ogImage?.image?.resizedTargets?.tablet?.url ||
       heroImage?.image?.resizedTargets?.tablet?.url ||
       SITE_OG_IMG
+    const dableImgUrl =
+      ogImage?.image?.resizedTargets?.tiny?.url ||
+      heroImage?.image?.resizedTargets?.tiny?.url ||
+      SITE_OG_IMG
     const pageUrl = `https://${DOMAIN_NAME}${this.$route.path}`
 
     const publishedDateIso = new Date(publishedDate).toISOString()
@@ -740,6 +744,7 @@ export default {
         { hid: 'twitter:image', name: 'twitter:image', content: imgUrl },
         { property: 'dable:item_id', content: this.storySlug },
         { property: 'dable:author', content: writerName },
+        { property: 'dable:image', content: dableImgUrl },
         this.hasSection
           ? {
               property: 'article:section',

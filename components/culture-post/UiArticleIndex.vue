@@ -1,5 +1,15 @@
 <template>
   <section class="index" :class="{ active: isIndexActive }">
+    <button class="index__btn open" @click="$emit('openIndex')">
+      <!-- TODO: inline svg -->
+      <img
+        v-if="isCurrentPagePremium"
+        src="~/assets/premium-header-sidebar-toggle.svg"
+        alt="開啟"
+      />
+      <img v-else src="~/assets/hamburger.svg" alt="開啟" />
+    </button>
+
     <div class="index__curtain">
       <div ref="indexContainer" class="index-container">
         <button class="index__btn close" @click="$emit('closeIndex')">
@@ -17,8 +27,7 @@
                 <!-- eslint-disable vue/no-v-html -->
                 <a
                   :href="`#header-${item.id}`"
-                  data-scroll
-                  @click="$emit('closeIndex')"
+                  @click="handleIndexClick(item.id)"
                   v-html="item.content"
                 />
                 <!-- eslint-enable vue/no-v-html -->
@@ -34,7 +43,7 @@
             <UiShareLine />
           </div>
         </div>
-        <div class="bottom">
+        <div v-if="isCurrentPagePremium" class="bottom">
           <ul
             v-if="sectionsMember.length > 0"
             class="bottom__member-section-list member-section-list"
@@ -114,15 +123,13 @@ export default {
     },
   },
 
-  data() {
-    return {
-      smoothScroll: undefined,
-    }
-  },
-
   computed: {
     sectionsMember() {
       return this.$store.getters['sections/sectionsMember']
+    },
+
+    isCurrentPagePremium() {
+      return this.$route.name === 'premium-slug'
     },
   },
 
@@ -134,34 +141,12 @@ export default {
     },
   },
 
-  mounted() {
-    this.enableSmoothScroll()
-  },
-
-  beforeDestroy() {
-    this.disableSmoothScroll()
-  },
-
   methods: {
-    async enableSmoothScroll() {
-      const htmlElem = document.documentElement
-
-      htmlElem.style.scrollBehavior = 'smooth'
-
-      if (!('scrollBehavior' in htmlElem.style)) {
-        const { default: SmoothScroll } = await import('smooth-scroll')
-
-        this.smoothScroll = new SmoothScroll('a[href*="#"]')
-      }
-    },
-    disableSmoothScroll() {
-      const htmlElem = document.documentElement
-
-      htmlElem.style.scrollBehavior = ''
-
-      if (!('scrollBehavior' in htmlElem.style) && this.smoothScroll) {
-        this.smoothScroll.destroy()
-      }
+    handleIndexClick(id) {
+      this.$emit('closeIndex')
+      this.$scrollTo(`#header-${id}`, 500, {
+        lazy: false,
+      })
     },
   },
 }
@@ -312,6 +297,10 @@ export default {
       display: none;
     }
   }
+}
+
+.top {
+  margin: auto 0;
 }
 
 .bottom {

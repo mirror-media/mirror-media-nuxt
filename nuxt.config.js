@@ -384,6 +384,7 @@ module.exports = {
       },
     ],
     '@nuxtjs/apollo',
+    'vue-scrollto/nuxt',
   ],
 
   // config for @mirror-media/nuxt-ssr-cache
