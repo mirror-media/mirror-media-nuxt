@@ -5,6 +5,7 @@ import UiSlideshow from '~/components/UiSlideshow.vue'
 import UiSlideshowButtonPrev from '~/components/slideshow/UiSlideshowButtonPrev.vue'
 import UiSlideshowButtonNext from '~/components/slideshow/UiSlideshowButtonNext.vue'
 import UiStoryVideo from '~/components/UiStoryVideo.vue'
+import UiEmbeddedCode from '~/components/UiEmbeddedCode.vue'
 import ContainerAudioPlayer from '~/components/audio-player/ContainerAudioPlayer.vue'
 import ContainerParagraphWithAnnotation from '~/components/ContainerParagraphWithAnnotation.vue'
 
@@ -105,14 +106,7 @@ export default {
         return <UiInfobox class="infobox" content={content} />
 
       case 'embeddedcode':
-        return (
-          <LazyRenderer class="embedded-code">
-            <div
-              class="embedded-code"
-              domPropsInnerHTML={addTitleAndLazyloadToIframe(content)}
-            ></div>
-          </LazyRenderer>
-        )
+        return <UiEmbeddedCode class="embedded-code" content={content} />
 
       case 'audio':
         return (
@@ -207,13 +201,6 @@ export default {
 
       default:
         return undefined
-    }
-
-    function addTitleAndLazyloadToIframe(content = {}) {
-      return content.embeddedCode.replace(
-        '<iframe',
-        `<iframe title="${content.caption}" loading="lazy"`
-      )
     }
 
     function processListItmes(contents = []) {
