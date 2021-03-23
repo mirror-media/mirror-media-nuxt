@@ -4,7 +4,7 @@ import { API_PATH_FRONTEND } from '~/configs/config'
 
 const debug = require('debug')('user-behavior-log')
 
-export default (context) => {
+export default (context, inject) => {
   // pageview event
   context.app.router.beforeEach((to, from, next) => {
     const payload = {
@@ -78,6 +78,31 @@ export default (context) => {
         console.log(err)
       })
   })
+
+  inject(
+    'sendMembershipErrorLog',
+    ({ email = '', description = '', eventType = '' } = {}) => {
+      const now = dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss')
+      createUserBehaviorLog({
+        category: 'membershipErrorLog',
+        email,
+        description,
+        eventType,
+        time: now,
+      })
+        .then((log) => {
+          debug(
+            'Prepare to send exit event user behavior log to server, data: ',
+            JSON.stringify(log)
+          )
+          sendLog(log)
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err)
+        })
+    }
+  )
 }
 
 function sendLog(log) {

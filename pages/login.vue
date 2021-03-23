@@ -163,7 +163,11 @@ export default {
       // eslint-disable-next-line no-console
       console.error(e)
       this.isFederatedRedirectResultLoading = false
-      this.handleLoginError()
+      this.handleLoginError({
+        email: e.email,
+        error: e,
+        type: 'federatedLogin',
+      })
     }
   },
   methods: {
@@ -171,8 +175,13 @@ export default {
       this.pageState = 'success'
       this.emailShowInSuccess = email
     },
-    handleLoginError() {
+    handleLoginError({ email, error, type } = {}) {
       this.pageState = 'error'
+      this.$sendMembershipErrorLog({
+        email,
+        description: error,
+        eventType: type,
+      })
     },
     handleBackToForm() {
       this.pageState = 'form'
