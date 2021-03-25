@@ -280,10 +280,7 @@ export default {
       this.relatedImgs = items
     },
     enterMagazinePage() {
-      const pagePath = '/magazine/'
-      window.location.href = this.isLoggedIn
-        ? pagePath
-        : `/login/?destination=${pagePath}`
+      window.location.href = '/magazine/'
     },
   },
 
