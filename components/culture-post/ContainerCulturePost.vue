@@ -44,13 +44,6 @@
       :content="post.content"
     />
 
-    <div class="culture-post__article-body">
-      <div class="magazine">
-        <div>下載鏡週刊電子雜誌</div>
-        <button type="button" @click="enterMagazinePage">立即下載</button>
-      </div>
-    </div>
-
     <LazyRenderer
       v-if="doesHaveAnyRelateds"
       class="list-related-container"
@@ -279,9 +272,6 @@ export default {
 
       this.relatedImgs = items
     },
-    enterMagazinePage() {
-      window.location.href = '/magazine/'
-    },
   },
 
   head() {
@@ -385,43 +375,6 @@ export default {
     margin-left: 12px;
     @include media-breakpoint-up(lg) {
       margin-left: 24px;
-    }
-  }
-}
-
-.magazine {
-  margin: 24px 27px;
-  font-size: 24px;
-  line-height: 36px;
-  text-align: center;
-  background-color: #fff;
-  padding: 20px;
-  color: #054f77;
-  border: 1px solid rgba(155, 155, 155, 0.2);
-  box-shadow: 0px 0px 20px -4px rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-  @include media-breakpoint-up(xl) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px 32px;
-    font-size: 20px;
-  }
-
-  button {
-    width: 100%;
-    background-color: #1d9fb8;
-    border-radius: 2px;
-    line-height: 1.38;
-    color: #fff;
-    padding: 12px 4px;
-    margin-top: 16px;
-    font-size: 18px;
-    line-height: 25px;
-    @include media-breakpoint-up(xl) {
-      margin-top: 0;
-      max-width: 170px;
-      line-height: 27px;
     }
   }
 }
