@@ -32,4 +32,5 @@ export const actions = {
 
 function commitSectionsData(commit, response) {
   commit('sections/setSectionsData', response.endpoints.sections ?? {})
+  commit('sections/addMagazineToMemberSection')
 }

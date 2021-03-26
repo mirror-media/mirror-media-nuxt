@@ -81,6 +81,9 @@ export default {
       if (sectionName === 'videohub') {
         return `/video_category/${categoryName}`
       }
+      if (categoryName === 'magazine') {
+        return '/magazine/'
+      }
       return `/category/${categoryName}`
     },
     emitGa(eventLabel) {
