@@ -25,7 +25,7 @@ describe('pageview event', function () {
         },
       },
     }
-    plugin(mockContext)
+    plugin(mockContext, () => {})
 
     await flushPromises()
     expect(JSON.parse(Blob.mock.calls[0][0])).toMatchObject({
@@ -66,7 +66,7 @@ describe('pageview event', function () {
         },
       },
     }
-    plugin(mockContext)
+    plugin(mockContext, () => {})
 
     await flushPromises()
     expect(JSON.parse(Blob.mock.calls[0][0])).toMatchObject({
@@ -96,7 +96,7 @@ describe('click event', function () {
         },
       },
     }
-    plugin(mockContext)
+    plugin(mockContext, () => {})
 
     document.body.click()
 
@@ -131,7 +131,7 @@ describe('exit event', function () {
         },
       },
     }
-    plugin(mockContext)
+    plugin(mockContext, () => {})
 
     window.dispatchEvent(new Event('beforeunload'))
 

@@ -90,3 +90,6 @@
 2021/03/12 
   - release version: master_kjwen310_1271 1.2.10
   - features: add premium page categories, enlarge wide story font size, add wide story herovideo autoplay functions, change membership promotion wording 
+2021/03/19 
+  - release version: master_kjwen310_1297 1.2.12
+  - features: add wide mobile menu, fix wide index, fix twitter & instagram & tiktok embedded code, add dable:image

@@ -49,9 +49,10 @@ export default {
         this.isLoading = false
       }
     },
-    handleError(e) {
+    handleError({ email, error }) {
       // eslint-disable-next-line no-console
-      console.error(e)
+      console.error(error)
+      this.$emit('error', { email, error, type: 'emailLoginSendEmail' })
     },
     createSignInLinkToEmail() {
       const origin = window.location.origin
@@ -104,8 +105,7 @@ export default {
         await loginDestination.set(this.$route)
         this.$emit('success', this.emailInput)
       } catch (e) {
-        this.handleError(e)
-        this.$emit('error')
+        this.handleError({ email: this.emailInput, error: e })
       }
     },
     handleInputValidStateChange(value) {

@@ -17,6 +17,7 @@ const createWrapper = createWrapperHelper({
         signInWithEmailLink: jest.fn(() => Promise.resolve()),
       },
     },
+    $sendMembershipErrorLog: jest.fn(),
   },
 })
 

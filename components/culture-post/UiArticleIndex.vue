@@ -35,9 +35,7 @@
             </ul>
           </div>
 
-          <div
-            :class="['share', { 'share--hide-on-desktop': items.length <= 0 }]"
-          >
+          <div :class="['share', { 'share--with-no-list': items.length <= 0 }]">
             <p>分享到：</p>
             <UiShareFb />
             <UiShareLine />
@@ -292,10 +290,9 @@ export default {
     }
   }
 
-  &--hide-on-desktop {
-    @include media-breakpoint-up(xl) {
-      display: none;
-    }
+  &--with-no-list {
+    position: relative;
+    z-index: -1;
   }
 }
 
