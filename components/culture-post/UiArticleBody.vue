@@ -15,7 +15,7 @@
 
       <ContentHandler v-for="item in content" :key="item.id" :item="item" />
 
-      <div class="magazine">
+      <div v-if="!shouldInviteVisitorToJoinMembership" class="magazine">
         <div>下載鏡週刊電子雜誌</div>
         <button type="button" @click="enterMagazinePage">立即下載</button>
       </div>
