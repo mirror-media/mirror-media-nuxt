@@ -317,7 +317,9 @@ export default {
       )
     },
     publishedDate() {
-      return dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm')
+      return (
+        dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm') + ' 臺北時間'
+      )
     },
     section() {
       return this.story.sections?.[0] ?? {}
