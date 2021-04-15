@@ -252,6 +252,16 @@ export default {
           !this.story.hiddenAdvertised ?? true
         )
 
+        const isTitleExist = this.story.title
+        const isContentExist = (this.story?.content?.apiData ?? []).length > 0
+        if (!isTitleExist || !isContentExist) {
+          this.$nuxt.error({
+            message: 'missing title or article content',
+            statusCode: 404,
+          })
+          return false
+        }
+
         return true
       } else {
         const { message, statusCode } = response.reason
