@@ -91,6 +91,18 @@ export default {
       return this.doesCategoryHaveMemberOnly
     },
   },
+  beforeMount() {
+    this.setGaDimensionOfMembership()
+  },
+  methods: {
+    setGaDimensionOfMembership() {
+      const dimensionMembership = this.$store.getters['membership/isLoggedIn']
+        ? 'isMember'
+        : 'notMember'
+
+      this.$ga.set('membership', dimensionMembership)
+    },
+  },
   head() {
     const {
       brief = {},
