@@ -100,7 +100,7 @@ export default {
         ? 'isMember'
         : 'notMember'
 
-      this.$ga.set('membership', dimensionMembership)
+      this.$ga.set('dimension1', dimensionMembership)
     },
   },
   head() {
