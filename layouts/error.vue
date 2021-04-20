@@ -2,8 +2,8 @@
   <div class="page">
     <div class="message-container">
       <div class="page__info">
-        <h1 v-text="error.statusCode" />
-        <h2>抱歉！<br />{{ subtitle }}</h2>
+        <h1 v-text="errorState.statusCode" />
+        <h2>抱歉！<br />{{ errorState.message }}</h2>
         <!-- 首頁改用 nuxt 後可以改成 NuxtLink -->
         <a href="/">| 回首頁 |</a>
         <!-- <NuxtLink to="/">| 回首頁 |</NuxtLink> -->
@@ -59,12 +59,23 @@ export default {
     hasLatestStories() {
       return this.latestStories?.length > 0
     },
-    subtitle() {
-      switch (this.error.statusCode) {
-        case 404:
-          return '找不到這個網址'
+    errorState() {
+      switch (this.error.message) {
+        case 'not found':
+          return {
+            statusCode: 404,
+            message: '找不到這個網址',
+          }
+        case 'error':
+          return {
+            statusCode: 500,
+            message: '系統忙碌中',
+          }
         default:
-          return '系統忙碌中'
+          return {
+            statusCode: this.error?.statusCode ?? 500,
+            message: this.error?.message ?? '系統忙碌中',
+          }
       }
     },
   },

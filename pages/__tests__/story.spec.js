@@ -18,6 +18,7 @@ const createWrapper = createWrapperHelper({
     isDesktopWidth: () => true,
   },
   mocks: {
+    $fetchState: {},
     $store: {
       state: { canAdvertise: true },
     },
