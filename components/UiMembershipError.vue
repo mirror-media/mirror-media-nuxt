@@ -17,11 +17,11 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            MM-onlineservice@mirrormedia.mg
+            mm-onlineservice@mirrormedia.mg
           </a>
           &nbsp; / &nbsp;
         </span>
-        <span>02-6633-3966 &nbsp;</span>
+        <span>(02)6633-3966 &nbsp;</span>
         <span>我們將有專人為你服務。</span>
       </p>
     </div>
