@@ -23,7 +23,7 @@ export default {
   },
   async fetch() {
     const [postResponse] = await Promise.allSettled([
-      this.$fetchPosts(
+      this.$fetchPostsFromMembershipGateway(
         {
           slug: this.storySlug,
           isAudioSiteOnly: false,
