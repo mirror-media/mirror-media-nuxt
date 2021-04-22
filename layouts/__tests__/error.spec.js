@@ -5,24 +5,59 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
   propsData: {
-    error: {
-      statusCode: 404,
-    },
+    error: {},
   },
 })
 
-describe('page information', () => {
+describe('page information with default empty error settings', () => {
   const wrapper = createWrapper(Page)
-  test('Should have proper message', () => {
+  test('Should provide info of 500 by default', () => {
+    expect(wrapper.find('h1').text()).toBe('500')
+    expect(wrapper.find('h2').text()).toEqual('抱歉！系統忙碌中')
+  })
+  test('Should provide info of 500 if message of error settings is "error"', () => {
+    const wrapper = createWrapper(Page, {
+      propsData: {
+        error: {
+          message: 'error',
+        },
+      },
+    })
+    expect(wrapper.find('h1').text()).toBe('500')
+    expect(wrapper.find('h2').text()).toEqual('抱歉！系統忙碌中')
+  })
+  test('Should provide info of 404 if message of error settings is "not found"', () => {
+    const wrapper = createWrapper(Page, {
+      propsData: {
+        error: {
+          message: 'not found',
+        },
+      },
+    })
     expect(wrapper.find('h1').text()).toBe('404')
-    expect(wrapper.find('h2').text()).toContain('抱歉！')
-    expect(wrapper.find('h2').text()).toContain('找不到這個網址')
+    expect(wrapper.find('h2').text()).toEqual('抱歉！找不到這個網址')
   })
-  test('Should have link to home page', () => {
-    const link = wrapper.find('a')
-    expect(link.attributes().href).toBe('/')
-    expect(link.text()).toBe('| 回首頁 |')
+  test('Should customize statusCode and message of error page by error settings', () => {
+    const mockStatusCode = 123
+    const mockMessage = 'mock message'
+    const wrapper = createWrapper(Page, {
+      propsData: {
+        error: {
+          statusCode: mockStatusCode,
+          message: mockMessage,
+        },
+      },
+    })
+    expect(wrapper.find('h1').text()).toBe(`${mockStatusCode}`)
+    expect(wrapper.find('h2').text()).toEqual(`抱歉！${mockMessage}`)
   })
+})
+
+test('Should have link to home page', () => {
+  const wrapper = createWrapper(Page)
+  const link = wrapper.find('a')
+  expect(link.attributes().href).toBe('/')
+  expect(link.text()).toBe('| 回首頁 |')
 })
 
 describe('latest stories', () => {

@@ -94,6 +94,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
 h1 {

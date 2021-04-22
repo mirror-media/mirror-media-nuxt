@@ -40,7 +40,7 @@ describe('render the proper content from props "story"', () => {
       },
     })
     expect(wrapper.get('.story__published-date').text()).toBe(
-      '2020.09.14 16:29'
+      '2020.09.14 16:29 臺北時間'
     )
   })
 

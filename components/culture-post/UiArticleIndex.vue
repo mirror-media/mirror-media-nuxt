@@ -292,7 +292,6 @@ export default {
 
   &--with-no-list {
     position: relative;
-    z-index: -1;
   }
 }
 

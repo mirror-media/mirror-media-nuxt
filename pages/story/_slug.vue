@@ -1,172 +1,182 @@
 <template>
-  <div class="story-slug">
-    <ContainerPhotoGallery v-if="isStylePhotography" :story="story" />
+  <div>
+    <error
+      v-if="$fetchState.error"
+      :error="{
+        message: $fetchState.error.message,
+      }"
+    />
+    <div v-else class="story-slug">
+      <ContainerPhotoGallery v-if="isStylePhotography" :story="story" />
 
-    <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
+      <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
 
-    <div v-else class="article">
-      <ContainerHeader :currentSectionName="sectionName" />
+      <div v-else class="article">
+        <ContainerHeader :currentSectionName="sectionName" />
 
-      <div class="story-container">
-        <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="HD" />
+        <div class="story-container">
+          <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="HD" />
 
-        <div class="story-wrapper">
-          <ContainerStoryBody :story="story" class="story-slug__story-body">
-            <template #fixedTriggerEnd>
-              <div ref="fixedTriggerEnd" />
-            </template>
+          <div class="story-wrapper">
+            <ContainerStoryBody :story="story" class="story-slug__story-body">
+              <template #fixedTriggerEnd>
+                <div ref="fixedTriggerEnd" />
+              </template>
 
-            <template #storyRelateds>
-              <LazyRenderer
-                class="story__list"
-                @load="handleLoadStoryListRelated"
-              >
-                <UiStoryListRelated
-                  :items="relateds"
-                  :images="relatedImages"
-                  @sendGa="sendGaForClick('related')"
-                >
-                  <template v-if="canAdvertise" #ads>
-                    <ClientOnly>
-                      <MicroAd
-                        v-for="unit in microAdUnits[device]"
-                        :key="unit.name"
-                        :unitId="unit.id"
-                      />
-
-                      <div id="_popIn_recommend"></div>
-                    </ClientOnly>
-                  </template>
-                </UiStoryListRelated>
-              </LazyRenderer>
-            </template>
-
-            <template v-if="canAdvertise && isDesktopWidth" #dableWidget>
-              <ClientOnly>
-                <div ref="dableWidget" class="dable-widget">
-                  <LazyRenderer
-                    :id="`dablewidget_${DABLE_WIDGET_IDS.PC}`"
-                    :data-widget_id="DABLE_WIDGET_IDS.PC"
-                    @load="handleLoadDableWidget"
-                  ></LazyRenderer>
-                </div>
-              </ClientOnly>
-            </template>
-          </ContainerStoryBody>
-
-          <aside>
-            <ClientOnly>
-              <ContainerGptAd
-                class="story__ad"
-                :pageKey="sectionId"
-                adKey="PC_R1"
-              />
-
-              <LazyRenderer v-if="!isDesktopWidth" class="story__fb-page">
-                <FbPage />
-              </LazyRenderer>
-
-              <ContainerGptAd
-                class="story__ad"
-                :pageKey="sectionId"
-                adKey="MB_E1"
-              />
-
-              <div
-                v-if="canAdvertise && !isDesktopWidth"
-                ref="dableWidget"
-                key="dable-widget"
-                class="dable-widget"
-              >
+              <template #storyRelateds>
                 <LazyRenderer
-                  :id="`dablewidget_${DABLE_WIDGET_IDS.MB}`"
-                  :data-widget_id="DABLE_WIDGET_IDS.MB"
-                  @load="handleLoadDableWidget"
-                ></LazyRenderer>
-              </div>
-
-              <div v-if="shouldOpenLatestList" ref="latestList">
-                <LazyRenderer
-                  class="lazy-latest-list"
-                  :style="{
-                    height: doesHaveLatestStories ? undefined : '100vh',
-                  }"
-                  @load="fetchLatestStories"
+                  class="story__list"
+                  @load="handleLoadStoryListRelated"
                 >
-                  <UiArticleListAside
-                    class="latest-list"
-                    heading="最新文章"
-                    :items="latestStories"
-                    @sendGa="sendGaForClick('latest')"
-                  />
+                  <UiStoryListRelated
+                    :items="relateds"
+                    :images="relatedImages"
+                    @sendGa="sendGaForClick('related')"
+                  >
+                    <template v-if="canAdvertise" #ads>
+                      <ClientOnly>
+                        <MicroAd
+                          v-for="unit in microAdUnits[device]"
+                          :key="unit.name"
+                          :unitId="unit.id"
+                        />
+
+                        <div id="_popIn_recommend"></div>
+                      </ClientOnly>
+                    </template>
+                  </UiStoryListRelated>
                 </LazyRenderer>
-              </div>
+              </template>
 
-              <div
-                ref="fixedContainer"
-                class="fixed-container"
-                :class="{ fixed: shouldFixAside }"
-              >
+              <template v-if="canAdvertise && isDesktopWidth" #dableWidget>
+                <ClientOnly>
+                  <div ref="dableWidget" class="dable-widget">
+                    <LazyRenderer
+                      :id="`dablewidget_${DABLE_WIDGET_IDS.PC}`"
+                      :data-widget_id="DABLE_WIDGET_IDS.PC"
+                      @load="handleLoadDableWidget"
+                    ></LazyRenderer>
+                  </div>
+                </ClientOnly>
+              </template>
+            </ContainerStoryBody>
+
+            <aside>
+              <ClientOnly>
                 <ContainerGptAd
                   class="story__ad"
                   :pageKey="sectionId"
-                  adKey="PC_R2"
+                  adKey="PC_R1"
                 />
 
-                <LazyRenderer
-                  ref="popularList"
-                  class="story__popular-list"
-                  @load="fetchPopularStories"
-                >
-                  <UiArticleListAside
-                    v-if="doesHavePopularStories"
-                    heading="熱門文章"
-                    :items="popularStories"
-                    @sendGa="sendGaForClick('popular')"
-                  />
-                </LazyRenderer>
-
-                <LazyRenderer v-if="isDesktopWidth" class="story__fb-page">
+                <LazyRenderer v-if="!isDesktopWidth" class="story__fb-page">
                   <FbPage />
                 </LazyRenderer>
-              </div>
-            </ClientOnly>
-          </aside>
-        </div>
 
-        <ContainerGptAd
-          class="story__ad story__ad--ft"
-          :pageKey="sectionId"
-          adKey="FT"
-        />
+                <ContainerGptAd
+                  class="story__ad"
+                  :pageKey="sectionId"
+                  adKey="MB_E1"
+                />
 
-        <UiAdultContentWarning v-if="story.isAdult" />
+                <div
+                  v-if="canAdvertise && !isDesktopWidth"
+                  ref="dableWidget"
+                  key="dable-widget"
+                  class="dable-widget"
+                >
+                  <LazyRenderer
+                    :id="`dablewidget_${DABLE_WIDGET_IDS.MB}`"
+                    :data-widget_id="DABLE_WIDGET_IDS.MB"
+                    @load="handleLoadDableWidget"
+                  ></LazyRenderer>
+                </div>
 
-        <div v-show="shouldShowAdPcFloating" class="ad-pc-floating">
+                <div v-if="shouldOpenLatestList" ref="latestList">
+                  <LazyRenderer
+                    class="lazy-latest-list"
+                    :style="{
+                      height: doesHaveLatestStories ? undefined : '100vh',
+                    }"
+                    @load="fetchLatestStories"
+                  >
+                    <UiArticleListAside
+                      class="latest-list"
+                      heading="最新文章"
+                      :items="latestStories"
+                      @sendGa="sendGaForClick('latest')"
+                    />
+                  </LazyRenderer>
+                </div>
+
+                <div
+                  ref="fixedContainer"
+                  class="fixed-container"
+                  :class="{ fixed: shouldFixAside }"
+                >
+                  <ContainerGptAd
+                    class="story__ad"
+                    :pageKey="sectionId"
+                    adKey="PC_R2"
+                  />
+
+                  <LazyRenderer
+                    ref="popularList"
+                    class="story__popular-list"
+                    @load="fetchPopularStories"
+                  >
+                    <UiArticleListAside
+                      v-if="doesHavePopularStories"
+                      heading="熱門文章"
+                      :items="popularStories"
+                      @sendGa="sendGaForClick('popular')"
+                    />
+                  </LazyRenderer>
+
+                  <LazyRenderer v-if="isDesktopWidth" class="story__fb-page">
+                    <FbPage />
+                  </LazyRenderer>
+                </div>
+              </ClientOnly>
+            </aside>
+          </div>
+
           <ContainerGptAd
-            :pageKey="sectionCarandwatchId"
-            adKey="PC_FLOATING"
-            @slotRenderEnded="handleRenderEndedAdPcFloating"
+            class="story__ad story__ad--ft"
+            :pageKey="sectionId"
+            adKey="FT"
           />
-          <SvgCloseIcon @click="doesClickCloseAdPcFloating = true" />
+
+          <UiAdultContentWarning v-if="story.isAdult" />
+
+          <div v-show="shouldShowAdPcFloating" class="ad-pc-floating">
+            <ContainerGptAd
+              :pageKey="sectionCarandwatchId"
+              adKey="PC_FLOATING"
+              @slotRenderEnded="handleRenderEndedAdPcFloating"
+            />
+            <SvgCloseIcon @click="doesClickCloseAdPcFloating = true" />
+          </div>
+
+          <ContainerFullScreenAds
+            v-if="!doesHaveWineCategory && canAdvertise"
+          />
         </div>
 
-        <ContainerFullScreenAds v-if="!doesHaveWineCategory && canAdvertise" />
-      </div>
+        <div class="sticky-footer">
+          <AppOpenNotification v-if="false" />
 
-      <div class="sticky-footer">
-        <AppOpenNotification v-if="false" />
+          <UiStickyAd
+            v-if="!doesHaveWineCategory && canAdvertise"
+            :pageKey="sectionId"
+          />
 
-        <UiStickyAd
-          v-if="!doesHaveWineCategory && canAdvertise"
-          :pageKey="sectionId"
-        />
+          <UiWineWarning v-if="doesHaveWineCategory" />
+        </div>
 
-        <UiWineWarning v-if="doesHaveWineCategory" />
-      </div>
-
-      <div class="footer-container">
-        <UiFooter />
+        <div class="footer-container">
+          <UiFooter />
+        </div>
       </div>
     </div>
   </div>
@@ -197,6 +207,8 @@ import UiFooter from '~/components/UiFooter.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
+import error from '~/layouts/error.vue'
+
 import { DOMAIN_NAME, ENV, PREVIEW_QUERY } from '~/configs/config'
 import {
   SECTION_IDS,
@@ -221,6 +233,7 @@ export default {
     useFbQuotePlugin()
   },
   components: {
+    error,
     ContainerHeader,
     ContainerPhotoGallery,
     ContainerCulturePost,
@@ -252,14 +265,23 @@ export default {
           !this.story.hiddenAdvertised ?? true
         )
 
+        const isTitleExist = this.story.title
+        const isContentExist = (this.story?.content?.apiData ?? []).length > 0
+        if (!isTitleExist || !isContentExist) {
+          if (process.server) {
+            this.$nuxt.context.res.statusCode = 404
+          }
+          throw new Error('not found')
+        }
+
         return true
       } else {
-        const { message, statusCode } = response.reason
+        const { statusCode, message } = response.reason
 
-        this.$nuxt.error({
-          message,
-          statusCode,
-        })
+        if (process.server) {
+          this.$nuxt.context.res.statusCode = statusCode
+        }
+        throw new Error(message)
       }
     }
 
@@ -628,7 +650,7 @@ export default {
             eventLabel: 'matched',
           },
           {
-            elem: popularList.$el,
+            elem: popularList?.$el,
             eventLabel: 'popular',
           },
         ]
