@@ -21,5 +21,6 @@
   background-color: #e3e3e3;
   color: rgba(0, 0, 0, 0.2);
   cursor: not-allowed;
+  pointer-events: none;
 }
 </style>
