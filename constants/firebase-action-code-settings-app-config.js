@@ -7,7 +7,7 @@ export default ENV === 'prod' || ENV === 'staging'
       },
       android: {
         packageName: 'com.mirrormedia.news',
-        installApp: true,
+        installApp: false,
         minimumVersion: '12',
       },
       dynamicLinkDomain: 'mirrormedia.page.link',
@@ -18,7 +18,7 @@ export default ENV === 'prod' || ENV === 'staging'
       },
       android: {
         packageName: 'com.mirrormedia.news.dev',
-        installApp: true,
+        installApp: false,
         minimumVersion: '12',
       },
       dynamicLinkDomain: 'mirrormediadev.page.link',
