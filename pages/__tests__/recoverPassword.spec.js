@@ -1,7 +1,7 @@
 import flushPromises from 'flush-promises'
 import page from '../recoverPassword.vue'
 import UiMembershipInputEmail from '~/components/UiMembershipInputEmail'
-import UiRecoverPasswordButton from '~/components/UiRecoverPasswordButton.vue'
+import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import UiRecoverPasswordHints from '~/components/UiRecoverPasswordHints.vue'
@@ -29,7 +29,7 @@ test('should enable submit button if we input something on email input', async f
   input.vm.$emit('input', 'something')
   await wrapper.vm.$nextTick()
   expect(
-    wrapper.getComponent(UiRecoverPasswordButton).attributes().disabled
+    wrapper.getComponent(UiMembershipButtonPrimary).attributes().disabled
   ).not.toBe('true')
 })
 
@@ -37,7 +37,7 @@ test('should enable the ability to show invalid hint in email input after we cli
   const wrapper = createWrapper(page)
   const input = wrapper.getComponent(UiMembershipInputEmail)
   input.vm.$emit('input', 'something')
-  wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+  wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
   await wrapper.vm.$nextTick()
   expect(input.props().shouldShowInvalidHint).toBe(true)
 })
@@ -63,7 +63,7 @@ describe('behaviors after user click the submit button', function () {
     const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await wrapper.vm.$nextTick()
     expect(
       wrapper.getComponent(UiMembershipLoadingIcon).element.style.display
@@ -85,7 +85,7 @@ describe('behaviors after user click the submit button', function () {
     const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await flushPromises()
     expect(wrapper.getComponent(UiRecoverPasswordHints).props().state).toBe(
       'emailNotExist'
@@ -116,7 +116,7 @@ describe('behaviors after user click the submit button', function () {
     const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await flushPromises()
     expect(wrapper.getComponent(UiRecoverPasswordHints).props().state).toBe(
       'success'
@@ -139,7 +139,7 @@ describe('behaviors after user click the submit button', function () {
     const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await flushPromises()
     expect(wrapper.getComponent(UiRecoverPasswordHints).props().state).toBe(
       'error'
@@ -166,7 +166,7 @@ describe('behaviors after user click the submit button', function () {
     const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await flushPromises()
     expect(wrapper.getComponent(UiRecoverPasswordHints).props().state).toBe(
       'error'
@@ -192,18 +192,18 @@ describe('behaviors after user click the submit button', function () {
     const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await flushPromises()
     expect(wrapper.getComponent(UiRecoverPasswordHints).props().state).toBe(
       'success'
     )
     expect(
-      wrapper.getComponent(UiRecoverPasswordButton).attributes().disabled
+      wrapper.getComponent(UiMembershipButtonPrimary).attributes().disabled
     ).toBe('true')
     jest.runTimersToTime(31000)
     await wrapper.vm.$nextTick()
     expect(
-      wrapper.getComponent(UiRecoverPasswordButton).attributes().disabled
+      wrapper.getComponent(UiMembershipButtonPrimary).attributes().disabled
     ).not.toBe('true')
   })
 })

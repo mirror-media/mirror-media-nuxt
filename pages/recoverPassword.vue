@@ -14,7 +14,7 @@
       />
       <div class="wrapper__submit-button-wrapper">
         <UiRecoverPasswordHints class="wrapper__hints" :state="hintState" />
-        <UiRecoverPasswordButton
+        <UiMembershipButtonPrimary
           class="wrapper__submit-button"
           :disabled="!email || shouldAvoidEmailSpam"
           @click.native="handleSubmit"
@@ -24,7 +24,7 @@
           </p>
           <UiMembershipLoadingIcon v-else-if="isLoading" />
           <p v-else>送出</p>
-        </UiRecoverPasswordButton>
+        </UiMembershipButtonPrimary>
       </div>
       <button
         v-if="hintState === 'emailNotExist'"
@@ -47,7 +47,7 @@
 <script>
 import UiMembershipInputEmail from '~/components/UiMembershipInputEmail.vue'
 import UiRecoverPasswordHints from '~/components/UiRecoverPasswordHints.vue'
-import UiRecoverPasswordButton from '~/components/UiRecoverPasswordButton.vue'
+import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settings-app-config'
 
@@ -55,7 +55,7 @@ export default {
   components: {
     UiMembershipInputEmail,
     UiRecoverPasswordHints,
-    UiRecoverPasswordButton,
+    UiMembershipButtonPrimary,
     UiMembershipLoadingIcon,
   },
   data() {
