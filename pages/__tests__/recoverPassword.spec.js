@@ -28,9 +28,9 @@ test('should enable submit button if we input something on email input', async f
   const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
   input.vm.$emit('input', 'something')
   await wrapper.vm.$nextTick()
-  expect(wrapper.getComponent(UiRecoverPasswordButton).classes()).not.toContain(
-    'disable'
-  )
+  expect(
+    wrapper.getComponent(UiRecoverPasswordButton).attributes().disabled
+  ).not.toBe('true')
 })
 
 test('should enable the ability to show invalid hint in email input after we click the submit button', async function () {
@@ -197,13 +197,13 @@ describe('behaviors after user click the submit button', function () {
     expect(wrapper.getComponent(UiRecoverPasswordHints).props().state).toBe(
       'success'
     )
-    expect(wrapper.getComponent(UiRecoverPasswordButton).classes()).toContain(
-      'disable'
-    )
+    expect(
+      wrapper.getComponent(UiRecoverPasswordButton).attributes().disabled
+    ).toBe('true')
     jest.runTimersToTime(31000)
     await wrapper.vm.$nextTick()
     expect(
-      wrapper.getComponent(UiRecoverPasswordButton).classes()
-    ).not.toContain('disable')
+      wrapper.getComponent(UiRecoverPasswordButton).attributes().disabled
+    ).not.toBe('true')
   })
 })

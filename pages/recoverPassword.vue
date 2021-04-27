@@ -16,7 +16,7 @@
         <UiRecoverPasswordHints class="wrapper__hints" :state="hintState" />
         <UiRecoverPasswordButton
           class="wrapper__submit-button"
-          :class="{ disable: !email || shouldAvoidEmailSpam }"
+          :disabled="!email || shouldAvoidEmailSpam"
           @click.native="handleSubmit"
         >
           <p v-if="shouldAvoidEmailSpam">
