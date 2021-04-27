@@ -1,6 +1,6 @@
 import flushPromises from 'flush-promises'
 import page from '../recoverPassword.vue'
-import UiRecoverPasswordInputEmail from '~/components/UiRecoverPasswordInputEmail'
+import UiMembershipInputEmail from '~/components/UiMembershipInputEmail'
 import UiRecoverPasswordButton from '~/components/UiRecoverPasswordButton.vue'
 import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
@@ -25,7 +25,7 @@ test('should not have global authenticate nuxt middleware in page component opti
 test('should enable submit button if we input something on email input', async function () {
   expect.assertions(1)
   const wrapper = createWrapper(page)
-  const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+  const input = wrapper.getComponent(UiMembershipInputEmail)
   input.vm.$emit('input', 'something')
   await wrapper.vm.$nextTick()
   expect(
@@ -35,7 +35,7 @@ test('should enable submit button if we input something on email input', async f
 
 test('should enable the ability to show invalid hint in email input after we click the submit button', async function () {
   const wrapper = createWrapper(page)
-  const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+  const input = wrapper.getComponent(UiMembershipInputEmail)
   input.vm.$emit('input', 'something')
   wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
   await wrapper.vm.$nextTick()
@@ -60,7 +60,7 @@ describe('behaviors after user click the submit button', function () {
   test('should show loading icon after user enter the valid email and click submit button', async function () {
     expect.assertions(1)
     const wrapper = createWrapper(page)
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
     wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
@@ -82,7 +82,7 @@ describe('behaviors after user click the submit button', function () {
         },
       },
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
     wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
@@ -113,7 +113,7 @@ describe('behaviors after user click the submit button', function () {
         },
       },
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
     wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
@@ -136,7 +136,7 @@ describe('behaviors after user click the submit button', function () {
         },
       },
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
     wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
@@ -163,7 +163,7 @@ describe('behaviors after user click the submit button', function () {
         },
       },
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
     wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
@@ -189,7 +189,7 @@ describe('behaviors after user click the submit button', function () {
         },
       },
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmail)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
     wrapper.getComponent(UiRecoverPasswordButton).trigger('click')

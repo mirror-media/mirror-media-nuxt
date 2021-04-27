@@ -6,7 +6,7 @@
         請輸入您註冊時使用的 Email 信箱。我們會發送一封 Email
         到這個地址，裡面附有重設/設定密碼的連結。
       </p>
-      <UiRecoverPasswordInputEmail
+      <UiMembershipInputEmail
         class="wrapper__email-input"
         :shouldShowInvalidHint="isSubmitButtonClicked"
         @input="handleInput"
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import UiRecoverPasswordInputEmail from '~/components/UiRecoverPasswordInputEmail.vue'
+import UiMembershipInputEmail from '~/components/UiMembershipInputEmail.vue'
 import UiRecoverPasswordHints from '~/components/UiRecoverPasswordHints.vue'
 import UiRecoverPasswordButton from '~/components/UiRecoverPasswordButton.vue'
 import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
@@ -53,7 +53,7 @@ import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settin
 
 export default {
   components: {
-    UiRecoverPasswordInputEmail,
+    UiMembershipInputEmail,
     UiRecoverPasswordHints,
     UiRecoverPasswordButton,
     UiMembershipLoadingIcon,
