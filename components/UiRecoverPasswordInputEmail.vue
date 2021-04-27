@@ -1,6 +1,6 @@
 <template>
   <div class="input-wrapper">
-    <UiRecoverPasswordInput
+    <UiMembershipInput
       v-model.trim="$v.email.$model"
       :class="{ 'border-black': canShowInputInvalid }"
       type="email"
@@ -16,11 +16,11 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { email, required } from 'vuelidate/lib/validators'
-import UiRecoverPasswordInput from './UiRecoverPasswordInput.vue'
+import UiMembershipInput from './UiMembershipInput.vue'
 
 export default {
   components: {
-    UiRecoverPasswordInput,
+    UiMembershipInput,
   },
   mixins: [validationMixin],
   props: {

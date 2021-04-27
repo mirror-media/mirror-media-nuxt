@@ -1,11 +1,11 @@
 import { shallowMount } from '@vue/test-utils'
 import UiRecoverPasswordInputEmail from '../UiRecoverPasswordInputEmail.vue'
-import UiRecoverPasswordInput from '../UiRecoverPasswordInput.vue'
+import UiMembershipInput from '../UiMembershipInput.vue'
 
 describe('data binding between v-model.trim and vuelidate', function () {
   test('should trim white spaces', function () {
     const wrapper = shallowMount(UiRecoverPasswordInputEmail)
-    const input = wrapper.getComponent(UiRecoverPasswordInput)
+    const input = wrapper.getComponent(UiMembershipInput)
     const emailWithWhiteSpace = ' example@example.com '
     const emailWithNoWhiteSpace = 'example@example.com'
     input.vm.$emit('input', emailWithWhiteSpace)
@@ -20,7 +20,7 @@ describe('features affect by input state', function () {
     await wrapper.setProps({
       shouldShowInvalidHint: true,
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInput)
+    const input = wrapper.getComponent(UiMembershipInput)
     const emailInvalid = 'emailInvalid'
     input.vm.$emit('input', emailInvalid)
     expect(input.classes()).toContain('border-black')
@@ -32,7 +32,7 @@ describe('features affect by input state', function () {
     await wrapper.setProps({
       shouldShowInvalidHint: true,
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInput)
+    const input = wrapper.getComponent(UiMembershipInput)
     const emailValid = 'example@example.com'
     input.vm.$emit('input', emailValid)
     await wrapper.vm.$nextTick()
@@ -45,7 +45,7 @@ describe('features affect by input state', function () {
     await wrapper.setProps({
       shouldShowInvalidHint: false,
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInput)
+    const input = wrapper.getComponent(UiMembershipInput)
     const emailInvalid = 'mailInvalid'
     input.vm.$emit('input', emailInvalid)
     await wrapper.vm.$nextTick()
@@ -57,7 +57,7 @@ describe('features affect by input state', function () {
 describe('component behaviours', function () {
   test('should emit "input" event with value when input was change', function () {
     const wrapper = shallowMount(UiRecoverPasswordInputEmail)
-    const input = wrapper.getComponent(UiRecoverPasswordInput)
+    const input = wrapper.getComponent(UiMembershipInput)
     const emailValid = 'example@example.com'
     input.vm.$emit('input', emailValid)
     expect(wrapper.emitted().input[0]).toEqual([emailValid])
@@ -65,7 +65,7 @@ describe('component behaviours', function () {
   test('should emit "inputValidStateChange" event with value when input validation state changed', async function () {
     expect.assertions(1)
     const wrapper = shallowMount(UiRecoverPasswordInputEmail)
-    const input = wrapper.getComponent(UiRecoverPasswordInput)
+    const input = wrapper.getComponent(UiMembershipInput)
     const emailValid = 'example@example.com'
     input.vm.$emit('input', emailValid)
     await wrapper.vm.$nextTick()
