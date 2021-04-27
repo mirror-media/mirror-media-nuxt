@@ -22,7 +22,7 @@
           <p v-if="shouldAvoidEmailSpam">
             重新寄送...({{ emailSpamSecondCounter }} 秒)
           </p>
-          <UiRecoverPasswordButtonLoadingIcon v-else-if="isLoading" />
+          <UiMembershipLoadingIcon v-else-if="isLoading" />
           <p v-else>送出</p>
         </UiRecoverPasswordButton>
       </div>
@@ -48,7 +48,7 @@
 import UiRecoverPasswordInputEmail from '~/components/UiRecoverPasswordInputEmail.vue'
 import UiRecoverPasswordHints from '~/components/UiRecoverPasswordHints.vue'
 import UiRecoverPasswordButton from '~/components/UiRecoverPasswordButton.vue'
-import UiRecoverPasswordButtonLoadingIcon from '~/components/UiRecoverPasswordButtonLoadingIcon.vue'
+import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settings-app-config'
 
 export default {
@@ -56,7 +56,7 @@ export default {
     UiRecoverPasswordInputEmail,
     UiRecoverPasswordHints,
     UiRecoverPasswordButton,
-    UiRecoverPasswordButtonLoadingIcon,
+    UiMembershipLoadingIcon,
   },
   data() {
     return {

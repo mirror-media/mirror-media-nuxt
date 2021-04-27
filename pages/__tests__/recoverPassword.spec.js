@@ -2,7 +2,7 @@ import flushPromises from 'flush-promises'
 import page from '../recoverPassword.vue'
 import UiRecoverPasswordInputEmail from '~/components/UiRecoverPasswordInputEmail'
 import UiRecoverPasswordButton from '~/components/UiRecoverPasswordButton.vue'
-import UiRecoverPasswordButtonLoadingIcon from '~/components/UiRecoverPasswordButtonLoadingIcon.vue'
+import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import UiRecoverPasswordHints from '~/components/UiRecoverPasswordHints.vue'
 
@@ -66,8 +66,7 @@ describe('behaviors after user click the submit button', function () {
     wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
     await wrapper.vm.$nextTick()
     expect(
-      wrapper.getComponent(UiRecoverPasswordButtonLoadingIcon).element.style
-        .display
+      wrapper.getComponent(UiMembershipLoadingIcon).element.style.display
     ).not.toBe('none')
   })
 
