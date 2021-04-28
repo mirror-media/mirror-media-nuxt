@@ -8,6 +8,7 @@
       </p>
       <UiMembershipInputEmail
         class="wrapper__email-input"
+        :emailProps="email"
         :shouldShowInvalidHint="isSubmitButtonClicked"
         @input="handleInput"
         @inputValidStateChange="handleInputValidStateChange"
@@ -61,7 +62,7 @@ export default {
   data() {
     return {
       isEmailInputValid: false,
-      email: '',
+      email: this.$route?.query?.email ?? '',
       isLoading: false,
       isError: false,
       isSending: false,
@@ -150,7 +151,6 @@ export default {
           this.email
         )
 
-        // console.log(isEmailSignInWithEmailMethods)
         this.isLoading = false
         this.isEmailSignInWithEmailMethod = isEmailSignInWithEmailMethods
         if (!this.isEmailSignInWithEmailMethod) {

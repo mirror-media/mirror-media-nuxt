@@ -28,6 +28,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    emailProps: {
+      type: String,
+      default: '',
+    },
   },
   validations: {
     email: {
@@ -59,6 +63,9 @@ export default {
     '$v.email.$invalid'(value) {
       this.$emit('inputValidStateChange', !value)
     },
+  },
+  beforeMount() {
+    this.email = this.emailProps
   },
   methods: {
     handleInput() {
