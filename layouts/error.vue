@@ -67,14 +67,10 @@ export default {
             message: '找不到這個網址',
           }
         case 'error':
+        default:
           return {
             statusCode: 500,
             message: '系統忙碌中',
-          }
-        default:
-          return {
-            statusCode: this.error?.statusCode ?? 500,
-            message: this.error?.message ?? '系統忙碌中',
           }
       }
     },
