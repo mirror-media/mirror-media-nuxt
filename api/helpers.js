@@ -12,7 +12,7 @@ function createProxy(baseUrl) {
         url: `${baseUrl}${req.url}`,
         headers,
         data: req.method === 'GET' ? undefined : req.body,
-        timeout: API_TIMEOUT,
+        timeout: (req.url ?? '').startsWith('/search') ? 500 : API_TIMEOUT,
       })
 
       if (response.data._status === 'ERR') {
