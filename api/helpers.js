@@ -3,6 +3,15 @@ const { API_TIMEOUT } = require('../configs/config')
 
 function createProxy(baseUrl) {
   return async function (req, res) {
+    if ((req.url || '').startsWith('/search')) {
+      console.log(
+        `[Search Log] the incoming request headers is: ${JSON.stringify(
+          req.headers
+        )}`
+      )
+      return res.status(500).end('error')
+    }
+
     const headers = Object.assign({}, req.headers)
     delete headers.host
 
