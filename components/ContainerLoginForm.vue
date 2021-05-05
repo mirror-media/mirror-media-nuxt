@@ -8,7 +8,10 @@
     />
     <ContainerLoginFormRegisterWithEmailPassword
       v-else-if="state === 'register'"
+      :emailProps="email"
+      @back="handleBackToInitial"
     />
+    <!--    <ContainerLoginFormLoginWithPassword v-else-if="state === 'login'" />-->
     <ContainerLoginFormRecoverPassword
       v-else-if="state === 'recoverPassword'"
       :email="email"
@@ -19,12 +22,16 @@
 <script>
 import ContainerLoginFormInitial from './ContainerLoginFormInitial.vue'
 import ContainerLoginFormRegisterWithEmailPassword from './ContainerLoginFormRegisterWithEmailPassword.vue'
+
+// import ContainerLoginFormLoginWithPassword from './ContainerLoginFormLoginWithPassword.vue'
 import ContainerLoginFormRecoverPassword from './ContainerLoginFormRecoverPassword.vue'
 
 export default {
   components: {
     ContainerLoginFormInitial,
     ContainerLoginFormRegisterWithEmailPassword,
+
+    // ContainerLoginFormLoginWithPassword,
     ContainerLoginFormRecoverPassword,
   },
   data() {
@@ -50,8 +57,15 @@ export default {
     handleRegister() {
       this.state = 'register'
     },
+    handleBackToInitial() {
+      this.state = 'initial'
+    },
   },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.login-form-wrapper {
+  width: 100%;
+}
+</style>

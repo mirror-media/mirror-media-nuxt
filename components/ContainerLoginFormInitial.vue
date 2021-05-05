@@ -18,7 +18,7 @@
       />
       <div class="email-login__submit-button-wrapper">
         <UiMembershipButtonPrimary
-          :disabled="!email"
+          :disabled="!isEmailInputValid"
           @click.native="handleSubmit"
         >
           <UiMembershipLoadingIcon v-if="isLoading" />
@@ -26,23 +26,7 @@
         </UiMembershipButtonPrimary>
       </div>
     </div>
-    <div class="login-form__rights-caveat rights-caveat">
-      <p>
-        <span>繼續使用代表您同意與接受</span>
-        <span>
-          鏡傳媒的
-          <UiMembershipLink
-            href="https://www.mirrormedia.mg/story/service-rule"
-          >
-            《服務條款》
-          </UiMembershipLink>
-          以及
-          <UiMembershipLink href="https://www.mirrormedia.mg/story/privacy/">
-            《隱私政策》
-          </UiMembershipLink>
-        </span>
-      </p>
-    </div>
+    <UiMembershipRightsCaveat class="login-form__rights-caveat" />
   </div>
 </template>
 
@@ -50,9 +34,9 @@
 import ContainerMembershipLoginWithFacebookNew from './ContainerMembershipLoginWithFacebookNew.vue'
 import ContainerMembershipLoginWithGoogleNew from './ContainerMembershipLoginWithGoogleNew.vue'
 import UiMembershipLoadingIcon from './UiMembershipLoadingIcon.vue'
-import UiMembershipLink from './UiMembershipLink.vue'
-import UiMembershipInputEmail from '~/components/UiMembershipInputEmail.vue'
-import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
+import UiMembershipInputEmail from './UiMembershipInputEmail.vue'
+import UiMembershipButtonPrimary from './UiMembershipButtonPrimary.vue'
+import UiMembershipRightsCaveat from './UiMembershipRightsCaveat.vue'
 
 export default {
   components: {
@@ -61,7 +45,7 @@ export default {
     UiMembershipLoadingIcon,
     UiMembershipInputEmail,
     UiMembershipButtonPrimary,
-    UiMembershipLink,
+    UiMembershipRightsCaveat,
   },
   props: {
     email: {
@@ -164,12 +148,5 @@ export default {
   &__submit-button-wrapper {
     margin: 24px 0 0 0;
   }
-}
-
-.rights-caveat {
-  font-size: 15px;
-  line-height: 21px;
-  text-align: center;
-  color: rgba(0, 0, 0, 0.66);
 }
 </style>
