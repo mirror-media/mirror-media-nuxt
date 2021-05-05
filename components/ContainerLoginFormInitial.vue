@@ -10,7 +10,7 @@
       <span>或</span>
     </div>
     <div class="login-form__email-login email-login">
-      <UiMembershipInputEmail
+      <UiMembershipInputEmailInvalidation
         class="email-login__email-input"
         :shouldShowInvalidHint="isSubmitButtonClicked"
         @input="handleInput"
@@ -34,7 +34,7 @@
 import ContainerMembershipLoginWithFacebookNew from './ContainerMembershipLoginWithFacebookNew.vue'
 import ContainerMembershipLoginWithGoogleNew from './ContainerMembershipLoginWithGoogleNew.vue'
 import UiMembershipLoadingIcon from './UiMembershipLoadingIcon.vue'
-import UiMembershipInputEmail from './UiMembershipInputEmail.vue'
+import UiMembershipInputEmailInvalidation from './UiMembershipInputEmailInvalidation.vue'
 import UiMembershipButtonPrimary from './UiMembershipButtonPrimary.vue'
 import UiMembershipRightsCaveat from './UiMembershipRightsCaveat.vue'
 
@@ -43,7 +43,7 @@ export default {
     ContainerMembershipLoginWithFacebookNew,
     ContainerMembershipLoginWithGoogleNew,
     UiMembershipLoadingIcon,
-    UiMembershipInputEmail,
+    UiMembershipInputEmailInvalidation,
     UiMembershipButtonPrimary,
     UiMembershipRightsCaveat,
   },
