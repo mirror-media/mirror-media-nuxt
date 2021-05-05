@@ -2,6 +2,7 @@
   <div class="input-button-wrapper">
     <UiMembershipInput
       v-model.trim="password"
+      :class="className"
       :type="shouldRevealPassword ? 'text' : 'password'"
       :placeholder="$attrs.placeholder"
       @input="handleInput"
@@ -32,6 +33,16 @@ export default {
     UiMembershipInput,
     SvgPasswordIsHiding,
     SvgPasswordIsRevealing,
+  },
+  props: {
+    /*
+     * workaround of this.$attr.class is not available in vue 2, but available in vue 3
+     * see: https://v3.vuejs.org/guide/migration/attrs-includes-class-style.html
+     */
+    className: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data() {
     return {
