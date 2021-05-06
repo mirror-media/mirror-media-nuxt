@@ -89,7 +89,7 @@ export default {
     await this.handleFederatedRedirectResult()
   },
   methods: {
-    handleError({ type, email, error }) {
+    async handleError({ type, email, error }) {
       // eslint-disable-next-line no-console
       console.error(error)
       this.$sendMembershipErrorLog({
@@ -97,6 +97,8 @@ export default {
         description: error,
         eventType: type,
       })
+
+      await this.$fire.auth.signOut()
     },
     showRegisterSuccessAndRedirectToSectionMember() {
       this.state = 'registerSuccess'
@@ -120,7 +122,7 @@ export default {
             },
           })
         } catch (e) {
-          this.handleError({
+          await this.handleError({
             type: 'gatewayFailUserCreate',
             email,
             error: e,
@@ -141,9 +143,9 @@ export default {
     async handleLoginSuccess() {
       await loginDestination.redirect()
     },
-    handleLoginFail(error) {
+    async handleLoginFail(error) {
       this.state = 'loginError'
-      this.handleError(error)
+      await this.handleError(error)
     },
     async handleFederatedRedirectResult() {
       try {
@@ -157,7 +159,7 @@ export default {
         }
       } catch (e) {
         this.isFederatedRedirectResultLoading = false
-        this.handleLoginFail({
+        await this.handleLoginFail({
           type: 'signInFailFederated',
           email: e.email,
           error: e,
