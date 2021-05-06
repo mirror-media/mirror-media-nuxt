@@ -12,7 +12,7 @@
       <p>前往設定密碼</p>
     </UiMembershipButtonPrimary>
     <UiMembershipLink class="form-recover-password__back" href="">
-      上一頁
+      回上一步
     </UiMembershipLink>
   </div>
 </template>

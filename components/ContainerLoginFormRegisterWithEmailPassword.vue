@@ -108,11 +108,15 @@ export default {
     async handleSubmit() {
       this.isLoading = true
       try {
-        await this.$fire.auth.createUserWithEmailAndPassword(
+        const { user } = await this.$fire.auth.createUserWithEmailAndPassword(
           this.email,
           this.password
         )
+        await this.$store.dispatch('membership/ON_AUTH_STATE_CHANGED_ACTION', {
+          authUser: user,
+        })
         this.isLoading = false
+        this.$emit('register', user)
       } catch (e) {
         this.isLoading = false
         if (e.code === 'auth/email-already-in-use') {

@@ -76,16 +76,18 @@ export default {
     async handleSubmit() {
       this.isLoading = true
       try {
-        await this.$fire.auth.signInWithEmailAndPassword(
+        const { user = {} } = await this.$fire.auth.signInWithEmailAndPassword(
           this.email,
           this.password
         )
         this.isLoading = false
+        this.$emit('loginSuccess', user)
       } catch (e) {
         this.isLoading = false
         if (e.code === 'auth/wrong-password') {
           this.shouldShowErrorHint = true
         }
+        this.$emit('loginFail', e)
         console.error(e)
       }
     },

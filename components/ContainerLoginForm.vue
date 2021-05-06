@@ -2,18 +2,29 @@
   <div class="login-form-wrapper">
     <ContainerLoginFormInitial
       v-if="state === 'initial'"
+      :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
       :email.sync="email"
       @verifyEmailSignInMethod="handleVerifyEmailSignInMethod"
-      @register="handleRegister"
+      @goToRegister="handleGoToRegister"
     />
     <ContainerLoginFormRegisterWithEmailPassword
       v-else-if="state === 'register'"
       :emailProps="email"
+      @register="(user) => $emit('register', user)"
       @back="handleBackToInitial"
     />
     <ContainerLoginFormLoginWithPassword
       v-else-if="state === 'login'"
       :email="email"
+      @loginSuccess="(v) => $emit('loginSuccess', v)"
+      @loginFail="
+        (e) =>
+          $emit('loginFail', {
+            type: 'signInFailEmailPassword',
+            email,
+            error: e,
+          })
+      "
       @back="handleBackToInitial"
     />
     <ContainerLoginFormRecoverPassword
@@ -36,6 +47,12 @@ export default {
     ContainerLoginFormLoginWithPassword,
     ContainerLoginFormRecoverPassword,
   },
+  props: {
+    isFederatedRedirectResultLoading: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       email: '',
@@ -56,7 +73,7 @@ export default {
           break
       }
     },
-    handleRegister() {
+    handleGoToRegister() {
       this.state = 'register'
     },
     handleBackToInitial() {

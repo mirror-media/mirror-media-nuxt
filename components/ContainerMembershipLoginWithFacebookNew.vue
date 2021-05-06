@@ -1,10 +1,10 @@
 <template>
   <UiMembershipButtonSecondary class="button" @click.native="handleClick">
-    <div v-show="!isLoading" class="content-wrapper">
+    <div v-show="!shouldShowLoading" class="content-wrapper">
       <SvgFacebookIcon />
       <span>使用 Facebook 帳號繼續</span>
     </div>
-    <UiMembershipLoadingIcon v-show="isLoading" class="loading-icon" />
+    <UiMembershipLoadingIcon v-show="shouldShowLoading" class="loading-icon" />
   </UiMembershipButtonSecondary>
 </template>
 
@@ -20,10 +20,21 @@ export default {
     UiMembershipLoadingIcon,
     SvgFacebookIcon,
   },
+  props: {
+    isFederatedRedirectResultLoading: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       isLoading: false,
     }
+  },
+  computed: {
+    shouldShowLoading() {
+      return this.isFederatedRedirectResultLoading || this.isLoading
+    },
   },
   methods: {
     async handleClick() {

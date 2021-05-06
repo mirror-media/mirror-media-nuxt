@@ -2,9 +2,13 @@
   <div class="login-form">
     <div class="login-form__federated-login federated-login">
       <ContainerMembershipLoginWithFacebookNew
+        :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
         class="federated-login__facebook"
       />
-      <ContainerMembershipLoginWithGoogleNew class="federated-login__google" />
+      <ContainerMembershipLoginWithGoogleNew
+        :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
+        class="federated-login__google"
+      />
     </div>
     <div class="login-form__separator separator">
       <span>或</span>
@@ -48,6 +52,10 @@ export default {
     UiMembershipRightsCaveat,
   },
   props: {
+    isFederatedRedirectResultLoading: {
+      type: Boolean,
+      default: true,
+    },
     email: {
       type: String,
       default: '',
@@ -79,7 +87,7 @@ export default {
         } else if (isEmailExistWithEmailPasswordSignInMethod) {
           this.$emit('verifyEmailSignInMethod', 'password')
         } else {
-          this.$emit('register')
+          this.$emit('goToRegister')
         }
       } catch (e) {
         console.error(e)
