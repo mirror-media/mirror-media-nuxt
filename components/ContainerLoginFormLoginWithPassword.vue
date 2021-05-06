@@ -86,9 +86,9 @@ export default {
         this.isLoading = false
         if (e.code === 'auth/wrong-password') {
           this.shouldShowErrorHint = true
+        } else {
+          this.$emit('loginFail', e)
         }
-        this.$emit('loginFail', e)
-        console.error(e)
       }
     },
 
