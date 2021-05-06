@@ -8,7 +8,8 @@
       <div class="container container--form">
         <ContainerLoginForm
           :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
-          @register="handleRegister"
+          @registerSuccess="handleRegisterSuccess"
+          @registerFail="handleRegisterFail"
           @loginSuccess="handleLoginSuccess"
           @loginFail="handleLoginFail"
         />
@@ -132,13 +133,17 @@ export default {
       }
     },
 
-    async handleRegister(user) {
+    async handleRegisterSuccess(user) {
       try {
         await this.postCreateUserForRegister(user)
         this.showRegisterSuccessAndRedirectToSectionMember()
       } catch {
         this.state = 'registerError'
       }
+    },
+    async handleRegisterFail(error) {
+      this.state = 'registerError'
+      await this.handleError(error)
     },
     async handleLoginSuccess() {
       await loginDestination.redirect()

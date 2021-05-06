@@ -116,13 +116,14 @@ export default {
           authUser: user,
         })
         this.isLoading = false
-        this.$emit('register', user)
+        this.$emit('registerSuccess', user)
       } catch (e) {
         this.isLoading = false
         if (e.code === 'auth/email-already-in-use') {
           this.isDuplicateEmailMember = true
+        } else {
+          this.$emit('registerFail', e)
         }
-        console.error(e)
       }
     },
 

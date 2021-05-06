@@ -10,7 +10,15 @@
     <ContainerLoginFormRegisterWithEmailPassword
       v-else-if="state === 'register'"
       :emailProps="email"
-      @register="(user) => $emit('register', user)"
+      @registerSuccess="(user) => $emit('registerSuccess', user)"
+      @registerFail="
+        (e) =>
+          $emit('registerFail', {
+            type: 'registerFailEmailPassword',
+            email,
+            error: e,
+          })
+      "
       @back="handleBackToInitial"
     />
     <ContainerLoginFormLoginWithPassword
