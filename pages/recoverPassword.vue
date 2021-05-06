@@ -126,7 +126,9 @@ export default {
           acc,
           curr
         ) {
-          return acc || (curr ?? '').includes('email')
+          return (
+            acc || (curr ?? '') === 'emailLink' || (curr ?? '') === 'password'
+          )
         },
         false)
       } catch (e) {
