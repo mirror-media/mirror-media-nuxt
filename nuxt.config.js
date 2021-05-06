@@ -473,4 +473,20 @@ module.exports = {
    * Doc: https://github.com/nuxt/telemetry#opting-out
    */
   telemetry: false,
+
+  router: {
+    extendRoutes(routes, resolve) {
+      // Toggle on the feature of replace /login origin pages/login.vue page component with pages/loginNew.vue
+      const originalLoginRouteIndex = routes.findIndex(
+        function getRoutePathLogin(route) {
+          return route.path === '/login'
+        }
+      )
+      routes.splice(originalLoginRouteIndex, 1)
+      routes.push({
+        path: '/login',
+        component: resolve(__dirname, 'pages/loginNew.vue'),
+      })
+    },
+  },
 }
