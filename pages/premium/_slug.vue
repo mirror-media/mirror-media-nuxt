@@ -18,6 +18,7 @@ import { checkCategoryHasMemberOnly } from '~/utils/article'
 
 export default {
   layout: 'empty',
+  middleware: ['handle-story-premium-redirect-and-cache-control'],
   components: {
     ContainerCulturePost,
   },
@@ -46,25 +47,9 @@ export default {
       )
       console.log('shouldShowPremiumStory: ' + this.shouldShowPremiumStory)
 
-      // disable cdn cache to prevent caching both regular version and premium version with the same /premium/:slug uri
-      if (process.server && this.doesCategoryHaveMemberOnly) {
-        console.log('this premium should not cache')
-        this.$nuxt.context.res.setHeader('Cache-Control', 'no-store')
-      }
-
       console.log(`token: ${this.$store.state.membership.userToken}`)
       console.log(`email: ${this.$store.state.membership.userEmail}`)
       console.log(`membershipTokenState: ${this.membershipTokenState}`)
-      if (!this.shouldShowPremiumStory) {
-        console.log(
-          `this ${this.$nuxt.context.req.url} should redirect to story`
-        )
-
-        const qs = require('querystring')
-        this.$nuxt.context.redirect(
-          `/story/${this.storySlug}?${qs.stringify(this.$route.query)}`
-        )
-      }
     } else {
       const { message, statusCode } = postResponse.reason
 
