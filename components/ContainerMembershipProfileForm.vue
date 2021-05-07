@@ -9,6 +9,21 @@
           v-text="currentMemberEmail"
         />
       </div>
+      <div
+        v-show="
+          currentUserProvider === 'emailLink' ||
+          currentUserProvider === 'password'
+        "
+        class="form__item-wrapper password-wrapper"
+      >
+        <h2 class="password-wrapper__subtitle subtitle">密碼</h2>
+        <a
+          :href="`/recoverPassword?email=${currentMemberEmail}`"
+          class="password-wrapper__update-password-button update-password-button"
+        >
+          更改密碼
+        </a>
+      </div>
       <div class="form__item-wrapper name-wrapper">
         <label class="name-wrapper__subtitle subtitle" for="profile-name-input">
           姓名
@@ -422,6 +437,10 @@ export default {
     isAddressInputInvalid() {
       return this.shouldShowAddressInvalidHint && this.$v.addressInput.$invalid
     },
+
+    currentUserProvider() {
+      return this.$fire.auth?.currentUser?.providerData?.[0]?.providerId ?? ''
+    },
   },
   methods: {
     handleDropdownMenuGenderChange(value) {
@@ -700,5 +719,26 @@ export default {
   color: #d0021b;
   font-size: 18px;
   font-weight: 700;
+}
+
+.update-password-button {
+  width: 98px;
+  height: 38px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.66);
+  &:hover {
+    border: 1px solid rgba(0, 0, 0, 0.66);
+  }
+  &:active {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)),
+      #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.66);
+  }
 }
 </style>
