@@ -317,17 +317,6 @@ export default {
 
       if (canContinueProcessing) {
         this.membershipTokenState = postResponse.value.tokenState
-
-        console.log(`[DEBUG] ${this.$nuxt.context.req.url}`)
-        console.log(`categories: ${JSON.stringify(this.story.categories)}`)
-        console.log(`process.server: ${process.server}`)
-        console.log(
-          `doesCategoryHaveMemberOnly: ${this.doesCategoryHaveMemberOnly}`
-        )
-        console.log(`shouldShowPremiumStory: ${this.shouldShowPremiumStory}`)
-
-        console.log(`token: ${this.$store.state.membership.userToken}`)
-        console.log(`email: ${this.$store.state.membership.userEmail}`)
       }
     } else {
       const [postResponse] = await Promise.allSettled([
