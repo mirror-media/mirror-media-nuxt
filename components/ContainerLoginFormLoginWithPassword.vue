@@ -26,12 +26,6 @@
     </div>
     <div class="login-form-login-with-password__links links">
       <UiMembershipLink href="/recoverPassword">忘記密碼？</UiMembershipLink>
-      <UiMembershipLink
-        class="links__member-without-password"
-        href="/recoverPassword"
-      >
-        已經是會員了，但我沒有密碼
-      </UiMembershipLink>
     </div>
   </div>
 </template>
