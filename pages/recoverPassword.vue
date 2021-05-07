@@ -1,10 +1,10 @@
 <template>
   <section class="recover-password">
     <div class="wrapper">
-      <h1 class="wrapper__title">如果您忘記/尚未設定密碼</h1>
+      <h1 class="wrapper__title">如果您要更改密碼</h1>
       <p class="wrapper__description">
-        請輸入您註冊時使用的 Email 信箱。我們會發送一封 Email
-        到這個地址，裡面附有重設/設定密碼的連結。
+        請輸入您登入時使用的 Email 信箱。我們會發送一封 Email
+        到這個地址，裡面附有重新設定密碼的連結。
       </p>
       <UiMembershipInputEmailInvalidation
         class="wrapper__email-input"
