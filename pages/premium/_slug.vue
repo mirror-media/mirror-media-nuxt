@@ -1,6 +1,8 @@
 <template>
   <div class="story-slug">
-    <ContainerCulturePost :story="story" />
+    <ClientOnly>
+      <ContainerCulturePost :story="story" />
+    </ClientOnly>
   </div>
 </template>
 
@@ -23,29 +25,11 @@ export default {
     ContainerCulturePost,
   },
   async fetch() {
-    const [postResponse] = await Promise.allSettled([
-      this.$fetchPostsFromMembershipGateway(
-        {
-          slug: this.storySlug,
-          isAudioSiteOnly: false,
-          clean: 'content',
-          related: 'article',
-        },
-        this.$store.state.membership.userToken
-      ),
-    ])
-
-    if (postResponse.status === 'fulfilled') {
-      this.story = postResponse.value.items?.[0] ?? {}
-      this.membershipTokenState = postResponse.value.tokenState
-    } else {
-      const { message, statusCode } = postResponse.reason
-
-      this.$nuxt.error({
-        message,
-        statusCode,
-      })
-    }
+    /*
+     * fetch post in server side for composing meta tag properties, not article content
+     * article content is fetch in client side
+     */
+    await this.fetchPost()
   },
   data() {
     return {
@@ -64,8 +48,9 @@ export default {
       return this.doesCategoryHaveMemberOnly
     },
   },
-  beforeMount() {
+  async beforeMount() {
     this.setGaDimensionOfMembership()
+    await this.fetchPost()
   },
   methods: {
     setGaDimensionOfMembership() {
@@ -74,6 +59,31 @@ export default {
         : 'notMember'
 
       this.$ga.set('dimension1', dimensionMembership)
+    },
+    async fetchPost() {
+      const [postResponse] = await Promise.allSettled([
+        this.$fetchPostsFromMembershipGateway(
+          {
+            slug: this.storySlug,
+            isAudioSiteOnly: false,
+            clean: 'content',
+            related: 'article',
+          },
+          this.$store.state.membership.userToken
+        ),
+      ])
+
+      if (postResponse.status === 'fulfilled') {
+        this.story = postResponse.value.items?.[0] ?? {}
+        this.membershipTokenState = postResponse.value.tokenState
+      } else {
+        const { message, statusCode } = postResponse.reason
+
+        this.$nuxt.error({
+          message,
+          statusCode,
+        })
+      }
     },
   },
   head() {
