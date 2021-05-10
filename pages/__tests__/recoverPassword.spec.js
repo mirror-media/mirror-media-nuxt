@@ -1,8 +1,8 @@
 import flushPromises from 'flush-promises'
 import page from '../recoverPassword.vue'
-import UiRecoverPasswordInputEmail from '~/components/UiRecoverPasswordInputEmail'
-import UiRecoverPasswordButton from '~/components/UiRecoverPasswordButton.vue'
-import UiRecoverPasswordButtonLoadingIcon from '~/components/UiRecoverPasswordButtonLoadingIcon.vue'
+import UiMembershipInputEmailInvalidation from '~/components/UiMembershipInputEmailInvalidation'
+import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
+import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 import UiRecoverPasswordHints from '~/components/UiRecoverPasswordHints.vue'
 
@@ -25,19 +25,19 @@ test('should not have global authenticate nuxt middleware in page component opti
 test('should enable submit button if we input something on email input', async function () {
   expect.assertions(1)
   const wrapper = createWrapper(page)
-  const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+  const input = wrapper.getComponent(UiMembershipInputEmailInvalidation)
   input.vm.$emit('input', 'something')
   await wrapper.vm.$nextTick()
-  expect(wrapper.getComponent(UiRecoverPasswordButton).classes()).not.toContain(
-    'disable'
-  )
+  expect(
+    wrapper.getComponent(UiMembershipButtonPrimary).attributes().disabled
+  ).not.toBe('true')
 })
 
 test('should enable the ability to show invalid hint in email input after we click the submit button', async function () {
   const wrapper = createWrapper(page)
-  const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+  const input = wrapper.getComponent(UiMembershipInputEmailInvalidation)
   input.vm.$emit('input', 'something')
-  wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+  wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
   await wrapper.vm.$nextTick()
   expect(input.props().shouldShowInvalidHint).toBe(true)
 })
@@ -60,14 +60,13 @@ describe('behaviors after user click the submit button', function () {
   test('should show loading icon after user enter the valid email and click submit button', async function () {
     expect.assertions(1)
     const wrapper = createWrapper(page)
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmailInvalidation)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await wrapper.vm.$nextTick()
     expect(
-      wrapper.getComponent(UiRecoverPasswordButtonLoadingIcon).element.style
-        .display
+      wrapper.getComponent(UiMembershipLoadingIcon).element.style.display
     ).not.toBe('none')
   })
 
@@ -83,10 +82,10 @@ describe('behaviors after user click the submit button', function () {
         },
       },
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmailInvalidation)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await flushPromises()
     expect(wrapper.getComponent(UiRecoverPasswordHints).props().state).toBe(
       'emailNotExist'
@@ -114,10 +113,10 @@ describe('behaviors after user click the submit button', function () {
         },
       },
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmailInvalidation)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await flushPromises()
     expect(wrapper.getComponent(UiRecoverPasswordHints).props().state).toBe(
       'success'
@@ -137,10 +136,10 @@ describe('behaviors after user click the submit button', function () {
         },
       },
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmailInvalidation)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await flushPromises()
     expect(wrapper.getComponent(UiRecoverPasswordHints).props().state).toBe(
       'error'
@@ -164,10 +163,10 @@ describe('behaviors after user click the submit button', function () {
         },
       },
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmailInvalidation)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await flushPromises()
     expect(wrapper.getComponent(UiRecoverPasswordHints).props().state).toBe(
       'error'
@@ -190,21 +189,21 @@ describe('behaviors after user click the submit button', function () {
         },
       },
     })
-    const input = wrapper.getComponent(UiRecoverPasswordInputEmail)
+    const input = wrapper.getComponent(UiMembershipInputEmailInvalidation)
     input.vm.$emit('input', 'name@example.com')
     input.vm.$emit('inputValidStateChange', true)
-    wrapper.getComponent(UiRecoverPasswordButton).trigger('click')
+    wrapper.getComponent(UiMembershipButtonPrimary).trigger('click')
     await flushPromises()
     expect(wrapper.getComponent(UiRecoverPasswordHints).props().state).toBe(
       'success'
     )
-    expect(wrapper.getComponent(UiRecoverPasswordButton).classes()).toContain(
-      'disable'
-    )
+    expect(
+      wrapper.getComponent(UiMembershipButtonPrimary).attributes().disabled
+    ).toBe('true')
     jest.runTimersToTime(31000)
     await wrapper.vm.$nextTick()
     expect(
-      wrapper.getComponent(UiRecoverPasswordButton).classes()
-    ).not.toContain('disable')
+      wrapper.getComponent(UiMembershipButtonPrimary).attributes().disabled
+    ).not.toBe('true')
   })
 })

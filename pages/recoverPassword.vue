@@ -1,30 +1,31 @@
 <template>
   <section class="recover-password">
     <div class="wrapper">
-      <h1 class="wrapper__title">如果您忘記/尚未設定密碼</h1>
+      <h1 class="wrapper__title">如果您要更改密碼</h1>
       <p class="wrapper__description">
-        請輸入您註冊時使用的 Email 信箱。我們會發送一封 Email
-        到這個地址，裡面附有重設/設定密碼的連結。
+        請輸入您登入時使用的 Email 信箱。我們會發送一封 Email
+        到這個地址，裡面附有重新設定密碼的連結。
       </p>
-      <UiRecoverPasswordInputEmail
+      <UiMembershipInputEmailInvalidation
         class="wrapper__email-input"
+        :emailProps="email"
         :shouldShowInvalidHint="isSubmitButtonClicked"
         @input="handleInput"
         @inputValidStateChange="handleInputValidStateChange"
       />
       <div class="wrapper__submit-button-wrapper">
         <UiRecoverPasswordHints class="wrapper__hints" :state="hintState" />
-        <UiRecoverPasswordButton
+        <UiMembershipButtonPrimary
           class="wrapper__submit-button"
-          :class="{ disable: !email || shouldAvoidEmailSpam }"
+          :disabled="!email || shouldAvoidEmailSpam"
           @click.native="handleSubmit"
         >
           <p v-if="shouldAvoidEmailSpam">
             重新寄送...({{ emailSpamSecondCounter }} 秒)
           </p>
-          <UiRecoverPasswordButtonLoadingIcon v-else-if="isLoading" />
+          <UiMembershipLoadingIcon v-else-if="isLoading" />
           <p v-else>送出</p>
-        </UiRecoverPasswordButton>
+        </UiMembershipButtonPrimary>
       </div>
       <button
         v-if="hintState === 'emailNotExist'"
@@ -45,23 +46,23 @@
 </template>
 
 <script>
-import UiRecoverPasswordInputEmail from '~/components/UiRecoverPasswordInputEmail.vue'
+import UiMembershipInputEmailInvalidation from '~/components/UiMembershipInputEmailInvalidation.vue'
 import UiRecoverPasswordHints from '~/components/UiRecoverPasswordHints.vue'
-import UiRecoverPasswordButton from '~/components/UiRecoverPasswordButton.vue'
-import UiRecoverPasswordButtonLoadingIcon from '~/components/UiRecoverPasswordButtonLoadingIcon.vue'
+import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
+import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settings-app-config'
 
 export default {
   components: {
-    UiRecoverPasswordInputEmail,
+    UiMembershipInputEmailInvalidation,
     UiRecoverPasswordHints,
-    UiRecoverPasswordButton,
-    UiRecoverPasswordButtonLoadingIcon,
+    UiMembershipButtonPrimary,
+    UiMembershipLoadingIcon,
   },
   data() {
     return {
       isEmailInputValid: false,
-      email: '',
+      email: this.$route?.query?.email ?? '',
       isLoading: false,
       isError: false,
       isSending: false,
@@ -125,7 +126,9 @@ export default {
           acc,
           curr
         ) {
-          return acc || (curr ?? '').includes('email')
+          return (
+            acc || (curr ?? '') === 'emailLink' || (curr ?? '') === 'password'
+          )
         },
         false)
       } catch (e) {
@@ -150,7 +153,6 @@ export default {
           this.email
         )
 
-        // console.log(isEmailSignInWithEmailMethods)
         this.isLoading = false
         this.isEmailSignInWithEmailMethod = isEmailSignInWithEmailMethods
         if (!this.isEmailSignInWithEmailMethod) {

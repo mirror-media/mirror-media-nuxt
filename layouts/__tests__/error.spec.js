@@ -37,20 +37,6 @@ describe('page information with default empty error settings', () => {
     expect(wrapper.find('h1').text()).toBe('404')
     expect(wrapper.find('h2').text()).toEqual('抱歉！找不到這個網址')
   })
-  test('Should customize statusCode and message of error page by error settings', () => {
-    const mockStatusCode = 123
-    const mockMessage = 'mock message'
-    const wrapper = createWrapper(Page, {
-      propsData: {
-        error: {
-          statusCode: mockStatusCode,
-          message: mockMessage,
-        },
-      },
-    })
-    expect(wrapper.find('h1').text()).toBe(`${mockStatusCode}`)
-    expect(wrapper.find('h2').text()).toEqual(`抱歉！${mockMessage}`)
-  })
 })
 
 test('Should have link to home page', () => {

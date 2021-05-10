@@ -1,14 +1,17 @@
 <template>
   <div class="input-wrapper">
-    <UiRecoverPasswordInput
+    <UiMembershipInput
       v-model.trim="$v.email.$model"
-      :class="{ 'border-black': canShowInputInvalid }"
       type="email"
       placeholder="name@example.com"
       @input="handleInput"
     />
-    <p v-show="canShowInputInvalid" class="invalid-hint">
-      請輸入有效 Email 地址
+    <p v-show="$v.$invalid" class="valid-hint">
+      <span>Email 格式正確</span>
+    </p>
+    <p v-show="!$v.$invalid" class="valid-hint valid-hint--green">
+      <SvgCheckIcon class="valid-hint__check-icon" />
+      <span>Email 格式正確</span>
     </p>
   </div>
 </template>
@@ -16,17 +19,23 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { email, required } from 'vuelidate/lib/validators'
-import UiRecoverPasswordInput from './UiRecoverPasswordInput.vue'
+import UiMembershipInput from './UiMembershipInput.vue'
+import SvgCheckIcon from '~/assets/membership-validation-check-icon.svg?inline'
 
 export default {
   components: {
-    UiRecoverPasswordInput,
+    UiMembershipInput,
+    SvgCheckIcon,
   },
   mixins: [validationMixin],
   props: {
     shouldShowInvalidHint: {
       type: Boolean,
       default: false,
+    },
+    emailProps: {
+      type: String,
+      default: '',
     },
   },
   validations: {
@@ -40,25 +49,15 @@ export default {
       email: '',
     }
   },
-  computed: {
-    canShowInputInvalid() {
-      return this.shouldShowInvalidHint && this.$v.$dirty && this.$v.$invalid
-    },
-  },
   watch: {
-    shouldShowInvalidHint() {
-      /*
-       * toggling invalid hint when input was empty but we really want to show it
-       * because invalid hint was always disable if we never touch it
-       */
-      if (this.shouldShowInvalidHint && !this.$v.$dirty) {
-        // same as this.$v.$dirty = true
-        this.$v.$touch()
-      }
-    },
     '$v.email.$invalid'(value) {
       this.$emit('inputValidStateChange', !value)
     },
+  },
+  beforeMount() {
+    if (this.emailProps) {
+      this.email = this.emailProps
+    }
   },
   methods: {
     handleInput() {
@@ -73,10 +72,19 @@ export default {
   width: 100%;
 }
 
-.invalid-hint {
+.valid-hint {
   margin: 8px 0 0 0;
   font-size: 16px;
   line-height: 150%;
-  color: #db1730;
+  color: #9b9b9b;
+  display: flex;
+  align-items: center;
+  &--green {
+    color: #009045;
+  }
+
+  &__check-icon {
+    margin: 0 8px 0 0;
+  }
 }
 </style>

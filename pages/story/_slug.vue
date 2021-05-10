@@ -228,6 +228,7 @@ const DEFAULT_SECTION_ID = 'other'
 export default {
   name: 'Story',
   layout: 'empty',
+  middleware: ['handle-story-premium-redirect-and-cache-control'],
   setup() {
     useViewport()
     useFbQuotePlugin()
@@ -316,35 +317,6 @@ export default {
 
       if (canContinueProcessing) {
         this.membershipTokenState = postResponse.value.tokenState
-
-        console.log(`[DEBUG] ${this.$nuxt.context.req.url}`)
-        console.log(`categories: ${JSON.stringify(this.story.categories)}`)
-        console.log(`process.server: ${process.server}`)
-        console.log(
-          `doesCategoryHaveMemberOnly: ${this.doesCategoryHaveMemberOnly}`
-        )
-        console.log(`shouldShowPremiumStory: ${this.shouldShowPremiumStory}`)
-
-        // disable cdn cache to prevent caching both regular version and premium version with the same /story/:slug uri
-        if (process.server && this.doesCategoryHaveMemberOnly) {
-          console.log('this story should not cache')
-
-          this.$nuxt.context.res.setHeader('Cache-Control', 'no-store')
-        }
-
-        console.log(`token: ${this.$store.state.membership.userToken}`)
-        console.log(`email: ${this.$store.state.membership.userEmail}`)
-
-        if (this.shouldShowPremiumStory) {
-          console.log(
-            `this ${this.$nuxt.context.req.url} should redirect to premium`
-          )
-
-          const qs = require('querystring')
-          this.$nuxt.context.redirect(
-            `/premium/${this.storySlug}?${qs.stringify(this.$route.query)}`
-          )
-        }
       }
     } else {
       const [postResponse] = await Promise.allSettled([

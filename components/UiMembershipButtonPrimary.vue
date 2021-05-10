@@ -15,11 +15,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.disable {
-  background-color: #e3e3e3;
-  color: rgba(0, 0, 0, 0.2);
-  cursor: not-allowed;
+  &:disabled {
+    background-color: #e3e3e3;
+    color: rgba(0, 0, 0, 0.2);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }
 </style>

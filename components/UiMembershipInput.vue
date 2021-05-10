@@ -37,4 +37,8 @@ input {
 .border-black {
   border: 1px solid rgba(0, 0, 0, 0.87);
 }
+
+.border-red {
+  border: 1px solid #db1730;
+}
 </style>

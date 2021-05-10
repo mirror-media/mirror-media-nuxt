@@ -11,6 +11,11 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 const createWrapper = createWrapperHelper({
+  mocks: {
+    $fire: {
+      auth: {},
+    },
+  },
   stubs: {
     NuxtLink: RouterLinkStub,
   },

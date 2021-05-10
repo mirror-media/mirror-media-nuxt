@@ -1,6 +1,8 @@
 <template>
   <div class="story-slug">
-    <ContainerCulturePost :story="story" />
+    <ClientOnly>
+      <ContainerCulturePost :story="story" />
+    </ClientOnly>
   </div>
 </template>
 
@@ -18,61 +20,16 @@ import { checkCategoryHasMemberOnly } from '~/utils/article'
 
 export default {
   layout: 'empty',
+  middleware: ['handle-story-premium-redirect-and-cache-control'],
   components: {
     ContainerCulturePost,
   },
   async fetch() {
-    const [postResponse] = await Promise.allSettled([
-      this.$fetchPostsFromMembershipGateway(
-        {
-          slug: this.storySlug,
-          isAudioSiteOnly: false,
-          clean: 'content',
-          related: 'article',
-        },
-        this.$store.state.membership.userToken
-      ),
-    ])
-
-    if (postResponse.status === 'fulfilled') {
-      this.story = postResponse.value.items?.[0] ?? {}
-      this.membershipTokenState = postResponse.value.tokenState
-
-      console.log('[DEBUG] ' + `${this.$nuxt.context.req.url}`)
-      console.log('categories: ' + JSON.stringify(this.story.categories))
-      console.log('process.server: ' + process.server)
-      console.log(
-        'doesCategoryHaveMemberOnly: ' + this.doesCategoryHaveMemberOnly
-      )
-      console.log('shouldShowPremiumStory: ' + this.shouldShowPremiumStory)
-
-      // disable cdn cache to prevent caching both regular version and premium version with the same /premium/:slug uri
-      if (process.server && this.doesCategoryHaveMemberOnly) {
-        console.log('this premium should not cache')
-        this.$nuxt.context.res.setHeader('Cache-Control', 'no-store')
-      }
-
-      console.log(`token: ${this.$store.state.membership.userToken}`)
-      console.log(`email: ${this.$store.state.membership.userEmail}`)
-      console.log(`membershipTokenState: ${this.membershipTokenState}`)
-      if (!this.shouldShowPremiumStory) {
-        console.log(
-          `this ${this.$nuxt.context.req.url} should redirect to story`
-        )
-
-        const qs = require('querystring')
-        this.$nuxt.context.redirect(
-          `/story/${this.storySlug}?${qs.stringify(this.$route.query)}`
-        )
-      }
-    } else {
-      const { message, statusCode } = postResponse.reason
-
-      this.$nuxt.error({
-        message,
-        statusCode,
-      })
-    }
+    /*
+     * fetch post in server side for composing meta tag properties, not article content
+     * article content is fetch in client side
+     */
+    await this.fetchPost()
   },
   data() {
     return {
@@ -91,8 +48,9 @@ export default {
       return this.doesCategoryHaveMemberOnly
     },
   },
-  beforeMount() {
+  async beforeMount() {
     this.setGaDimensionOfMembership()
+    await this.fetchPost()
   },
   methods: {
     setGaDimensionOfMembership() {
@@ -101,6 +59,31 @@ export default {
         : 'notMember'
 
       this.$ga.set('dimension1', dimensionMembership)
+    },
+    async fetchPost() {
+      const [postResponse] = await Promise.allSettled([
+        this.$fetchPostsFromMembershipGateway(
+          {
+            slug: this.storySlug,
+            isAudioSiteOnly: false,
+            clean: 'content',
+            related: 'article',
+          },
+          this.$store.state.membership.userToken
+        ),
+      ])
+
+      if (postResponse.status === 'fulfilled') {
+        this.story = postResponse.value.items?.[0] ?? {}
+        this.membershipTokenState = postResponse.value.tokenState
+      } else {
+        const { message, statusCode } = postResponse.reason
+
+        this.$nuxt.error({
+          message,
+          statusCode,
+        })
+      }
     },
   },
   head() {
