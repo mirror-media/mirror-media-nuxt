@@ -109,6 +109,8 @@ export default {
 
       try {
         await this.currentUser.updatePassword(this.newPassword)
+        await this.$fire.auth.signOut()
+        window.location.assign('/login')
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e)
