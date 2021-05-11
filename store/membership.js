@@ -19,8 +19,10 @@ export const mutations = {
       state.userEmail = email
       state.userEmailVerified = emailVerified
 
-      const { firebase } = claims
-      state.userSignInInfo = firebase
+      if (Object.keys(claims).length !== 0) {
+        const { firebase } = claims
+        state.userSignInInfo = firebase
+      }
 
       if (token) {
         state.userToken = token
