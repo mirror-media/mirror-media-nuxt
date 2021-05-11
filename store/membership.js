@@ -4,16 +4,24 @@ export const state = () => ({
   userEmail: undefined,
   userEmailVerified: undefined,
   userToken: undefined,
+  userSignInInfo: {},
 })
 
 export const mutations = {
-  ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser, token }) {
+  ON_AUTH_STATE_CHANGED_MUTATION(
+    state,
+    { authUser = {}, token, claims = {} } = {}
+  ) {
     if (authUser) {
       const { uid, email, emailVerified } = authUser
 
       state.userUid = uid
       state.userEmail = email
       state.userEmailVerified = emailVerified
+
+      const { firebase } = claims
+      state.userSignInInfo = firebase
+
       if (token) {
         state.userToken = token
       }

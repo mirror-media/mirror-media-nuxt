@@ -3,7 +3,7 @@
     <UiMembershipInputPassword
       v-model.trim="$v.password.$model"
       :className="{ 'border-red': shouldShowErrorHint }"
-      :placeholder="`密碼大於 ${passwordMinLength} 位數`"
+      :placeholder="placeholder"
       @input="handleInput"
     />
     <p v-show="shouldShowErrorHint" class="invalid-hint">
@@ -39,8 +39,12 @@ export default {
   data() {
     return {
       password: '',
-      passwordMinLength,
     }
+  },
+  computed: {
+    placeholder() {
+      return this.$attrs.placeholder ?? `密碼大於 ${passwordMinLength} 位數`
+    },
   },
   watch: {
     '$v.password.$invalid'(value) {
