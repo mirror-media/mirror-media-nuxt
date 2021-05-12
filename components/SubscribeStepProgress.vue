@@ -26,7 +26,6 @@
         :isActive="currentStep >= stepList[2].step"
       />
     </div>
-    {{ currentStep }}
   </div>
 </template>
 
