@@ -173,6 +173,20 @@ module.exports = {
                 (function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://certify-js.alexametrics.com/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
               `,
             },
+            // Facebook Pixel
+            {
+              hid: 'likrNotification',
+              innerHTML: `!function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '176410021005270');
+                fbq('track', 'PageView');`,
+            },
           ]
         : []),
 
@@ -196,6 +210,13 @@ module.exports = {
         hid: 'comScoreNoScript',
         innerHTML:
           '<img src="https://sb.scorecardresearch.com/p?c1=2&amp;c2=24318560&amp;cv=3.6.0&amp;cj=1" />',
+      },
+
+      // Facebook Pixel
+      {
+        hid: 'facebookPixelNoScript',
+        innerHTML:
+          '<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=176410021005270&ev=PageView&noscript=1"/>',
       },
     ],
     __dangerouslyDisableSanitizersByTagID: {
