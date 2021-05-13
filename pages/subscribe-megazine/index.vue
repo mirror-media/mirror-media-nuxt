@@ -1,7 +1,10 @@
 <template>
   <div class="subscribe-megazine-page">
-    <SubscribeStepProgress :currentStep="currentStep" />
-    <SubscribeChoosePlan />
+    <SubscribeStepProgress
+      :currentStep="currentStep"
+      :jumpToStep="jumpToStep"
+    />
+    <SubscribeChoosePlan v-if="currentStep === 1" :choosePlan="choosePlan" />
   </div>
 </template>
 
@@ -16,7 +19,17 @@ export default {
   data() {
     return {
       currentStep: 1,
+      choosedPlanId: 0,
     }
+  },
+  methods: {
+    jumpToStep(step) {
+      this.currentStep = step
+    },
+    choosePlan(choosedPlanId) {
+      this.choosedPlanId = choosedPlanId
+      this.currentStep++
+    },
   },
 }
 </script>

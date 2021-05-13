@@ -9,16 +9,20 @@
           :detail="plan.detail"
           :originalPrice="plan.originalPrice"
           :newPrice="plan.newPrice"
+          @click.native="choosePlan(plan.id)"
         />
       </div>
 
       <div class="choose-plan__info">
-        <ol>
+        <h2>注意事項</h2>
+        <ul>
           <li v-for="info in infoList" :key="info.id">
-            {{}}
-            <span>{{ info.text }}</span>
+            <p>{{ info.text }}</p>
+            <p v-for="infoChild in infoSubList(info)" :key="infoChild.id">
+              {{ infoChild.text }}
+            </p>
           </li>
-        </ol>
+        </ul>
       </div>
     </div>
   </div>
@@ -29,6 +33,12 @@ import SubscribeChoosePlanCard from '~/components/SubscribeChoosePlanCard.vue'
 export default {
   components: {
     SubscribeChoosePlanCard,
+  },
+  props: {
+    choosePlan: {
+      type: Function,
+      isRequired: true,
+    },
   },
   data() {
     return {
@@ -54,24 +64,39 @@ export default {
           text: '完成訂購後約三週內可分別收到第一期雜誌。',
         },
         {
-          id: 0,
+          id: 1,
           text: '發票將於您完成訂購後七個工作天內寄達。',
         },
         {
-          id: 0,
+          id: 2,
           text: '如需更改收件地址，請於服務時間來電告知。',
         },
         {
-          id: 0,
+          id: 3,
           text: '雜誌如有下列情事者，同意訂戶退貨：',
           child: [
-            '雜誌如有下列情事者，同意訂戶退貨：',
-            '(1) 訂戶需支付作業手續費用。',
-            '(2) 贈送的期數將不列入計算。',
+            {
+              id: 0,
+              text:
+                '訂戶可依消費者保護法規定得於完成付款日起算七天猶豫期內主張退貨且可獲全額退款，如已開始配送，其處理說明如下：',
+            },
+            {
+              id: 1,
+              text: '(1) 訂戶需支付作業手續費用。',
+            },
+            {
+              id: 2,
+              text: '(2) 贈送的期數將不列入計算。',
+            },
           ],
         },
       ],
     }
+  },
+  methods: {
+    infoSubList(info) {
+      return info.child ? info.child : []
+    },
   },
 }
 </script>
@@ -79,7 +104,11 @@ export default {
 <style lang="scss" scoped>
 .choose-plan {
   background: white;
-  padding: 49px 0 47px;
+  padding: 10px 8px;
+
+  @include media-breakpoint-up(sm) {
+    padding: 49px 8px 47px;
+  }
 
   &__wrapper {
     max-width: 990px;
@@ -88,7 +117,50 @@ export default {
 
   &__plan_container {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
+    margin-bottom: 32px;
+
+    @include media-breakpoint-up(sm) {
+      flex-direction: row;
+    }
+  }
+
+  &__info {
+    max-width: 940px;
+    margin: auto;
+    padding: 0 17px;
+
+    h2 {
+      font-size: 22px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: #4a4a4a;
+      margin-bottom: 13px;
+
+      @include media-breakpoint-up(sm) {
+        font-size: 26px;
+      }
+    }
+    ul {
+      list-style: disc;
+      margin-left: 1rem;
+
+      li {
+        max-width: 940px;
+        margin: auto;
+        font-size: 15px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 2;
+        letter-spacing: normal;
+        color: #4a4a4a;
+      }
+    }
   }
 }
 </style>
