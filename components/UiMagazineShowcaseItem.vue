@@ -5,14 +5,17 @@
     class="magazine"
     @click="$emit('downloadLinkClick')"
   >
-    <img v-lazy="coverImgUrl" class="cover-img" alt="magazine-cover-img" />
+    <UiMagazineShowcaseItemCoverImg :coverImgUrl="coverImgUrl" />
     <p class="magazine__label label" v-text="label" />
     <h1 class="magazine__title title" v-text="title" />
   </a>
 </template>
 
 <script>
+import UiMagazineShowcaseItemCoverImg from './UiMagazineShowcaseItemCoverImg.vue'
+
 export default {
+  components: { UiMagazineShowcaseItemCoverImg },
   props: {
     coverImgUrl: {
       type: String,

@@ -1,6 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
 import flushPromises from 'flush-promises'
 import UiMagazineShowcaseItem from '../UiMagazineShowcaseItem.vue'
+import UiMagazineShowcaseItemCoverImg from '../UiMagazineShowcaseItemCoverImg.vue'
 
 describe('props', function () {
   test('coverImgUrl', async function () {
@@ -11,7 +12,9 @@ describe('props', function () {
       },
     })
     await flushPromises()
-    expect(wrapper.get('.cover-img').attributes()['data-src']).toBe(imgUrlMock)
+    expect(
+      wrapper.getComponent(UiMagazineShowcaseItemCoverImg).props().coverImgUrl
+    ).toBe(imgUrlMock)
   })
   test('label', function () {
     const labelMock = '2020/12/30'
