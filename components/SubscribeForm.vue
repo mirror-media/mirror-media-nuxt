@@ -13,16 +13,20 @@
         <h2 class="subscribe-form__title">電子發票</h2>
         <h2 class="subscribe-form__title">信用卡</h2>
       </div>
-      <div class="subscribe-form__right">YO</div>
+      <div class="subscribe-form__right">
+        <SubscribeInfo :perchasedPlan="perchasedPlan" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import SubscribeFormMerchandiseList from '~/components/SubscribeFormMerchandiseList.vue'
+import SubscribeInfo from '~/components/SubscribeInfo.vue'
 export default {
   components: {
     SubscribeFormMerchandiseList,
+    SubscribeInfo,
   },
   props: {
     perchasedPlan: {
@@ -66,6 +70,11 @@ export default {
 <style lang="scss" scoped>
 .subscribe-form {
   padding: 10px 8px;
+  @include media-breakpoint-up(sm) {
+  }
+  @include media-breakpoint-up(md) {
+    padding: 40px 8px;
+  }
   &__wrapper {
     max-width: 991px;
     margin: auto;
