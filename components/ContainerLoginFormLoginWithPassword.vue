@@ -25,7 +25,9 @@
       </UiMembershipButtonSecondary>
     </div>
     <div class="login-form-login-with-password__links links">
-      <UiMembershipLink href="/recoverPassword">忘記密碼？</UiMembershipLink>
+      <UiMembershipLink :href="`/recoverPassword?email=${email}`">
+        忘記密碼？
+      </UiMembershipLink>
     </div>
   </div>
 </template>

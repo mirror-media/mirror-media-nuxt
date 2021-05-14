@@ -116,6 +116,9 @@ export function buildParams(params = {}) {
         _.set(queryParams, 'where._id', params[param])
       } else if (Array.isArray(params[param])) {
         _.set(queryParams, `where.${snakeCase(param)}.$in`, params[param])
+      } else if (param === 'magazineType') {
+        const condition = params[param] === 'special' ? '$in' : '$nin'
+        _.set(queryParams, `where.type.${condition}`, ['special'])
       } else {
         _.set(queryParams, `where.${snakeCase(param)}`, params[param])
       }

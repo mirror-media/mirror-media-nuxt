@@ -29,19 +29,6 @@ describe('props', function () {
     })
     expect(wrapper.get('.title').text()).toBe(titleMock)
   })
-  test('descriptions', function () {
-    const descriptionsMock = ['paragraph 1', 'paragraph 2', 'paragraph 3']
-    const wrapper = shallowMount(UiMagazineFeatured, {
-      propsData: {
-        descriptions: descriptionsMock,
-      },
-    })
-    const paragraphs = wrapper.findAll('.description')
-    expect(paragraphs.length).toBe(descriptionsMock.length)
-    paragraphs.wrappers.forEach(function assertDescription(paragraph, i) {
-      expect(paragraph.text()).toBe(descriptionsMock[i])
-    })
-  })
   test('downloadLink', function () {
     const downloadLinkMock = 'http://download'
     const wrapper = shallowMount(UiMagazineFeatured, {

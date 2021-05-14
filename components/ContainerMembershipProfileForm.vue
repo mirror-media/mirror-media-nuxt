@@ -18,7 +18,7 @@
       >
         <h2 class="password-wrapper__subtitle subtitle">密碼</h2>
         <a
-          :href="`/recoverPassword?email=${currentMemberEmail}`"
+          href="/updatePassword"
           class="password-wrapper__update-password-button update-password-button"
         >
           更改密碼

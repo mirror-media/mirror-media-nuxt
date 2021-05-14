@@ -2,41 +2,32 @@
   <div class="featured">
     <div class="featured__cover-wrapper cover-wrapper">
       <img class="cover-img" :src="coverImgUrl" alt="magazine-cover-img" />
-      <a
-        :href="downloadLink"
-        target="_blank"
-        class="cover-wrapper__download-link download-link desktop"
-        @click="$emit('downloadLinkClick')"
-      >
-        立即下載
-      </a>
     </div>
     <div class="featured__info-wrapper info-wrapper">
-      <p class="label" v-text="label" />
-      <h1 class="info-wrapper__title title" v-text="title" />
       <div
-        class="info-wrapper__description-wrapper description-wrapper desktop"
+        class="info-wrapper__title-description-wrapper title-description-wrapper"
       >
-        <p
-          v-for="(description, i) in descriptions"
-          :key="`${description}-${i}`"
-          class="description"
-          v-text="description"
-        />
+        <p class="label" v-text="label" />
+        <h1 class="title-description-wrapper__title title" v-text="title" />
       </div>
-      <a
+      <UiMagazineLinkPrimary
+        class="info-wrapper__download-link download-link"
         :href="downloadLink"
         target="_blank"
-        class="info-wrapper__download-link download-link mobile"
+        rel="noreferrer noopener"
+        @click.native="$emit('downloadLinkClick')"
       >
         立即下載
-      </a>
+      </UiMagazineLinkPrimary>
     </div>
   </div>
 </template>
 
 <script>
+import UiMagazineLinkPrimary from './UiMagazineLinkPrimary.vue'
+
 export default {
+  components: { UiMagazineLinkPrimary },
   props: {
     coverImgUrl: {
       type: String,
@@ -49,10 +40,6 @@ export default {
     title: {
       type: String,
       default: '',
-    },
-    descriptions: {
-      type: Array,
-      default: () => [],
     },
     downloadLink: {
       type: String,
@@ -67,19 +54,24 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  &__info-wrapper {
-    margin: 10px 0 0 0;
-    @include media-breakpoint-up(md) {
-      margin: 0 0 0 30px;
-    }
-  }
+  border: 1px solid #9b9b9b;
+  border-radius: 2px;
+  width: 100%;
+  padding: 16px 12px;
   @include media-breakpoint-up(md) {
-    width: 672px;
     flex-direction: row;
     align-items: flex-start;
+    padding: 24px;
   }
   @include media-breakpoint-up(xl) {
     width: 840px;
+  }
+
+  &__info-wrapper {
+    margin: 12px 0 0 0;
+    @include media-breakpoint-up(md) {
+      margin: 0 0 0 32px;
+    }
   }
 }
 
@@ -89,23 +81,29 @@ export default {
   justify-content: center;
   align-items: center;
   min-width: 160px;
-  width: 160px;
-  &__download-link {
-    margin: 16px 0 0 0;
+  width: 55%;
+  position: relative;
+  padding-bottom: 75.47%;
+  height: 0;
+  @include media-breakpoint-up(md) {
+    width: 160px;
+    height: 212px;
+    padding-bottom: 0;
   }
   @include media-breakpoint-up(xl) {
-    min-width: 240px;
-    width: 240px;
+    min-width: 200px;
+    width: 200px;
+    height: 265px;
   }
 }
 
 .cover-img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 212px;
+  height: 100%;
   object-fit: cover;
-  @include media-breakpoint-up(xl) {
-    height: 318px;
-  }
 }
 
 .info-wrapper {
@@ -113,77 +111,52 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  &__title {
-    margin: 10px 0 0 0;
+  width: 100%;
+  @include media-breakpoint-up(md) {
+    height: 212px;
+    justify-content: space-between;
+    align-items: flex-start;
   }
-  &__description-wrapper {
-    margin: 16px 0 0 0;
+  @include media-breakpoint-up(xl) {
+    height: 265px;
   }
+
   &__download-link {
-    margin: 10px 0 0 0;
+    margin: 12px 0 0 0;
+    @include media-breakpoint-up(md) {
+      margin: 0;
+    }
   }
+}
+
+.title-description-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   @include media-breakpoint-up(md) {
     align-items: flex-start;
+  }
+
+  &__title {
+    margin: 8px 0 0 0;
   }
 }
 
 .label {
   font-size: 16px;
+  line-height: 150%;
   color: #1d9fb8;
 }
 
 .title {
   font-size: 22px;
+  line-height: 31px;
   font-weight: 400;
   color: #4a4a4a;
   text-align: center;
   @include media-breakpoint-up(md) {
     text-align: left;
-  }
-}
-
-.description-wrapper {
-  flex-direction: column;
-}
-
-.description {
-  font-size: 16px;
-  color: #9b9b9b;
-  & + & {
-    margin: 16px 0 0 0;
-  }
-}
-
-.download-link {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  width: 100%;
-  height: 48px;
-  background: #1d9fb8;
-  border-radius: 2px;
-  &:hover,
-  &:active {
-    background: linear-gradient(
-        0deg,
-        rgba(5, 79, 119, 0.5),
-        rgba(5, 79, 119, 0.5)
-      ),
-      #1d9fb8;
-  }
-}
-
-.mobile {
-  display: flex;
-  @include media-breakpoint-up(md) {
-    display: none;
-  }
-}
-.desktop {
-  display: none;
-  @include media-breakpoint-up(md) {
-    display: flex;
   }
 }
 </style>
