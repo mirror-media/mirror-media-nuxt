@@ -52,15 +52,17 @@ describe('normal navbar items', () => {
   })
 })
 
-describe('external navbar item', () => {
-  test('display partner items in the drop-down list', () => {
-    const sut = createWrapper(UiHeaderNavSection)
-
-    expect(sut.get(`[href="/externals/${partnerMock.name}"]`).text()).toBe(
-      partnerMock.display
-    )
-  })
-})
+/*
+ * describe('external navbar item', () => {
+ *   test('display partner items in the drop-down list', () => {
+ *     const sut = createWrapper(UiHeaderNavSection)
+ *
+ *     expect(sut.get(`[href="/externals/${partnerMock.name}"]`).text()).toBe(
+ *       partnerMock.display
+ *     )
+ *   })
+ * })
+ */
 
 describe('GA events', () => {
   test('send a GA event when users click a section navbar item', () => {
@@ -102,17 +104,19 @@ describe('GA events', () => {
     ])
   })
 
-  test('send a GA event when users click a partner item in the drop-down list', () => {
-    const sut = createWrapper(UiHeaderNavSection)
-
-    sut.get(`[href="/externals/${partnerMock.name}"]`).trigger('click')
-
-    expect(sut.emitted().sendGa[0]).toEqual([
-      {
-        eventCategory: 'header',
-        eventAction: 'click',
-        eventLabel: `external ${partnerMock.name}`,
-      },
-    ])
-  })
+  /*
+   * test('send a GA event when users click a partner item in the drop-down list', () => {
+   *   const sut = createWrapper(UiHeaderNavSection)
+   *
+   *   sut.get(`[href="/externals/${partnerMock.name}"]`).trigger('click')
+   *
+   *   expect(sut.emitted().sendGa[0]).toEqual([
+   *     {
+   *       eventCategory: 'header',
+   *       eventAction: 'click',
+   *       eventLabel: `external ${partnerMock.name}`,
+   *     },
+   *   ])
+   * })
+   */
 })

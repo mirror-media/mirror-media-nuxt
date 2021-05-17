@@ -37,19 +37,19 @@
         </div>
       </div>
 
-      <div class="section section--external">
-        <h2>合作媒體</h2>
-        <div class="section__dropdown">
-          <a
-            v-for="partner in partners"
-            :key="partner.id"
-            :href="`/externals/${partner.name}`"
-            @click="emitGa(`external ${partner.name}`)"
-          >
-            <h3>{{ partner.display }}</h3>
-          </a>
-        </div>
-      </div>
+      <!--      <div class="section section&#45;&#45;external">-->
+      <!--        <h2>合作媒體</h2>-->
+      <!--        <div class="section__dropdown">-->
+      <!--          <a-->
+      <!--            v-for="partner in partners"-->
+      <!--            :key="partner.id"-->
+      <!--            :href="`/externals/${partner.name}`"-->
+      <!--            @click="emitGa(`external ${partner.name}`)"-->
+      <!--          >-->
+      <!--            <h3>{{ partner.display }}</h3>-->
+      <!--          </a>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
   </section>
 </template>
