@@ -17,7 +17,7 @@
       <div class="form-row__head_title">
         <input type="number" min="1" max="9" v-model="perchased.count" />
       </div>
-      <div class="form-row__head_title">{{ perchased.newPrice }}</div>
+      <div class="form-row__head_title">NT${{ perchased.newPrice }}</div>
     </div>
 
     <div class="merchandise-list__discount_code">
@@ -26,7 +26,7 @@
         <span>我有續訂折扣碼</span>
       </div>
       <div class="merchandise-list__discount_code_input">
-        <input type="text" v-model="discount.code" />
+        <input type="text" v-model="discount.code" placeholder="MI00000000" />
         <p>折扣80元、加購1期</p>
       </div>
     </div>
@@ -86,6 +86,13 @@ export default {
 
 <style lang="scss" scoped>
 .merchandise-list {
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #4a4a4a;
   @include media-breakpoint-up(sm) {
   }
   @include media-breakpoint-up(md) {
@@ -99,7 +106,7 @@ export default {
       flex: 1;
 
       &:first-child {
-        flex: 2;
+        flex: 3;
         max-width: 278px;
       }
     }
@@ -117,7 +124,20 @@ export default {
     position: relative;
     display: flex;
     align-items: center;
-    padding: 0 0 61px;
+    padding: 12px 0 61px;
+    @include media-breakpoint-up(md) {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 28px 0 61px;
+    }
+
+    &_check {
+      margin-right: 18px;
+      @include media-breakpoint-up(md) {
+        margin-bottom: 10px;
+      }
+    }
+
     &_input {
       position: relative;
       align-self: flex-start;

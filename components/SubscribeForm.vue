@@ -8,6 +8,7 @@
           :discount="discount"
         />
         <h2 class="subscribe-form__title">訂購人</h2>
+        <SubscribeFormOrdererData :ordererData="ordererData" />
         <h2 class="subscribe-form__title">收件人</h2>
         <h2 class="subscribe-form__title">寄送方式</h2>
         <h2 class="subscribe-form__title">電子發票</h2>
@@ -23,10 +24,12 @@
 <script>
 import SubscribeFormMerchandiseList from '~/components/SubscribeFormMerchandiseList.vue'
 import SubscribeInfo from '~/components/SubscribeInfo.vue'
+import SubscribeFormOrdererData from '~/components/SubscribeFormOrdererData.vue'
 export default {
   components: {
     SubscribeFormMerchandiseList,
     SubscribeInfo,
+    SubscribeFormOrdererData,
   },
   props: {
     perchasedPlan: {
@@ -99,7 +102,6 @@ export default {
   }
 
   &__right {
-    background: gold;
     width: 100%;
     flex: 1;
 

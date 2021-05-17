@@ -52,6 +52,32 @@ export default {
         hasCode: false,
         code: '',
       },
+      ordererData: {
+        name: {
+          title: '姓名',
+          value: '',
+        },
+        cellphone: {
+          title: '手機',
+          value: '',
+        },
+        phone: {
+          title: '市話（非必填）',
+          value: '',
+        },
+        phoneExt: {
+          title: '通訊地址',
+          value: '',
+        },
+        address: {
+          title: '地址',
+          value: '',
+        },
+        email: {
+          title: '電子信箱',
+          value: '',
+        },
+      },
     }
   },
 
