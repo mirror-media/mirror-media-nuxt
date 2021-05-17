@@ -1,6 +1,7 @@
+import { shouldBypassAuthInAppWebview } from './utils'
+
 export default async function ({ req, store, app, redirect }) {
-  // workaround of bypass the auth, in the iOS in-app browser environment
-  if (process.server && app.$ua.browser() === 'Webview') {
+  if (shouldBypassAuthInAppWebview({ app })) {
     return
   }
   const token = store.state.membership.userToken
