@@ -1,24 +1,11 @@
 <template>
   <div class="merchandise-list">
-    <div class="merchandise-list__form_head form-row">
-      <div class="form-row__head_title">品名</div>
-      <div class="form-row__head_title">數量</div>
-      <div class="form-row__head_title">單價</div>
+    <div class="merchandise-list__title">
+      <h2 class="subscribe-form__title">訂購項目</h2>
+      <SubscribeFormEditPerchase :perchasedPlan="perchasedPlan" />
     </div>
 
-    <div class="merchandise-list__form_devider" />
-
-    <div
-      v-for="perchased in filteredPerchasedPlan"
-      :key="perchased.id"
-      class="merchandise-list__form_content form-row"
-    >
-      <div class="form-row__head_title">{{ perchased.detail }}</div>
-      <div class="form-row__head_title">
-        <input type="number" min="1" max="9" v-model="perchased.count" />
-      </div>
-      <div class="form-row__head_title">NT${{ perchased.newPrice }}</div>
-    </div>
+    <UiMerchandiseList :perchasedPlan="perchasedPlan" />
 
     <div class="merchandise-list__discount_code">
       <div class="merchandise-list__discount_code_check">
@@ -34,7 +21,14 @@
 </template>
 
 <script>
+import UiMerchandiseList from '~/components/UiMerchandiseList.vue'
+import SubscribeFormEditPerchase from '~/components/SubscribeFormEditPerchase.vue'
+
 export default {
+  components: {
+    UiMerchandiseList,
+    SubscribeFormEditPerchase,
+  },
   props: {
     perchasedPlan: {
       type: Array,
@@ -96,6 +90,11 @@ export default {
   @include media-breakpoint-up(sm) {
   }
   @include media-breakpoint-up(md) {
+  }
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
   }
 
   .form-row {

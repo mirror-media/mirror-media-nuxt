@@ -10,8 +10,6 @@
       :perchasedPlan="perchasedPlan"
       :discount="discount"
     />
-    {{ discount.hasCode }}
-    {{ discount.code }}
   </div>
 </template>
 

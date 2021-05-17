@@ -2,33 +2,33 @@
   <div class="subscribe-form">
     <div class="subscribe-form__wrapper">
       <div class="subscribe-form__left">
-        <h2 class="subscribe-form__title">訂購項目</h2>
-        <SubscribeFormMerchandiseList
+        <SubscribeFormPlanList
           :perchasedPlan="perchasedPlan"
           :discount="discount"
         />
         <h2 class="subscribe-form__title">訂購人</h2>
         <SubscribeFormOrdererData :ordererData="ordererData" />
+
         <h2 class="subscribe-form__title">收件人</h2>
         <h2 class="subscribe-form__title">寄送方式</h2>
         <h2 class="subscribe-form__title">電子發票</h2>
         <h2 class="subscribe-form__title">信用卡</h2>
       </div>
       <div class="subscribe-form__right">
-        <SubscribeInfo :perchasedPlan="perchasedPlan" />
+        <SubscribeFormPerchaseInfo :perchasedPlan="perchasedPlan" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import SubscribeFormMerchandiseList from '~/components/SubscribeFormMerchandiseList.vue'
-import SubscribeInfo from '~/components/SubscribeInfo.vue'
+import SubscribeFormPlanList from '~/components/SubscribeFormPlanList.vue'
+import SubscribeFormPerchaseInfo from '~/components/SubscribeFormPerchaseInfo.vue'
 import SubscribeFormOrdererData from '~/components/SubscribeFormOrdererData.vue'
 export default {
   components: {
-    SubscribeFormMerchandiseList,
-    SubscribeInfo,
+    SubscribeFormPlanList,
+    SubscribeFormPerchaseInfo,
     SubscribeFormOrdererData,
   },
   props: {
@@ -70,7 +70,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .subscribe-form {
   padding: 10px 8px;
   @include media-breakpoint-up(sm) {
@@ -79,7 +79,7 @@ export default {
     padding: 40px 8px;
   }
   &__wrapper {
-    max-width: 991px;
+    max-width: 850px;
     margin: auto;
     display: flex;
     flex-direction: column-reverse;
@@ -88,6 +88,9 @@ export default {
     }
     @include media-breakpoint-up(md) {
       flex-direction: row;
+    }
+    @include media-breakpoint-up(lg) {
+      max-width: 991px;
     }
   }
 
@@ -104,6 +107,7 @@ export default {
   &__right {
     width: 100%;
     flex: 1;
+    margin-bottom: 26px;
 
     @include media-breakpoint-up(md) {
       max-width: 400px;

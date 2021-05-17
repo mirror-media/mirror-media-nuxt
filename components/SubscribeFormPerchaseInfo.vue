@@ -1,18 +1,18 @@
 <template>
-  <div class="subscribe-info">
+  <div class="perchase-info">
     <div class="subscribe-form__title">訂單資訊</div>
-    <div class="subscribe-info__row">
+    <div class="perchase-info__row">
       <span>商品總計</span>
       <span>NT$ {{ price }}</span>
     </div>
-    <div class="subscribe-info__row">
+    <div class="perchase-info__row">
       <span>運費</span>
       <span>NT$ {{ shipping }}</span>
     </div>
 
-    <div class="subscribe-info__devider" />
+    <div class="perchase-info__devider" />
 
-    <div class="subscribe-info__row">
+    <div class="perchase-info__row">
       <span>總計</span>
       <span>NT$ {{ total }}</span>
     </div>
@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.subscribe-info {
+.perchase-info {
   padding: 27px 10px 24px;
   border-radius: 4px;
   background-color: #f5f5f5;
