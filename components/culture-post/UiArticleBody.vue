@@ -15,6 +15,12 @@
 
       <ContentHandler v-for="item in content" :key="item.id" :item="item" />
 
+      <div v-if="isCurrentUserLogInPremiumPage" class="copyright-warning">
+        <p>
+          本新聞文字、照片、影片專供鏡週刊會員閱覽，未經鏡週刊授權，任何媒體、社群網站、論壇等均不得引用、改寫、轉貼，以免訟累。
+        </p>
+      </div>
+
       <div v-if="isCurrentUserLogInPremiumPage" class="magazine">
         <div>下載鏡週刊電子雜誌</div>
         <button type="button" @click="enterMagazinePage">立即下載</button>
@@ -137,8 +143,15 @@ export default {
   }
 }
 
+.copyright-warning {
+  font-size: 14px;
+  line-height: 180%;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.5);
+}
+
 .magazine {
-  margin: 24px 27px;
+  margin: 24px 0;
   font-size: 24px;
   line-height: 36px;
   text-align: center;
