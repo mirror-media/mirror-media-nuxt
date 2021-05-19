@@ -4,7 +4,7 @@
       :class="[
         'article-body',
         {
-          'article-body--fade-out-bottom': shouldInviteVisitorToJoinMembership,
+          'article-body--fade-out-bottom': !isCurrentUserLogInPremiumPage,
         },
       ]"
     >
@@ -15,12 +15,12 @@
 
       <ContentHandler v-for="item in content" :key="item.id" :item="item" />
 
-      <div v-if="!shouldInviteVisitorToJoinMembership" class="magazine">
+      <div v-if="isCurrentUserLogInPremiumPage" class="magazine">
         <div>下載鏡週刊電子雜誌</div>
         <button type="button" @click="enterMagazinePage">立即下載</button>
       </div>
     </article>
-    <UiPremiumInviteToLogin v-if="shouldInviteVisitorToJoinMembership" />
+    <UiPremiumInviteToLogin v-if="!isCurrentUserLogInPremiumPage" />
   </div>
 </template>
 
@@ -56,10 +56,10 @@ export default {
     isCurrentPagePremium() {
       return this.$route.name === 'premium-slug'
     },
-    shouldInviteVisitorToJoinMembership() {
+    isCurrentUserLogInPremiumPage() {
       return (
         this.isCurrentPagePremium &&
-        !this.$store.getters['membership/isLoggedIn']
+        this.$store.getters['membership/isLoggedIn']
       )
     },
   },
