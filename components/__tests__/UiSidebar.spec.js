@@ -24,11 +24,14 @@ const mockSection = {
   isFeatured: true,
   categories: [{ name: 'bookreview', title: '書評' }],
 }
-const mockPartner = {
-  name: 'healthnews',
-  display: '健康醫療網新聞',
-  public: true,
-}
+
+/*
+ * const mockPartner = {
+ *   name: 'healthnews',
+ *   display: '健康醫療網新聞',
+ *   public: true,
+ * }
+ */
 const mockSubBrand = {
   name: 'mirrorvoice',
   title: '鏡好聽',
@@ -102,16 +105,18 @@ describe('sections', () => {
     expect(wrapper.find('.section__categories').exists()).toBe(false)
   })
 
-  test('render the proper partner link', () => {
-    const wrapper = createWrapper(UiSidebar, {
-      propsData: {
-        partners: [mockPartner],
-      },
-    })
-
-    const link = wrapper.get(`[href="/externals/${mockPartner.name}"]`)
-    expect(link.text()).toBe(mockPartner.display)
-  })
+  /*
+   * test('render the proper partner link', () => {
+   *   const wrapper = createWrapper(UiSidebar, {
+   *     propsData: {
+   *       partners: [mockPartner],
+   *     },
+   *   })
+   *
+   *   const link = wrapper.get(`[href="/externals/${mockPartner.name}"]`)
+   *   expect(link.text()).toBe(mockPartner.display)
+   * })
+   */
 
   test('close the external section if the prop "partners" is an empty array', () => {
     const wrapper = createWrapper(UiSidebar, {
@@ -237,23 +242,25 @@ describe('emitGa method', () => {
     ])
   })
 
-  test('with a proper argument when users click a partner link', () => {
-    const wrapper = createWrapper(UiSidebar, {
-      propsData: {
-        partners: [mockPartner],
-      },
-    })
-
-    const partnerLink = wrapper.get(`[href="/externals/${mockPartner.name}"]`)
-    partnerLink.trigger('click')
-    expect(wrapper.emitted().sendGa[0]).toEqual([
-      {
-        eventCategory: 'sidebar',
-        eventAction: 'click',
-        eventLabel: `external ${mockPartner.name}`,
-      },
-    ])
-  })
+  /*
+   * test('with a proper argument when users click a partner link', () => {
+   *   const wrapper = createWrapper(UiSidebar, {
+   *     propsData: {
+   *       partners: [mockPartner],
+   *     },
+   *   })
+   *
+   *   const partnerLink = wrapper.get(`[href="/externals/${mockPartner.name}"]`)
+   *   partnerLink.trigger('click')
+   *   expect(wrapper.emitted().sendGa[0]).toEqual([
+   *     {
+   *       eventCategory: 'sidebar',
+   *       eventAction: 'click',
+   *       eventLabel: `external ${mockPartner.name}`,
+   *     },
+   *   ])
+   * })
+   */
 
   test('with a proper argument when users click a sub-brand link', () => {
     const wrapper = createWrapper(UiSidebar, {

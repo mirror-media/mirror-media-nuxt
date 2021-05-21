@@ -51,22 +51,22 @@
         </div>
       </div>
 
-      <div v-if="shouldOpenSectionExternal" class="section section--external">
-        <div class="section__title">
-          <h2>合作媒體</h2>
-        </div>
+      <!--      <div v-if="shouldOpenSectionExternal" class="section section&#45;&#45;external">-->
+      <!--        <div class="section__title">-->
+      <!--          <h2>合作媒體</h2>-->
+      <!--        </div>-->
 
-        <div class="section__categories">
-          <a
-            v-for="partner in partners"
-            :key="partner.id"
-            :href="`/externals/${partner.name}`"
-            @click="emitGa(`external ${partner.name}`)"
-          >
-            <h3>{{ partner.display }}</h3>
-          </a>
-        </div>
-      </div>
+      <!--        <div class="section__categories">-->
+      <!--          <a-->
+      <!--            v-for="partner in partners"-->
+      <!--            :key="partner.id"-->
+      <!--            :href="`/externals/${partner.name}`"-->
+      <!--            @click="emitGa(`external ${partner.name}`)"-->
+      <!--          >-->
+      <!--            <h3>{{ partner.display }}</h3>-->
+      <!--          </a>-->
+      <!--        </div>-->
+      <!--      </div>-->
 
       <div
         v-for="subBrand in subBrands"
