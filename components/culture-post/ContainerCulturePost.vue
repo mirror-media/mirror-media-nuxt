@@ -42,6 +42,7 @@
       class="culture-post__article-body"
       :brief="post.brief"
       :content="post.content"
+      :pageState="articleBodyPageState"
     />
 
     <LazyRenderer
@@ -214,6 +215,18 @@ export default {
 
     isCurrentPagePremium() {
       return this.$route.name === 'premium-slug'
+    },
+
+    articleBodyPageState() {
+      if (!this.isCurrentPagePremium) {
+        return 'storyPage'
+      }
+
+      if (this.$store.getters['membership/isLoggedIn']) {
+        return 'premiumPageIsLogin'
+      } else {
+        return 'premiumPageNotLogin'
+      }
     },
   },
 
