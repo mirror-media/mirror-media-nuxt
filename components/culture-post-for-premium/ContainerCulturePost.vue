@@ -24,6 +24,7 @@
     <!--    />-->
 
     <div class="landing-info">
+      <UiSectionLabel v-text="post.sectionLabelFirst" />
       <UiH1 class="landing-info__title" v-html="post.title" />
     </div>
 
@@ -77,11 +78,13 @@ import UiWineWarning from '~/components/UiWineWarning.vue'
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
 import UiH1 from '~/components/culture-post-for-premium/UiH1.vue'
+import UiSectionLabel from '~/components/culture-post-for-premium/UiSectionLabel.vue'
 
 export default {
   name: 'ContainerCulturePost',
 
   components: {
+    UiSectionLabel,
     UiH1,
     // eslint-disable-next-line vue/no-unused-components
     ContainerHeaderSectionMember,
@@ -133,6 +136,7 @@ export default {
         publishedDate = '',
         updatedAt = '',
         relateds = [],
+        sections = [],
       } = this.story
 
       const heroVideoSrc = heroVideo.video?.url || ''
@@ -157,6 +161,7 @@ export default {
         publishedDate: dayjs(publishedDate).format('YYYY.M.D'),
         updatedAt: dayjs(updatedAt).format('YYYY.M.D HH:mm'),
         relateds,
+        sectionLabelFirst: sections?.[0]?.title,
       }
 
       function getCredits() {
@@ -374,6 +379,9 @@ export default {
 
 .landing-info {
   padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   @include media-breakpoint-up(md) {
     padding: 0;
     max-width: 608px;
@@ -383,6 +391,7 @@ export default {
     max-width: 800px;
   }
   &__title {
+    margin: 8px 0 0 0;
   }
 }
 
