@@ -1,8 +1,5 @@
 <template>
   <div class="the-cover" :style="{ height: coverHeight }">
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <h1 v-html="title"></h1>
-
     <ClientOnly v-if="videoSrc">
       <UiStoryVideo
         :src="videoSrc"
@@ -41,11 +38,6 @@ export default {
   },
 
   props: {
-    title: {
-      type: String,
-      default: '',
-      required: true,
-    },
     video: {
       type: Object,
       default: () => ({}),
@@ -96,24 +88,6 @@ export default {
   align-items: center;
   position: relative;
   z-index: 2;
-}
-
-h1 {
-  font-family: source-han-serif-tc, 'Songti TC', serif;
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 50px;
-  color: #fff;
-  text-shadow: 0 6px 8px rgba(#000, 0.6);
-  width: 100%;
-  max-width: 240px;
-  text-align: center;
-  z-index: 1;
-  @include media-breakpoint-up(lg) {
-    font-size: 60px;
-    line-height: 84px;
-    max-width: 960px;
-  }
 }
 
 .video {

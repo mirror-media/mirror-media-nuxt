@@ -1,33 +1,37 @@
 <template>
   <section class="culture-post">
-    <ContainerHeaderSectionMember
-      v-if="isCurrentPagePremium"
-      class="header"
-      @sidebarToggle="handleIndexActive(!isIndexActive)"
-    />
-    <a
-      v-else
-      :href="SITE_URL"
-      class="logo"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />
-    </a>
+    <!--    <ContainerHeaderSectionMember-->
+    <!--      v-if="isCurrentPagePremium"-->
+    <!--      class="header"-->
+    <!--      @sidebarToggle="handleIndexActive(!isIndexActive)"-->
+    <!--    />-->
+    <!--    <a-->
+    <!--      v-else-->
+    <!--      :href="SITE_URL"-->
+    <!--      class="logo"-->
+    <!--      target="_blank"-->
+    <!--      rel="noopener noreferrer"-->
+    <!--    >-->
+    <!--      <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />-->
+    <!--    </a>-->
 
-    <UiArticleIndex
-      :items="indexes"
-      :currentIndex="currentIndex"
-      :isIndexActive="isIndexActive"
-      @closeIndex="handleIndexActive(false)"
-      @openIndex="handleIndexActive(true)"
-    />
+    <!--    <UiArticleIndex-->
+    <!--      :items="indexes"-->
+    <!--      :currentIndex="currentIndex"-->
+    <!--      :isIndexActive="isIndexActive"-->
+    <!--      @closeIndex="handleIndexActive(false)"-->
+    <!--      @openIndex="handleIndexActive(true)"-->
+    <!--    />-->
 
-    <UiTheCover
-      :title="post.title"
-      :video="post.coverVideo"
-      :picture="post.coverPicture"
-    />
+    <div class="landing-info">
+      <UiH1 class="landing-info__title" v-html="post.title" />
+    </div>
+
+    <!--    <UiTheCover-->
+    <!--      :title="post.title"-->
+    <!--      :video="post.coverVideo"-->
+    <!--      :picture="post.coverPicture"-->
+    <!--    />-->
 
     <div class="info">
       <div>發布時間 {{ post.publishedDate }}</div>
@@ -72,14 +76,19 @@ import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
+import UiH1 from '~/components/culture-post-for-premium/UiH1.vue'
 
 export default {
   name: 'ContainerCulturePost',
 
   components: {
+    UiH1,
+    // eslint-disable-next-line vue/no-unused-components
     ContainerHeaderSectionMember,
+    // eslint-disable-next-line vue/no-unused-components
     UiTheCover,
     UiArticleBody,
+    // eslint-disable-next-line vue/no-unused-components
     UiArticleIndex,
     UiListRelated,
     UiWineWarning,
@@ -360,6 +369,20 @@ export default {
 
   img {
     width: 100%;
+  }
+}
+
+.landing-info {
+  padding: 0 20px;
+  @include media-breakpoint-up(md) {
+    padding: 0;
+    max-width: 608px;
+    margin: 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: 800px;
+  }
+  &__title {
   }
 }
 
