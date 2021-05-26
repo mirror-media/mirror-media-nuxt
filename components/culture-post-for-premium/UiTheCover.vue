@@ -82,17 +82,21 @@ export default {
 
 <style lang="scss" scoped>
 .the-cover {
-  height: 100vh;
+  height: calc(100vw * 0.66875);
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   z-index: 2;
+  @include media-breakpoint-up(xl) {
+    height: 800px;
+  }
 }
 
 .video {
   position: absolute;
   height: 100%;
+  object-fit: contain !important;
 }
 
 picture {
@@ -109,13 +113,12 @@ picture {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15));
   }
 }
 
 img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 </style>

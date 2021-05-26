@@ -28,11 +28,7 @@
       <UiH1 class="landing-info__title" v-html="post.title" />
     </div>
 
-    <!--    <UiTheCover-->
-    <!--      :title="post.title"-->
-    <!--      :video="post.coverVideo"-->
-    <!--      :picture="post.coverPicture"-->
-    <!--    />-->
+    <UiTheCover :video="post.coverVideo" :picture="post.coverPicture" />
 
     <div class="info">
       <div>發布時間 {{ post.publishedDate }}</div>
