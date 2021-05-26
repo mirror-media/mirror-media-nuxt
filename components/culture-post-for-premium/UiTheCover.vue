@@ -82,6 +82,7 @@ export default {
 
 <style lang="scss" scoped>
 .the-cover {
+  width: 100%;
   height: calc(100vw * 0.66875);
   display: flex;
   justify-content: center;

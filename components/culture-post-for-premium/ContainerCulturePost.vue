@@ -28,7 +28,10 @@
       <UiH1 class="landing-info__title" v-html="post.title" />
     </div>
 
-    <UiTheCover :video="post.coverVideo" :picture="post.coverPicture" />
+    <div class="cover">
+      <UiTheCover :video="post.coverVideo" :picture="post.coverPicture" />
+      <UiHeroCaption class="cover__hero-caption" v-text="post.heroCaption" />
+    </div>
 
     <div class="info">
       <div>發布時間 {{ post.publishedDate }}</div>
@@ -75,11 +78,13 @@ import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
 import UiH1 from '~/components/culture-post-for-premium/UiH1.vue'
 import UiSectionLabel from '~/components/culture-post-for-premium/UiSectionLabel.vue'
+import UiHeroCaption from '~/components/culture-post-for-premium/UiHeroCaption.vue'
 
 export default {
   name: 'ContainerCulturePost',
 
   components: {
+    UiHeroCaption,
     UiSectionLabel,
     UiH1,
     // eslint-disable-next-line vue/no-unused-components
@@ -128,6 +133,7 @@ export default {
         content = {},
         heroVideo = {},
         heroImage = {},
+        heroCaption = '',
         mobileImage = {},
         publishedDate = '',
         updatedAt = '',
@@ -146,6 +152,7 @@ export default {
         brief: getBrief(),
         content: content.apiData || [],
         heroImage: heroImgsResized,
+        heroCaption,
         coverVideo: {
           src: heroVideoSrc,
           poster: heroVideoPoster,
@@ -388,6 +395,22 @@ export default {
   }
   &__title {
     margin: 8px 0 0 0;
+  }
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &__hero-caption {
+    margin: 16px 20px 0 20px;
+    @include media-breakpoint-up(md) {
+      margin: 16px auto 0 auto;
+      max-width: 608px;
+    }
+    @include media-breakpoint-up(xl) {
+      max-width: 800px;
+    }
   }
 }
 
