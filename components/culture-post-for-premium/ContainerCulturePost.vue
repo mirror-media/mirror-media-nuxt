@@ -33,13 +33,22 @@
       <UiHeroCaption class="cover__hero-caption" v-text="post.heroCaption" />
     </div>
 
-    <div class="info">
-      <div>發布時間 {{ post.publishedDate }}</div>
+    <UiArticleInfo
+      class="article-info"
+      :publishTime="post.publishedDate"
+      :updateTime="post.updatedAt"
+      :writers="post.writers"
+      :photographers="post.photographers"
+      :tags="post.tags"
+    />
 
-      <div class="credit">
-        <span v-for="credit in post.credits" :key="credit">{{ credit }}</span>
-      </div>
-    </div>
+    <!--    <div class="info">-->
+    <!--      <div>發布時間 {{ post.publishedDate }}</div>-->
+
+    <!--      <div class="credit">-->
+    <!--        <span v-for="credit in post.credits" :key="credit">{{ credit }}</span>-->
+    <!--      </div>-->
+    <!--    </div>-->
 
     <UiArticleBody
       ref="articleBody"
@@ -65,7 +74,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import dayjs from 'dayjs'
 
 import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
@@ -79,11 +87,13 @@ import { doesContainWineName } from '~/utils/article.js'
 import UiH1 from '~/components/culture-post-for-premium/UiH1.vue'
 import UiSectionLabel from '~/components/culture-post-for-premium/UiSectionLabel.vue'
 import UiHeroCaption from '~/components/culture-post-for-premium/UiHeroCaption.vue'
+import UiArticleInfo from '~/components/culture-post-for-premium/UiArticleInfo.vue'
 
 export default {
   name: 'ContainerCulturePost',
 
   components: {
+    UiArticleInfo,
     UiHeroCaption,
     UiSectionLabel,
     UiH1,
@@ -128,8 +138,6 @@ export default {
         brief = {},
         writers = [],
         photographers = [],
-        cameraMan = [],
-        extendByline = '',
         content = {},
         heroVideo = {},
         heroImage = {},
@@ -139,6 +147,7 @@ export default {
         updatedAt = '',
         relateds = [],
         sections = [],
+        tags = [],
       } = this.story
 
       const heroVideoSrc = heroVideo.video?.url || ''
@@ -148,7 +157,8 @@ export default {
 
       return {
         title,
-        credits: getCredits(),
+        writers,
+        photographers,
         brief: getBrief(),
         content: content.apiData || [],
         heroImage: heroImgsResized,
@@ -161,33 +171,11 @@ export default {
           heroImage: heroImgsResized,
           mobileImage: mobileImage.image?.resizedTargets || {},
         },
-        publishedDate: dayjs(publishedDate).format('YYYY.M.D'),
-        updatedAt: dayjs(updatedAt).format('YYYY.M.D HH:mm'),
+        publishedDate,
+        updatedAt,
         relateds,
         sectionLabelFirst: sections?.[0]?.title,
-      }
-
-      function getCredits() {
-        return [
-          [writers, '記者'],
-          [photographers, '攝影'],
-          [cameraMan, '影音'],
-          [extendByline, ''],
-        ]
-          .filter(doesHaveAnyPeople)
-          .map(buildText)
-
-        function doesHaveAnyPeople([people]) {
-          return people.length > 0
-        }
-
-        function buildText([people, role]) {
-          return role !== '' ? `${role}／${joinNames(people)}` : people
-        }
-
-        function joinNames(items = []) {
-          return items.map((item) => item.name).join('、')
-        }
+        tags,
       }
 
       function getBrief() {
@@ -406,11 +394,22 @@ export default {
     margin: 16px 20px 0 20px;
     @include media-breakpoint-up(md) {
       margin: 16px auto 0 auto;
-      max-width: 608px;
     }
     @include media-breakpoint-up(xl) {
-      max-width: 800px;
+      max-width: 640px;
     }
+  }
+}
+
+.article-info {
+  margin: 36px 20px 0 20px;
+  @include media-breakpoint-up(md) {
+    max-width: 608px;
+    margin: 52px auto 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: 640px;
+    margin: 64px auto 0 auto;
   }
 }
 
