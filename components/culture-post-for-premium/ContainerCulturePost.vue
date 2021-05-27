@@ -66,8 +66,6 @@
       <UiListRelated :items="relateds" :imgs="relatedImgs" />
     </LazyRenderer>
 
-    <div v-if="updatedAt" class="updated-at">更新時間／{{ updatedAt }}</div>
-
     <UiWineWarning v-if="doesHaveWineCategory" />
   </section>
 </template>
@@ -453,23 +451,6 @@ export default {
   @include media-breakpoint-up(xl) {
     max-width: 640px;
     margin: 60px auto 0 auto;
-  }
-}
-
-.updated-at {
-  padding-top: 12px;
-  padding-bottom: 15px;
-  margin-left: 10px;
-  margin-right: 10px;
-  letter-spacing: 1px;
-  border-top: 1px solid #979797;
-  @include media-breakpoint-up(md) {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 700px;
-  }
-  @include media-breakpoint-up(lg) {
-    max-width: 900px;
   }
 }
 </style>
