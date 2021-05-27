@@ -393,6 +393,7 @@ export default {
   &__hero-caption {
     margin: 16px 20px 0 20px;
     @include media-breakpoint-up(md) {
+      max-width: 608px;
       margin: 16px auto 0 auto;
     }
     @include media-breakpoint-up(xl) {
