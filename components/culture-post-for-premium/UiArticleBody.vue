@@ -85,7 +85,7 @@ export default {
 }
 
 .article-body {
-  padding-bottom: 60px;
+  //padding-bottom: 60px;
   font-size: 18px;
   line-height: 36px;
   text-align: justify;
@@ -103,7 +103,7 @@ export default {
     }
   }
   @include media-breakpoint-up(md) {
-    padding-bottom: 50px;
+    //padding-bottom: 50px;
   }
 
   //> * {
