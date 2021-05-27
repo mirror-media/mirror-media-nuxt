@@ -1,9 +1,9 @@
 <template>
   <div class="list-related">
-    <h2>延伸閱讀</h2>
+    <UiH4 v-text="'延伸閱讀'" />
 
-    <div class="list">
-      <div v-for="item in items" :key="item.slug" class="item">
+    <div class="list-related__list list">
+      <div v-for="item in items" :key="item.slug" class="list__item item">
         <a
           :href="`/story/${item.slug}`"
           class="item__img"
@@ -26,10 +26,15 @@
 </template>
 
 <script>
+import UiH4 from './UiH4.vue'
 import { getImgById } from '~/utils/img.js'
 
 export default {
   name: 'UiListRelated',
+
+  components: {
+    UiH4,
+  },
 
   props: {
     items: {
@@ -51,77 +56,55 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.list-related,
-h2 {
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .list-related {
-  max-width: 300px;
-  padding-bottom: 63px;
-  @include media-breakpoint-up(md) {
-    max-width: 700px;
-  }
-}
-
-h2 {
-  max-width: 266px;
-  font-family: source-han-serif-tc, 'Songti TC', serif;
-  font-size: 28px;
-  line-height: 42px;
-  font-weight: 700;
-  @include media-breakpoint-up(md) {
-    max-width: 634px;
-  }
-  @include media-breakpoint-up(lg) {
-    font-size: 36px;
-    line-height: 54px;
+  &__list {
+    margin: 16px 0 0 0;
+    @include media-breakpoint-up(md) {
+      margin: 20px 0 0 0;
+    }
   }
 }
 
 .list {
-  margin-top: 40px;
   @include media-breakpoint-up(md) {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 20px;
+    margin: -8px 0 0 -24px;
   }
-}
 
-a {
-  display: block;
+  &__item {
+    @include media-breakpoint-up(md) {
+      margin: 24px 0 0 24px;
+    }
+    & + & {
+      margin: 12px 0 0 0;
+      @include media-breakpoint-up(md) {
+        margin: 24px 0 0 24px;
+      }
+    }
+  }
 }
 
 .item {
   display: flex;
   @include media-breakpoint-up(md) {
-    display: block;
-    width: calc((100% - 60px) / 3);
-    margin-top: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-
-  + .item {
-    margin-top: 20px;
+    width: calc(50% - 24px);
   }
 
   &__img {
-    position: relative;
-    width: 116px;
-    padding-top: calc(116px * 0.6666);
+    display: block;
+    width: 90px;
+    height: 90px;
+    min-width: 90px;
+    min-height: 90px;
     @include media-breakpoint-up(md) {
-      width: 100%;
-      padding-top: 66.66%;
+      width: 120px;
+      height: 80px;
+      min-width: 120px;
+      min-height: 80px;
     }
 
     img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -129,16 +112,11 @@ a {
   }
 
   &__title {
-    flex-grow: 1;
-    flex-basis: 0%;
-    margin: 0 0 0 10px;
+    margin: 0 0 0 16px;
     font-family: source-han-serif-tc, 'Songti TC', serif;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 27px;
-    @include media-breakpoint-up(md) {
-      margin: 10px 0 0 0;
-    }
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 150%;
   }
 }
 </style>

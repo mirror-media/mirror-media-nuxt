@@ -445,8 +445,15 @@ export default {
 }
 
 .list-related-container {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 48px 20px 0 20px;
+  @include media-breakpoint-up(md) {
+    max-width: 608px;
+    margin: 48px auto 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: 640px;
+    margin: 60px auto 0 auto;
+  }
 }
 
 .updated-at {
