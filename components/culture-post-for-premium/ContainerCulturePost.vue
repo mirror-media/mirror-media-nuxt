@@ -186,7 +186,8 @@ export default {
             )
             .map((item) => ({
               id: item.id,
-              content: item.content[0],
+              type: item.type,
+              content: item.content,
             })) || []
         )
       }
