@@ -340,14 +340,14 @@ export default {
   overflow-wrap: break-word;
 
   &__article-body {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 0 20px;
     @include media-breakpoint-up(md) {
-      padding-left: 0;
-      padding-right: 0;
-      margin-left: auto;
-      margin-right: auto;
-      max-width: 700px;
+      padding: 0;
+      margin: 0 auto;
+      max-width: 608px;
+    }
+    @include media-breakpoint-up(xl) {
+      max-width: 640px;
     }
   }
 }
