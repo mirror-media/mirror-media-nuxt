@@ -158,7 +158,6 @@ export default {
     right: 10px;
     width: 44px;
     height: 44px;
-    background-color: #191919;
     border-radius: 50%;
     cursor: pointer;
     user-select: none;
