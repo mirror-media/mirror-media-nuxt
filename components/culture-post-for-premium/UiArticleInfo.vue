@@ -147,6 +147,7 @@ export default {
 
 .share-links-wrapper {
   min-width: 84px;
+  width: 84px;
   height: 36px;
   display: flex;
   justify-content: space-between;
