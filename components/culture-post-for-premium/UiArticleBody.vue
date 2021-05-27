@@ -106,19 +106,19 @@ export default {
     padding-bottom: 50px;
   }
 
-  > * {
-    margin: 40px auto;
-    padding-left: 27px;
-    padding-right: 27px;
-    @include media-breakpoint-up(md) {
-      padding-left: 33px;
-      padding-right: 33px;
-    }
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
+  //> * {
+  //  margin: 40px auto;
+  //  padding-left: 27px;
+  //  padding-right: 27px;
+  //  @include media-breakpoint-up(md) {
+  //    padding-left: 33px;
+  //    padding-right: 33px;
+  //  }
+  //
+  //  &:last-child {
+  //    margin-bottom: 0;
+  //  }
+  //}
 
   &::v-deep {
     a {
