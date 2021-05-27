@@ -226,6 +226,14 @@ export default {
 $quote-color: #4a90e2;
 
 .article-body {
+  * {
+    margin: 32px 0;
+  }
+  h2 + *,
+  h3 + * {
+    margin: 20px 0 32px 0;
+  }
+
   h2,
   h3 {
     margin-top: 48px;
@@ -438,14 +446,6 @@ $quote-color: #4a90e2;
 
   .code {
     line-height: 2em;
-  }
-
-  p {
-    margin: 32px 0;
-  }
-  h2 + p,
-  h3 + p {
-    margin: 20px 0 32px 0;
   }
 }
 </style>
