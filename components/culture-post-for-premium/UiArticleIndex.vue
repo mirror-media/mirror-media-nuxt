@@ -34,12 +34,6 @@
               </li>
             </ul>
           </div>
-
-          <div :class="['share', { 'share--with-no-list': items.length <= 0 }]">
-            <p>分享到：</p>
-            <UiShareFb />
-            <UiShareLine />
-          </div>
         </div>
         <div v-if="isCurrentPagePremium" class="bottom">
           <ul
@@ -91,17 +85,12 @@
 
 <script>
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
-
-import UiShareFb from '~/components/UiShareFb.vue'
-import UiShareLine from '~/components/UiShareLine.vue'
 import SvgClose from '~/assets/premium-header-sidebar-hide.svg?inline'
 
 export default {
   name: 'UiArticleIndex',
 
   components: {
-    UiShareFb,
-    UiShareLine,
     SvgClose,
   },
 
@@ -270,28 +259,6 @@ export default {
         margin-top: 19px;
       }
     }
-  }
-}
-
-.share {
-  display: flex;
-  align-items: center;
-  font-size: 15px;
-
-  p + a {
-    margin-left: 18px;
-  }
-
-  a {
-    width: 36px;
-
-    + a {
-      margin-left: 17px;
-    }
-  }
-
-  &--with-no-list {
-    position: relative;
   }
 }
 
