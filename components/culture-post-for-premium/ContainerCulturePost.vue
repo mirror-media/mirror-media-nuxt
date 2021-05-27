@@ -75,16 +75,16 @@ import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
 import UiArticleIndex from './UiArticleIndex.vue'
 import UiListRelated from './UiListRelated.vue'
+import UiH1 from './UiH1.vue'
+import UiSectionLabel from './UiSectionLabel.vue'
+import UiCaption from './UiCaption.vue'
+import UiArticleInfo from './UiArticleInfo.vue'
 import ContainerHeaderSectionMember from '~/components/ContainerHeaderSectionMember.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import UiFooter from '~/components/UiFooter.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
-import UiH1 from '~/components/culture-post-for-premium/UiH1.vue'
-import UiSectionLabel from '~/components/culture-post-for-premium/UiSectionLabel.vue'
-import UiCaption from '~/components/culture-post-for-premium/UiCaption.vue'
-import UiArticleInfo from '~/components/culture-post-for-premium/UiArticleInfo.vue'
 
 export default {
   name: 'ContainerCulturePost',

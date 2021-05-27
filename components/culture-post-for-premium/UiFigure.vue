@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import UiCaption from '~/components/culture-post-for-premium/UiCaption.vue'
+import UiCaption from './UiCaption.vue'
 
 export default {
   components: { UiCaption },
