@@ -2,6 +2,7 @@
 import UiH2 from './UiH2.vue'
 import UiH3 from './UiH3.vue'
 import UiAnnotation from './UiAnnotation.vue'
+import UiFigure from './UiFigure.vue'
 import UiInfobox from '~/components/UiInfobox.vue'
 import UiSlideshow from '~/components/UiSlideshow.vue'
 import UiSlideshowButtonPrev from '~/components/slideshow/UiSlideshowButtonPrev.vue'
@@ -162,17 +163,9 @@ export default {
         return <UiH3 id={`header-${id}`} domPropsInnerHTML={content} />
 
       case 'image': {
-        const { alignment, tablet = {}, description } = content
+        const { tablet = {}, description } = content
 
-        return (
-          // eslint-disable-next-line lines-around-comment
-          // 不需要 'center' 來判斷樣式，故排除
-          <figure class={alignment !== 'center' && alignment}>
-            <img v-lazy={tablet.url} alt="" />
-
-            {description && <figcaption>{description}</figcaption>}
-          </figure>
-        )
+        return <UiFigure imgUrl={tablet.url} caption={description} />
       }
 
       case 'blockquote':
@@ -237,55 +230,6 @@ $quote-color: #4a90e2;
   h2,
   h3 {
     margin-top: 48px;
-  }
-
-  figure {
-    width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-    @include media-breakpoint-up(md) {
-      &.left,
-      &.right {
-        clear: both;
-        width: 300px;
-        margin-bottom: 35px;
-
-        figcaption {
-          margin-left: 0;
-          margin-right: 0;
-        }
-      }
-
-      &.left {
-        float: left;
-        margin-right: 35px;
-        padding-left: 33px;
-      }
-
-      &.right {
-        float: right;
-        margin-left: 35px;
-        padding-right: 33px;
-      }
-    }
-
-    img {
-      width: 100%;
-      border-radius: 4px;
-    }
-
-    figcaption {
-      padding-top: 8px;
-      margin: 12px 17px 0 17px;
-      color: rgba(#000, 0.66);
-      font-size: 14px;
-      line-height: 25px;
-      border-top: 1px solid #979797;
-      @include media-breakpoint-up(lg) {
-        padding-top: 12px;
-        margin: 16px 33px 0 33px;
-      }
-    }
   }
 
   .quote {
