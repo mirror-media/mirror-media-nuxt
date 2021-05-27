@@ -1,11 +1,11 @@
 <template>
-  <p>
+  <figcaption>
     <slot />
-  </p>
+  </figcaption>
 </template>
 
 <style lang="scss" scoped>
-p {
+figcaption {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding: 12px 0 0 0;
   font-size: 14px;

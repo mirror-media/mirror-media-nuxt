@@ -30,7 +30,7 @@
 
     <div class="cover">
       <UiTheCover :video="post.coverVideo" :picture="post.coverPicture" />
-      <UiHeroCaption class="cover__hero-caption" v-text="post.heroCaption" />
+      <UiCaption class="cover__hero-caption" v-text="post.heroCaption" />
     </div>
 
     <UiArticleInfo
@@ -86,7 +86,7 @@ import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
 import UiH1 from '~/components/culture-post-for-premium/UiH1.vue'
 import UiSectionLabel from '~/components/culture-post-for-premium/UiSectionLabel.vue'
-import UiHeroCaption from '~/components/culture-post-for-premium/UiHeroCaption.vue'
+import UiCaption from '~/components/culture-post-for-premium/UiCaption.vue'
 import UiArticleInfo from '~/components/culture-post-for-premium/UiArticleInfo.vue'
 
 export default {
@@ -94,7 +94,7 @@ export default {
 
   components: {
     UiArticleInfo,
-    UiHeroCaption,
+    UiCaption,
     UiSectionLabel,
     UiH1,
     // eslint-disable-next-line vue/no-unused-components
