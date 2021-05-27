@@ -133,6 +133,7 @@ export default {
       this.$emit('closeIndex')
       this.$scrollTo(`#header-${id}`, 500, {
         lazy: false,
+        offset: -64,
       })
     },
   },
@@ -206,11 +207,16 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
-    width: 244px;
+    width: 81.25%;
     height: 100%;
     background-color: #fff;
-    overflow-y: auto;
+    overflow-y: scroll;
+    @include media-breakpoint-up(md) {
+      width: 78.125%;
+    }
     @include media-breakpoint-up(xl) {
+      overflow-y: hidden;
+      width: 244px;
       position: static;
       padding: 0;
       background-color: transparent;
