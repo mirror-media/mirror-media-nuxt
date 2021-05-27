@@ -17,6 +17,7 @@
       </a>
 
       <UiArticleIndex
+        class="article-index"
         :items="indexes"
         :currentIndex="currentIndex"
         :isIndexActive="isIndexActive"
@@ -24,14 +25,16 @@
         @openIndex="handleIndexActive(true)"
       />
 
-      <div class="landing-info">
-        <UiSectionLabel v-text="post.sectionLabelFirst" />
-        <UiH1 class="landing-info__title" v-html="post.title" />
-      </div>
+      <div class="landing">
+        <div class="landing-info">
+          <UiSectionLabel v-text="post.sectionLabelFirst" />
+          <UiH1 class="landing-info__title" v-html="post.title" />
+        </div>
 
-      <div class="cover">
-        <UiTheCover :video="post.coverVideo" :picture="post.coverPicture" />
-        <UiCaption class="cover__hero-caption" v-text="post.heroCaption" />
+        <div class="cover">
+          <UiTheCover :video="post.coverVideo" :picture="post.coverPicture" />
+          <UiCaption class="cover__hero-caption" v-text="post.heroCaption" />
+        </div>
       </div>
 
       <UiArticleInfo
@@ -371,6 +374,16 @@ export default {
   img {
     width: 100%;
   }
+}
+
+.article-index {
+  z-index: 1;
+}
+
+.landing {
+  position: relative;
+  z-index: 2;
+  background-color: white;
 }
 
 .landing-info {
