@@ -1,4 +1,6 @@
 <script>
+import UiH2 from './UiH2.vue'
+import UiH3 from './UiH3.vue'
 import UiAnnotation from './UiAnnotation.vue'
 import UiInfobox from '~/components/UiInfobox.vue'
 import UiSlideshow from '~/components/UiSlideshow.vue'
@@ -154,10 +156,10 @@ export default {
         )
 
       case 'header-one':
-        return <h2 id={`header-${id}`} domPropsInnerHTML={content} />
+        return <UiH2 id={`header-${id}`} domPropsInnerHTML={content} />
 
       case 'header-two':
-        return <h3 id={`header-${id}`} domPropsInnerHTML={content} />
+        return <UiH3 id={`header-${id}`} domPropsInnerHTML={content} />
 
       case 'image': {
         const { alignment, tablet = {}, description } = content
@@ -226,28 +228,7 @@ $quote-color: #4a90e2;
 .article-body {
   h2,
   h3 {
-    font-family: source-han-serif-tc, 'Songti TC', serif;
-    margin-top: 60px;
-  }
-
-  h2 {
-    font-size: 28px;
-    line-height: 42px;
-    font-weight: 700;
-    @include media-breakpoint-up(lg) {
-      font-size: 36px;
-      line-height: 54px;
-    }
-  }
-
-  h3 {
-    font-size: 24px;
-    line-height: 36px;
-    font-weight: 400;
-    @include media-breakpoint-up(lg) {
-      font-size: 32px;
-      line-height: 48px;
-    }
+    margin-top: 48px;
   }
 
   figure {
