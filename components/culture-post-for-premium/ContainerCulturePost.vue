@@ -389,6 +389,11 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 32px 0 0 0;
+  @include media-breakpoint-up(xl) {
+    margin: 48px 0 0 0;
+  }
+
   &__hero-caption {
     margin: 16px 20px 0 20px;
     @include media-breakpoint-up(md) {
