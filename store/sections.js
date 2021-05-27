@@ -35,6 +35,16 @@ export const getters = {
           categories: [],
         },
       ])
+      .concat([
+        {
+          id: 'mirrormagazine',
+          name: 'magazine',
+          customPath: null,
+          title: '電子雜誌',
+          categories: [],
+          shouldShowSeparator: true,
+        },
+      ])
   },
   getSectionByCategoryName: (state, getters) => (categoryName) => {
     return (

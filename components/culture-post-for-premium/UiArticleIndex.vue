@@ -43,7 +43,13 @@
             <li
               v-for="section in sectionsMember"
               :key="section.id"
-              class="member-section-list__section"
+              :class="[
+                'member-section-list__section',
+                {
+                  'member-section-list__section--separator-top':
+                    section.shouldShowSeparator,
+                },
+              ]"
             >
               <div class="section">
                 <h1
@@ -56,9 +62,11 @@
                   ]"
                 >
                   <a
-                    :href="`/${section.customPath || 'section'}/${
-                      section.name
-                    }`"
+                    :href="`${
+                      section.customPath !== null
+                        ? '/' + (section.customPath || 'section')
+                        : ''
+                    }/${section.name}`"
                     v-text="section.title"
                   />
                 </h1>
@@ -284,8 +292,14 @@ export default {
 .member-section-list {
   display: flex;
   flex-direction: column;
-  &__section + &__section {
-    margin: 26px 0 0 0;
+  &__section {
+    &--separator-top {
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 24px 0 0 0;
+    }
+    & + & {
+      margin: 26px 0 0 0;
+    }
   }
 }
 
