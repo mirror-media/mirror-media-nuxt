@@ -224,12 +224,18 @@ $quote-color: #4a90e2;
   }
   h2 + *,
   h3 + * {
-    margin: 20px 0 32px 0;
+    margin: 12px 0 32px 0;
+    @include media-breakpoint-up(md) {
+      margin: 20px 0 32px 0;
+    }
   }
 
   h2,
   h3 {
-    margin-top: 48px;
+    margin: 48px 0 12px 0;
+    @include media-breakpoint-up(md) {
+      margin: 48px 0 20px 0;
+    }
   }
 
   .quote {
