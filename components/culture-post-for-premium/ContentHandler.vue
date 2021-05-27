@@ -274,7 +274,6 @@ $quote-color: #4a90e2;
 
   .embedded-code,
   .video,
-  .youtube,
   .code {
     margin-top: 20px;
   }
@@ -372,7 +371,7 @@ $quote-color: #4a90e2;
   }
 
   .youtube {
-    $aspect-ratio--youtube: 315 / 560;
+    $aspect-ratio--youtube: 360 / 640;
 
     .wrapper {
       position: relative;
@@ -385,6 +384,7 @@ $quote-color: #4a90e2;
       left: 0;
       width: 100%;
       height: 100%;
+      margin: 0;
     }
   }
 
