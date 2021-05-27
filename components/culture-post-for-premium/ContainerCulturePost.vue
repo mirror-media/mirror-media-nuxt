@@ -1,72 +1,75 @@
 <template>
-  <section class="culture-post">
-    <!--    <ContainerHeaderSectionMember-->
-    <!--      v-if="isCurrentPagePremium"-->
-    <!--      class="header"-->
-    <!--      @sidebarToggle="handleIndexActive(!isIndexActive)"-->
-    <!--    />-->
-    <!--    <a-->
-    <!--      v-else-->
-    <!--      :href="SITE_URL"-->
-    <!--      class="logo"-->
-    <!--      target="_blank"-->
-    <!--      rel="noopener noreferrer"-->
-    <!--    >-->
-    <!--      <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />-->
-    <!--    </a>-->
+  <section>
+    <section class="culture-post">
+      <ContainerHeaderSectionMember
+        v-if="isCurrentPagePremium"
+        class="header"
+        @sidebarToggle="handleIndexActive(!isIndexActive)"
+      />
+      <a
+        v-else
+        :href="SITE_URL"
+        class="logo"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />
+      </a>
 
-    <!--    <UiArticleIndex-->
-    <!--      :items="indexes"-->
-    <!--      :currentIndex="currentIndex"-->
-    <!--      :isIndexActive="isIndexActive"-->
-    <!--      @closeIndex="handleIndexActive(false)"-->
-    <!--      @openIndex="handleIndexActive(true)"-->
-    <!--    />-->
+      <!--    <UiArticleIndex-->
+      <!--      :items="indexes"-->
+      <!--      :currentIndex="currentIndex"-->
+      <!--      :isIndexActive="isIndexActive"-->
+      <!--      @closeIndex="handleIndexActive(false)"-->
+      <!--      @openIndex="handleIndexActive(true)"-->
+      <!--    />-->
 
-    <div class="landing-info">
-      <UiSectionLabel v-text="post.sectionLabelFirst" />
-      <UiH1 class="landing-info__title" v-html="post.title" />
-    </div>
+      <div class="landing-info">
+        <UiSectionLabel v-text="post.sectionLabelFirst" />
+        <UiH1 class="landing-info__title" v-html="post.title" />
+      </div>
 
-    <div class="cover">
-      <UiTheCover :video="post.coverVideo" :picture="post.coverPicture" />
-      <UiCaption class="cover__hero-caption" v-text="post.heroCaption" />
-    </div>
+      <div class="cover">
+        <UiTheCover :video="post.coverVideo" :picture="post.coverPicture" />
+        <UiCaption class="cover__hero-caption" v-text="post.heroCaption" />
+      </div>
 
-    <UiArticleInfo
-      class="article-info"
-      :publishTime="post.publishedDate"
-      :updateTime="post.updatedAt"
-      :writers="post.writers"
-      :photographers="post.photographers"
-      :tags="post.tags"
-    />
+      <UiArticleInfo
+        class="article-info"
+        :publishTime="post.publishedDate"
+        :updateTime="post.updatedAt"
+        :writers="post.writers"
+        :photographers="post.photographers"
+        :tags="post.tags"
+      />
 
-    <!--    <div class="info">-->
-    <!--      <div>發布時間 {{ post.publishedDate }}</div>-->
+      <!--    <div class="info">-->
+      <!--      <div>發布時間 {{ post.publishedDate }}</div>-->
 
-    <!--      <div class="credit">-->
-    <!--        <span v-for="credit in post.credits" :key="credit">{{ credit }}</span>-->
-    <!--      </div>-->
-    <!--    </div>-->
+      <!--      <div class="credit">-->
+      <!--        <span v-for="credit in post.credits" :key="credit">{{ credit }}</span>-->
+      <!--      </div>-->
+      <!--    </div>-->
 
-    <UiArticleBody
-      ref="articleBody"
-      class="culture-post__article-body"
-      :brief="post.brief"
-      :content="post.content"
-      :pageState="articleBodyPageState"
-    />
+      <UiArticleBody
+        ref="articleBody"
+        class="culture-post__article-body"
+        :brief="post.brief"
+        :content="post.content"
+        :pageState="articleBodyPageState"
+      />
 
-    <LazyRenderer
-      v-if="doesHaveAnyRelateds"
-      class="list-related-container"
-      @load="fetchRelatedImgs"
-    >
-      <UiListRelated :items="relateds" :imgs="relatedImgs" />
-    </LazyRenderer>
+      <LazyRenderer
+        v-if="doesHaveAnyRelateds"
+        class="list-related-container"
+        @load="fetchRelatedImgs"
+      >
+        <UiListRelated :items="relateds" :imgs="relatedImgs" />
+      </LazyRenderer>
 
-    <UiWineWarning v-if="doesHaveWineCategory" />
+      <UiWineWarning v-if="doesHaveWineCategory" />
+    </section>
+    <UiFooter />
   </section>
 </template>
 
@@ -79,6 +82,7 @@ import UiArticleIndex from './UiArticleIndex.vue'
 import UiListRelated from './UiListRelated.vue'
 import ContainerHeaderSectionMember from '~/components/ContainerHeaderSectionMember.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
+import UiFooter from '~/components/UiFooter.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
@@ -95,15 +99,14 @@ export default {
     UiCaption,
     UiSectionLabel,
     UiH1,
-    // eslint-disable-next-line vue/no-unused-components
     ContainerHeaderSectionMember,
-    // eslint-disable-next-line vue/no-unused-components
     UiTheCover,
     UiArticleBody,
     // eslint-disable-next-line vue/no-unused-components
     UiArticleIndex,
     UiListRelated,
     UiWineWarning,
+    UiFooter,
   },
 
   props: {
@@ -336,6 +339,10 @@ export default {
   color: rgba(#000, 0.87);
   word-break: break-word;
   overflow-wrap: break-word;
+  padding: 88px 0 48px 0;
+  @include media-breakpoint-up(md) {
+    padding: 112px 0 48px 0;
+  }
 
   &__article-body {
     padding: 0 20px;
