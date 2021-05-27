@@ -16,13 +16,13 @@
         <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />
       </a>
 
-      <!--    <UiArticleIndex-->
-      <!--      :items="indexes"-->
-      <!--      :currentIndex="currentIndex"-->
-      <!--      :isIndexActive="isIndexActive"-->
-      <!--      @closeIndex="handleIndexActive(false)"-->
-      <!--      @openIndex="handleIndexActive(true)"-->
-      <!--    />-->
+      <UiArticleIndex
+        :items="indexes"
+        :currentIndex="currentIndex"
+        :isIndexActive="isIndexActive"
+        @closeIndex="handleIndexActive(false)"
+        @openIndex="handleIndexActive(true)"
+      />
 
       <div class="landing-info">
         <UiSectionLabel v-text="post.sectionLabelFirst" />
@@ -102,7 +102,6 @@ export default {
     ContainerHeaderSectionMember,
     UiTheCover,
     UiArticleBody,
-    // eslint-disable-next-line vue/no-unused-components
     UiArticleIndex,
     UiListRelated,
     UiWineWarning,
