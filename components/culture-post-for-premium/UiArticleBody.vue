@@ -85,7 +85,6 @@ export default {
 }
 
 .article-body {
-  //padding-bottom: 60px;
   font-size: 18px;
   line-height: 36px;
   text-align: justify;
@@ -102,24 +101,6 @@ export default {
       pointer-events: none;
     }
   }
-  @include media-breakpoint-up(md) {
-    //padding-bottom: 50px;
-  }
-
-  //> * {
-  //  margin: 40px auto;
-  //  padding-left: 27px;
-  //  padding-right: 27px;
-  //  @include media-breakpoint-up(md) {
-  //    padding-left: 33px;
-  //    padding-right: 33px;
-  //  }
-  //
-  //  &:last-child {
-  //    margin-bottom: 0;
-  //  }
-  //}
-
   &::v-deep {
     a {
       color: rgba(199, 159, 101, 0.87);

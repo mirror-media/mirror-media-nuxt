@@ -46,14 +46,6 @@
         :tags="post.tags"
       />
 
-      <!--    <div class="info">-->
-      <!--      <div>發布時間 {{ post.publishedDate }}</div>-->
-
-      <!--      <div class="credit">-->
-      <!--        <span v-for="credit in post.credits" :key="credit">{{ credit }}</span>-->
-      <!--      </div>-->
-      <!--    </div>-->
-
       <UiArticleBody
         ref="articleBody"
         class="culture-post__article-body"
