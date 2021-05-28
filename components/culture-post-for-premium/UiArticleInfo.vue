@@ -34,7 +34,7 @@
           />
         </p>
       </div>
-      <div class="info__tags tags">
+      <div v-if="tags.length" class="info__tags tags">
         <UiTag
           v-for="tag in tags"
           :key="tag.id"
