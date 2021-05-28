@@ -1,12 +1,15 @@
 <template>
   <div class="article-info">
-    <div class="article-info__info">
+    <div class="article-info__info info">
       <div class="info__time time">
         <p>發布時間 {{ publishTimeFormat }}</p>
         <p class="time__update-time">更新時間 {{ updateTimeFormat }}</p>
       </div>
-      <div class="info__people people">
-        <p class="people__writers">
+      <div
+        v-if="writers.length && photographers.length"
+        class="info__people people"
+      >
+        <p v-if="writers.length" class="people__writers">
           <span>記者／</span>
           <UiLink
             v-for="writer in writers"
@@ -18,7 +21,7 @@
             v-text="writer.name"
           />
         </p>
-        <p class="people__photographers">
+        <p v-if="photographers.length" class="people__photographers">
           <span>攝影／</span>
           <UiLink
             v-for="photographer in photographers"
@@ -119,6 +122,7 @@ export default {
 }
 
 .info {
+  width: 100%;
   &__people {
     margin: 20px 0 0 0;
   }
