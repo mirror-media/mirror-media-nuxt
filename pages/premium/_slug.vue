@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import ContainerCulturePost from '~/components/culture-post/ContainerCulturePost.vue'
+import ContainerCulturePost from '~/components/culture-post-for-premium/ContainerCulturePost.vue'
 import {
   SITE_DESCRIPTION,
   SITE_OG_IMG,

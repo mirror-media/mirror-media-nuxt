@@ -1,74 +1,87 @@
 <template>
-  <section class="culture-post">
-    <ContainerHeaderSectionMember
-      v-if="isCurrentPagePremium"
-      class="header"
-      @sidebarToggle="handleIndexActive(!isIndexActive)"
-    />
-    <a
-      v-else
-      :href="SITE_URL"
-      class="logo"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />
-    </a>
+  <section>
+    <section class="culture-post">
+      <ContainerHeaderSectionMember
+        v-if="isCurrentPagePremium"
+        class="header"
+        @sidebarToggle="handleIndexActive(!isIndexActive)"
+      />
+      <a
+        v-else
+        :href="SITE_URL"
+        class="logo"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />
+      </a>
 
-    <UiArticleIndex
-      :items="indexes"
-      :currentIndex="currentIndex"
-      :isIndexActive="isIndexActive"
-      @closeIndex="handleIndexActive(false)"
-      @openIndex="handleIndexActive(true)"
-    />
+      <UiArticleIndex
+        class="article-index"
+        :items="indexes"
+        :currentIndex="currentIndex"
+        :isIndexActive="isIndexActive"
+        @closeIndex="handleIndexActive(false)"
+        @openIndex="handleIndexActive(true)"
+      />
 
-    <UiTheCover
-      :title="post.title"
-      :video="post.coverVideo"
-      :picture="post.coverPicture"
-    />
+      <div class="landing">
+        <div class="landing-info">
+          <UiSectionLabel v-text="post.sectionLabelFirst" />
+          <UiH1 class="landing-info__title" v-html="post.title" />
+        </div>
 
-    <div class="info">
-      <div>發布時間 {{ post.publishedDate }}</div>
-
-      <div class="credit">
-        <span v-for="credit in post.credits" :key="credit">{{ credit }}</span>
+        <div class="cover">
+          <UiTheCover :video="post.coverVideo" :picture="post.coverPicture" />
+          <UiCaption class="cover__hero-caption" v-text="post.heroCaption" />
+        </div>
       </div>
-    </div>
 
-    <UiArticleBody
-      ref="articleBody"
-      class="culture-post__article-body"
-      :brief="post.brief"
-      :content="post.content"
-      :pageState="articleBodyPageState"
-    />
+      <UiArticleInfo
+        class="article-info"
+        :publishTime="post.publishedDate"
+        :updateTime="post.updatedAt"
+        :writers="post.writers"
+        :photographers="post.photographers"
+        :tags="post.tags"
+      />
 
-    <LazyRenderer
-      v-if="doesHaveAnyRelateds"
-      class="list-related-container"
-      @load="fetchRelatedImgs"
-    >
-      <UiListRelated :items="relateds" :imgs="relatedImgs" />
-    </LazyRenderer>
+      <UiArticleBody
+        ref="articleBody"
+        class="culture-post__article-body"
+        :brief="post.brief"
+        :content="post.content"
+        :pageState="articleBodyPageState"
+      />
 
-    <div v-if="updatedAt" class="updated-at">更新時間／{{ updatedAt }}</div>
+      <LazyRenderer
+        v-if="doesHaveAnyRelateds"
+        class="list-related-container"
+        @load="fetchRelatedImgs"
+      >
+        <UiListRelated :items="relateds" :imgs="relatedImgs" />
+      </LazyRenderer>
 
-    <UiWineWarning v-if="doesHaveWineCategory" />
+      <UiWineWarning v-if="doesHaveWineCategory" />
+    </section>
+    <UiFooter />
   </section>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import dayjs from 'dayjs'
 
 import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
 import UiArticleIndex from './UiArticleIndex.vue'
 import UiListRelated from './UiListRelated.vue'
+import UiH1 from './UiH1.vue'
+import UiSectionLabel from './UiSectionLabel.vue'
+import UiCaption from './UiCaption.vue'
+import UiArticleInfo from './UiArticleInfo.vue'
 import ContainerHeaderSectionMember from '~/components/ContainerHeaderSectionMember.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
+import UiFooter from '~/components/UiFooter.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
@@ -77,12 +90,17 @@ export default {
   name: 'ContainerCulturePost',
 
   components: {
+    UiArticleInfo,
+    UiCaption,
+    UiSectionLabel,
+    UiH1,
     ContainerHeaderSectionMember,
     UiTheCover,
     UiArticleBody,
     UiArticleIndex,
     UiListRelated,
     UiWineWarning,
+    UiFooter,
   },
 
   props: {
@@ -115,15 +133,16 @@ export default {
         brief = {},
         writers = [],
         photographers = [],
-        cameraMan = [],
-        extendByline = '',
         content = {},
         heroVideo = {},
         heroImage = {},
+        heroCaption = '',
         mobileImage = {},
         publishedDate = '',
         updatedAt = '',
         relateds = [],
+        sections = [],
+        tags = [],
       } = this.story
 
       const heroVideoSrc = heroVideo.video?.url || ''
@@ -133,10 +152,12 @@ export default {
 
       return {
         title,
-        credits: getCredits(),
+        writers,
+        photographers,
         brief: getBrief(),
         content: content.apiData || [],
         heroImage: heroImgsResized,
+        heroCaption,
         coverVideo: {
           src: heroVideoSrc,
           poster: heroVideoPoster,
@@ -145,32 +166,11 @@ export default {
           heroImage: heroImgsResized,
           mobileImage: mobileImage.image?.resizedTargets || {},
         },
-        publishedDate: dayjs(publishedDate).format('YYYY.M.D'),
-        updatedAt: dayjs(updatedAt).format('YYYY.M.D HH:mm'),
+        publishedDate: new Date(publishedDate),
+        updatedAt: new Date(updatedAt),
         relateds,
-      }
-
-      function getCredits() {
-        return [
-          [writers, '記者'],
-          [photographers, '攝影'],
-          [cameraMan, '影音'],
-          [extendByline, ''],
-        ]
-          .filter(doesHaveAnyPeople)
-          .map(buildText)
-
-        function doesHaveAnyPeople([people]) {
-          return people.length > 0
-        }
-
-        function buildText([people, role]) {
-          return role !== '' ? `${role}／${joinNames(people)}` : people
-        }
-
-        function joinNames(items = []) {
-          return items.map((item) => item.name).join('、')
-        }
+        sectionLabelFirst: sections?.[0]?.title,
+        tags,
       }
 
       function getBrief() {
@@ -181,7 +181,8 @@ export default {
             )
             .map((item) => ({
               id: item.id,
-              content: item.content[0],
+              type: item.type,
+              content: item.content,
             })) || []
         )
       }
@@ -332,16 +333,20 @@ export default {
   color: rgba(#000, 0.87);
   word-break: break-word;
   overflow-wrap: break-word;
+  padding: 88px 0 48px 0;
+  @include media-breakpoint-up(md) {
+    padding: 112px 0 48px 0;
+  }
 
   &__article-body {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 0 20px;
     @include media-breakpoint-up(md) {
-      padding-left: 0;
-      padding-right: 0;
-      margin-left: auto;
-      margin-right: auto;
-      max-width: 700px;
+      padding: 0;
+      margin: 0 auto;
+      max-width: 608px;
+    }
+    @include media-breakpoint-up(xl) {
+      max-width: 640px;
     }
   }
 }
@@ -360,6 +365,67 @@ export default {
 
   img {
     width: 100%;
+  }
+}
+
+.article-index {
+  z-index: 1;
+}
+
+.landing {
+  position: relative;
+  z-index: 2;
+  background-color: white;
+}
+
+.landing-info {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include media-breakpoint-up(md) {
+    padding: 0;
+    max-width: 608px;
+    margin: 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: 800px;
+  }
+  &__title {
+    margin: 8px 0 0 0;
+  }
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 32px 0 0 0;
+  @include media-breakpoint-up(xl) {
+    margin: 48px 0 0 0;
+  }
+
+  &__hero-caption {
+    margin: 16px 20px 0 20px;
+    @include media-breakpoint-up(md) {
+      max-width: 608px;
+      margin: 16px auto 0 auto;
+    }
+    @include media-breakpoint-up(xl) {
+      max-width: 640px;
+    }
+  }
+}
+
+.article-info {
+  margin: 36px 20px 0 20px;
+  @include media-breakpoint-up(md) {
+    max-width: 608px;
+    margin: 52px auto 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: 640px;
+    margin: 64px auto 0 auto;
   }
 }
 
@@ -393,24 +459,14 @@ export default {
 }
 
 .list-related-container {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.updated-at {
-  padding-top: 12px;
-  padding-bottom: 15px;
-  margin-left: 10px;
-  margin-right: 10px;
-  letter-spacing: 1px;
-  border-top: 1px solid #979797;
+  margin: 48px 20px 0 20px;
   @include media-breakpoint-up(md) {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 700px;
+    max-width: 608px;
+    margin: 48px auto 0 auto;
   }
-  @include media-breakpoint-up(lg) {
-    max-width: 900px;
+  @include media-breakpoint-up(xl) {
+    max-width: 640px;
+    margin: 60px auto 0 auto;
   }
 }
 </style>

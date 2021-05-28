@@ -1,6 +1,9 @@
 <template>
   <li
-    class="list-item"
+    :class="[
+      'list-item',
+      { 'list-item--separator-left': section.shouldShowSeparator },
+    ]"
     @mouseover="shouldShowCategoryList = true"
     @mouseout="shouldShowCategoryList = false"
   >
@@ -12,7 +15,11 @@
         ]"
       >
         <a
-          :href="`/${section.customPath || 'section'}/${section.name}`"
+          :href="`${
+            section.customPath !== null
+              ? '/' + (section.customPath || 'section')
+              : ''
+          }/${section.name}`"
           v-text="section.title"
         />
       </h1>
@@ -58,6 +65,10 @@ export default {
   width: 113px;
   height: 100%;
   color: #4a4a4a;
+
+  &--separator-left {
+    box-shadow: -12px 0 0px -11px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .section {

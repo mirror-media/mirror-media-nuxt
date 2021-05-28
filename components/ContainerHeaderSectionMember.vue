@@ -61,6 +61,7 @@ export default {
   align-items: center;
   padding: 0 10px;
   position: relative;
+  box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.06);
   &__logo {
     position: absolute;
     left: 10px;
