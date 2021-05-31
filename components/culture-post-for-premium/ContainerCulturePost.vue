@@ -164,7 +164,7 @@ export default {
         },
         coverPicture: {
           heroImage: heroImgsResized,
-          mobileImage: mobileImage.image?.resizedTargets || {},
+          mobileImage: mobileImage?.image?.resizedTargets || {},
         },
         publishedDate: new Date(publishedDate),
         updatedAt: new Date(updatedAt),
