@@ -143,7 +143,7 @@ export default {
         },
         coverPicture: {
           heroImage: heroImgsResized,
-          mobileImage: mobileImage.image?.resizedTargets || {},
+          mobileImage: mobileImage?.image?.resizedTargets || {},
         },
         publishedDate: dayjs(publishedDate).format('YYYY.M.D'),
         updatedAt: dayjs(updatedAt).format('YYYY.M.D HH:mm'),
