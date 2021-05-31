@@ -30,10 +30,7 @@ export default {
   cursor: pointer;
 
   @include media-breakpoint-up(sm) {
-    padding: 13px 57px 12px;
-  }
-  @include media-breakpoint-up(md) {
-    padding: 13px 97px 12px;
+    padding: 15px 97px 15px;
   }
 }
 </style>

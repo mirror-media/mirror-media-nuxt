@@ -4,7 +4,9 @@
       :currentStep="currentStep"
       :jumpToStep="jumpToStep"
     />
+
     <SubscribeChoosePlan v-if="currentStep === 1" :choosePlan="choosePlan" />
+
     <SubscribeForm
       v-if="currentStep === 2"
       :perchasedPlan="perchasedPlan"
