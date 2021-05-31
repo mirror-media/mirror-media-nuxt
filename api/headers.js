@@ -25,12 +25,12 @@ module.exports = function handleHeaders(req, res, next) {
     url
   )
   if (isDefaultListingPages) {
-    res.setHeader('Cache-Control', `private, max-age=${60 * 5}`)
+    res.setHeader('Cache-Control', `public, max-age=${60 * 5}`)
 
     return next()
   }
 
-  res.setHeader('Cache-Control', `private, max-age=${60 * 10}`)
+  res.setHeader('Cache-Control', `public, max-age=${60 * 10}`)
 
   return next()
 }
