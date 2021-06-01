@@ -83,7 +83,7 @@ export default {
 
   methods: {
     jumpToStep(step) {
-      this.currentStep = step
+      // this.currentStep = step
     },
     choosePlan(choosedPlanId) {
       this.perchasedPlan[choosedPlanId].count++

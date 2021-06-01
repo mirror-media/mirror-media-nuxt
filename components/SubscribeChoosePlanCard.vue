@@ -8,15 +8,15 @@
     <p class="plan-card__original_price">原價 ${{ originalPrice }}</p>
     <p class="plan-card__new_price">優惠價 ${{ newPrice }}</p>
 
-    <SubscribeButton :title="`訂購${title}`" />
+    <UiSubscribeButton :title="`訂購${title}`" />
   </div>
 </template>
 
 <script>
-import SubscribeButton from '~/components/SubscribeButton.vue'
+import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 export default {
   components: {
-    SubscribeButton,
+    UiSubscribeButton,
   },
   props: {
     title: {

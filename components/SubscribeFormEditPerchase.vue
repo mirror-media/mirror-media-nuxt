@@ -1,13 +1,28 @@
 <template>
   <div class="edit-perchase">
-    <div class="edit-perchase__button" @click="toggleHandler">修改</div>
+    <UiSubscribeButtonSmall @click.native="toggleHandler" title="修改" />
 
     <div v-if="isToggled" class="edit-perchase__wrapper">
       <div class="edit-perchase__background" @click="toggleHandler" />
 
       <div class="edit-perchase__dialog">
         <h2 class="subscribe-form__title">訂購項目</h2>
-        <UiMerchandiseList :perchasedPlan="perchasedPlan" :showAll="true" />
+        <UiMerchandiseList
+          :perchasedPlan="waitToEdittedPerchasedPlan"
+          :showAll="true"
+        />
+
+        <div class="edit-perchase__dialog_controller">
+          <UiSubscribeButton
+            :title="`取消`"
+            :isColorLight="true"
+            @click.native="cancelModification"
+          />
+          <UiSubscribeButton
+            :title="`確認修改`"
+            @click.native="acceptModification"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -15,9 +30,13 @@
 
 <script>
 import UiMerchandiseList from '~/components/UiMerchandiseList.vue'
+import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
+import UiSubscribeButtonSmall from '~/components/UiSubscribeButtonSmall.vue'
 export default {
   components: {
+    UiSubscribeButtonSmall,
     UiMerchandiseList,
+    UiSubscribeButton,
   },
   props: {
     perchasedPlan: {
@@ -49,11 +68,48 @@ export default {
   data() {
     return {
       isToggled: false,
+      waitToEdittedPerchasedPlan: [
+        {
+          id: 0,
+          title: '一年方案',
+          detail: '一年鏡週刊52期，加購5期方案',
+          originalPrice: 3990,
+          newPrice: 2880,
+          count: 0,
+        },
+        {
+          id: 1,
+          title: '二年方案',
+          detail: '二年鏡週刊104期，加購10期方案',
+          originalPrice: 7800,
+          newPrice: 5280,
+          count: 0,
+        },
+      ],
     }
+  },
+  watch: {
+    perchasedPlan: {
+      handler(val) {
+        this.waitToEdittedPerchasedPlan.forEach((plan, index) => {
+          plan.count = val[index]?.count || 0
+        })
+      },
+      immediate: true,
+    },
   },
 
   methods: {
     toggleHandler() {
+      this.isToggled = !this.isToggled
+    },
+    cancelModification() {
+      this.isToggled = !this.isToggled
+    },
+    acceptModification() {
+      this.waitToEdittedPerchasedPlan.forEach((plan, index) => {
+        this.perchasedPlan[index].count = plan.count
+      })
       this.isToggled = !this.isToggled
     },
   },
@@ -100,8 +156,29 @@ export default {
     border-radius: 4px;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25);
     background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
     @include media-breakpoint-up(sm) {
       padding: 22px 25px;
+    }
+
+    .merchandise-list {
+      flex: 1;
+    }
+
+    &_controller {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+
+      & > div {
+        flex: 1;
+        margin-right: 14px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
     }
   }
 }

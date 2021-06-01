@@ -7,7 +7,7 @@
           :discount="discount"
         />
         <h2 class="subscribe-form__title">訂購人</h2>
-        <SubscribeFormOrdererData :ordererData="ordererData" />
+        <SubscribeFormOrdererData />
 
         <h2 class="subscribe-form__title">收件人</h2>
         <h2 class="subscribe-form__title">寄送方式</h2>

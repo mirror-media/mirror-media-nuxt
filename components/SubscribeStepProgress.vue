@@ -6,7 +6,6 @@
         :step="stepList[0].step"
         :name="stepList[0].name"
         :isActive="currentStep >= stepList[0].step"
-        @click.native="jumpToStep(stepList[0].step)"
       />
 
       <SubscribeStepProgressDevider :isActive="currentStep >= 2" />
@@ -16,7 +15,6 @@
         :step="stepList[1].step"
         :name="stepList[1].name"
         :isActive="currentStep >= stepList[1].step"
-        @click.native="jumpToStep(stepList[1].step)"
       />
 
       <SubscribeStepProgressDevider :isActive="currentStep >= 3" />
@@ -42,10 +40,6 @@ export default {
       default: () => {
         return 1
       },
-    },
-    jumpToStep: {
-      type: Function,
-      isRequired: true,
     },
   },
   components: {

@@ -37,7 +37,7 @@ export default {
   background: #054f77;
   display: flex;
   align-items: center;
-  cursor: pointer;
+  // cursor: pointer;
 
   &__step {
     width: 30px;
