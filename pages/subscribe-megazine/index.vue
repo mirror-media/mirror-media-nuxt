@@ -10,7 +10,8 @@
       :discount="discount"
       :ordererData="ordererData"
       :receiverData="receiverData"
-      :chooseShipPlan="chooseShipPlan"
+      :setShipPlan="setShipPlan"
+      :setReceiptPlan="setReceiptPlan"
     />
   </div>
 </template>
@@ -108,6 +109,7 @@ export default {
         name: '限時專送',
         cost: 0,
       },
+      receiptPlan: '捐贈',
     }
   },
 
@@ -116,8 +118,11 @@ export default {
       this.perchasedPlan[choosedPlanId].count++
       this.currentStep++
     },
-    chooseShipPlan(choosedShipPlan) {
+    setShipPlan(choosedShipPlan) {
       this.shipPlan = choosedShipPlan
+    },
+    setReceiptPlan(choosedReceiptPlan) {
+      this.receiptPlan = choosedReceiptPlan
     },
   },
 }

@@ -9,8 +9,9 @@
         <SubscribeFormOrdererData type="訂購人" />
         <SubscribeFormOrdererData type="收件人" />
 
-        <SubscribeFormShip :chooseShipPlan="chooseShipPlan" />
-        <h2 class="subscribe-form__title">電子發票</h2>
+        <SubscribeFormShip :setShipPlan="setShipPlan" />
+        <SubscribeFormReceipt :setReceiptPlan="setReceiptPlan" />
+
         <h2 class="subscribe-form__title">信用卡</h2>
       </div>
       <div class="subscribe-form__right">
@@ -25,12 +26,14 @@ import SubscribeFormPlanList from '~/components/SubscribeFormPlanList.vue'
 import SubscribeFormPerchaseInfo from '~/components/SubscribeFormPerchaseInfo.vue'
 import SubscribeFormOrdererData from '~/components/SubscribeFormOrdererData.vue'
 import SubscribeFormShip from '~/components/SubscribeFormShip.vue'
+import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 export default {
   components: {
     SubscribeFormPlanList,
     SubscribeFormPerchaseInfo,
     SubscribeFormOrdererData,
     SubscribeFormShip,
+    SubscribeFormReceipt,
   },
   props: {
     perchasedPlan: {
@@ -67,7 +70,11 @@ export default {
         }
       },
     },
-    chooseShipPlan: {
+    setShipPlan: {
+      type: Function,
+      isRequired: true,
+    },
+    setReceiptPlan: {
       type: Function,
       isRequired: true,
     },

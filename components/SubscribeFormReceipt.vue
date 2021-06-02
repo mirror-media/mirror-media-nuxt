@@ -1,27 +1,29 @@
 <template>
-  <div class="ship">
-    <h2 class="subscribe-form__title">寄送方式</h2>
+  <div class="receipt">
+    <h2 class="subscribe-form__title">電子發票</h2>
 
-    <p class="ship__detail">
+    <p class="receipt__detail">
       雜誌每週三出刊，週五前可收到雜誌。欲更改收件地址，請於上班時間來電告知。
     </p>
 
-    <div class="ship__choose">
-      <div class="ship__choose_item">
-        <input
-          type="radio"
-          :value="{ name: '限時專送', cost: 0 }"
-          v-model="shipPlan"
-        />
-        <span>限時專送 NT$ 0 / 期</span>
+    <div class="receipt__choose">
+      <div class="receipt__choose_item">
+        <input type="radio" value="捐贈" v-model="receiptPlan" />
+        <span>捐贈</span>
       </div>
-      <div class="ship__choose_item">
+
+      <div class="receipt__choose_item">
         <input
           type="radio"
-          :value="{ name: '限時掛號', cost: 20 }"
-          v-model="shipPlan"
+          value="二聯式發票（含載具）"
+          v-model="receiptPlan"
         />
-        <span>限時掛號 NT$ 20 / 期</span>
+        <span>二聯式發票（含載具）</span>
+      </div>
+
+      <div class="receipt__choose_item">
+        <input type="radio" value="三聯式發票" v-model="receiptPlan" />
+        <span>三聯式發票</span>
       </div>
     </div>
   </div>
@@ -30,29 +32,26 @@
 <script>
 export default {
   props: {
-    setShipPlan: {
+    setReceiptPlan: {
       type: Function,
       isRequired: true,
     },
   },
   data() {
     return {
-      shipPlan: {
-        name: '限時專送',
-        cost: 0,
-      },
+      receiptPlan: '捐贈',
     }
   },
   watch: {
-    shipPlan(val) {
-      this.setShipPlan(val)
+    receiptPlan(val) {
+      this.setReceiptPlan(val)
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.ship {
+.receipt {
   font-size: 15px;
   line-height: 1.87;
   color: #4a4a4a;
