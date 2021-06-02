@@ -1,9 +1,6 @@
 <template>
   <div class="subscribe-megazine-page">
-    <SubscribeStepProgress
-      :currentStep="currentStep"
-      :jumpToStep="jumpToStep"
-    />
+    <SubscribeStepProgress />
 
     <SubscribeChoosePlan v-if="currentStep === 1" :choosePlan="choosePlan" />
 
@@ -82,9 +79,6 @@ export default {
   },
 
   methods: {
-    jumpToStep(step) {
-      // this.currentStep = step
-    },
     choosePlan(choosedPlanId) {
       this.perchasedPlan[choosedPlanId].count++
       this.currentStep++

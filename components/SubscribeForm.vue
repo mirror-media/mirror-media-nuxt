@@ -6,10 +6,9 @@
           :perchasedPlan="perchasedPlan"
           :discount="discount"
         />
-        <h2 class="subscribe-form__title">訂購人</h2>
-        <SubscribeFormOrdererData />
+        <SubscribeFormOrdererData type="訂購人" />
+        <SubscribeFormOrdererData type="收件人" />
 
-        <h2 class="subscribe-form__title">收件人</h2>
         <h2 class="subscribe-form__title">寄送方式</h2>
         <h2 class="subscribe-form__title">電子發票</h2>
         <h2 class="subscribe-form__title">信用卡</h2>
@@ -101,6 +100,10 @@ export default {
     margin-right: 41px;
     @include media-breakpoint-up(md) {
       max-width: 550px;
+    }
+
+    & > div {
+      margin-bottom: 42px;
     }
   }
 
