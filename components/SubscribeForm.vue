@@ -7,7 +7,7 @@
           :discount="discount"
         />
         <SubscribeFormOrdererData type="訂購人" />
-        <SubscribeFormOrdererData type="收件人" />
+        <SubscribeFormOrdererData type="收件人" :disable="true" />
 
         <h2 class="subscribe-form__title">寄送方式</h2>
         <h2 class="subscribe-form__title">電子發票</h2>

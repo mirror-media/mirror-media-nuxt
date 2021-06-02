@@ -2,35 +2,44 @@
   <div class="orderer-data">
     <h2 class="subscribe-form__title">{{ type }}</h2>
 
-    <div class="orderer-data__input_wrapper half">
-      <span>姓名</span>
-      <input type="text" />
+    <div v-if="!isOrderer" class="orderer-data__check">
+      <input type="checkbox" name="" /><span>同訂購人資訊</span>
     </div>
 
-    <div class="orderer-data__input_wrapper phone">
+    <div class="orderer-data__input_wrapper half">
+      <span>姓名</span>
+      <input type="text" :disabled="disable" />
+    </div>
+
+    <div class="phone">
       <div class="orderer-data__input_wrapper phone__cellphone">
         <span>手機</span>
-        <input type="text" />
+        <input type="text" :disabled="disable" />
       </div>
 
       <div class="orderer-data__input_wrapper phone__phone">
         <span>市話（非必填）</span>
         <div class="orderer-data__input_wrapper multi">
-          <input class="multi__phone" type="text" />
+          <input class="multi__phone" type="text" :disabled="disable" />
           <span>-</span>
-          <input class="multi__ext" type="text" placeholder="EXT" />
+          <input
+            class="multi__ext"
+            type="text"
+            placeholder="EXT"
+            :disabled="disable"
+          />
         </div>
       </div>
     </div>
 
     <div class="orderer-data__input_wrapper">
       <span>通訊地址</span>
-      <input type="text" />
+      <input type="text" :disabled="disable" />
     </div>
 
-    <div class="orderer-data__input_wrapper">
+    <div v-if="isOrderer" class="orderer-data__input_wrapper">
       <span>電子信箱</span>
-      <input type="text" />
+      <input type="text" :disabled="disable" />
     </div>
   </div>
 </template>
@@ -43,9 +52,18 @@ export default {
       isRequired: true,
       default: '訂購人',
     },
+    disable: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {}
+  },
+  computed: {
+    isOrderer() {
+      return this.type !== '收件人'
+    },
   },
 }
 </script>
@@ -57,6 +75,25 @@ export default {
 
   @include media-breakpoint-up(md) {
     padding: 0;
+  }
+
+  &__check {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    input {
+      width: 22px;
+      height: 22px;
+      border-radius: 2px;
+      box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.2);
+      background-color: #f5f5f5;
+      margin-right: 8px;
+    }
+
+    span {
+      font-size: 18px;
+      color: #4a4a4a;
+    }
   }
 
   &__input_wrapper {
