@@ -3,7 +3,7 @@
     <h2 class="subscribe-form__title">{{ type }}</h2>
 
     <div v-if="!isOrderer" class="orderer-data__check">
-      <input type="checkbox" name="" /><span>同訂購人資訊</span>
+      <input type="checkbox" v-model="disable" /><span>同訂購人資訊</span>
     </div>
 
     <div class="orderer-data__input_wrapper half">
@@ -52,13 +52,11 @@ export default {
       isRequired: true,
       default: '訂購人',
     },
-    disable: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
-    return {}
+    return {
+      disable: false,
+    }
   },
   computed: {
     isOrderer() {
@@ -188,10 +186,15 @@ export default {
       padding: 11px 7px 11px;
       border-radius: 4px;
       box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.1);
-      background-color: #f5f5f5;
+      background: #f5f5f5;
 
       &:focus {
         outline: none;
+      }
+
+      &:disabled {
+        // background-color: #f5f5f558;
+        background: #ebebeb;
       }
     }
   }

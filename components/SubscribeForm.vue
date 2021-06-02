@@ -7,9 +7,9 @@
           :discount="discount"
         />
         <SubscribeFormOrdererData type="訂購人" />
-        <SubscribeFormOrdererData type="收件人" :disable="true" />
+        <SubscribeFormOrdererData type="收件人" />
 
-        <h2 class="subscribe-form__title">寄送方式</h2>
+        <SubscribeFormShip :chooseShipPlan="chooseShipPlan" />
         <h2 class="subscribe-form__title">電子發票</h2>
         <h2 class="subscribe-form__title">信用卡</h2>
       </div>
@@ -24,11 +24,13 @@
 import SubscribeFormPlanList from '~/components/SubscribeFormPlanList.vue'
 import SubscribeFormPerchaseInfo from '~/components/SubscribeFormPerchaseInfo.vue'
 import SubscribeFormOrdererData from '~/components/SubscribeFormOrdererData.vue'
+import SubscribeFormShip from '~/components/SubscribeFormShip.vue'
 export default {
   components: {
     SubscribeFormPlanList,
     SubscribeFormPerchaseInfo,
     SubscribeFormOrdererData,
+    SubscribeFormShip,
   },
   props: {
     perchasedPlan: {
@@ -65,6 +67,15 @@ export default {
         }
       },
     },
+    chooseShipPlan: {
+      type: Function,
+      isRequired: true,
+    },
+  },
+  data() {
+    return {
+      receiverDataIsSameAsOrderer: false,
+    }
   },
 }
 </script>
