@@ -9,11 +9,11 @@
 
     <div class="merchandise-list__discount_code">
       <div class="merchandise-list__discount_code_check">
-        <input type="checkbox" name="" v-model="discount.hasCode" />
+        <input v-model="discount.hasCode" type="checkbox" name="" />
         <span>我有續訂折扣碼</span>
       </div>
       <div class="merchandise-list__discount_code_input">
-        <input type="text" v-model="discount.code" placeholder="MI00000000" />
+        <input v-model="discount.code" type="text" placeholder="MI00000000" />
         <p>折扣80元、加購1期</p>
       </div>
     </div>

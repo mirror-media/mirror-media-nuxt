@@ -3,7 +3,7 @@
     <h2 class="subscribe-form__title">{{ type }}</h2>
 
     <div v-if="!isOrderer" class="orderer-data__check">
-      <input :value="disable" @change="setDisable" type="checkbox" /><span
+      <input type="checkbox" :value="disable" @change="setDisable" /><span
         >同訂購人資訊</span
       >
     </div>
@@ -118,8 +118,9 @@ export default {
   },
   data() {
     return {
-      // disable: this.receiverDataIsSameAsOrderer,
+      validateOn: false, // for development
       submitStatus: null,
+      validateSwitch: true,
       name: '',
       cellphone: '',
       phone: '',
@@ -152,7 +153,7 @@ export default {
       return this.type !== '收件人'
     },
     isNeedToCheck() {
-      return !this.receiverDataIsSameAsOrderer
+      return !this.receiverDataIsSameAsOrderer && this.validateOn
     },
     getFormType() {
       switch (this.type) {
@@ -165,23 +166,26 @@ export default {
       }
     },
   },
-  watch: {
-    submitStatus(val) {
-      this.setFormStatus(this.getFormType, val)
-    },
-  },
+
   methods: {
     setDisable(e) {
       e.preventDefault()
       this.setReceiverDataIsSameAsOrderer(!this.receiverDataIsSameAsOrderer)
     },
     check() {
-      this.$v.$touch()
-      if (this.$v.$invalid && this.isNeedToCheck) {
-        this.submitStatus = 'ERROR'
+      if (this.isNeedToCheck) {
+        this.$v.$touch()
+        if (this.$v.$invalid) {
+          this.submitStatus = 'ERROR'
+        } else {
+          this.submitStatus = 'OK'
+        }
       } else {
         this.submitStatus = 'OK'
       }
+
+      this.setFormStatus(this.getFormType, this.submitStatus)
+
       // after check, feed formData to parent
       return {
         name: this.name,

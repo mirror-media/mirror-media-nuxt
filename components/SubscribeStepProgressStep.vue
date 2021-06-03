@@ -16,10 +16,12 @@ export default {
     step: {
       type: Number,
       isRequired: true,
+      default: 1,
     },
     name: {
       type: String,
       isRequired: true,
+      default: '方案選擇',
     },
     isActive: {
       type: Boolean,

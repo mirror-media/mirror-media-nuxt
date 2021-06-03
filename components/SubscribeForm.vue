@@ -13,8 +13,8 @@
           :setFormStatus="setFormStatus"
         />
         <SubscribeFormOrdererData
-          type="收件人"
           ref="receiverDOM"
+          type="收件人"
           :setOrdererData="setOrdererData"
           :setFormStatus="setFormStatus"
           :receiverDataIsSameAsOrderer="receiverDataIsSameAsOrderer"
@@ -77,6 +77,10 @@ export default {
         ]
       },
     },
+    proceedOrderPayment: {
+      type: Function,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -128,27 +132,40 @@ export default {
     setFormStatus(type, formStatus) {
       this.formStatus[type] = formStatus
     },
+    getOrderInfo() {
+      return {
+        perchasedPlan: this.perchasedPlan,
+        discount: this.discount,
+        ordererData: this.ordererData,
+        receiverData: this.receiverData,
+        shipPlan: this.shipPlan,
+        receiptPlan: this.receiptPlan,
+      }
+    },
+    validationPass() {
+      const validateArray = Object.values(this.formStatus)
+      if (validateArray.find((item) => item !== 'OK')) {
+        return false
+      } else {
+        return true
+      }
+    },
     submitHandler(e) {
       e.preventDefault()
-      console.log('submit')
       if (this.receiverDataIsSameAsOrderer) {
         this.receiverData = this.ordererData
       }
 
       // check form's validationStatus
       this.ordererData = this.$refs.ordererDOM.check()
-      if (!this.receiverDataIsSameAsOrderer) {
-        this.receiverData = this.$refs.receiverDOM.check()
-      } else {
+      this.receiverData = this.$refs.receiverDOM.check()
+      if (this.receiverDataIsSameAsOrderer) {
         this.receiverData = this.ordererData
       }
 
-      console.log('perchasedPlan', this.perchasedPlan)
-      console.log('discount', this.discount)
-      console.log('ordererData', this.ordererData)
-      console.log('receiverData', this.receiverData)
-      console.log('shipPlan', this.shipPlan)
-      console.log('receiptPlan', this.receiptPlan)
+      if (this.validationPass) {
+        this.proceedOrderPayment(this.getOrderInfo)
+      }
     },
   },
 }

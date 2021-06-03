@@ -1,6 +1,6 @@
 <template>
   <div class="edit-perchase">
-    <UiSubscribeButtonSmall @click.native="toggleHandler" title="修改" />
+    <UiSubscribeButtonSmall title="修改" @click.native="toggleHandler" />
 
     <div v-if="isToggled" class="edit-perchase__wrapper">
       <div class="edit-perchase__background" @click="toggleHandler" />

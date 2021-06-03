@@ -8,21 +8,21 @@
 
     <div class="receipt__choose">
       <div class="receipt__choose_item">
-        <input type="radio" value="捐贈" v-model="receiptPlan" />
+        <input v-model="receiptPlan" type="radio" value="捐贈" />
         <span>捐贈</span>
       </div>
 
       <div class="receipt__choose_item">
         <input
+          v-model="receiptPlan"
           type="radio"
           value="二聯式發票（含載具）"
-          v-model="receiptPlan"
         />
         <span>二聯式發票（含載具）</span>
       </div>
 
       <div class="receipt__choose_item">
-        <input type="radio" value="三聯式發票" v-model="receiptPlan" />
+        <input v-model="receiptPlan" type="radio" value="三聯式發票" />
         <span>三聯式發票</span>
       </div>
     </div>
@@ -35,6 +35,7 @@ export default {
     setReceiptPlan: {
       type: Function,
       isRequired: true,
+      default: () => {},
     },
   },
   data() {

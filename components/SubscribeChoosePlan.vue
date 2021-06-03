@@ -38,6 +38,7 @@ export default {
     choosePlan: {
       type: Function,
       isRequired: true,
+      default: () => {},
     },
   },
   data() {

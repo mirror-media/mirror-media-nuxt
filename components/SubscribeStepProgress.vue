@@ -33,6 +33,10 @@
 import SubscribeStepProgress from '~/components/SubscribeStepProgressStep.vue'
 import SubscribeStepProgressDevider from '~/components/SubscribeStepProgressDevider.vue'
 export default {
+  components: {
+    SubscribeStepProgress,
+    SubscribeStepProgressDevider,
+  },
   props: {
     currentStep: {
       type: Number,
@@ -42,11 +46,6 @@ export default {
       },
     },
   },
-  components: {
-    SubscribeStepProgress,
-    SubscribeStepProgressDevider,
-  },
-
   data() {
     return {
       stepList: [
