@@ -164,7 +164,7 @@ export default {
       }
 
       if (this.validationPass) {
-        this.proceedOrderPayment(this.getOrderInfo)
+        this.proceedOrderPayment(this.getOrderInfo())
       }
     },
   },

@@ -21,8 +21,12 @@
       :orderStatus="orderStatus"
     />
 
-    <SubscribeSuccess v-if="currentStep === 3 && orderStatus === 'success'" />
+    <SubscribeSuccess
+      v-if="currentStep === 3 && orderStatus === 'success'"
+      :orderInfo="orderInfo"
+    />
 
+    <!-- loading mask -->
     <div
       v-if="orderStatus === 'loading'"
       class="subscribe-megazine-page__loading"
@@ -83,9 +87,11 @@ export default {
       this.perchasedPlan[choosedPlanId].count++
       this.currentStep++
     },
-    async proceedOrderPayment(newInfo) {
+    async proceedOrderPayment(orderInfo) {
+      console.log(orderInfo)
+      this.orderInfo = orderInfo
       try {
-        await this.payment(newInfo)
+        await this.payment(orderInfo)
 
         // payment success
         this.currentStep++
