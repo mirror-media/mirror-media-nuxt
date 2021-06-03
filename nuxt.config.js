@@ -173,6 +173,7 @@ module.exports = {
                 (function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://certify-js.alexametrics.com/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
               `,
             },
+
             // Facebook Pixel
             {
               hid: 'likrNotification',
@@ -478,9 +479,11 @@ module.exports = {
     extend(config, ctx) {
       config.resolve.extensions = ['.js']
 
-      // lodash-webpack-plugin
-      const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-      config.plugins.push(new LodashModuleReplacementPlugin({ paths: true }))
+      /*
+       * lodash-webpack-plugin
+       * const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+       * config.plugins.push(new LodashModuleReplacementPlugin({ paths: true }))
+       */
 
       // // Extend only webpack config for client-bundle
       // if (ctx.isClient) {
@@ -507,6 +510,18 @@ module.exports = {
       routes.push({
         path: '/login',
         component: resolve(__dirname, 'pages/loginNew.vue'),
+      })
+
+      // Toggle on the feature of replace /topic origin pages/topic/_id.vue page component with deprecated/topic-page/Topic.vue
+      const originalTopicRouteIndex = routes.findIndex(
+        function getRouteNameTopic(route) {
+          return route.name === 'topic-id'
+        }
+      )
+      routes.splice(originalTopicRouteIndex, 1)
+      routes.push({
+        path: '/topic/:topicId',
+        component: resolve(__dirname, 'deprecated/topic-page/Topic.vue'),
       })
     },
   },
