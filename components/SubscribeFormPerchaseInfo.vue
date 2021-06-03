@@ -47,6 +47,16 @@ export default {
         ]
       },
     },
+    shipPlan: {
+      type: Object,
+      isRequired: true,
+      default: () => {
+        return {
+          name: '限時專送',
+          cost: 0,
+        }
+      },
+    },
   },
   computed: {
     price() {
@@ -60,7 +70,7 @@ export default {
       return this.perchasedPlan.reduce(reducer)
     },
     shipping() {
-      return 0
+      return this.shipPlan?.cost || 0
     },
     total() {
       return this.price + this.shipping

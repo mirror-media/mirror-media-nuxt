@@ -6,8 +6,14 @@
           :perchasedPlan="perchasedPlan"
           :discount="discount"
         />
-        <SubscribeFormOrdererData type="訂購人" />
-        <SubscribeFormOrdererData type="收件人" />
+        <SubscribeFormOrdererData
+          type="訂購人"
+          :setOrdererData="setOrdererData"
+        />
+        <SubscribeFormOrdererData
+          type="收件人"
+          :setOrdererData="setOrdererData"
+        />
 
         <SubscribeFormShip :setShipPlan="setShipPlan" />
         <SubscribeFormReceipt :setReceiptPlan="setReceiptPlan" />
@@ -15,7 +21,10 @@
         <h2 class="subscribe-form__title">信用卡</h2>
       </div>
       <div class="subscribe-form__right">
-        <SubscribeFormPerchaseInfo :perchasedPlan="perchasedPlan" />
+        <SubscribeFormPerchaseInfo
+          :perchasedPlan="perchasedPlan"
+          :shipPlan="shipPlan"
+        />
       </div>
     </div>
   </div>
@@ -60,29 +69,47 @@ export default {
         ]
       },
     },
-    discount: {
-      type: Object,
-      isRequired: true,
-      default: () => {
-        return {
-          hasCode: false,
-          code: '',
-        }
-      },
-    },
-    setShipPlan: {
-      type: Function,
-      isRequired: true,
-    },
-    setReceiptPlan: {
-      type: Function,
-      isRequired: true,
-    },
   },
   data() {
     return {
+      discount: {
+        hasCode: false,
+        code: '',
+      },
+      ordererData: {
+        name: '',
+        cellphone: '',
+        phone: '',
+        phoneExt: '',
+        address: '',
+        email: '',
+      },
+      receiverData: {
+        name: '',
+        cellphone: '',
+        phone: '',
+        phoneExt: '',
+        address: '',
+        email: '',
+      },
+      shipPlan: {
+        name: '限時專送',
+        cost: 0,
+      },
+      receiptPlan: '捐贈',
       receiverDataIsSameAsOrderer: false,
     }
+  },
+  methods: {
+    setShipPlan(choosedShipPlan) {
+      this.shipPlan = choosedShipPlan
+    },
+    setReceiptPlan(choosedReceiptPlan) {
+      this.receiptPlan = choosedReceiptPlan
+    },
+    setOrdererData(newOrdererData) {
+      this.ordererData = newOrdererData
+    },
   },
 }
 </script>

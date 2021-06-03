@@ -4,15 +4,7 @@
 
     <SubscribeChoosePlan v-if="currentStep === 1" :choosePlan="choosePlan" />
 
-    <SubscribeForm
-      v-if="currentStep === 2"
-      :perchasedPlan="perchasedPlan"
-      :discount="discount"
-      :ordererData="ordererData"
-      :receiverData="receiverData"
-      :setShipPlan="setShipPlan"
-      :setReceiptPlan="setReceiptPlan"
-    />
+    <SubscribeForm v-if="currentStep === 2" :perchasedPlan="perchasedPlan" />
   </div>
 </template>
 
@@ -30,7 +22,6 @@ export default {
     return {
       currentStep: 1,
       choosedPlanId: 0,
-
       perchasedPlan: [
         {
           id: 0,
@@ -49,67 +40,6 @@ export default {
           count: 0,
         },
       ],
-      discount: {
-        hasCode: false,
-        code: '',
-      },
-      ordererData: {
-        name: {
-          title: '姓名',
-          value: '',
-        },
-        cellphone: {
-          title: '手機',
-          value: '',
-        },
-        phone: {
-          title: '市話（非必填）',
-          value: '',
-        },
-        phoneExt: {
-          title: '通訊地址',
-          value: '',
-        },
-        address: {
-          title: '地址',
-          value: '',
-        },
-        email: {
-          title: '電子信箱',
-          value: '',
-        },
-      },
-      receiverData: {
-        name: {
-          title: '姓名',
-          value: '',
-        },
-        cellphone: {
-          title: '手機',
-          value: '',
-        },
-        phone: {
-          title: '市話（非必填）',
-          value: '',
-        },
-        phoneExt: {
-          title: '通訊地址',
-          value: '',
-        },
-        address: {
-          title: '地址',
-          value: '',
-        },
-        email: {
-          title: '電子信箱',
-          value: '',
-        },
-      },
-      shipPlan: {
-        name: '限時專送',
-        cost: 0,
-      },
-      receiptPlan: '捐贈',
     }
   },
 
@@ -117,12 +47,6 @@ export default {
     choosePlan(choosedPlanId) {
       this.perchasedPlan[choosedPlanId].count++
       this.currentStep++
-    },
-    setShipPlan(choosedShipPlan) {
-      this.shipPlan = choosedShipPlan
-    },
-    setReceiptPlan(choosedReceiptPlan) {
-      this.receiptPlan = choosedReceiptPlan
     },
   },
 }

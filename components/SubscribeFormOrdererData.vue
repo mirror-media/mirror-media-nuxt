@@ -3,48 +3,89 @@
     <h2 class="subscribe-form__title">{{ type }}</h2>
 
     <div v-if="!isOrderer" class="orderer-data__check">
-      <input type="checkbox" v-model="disable" /><span>同訂購人資訊</span>
+      <input v-model="disable" type="checkbox" /><span>同訂購人資訊</span>
     </div>
 
-    <div class="orderer-data__input_wrapper half">
+    <div
+      class="orderer-data__input_wrapper half"
+      :class="{ error: $v.name.$error }"
+    >
       <span>姓名</span>
-      <input type="text" :disabled="disable" />
+      <input v-model.trim="$v.name.$model" type="text" :disabled="disable" />
+      <span v-if="!$v.name.required && $v.name.$error" class="error__message"
+        >Required</span
+      >
     </div>
 
     <div class="phone">
-      <div class="orderer-data__input_wrapper phone__cellphone">
+      <div
+        class="orderer-data__input_wrapper phone__cellphone"
+        :class="{ error: $v.cellphone.$error }"
+      >
         <span>手機</span>
-        <input type="text" :disabled="disable" />
+        <input
+          v-model.trim="$v.cellphone.$model"
+          :disabled="disable"
+          type="text"
+        />
+        <span
+          v-if="!$v.cellphone.required && $v.cellphone.$error"
+          class="error__message"
+          >Required</span
+        >
       </div>
 
       <div class="orderer-data__input_wrapper phone__phone">
         <span>市話（非必填）</span>
         <div class="orderer-data__input_wrapper multi">
-          <input class="multi__phone" type="text" :disabled="disable" />
+          <input
+            v-model="phone"
+            :disabled="disable"
+            class="multi__phone"
+            type="text"
+          />
           <span>-</span>
           <input
+            v-model="phoneExt"
+            :disabled="disable"
             class="multi__ext"
             type="text"
             placeholder="EXT"
-            :disabled="disable"
           />
         </div>
       </div>
     </div>
 
-    <div class="orderer-data__input_wrapper">
+    <div
+      class="orderer-data__input_wrapper"
+      :class="{ error: $v.address.$error }"
+    >
       <span>通訊地址</span>
-      <input type="text" :disabled="disable" />
+      <input v-model.trim="$v.address.$model" :disabled="disable" type="text" />
+      <span
+        v-if="!$v.address.required && $v.address.$error"
+        class="error__message"
+        >Required</span
+      >
     </div>
 
-    <div v-if="isOrderer" class="orderer-data__input_wrapper">
+    <div
+      v-if="isOrderer"
+      class="orderer-data__input_wrapper"
+      :class="{ error: $v.email.$error }"
+    >
       <span>電子信箱</span>
-      <input type="text" :disabled="disable" />
+      <input v-model.trim="$v.email.$model" :disabled="disable" type="text" />
+      <span v-if="!$v.email.email && $v.email.$error" class="error__message"
+        >email format error</span
+      >
     </div>
   </div>
 </template>
 
 <script>
+import { required, email } from 'vuelidate/lib/validators'
+
 export default {
   props: {
     type: {
@@ -52,16 +93,53 @@ export default {
       isRequired: true,
       default: '訂購人',
     },
+    setOrdererData: {
+      type: Function,
+      default: () => {},
+    },
   },
   data() {
     return {
       disable: false,
+      name: '',
+      cellphone: '',
+      phone: '',
+      phoneExt: '',
+      address: '',
+      email: '',
     }
   },
+  validations: {
+    name: {
+      required,
+    },
+    cellphone: {
+      required,
+    },
+    address: {
+      required,
+    },
+    email: {
+      email,
+      required,
+    },
+  },
+
   computed: {
     isOrderer() {
       return this.type !== '收件人'
     },
+  },
+  watch: {
+    name() {
+      console.log(this.$v.name.required)
+    },
+  },
+  methods: {
+    inputHandler(e) {
+      console.log(e.target.value)
+    },
+    errorMessage(fieldName, $v) {},
   },
 }
 </script>
@@ -197,6 +275,32 @@ export default {
         background: #ebebeb;
       }
     }
+  }
+}
+
+.error {
+  animation-name: errorShake;
+  animation-duration: 0.3s;
+  input {
+    border: solid 2px rgba(232, 24, 49, 0.5);
+  }
+
+  &__message {
+    color: rgba(232, 24, 49, 0.5) !important;
+  }
+}
+@keyframes errorShake {
+  0% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(3%);
+  }
+  60% {
+    transform: translateX(-3%);
+  }
+  90% {
+    transform: translateX(0);
   }
 }
 </style>
