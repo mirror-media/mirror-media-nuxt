@@ -51,11 +51,13 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   margin-bottom: 10px;
   padding: 16px 10px 22px;
   &:last-child {
     margin-bottom: 0;
+    @include media-breakpoint-up(sm) {
+      margin-bottom: 10px;
+    }
   }
   @include media-breakpoint-up(sm) {
     padding: 20px 20px 39px;

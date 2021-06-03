@@ -132,6 +132,8 @@ export default {
 
     &_check {
       margin-right: 18px;
+      display: flex;
+      align-items: center;
       @include media-breakpoint-up(md) {
         margin-bottom: 10px;
       }

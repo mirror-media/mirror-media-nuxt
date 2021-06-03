@@ -3,16 +3,20 @@
     <h2 class="subscribe-form__title">{{ type }}</h2>
 
     <div v-if="!isOrderer" class="orderer-data__check">
-      <input v-model="disable" type="checkbox" /><span>同訂購人資訊</span>
+      <input :value="disable" @change="setDisable" type="checkbox" /><span
+        >同訂購人資訊</span
+      >
     </div>
 
     <div
       class="orderer-data__input_wrapper half"
-      :class="{ error: $v.name.$error }"
+      :class="{ error: $v.name.$error && isNeedToCheck }"
     >
       <span>姓名</span>
       <input v-model.trim="$v.name.$model" type="text" :disabled="disable" />
-      <span v-if="!$v.name.required && $v.name.$error" class="error__message"
+      <span
+        v-if="!$v.name.required && $v.name.$error && isNeedToCheck"
+        class="error__message"
         >Required</span
       >
     </div>
@@ -20,7 +24,7 @@
     <div class="phone">
       <div
         class="orderer-data__input_wrapper phone__cellphone"
-        :class="{ error: $v.cellphone.$error }"
+        :class="{ error: $v.cellphone.$error && isNeedToCheck }"
       >
         <span>手機</span>
         <input
@@ -29,7 +33,7 @@
           type="text"
         />
         <span
-          v-if="!$v.cellphone.required && $v.cellphone.$error"
+          v-if="!$v.cellphone.required && $v.cellphone.$error && isNeedToCheck"
           class="error__message"
           >Required</span
         >
@@ -58,12 +62,12 @@
 
     <div
       class="orderer-data__input_wrapper"
-      :class="{ error: $v.address.$error }"
+      :class="{ error: $v.address.$error && isNeedToCheck }"
     >
       <span>通訊地址</span>
       <input v-model.trim="$v.address.$model" :disabled="disable" type="text" />
       <span
-        v-if="!$v.address.required && $v.address.$error"
+        v-if="!$v.address.required && $v.address.$error && isNeedToCheck"
         class="error__message"
         >Required</span
       >
@@ -72,11 +76,13 @@
     <div
       v-if="isOrderer"
       class="orderer-data__input_wrapper"
-      :class="{ error: $v.email.$error }"
+      :class="{ error: $v.email.$error && isNeedToCheck }"
     >
       <span>電子信箱</span>
       <input v-model.trim="$v.email.$model" :disabled="disable" type="text" />
-      <span v-if="!$v.email.email && $v.email.$error" class="error__message"
+      <span
+        v-if="!$v.email.email && $v.email.$error && isNeedToCheck"
+        class="error__message"
         >email format error</span
       >
     </div>
@@ -97,10 +103,23 @@ export default {
       type: Function,
       default: () => {},
     },
+    setFormStatus: {
+      type: Function,
+      default: () => {},
+    },
+    receiverDataIsSameAsOrderer: {
+      type: Boolean,
+      default: false,
+    },
+    setReceiverDataIsSameAsOrderer: {
+      type: Function,
+      default: () => {},
+    },
   },
   data() {
     return {
-      disable: false,
+      // disable: this.receiverDataIsSameAsOrderer,
+      submitStatus: null,
       name: '',
       cellphone: '',
       phone: '',
@@ -126,20 +145,53 @@ export default {
   },
 
   computed: {
+    disable() {
+      return this.receiverDataIsSameAsOrderer
+    },
     isOrderer() {
       return this.type !== '收件人'
     },
+    isNeedToCheck() {
+      return !this.receiverDataIsSameAsOrderer
+    },
+    getFormType() {
+      switch (this.type) {
+        case '訂購人':
+          return 'orderer'
+        case '收件人':
+          return 'receiver'
+        default:
+          return 'orderer'
+      }
+    },
   },
   watch: {
-    name() {
-      console.log(this.$v.name.required)
+    submitStatus(val) {
+      this.setFormStatus(this.getFormType, val)
     },
   },
   methods: {
-    inputHandler(e) {
-      console.log(e.target.value)
+    setDisable(e) {
+      e.preventDefault()
+      this.setReceiverDataIsSameAsOrderer(!this.receiverDataIsSameAsOrderer)
     },
-    errorMessage(fieldName, $v) {},
+    check() {
+      this.$v.$touch()
+      if (this.$v.$invalid && this.isNeedToCheck) {
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'OK'
+      }
+      // after check, feed formData to parent
+      return {
+        name: this.name,
+        cellphone: this.cellphone,
+        phone: this.phone,
+        phoneExt: this.phoneExt,
+        address: this.address,
+        email: this.email,
+      }
+    },
   },
 }
 </script>
@@ -157,15 +209,6 @@ export default {
     margin-bottom: 12px;
     display: flex;
     align-items: center;
-    input {
-      width: 22px;
-      height: 22px;
-      border-radius: 2px;
-      box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.2);
-      background-color: #f5f5f5;
-      margin-right: 8px;
-    }
-
     span {
       font-size: 18px;
       color: #4a4a4a;
@@ -184,23 +227,6 @@ export default {
       }
     }
 
-    // .half-phone {
-    //   display: flex;
-    //   @include media-breakpoint-up(md) {
-    //     width: calc((100% - 30px) / 2);
-    //   }
-
-    //   &__phone {
-    //     width: 180px;
-    //   }
-
-    //   &__ext {
-    //     width: 72px;
-    //     @include media-breakpoint-up(md) {
-    //       width: auto;
-    //     }
-    //   }
-    // }
     &.phone {
       display: flex;
       flex-direction: column;
@@ -271,7 +297,6 @@ export default {
       }
 
       &:disabled {
-        // background-color: #f5f5f558;
         background: #ebebeb;
       }
     }

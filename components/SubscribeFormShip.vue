@@ -74,6 +74,11 @@ export default {
     line-height: normal;
     &_item {
       margin-bottom: 21px;
+      display: flex;
+      align-items: center;
+      input[type='radio'] {
+        margin-right: 8px;
+      }
     }
   }
 }

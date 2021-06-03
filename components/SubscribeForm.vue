@@ -7,18 +7,24 @@
           :discount="discount"
         />
         <SubscribeFormOrdererData
+          ref="ordererDOM"
           type="訂購人"
           :setOrdererData="setOrdererData"
+          :setFormStatus="setFormStatus"
         />
         <SubscribeFormOrdererData
           type="收件人"
+          ref="receiverDOM"
           :setOrdererData="setOrdererData"
+          :setFormStatus="setFormStatus"
+          :receiverDataIsSameAsOrderer="receiverDataIsSameAsOrderer"
+          :setReceiverDataIsSameAsOrderer="setReceiverDataIsSameAsOrderer"
         />
 
         <SubscribeFormShip :setShipPlan="setShipPlan" />
         <SubscribeFormReceipt :setReceiptPlan="setReceiptPlan" />
 
-        <h2 class="subscribe-form__title">信用卡</h2>
+        <UiSubscribeButton title="確認訂購" @click.native="submitHandler" />
       </div>
       <div class="subscribe-form__right">
         <SubscribeFormPerchaseInfo
@@ -36,6 +42,7 @@ import SubscribeFormPerchaseInfo from '~/components/SubscribeFormPerchaseInfo.vu
 import SubscribeFormOrdererData from '~/components/SubscribeFormOrdererData.vue'
 import SubscribeFormShip from '~/components/SubscribeFormShip.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
+import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 export default {
   components: {
     SubscribeFormPlanList,
@@ -43,6 +50,7 @@ export default {
     SubscribeFormOrdererData,
     SubscribeFormShip,
     SubscribeFormReceipt,
+    UiSubscribeButton,
   },
   props: {
     perchasedPlan: {
@@ -98,6 +106,10 @@ export default {
       },
       receiptPlan: '捐贈',
       receiverDataIsSameAsOrderer: false,
+      formStatus: {
+        orderer: 'OK',
+        receiver: 'OK',
+      },
     }
   },
   methods: {
@@ -109,6 +121,34 @@ export default {
     },
     setOrdererData(newOrdererData) {
       this.ordererData = newOrdererData
+    },
+    setReceiverDataIsSameAsOrderer() {
+      this.receiverDataIsSameAsOrderer = !this.receiverDataIsSameAsOrderer
+    },
+    setFormStatus(type, formStatus) {
+      this.formStatus[type] = formStatus
+    },
+    submitHandler(e) {
+      e.preventDefault()
+      console.log('submit')
+      if (this.receiverDataIsSameAsOrderer) {
+        this.receiverData = this.ordererData
+      }
+
+      // check form's validationStatus
+      this.ordererData = this.$refs.ordererDOM.check()
+      if (!this.receiverDataIsSameAsOrderer) {
+        this.receiverData = this.$refs.receiverDOM.check()
+      } else {
+        this.receiverData = this.ordererData
+      }
+
+      console.log('perchasedPlan', this.perchasedPlan)
+      console.log('discount', this.discount)
+      console.log('ordererData', this.ordererData)
+      console.log('receiverData', this.receiverData)
+      console.log('shipPlan', this.shipPlan)
+      console.log('receiptPlan', this.receiptPlan)
     },
   },
 }
@@ -150,6 +190,11 @@ export default {
     & > div {
       margin-bottom: 42px;
     }
+
+    & > .subcribe-button {
+      max-width: 490px;
+      margin: auto;
+    }
   }
 
   &__right {
@@ -171,6 +216,23 @@ export default {
     letter-spacing: normal;
     color: #4a4a4a;
     margin-bottom: 16px;
+  }
+
+  input[type='checkbox'] {
+    width: 22px;
+    height: 22px;
+    border-radius: 2px;
+    box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.2);
+    background-color: #f5f5f5;
+    margin-right: 8px;
+  }
+
+  input[type='radio'] {
+    width: 22px;
+    height: 22px;
+    padding: 6px;
+    border-radius: 11px;
+    background-color: #f5f5f5;
   }
 }
 </style>
