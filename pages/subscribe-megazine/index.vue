@@ -11,6 +11,7 @@
       "
       :perchasedPlan="perchasedPlan"
       :proceedOrderPayment="proceedOrderPayment"
+      :validateOn="validateOn"
     />
 
     <SubscribeFail
@@ -19,6 +20,7 @@
         (orderStatus === 'order-fail' || orderStatus === 'payment-fail')
       "
       :orderStatus="orderStatus"
+      :orderId="orderId"
     />
 
     <SubscribeSuccess
@@ -35,6 +37,12 @@
         <img :src="require('~/assets/loading.gif')" alt="" />
       </div>
     </div>
+
+    <SubscribeSimFormStatus
+      :setSimOrderStatus="setSimOrderStatus"
+      :validateOn="validateOn"
+      :setValidateOn="setValidateOn"
+    />
   </div>
 </template>
 
@@ -44,6 +52,7 @@ import SubscribeChoosePlan from '~/components/SubscribeChoosePlan.vue'
 import SubscribeForm from '~/components/SubscribeForm.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeSuccess from '~/components/SubscribeSuccess.vue'
+import SubscribeSimFormStatus from '~/components/SubscribeSimFormStatus.vue'
 export default {
   components: {
     SubscribeStepProgress,
@@ -51,9 +60,11 @@ export default {
     SubscribeForm,
     SubscribeFail,
     SubscribeSuccess,
+    SubscribeSimFormStatus,
   },
   data() {
     return {
+      orderId: 'MI100048583',
       currentStep: 1,
       choosedPlanId: 0,
       orderStatus: 'normal', // normal, loading, order-fail, payment-fail, success
@@ -75,10 +86,8 @@ export default {
           count: 0,
         },
       ],
-      error: {
-        state: '',
-        message: '',
-      },
+      simOrderStatus: 'success', //  order-fail, payment-fail, success
+      validateOn: true,
     }
   },
 
@@ -88,7 +97,6 @@ export default {
       this.currentStep++
     },
     async proceedOrderPayment(orderInfo) {
-      console.log(orderInfo)
       this.orderInfo = orderInfo
       try {
         await this.payment(orderInfo)
@@ -98,7 +106,7 @@ export default {
         this.orderStatus = 'success'
       } catch (e) {
         // payment fail
-        this.error.state = 'payment-fail'
+        this.orderStatus = e.message
       }
     },
     payment(orderInfo) {
@@ -107,13 +115,29 @@ export default {
           this.orderStatus = 'loading'
 
           setTimeout(() => {
-            this.orderStatus = 'success'
-            resolve()
+            // sim order status
+            switch (this.simOrderStatus) {
+              case 'success':
+                resolve()
+                break
+              case 'order-fail':
+                reject(new Error('order-fail'))
+                break
+              case 'payment-fail':
+                reject(new Error('payment-fail'))
+                break
+            }
           }, 3000)
         } catch (e) {
           reject(e)
         }
       })
+    },
+    setSimOrderStatus(val) {
+      this.simOrderStatus = val
+    },
+    setValidateOn() {
+      this.validateOn = !this.validateOn
     },
   },
 }

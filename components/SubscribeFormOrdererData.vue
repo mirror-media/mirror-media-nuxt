@@ -115,10 +115,14 @@ export default {
       type: Function,
       default: () => {},
     },
+    validateOn: {
+      // for testing
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
-      validateOn: false, // for development
       submitStatus: null,
       validateSwitch: true,
       name: '',

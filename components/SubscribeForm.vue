@@ -11,12 +11,14 @@
           type="訂購人"
           :setOrdererData="setOrdererData"
           :setFormStatus="setFormStatus"
+          :validateOn="validateOn"
         />
         <SubscribeFormOrdererData
           ref="receiverDOM"
           type="收件人"
           :setOrdererData="setOrdererData"
           :setFormStatus="setFormStatus"
+          :validateOn="validateOn"
           :receiverDataIsSameAsOrderer="receiverDataIsSameAsOrderer"
           :setReceiverDataIsSameAsOrderer="setReceiverDataIsSameAsOrderer"
         />
@@ -80,6 +82,11 @@ export default {
     proceedOrderPayment: {
       type: Function,
       default: () => {},
+    },
+    validateOn: {
+      // for testing
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -163,7 +170,7 @@ export default {
         this.receiverData = this.ordererData
       }
 
-      if (this.validationPass) {
+      if (this.validationPass()) {
         this.proceedOrderPayment(this.getOrderInfo())
       }
     },
