@@ -267,6 +267,7 @@ export default {
     }
 
     &__message {
+      margin-top: 3px;
       color: rgba(232, 24, 49, 0.5) !important;
     }
   }

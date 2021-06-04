@@ -17,7 +17,7 @@
       <span
         v-if="!$v.name.required && $v.name.$error && isNeedToCheck"
         class="error__message"
-        >Required</span
+        >欄位不得為空</span
       >
     </div>
 
@@ -35,7 +35,7 @@
         <span
           v-if="!$v.cellphone.required && $v.cellphone.$error && isNeedToCheck"
           class="error__message"
-          >Required</span
+          >欄位不得為空</span
         >
       </div>
 
@@ -69,7 +69,7 @@
       <span
         v-if="!$v.address.required && $v.address.$error && isNeedToCheck"
         class="error__message"
-        >Required</span
+        >欄位不得為空</span
       >
     </div>
 
@@ -83,7 +83,12 @@
       <span
         v-if="!$v.email.email && $v.email.$error && isNeedToCheck"
         class="error__message"
-        >email format error</span
+        >電子信箱格式錯誤</span
+      >
+      <span
+        v-if="!$v.email.required && $v.email.$error && isNeedToCheck"
+        class="error__message"
+        >欄位不得為空</span
       >
     </div>
   </div>
@@ -175,6 +180,12 @@ export default {
     setDisable(e) {
       e.preventDefault()
       this.setReceiverDataIsSameAsOrderer(!this.receiverDataIsSameAsOrderer)
+      this.name = ''
+      this.cellphone = ''
+      this.phone = ''
+      this.phoneExt = ''
+      this.address = ''
+      this.email = ''
     },
     check() {
       if (this.isNeedToCheck) {
