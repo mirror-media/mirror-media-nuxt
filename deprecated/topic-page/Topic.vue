@@ -847,13 +847,6 @@ export default {
       link: [{ rel: 'alternate', href: relUrl }],
     }
   },
-  created() {
-    /*
-     * this.$store.registerModule('deprecatedStore', createStore())
-     * this.$store.replaceState(createStore())
-     */
-    // this.$store.registerModule('deprecatedStore', createStore())
-  },
   beforeMount() {
     fetchEvent(this.$store, 'logo')
     if (this.topicType !== 'timeline') {

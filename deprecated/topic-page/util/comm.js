@@ -381,7 +381,12 @@ export function mmLog({
 }
 
 export function sendGaClickEvent(eventCategory, eventLabel) {
-  window.ga && window.ga('send', 'event', eventCategory, 'click', eventLabel)
+  this.$ga &&
+    this.$ga.event({
+      eventCategory,
+      eventAction: 'click',
+      eventLabel,
+    })
 }
 
 export function isEleFixed(ele) {

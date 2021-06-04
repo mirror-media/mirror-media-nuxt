@@ -34,23 +34,6 @@
           />
         </div>
       </div>
-      <div
-        :style="{ minWidth: `calc(100% / ${sections.length + 1})` }"
-        class="section external"
-      >
-        <!--        <a>-->
-        <!--          <span v-text="$t('HEADER.EXTERNAL')" />-->
-        <!--        </a>-->
-        <div class="dropdown">
-          <a
-            v-for="partner in activePartners"
-            :key="`dropdown-${partner.id}`"
-            :href="`/externals/${partner.name}`"
-            @click="sendGaClickEvent('header', `external ${partner.name}`)"
-            v-text="partner.display"
-          />
-        </div>
-      </div>
     </nav>
     <nav class="header-nav__topics">
       <div class="topics-container">
@@ -62,45 +45,45 @@
           v-text="topic.name"
         />
       </div>
-      <!--      <a-->
-      <!--        href="/section/topic"-->
-      <!--        class="more"-->
-      <!--        @click="sendGaClickEvent('header', `topic ${$t('HEADER.MORE')}`)"-->
-      <!--        v-text="$t('HEADER.MORE')"-->
-      <!--      />-->
-      <!--      <a-->
-      <!--        href="https://voice.mirrorfiction.com/"-->
-      <!--        class="link&#45;&#45;external mirrorvoice"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `section mirrorvoice`)"-->
-      <!--      >-->
-      <!--        <LazyImage-->
-      <!--          src="/deprecated/topic-page/assets/mirrormedia/icon/mirrorvoice.png"-->
-      <!--          :caption="$t('HEADER.MIRRORVOICE')"-->
-      <!--        />-->
-      <!--      </a>-->
-      <!--      <a-->
-      <!--        href="https://www.mirrorfiction.com/"-->
-      <!--        class="link&#45;&#45;external mirrorfiction"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `section mirrorfiction`)"-->
-      <!--      >-->
-      <!--        <LazyImage-->
-      <!--          src="/deprecated/topic-page/assets/mirrormedia/icon/mirrorfiction.png"-->
-      <!--          :caption="$t('HEADER.MIRRORFICTION')"-->
-      <!--        />-->
-      <!--      </a>-->
-      <!--      <a-->
-      <!--        href="https://www.readr.tw/"-->
-      <!--        class="link&#45;&#45;external readr"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `section readr`)"-->
-      <!--      >-->
-      <!--        <LazyImage-->
-      <!--          src="/deprecated/topic-page/assets/mirrormedia/icon/readrlogo-gary.png"-->
-      <!--          :caption="$t('HEADER.READR')"-->
-      <!--        />-->
-      <!--      </a>-->
+      <a
+        href="/section/topic"
+        class="more"
+        @click="sendGaClickEvent('header', `topic 更多`)"
+        v-text="'更多'"
+      />
+      <a
+        href="https://voice.mirrorfiction.com/"
+        class="link--external mirrorvoice"
+        target="_blank"
+        @click="sendGaClickEvent('header', `section mirrorvoice`)"
+      >
+        <LazyImage
+          src="/deprecated/topic-page/assets/mirrormedia/icon/mirrorvoice.png"
+          :caption="'鏡好聽'"
+        />
+      </a>
+      <a
+        href="https://www.mirrorfiction.com/"
+        class="link--external mirrorfiction"
+        target="_blank"
+        @click="sendGaClickEvent('header', `section mirrorfiction`)"
+      >
+        <LazyImage
+          src="/deprecated/topic-page/assets/mirrormedia/icon/mirrorfiction.png"
+          :caption="'鏡文學'"
+        />
+      </a>
+      <a
+        href="https://www.readr.tw/"
+        class="link--external readr"
+        target="_blank"
+        @click="sendGaClickEvent('header', `section readr`)"
+      >
+        <LazyImage
+          src="/deprecated/topic-page/assets/mirrormedia/icon/readrlogo-gary.png"
+          :caption="'readr 讀+'"
+        />
+      </a>
     </nav>
   </section>
 </template>
@@ -113,7 +96,6 @@ import { sendGaClickEvent } from '../../util/comm'
 export default {
   name: 'HeaderNav',
   components: {
-    // eslint-disable-next-line vue/no-unused-components
     LazyImage,
   },
   props: {

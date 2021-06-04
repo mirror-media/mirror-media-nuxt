@@ -1,14 +1,13 @@
 <template>
   <section class="header-search-bar">
     <form action="" @submit.prevent="search" @focusout="search">
-      <!--      <input-->
-      <!--        v-model="keyword"-->
-      <!--        type="search"-->
-      <!--        :placeholder="$t('HEADER.SEARCH')"-->
-      <!--      />-->
+      <input v-model="keyword" type="search" :placeholder="'搜尋'" />
     </form>
     <button @click="closeSearchBar()">
-      <!--      <img src="/deprecated/topic-page/assets/mirrormedia/icon/close.png" :alt="$t('HEADER.CLOSE')" />-->
+      <img
+        src="/deprecated/topic-page/assets/mirrormedia/icon/close.png"
+        :alt="'關閉'"
+      />
     </button>
   </section>
 </template>
@@ -25,7 +24,7 @@ export default {
   methods: {
     closeSearchBar() {
       this.$emit('closeSearchBar')
-      sendGaClickEvent('header', 'search close')
+      sendGaClickEvent.call(this, 'header', 'search close')
     },
     search() {
       this.$emit('search', this.keyword)

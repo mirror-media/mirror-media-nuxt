@@ -69,48 +69,48 @@
           />
         </button>
         <div class="others">
-          <!--          <a-->
-          <!--            :href="SOCIAL_LINK.SUBSCRIBE"-->
-          <!--            target="_blank"-->
-          <!--            @click="sendGaClickEvent('header', 'more subscribe')"-->
-          <!--            v-text="$t('HEADER.SUBSCRIBE')"-->
-          <!--          />-->
-          <!--          <a-->
-          <!--            :href="SOCIAL_LINK.MAGAZINE"-->
-          <!--            target="_blank"-->
-          <!--            @click="sendGaClickEvent('header', 'more magazine')"-->
-          <!--            v-text="$t('HEADER.MAGAZINE')"-->
-          <!--          />-->
-          <!--          <a-->
-          <!--            :href="SOCIAL_LINK.AUTH"-->
-          <!--            target="_blank"-->
-          <!--            @click="sendGaClickEvent('header', 'more auth')"-->
-          <!--            v-text="$t('HEADER.AUTH')"-->
-          <!--          />-->
-          <!--          <a-->
-          <!--            :href="SOCIAL_LINK.AD"-->
-          <!--            target="_blank"-->
-          <!--            @click="sendGaClickEvent('header', 'more ad')"-->
-          <!--            v-text="$t('HEADER.AD')"-->
-          <!--          />-->
-          <!--          <a-->
-          <!--            href="/category/campaign"-->
-          <!--            target="_blank"-->
-          <!--            @click="sendGaClickEvent('header', 'more campaign')"-->
-          <!--            v-text="$t('HEADER.CAMPAIGN')"-->
-          <!--          />-->
-          <!--          <a-->
-          <!--            :href="SOCIAL_LINK.DOWNLOADAPP"-->
-          <!--            target="_blank"-->
-          <!--            @click="sendGaClickEvent('header', 'more download')"-->
-          <!--            v-text="$t('HEADER.DOWNLOADAPP')"-->
-          <!--          />-->
-          <!--          <a-->
-          <!--            :href="SOCIAL_LINK.DISPILINE"-->
-          <!--            target="_blank"-->
-          <!--            @click="sendGaClickEvent('header', 'more dispiline')"-->
-          <!--            v-text="$t('HEADER.DISPILINE')"-->
-          <!--          />-->
+          <a
+            :href="SOCIAL_LINK.SUBSCRIBE"
+            target="_blank"
+            @click="sendGaClickEvent('header', 'more subscribe')"
+            v-text="'訂閱鏡週刊'"
+          />
+          <a
+            :href="SOCIAL_LINK.MAGAZINE"
+            target="_blank"
+            @click="sendGaClickEvent('header', 'more magazine')"
+            v-text="'訂閱電子雜誌'"
+          />
+          <a
+            :href="SOCIAL_LINK.AUTH"
+            target="_blank"
+            @click="sendGaClickEvent('header', 'more auth')"
+            v-text="'內容授權'"
+          />
+          <a
+            :href="SOCIAL_LINK.AD"
+            target="_blank"
+            @click="sendGaClickEvent('header', 'more ad')"
+            v-text="'廣告合作'"
+          />
+          <a
+            href="/category/campaign"
+            target="_blank"
+            @click="sendGaClickEvent('header', 'more campaign')"
+            v-text="'活動專區'"
+          />
+          <a
+            :href="SOCIAL_LINK.DOWNLOADAPP"
+            target="_blank"
+            @click="sendGaClickEvent('header', 'more download')"
+            v-text="'下載APP'"
+          />
+          <a
+            :href="SOCIAL_LINK.DISPILINE"
+            target="_blank"
+            @click="sendGaClickEvent('header', 'more dispiline')"
+            v-text="'新聞自律綱要'"
+          />
         </div>
       </div>
       <SearchNav :sections="sections" class="search-nav" />
@@ -185,6 +185,19 @@ import HeaderSidebar from './header/HeaderSidebar.vue'
 import HeaderSearchBar from './header/HeaderSearchBar.vue'
 import HeaderNav from './header/HeaderNav.vue'
 
+const updateViewport = (store) => {
+  const width = Math.min(
+    window.innerWidth,
+    document.documentElement.clientWidth
+  )
+  const height =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    document.body.clientHeight
+  const viewport = { width, height }
+  return store.dispatch('deprecatedStore/UPDATE_VIEWPORT', viewport)
+}
+
 export default {
   name: 'AppHeader',
   components: {
@@ -252,8 +265,7 @@ export default {
       )
     },
     isMobile() {
-      // return this.$store.state.deprecatedStore.viewport.width < 1200
-      return false
+      return this.$store.state.deprecatedStore.viewport.width < 1200
     },
     logoFromEvent() {
       if (
@@ -315,11 +327,24 @@ export default {
      *   logoDfpDisplay === 'none' ? this.hasLogoDfp = false : this.hasLogoDfp = true
      * }
      */
+
+    /**
+     * todo
+     * updateViewport() 從 beforeMount 改放到 mounted 後，更新的速度變得比螢幕尺寸變化還慢
+     * 如果你是在組件的 mounted 處取得螢幕尺寸（比如使用 viewportWidth），那這個變數紀錄的值會是在螢幕變化前的值（因為 updateViewport() 會比較慢執行）
+     * 但現在又不能把 updateViewport() 改放回到 beforeMount，不然網頁會出現難以理解的錯誤
+     */
+    updateViewport(this.$store)
+    window.addEventListener('resize', this.updateViewport)
   },
   beforeDestroy() {
+    window.removeEventListener('resize', this.updateViewport)
     window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
+    updateViewport() {
+      updateViewport(this.$store)
+    },
     get,
     getColor(section) {
       return get(SECTION_MAP, [section.id, 'bgcolor'])

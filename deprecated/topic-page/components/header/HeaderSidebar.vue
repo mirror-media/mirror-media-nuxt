@@ -1,10 +1,10 @@
 <template>
   <section class="header-sidebar">
     <button class="header-sidebar__close" @click="closeSidebar()">
-      <!--      <img-->
-      <!--        src="/deprecated/topic-page/assets/mirrormedia/icon/close_white@2x.png"-->
-      <!--        :alt="$t('HEADER.CLOSE')"-->
-      <!--      />-->
+      <img
+        src="/deprecated/topic-page/assets/mirrormedia/icon/close_white@2x.png"
+        :alt="'關閉'"
+      />
     </button>
     <div v-if="topics.length > 0" class="topics">
       <a
@@ -14,12 +14,12 @@
         @click="sendGaClickEvent('header', `topic ${topic.name}`)"
         v-text="topic.name"
       />
-      <!--      <a-->
-      <!--        href="/section/topic"-->
-      <!--        class="topic&#45;&#45;more"-->
-      <!--        @click="sendGaClickEvent('header', `topic ${$t('HEADER.MORE')}`)"-->
-      <!--        v-text="$t('HEADER.MORE')"-->
-      <!--      />-->
+      <a
+        href="/section/topic"
+        class="topic--more"
+        @click="sendGaClickEvent('header', `topic 更多`)"
+        v-text="'更多'"
+      />
     </div>
     <div class="sections">
       <div
@@ -62,127 +62,127 @@
           />
         </div>
       </div>
-      <!--      <div class="section mirrorvoice">-->
-      <!--        <a-->
-      <!--          href="https://voice.mirrorfiction.com/"-->
-      <!--          class="link&#45;&#45;external mirrorvoice"-->
-      <!--          target="_blank"-->
-      <!--          @click="sendGaClickEvent('header', `section mirrorvoice`)"-->
-      <!--          v-text="$t('HEADER.MIRRORVOICE')"-->
-      <!--        />-->
-      <!--      </div>-->
-      <!--      <div class="section mirrorfiction">-->
-      <!--        <a-->
-      <!--          href="https://www.mirrorfiction.com/"-->
-      <!--          class="link&#45;&#45;external mirrorfiction"-->
-      <!--          target="_blank"-->
-      <!--          @click="sendGaClickEvent('header', `section mirrorfiction`)"-->
-      <!--          v-text="$t('HEADER.MIRRORFICTION')"-->
-      <!--        />-->
-      <!--      </div>-->
-      <!--      <div class="section">-->
-      <!--        <a-->
-      <!--          href="https://www.readr.tw/"-->
-      <!--          class="link&#45;&#45;external readr"-->
-      <!--          target="_blank"-->
-      <!--          @click="sendGaClickEvent('header', `section readr`)"-->
-      <!--          v-text="$t('HEADER.READR')"-->
-      <!--        />-->
-      <!--      </div>-->
-      <!--    </div>-->
-      <!--    <div class="others">-->
-      <!--      <a-->
-      <!--        :href="SOCIAL_LINK.SUBSCRIBE"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `more subscribe`)"-->
-      <!--        v-text="$t('HEADER.SUBSCRIBE')"-->
-      <!--      />-->
-      <!--      <a-->
-      <!--        :href="SOCIAL_LINK.MAGAZINE"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `more magazine`)"-->
-      <!--        v-text="$t('HEADER.MAGAZINE')"-->
-      <!--      />-->
-      <!--      <a-->
-      <!--        :href="SOCIAL_LINK.AUTH"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `more auth`)"-->
-      <!--        v-text="$t('HEADER.AUTH')"-->
-      <!--      />-->
-      <!--      <a-->
-      <!--        :href="SOCIAL_LINK.AD"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `more ad`)"-->
-      <!--        v-text="$t('HEADER.AD')"-->
-      <!--      />-->
-      <!--      <a-->
-      <!--        href="/category/campaign"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `more campaign`)"-->
-      <!--        v-text="$t('HEADER.CAMPAIGN')"-->
-      <!--      />-->
-      <!--      <a-->
-      <!--        :href="SOCIAL_LINK.DOWNLOADAPP"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `more download`)"-->
-      <!--        v-text="$t('HEADER.DOWNLOADAPP')"-->
-      <!--      />-->
-      <!--    </div>-->
-      <!--    <div class="social-media">-->
-      <!--      <a-->
-      <!--        :href="SOCIAL_LINK.LINE"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `social line`)"-->
-      <!--        ><img-->
-      <!--          class="sprite sprite-line"-->
-      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
-      <!--          :alt="$t('HEADER.LINE')"-->
-      <!--      /></a>-->
-      <!--      <a-->
-      <!--        :href="SOCIAL_LINK.WEIBO"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `social weibo`)"-->
-      <!--        ><img-->
-      <!--          class="sprite sprite-weibo"-->
-      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
-      <!--          :alt="$t('HEADER.WEIBO')"-->
-      <!--      /></a>-->
-      <!--      <a-->
-      <!--        :href="SOCIAL_LINK.FACEBOOK"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `social facebook`)"-->
-      <!--        ><img-->
-      <!--          class="sprite sprite-facebook"-->
-      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
-      <!--          :alt="$t('HEADER.FACEBOOK')"-->
-      <!--      /></a>-->
-      <!--      <a-->
-      <!--        :href="SOCIAL_LINK.INSTAGRAM"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `social instagram`)"-->
-      <!--        ><img-->
-      <!--          class="sprite sprite-instagram"-->
-      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
-      <!--          :alt="$t('HEADER.INSTAGRAM')"-->
-      <!--      /></a>-->
-      <!--      <a-->
-      <!--        :href="SOCIAL_LINK.FEED"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `social rss`)"-->
-      <!--        ><img-->
-      <!--          class="sprite sprite-rss"-->
-      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
-      <!--          :alt="$t('HEADER.RSS')"-->
-      <!--      /></a>-->
-      <!--      <a-->
-      <!--        :href="SOCIAL_LINK.EMAIL"-->
-      <!--        target="_blank"-->
-      <!--        @click="sendGaClickEvent('header', `social mail`)"-->
-      <!--        ><img-->
-      <!--          class="sprite sprite-mail"-->
-      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
-      <!--          :alt="$t('HEADER.EMAIL')"-->
-      <!--      /></a>-->
+      <div class="section mirrorvoice">
+        <a
+          href="https://voice.mirrorfiction.com/"
+          class="link--external mirrorvoice"
+          target="_blank"
+          @click="sendGaClickEvent('header', `section mirrorvoice`)"
+          v-text="'鏡好聽'"
+        />
+      </div>
+      <div class="section mirrorfiction">
+        <a
+          href="https://www.mirrorfiction.com/"
+          class="link--external mirrorfiction"
+          target="_blank"
+          @click="sendGaClickEvent('header', `section mirrorfiction`)"
+          v-text="'鏡文學'"
+        />
+      </div>
+      <div class="section">
+        <a
+          href="https://www.readr.tw/"
+          class="link--external readr"
+          target="_blank"
+          @click="sendGaClickEvent('header', `section readr`)"
+          v-text="'READR 讀+'"
+        />
+      </div>
+    </div>
+    <div class="others">
+      <a
+        :href="SOCIAL_LINK.SUBSCRIBE"
+        target="_blank"
+        @click="sendGaClickEvent('header', `more subscribe`)"
+        v-text="'訂閱鏡週刊'"
+      />
+      <a
+        :href="SOCIAL_LINK.MAGAZINE"
+        target="_blank"
+        @click="sendGaClickEvent('header', `more magazine`)"
+        v-text="'訂閱電子雜誌'"
+      />
+      <a
+        :href="SOCIAL_LINK.AUTH"
+        target="_blank"
+        @click="sendGaClickEvent('header', `more auth`)"
+        v-text="'內容授權'"
+      />
+      <a
+        :href="SOCIAL_LINK.AD"
+        target="_blank"
+        @click="sendGaClickEvent('header', `more ad`)"
+        v-text="'廣告合作'"
+      />
+      <a
+        href="/category/campaign"
+        target="_blank"
+        @click="sendGaClickEvent('header', `more campaign`)"
+        v-text="'活動專區'"
+      />
+      <a
+        :href="SOCIAL_LINK.DOWNLOADAPP"
+        target="_blank"
+        @click="sendGaClickEvent('header', `more download`)"
+        v-text="'下載APP'"
+      />
+    </div>
+    <div class="social-media">
+      <a
+        :href="SOCIAL_LINK.LINE"
+        target="_blank"
+        @click="sendGaClickEvent('header', `social line`)"
+        ><img
+          class="sprite sprite-line"
+          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"
+          :alt="'Line'"
+      /></a>
+      <a
+        :href="SOCIAL_LINK.WEIBO"
+        target="_blank"
+        @click="sendGaClickEvent('header', `social weibo`)"
+        ><img
+          class="sprite sprite-weibo"
+          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"
+          :alt="'微博'"
+      /></a>
+      <a
+        :href="SOCIAL_LINK.FACEBOOK"
+        target="_blank"
+        @click="sendGaClickEvent('header', `social facebook`)"
+        ><img
+          class="sprite sprite-facebook"
+          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"
+          :alt="'Facebook'"
+      /></a>
+      <a
+        :href="SOCIAL_LINK.INSTAGRAM"
+        target="_blank"
+        @click="sendGaClickEvent('header', `social instagram`)"
+        ><img
+          class="sprite sprite-instagram"
+          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"
+          :alt="'Instagram'"
+      /></a>
+      <a
+        :href="SOCIAL_LINK.FEED"
+        target="_blank"
+        @click="sendGaClickEvent('header', `social rss`)"
+        ><img
+          class="sprite sprite-rss"
+          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"
+          :alt="'RSS'"
+      /></a>
+      <a
+        :href="SOCIAL_LINK.EMAIL"
+        target="_blank"
+        @click="sendGaClickEvent('header', `social mail`)"
+        ><img
+          class="sprite sprite-mail"
+          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"
+          :alt="'Email'"
+      /></a>
     </div>
   </section>
 </template>
@@ -234,7 +234,7 @@ export default {
   methods: {
     closeSidebar() {
       this.$emit('closeSidebar')
-      sendGaClickEvent('header', 'menu close')
+      sendGaClickEvent.call(this, 'header', 'menu close')
     },
     filterSectionCategories(section) {
       const categories = section.categories || []
