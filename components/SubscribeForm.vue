@@ -258,5 +258,31 @@ export default {
     border-radius: 11px;
     background-color: #f5f5f5;
   }
+
+  .error {
+    animation-name: errorShake;
+    animation-duration: 0.3s;
+    input {
+      border: solid 2px rgba(232, 24, 49, 0.5);
+    }
+
+    &__message {
+      color: rgba(232, 24, 49, 0.5) !important;
+    }
+  }
+  @keyframes errorShake {
+    0% {
+      transform: translateX(0);
+    }
+    30% {
+      transform: translateX(3%);
+    }
+    60% {
+      transform: translateX(-3%);
+    }
+    90% {
+      transform: translateX(0);
+    }
+  }
 }
 </style>

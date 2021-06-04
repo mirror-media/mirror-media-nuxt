@@ -1,7 +1,6 @@
 <template>
   <div class="edit-perchase">
     <UiSubscribeButtonSmall title="修改" @click.native="toggleHandler" />
-
     <div v-if="isToggled" class="edit-perchase__wrapper">
       <div class="edit-perchase__background" @click="toggleHandler" />
 
@@ -10,6 +9,7 @@
         <UiMerchandiseList
           :perchasedPlan="waitToEdittedPerchasedPlan"
           :showAll="true"
+          :class="{ error: bothCountZero }"
         />
 
         <div class="edit-perchase__dialog_controller">
@@ -68,6 +68,7 @@ export default {
   data() {
     return {
       isToggled: false,
+      bothCountZero: false,
       waitToEdittedPerchasedPlan: [
         {
           id: 0,
@@ -97,6 +98,17 @@ export default {
       },
       immediate: true,
     },
+    waitToEdittedPerchasedPlan: {
+      handler(val) {
+        if (parseInt(val[0].count) === 0 && parseInt(val[1].count) === 0) {
+          this.bothCountZero = true
+        } else {
+          this.bothCountZero = false
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
   },
 
   methods: {
@@ -107,10 +119,15 @@ export default {
       this.isToggled = !this.isToggled
     },
     acceptModification() {
-      this.waitToEdittedPerchasedPlan.forEach((plan, index) => {
-        this.perchasedPlan[index].count = plan.count
-      })
-      this.isToggled = !this.isToggled
+      // check if plan count are both zero
+      // if yes, then show error
+
+      if (!this.bothCountZero) {
+        this.waitToEdittedPerchasedPlan.forEach((plan, index) => {
+          this.perchasedPlan[index].count = plan.count
+        })
+        this.isToggled = !this.isToggled
+      }
     },
   },
 }
