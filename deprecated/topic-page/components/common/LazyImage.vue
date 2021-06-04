@@ -1,7 +1,7 @@
 <template>
   <img
     :id="`img-${id}`"
-    src="/assets/mirrormedia/icon/loading.gif"
+    src="/deprecated/topic-page/assets/mirrormedia/icon/loading.gif"
     class="plate-vue-lazy-image"
     :class="{ loading: !isVirtualImgLoaded }"
     :alt="caption"

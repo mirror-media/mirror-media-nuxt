@@ -8,7 +8,7 @@
       <!--      />-->
     </form>
     <button @click="closeSearchBar()">
-      <!--      <img src="/assets/mirrormedia/icon/close.png" :alt="$t('HEADER.CLOSE')" />-->
+      <!--      <img src="/deprecated/topic-page/assets/mirrormedia/icon/close.png" :alt="$t('HEADER.CLOSE')" />-->
     </button>
   </section>
 </template>

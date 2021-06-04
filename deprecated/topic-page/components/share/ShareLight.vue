@@ -1,10 +1,16 @@
 <template>
   <div class="share-light">
     <button @click="shareFacebook">
-      <img src="/assets/mirrormedia/icon/share-fb.png" alt="分享至 Facebook" />
+      <img
+        src="/deprecated/topic-page/assets/mirrormedia/icon/share-fb.png"
+        alt="分享至 Facebook"
+      />
     </button>
     <button @click="shareLine">
-      <img src="/assets/mirrormedia/icon/share-line.png" alt="分享至 Line" />
+      <img
+        src="/deprecated/topic-page/assets/mirrormedia/icon/share-line.png"
+        alt="分享至 Line"
+      />
     </button>
   </div>
 </template>

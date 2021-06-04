@@ -187,7 +187,7 @@ export default {
         background-position 45% 50%
         background-repeat no-repeat
         border-radius 4px
-        background-image url(/assets/mirrormedia/icon/arrow-slideshow-blue-left.png)
+        background-image url(/deprecated/topic-page/assets/mirrormedia/icon/arrow-slideshow-blue-left.png)
       >>> .swiper-button-prev
         left 5px
       >>> .swiper-button-next

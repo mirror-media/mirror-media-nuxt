@@ -2,7 +2,7 @@
   <button class="button">
     <img
       class="button__img"
-      src="/assets/mirrormedia/icon/icon_search_web.png"
+      src="/deprecated/topic-page/assets/mirrormedia/icon/icon_search_web.png"
       alt=""
     />
   </button>

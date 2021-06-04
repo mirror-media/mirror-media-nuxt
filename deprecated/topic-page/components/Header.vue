@@ -3,7 +3,7 @@
     <section class="header__logo-layer">
       <button class="btn--menu" @click="openSidebar = true">
         <img
-          src="/assets/mirrormedia/icon/hamburger@2x.png"
+          src="/deprecated/topic-page/assets/mirrormedia/icon/hamburger@2x.png"
           alt=""
           @click="sendGaClickEvent('header', 'menu open')"
         />
@@ -14,14 +14,18 @@
         href="/"
         class="logo"
         @click="sendGaClickEvent('header', 'logo')"
-        ><img src="/assets/mirrormedia/logo.svg" :alt="SITE_TITLE"
+        ><img
+          src="/deprecated/topic-page/assets/mirrormedia/logo.svg"
+          :alt="SITE_TITLE"
       /></a>
       <a
         v-show="isScrolled"
         href="/"
         class="logo"
         @click="sendGaClickEvent('header', 'logo')"
-        ><img src="/assets/mirrormedia/icon/logo@2x.png" :alt="SITE_TITLE"
+        ><img
+          src="/deprecated/topic-page/assets/mirrormedia/icon/logo@2x.png"
+          :alt="SITE_TITLE"
       /></a>
       <a
         v-if="logoFromEvent"
@@ -59,7 +63,7 @@
       >
         <button class="btn--more" @click="openMore = true">
           <img
-            src="/assets/mirrormedia/icon/more_grey@2x.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/more_grey@2x.png"
             alt=""
             @click="sendGaClickEvent('header', 'more open')"
           />

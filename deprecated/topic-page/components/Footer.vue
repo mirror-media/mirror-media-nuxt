@@ -59,7 +59,7 @@
         target="_blank"
         @click="sendGaClickEvent('footer', 'footer line')"
         ><img
-          src="/assets/mirrormedia/icon/line@2x.png"
+          src="/deprecated/topic-page/assets/mirrormedia/icon/line@2x.png"
           alt="Line"
           class="footer-icon line"
       /></a>
@@ -69,7 +69,7 @@
         target="_blank"
         @click="sendGaClickEvent('footer', 'footer weibo')"
         ><img
-          src="/assets/mirrormedia/icon/weibo@2x.png"
+          src="/deprecated/topic-page/assets/mirrormedia/icon/weibo@2x.png"
           alt="微博"
           class="footer-icon weibo"
       /></a>
@@ -79,7 +79,7 @@
         target="_blank"
         @click="sendGaClickEvent('footer', 'footer fb')"
         ><img
-          src="/assets/mirrormedia/icon/facebook@2x.png"
+          src="/deprecated/topic-page/assets/mirrormedia/icon/facebook@2x.png"
           alt="Facebook"
           class="footer-icon facebook"
       /></a>
@@ -89,7 +89,7 @@
         target="_blank"
         @click="sendGaClickEvent('footer', 'footer ig')"
         ><img
-          src="/assets/mirrormedia/icon/instagram@2x.png"
+          src="/deprecated/topic-page/assets/mirrormedia/icon/instagram@2x.png"
           alt="Instagram"
           class="footer-icon instagram"
       /></a>
@@ -99,7 +99,7 @@
         target="_blank"
         @click="sendGaClickEvent('footer', 'footer feed')"
         ><img
-          src="/assets/mirrormedia/icon/feed@2x.png"
+          src="/deprecated/topic-page/assets/mirrormedia/icon/feed@2x.png"
           alt="RSS"
           class="footer-icon feed"
       /></a>
@@ -109,7 +109,7 @@
         target="_blank"
         @click="sendGaClickEvent('footer', 'footer email')"
         ><img
-          src="/assets/mirrormedia/icon/mail@2x.png"
+          src="/deprecated/topic-page/assets/mirrormedia/icon/mail@2x.png"
           alt="聯絡我們"
           class="footer-icon mail"
       /></a>

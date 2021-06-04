@@ -102,7 +102,7 @@
             getValue(
               article,
               ['coverPhoto', 'image', 'resizedTargets', 'mobile', 'url'],
-              '/assets/mirrormedia/notImage.png'
+              '/deprecated/topic-page/assets/mirrormedia/notImage.png'
             )
           "
           :alt="getValue(article, ['title'])"

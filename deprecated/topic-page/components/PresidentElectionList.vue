@@ -57,7 +57,10 @@
           ]"
           @click="loadMore(cand.tagId, idx)"
         >
-          <img src="/assets/mirrormedia/refresh.png" alt="refresh" />
+          <img
+            src="/deprecated/topic-page/assets/mirrormedia/refresh.png"
+            alt="refresh"
+          />
           <div>看更多</div>
         </div>
       </div>

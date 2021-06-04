@@ -52,7 +52,7 @@
           @click="sendGaClickEvent('footer', 'footer fb')"
           ><img
             class="facebook"
-            src="/assets/mirrormedia/icon/facebook_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/facebook_white.png"
             alt="Facebook"
         /></a>
         <a
@@ -61,7 +61,7 @@
           @click="sendGaClickEvent('footer', 'footer line')"
           ><img
             class="line"
-            src="/assets/mirrormedia/icon/line_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/line_white.png"
             alt="Line"
         /></a>
         <a
@@ -70,7 +70,7 @@
           @click="sendGaClickEvent('footer', 'footer weibo')"
           ><img
             class="weibo"
-            src="/assets/mirrormedia/icon/weibo_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/weibo_white.png"
             alt="微博"
         /></a>
       </div>
@@ -132,7 +132,7 @@ export default {
     getSectionLogoUrl() {
       return _.get(this.sectionLogo, ['image', 'url'])
         ? _.get(this.sectionLogo, ['image', 'url'])
-        : '/assets/mirrormedia/logo.svg'
+        : '/deprecated/topic-page/assets/mirrormedia/logo.svg'
     },
     getSectionLogoWidth() {
       return _.get(this.sectionLogo, ['image', 'width'])

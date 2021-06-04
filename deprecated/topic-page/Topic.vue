@@ -31,7 +31,10 @@
         <!--    各式型態    -->
         <template v-else-if="topicType === 'timeline'">
           <a href="/" class="topicTimeline__logo">
-            <img src="/assets/mirrormedia/icon/logo@2x.png" :alt="siteTitle" />
+            <img
+              src="/deprecated/topic-page/assets/mirrormedia/icon/logo@2x.png"
+              :alt="siteTitle"
+            />
           </a>
           <share
             :direction="`right`"
@@ -496,21 +499,21 @@ export default {
         {
           tagId: '5d65fbaa486faa3919afaeb9',
           title: '民進黨',
-          img: '/assets/mirrormedia/2020-1.jpg',
+          img: '/deprecated/topic-page/assets/mirrormedia/2020-1.jpg',
           color: '#5dc68a',
           articles: [],
         },
         {
           tagId: '5d65fbaf486faa3919afaeba',
           title: '國民黨',
-          img: '/assets/mirrormedia/2020-2.jpeg',
+          img: '/deprecated/topic-page/assets/mirrormedia/2020-2.jpeg',
           color: '#4a90e2',
           articles: [],
         },
         {
           tagId: '5d65fbb6486faa3919afaebb',
           title: '親民黨及第三勢力',
-          img: '/assets/mirrormedia/2020-5.jpg',
+          img: '/deprecated/topic-page/assets/mirrormedia/2020-5.jpg',
           color: '#9b9b9b',
           articles: [],
         },

@@ -3,7 +3,7 @@
     <button class="nav-wrapper__button button" @click="toggleNav">
       <img
         class="button__img"
-        src="/assets/mirrormedia/icon/icon_search_mobile.png"
+        src="/deprecated/topic-page/assets/mirrormedia/icon/icon_search_mobile.png"
         alt=""
       />
     </button>

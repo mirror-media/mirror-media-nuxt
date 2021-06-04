@@ -75,7 +75,7 @@
       <!--        @click="sendGaClickEvent('header', `section mirrorvoice`)"-->
       <!--      >-->
       <!--        <LazyImage-->
-      <!--          src="/assets/mirrormedia/icon/mirrorvoice.png"-->
+      <!--          src="/deprecated/topic-page/assets/mirrormedia/icon/mirrorvoice.png"-->
       <!--          :caption="$t('HEADER.MIRRORVOICE')"-->
       <!--        />-->
       <!--      </a>-->
@@ -86,7 +86,7 @@
       <!--        @click="sendGaClickEvent('header', `section mirrorfiction`)"-->
       <!--      >-->
       <!--        <LazyImage-->
-      <!--          src="/assets/mirrormedia/icon/mirrorfiction.png"-->
+      <!--          src="/deprecated/topic-page/assets/mirrormedia/icon/mirrorfiction.png"-->
       <!--          :caption="$t('HEADER.MIRRORFICTION')"-->
       <!--        />-->
       <!--      </a>-->
@@ -97,7 +97,7 @@
       <!--        @click="sendGaClickEvent('header', `section readr`)"-->
       <!--      >-->
       <!--        <LazyImage-->
-      <!--          src="/assets/mirrormedia/icon/readrlogo-gary.png"-->
+      <!--          src="/deprecated/topic-page/assets/mirrormedia/icon/readrlogo-gary.png"-->
       <!--          :caption="$t('HEADER.READR')"-->
       <!--        />-->
       <!--      </a>-->

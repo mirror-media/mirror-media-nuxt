@@ -113,14 +113,14 @@ export default {
         background-color #064f77
     >>> .swiper-button-prev
       left 5px
-      background-image url(/assets/mirrormedia/icon/arrow-slideshow-blue-left.png)
+      background-image url(/deprecated/topic-page/assets/mirrormedia/icon/arrow-slideshow-blue-left.png)
       &:hover
-        background-image url(/assets/mirrormedia/icon/arrow-slideshow-white-left.png)
+        background-image url(/deprecated/topic-page/assets/mirrormedia/icon/arrow-slideshow-white-left.png)
     >>> .swiper-button-next
       right 5px
-      background-image url(/assets/mirrormedia/icon/arrow-slideshow-blue-right.png)
+      background-image url(/deprecated/topic-page/assets/mirrormedia/icon/arrow-slideshow-blue-right.png)
       &:hover
-        background-image url(/assets/mirrormedia/icon/arrow-slideshow-white-right.png)
+        background-image url(/deprecated/topic-page/assets/mirrormedia/icon/arrow-slideshow-white-right.png)
 .swiper-slide
   box-sizing border-box
   display flex

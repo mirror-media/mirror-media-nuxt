@@ -2,7 +2,7 @@
   <section class="header-sidebar">
     <button class="header-sidebar__close" @click="closeSidebar()">
       <!--      <img-->
-      <!--        src="/assets/mirrormedia/icon/close_white@2x.png"-->
+      <!--        src="/deprecated/topic-page/assets/mirrormedia/icon/close_white@2x.png"-->
       <!--        :alt="$t('HEADER.CLOSE')"-->
       <!--      />-->
     </button>
@@ -135,7 +135,7 @@
       <!--        @click="sendGaClickEvent('header', `social line`)"-->
       <!--        ><img-->
       <!--          class="sprite sprite-line"-->
-      <!--          src="/assets/mirrormedia/transperent.png"-->
+      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
       <!--          :alt="$t('HEADER.LINE')"-->
       <!--      /></a>-->
       <!--      <a-->
@@ -144,7 +144,7 @@
       <!--        @click="sendGaClickEvent('header', `social weibo`)"-->
       <!--        ><img-->
       <!--          class="sprite sprite-weibo"-->
-      <!--          src="/assets/mirrormedia/transperent.png"-->
+      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
       <!--          :alt="$t('HEADER.WEIBO')"-->
       <!--      /></a>-->
       <!--      <a-->
@@ -153,7 +153,7 @@
       <!--        @click="sendGaClickEvent('header', `social facebook`)"-->
       <!--        ><img-->
       <!--          class="sprite sprite-facebook"-->
-      <!--          src="/assets/mirrormedia/transperent.png"-->
+      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
       <!--          :alt="$t('HEADER.FACEBOOK')"-->
       <!--      /></a>-->
       <!--      <a-->
@@ -162,7 +162,7 @@
       <!--        @click="sendGaClickEvent('header', `social instagram`)"-->
       <!--        ><img-->
       <!--          class="sprite sprite-instagram"-->
-      <!--          src="/assets/mirrormedia/transperent.png"-->
+      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
       <!--          :alt="$t('HEADER.INSTAGRAM')"-->
       <!--      /></a>-->
       <!--      <a-->
@@ -171,7 +171,7 @@
       <!--        @click="sendGaClickEvent('header', `social rss`)"-->
       <!--        ><img-->
       <!--          class="sprite sprite-rss"-->
-      <!--          src="/assets/mirrormedia/transperent.png"-->
+      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
       <!--          :alt="$t('HEADER.RSS')"-->
       <!--      /></a>-->
       <!--      <a-->
@@ -180,7 +180,7 @@
       <!--        @click="sendGaClickEvent('header', `social mail`)"-->
       <!--        ><img-->
       <!--          class="sprite sprite-mail"-->
-      <!--          src="/assets/mirrormedia/transperent.png"-->
+      <!--          src="/deprecated/topic-page/assets/mirrormedia/transperent.png"-->
       <!--          :alt="$t('HEADER.EMAIL')"-->
       <!--      /></a>-->
     </div>
@@ -336,7 +336,7 @@ export default {
   margin-top 1em
 
 .sprite
-  background-image url('/assets/mirrormedia/icon/socialMedia_white@2x.png')
+  background-image url('/deprecated/topic-page/assets/mirrormedia/icon/socialMedia_white@2x.png')
   background-repeat no-repeat
   background-size 126px 120px
   display block

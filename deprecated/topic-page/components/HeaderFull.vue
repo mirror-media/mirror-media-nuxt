@@ -4,7 +4,7 @@
       <div class="headerFull__menu">
         <a @click="openSideBar()"
           ><img
-            src="/assets/mirrormedia/icon/hamburger_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/hamburger_white.png"
             alt="開啟側邊欄"
         /></a>
       </div>
@@ -20,35 +20,35 @@
         <router-link to="/">
           <img
             class="headerFull__link--icon desktop-only"
-            src="/assets/mirrormedia/icon/logo@2x.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/logo@2x.png"
             alt="鏡週刊 Mirror Media"
           />
         </router-link>
         <a :href="socialLink.FACEBOOK" target="_blank">
           <img
             class="headerFull__link--icon desktop-only"
-            src="/assets/mirrormedia/icon/facebook_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/facebook_white.png"
             alt="Facebook"
           />
         </a>
         <a :href="socialLink.LINE" target="_blank">
           <img
             class="headerFull__link--icon desktop-only"
-            src="/assets/mirrormedia/icon/line_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/line_white.png"
             alt="Line"
           />
         </a>
         <a :href="socialLink.WEIBO" target="_blank">
           <img
             class="headerFull__link--icon desktop-only"
-            src="/assets/mirrormedia/icon/weibo_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/weibo_white.png"
             alt="微博"
           />
         </a>
         <a @click="openSearchBar()">
           <img
             class="headerFull__link--icon"
-            src="/assets/mirrormedia/icon/search_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/search_white.png"
             alt="開啟搜尋列"
           />
         </a>
@@ -62,7 +62,7 @@
       <div class="headerFull__menu">
         <a @click="openSideBar()"
           ><img
-            src="/assets/mirrormedia/icon/hamburger_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/hamburger_white.png"
             alt="開啟側邊欄"
         /></a>
       </div>
@@ -78,35 +78,35 @@
         <router-link to="/">
           <img
             class="headerFull__link--icon desktop-only"
-            src="/assets/mirrormedia/icon/logo@2x.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/logo@2x.png"
             alt="鏡週刊 Mirror Media"
           />
         </router-link>
         <a :href="socialLink.FACEBOOK" target="_blank">
           <img
             class="headerFull__link--icon desktop-only"
-            src="/assets/mirrormedia/icon/facebook_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/facebook_white.png"
             alt="Facebook"
           />
         </a>
         <a :href="socialLink.LINE" target="_blank">
           <img
             class="headerFull__link--icon desktop-only"
-            src="/assets/mirrormedia/icon/line_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/line_white.png"
             alt="Line"
           />
         </a>
         <a :href="socialLink.WEIBO" target="_blank">
           <img
             class="headerFull__link--icon desktop-only"
-            src="/assets/mirrormedia/icon/weibo_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/weibo_white.png"
             alt="微博"
           />
         </a>
         <a @click="openSearchBar()">
           <img
             class="headerFull__link--icon"
-            src="/assets/mirrormedia/icon/search_white.png"
+            src="/deprecated/topic-page/assets/mirrormedia/icon/search_white.png"
             alt="開啟搜尋列"
           />
         </a>
@@ -116,7 +116,10 @@
       <div class="sidebarFull-container" :class="{ open: openSide }">
         <div class="sidebarFull__close">
           <a class="sidebarFull__close--icon" @click="closeSideBar()">
-            <img src="/assets/mirrormedia/icon/close.png" alt="關閉側邊欄" />
+            <img
+              src="/deprecated/topic-page/assets/mirrormedia/icon/close.png"
+              alt="關閉側邊欄"
+            />
           </a>
           <a class="sidebarFull__close--text" @click="closeSideBar()"
             >CLOSE THE MENU</a
@@ -158,7 +161,10 @@
           />
         </form>
         <a @click="closeSearchBar()">
-          <img src="/assets/mirrormedia/icon/close.png" alt="關閉搜尋列" />
+          <img
+            src="/deprecated/topic-page/assets/mirrormedia/icon/close.png"
+            alt="關閉搜尋列"
+          />
         </a>
       </div>
       <div class="searchFull-curtain" @click="closeSearchBar()" />
@@ -237,7 +243,7 @@ export default {
       } else {
         return _.get(this.sectionLogo, ['image', 'url'])
           ? _.get(this.sectionLogo, ['image', 'url'])
-          : '/assets/mirrormedia/logo.svg'
+          : '/deprecated/topic-page/assets/mirrormedia/logo.svg'
       }
     },
     openSearchBar() {

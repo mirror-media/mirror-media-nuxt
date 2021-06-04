@@ -154,7 +154,7 @@ export function getImage(article, size) {
   let image
 
   if (!article) {
-    return '/assets/mirrormedia/notImage.png'
+    return '/deprecated/topic-page/assets/mirrormedia/notImage.png'
   }
 
   if (article.heroImage) {
@@ -183,19 +183,31 @@ export function getImage(article, size) {
       return _.get(
         image,
         ['desktop', 'url'],
-        '/assets/mirrormedia/notImage.png'
+        '/deprecated/topic-page/assets/mirrormedia/notImage.png'
       )
     case 'mobile':
-      return _.get(image, ['mobile', 'url'], '/assets/mirrormedia/notImage.png')
+      return _.get(
+        image,
+        ['mobile', 'url'],
+        '/deprecated/topic-page/assets/mirrormedia/notImage.png'
+      )
     case 'tablet':
-      return _.get(image, ['tablet', 'url'], '/assets/mirrormedia/notImage.png')
+      return _.get(
+        image,
+        ['tablet', 'url'],
+        '/deprecated/topic-page/assets/mirrormedia/notImage.png'
+      )
     case 'tiny':
-      return _.get(image, ['tiny', 'url'], '/assets/mirrormedia/notImage.png')
+      return _.get(
+        image,
+        ['tiny', 'url'],
+        '/deprecated/topic-page/assets/mirrormedia/notImage.png'
+      )
     default:
       return _.get(
         image,
         ['desktop', 'url'],
-        '/assets/mirrormedia/notImage.png'
+        '/deprecated/topic-page/assets/mirrormedia/notImage.png'
       )
   }
 }

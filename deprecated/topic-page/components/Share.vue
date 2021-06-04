@@ -19,8 +19,8 @@
       ><img
         :src="
           isOpen
-            ? '/assets/mirrormedia/icon/close_white.png'
-            : '/assets/mirrormedia/icon/share-white.png'
+            ? '/deprecated/topic-page/assets/mirrormedia/icon/close_white.png'
+            : '/deprecated/topic-page/assets/mirrormedia/icon/share-white.png'
         "
         :alt="isOpen ? '關閉' : '開啟'"
     /></a>
@@ -28,13 +28,17 @@
       class="share__icon share__icon--list share--line"
       :class="[isOpen ? 'open' : '']"
       @click="shareLine"
-      ><img src="/assets/mirrormedia/icon/line_white_v2.png" alt="Line"
+      ><img
+        src="/deprecated/topic-page/assets/mirrormedia/icon/line_white_v2.png"
+        alt="Line"
     /></a>
     <a
       class="share__icon share__icon--list share--fb"
       :class="[isOpen ? 'open' : '']"
       @click="shareFacebook"
-      ><img src="/assets/mirrormedia/icon/facebook_white.png" alt="Facebook"
+      ><img
+        src="/deprecated/topic-page/assets/mirrormedia/icon/facebook_white.png"
+        alt="Facebook"
     /></a>
   </div>
 </template>
