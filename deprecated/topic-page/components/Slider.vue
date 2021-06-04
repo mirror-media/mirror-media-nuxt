@@ -99,6 +99,9 @@ export default {
 
 .swiper-container
   clear both
+  >>> .swiper-button-prev, >>> .swiper-button-next
+    &::after
+      display none !important
   &--article
     >>> .swiper-button-prev, >>> .swiper-button-next
       width 30px
