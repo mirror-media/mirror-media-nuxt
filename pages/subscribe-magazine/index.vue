@@ -1,5 +1,5 @@
 <template>
-  <div class="subscribe-megazine-page">
+  <div class="subscribe-magazine-page">
     <SubscribeStepProgress :currentStep="currentStep" />
 
     <SubscribeChoosePlan v-if="currentStep === 1" :choosePlan="choosePlan" />
@@ -31,9 +31,9 @@
     <!-- loading mask -->
     <div
       v-if="orderStatus === 'loading'"
-      class="subscribe-megazine-page__loading"
+      class="subscribe-magazine-page__loading"
     >
-      <div class="subscribe-megazine-page__loading_icon">
+      <div class="subscribe-magazine-page__loading_icon">
         <img :src="require('~/assets/loading.gif')" alt="" />
       </div>
     </div>
@@ -144,7 +144,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.subscribe-megazine-page {
+.subscribe-magazine-page {
   position: relative;
   &__loading {
     position: fixed;
