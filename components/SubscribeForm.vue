@@ -25,6 +25,14 @@
 
         <SubscribeFormShip :setShipPlan="setShipPlan" />
         <SubscribeFormReceipt :setReceiptPlan="setReceiptPlan" />
+        <SubscribeFormAcceptPermission
+          :acceptPermission="acceptPermission"
+          :setAcceptPermission="setAcceptPermission"
+        />
+        <SubscribeFormCreditCard
+          :acceptPermission="acceptPermission"
+          :setAcceptPermission="setAcceptPermission"
+        />
 
         <UiSubscribeButton title="確認訂購" @click.native="submitHandler" />
       </div>
@@ -44,6 +52,8 @@ import SubscribeFormPerchaseInfo from '~/components/SubscribeFormPerchaseInfo.vu
 import SubscribeFormOrdererData from '~/components/SubscribeFormOrdererData.vue'
 import SubscribeFormShip from '~/components/SubscribeFormShip.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
+import SubscribeFormAcceptPermission from '~/components/SubscribeFormAcceptPermission.vue'
+import SubscribeFormCreditCard from '~/components/SubscribeFormCreditCard.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 export default {
   components: {
@@ -52,6 +62,8 @@ export default {
     SubscribeFormOrdererData,
     SubscribeFormShip,
     SubscribeFormReceipt,
+    SubscribeFormAcceptPermission,
+    SubscribeFormCreditCard,
     UiSubscribeButton,
   },
   props: {
@@ -117,6 +129,7 @@ export default {
       },
       receiptPlan: '捐贈',
       receiverDataIsSameAsOrderer: false,
+      acceptPermission: false,
       formStatus: {
         orderer: 'OK',
         receiver: 'OK',
@@ -132,6 +145,9 @@ export default {
     },
     setOrdererData(newOrdererData) {
       this.ordererData = newOrdererData
+    },
+    setAcceptPermission() {
+      this.acceptPermission = !this.acceptPermission
     },
     setReceiverDataIsSameAsOrderer() {
       this.receiverDataIsSameAsOrderer = !this.receiverDataIsSameAsOrderer
