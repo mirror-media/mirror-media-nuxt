@@ -21,10 +21,10 @@ export default {
     background-color #000
   &-img
     height 100%
-    background-image url(/assets/mirrormedia/wine-warning--mobile.png)
+    background-image url(/deprecated/topic-page/assets/mirrormedia/wine-warning--mobile.png)
     background-size contain
     background-repeat no-repeat
     background-position center
     @media (min-width 965px)
-      background-image url(/assets/mirrormedia/wine-warning--desktop.png)
+      background-image url(/deprecated/topic-page/assets/mirrormedia/wine-warning--desktop.png)
 </style>
