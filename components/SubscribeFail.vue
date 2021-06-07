@@ -60,49 +60,61 @@ export default {
 <style lang="scss" scoped>
 .order-fail,
 .payment-fail {
-  display: flex;
   font-family: PingFangTC;
   font-size: 15px;
   line-height: 1.87;
   text-align: justify;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  height: 50vh;
 
   &__wrapper {
-    margin: auto;
+    margin: 0 auto;
     border-radius: 4px;
     background-color: #f5f5f5;
     color: #4a4a4a;
+    display: flex;
+    flex-direction: column;
 
     @include media-breakpoint-up(sm) {
       padding: 17px 25px 30px 25px;
       max-height: 50vh;
-      width: 990px;
+      max-width: 990px;
     }
   }
 }
 
-.order-fail_wrapper {
+.order-fail__wrapper {
   padding: 27px 24px 24px 24px;
 
   @include media-breakpoint-up(sm) {
     padding: 17px 25px 30px 25px;
-    margin: 47px 25px;
+    margin: 47px auto;
+  }
+
+  & .button__wrapper {
+    margin-top: 27px;
+    width: 321px;
+    height: 56px;
+    align-self: center;
+
+    @include media-breakpoint-up(sm) {
+      margin-top: 17px;
+      width: 270px;
+      align-self: flex-start;
+    }
   }
 }
 
 .payment-fail__wrapper {
   padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  font-size: 15px;
   line-height: 21px;
+  margin: 20px;
 
   @include media-breakpoint-up(sm) {
+    padding-left: 24px;
     font-size: 18px;
     line-height: 25px;
-    margin: 20px 24px;
+    margin: 0 auto;
   }
 
   & .button__wrapper {
@@ -113,22 +125,12 @@ export default {
   }
 }
 
-.button__wrapper {
-  margin-top: 48px;
-  justify-content: center;
-  display: flex;
-
-  @include media-breakpoint-up(sm) {
-    margin-top: 17px;
-    justify-content: flex-start;
-  }
-}
-
 .error-message {
   font-size: 15px;
   line-height: 200%;
   color: #4a4a4a;
   margin: 20px;
+  text-align: center;
 
   @include media-breakpoint-up(sm) {
     width: 990px;
