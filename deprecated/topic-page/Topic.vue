@@ -50,7 +50,7 @@
           />
           <div class="topicTimeline__projects">
             <h1>更多專題文章</h1>
-            <ProjectSliderContainer :projects="filteredProjects" />
+            <!--            <ProjectSliderContainer :projects="filteredProjects" />-->
           </div>
         </template>
 
@@ -476,6 +476,7 @@ export default {
    */
   async fetch() {
     await fetchData(this.$store, this.$route.params.topicId)
+    await this.beforeRouteUpdate({ path: this.$route.path }, '', () => {})
   },
   data() {
     return {
@@ -1056,78 +1057,82 @@ export default {
     updateSysStage() {
       this.dfpMode = currEnv()
     },
-  },
-  beforeRouteUpdate(to, from, next) {
-    let topicType
-    const uuid = _.split(to.path, '/')[2]
-    const topic = _.find(
-      _.get(this.$store.state.deprecatedStore.topics, ['items']),
-      { id: uuid },
-      undefined
-    )
-    if (!topic) {
-      fetchTopicByUuid(this.$store, uuid).then(() => {
-        topicType = _.camelCase(
-          _.get(this.$store.state.deprecatedStore.topic, ['items', '0', 'type'])
-        )
+    async beforeRouteUpdate(to, from, next) {
+      let topicType
+      const uuid = _.split(to.path, '/')[2]
+      const topic = _.find(
+        _.get(this.$store.state.deprecatedStore.topics, ['items']),
+        { id: uuid },
+        undefined
+      )
+      if (!topic) {
+        await fetchTopicByUuid(this.$store, uuid).then(async () => {
+          topicType = _.camelCase(
+            _.get(this.$store.state.deprecatedStore.topic, [
+              'items',
+              '0',
+              'type',
+            ])
+          )
+          if (topicType === 'group') {
+            return await Promise.all([
+              fetchAllArticlesByUuid(this.$store, uuid, TOPIC, true),
+              fetchTopicImages(this.$store, uuid),
+            ]).then(next())
+          } else if (topicType === 'portraitWall') {
+            return await Promise.all([
+              fetchAllArticlesByUuid(this.$store, uuid, TOPIC, false),
+              fetchTopicImages(this.$store, uuid),
+            ]).then(next())
+          } else if (topicType === 'timeline') {
+            return await Promise.all([
+              fetchArticlesByUuid(this.$store, uuid, TOPIC, false, false),
+              fetchTopicImages(this.$store, uuid),
+              fetchTimeline(this.$store, uuid),
+            ]).then(next())
+          } else if (topicType === 'wide') {
+            return await Promise.all([
+              fetchArticlesByUuid(this.$store, uuid, TOPIC, false, false, 3),
+              fetchTopicImages(this.$store, uuid),
+            ]).then(next())
+          } else {
+            return await Promise.all([
+              fetchArticlesByUuid(this.$store, uuid, TOPIC, false, false),
+              fetchTopicImages(this.$store, uuid),
+            ]).then(next())
+          }
+        })
+      } else {
+        topicType = _.camelCase(_.get(topic, ['type']))
         if (topicType === 'group') {
-          Promise.all([
+          await Promise.all([
             fetchAllArticlesByUuid(this.$store, uuid, TOPIC, true),
             fetchTopicImages(this.$store, uuid),
           ]).then(next())
         } else if (topicType === 'portraitWall') {
-          Promise.all([
+          await Promise.all([
             fetchAllArticlesByUuid(this.$store, uuid, TOPIC, false),
             fetchTopicImages(this.$store, uuid),
           ]).then(next())
         } else if (topicType === 'timeline') {
-          Promise.all([
+          await Promise.all([
             fetchArticlesByUuid(this.$store, uuid, TOPIC, false, false),
             fetchTopicImages(this.$store, uuid),
             fetchTimeline(this.$store, uuid),
           ]).then(next())
         } else if (topicType === 'wide') {
-          Promise.all([
+          await Promise.all([
             fetchArticlesByUuid(this.$store, uuid, TOPIC, false, false, 3),
             fetchTopicImages(this.$store, uuid),
           ]).then(next())
         } else {
-          Promise.all([
+          await Promise.all([
             fetchArticlesByUuid(this.$store, uuid, TOPIC, false, false),
             fetchTopicImages(this.$store, uuid),
           ]).then(next())
         }
-      })
-    } else {
-      topicType = _.camelCase(_.get(topic, ['type']))
-      if (topicType === 'group') {
-        Promise.all([
-          fetchAllArticlesByUuid(this.$store, uuid, TOPIC, true),
-          fetchTopicImages(this.$store, uuid),
-        ]).then(next())
-      } else if (topicType === 'portraitWall') {
-        Promise.all([
-          fetchAllArticlesByUuid(this.$store, uuid, TOPIC, false),
-          fetchTopicImages(this.$store, uuid),
-        ]).then(next())
-      } else if (topicType === 'timeline') {
-        Promise.all([
-          fetchArticlesByUuid(this.$store, uuid, TOPIC, false, false),
-          fetchTopicImages(this.$store, uuid),
-          fetchTimeline(this.$store, uuid),
-        ]).then(next())
-      } else if (topicType === 'wide') {
-        Promise.all([
-          fetchArticlesByUuid(this.$store, uuid, TOPIC, false, false, 3),
-          fetchTopicImages(this.$store, uuid),
-        ]).then(next())
-      } else {
-        Promise.all([
-          fetchArticlesByUuid(this.$store, uuid, TOPIC, false, false),
-          fetchTopicImages(this.$store, uuid),
-        ]).then(next())
       }
-    }
+    },
   },
   beforeRouteLeave(to, from, next) {
     if (process.env.VUE_ENV === 'client') {

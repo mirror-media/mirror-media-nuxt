@@ -68,6 +68,8 @@ article
     color #000
     line-height 1.5
     letter-spacing 2px
+    >>> p
+      margin 16px auto
   > article
     background-color #fff
 
