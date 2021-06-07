@@ -177,7 +177,6 @@ export default {
       ],
       link: [
         { rel: 'canonical', href: pageUrl },
-        { rel: 'amphtml', href: `${SITE_URL}/story/amp/${this.storySlug}/` },
         {
           hid: 'gptLink',
           skip: !this.canAdvertise,
