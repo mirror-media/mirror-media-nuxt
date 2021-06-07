@@ -92,3 +92,4 @@ dist
 # Config
 config.js
 gcskeyfile.json
+deprecated/topic-page/api/config.js

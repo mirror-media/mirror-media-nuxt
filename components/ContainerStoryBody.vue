@@ -1,5 +1,6 @@
 <template>
-  <article class="story-body" :class="section.name">
+  <!-- itemprop attribute is for Dable to clawing the story -->
+  <article class="story-body" :class="section.name" itemprop="articleBody">
     <div class="story__section-datetime">
       <p
         v-if="!isAdvertised && categoryTitle"
