@@ -26,6 +26,7 @@
     <SubscribeSuccess
       v-if="currentStep === 3 && orderStatus === 'success'"
       :orderInfo="orderInfo"
+      :orderId="orderId"
     />
 
     <!-- loading mask -->
