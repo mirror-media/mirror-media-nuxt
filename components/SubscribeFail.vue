@@ -1,6 +1,6 @@
 <template>
   <div class="fail">
-    <div class="payment-fail" v-if="orderStatus === 'payment-fail'">
+    <div v-if="orderStatus === 'payment-fail'" class="payment-fail">
       <div class="error-message">
         信用卡付款失敗，請再次確認信用卡資訊，或更換信用卡完成訂購手續，謝謝！
       </div>
@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="order-fail" v-else>
+    <div v-else class="order-fail">
       <div class="order-fail__wrapper">
         {{ errorMessage }}
         <div class="button__wrapper">
@@ -34,6 +34,9 @@
 <script>
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 export default {
+  components: {
+    UiSubscribeButton,
+  },
   props: {
     orderStatus: {
       type: String,
@@ -45,9 +48,6 @@ export default {
       isRequired: true,
       default: 'orderId',
     },
-  },
-  components: {
-    UiSubscribeButton,
   },
   computed: {
     errorMessage() {

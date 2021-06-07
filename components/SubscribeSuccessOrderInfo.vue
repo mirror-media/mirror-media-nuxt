@@ -22,9 +22,9 @@
           <div class="content__data">
             <div class="perchased-form">
               <div
-                class="perchased-form__row"
                 v-for="item of orderInfo.perchasedPlan"
                 :key="item.id"
+                class="perchased-form__row"
               >
                 <div>{{ item.detail }} X {{ item.count }}</div>
                 <div>NT$ {{ item.newPrice * item.count }}</div>
