@@ -12,6 +12,8 @@ module.exports = function handleHeaders(req, res, next) {
     /(login|finishSignUp|profile|cancelMembership|premium|magazine)/gs.test(
       url
     ) ||
+    // deprecated topic page, due to ads in different device environments
+    /topic/gs.test(url) ||
     // membership api paths
     new RegExp(`/${API_PATH_FRONTEND}/membership`, 'gs').test(url) ||
     new RegExp(`/${API_PATH_FRONTEND}/saleor`, 'gs').test(url)

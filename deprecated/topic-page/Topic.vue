@@ -179,27 +179,15 @@
             :articles="autoScrollArticles"
             :hasDFP="false"
           />
-          <div>
+          <div class="ad">
             <vue-dfp
               :is="props.vueDfp"
-              v-if="hasDFP && viewport > 1000"
-              pos="LPCFT"
-              :dfpUnits="props.dfpUnits"
-              :section="props.section"
-              :dfpId="props.dfpId"
-              :unitId="dfp"
-            />
-          </div>
-          <div>
-            <vue-dfp
-              :is="props.vueDfp"
-              v-if="hasDFP && viewport < 900"
-              pos="LMBFT"
+              :pos="dfpPos"
               :dfpUnits="props.dfpUnits"
               :section="props.section"
               :dfpId="props.dfpId"
               :unitId="mobileDfp"
-              :size="getValue($store, 'getters.adSize')"
+              :size="getValue($store, 'getters.deprecatedStore.adSize')"
             />
           </div>
           <article-list
@@ -495,7 +483,7 @@ export default {
       showDfpCoverAdVponFlag: false,
       showDfpHeaderLogo: false,
       siteTitle: SITE_TITLE,
-      viewport: 0,
+      viewport: undefined,
       persidentCandidateData: [
         {
           tagId: '5d65fbaa486faa3919afaeb9',
@@ -519,6 +507,7 @@ export default {
           articles: [],
         },
       ],
+      dfpPos: '',
     }
   },
   computed: {
@@ -847,6 +836,9 @@ export default {
       ],
       link: [{ rel: 'alternate', href: relUrl }],
     }
+  },
+  created() {
+    this.dfpPos = this.$ua.isFromPc() ? 'LPCFT' : 'LMBFT'
   },
   beforeMount() {
     fetchEvent(this.$store, 'logo')
@@ -1249,4 +1241,9 @@ export default {
       color #fff
       background-size contain
       background-position center center
+
+.ad-container
+  display flex
+  justify-content center
+  align-items center
 </style>
