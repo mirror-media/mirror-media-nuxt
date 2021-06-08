@@ -64,7 +64,9 @@
 
       <UiWineWarning v-if="doesHaveWineCategory" />
     </section>
-    <UiFooter />
+    <div class="footer-wrapper">
+      <UiFooter />
+    </div>
   </section>
 </template>
 
@@ -333,10 +335,6 @@ export default {
   color: rgba(#000, 0.87);
   word-break: break-word;
   overflow-wrap: break-word;
-  padding: 88px 0 48px 0;
-  @include media-breakpoint-up(md) {
-    padding: 112px 0 48px 0;
-  }
 
   &__article-body {
     padding: 0 20px;
@@ -379,12 +377,12 @@ export default {
 }
 
 .landing-info {
-  padding: 0 20px;
+  padding: 88px 20px 0 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   @include media-breakpoint-up(md) {
-    padding: 0;
+    padding: 112px 0 0 0;
     max-width: 608px;
     margin: 0 auto;
   }
@@ -459,14 +457,28 @@ export default {
 }
 
 .list-related-container {
-  margin: 48px 20px 0 20px;
+  margin: 48px 20px 48px 20px;
   @include media-breakpoint-up(md) {
-    max-width: 608px;
-    margin: 48px auto 0 auto;
+    margin: 0;
+    padding-top: 48px;
+    padding-left: calc((100vw - 608px) / 2);
+    padding-right: calc((100vw - 608px) / 2);
+    padding-bottom: 48px;
   }
   @include media-breakpoint-up(xl) {
-    max-width: 640px;
-    margin: 60px auto 0 auto;
+    padding-left: calc((100vw - 640px) / 2);
+    padding-right: calc((100vw - 640px) / 2);
+    background-color: white;
+    position: relative;
+    z-index: 511;
+  }
+}
+
+.footer-wrapper {
+  @include media-breakpoint-up(xl) {
+    background-color: white;
+    position: relative;
+    z-index: 511;
   }
 }
 </style>
