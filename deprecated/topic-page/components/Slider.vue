@@ -24,12 +24,6 @@
 </template>
 <script>
 import uuidv4 from 'uuid/v4'
-import Vue from 'vue'
-
-if (process.browser) {
-  const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
-  Vue.use(VueAwesomeSwiper)
-}
 
 export default {
   name: 'Slider',
