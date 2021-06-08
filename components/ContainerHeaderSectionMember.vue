@@ -15,23 +15,30 @@
         />
       </ul>
     </nav>
-    <button
-      class="header__sidebar-toggle-button sidebar-toggle-button"
-      @click="handleSidebarToggle"
-    >
-      <SvgSidebarToggleButton />
-    </button>
+    <div class="header__member-sidebar-toggle member-sidebar-toggle">
+      <ClientOnly>
+        <ContainerMembershipMemberIcon class="member-icon-mobile" />
+      </ClientOnly>
+      <button
+        class="member-sidebar-toggle__sidebar-toggle-button sidebar-toggle-button"
+        @click="handleSidebarToggle"
+      >
+        <SvgSidebarToggleButton />
+      </button>
+    </div>
   </header>
 </template>
 
 <script>
 import UiHeaderSectionMemberListItem from '~/components/UiHeaderSectionMemberListItem.vue'
 import SvgSidebarToggleButton from '~/assets/premium-header-sidebar-toggle.svg?inline'
+import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMemberIcon.vue'
 
 export default {
   components: {
     UiHeaderSectionMemberListItem,
     SvgSidebarToggleButton,
+    ContainerMembershipMemberIcon,
   },
   data() {
     return {
@@ -58,23 +65,20 @@ export default {
   height: 64px;
   background-color: white;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 0 10px;
   position: relative;
   box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.06);
-  &__logo {
-    position: absolute;
-    left: 10px;
+  @include media-breakpoint-up(xl) {
+    padding: 0 60px;
   }
+
   &__member-nav {
     display: none;
     @include media-breakpoint-up(xl) {
       display: flex;
     }
-  }
-  &__sidebar-toggle-button {
-    position: absolute;
-    right: 10px;
   }
 }
 
@@ -95,6 +99,14 @@ export default {
 
 .member-section-list {
   display: flex;
+}
+
+.member-sidebar-toggle {
+  display: flex;
+  align-items: center;
+  &__sidebar-toggle-button {
+    margin: 0 0 0 23px;
+  }
 }
 
 .sidebar-toggle-button {
