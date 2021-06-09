@@ -46,8 +46,24 @@
             </select>
           </div>
 
-          <div class="receipt__choose_item_input">
-            <input type="text" :placeholder="carrierNumberPlaceHolder" />
+          <div
+            class="receipt__choose_item_input"
+            :class="{ error: $v.carrierNumber.$error && isNeedToCheck }"
+          >
+            <input
+              v-model="$v.carrierNumber.$model"
+              type="text"
+              :placeholder="carrierNumberPlaceHolder"
+            />
+            <span
+              v-if="
+                !$v.carrierNumber.required &&
+                $v.carrierNumber.$error &&
+                isNeedToCheck
+              "
+              class="error__message"
+              >欄位不得為空</span
+            >
           </div>
         </div>
       </div>
@@ -62,12 +78,42 @@
           v-if="receiptPlan === '三聯式發票'"
           class="receipt__choose_item_detail"
         >
-          <div class="receipt__choose_item_input">
-            <input type="text" placeholder="抬頭" />
+          <div
+            class="receipt__choose_item_input"
+            :class="{ error: $v.carrierTitle.$error && isNeedToCheck }"
+          >
+            <input
+              v-model="$v.carrierTitle.$model"
+              type="text"
+              placeholder="抬頭"
+            />
+            <span
+              v-if="
+                !$v.carrierTitle.required &&
+                $v.carrierTitle.$error &&
+                isNeedToCheck
+              "
+              class="error__message"
+              >欄位不得為空</span
+            >
           </div>
 
-          <div class="receipt__choose_item_input">
-            <input type="text" placeholder="統一編號" />
+          <div
+            class="receipt__choose_item_input"
+            :class="{ error: $v.carrierUbn.$error && isNeedToCheck }"
+          >
+            <input
+              v-model="$v.carrierUbn.$model"
+              type="text"
+              placeholder="統一編號"
+            />
+            <span
+              v-if="
+                !$v.carrierUbn.required && $v.carrierUbn.$error && isNeedToCheck
+              "
+              class="error__message"
+              >欄位不得為空</span
+            >
           </div>
         </div>
       </div>
@@ -76,12 +122,19 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
+
 export default {
   props: {
-    setReceiptPlan: {
+    setReceiptData: {
       type: Function,
       isRequired: true,
       default: () => {},
+    },
+    validateOn: {
+      // for testing
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -95,9 +148,33 @@ export default {
     }
   },
 
+  validations: {
+    carrierNumber: {
+      required,
+    },
+    carrierTitle: {
+      required,
+    },
+    carrierUbn: {
+      required,
+    },
+  },
+
   watch: {
-    receiptPlan(val) {
-      this.setReceiptPlan(val)
+    $data: {
+      handler(val) {
+        console.log(this.$v)
+        const receiptData = {
+          receiptPlan: val.receiptPlan,
+          donateOrganization: val.donateOrganization,
+          carrierType: val.carrierType,
+          carrierNumber: val.carrierNumber,
+          carrierTitle: val.carrierTitle,
+          carrierUbn: val.carrierUbn,
+        }
+        this.setReceiptData(receiptData)
+      },
+      deep: true,
     },
   },
   computed: {
@@ -118,6 +195,9 @@ export default {
       }
 
       return placeholder
+    },
+    isNeedToCheck() {
+      return this.validateOn
     },
   },
 }

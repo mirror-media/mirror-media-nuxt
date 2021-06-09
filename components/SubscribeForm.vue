@@ -24,7 +24,10 @@
         />
 
         <SubscribeFormShip :setShipPlan="setShipPlan" />
-        <SubscribeFormReceipt :setReceiptPlan="setReceiptPlan" />
+        <SubscribeFormReceipt
+          ref="receiptDOM"
+          :setReceiptData="setReceiptData"
+        />
         <SubscribeFormAcceptPermission
           :acceptPermission="acceptPermission"
           :setAcceptPermission="setAcceptPermission"
@@ -124,7 +127,14 @@ export default {
         name: '限時專送',
         cost: 0,
       },
-      receiptPlan: '捐贈',
+      receiptData: {
+        receiptPlan: '捐贈',
+        donateOrganization: '財團法人伊甸社會福利基金會',
+        carrierType: 'mail',
+        carrierNumber: '',
+        carrierTitle: '',
+        carrierUbn: '',
+      },
       creditCard: {
         card: '',
         date: '',
@@ -155,8 +165,8 @@ export default {
     setShipPlan(choosedShipPlan) {
       this.shipPlan = choosedShipPlan
     },
-    setReceiptPlan(choosedReceiptPlan) {
-      this.receiptPlan = choosedReceiptPlan
+    setReceiptData(editedReceiptData) {
+      this.receiptData = editedReceiptData
     },
     setOrdererData(newOrdererData) {
       this.ordererData = newOrdererData
@@ -189,8 +199,11 @@ export default {
         rec_remark: '', // TODO
         delivery: this.shipPlan,
 
-        shipPlan: this.shipPlan,
-        receiptPlan: this.receiptPlan,
+        // 發票相關
+        carrier_type: this.receiptData.receiptPlan,
+        carrier_number: this.receiptData.receiptNumber,
+        carrier_title: this.receiptData.receiptTitle,
+        carrier_ubn: this.receiptData.receiptUbn,
       }
     },
     validationPass() {
@@ -215,7 +228,9 @@ export default {
       }
 
       if (this.validationPass()) {
-        this.proceedOrderPayment(this.getOrderPayload())
+        const payload = this.getOrderPayload()
+        console.log(payload)
+        // this.proceedOrderPayment(payload)
       }
     },
   },
