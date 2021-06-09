@@ -296,6 +296,23 @@ export default {
     letter-spacing: normal;
     color: #4a4a4a;
     margin-bottom: 6px;
+
+    &.radio {
+      margin-bottom: 0;
+    }
+  }
+  select {
+    height: 44px;
+    width: 100%;
+    padding: 11px 7px 11px;
+    border-radius: 4px;
+    box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.1);
+    background: #f5f5f5;
+    font-size: 15px;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   input[type='text'] {
@@ -305,6 +322,7 @@ export default {
     border-radius: 4px;
     box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.1);
     background: #f5f5f5;
+    font-size: 15px;
 
     &:focus {
       outline: none;

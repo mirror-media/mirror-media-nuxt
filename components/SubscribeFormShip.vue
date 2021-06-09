@@ -13,7 +13,7 @@
           type="radio"
           :value="{ name: '限時專送', cost: 0 }"
         />
-        <span>限時專送 NT$ 0 / 期</span>
+        <span class="radio">限時專送 NT$ 0 / 期</span>
       </div>
       <div class="ship__choose_item">
         <input
@@ -21,7 +21,7 @@
           type="radio"
           :value="{ name: '限時掛號', cost: 20 }"
         />
-        <span>限時掛號 NT$ 20 / 期</span>
+        <span class="radio">限時掛號 NT$ 20 / 期</span>
       </div>
     </div>
   </div>
