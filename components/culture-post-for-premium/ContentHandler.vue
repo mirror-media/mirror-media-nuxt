@@ -3,6 +3,7 @@ import UiH2 from './UiH2.vue'
 import UiH3 from './UiH3.vue'
 import UiAnnotation from './UiAnnotation.vue'
 import UiFigure from './UiFigure.vue'
+import UiQuoteBy from './UiQuoteBy.vue'
 import UiInfobox from '~/components/UiInfobox.vue'
 import UiSlideshow from '~/components/UiSlideshow.vue'
 import UiSlideshowButtonPrev from '~/components/slideshow/UiSlideshowButtonPrev.vue'
@@ -91,17 +92,7 @@ export default {
         const { quoteBy, quote = '' } = content
 
         return (
-          <div class="g-story-quote-by quote-by">
-            <div
-              class="g-story-quote-by__quote"
-              domPropsInnerHTML={quote.replace(/\n/g, '<br>')}
-            />
-            {quoteBy ? (
-              <span class="g-story-quote-by__quote-by">{quoteBy}</span>
-            ) : (
-              ''
-            )}
-          </div>
+          <UiQuoteBy quote={quote.replace(/\n/g, '<br>')} quoteBy={quoteBy} />
         )
       }
 
@@ -370,10 +361,6 @@ $quote-color: #4a90e2;
     margin-top: 1em;
     margin-bottom: 1em;
     padding: 0 !important;
-  }
-
-  .quote-by {
-    margin-top: 80px;
   }
 
   .youtube {
