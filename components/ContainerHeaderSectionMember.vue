@@ -17,7 +17,7 @@
     </nav>
     <div class="header__member-sidebar-toggle member-sidebar-toggle">
       <ClientOnly>
-        <ContainerMembershipMemberIcon class="member-icon-mobile" />
+        <ContainerMembershipMemberIcon class="member-icon" />
       </ClientOnly>
       <button
         class="member-sidebar-toggle__sidebar-toggle-button sidebar-toggle-button"
@@ -107,6 +107,11 @@ export default {
   &__sidebar-toggle-button {
     margin: 0 0 0 23px;
   }
+}
+
+.member-icon {
+  width: 30px;
+  height: 33px;
 }
 
 .sidebar-toggle-button {
