@@ -98,7 +98,7 @@
             >
           </div>
 
-          <div
+          <!-- <div
             class="receipt__choose_item_input"
             :class="{ error: $v.carrierUbn.$error && isNeedToCheck }"
           >
@@ -114,7 +114,9 @@
               class="error__message"
               >欄位不得為空</span
             >
-          </div>
+          </div> -->
+
+          <UiValidationInput :validionOn="true" v-model="carrierUbn" />
         </div>
       </div>
     </div>
@@ -123,8 +125,12 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import UiValidationInput from '~/components/UiValidationInput.vue'
 
 export default {
+  components: {
+    UiValidationInput,
+  },
   props: {
     setReceiptData: {
       type: Function,
@@ -155,15 +161,14 @@ export default {
     carrierTitle: {
       required,
     },
-    carrierUbn: {
-      required,
-    },
+    // carrierUbn: {
+    //   required,
+    // },
   },
 
   watch: {
     $data: {
       handler(val) {
-        console.log(this.$v)
         const receiptData = {
           receiptPlan: val.receiptPlan,
           donateOrganization: val.donateOrganization,
