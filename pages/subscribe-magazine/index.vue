@@ -88,6 +88,7 @@ export default {
       ],
       simOrderStatus: 'success', //  order-fail, payment-fail, success
       validateOn: true,
+      orderInfo: {},
     }
   },
 
@@ -96,10 +97,10 @@ export default {
       this.perchasedPlan[choosedPlanId].count++
       this.currentStep++
     },
-    async proceedOrderPayment(orderInfo) {
-      this.orderInfo = orderInfo
+    async proceedOrderPayment(orderPayload) {
+      this.orderInfo = orderPayload
       try {
-        await this.payment(orderInfo)
+        await this.payment(orderPayload)
 
         // payment success
         this.currentStep++
@@ -109,7 +110,7 @@ export default {
         this.orderStatus = e.message
       }
     },
-    payment(orderInfo) {
+    payment(orderPayload) {
       return new Promise((resolve, reject) => {
         try {
           this.orderStatus = 'loading'

@@ -29,10 +29,7 @@
           :acceptPermission="acceptPermission"
           :setAcceptPermission="setAcceptPermission"
         />
-        <SubscribeFormCreditCard
-          :acceptPermission="acceptPermission"
-          :setAcceptPermission="setAcceptPermission"
-        />
+        <SubscribeFormCreditCard />
 
         <UiSubscribeButton title="確認訂購" @click.native="submitHandler" />
       </div>
@@ -128,6 +125,11 @@ export default {
         cost: 0,
       },
       receiptPlan: '捐贈',
+      creditCard: {
+        card: '',
+        date: '',
+        cvv: '',
+      },
       receiverDataIsSameAsOrderer: false,
       acceptPermission: false,
       formStatus: {
@@ -135,6 +137,19 @@ export default {
         receiver: 'OK',
       },
     }
+  },
+  watch: {
+    perchasedItems() {
+      const items = this.perchasedPlan.map((plan) => {
+        return {
+          name: plan.detail,
+          amount: plan.count,
+          price: plan.newPrice,
+        }
+      })
+
+      return items
+    },
   },
   methods: {
     setShipPlan(choosedShipPlan) {
@@ -155,12 +170,25 @@ export default {
     setFormStatus(type, formStatus) {
       this.formStatus[type] = formStatus
     },
-    getOrderInfo() {
+    getOrderPayload() {
       return {
-        perchasedPlan: this.perchasedPlan,
-        discount: this.discount,
-        ordererData: this.ordererData,
-        receiverData: this.receiverData,
+        // 商品相關
+        items: this.perchasedItems,
+        discount_code: this.discount.code,
+        // 購買者相關
+        pur_name: this.ordererData.name,
+        pur_cell: this.ordererData.cellphone,
+        pur_phone: `${this.ordererData.phone} ${this.ordererData.phoneExt}`,
+        pur_addr: this.ordererData.address,
+        pur_mail: this.ordererData.email,
+        // 收貨相關
+        rec_name: this.receiverData.name,
+        rec_cell: this.receiverData.cellphone,
+        rec_phone: `${this.receiverData.phone} ${this.receiverData.phoneExt}`,
+        rec_addr: this.receiverData.address,
+        rec_remark: '', // TODO
+        delivery: this.shipPlan,
+
         shipPlan: this.shipPlan,
         receiptPlan: this.receiptPlan,
       }
@@ -187,7 +215,7 @@ export default {
       }
 
       if (this.validationPass()) {
-        this.proceedOrderPayment(this.getOrderInfo())
+        this.proceedOrderPayment(this.getOrderPayload())
       }
     },
   },
@@ -256,6 +284,35 @@ export default {
     letter-spacing: normal;
     color: #4a4a4a;
     margin-bottom: 16px;
+  }
+
+  span {
+    display: block;
+    font-size: 15px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4a4a4a;
+    margin-bottom: 6px;
+  }
+
+  input[type='text'] {
+    height: 44px;
+    width: 100%;
+    padding: 11px 7px 11px;
+    border-radius: 4px;
+    box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.1);
+    background: #f5f5f5;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:disabled {
+      background: #ebebeb;
+    }
   }
 
   input[type='checkbox'] {
