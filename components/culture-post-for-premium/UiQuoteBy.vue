@@ -39,7 +39,8 @@ export default {
   flex-direction: column;
   @include media-breakpoint-up(md) {
     max-width: 480px;
-    margin: 0 auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   &__quote {

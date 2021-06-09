@@ -92,7 +92,11 @@ export default {
         const { quoteBy, quote = '' } = content
 
         return (
-          <UiQuoteBy quote={quote.replace(/\n/g, '<br>')} quoteBy={quoteBy} />
+          <UiQuoteBy
+            class="quote-by"
+            quote={quote.replace(/\n/g, '<br>')}
+            quoteBy={quoteBy}
+          />
         )
       }
 
@@ -349,6 +353,11 @@ $quote-color: #4a90e2;
     margin-top: 3em;
     margin-bottom: 3em;
     padding: 0 18px !important;
+  }
+
+  .quote-by {
+    margin-top: 50px;
+    margin-bottom: 50px;
   }
 
   .embedded-code ::v-deep iframe {
