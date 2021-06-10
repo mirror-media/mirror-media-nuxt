@@ -23,57 +23,20 @@
 export default {
   components: {},
   props: {
-    perchasedPlan: {
-      type: Array,
+    price: {
+      type: Number,
       isRequired: true,
-      default: () => {
-        return [
-          {
-            id: 0,
-            title: '一年方案',
-            detail: '一年鏡週刊52期，加購5期方案',
-            originalPrice: 3990,
-            newPrice: 2880,
-            count: 0,
-          },
-          {
-            id: 1,
-            title: '二年方案',
-            detail: '二年鏡週刊104期，加購10期方案',
-            originalPrice: 7800,
-            newPrice: 5280,
-            count: 0,
-          },
-        ]
-      },
+      default: 0,
     },
-    shipPlan: {
-      type: Object,
+    shipping: {
+      type: Number,
       isRequired: true,
-      default: () => {
-        return {
-          name: '限時專送',
-          cost: 0,
-        }
-      },
+      default: 0,
     },
-  },
-  computed: {
-    price() {
-      const reducer = (accumulator, currentValue) => {
-        return (
-          accumulator.newPrice * accumulator.count +
-          currentValue.newPrice * currentValue.count
-        )
-      }
-
-      return this.perchasedPlan.reduce(reducer)
-    },
-    shipping() {
-      return this.shipPlan?.cost || 0
-    },
-    total() {
-      return this.price + this.shipping
+    total: {
+      type: Number,
+      isRequired: true,
+      default: 0,
     },
   },
 }

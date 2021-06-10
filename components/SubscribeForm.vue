@@ -39,8 +39,9 @@
       </div>
       <div class="subscribe-form__right">
         <SubscribeFormPerchaseInfo
-          :perchasedPlan="perchasedPlan"
-          :shipPlan="shipPlan"
+          :price="price"
+          :shipping="shipping"
+          :total="total"
         />
       </div>
     </div>
@@ -149,7 +150,7 @@ export default {
       },
     }
   },
-  watch: {
+  computed: {
     perchasedItems() {
       const items = this.perchasedPlan.map((plan) => {
         return {
@@ -160,6 +161,22 @@ export default {
       })
 
       return items
+    },
+    price() {
+      const reducer = (accumulator, currentValue) => {
+        return (
+          accumulator.newPrice * accumulator.count +
+          currentValue.newPrice * currentValue.count
+        )
+      }
+
+      return this.perchasedPlan.reduce(reducer)
+    },
+    shipping() {
+      return this.shipPlan?.cost || 0
+    },
+    total() {
+      return this.price + this.shipping
     },
   },
   methods: {
@@ -195,13 +212,17 @@ export default {
         rec_phone: `${this.receiverData.phone} ${this.receiverData.phoneExt}`,
         rec_addr: this.receiverData.address,
         rec_remark: '', // TODO
-        delivery: this.shipPlan,
+        delivery: this.shipPlan.name,
+
+        // 付款相關
+        prime_token: '',
+        price_total: this.totalPrice,
 
         // 發票相關
-        carrier_type: this.receiptData.receiptPlan,
-        carrier_number: this.receiptData.receiptNumber,
-        carrier_title: this.receiptData.receiptTitle,
-        carrier_ubn: this.receiptData.receiptUbn,
+        carrier_type: this.receiptData.carrierType,
+        carrier_number: this.receiptData.carrierNumber,
+        carrier_title: this.receiptData.carrierTitle,
+        carrier_ubn: this.receiptData.carrierUbn,
       }
     },
     validationPass() {

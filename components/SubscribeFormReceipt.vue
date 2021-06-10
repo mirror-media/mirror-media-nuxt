@@ -119,6 +119,8 @@ export default {
           carrierTitle: val.carrierTitle,
           carrierUbn: val.carrierUbn,
         }
+
+        console.log(receiptData)
         this.setReceiptData(receiptData)
       },
       deep: true,
