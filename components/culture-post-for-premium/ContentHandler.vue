@@ -4,7 +4,7 @@ import UiH3 from './UiH3.vue'
 import UiAnnotation from './UiAnnotation.vue'
 import UiFigure from './UiFigure.vue'
 import UiQuoteBy from './UiQuoteBy.vue'
-import UiInfobox from '~/components/UiInfobox.vue'
+import UiInfobox from './UiInfobox.vue'
 import UiSlideshow from '~/components/UiSlideshow.vue'
 import UiSlideshowButtonPrev from '~/components/slideshow/UiSlideshowButtonPrev.vue'
 import UiSlideshowButtonNext from '~/components/slideshow/UiSlideshowButtonNext.vue'
@@ -101,7 +101,13 @@ export default {
       }
 
       case 'infobox':
-        return <UiInfobox class="infobox" content={content} />
+        return (
+          <UiInfobox
+            class="infobox"
+            title={content.title}
+            content={content.body}
+          />
+        )
 
       case 'embeddedcode':
         return <UiEmbeddedCode class="embedded-code" content={content} />
@@ -350,9 +356,11 @@ $quote-color: #4a90e2;
   }
 
   .infobox {
-    margin-top: 3em;
-    margin-bottom: 3em;
-    padding: 0 18px !important;
+    @include media-breakpoint-up(xl) {
+      width: 720px;
+      position: relative;
+      left: calc((720px - 640px) / 2 * -1);
+    }
   }
 
   .quote-by {
