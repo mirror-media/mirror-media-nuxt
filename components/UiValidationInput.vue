@@ -7,7 +7,7 @@
       :value="$v.value.$model"
       @input="changeHandler"
       type="text"
-      placeholder="統一編號"
+      :placeholder="placeholder"
     />
 
     <span
@@ -22,15 +22,21 @@
 import { required } from 'vuelidate/lib/validators'
 export default {
   props: {
-    validateOn: {
-      // for testing
-      type: Boolean,
-      default: true,
-    },
+    //
     value: {
       type: String,
       isRequired: true,
       default: '',
+    },
+    placeholder: {
+      type: String,
+      default: '',
+    },
+
+    validateOn: {
+      // for testing
+      type: Boolean,
+      default: true,
     },
   },
   validations: {
