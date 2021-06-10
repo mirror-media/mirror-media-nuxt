@@ -113,26 +113,33 @@ export default {
     },
     payment(orderPayload) {
       return new Promise((resolve, reject) => {
-        try {
-          this.orderStatus = 'loading'
+        this.orderStatus = 'loading'
 
-          setTimeout(() => {
-            // sim order status
-            switch (this.simOrderStatus) {
-              case 'success':
-                resolve()
-                break
-              case 'order-fail':
-                reject(new Error('order-fail'))
-                break
-              case 'payment-fail':
-                reject(new Error('payment-fail'))
-                break
-            }
-          }, 3000)
-        } catch (e) {
-          reject(e)
-        }
+        // this.$axios
+        //   .$post('http://dev.mirrormedia.mg/api/mgzsubscribe', orderPayload)
+        //   .then((response) => {
+        //     console.log(response)
+        //     resolve()
+        //   })
+        //   .catch((err) => {
+        //     console.log(err)
+        //     reject(new Error('order-fail'))
+        //   })
+
+        setTimeout(() => {
+          // sim order status
+          switch (this.simOrderStatus) {
+            case 'success':
+              resolve()
+              break
+            case 'order-fail':
+              reject(new Error('order-fail'))
+              break
+            case 'payment-fail':
+              reject(new Error('payment-fail'))
+              break
+          }
+        }, 3000)
       })
     },
     setSimOrderStatus(val) {

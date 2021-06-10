@@ -30,8 +30,8 @@
         />
 
         <SubscribeFormAcceptPermission
-          v-model="acceptPermission"
           ref="permissionDOM"
+          v-model="acceptPermission"
         />
         <SubscribeFormCreditCard />
 
@@ -200,12 +200,14 @@ export default {
         // 商品相關
         items: this.perchasedItems,
         discount_code: this.discount.code,
+
         // 購買者相關
         pur_name: this.ordererData.name,
         pur_cell: this.ordererData.cellphone,
         pur_phone: `${this.ordererData.phone} ${this.ordererData.phoneExt}`,
         pur_addr: this.ordererData.address,
         pur_mail: this.ordererData.email,
+
         // 收貨相關
         rec_name: this.receiverData.name,
         rec_cell: this.receiverData.cellphone,
@@ -216,7 +218,7 @@ export default {
 
         // 付款相關
         prime_token: '',
-        price_total: this.totalPrice,
+        price_total: this.total,
 
         // 發票相關
         carrier_type: this.receiptData.carrierType,
@@ -249,8 +251,9 @@ export default {
 
       if (this.validationPass() && this.acceptPermission) {
         const payload = this.getOrderPayload()
-        console.log(payload)
-        // this.proceedOrderPayment(payload)
+
+        // console.log(payload)
+        this.proceedOrderPayment(payload)
       }
     },
   },

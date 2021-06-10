@@ -311,6 +311,7 @@ module.exports = {
    */
   modules: [
     'nuxt-user-agent',
+    '@nuxtjs/axios',
 
     ...(process.env.NODE_ENV === 'production' &&
     (ENV === 'prod' || ENV === 'staging')
@@ -408,7 +409,9 @@ module.exports = {
     '@nuxtjs/apollo',
     'vue-scrollto/nuxt',
   ],
-
+  axios: {
+    proxy: true,
+  },
   // config for @mirror-media/nuxt-ssr-cache
   cache: {
     /**
