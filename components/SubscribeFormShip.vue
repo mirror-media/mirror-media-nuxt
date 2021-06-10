@@ -7,28 +7,27 @@
     </p>
 
     <div class="ship__choose">
-      <div class="ship__choose_item">
-        <input
-          v-model="shipPlan"
-          type="radio"
-          :value="{ name: '限時專送', cost: 0 }"
-        />
-        <span class="radio">限時專送 NT$ 0 / 期</span>
-      </div>
-      <div class="ship__choose_item">
-        <input
-          v-model="shipPlan"
-          type="radio"
-          :value="{ name: '限時掛號', cost: 20 }"
-        />
-        <span class="radio">限時掛號 NT$ 20 / 期</span>
-      </div>
+      <UiSubscribeRadioInput
+        v-model="shipPlanName"
+        radioValue="限時專送"
+        radioName="限時掛號 NT$ 0 / 期"
+      />
+      <UiSubscribeRadioInput
+        v-model="shipPlanName"
+        radioValue="限時掛號"
+        radioName="限時掛號 NT$ 20 / 期"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import UiSubscribeRadioInput from '~/components/UiSubscribeRadioInput.vue'
+
 export default {
+  components: {
+    UiSubscribeRadioInput,
+  },
   props: {
     setShipPlan: {
       type: Function,
@@ -38,15 +37,33 @@ export default {
   },
   data() {
     return {
-      shipPlan: {
-        name: '限時專送',
-        cost: 0,
-      },
+      shipPlanName: '限時專送',
     }
   },
   watch: {
-    shipPlan(val) {
-      this.setShipPlan(val)
+    shipPlanName(val) {
+      switch (val) {
+        case '限時專送':
+          this.setShipPlan({
+            name: '限時專送',
+            cost: 0,
+          })
+          break
+
+        case '限時掛號':
+          this.setShipPlan({
+            name: '限時掛號',
+            cost: 20,
+          })
+          break
+
+        default:
+          this.setShipPlan({
+            name: '限時專送',
+            cost: 0,
+          })
+          break
+      }
     },
   },
 }
