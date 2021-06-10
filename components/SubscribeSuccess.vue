@@ -3,7 +3,7 @@
     <div class="order-success__wrapper">
       <p>您已完成付款，以下為本次訂購資訊，已同步寄送至您的信箱。</p>
 
-      <SubscribeSuccessOrderInfo />
+      <SubscribeSuccessOrderInfo :orderInfo="orderInfo" :orderId="orderId" />
 
       <UiSubscribeInfo />
     </div>
@@ -26,6 +26,11 @@ export default {
         return {}
       },
     },
+    orderId: {
+      type: String,
+      isRequired: true,
+      default: 'orderId',
+    },
   },
 }
 </script>
@@ -34,6 +39,7 @@ export default {
 .order-success {
   position: relative;
   padding: 13px 8px;
+
   @include media-breakpoint-up(sm) {
     padding: 18px 8px;
   }
