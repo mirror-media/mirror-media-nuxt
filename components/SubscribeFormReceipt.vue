@@ -8,32 +8,35 @@
 
     <div class="receipt__choose">
       <div class="receipt__choose_item">
-        <div class="receipt__choose_item_input">
-          <input v-model="receiptPlan" type="radio" value="捐贈" />
-          <span class="radio">捐贈</span>
-        </div>
-
-        <UiSelect
-          v-model="donateOrganization"
-          :optionList="donateOrganizationList"
+        <UiSubscribeRadioInput
+          v-model="receiptPlan"
+          radioValue="捐贈"
+          radioName="捐贈"
         />
+
+        <div v-if="receiptPlan === '捐贈'" class="receipt__choose_item_detail">
+          <UiSubscribeSelect
+            v-model="donateOrganization"
+            :optionList="donateOrganizationList"
+          />
+        </div>
       </div>
 
       <div class="receipt__choose_item">
-        <div class="receipt__choose_item_input">
-          <input
-            v-model="receiptPlan"
-            type="radio"
-            value="二聯式發票（含載具）"
-          />
-          <span class="radio">二聯式發票（含載具）</span>
-        </div>
+        <UiSubscribeRadioInput
+          v-model="receiptPlan"
+          radioValue="二聯式發票（含載具）"
+          radioName="二聯式發票（含載具）"
+        />
 
         <div
           v-if="receiptPlan === '二聯式發票（含載具）'"
           class="receipt__choose_item_detail"
         >
-          <UiSelect v-model="carrierType" :optionList="carrierTypeList" />
+          <UiSubscribeSelect
+            v-model="carrierType"
+            :optionList="carrierTypeList"
+          />
 
           <UiValidationInput
             :validionOn="true"
@@ -44,10 +47,11 @@
       </div>
 
       <div class="receipt__choose_item">
-        <div class="receipt__choose_item_input">
-          <input v-model="receiptPlan" type="radio" value="三聯式發票" />
-          <span class="radio">三聯式發票</span>
-        </div>
+        <UiSubscribeRadioInput
+          v-model="receiptPlan"
+          radioValue="三聯式發票"
+          radioName="三聯式發票"
+        />
 
         <div
           v-if="receiptPlan === '三聯式發票'"
@@ -72,12 +76,14 @@
 
 <script>
 import UiValidationInput from '~/components/UiValidationInput.vue'
-import UiSelect from '~/components/UiSelect.vue'
+import UiSubscribeSelect from '~/components/UiSubscribeSelect.vue'
+import UiSubscribeRadioInput from '~/components/UiSubscribeRadioInput.vue'
 
 export default {
   components: {
     UiValidationInput,
-    UiSelect,
+    UiSubscribeSelect,
+    UiSubscribeRadioInput,
   },
   props: {
     setReceiptData: {
@@ -201,18 +207,12 @@ export default {
     &_item {
       margin-bottom: 21px;
 
-      &_input {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-
-        input[type='radio'] {
-          margin-right: 8px;
-        }
-      }
-
       &_detail {
         margin-left: 30px;
+
+        & > div {
+          margin-bottom: 10px;
+        }
       }
     }
   }
