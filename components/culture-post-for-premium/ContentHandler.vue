@@ -13,8 +13,6 @@ import UiEmbeddedCode from '~/components/UiEmbeddedCode.vue'
 import ContainerAudioPlayer from '~/components/audio-player/ContainerAudioPlayer.vue'
 import ContainerParagraphWithAnnotation from '~/components/ContainerParagraphWithAnnotation.vue'
 
-import SvgQuotationMark from '~/assets/quotation-mark-culture-post.svg?inline'
-
 export default {
   name: 'ContentHandler',
 
@@ -170,15 +168,7 @@ export default {
       }
 
       case 'blockquote':
-        return (
-          <div class="quote">
-            <div class="quote-icon-wrapper">
-              <SvgQuotationMark />
-            </div>
-
-            <blockquote domPropsInnerHTML={content}></blockquote>
-          </div>
-        )
+        return <UiQuoteBy class="quote-by" quote={content} />
 
       case 'annotation':
         return (
