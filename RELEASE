@@ -126,3 +126,9 @@
 2021/05/31
   - release version: master_kwhsiung_1401 1.3.16
   - features: change cache-control private to public
+2021/06/07
+  - release version: master_kwhsiung_1439 1.3.17
+  - features: change topic from plate-vue to nxut, debug tiopic ads, del topic to plate-vue
+2021/06/08
+  - release version: master_kwhsiung_1452 1.3.19
+  - features: debug slideshow function
