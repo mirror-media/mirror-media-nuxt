@@ -28,9 +28,10 @@
           ref="receiptDOM"
           :setReceiptData="setReceiptData"
         />
+
         <SubscribeFormAcceptPermission
-          :acceptPermission="acceptPermission"
-          :setAcceptPermission="setAcceptPermission"
+          v-model="acceptPermission"
+          ref="permissionDOM"
         />
         <SubscribeFormCreditCard />
 
@@ -171,9 +172,6 @@ export default {
     setOrdererData(newOrdererData) {
       this.ordererData = newOrdererData
     },
-    setAcceptPermission() {
-      this.acceptPermission = !this.acceptPermission
-    },
     setReceiverDataIsSameAsOrderer() {
       this.receiverDataIsSameAsOrderer = !this.receiverDataIsSameAsOrderer
     },
@@ -223,11 +221,12 @@ export default {
       // check form's validationStatus
       this.ordererData = this.$refs.ordererDOM.check()
       this.receiverData = this.$refs.receiverDOM.check()
+      this.$refs.permissionDOM.check()
       if (this.receiverDataIsSameAsOrderer) {
         this.receiverData = this.ordererData
       }
 
-      if (this.validationPass()) {
+      if (this.validationPass() && this.acceptPermission) {
         const payload = this.getOrderPayload()
         console.log(payload)
         // this.proceedOrderPayment(payload)

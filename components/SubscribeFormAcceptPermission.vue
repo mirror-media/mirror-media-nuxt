@@ -1,10 +1,10 @@
 <template>
   <div class="accept-permission">
-    <div class="accept-permission__check">
+    <div class="accept-permission__check" :class="{ error: isError }">
       <input
         type="checkbox"
-        :value="acceptPermission"
-        @change="setAcceptPermission"
+        :checked="value"
+        @change="changeHandler"
         name=""
         id=""
       />
@@ -21,18 +21,35 @@
 <script>
 export default {
   props: {
-    acceptPermission: {
+    value: {
       type: Boolean,
       isRequired: true,
       default: false,
     },
-    setAcceptPermission: {
-      type: Function,
-      isRequired: true,
-      default: () => {},
+  },
+  data() {
+    return {
+      isError: false,
+    }
+  },
+  watch: {
+    value(val) {
+      this.check()
     },
   },
-  components: {},
+  methods: {
+    changeHandler(e) {
+      e.preventDefault()
+      this.$emit('input', !this.value)
+    },
+    check() {
+      if (!this.value) {
+        this.isError = true
+      } else {
+        this.isError = false
+      }
+    },
+  },
 }
 </script>
 
@@ -46,6 +63,13 @@ export default {
     span {
       font-size: 18px;
       color: #4a4a4a;
+      margin-bottom: 0;
+    }
+
+    &.error {
+      input {
+        outline: solid 2px rgba(232, 24, 49, 0.5);
+      }
     }
   }
 
