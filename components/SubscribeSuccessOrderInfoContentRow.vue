@@ -9,8 +9,8 @@
           :key="item.id"
           class="content_row__data_wrapper_row"
         >
-          <div>{{ item.detail }} X {{ item.count }}</div>
-          <div>NT$ {{ item.newPrice * item.count }}</div>
+          <div>{{ item.name }} X {{ item.amount }}</div>
+          <div>NT$ {{ item.price * item.amount }}</div>
         </div>
         <div
           class="content_row__data_wrapper_row content_row__data_wrapper_ship"
@@ -39,24 +39,19 @@ export default {
       isRequired: false,
     },
     shipCost: {
-      type: String,
+      type: Number,
       isRequired: false,
     },
     perchasedList: {
       type: Array,
       isRequired: false,
     },
-  },
-  computed: {
-    totalCost() {
-      let total = 0
-      this.perchasedList.forEach((item) => {
-        total += item.newPrice * item.count
-      })
-      total += this.shipCost
-      return total
+    totalCost: {
+      type: Number,
+      isRequired: false,
     },
   },
+  computed: {},
 }
 </script>
 
@@ -81,11 +76,8 @@ export default {
 }
 
 .content_row__data {
-  flex: 1;
-}
-
-.content_row__data {
   display: block;
+  flex: 1;
   @include media-breakpoint-up(sm) {
     display: flex;
   }

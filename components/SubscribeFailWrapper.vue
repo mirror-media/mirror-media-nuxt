@@ -17,7 +17,9 @@
         </div>
       </div>
     </div>
-    <UiSubscribeButton title="回前頁" :class="status + `_button`" />
+    <a href="/" class="fail-wrapper__button_wrapper">
+      <UiSubscribeButton title="回前頁" :class="status + `_button`" />
+    </a>
   </div>
 </template>
 
