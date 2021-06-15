@@ -33,7 +33,6 @@
           ref="permissionDOM"
           v-model="acceptPermission"
         />
-        <SubscribeFormCreditCard />
 
         <UiSubscribeButton title="確認訂購" @click.native="submitHandler" />
       </div>
@@ -55,7 +54,6 @@ import SubscribeFormOrdererData from '~/components/SubscribeFormOrdererData.vue'
 import SubscribeFormShip from '~/components/SubscribeFormShip.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import SubscribeFormAcceptPermission from '~/components/SubscribeFormAcceptPermission.vue'
-import SubscribeFormCreditCard from '~/components/SubscribeFormCreditCard.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 export default {
   components: {
@@ -65,7 +63,6 @@ export default {
     SubscribeFormShip,
     SubscribeFormReceipt,
     SubscribeFormAcceptPermission,
-    SubscribeFormCreditCard,
     UiSubscribeButton,
   },
   props: {
@@ -195,10 +192,46 @@ export default {
     setFormStatus(type, formStatus) {
       this.formStatus[type] = formStatus
     },
+    generateCarrierInt(carrierType) {
+      switch (carrierType) {
+        case 'mail':
+          return 2
+
+        case '手機條碼':
+          return 0
+
+        case '自然人憑證':
+          return 1
+      }
+    },
+    generateItemData() {
+      let itemDest = '一年鏡週刊52期，加購5期方案'
+      let amount = 1
+      let price = 2880
+
+      this.perchasedPlan.forEach((item) => {
+        if (item.count > 0) {
+          itemDest = item.detail
+          amount = item.count
+          price = item.newPrice
+        }
+      })
+
+      return {
+        itemDest,
+        amount,
+        price,
+      }
+    },
     getOrderPayload() {
+      const { itemDest, amount, price } = this.generateItemData()
+
       return {
         // 商品相關
-        items: this.perchasedItems,
+        // items: this.perchasedItems,
+        item_desc: itemDest,
+        amount,
+        price,
         discount_code: this.discount.code,
 
         // 購買者相關
@@ -221,7 +254,7 @@ export default {
         price_total: this.total,
 
         // 發票相關
-        carrier_type: this.receiptData.carrierType,
+        carrier_type: this.generateCarrierInt(this.receiptData.carrierType),
         carrier_number: this.receiptData.carrierNumber,
         carrier_title: this.receiptData.carrierTitle,
         carrier_ubn: this.receiptData.carrierUbn,

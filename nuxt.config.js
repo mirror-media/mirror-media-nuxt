@@ -260,6 +260,10 @@ module.exports = {
       handler: '~/api/gcs.js',
     },
     {
+      path: `/${API_PATH_FRONTEND}/magazine-payment`,
+      handler: '~/api/magazine-payment.js',
+    },
+    {
       path: `/${API_PATH_FRONTEND}/combo`,
       handler: '~/api/combo.js',
     },

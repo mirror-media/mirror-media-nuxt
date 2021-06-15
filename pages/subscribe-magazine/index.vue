@@ -54,6 +54,7 @@ import SubscribeForm from '~/components/SubscribeForm.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeSuccess from '~/components/SubscribeSuccess.vue'
 import SubscribeSimFormStatus from '~/components/SubscribeSimFormStatus.vue'
+
 export default {
   components: {
     SubscribeStepProgress,
@@ -102,6 +103,7 @@ export default {
       this.orderInfo = orderPayload
       try {
         await this.payment(orderPayload)
+        console.log('付款結束')
 
         // payment success
         this.currentStep++
@@ -115,31 +117,19 @@ export default {
       return new Promise((resolve, reject) => {
         this.orderStatus = 'loading'
 
-        // this.$axios
-        //   .$post('http://dev.mirrormedia.mg/api/mgzsubscribe', orderPayload)
-        //   .then((response) => {
-        //     console.log(response)
-        //     resolve()
-        //   })
-        //   .catch((err) => {
-        //     console.log(err)
-        //     reject(new Error('order-fail'))
-        //   })
+        console.log('ready to proceed payment')
 
-        setTimeout(() => {
-          // sim order status
-          switch (this.simOrderStatus) {
-            case 'success':
-              resolve()
-              break
-            case 'order-fail':
-              reject(new Error('order-fail'))
-              break
-            case 'payment-fail':
-              reject(new Error('payment-fail'))
-              break
-          }
-        }, 3000)
+        this.$axios
+          .$post(`/api/v2/magazine-payment`, orderPayload)
+          .then((response) => {
+            console.log(response)
+            this.$router.resolve(response)
+            resolve()
+          })
+          .catch((err) => {
+            console.log(err)
+            reject(new Error('order-fail'))
+          })
       })
     },
     setSimOrderStatus(val) {
