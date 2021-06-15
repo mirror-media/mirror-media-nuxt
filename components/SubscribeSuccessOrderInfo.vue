@@ -15,8 +15,9 @@
         <SubscribeSuccessOrderInfoContentRow
           title="訂單內容"
           data=""
+          :totalCost="orderInfo.price_total"
           :perchasedList="fileterPerchasedPlan"
-          :shipCost="orderInfo.shipPlan.cost"
+          :shipCost="shipCost"
           class="order-info__order_content_perchased"
         />
       </div>
@@ -27,32 +28,35 @@
         <div class="order-info__user_content_title">訂購人</div>
         <SubscribeSuccessOrderInfoContentRow
           title="姓名"
-          :data="orderInfo.ordererData.name"
+          :data="orderInfo.pur_name"
         />
         <SubscribeSuccessOrderInfoContentRow
           title="電子信箱"
-          :data="orderInfo.ordererData.email"
+          :data="orderInfo.pur_mail"
         />
         <SubscribeSuccessOrderInfoContentRow
           title="聯絡電話"
-          :data="orderInfo.ordererData.cellphone"
+          :data="orderInfo.pur_cell"
         />
       </div>
       <div class="order-info__user_content">
         <div class="order-info__user_content_title">收件人</div>
         <SubscribeSuccessOrderInfoContentRow
           title="姓名"
-          :data="orderInfo.receiverData.name"
+          :data="orderInfo.rec_name"
         />
         <SubscribeSuccessOrderInfoContentRow
           title="聯絡電話"
-          :data="orderInfo.receiverData.cellphone"
+          :data="orderInfo.rec_cell"
         />
         <SubscribeSuccessOrderInfoContentRow
           title="通訊地址"
-          :data="orderInfo.receiverData.address"
+          :data="orderInfo.rec_addr"
         />
-        <SubscribeSuccessOrderInfoContentRow title="派送備註" data="" />
+        <SubscribeSuccessOrderInfoContentRow
+          title="派送備註"
+          data="orderInfo.rec_remark"
+        />
       </div>
     </div>
   </div>
@@ -84,7 +88,11 @@ export default {
       return new Date().format('yyyy-MM-dd')
     },
     fileterPerchasedPlan() {
-      return this.orderInfo.perchasedPlan.filter((item) => item.count)
+      return this.orderInfo.items.filter((item) => item.amount)
+    },
+    shipCost() {
+      if (this.orderInfo.delivery === '限時專送') return 0
+      return 20
     },
   },
 }
@@ -127,9 +135,15 @@ export default {
 .order-info__order_content,
 .order-info__user_content {
   margin-top: 18px;
-
   @include media-breakpoint-up(sm) {
     margin-top: 23px;
+  }
+}
+
+.order-info__order_content_perchased {
+  display: block;
+  @include media-breakpoint-up(sm) {
+    display: flex;
   }
 }
 </style>
