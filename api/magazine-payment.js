@@ -1,4 +1,6 @@
 const axios = require('axios')
+// const { parse } = require('node-html-parser')
+
 const { ENV } = require('../configs/config.js')
 let DOMAIN = 'payment-dev.mirrormedia.mg'
 
@@ -11,17 +13,20 @@ if (ENV === 'prod') {
 // const { API_TIMEOUT, DOMAIN_NAME } = require('../configs/config.js')
 
 module.exports = async function magazinePayment(req, res) {
-  try {
-    // const { url: filename } = req
-    const apiUrl = `http://${DOMAIN}/mgzsubscribe`
-    const payload = JSON.stringify(req.body)
+  // const { url: filename } = req
+  const apiUrl = `http://${DOMAIN}/mgzsubscribe`
+  const payload = JSON.stringify(req.body)
 
-    const { data } = await axios.post(apiUrl, payload)
+  const { data } = await axios.post(apiUrl, payload)
+  // .then((response) => {
+  //   return response
+  //   // const htmlData = response.data
+  //   // const htmlObject = parse(JSON.parse(htmlData))
+  //   // console.log(htmlObject)
+  //   // res.send(JSON.stringify(htmlObject))
+  // })
 
-    res.send(data)
-  } catch (err) {
-    // res.setHeader('Cache-Control', 'no-store')
-    // res.status(500).send(err.message)
-    res.send('NONONO付款失敗')
-  }
+  console.log('data')
+  console.log(data)
+  res.send('<h1>YOYOYO</h1>')
 }

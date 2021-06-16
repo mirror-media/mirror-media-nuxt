@@ -123,7 +123,7 @@ export default {
           .$post(`/api/v2/magazine-payment`, orderPayload)
           .then((response) => {
             console.log(response)
-            this.$router.resolve(response)
+            // this.$router.resolve(response)
             resolve()
           })
           .catch((err) => {

@@ -120,7 +120,7 @@ export default {
           carrierUbn: val.carrierUbn,
         }
 
-        console.log(receiptData)
+        // console.log(receiptData)
         this.setReceiptData(receiptData)
       },
       deep: true,
