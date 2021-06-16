@@ -116,6 +116,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -124,7 +128,7 @@ export default {
     },
 
     isCurrentPagePremium() {
-      return this.$route.name === 'premium-slug'
+      return this.isPremium || this.$route.name === 'premium-slug'
     },
   },
 

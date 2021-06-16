@@ -1,6 +1,19 @@
 <template>
   <div>
-    <ContainerHeaderSectionMember class="header" />
+    <ContainerHeaderSectionMember
+      class="header"
+      @sidebarToggle="handleIndexActive(!isIndexActive)"
+    />
+
+    <UiArticleIndex
+      class="article-index"
+      :isPremium="true"
+      :items="[]"
+      :currentIndex="0"
+      :isIndexActive="isIndexActive"
+      @closeIndex="handleIndexActive(false)"
+      @openIndex="handleIndexActive(true)"
+    />
 
     <div class="router-view-wrapper">
       <nuxt />
@@ -18,6 +31,7 @@
 
 <script>
 import ContainerHeaderSectionMember from '~/components/ContainerHeaderSectionMember.vue'
+import UiArticleIndex from '~/components/culture-post-for-premium/UiArticleIndex.vue'
 import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
 
@@ -28,12 +42,25 @@ export default {
 
   components: {
     ContainerHeaderSectionMember,
+    UiArticleIndex,
     UiFooter,
     TheGdpr,
   },
 
+  data() {
+    return {
+      isIndexActive: false,
+    }
+  },
+
   mounted() {
     fireActivationEvent.bind(this)()
+  },
+
+  methods: {
+    handleIndexActive(isActive) {
+      this.isIndexActive = isActive
+    },
   },
 }
 </script>
@@ -44,6 +71,11 @@ export default {
   top: 0;
   right: 0;
   z-index: 512;
+}
+
+.article-index {
+  position: relative;
+  z-index: 513;
 }
 
 .router-view-wrapper {
