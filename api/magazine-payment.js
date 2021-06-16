@@ -20,10 +20,10 @@ module.exports = async function magazinePayment(req, res) {
   const { data } = await axios.post(apiUrl, payload)
   // .then((response) => {
   //   return response
-  //   // const htmlData = response.data
-  //   // const htmlObject = parse(JSON.parse(htmlData))
-  //   // console.log(htmlObject)
-  //   // res.send(JSON.stringify(htmlObject))
+  // console.log(data)
+  // const htmlObject = parse(JSON.parse(data))
+  // console.log(htmlObject)
+
   // })
 
   console.log('data')
