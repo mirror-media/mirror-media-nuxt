@@ -10,13 +10,13 @@
       <img v-else src="~/assets/hamburger.svg" alt="開啟" />
     </button>
 
-    <div class="index__curtain">
+    <div class="index__curtain" @click.self="$emit('closeIndex')">
       <div ref="indexContainer" class="index-container">
         <button class="index__btn close" @click="$emit('closeIndex')">
           <SvgClose />
         </button>
 
-        <div class="top">
+        <div :class="['top', { 'top--hidden': bottomStyle === 'white' }]">
           <div v-if="items.length > 0" class="index-list">
             <ul>
               <li
@@ -35,7 +35,10 @@
             </ul>
           </div>
         </div>
-        <div v-if="isCurrentPagePremium" class="bottom">
+        <div
+          v-if="isCurrentPagePremium"
+          :class="['bottom', { 'bottom--white': bottomStyle === 'white' }]"
+        >
           <ul
             v-if="sectionsMember.length > 0"
             class="bottom__member-section-list member-section-list"
@@ -116,6 +119,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+    bottomStyle: {
+      type: String,
+      default: 'blue',
+      validator(value) {
+        return ['blue', 'white'].includes(value)
+      },
+    },
   },
 
   computed: {
@@ -124,7 +138,7 @@ export default {
     },
 
     isCurrentPagePremium() {
-      return this.$route.name === 'premium-slug'
+      return this.isPremium || this.$route.name === 'premium-slug'
     },
   },
 
@@ -277,6 +291,9 @@ export default {
 
 .top {
   margin: auto 0;
+  &--hidden {
+    display: none;
+  }
 }
 
 .bottom {
@@ -286,6 +303,32 @@ export default {
   color: white;
   @include media-breakpoint-up(xl) {
     display: none;
+  }
+
+  &--white {
+    background-color: white;
+    color: #4a4a4a;
+    padding: 78px 24px;
+    @include media-breakpoint-up(md) {
+      padding: 78px 48px;
+    }
+
+    .section__title {
+      color: #054f77;
+    }
+
+    .section__title--small {
+      color: #4a4a4a;
+    }
+
+    .member-category-list__category,
+    .section__title--small {
+      font-weight: 300;
+    }
+
+    .member-section-list__section--separator-top {
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
   }
 }
 
