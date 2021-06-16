@@ -11,6 +11,7 @@
       :items="[]"
       :currentIndex="0"
       :isIndexActive="isIndexActive"
+      :bottomStyle="'white'"
       @closeIndex="handleIndexActive(false)"
       @openIndex="handleIndexActive(true)"
     />
