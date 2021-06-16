@@ -10,7 +10,7 @@
       <img v-else src="~/assets/hamburger.svg" alt="開啟" />
     </button>
 
-    <div class="index__curtain">
+    <div class="index__curtain" @click.self="$emit('closeIndex')">
       <div ref="indexContainer" class="index-container">
         <button class="index__btn close" @click="$emit('closeIndex')">
           <SvgClose />
