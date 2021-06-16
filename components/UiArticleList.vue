@@ -12,7 +12,7 @@
       <template v-for="(item, index) in listItems">
         <li :key="item.id" class="list__list-item">
           <UiArticleCard
-            :href="item.href"
+            :href="isSlugZhouZhiFei(item.href)"
             :imgSrc="item.imgSrc"
             :imgText="item.imgText"
             :imgTextBackgroundColor="item.imgTextBackgroundColor"
@@ -83,6 +83,12 @@ export default {
     },
     getMicroAdSlotNameAfter(index) {
       return this.indexToMicroAdName[index]
+    },
+    isSlugZhouZhiFei(href) {
+      if (href === '/story/zhou_zhi_fei') {
+        return 'projects/zhou_zhi_fei'
+      }
+      return href
     },
     isSlotForMicroAd(unit) {
       return Object.keys(this.$slots).includes(unit)
