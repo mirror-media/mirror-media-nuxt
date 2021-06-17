@@ -19,18 +19,27 @@ export const actions = {
       })
     }
 
-    const [sectionsResponse] = await dispatch('fetchGlobalData')
-
+    const sectionsResponse = await dispatch('fetchGlobalData')
     commitSectionsData(commit, sectionsResponse)
   },
 
   async fetchGlobalData({ dispatch }) {
-    const sectionsResponse = await dispatch('sections/fetchSectionsData')
-    return [sectionsResponse]
+    return await Promise.allSettled([
+      dispatch('sections/fetchSectionsData'),
+      dispatch('sections-member/fetchData'),
+    ])
   },
 }
 
-function commitSectionsData(commit, response) {
-  commit('sections/setSectionsData', response.endpoints.sections ?? {})
+function commitSectionsData(
+  commit,
+  [responseSectionsData = {}, responseSectionsDataMember = {}] = []
+) {
+  commit(
+    'sections/setSectionsData',
+    responseSectionsData?.value?.endpoints?.sections ?? {}
+  )
   commit('sections/addMagazineToMemberSection')
+
+  commit('sections-member/setData', responseSectionsDataMember?.value ?? {})
 }
