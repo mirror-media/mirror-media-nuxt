@@ -267,6 +267,8 @@ export default (context, inject) => {
 
   inject('fetchPopular', () => fetchGcsData('popularlist'))
 
+  inject('fetchMemberSections', () => fetchGcsData('member_sections'))
+
   inject('fetchTokenState', async (token) => {
     const urlFetched = `${baseUrl}${API_PATH_FRONTEND}/membership/v1/tokenState`
     const requestConfig = {
