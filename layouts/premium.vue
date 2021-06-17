@@ -71,12 +71,12 @@ export default {
   position: fixed !important;
   top: 0;
   right: 0;
-  z-index: 512;
+  z-index: 512 !important;
 }
 
 .article-index {
   position: relative;
-  z-index: 513;
+  z-index: 513 !important;
 }
 
 .router-view-wrapper {
@@ -87,7 +87,7 @@ export default {
   @include media-breakpoint-up(xl) {
     background-color: white;
     position: relative;
-    z-index: 511;
+    z-index: 511 !important;
   }
 }
 </style>
