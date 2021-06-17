@@ -29,6 +29,22 @@ import { getSectionColor } from '~/utils/index.js'
 
 export default {
   name: 'Category',
+
+  layout({ route, store }) {
+    const { name = '' } = route.params
+    const isCurrentCategoryPremium = store.getters[
+      'sections-member/categories'
+    ].some(function compareCategoryName(category) {
+      return category.name === name
+    })
+
+    if (isCurrentCategoryPremium) {
+      return 'premium'
+    }
+
+    return 'default'
+  },
+
   components: {
     ContainerList,
     UiWineWarning,
