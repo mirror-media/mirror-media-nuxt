@@ -15,8 +15,6 @@ export default async function ({ res, route, app, redirect }) {
     const doesCategoryHaveMemberOnly = checkCategoryHasMemberOnly(post)
 
     if (doesCategoryHaveMemberOnly) {
-      // disable cache to prevent caching both full article content and sliced article content with the same /premium/:slug uri
-      res.setHeader('Cache-Control', 'no-store')
       if (route.name === 'story-slug') {
         return redirect(`/premium/${slug}?${qs.stringify(route.query)}`)
       }
