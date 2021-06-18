@@ -1,8 +1,6 @@
 <template>
   <div class="story-slug">
-    <ClientOnly>
-      <ContainerCulturePost :story="story" />
-    </ClientOnly>
+    <ContainerCulturePost :story="story" />
   </div>
 </template>
 
@@ -29,7 +27,7 @@ export default {
      * fetch post in server side for composing meta tag properties, not article content
      * article content is fetch in client side
      */
-    await this.fetchPost()
+    await this.fetchPost('dummy-token-for-truncate-purpose')
   },
   data() {
     return {
@@ -48,9 +46,9 @@ export default {
       return this.doesCategoryHaveMemberOnly
     },
   },
-  async beforeMount() {
+  beforeMount() {
     this.setGaDimensionOfMembership()
-    await this.fetchPost()
+    this.fetchPost(this.$store.state.membership.userToken)
   },
   methods: {
     setGaDimensionOfMembership() {
@@ -60,7 +58,7 @@ export default {
 
       this.$ga.set('dimension1', dimensionMembership)
     },
-    async fetchPost() {
+    async fetchPost(token) {
       const [postResponse] = await Promise.allSettled([
         this.$fetchPostsFromMembershipGateway(
           {
@@ -69,7 +67,7 @@ export default {
             clean: 'content',
             related: 'article',
           },
-          this.$store.state.membership.userToken
+          token
         ),
       ])
 

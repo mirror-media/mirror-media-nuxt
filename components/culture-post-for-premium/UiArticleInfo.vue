@@ -18,8 +18,9 @@
             :href="`/author/${writer.id}`"
             target="_blank"
             rel="noreferrer noopener"
-            v-text="writer.name"
-          />
+          >
+            {{ writer.name }}
+          </UiLink>
         </p>
         <p v-if="photographers.length" class="people__photographers">
           <span>攝影／</span>
@@ -30,8 +31,9 @@
             :href="`/author/${photographer.id}`"
             target="_blank"
             rel="noreferrer noopener"
-            v-text="photographer.name"
-          />
+          >
+            {{ photographer.name }}
+          </UiLink>
         </p>
       </div>
       <div v-if="tags.length" class="info__tags tags">
@@ -42,8 +44,9 @@
           :href="`/tag/${tag.id}`"
           target="_blank"
           rel="noreferrer noopener"
-          v-text="tag.name"
-        />
+        >
+          {{ tag.name }}
+        </UiTag>
       </div>
     </div>
     <div class="article-info__share-links-wrapper share-links-wrapper">

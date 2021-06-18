@@ -1,7 +1,7 @@
 <template>
   <figure class="figure">
     <img v-lazy="imgUrl" class="figure__img img" alt="" />
-    <UiCaption class="figure__caption" v-text="caption" />
+    <UiCaption class="figure__caption">{{ caption }}</UiCaption>
   </figure>
 </template>
 

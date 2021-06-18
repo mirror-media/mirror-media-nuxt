@@ -1,6 +1,6 @@
 <template>
   <div class="list-related">
-    <UiH4 v-text="'延伸閱讀'" />
+    <UiH4>延伸閱讀</UiH4>
 
     <div class="list-related__list list">
       <div v-for="item in items" :key="item.slug" class="list__item item">

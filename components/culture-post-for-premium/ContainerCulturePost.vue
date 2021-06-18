@@ -27,13 +27,15 @@
 
       <div class="landing">
         <div class="landing-info">
-          <UiSectionLabel v-text="post.sectionLabelFirst" />
-          <UiH1 class="landing-info__title" v-html="post.title" />
+          <UiSectionLabel>{{ post.sectionLabelFirst }}</UiSectionLabel>
+          <UiH1 class="landing-info__title">{{ post.title }}</UiH1>
         </div>
 
         <div class="cover">
           <UiTheCover :video="post.coverVideo" :picture="post.coverPicture" />
-          <UiCaption class="cover__hero-caption" v-text="post.heroCaption" />
+          <UiCaption class="cover__hero-caption">
+            {{ post.heroCaption }}
+          </UiCaption>
         </div>
       </div>
 

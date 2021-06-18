@@ -1,32 +1,35 @@
 <template>
   <div class="wrapper">
-    <article
-      :class="[
-        'article-body',
-        {
-          'article-body--fade-out-bottom': pageState === 'premiumPageNotLogin',
-        },
-      ]"
-    >
+    <article class="article-body">
       <ContentHandler
         v-for="item in contentWithBriefAhead"
         :key="item.id"
         :item="item"
       />
 
-      <template v-if="pageState === 'premiumPageIsLogin'">
-        <div class="copyright-warning">
-          <p>
-            本新聞文字、照片、影片專供鏡週刊會員閱覽，未經鏡週刊授權，任何媒體、社群網站、論壇等均不得引用、改寫、轉貼，以免訟累。
-          </p>
-        </div>
-        <div class="magazine">
-          <div>下載鏡週刊電子雜誌</div>
-          <button type="button" @click="enterMagazinePage">立即下載</button>
-        </div>
-      </template>
+      <ClientOnly>
+        <template v-if="pageState === 'premiumPageIsLogin'">
+          <div class="copyright-warning">
+            <p>
+              本新聞文字、照片、影片專供鏡週刊會員閱覽，未經鏡週刊授權，任何媒體、社群網站、論壇等均不得引用、改寫、轉貼，以免訟累。
+            </p>
+          </div>
+          <div class="magazine">
+            <div>下載鏡週刊電子雜誌</div>
+            <button type="button" @click="enterMagazinePage">立即下載</button>
+          </div>
+        </template>
+      </ClientOnly>
     </article>
-    <UiPremiumInviteToLogin v-if="pageState === 'premiumPageNotLogin'" />
+    <ClientOnly>
+      <div
+        v-if="pageState === 'premiumPageNotLogin'"
+        class="invite-to-login-wrapper"
+      >
+        <div class="invite-to-login-wrapper__fade-out-effect" />
+        <UiPremiumInviteToLogin />
+      </div>
+    </ClientOnly>
   </div>
 </template>
 
@@ -89,18 +92,6 @@ export default {
   line-height: 36px;
   text-align: justify;
   position: relative;
-  &--fade-out-bottom {
-    &:after {
-      position: absolute;
-      bottom: 0;
-      content: '';
-      display: block;
-      width: 100%;
-      height: 300px;
-      background: linear-gradient(180deg, transparent 0%, white 80%);
-      pointer-events: none;
-    }
-  }
   &::v-deep {
     a {
       color: rgba(199, 159, 101, 0.87);
@@ -149,6 +140,27 @@ export default {
       margin-top: 0;
       max-width: 170px;
       line-height: 27px;
+    }
+  }
+}
+
+.invite-to-login-wrapper {
+  position: relative;
+  &__fade-out-effect {
+    position: absolute;
+    bottom: 234px;
+    width: 100vw;
+    height: 300px;
+    background: linear-gradient(180deg, transparent 0%, white 80%);
+    left: -20px;
+    @include media-breakpoint-up(md) {
+      bottom: 198px;
+      left: calc((100vw - 608px) / 2 * -1);
+    }
+    @include media-breakpoint-up(xl) {
+      width: 720px;
+      bottom: 133px;
+      left: calc(((720px - 640px) / 2) * -1);
     }
   }
 }
