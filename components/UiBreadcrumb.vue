@@ -72,6 +72,7 @@ export default {
     font-family: source-han-serif-tc, 'Songti TC', serif;
     font-weight: 600;
     font-size: 24px;
+    color: #4a4a4a;
     @include media-breakpoint-up(md) {
       font-size: 32px;
     }
