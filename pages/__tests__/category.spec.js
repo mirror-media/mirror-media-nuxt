@@ -13,6 +13,7 @@ const createWrapper = createWrapperHelper({
     }),
   },
   mocks: {
+    $store: {},
     $route: {
       params: {
         name: '',
