@@ -5,10 +5,6 @@
       :key="crumbs.name"
       class="breadcrumbs__crumb crumb"
     >
-      <BreadcrumbSeparatorIcon
-        class="crumb__separator"
-        :style="{ color: separatorColor }"
-      />
       <a
         :href="crumbs.link"
         rel="noreferrer noopener"
@@ -17,6 +13,10 @@
           color: crumbs.color,
         }"
         v-text="crumbs.text"
+      />
+      <BreadcrumbSeparatorIcon
+        class="crumb__separator"
+        :style="{ color: separatorColor }"
       />
     </div>
   </nav>
@@ -51,7 +51,7 @@ export default {
 .crumb {
   display: flex;
   align-items: center;
-  &:first-child {
+  &:last-child:not(:first-child) {
     .crumb__separator {
       display: none;
     }
