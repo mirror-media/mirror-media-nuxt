@@ -102,8 +102,9 @@ export default {
     async proceedOrderPayment(orderPayload) {
       this.orderInfo = orderPayload
       try {
-        await this.payment(orderPayload)
+        const result = await this.payment(orderPayload)
         console.log('付款結束')
+        console.log(result)
 
         // payment success
         this.currentStep++
@@ -122,9 +123,8 @@ export default {
         this.$axios
           .$post(`/api/v2/magazine-payment`, orderPayload)
           .then((response) => {
-            console.log(response)
             // this.$router.resolve(response)
-            resolve()
+            resolve(response)
           })
           .catch((err) => {
             console.log(err)

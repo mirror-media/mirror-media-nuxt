@@ -88,7 +88,17 @@ export default {
       return new Date().format('yyyy-MM-dd')
     },
     fileterPerchasedPlan() {
-      return this.orderInfo.items.filter((item) => item.amount)
+      const itemList = [
+        {
+          id: 0,
+          title: this.orderInfo.item_desc,
+          detail: this.orderInfo.item_desc,
+          originalPrice: 3990,
+          newPrice: this.orderInfo.price,
+          count: this.orderInfo.price_total / this.orderInfo.price,
+        },
+      ]
+      return itemList
     },
     shipCost() {
       if (this.orderInfo.delivery === '限時專送') return 0

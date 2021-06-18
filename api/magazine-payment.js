@@ -18,6 +18,7 @@ module.exports = async function magazinePayment(req, res) {
   const payload = JSON.stringify(req.body)
 
   const { data } = await axios.post(apiUrl, payload)
+
   // .then((response) => {
   //   return response
   // console.log(data)
@@ -26,7 +27,5 @@ module.exports = async function magazinePayment(req, res) {
 
   // })
 
-  console.log('data')
-  console.log(data)
-  res.send('<h1>YOYOYO</h1>')
+  res.send(data)
 }
