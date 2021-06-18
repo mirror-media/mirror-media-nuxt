@@ -149,14 +149,18 @@ export default {
   &__fade-out-effect {
     position: absolute;
     bottom: 234px;
-    width: 100%;
+    width: 100vw;
     height: 300px;
     background: linear-gradient(180deg, transparent 0%, white 80%);
+    left: -20px;
     @include media-breakpoint-up(md) {
       bottom: 198px;
+      left: calc((100vw - 608px) / 2 * -1);
     }
     @include media-breakpoint-up(xl) {
+      width: 720px;
       bottom: 133px;
+      left: calc(((720px - 640px) / 2) * -1);
     }
   }
 }
