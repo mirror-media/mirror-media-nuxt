@@ -105,32 +105,32 @@ export default {
         const result = await this.payment(orderPayload)
         console.log('付款結束')
         console.log(result)
+        this.$routter.go('/subscribe-magazine/payment')
 
-        // payment success
-        this.currentStep++
-        this.orderStatus = 'success'
+        // // payment success
+        // this.currentStep++
+        // this.orderStatus = 'success'
       } catch (e) {
         // payment fail
         this.orderStatus = e.message
       }
     },
-    payment(orderPayload) {
-      return new Promise((resolve, reject) => {
-        this.orderStatus = 'loading'
+    async payment(orderPayload) {
+      this.orderStatus = 'loading'
 
-        console.log('ready to proceed payment')
+      console.log('ready to proceed payment')
+      try {
+        const data = await this.$axios.$post(
+          `/api/v2/magazine-payment`,
+          orderPayload
+        )
 
-        this.$axios
-          .$post(`/api/v2/magazine-payment`, orderPayload)
-          .then((response) => {
-            // this.$router.resolve(response)
-            resolve(response)
-          })
-          .catch((err) => {
-            console.log(err)
-            reject(new Error('order-fail'))
-          })
-      })
+        return data
+      } catch (err) {
+        console.log('有問題啦！')
+        console.log(err)
+        return new Error('order-fail')
+      }
     },
     setSimOrderStatus(val) {
       this.simOrderStatus = val

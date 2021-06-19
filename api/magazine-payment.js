@@ -1,5 +1,5 @@
 const axios = require('axios')
-// const { parse } = require('node-html-parser')
+const FormData = require('form-data')
 
 const { ENV } = require('../configs/config.js')
 let DOMAIN = 'payment-dev.mirrormedia.mg'
@@ -13,19 +13,38 @@ if (ENV === 'prod') {
 // const { API_TIMEOUT, DOMAIN_NAME } = require('../configs/config.js')
 
 module.exports = async function magazinePayment(req, res) {
-  // const { url: filename } = req
-  const apiUrl = `http://${DOMAIN}/mgzsubscribe`
+  // first post request: to backend
   const payload = JSON.stringify(req.body)
 
-  const { data } = await axios.post(apiUrl, payload)
+  // fake price for testing
+  payload.price_total = 3
 
-  // .then((response) => {
-  //   return response
-  // console.log(data)
-  // const htmlObject = parse(JSON.parse(data))
-  // console.log(htmlObject)
+  //  get needed key/value from backend
+  const response = await axios.post(`http://${DOMAIN}/mgzsubscribe`, payload)
+  const newPayloadObject = response.data
 
-  // })
+  // feed them into a FormData
+  const bodyFormData = new FormData()
+  for (const [key, value] of Object.entries(newPayloadObject)) {
+    if (key === 'TradeSHA') {
+      bodyFormData.append('TradeSha', value)
+    } else {
+      bodyFormData.append(key, value)
+    }
+  }
 
-  res.send(data)
+  const formHeaders = bodyFormData.getHeaders()
+
+  // second post request: to payment
+  const newResponse = await axios.post(
+    'https://core.newebpay.com/MPG/mpg_gateway',
+    bodyFormData,
+    {
+      headers: {
+        ...formHeaders,
+      },
+    }
+  )
+
+  res.send(newResponse?.data)
 }

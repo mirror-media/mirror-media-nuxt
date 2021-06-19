@@ -229,8 +229,9 @@ export default {
       return {
         // 商品相關
         // items: this.perchasedItems,
+        merchant_id: 'MS315799494',
         item_desc: itemDest,
-        amount,
+        amount: parseInt(amount),
         price,
         discount_code: this.discount.code,
 
