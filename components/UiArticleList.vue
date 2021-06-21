@@ -86,7 +86,7 @@ export default {
     },
     isSlugZhouZhiFei(href) {
       if (href === '/story/zhou_zhi_fei') {
-        return 'projects/zhou_zhi_fei'
+        return '/projects/zhou_zhi_fei'
       }
       return href
     },
