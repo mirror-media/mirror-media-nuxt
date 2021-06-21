@@ -132,3 +132,10 @@
 2021/06/08
   - release version: master_kwhsiung_1452 1.3.19
   - features: debug slideshow function
+2021/06/11
+  - release version: master_kwhsiung_1482 1.3.20
+  - features: change quote UI
+2021/06/21
+  - release version: master_kwhsiung_1511 1.3.21
+  - features: add AMP and premium cache, update app_add.txt
+
