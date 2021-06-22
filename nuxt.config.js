@@ -248,6 +248,7 @@ module.exports = {
     '~/plugins/vueDirectivesGlobal.js',
     '~/plugins/requests/index.js',
     '~/plugins/user-behavior-log/index.client.js',
+    { src: '~/plugins/vuelidate', ssr: true },
   ],
 
   /**

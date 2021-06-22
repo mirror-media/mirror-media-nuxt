@@ -14,6 +14,11 @@
       :validateOn="validateOn"
     />
 
+    <SubscribePayment
+      v-if="currentStep === 2 && orderStatus === 'payment'"
+      :paymentHtml="paymentHtml"
+    />
+
     <SubscribeFail
       v-if="
         currentStep === 2 &&
@@ -54,6 +59,7 @@ import SubscribeForm from '~/components/SubscribeForm.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeSuccess from '~/components/SubscribeSuccess.vue'
 import SubscribeSimFormStatus from '~/components/SubscribeSimFormStatus.vue'
+import SubscribePayment from '~/components/SubscribePayment.vue'
 
 export default {
   components: {
@@ -63,11 +69,12 @@ export default {
     SubscribeFail,
     SubscribeSuccess,
     SubscribeSimFormStatus,
+    SubscribePayment,
   },
   data() {
     return {
       orderId: 'MI100048583',
-      currentStep: 1,
+      currentStep: 2,
       choosedPlanId: 0,
       orderStatus: 'normal', // normal, loading, order-fail, payment-fail, success
       perchasedPlan: [
@@ -77,7 +84,7 @@ export default {
           detail: '一年鏡週刊52期，加購5期方案',
           originalPrice: 3990,
           newPrice: 2880,
-          count: 0,
+          count: this.$route.params.plan === '1' ? 1 : 0,
         },
         {
           id: 1,
@@ -85,12 +92,13 @@ export default {
           detail: '二年鏡週刊104期，加購10期方案',
           originalPrice: 7800,
           newPrice: 5280,
-          count: 0,
+          count: this.$route.params.plan === '2' ? 1 : 0,
         },
       ],
       simOrderStatus: 'success', //  order-fail, payment-fail, success
       validateOn: true,
       orderInfo: {},
+      paymentHtml: 'Loading',
     }
   },
 
@@ -101,11 +109,14 @@ export default {
     },
     async proceedOrderPayment(orderPayload) {
       this.orderInfo = orderPayload
+      this.orderStatus = 'loading'
       try {
         const result = await this.payment(orderPayload)
+        this.orderStatus = 'payment'
         console.log('付款結束')
-        console.log(result)
-        this.$routter.go('/subscribe-magazine/payment')
+
+        this.paymentHtml = result
+        // this.$routter.go('/subscribe-magazine/payment')
 
         // // payment success
         // this.currentStep++
@@ -116,9 +127,6 @@ export default {
       }
     },
     async payment(orderPayload) {
-      this.orderStatus = 'loading'
-
-      console.log('ready to proceed payment')
       try {
         const data = await this.$axios.$post(
           `/api/v2/magazine-payment`,

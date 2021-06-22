@@ -8,7 +8,9 @@
     <p class="plan-card__original_price">原價 ${{ originalPrice }}</p>
     <p class="plan-card__new_price">優惠價 ${{ newPrice }}</p>
 
-    <UiSubscribeButton :title="`訂購${title}`" />
+    <a :href="`/subscribe/${planUrl}`">
+      <UiSubscribeButton :title="`訂購${title}`" />
+    </a>
   </div>
 </template>
 
@@ -28,6 +30,11 @@ export default {
       type: String,
       isRequired: true,
       default: '',
+    },
+    planUrl: {
+      type: Number,
+      isRequired: true,
+      default: 1,
     },
     originalPrice: {
       type: Number,
@@ -125,6 +132,10 @@ export default {
       font-size: 32px;
       margin-bottom: 26px;
     }
+  }
+
+  a {
+    width: 100%;
   }
 }
 </style>
