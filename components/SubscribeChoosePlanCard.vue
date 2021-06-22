@@ -8,9 +8,10 @@
     <p class="plan-card__original_price">原價 ${{ originalPrice }}</p>
     <p class="plan-card__new_price">優惠價 ${{ newPrice }}</p>
 
-    <a :href="`/subscribe/${planUrl}`">
-      <UiSubscribeButton :title="`訂購${title}`" />
-    </a>
+    <UiSubscribeButton
+      :title="`訂購${title}`"
+      @click.native="changePlanHandler"
+    />
   </div>
 </template>
 
@@ -45,6 +46,11 @@ export default {
       type: Number,
       isRequired: true,
       default: 2880,
+    },
+  },
+  methods: {
+    changePlanHandler() {
+      this.$router.push(`/subscribe/${this.planUrl}`)
     },
   },
 }
@@ -132,10 +138,6 @@ export default {
       font-size: 32px;
       margin-bottom: 26px;
     }
-  }
-
-  a {
-    width: 100%;
   }
 }
 </style>
