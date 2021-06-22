@@ -66,29 +66,9 @@ export default {
     UiSubscribeButton,
   },
   props: {
-    perchasedPlan: {
-      type: Array,
-      isRequired: true,
-      default: () => {
-        return [
-          {
-            id: 0,
-            title: '一年方案',
-            detail: '一年鏡週刊52期，加購5期方案',
-            originalPrice: 3990,
-            newPrice: 2880,
-            count: 0,
-          },
-          {
-            id: 1,
-            title: '二年方案',
-            detail: '二年鏡週刊104期，加購10期方案',
-            originalPrice: 7800,
-            newPrice: 5280,
-            count: 0,
-          },
-        ]
-      },
+    currentChoosedPlanId: {
+      type: Number,
+      default: 0,
     },
     proceedOrderPayment: {
       type: Function,
@@ -102,6 +82,24 @@ export default {
   },
   data() {
     return {
+      perchasedPlan: [
+        {
+          id: 0,
+          title: '一年方案',
+          detail: '一年鏡週刊52期，加購5期方案',
+          originalPrice: 3990,
+          newPrice: 2880,
+          count: this.currentChoosedPlanId === 0 ? 1 : 0,
+        },
+        {
+          id: 1,
+          title: '二年方案',
+          detail: '二年鏡週刊104期，加購10期方案',
+          originalPrice: 7800,
+          newPrice: 5280,
+          count: this.currentChoosedPlanId === 1 ? 1 : 0,
+        },
+      ],
       discount: {
         hasCode: false,
         code: '',

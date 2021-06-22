@@ -100,11 +100,12 @@ export default {
 }
 
 .order-fail_button {
-  width: 270px;
+  width: 100%;
+  max-width: 270px;
   height: 56px;
+  margin: auto;
 
   @include media-breakpoint-up(sm) {
-    margin: 0px;
     width: 321px;
   }
 }

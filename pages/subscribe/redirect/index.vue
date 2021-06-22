@@ -38,7 +38,6 @@ export default {
   },
   mounted() {
     const formDOM = document.forms.newebpay
-
     setTimeout(() => {
       formDOM.submit()
     }, 1000)

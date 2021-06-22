@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOrderInfoContentRow.vue'
 
 export default {
@@ -85,7 +86,8 @@ export default {
   },
   computed: {
     orderDate() {
-      return new Date().format('yyyy-MM-dd')
+      const now = new Date()
+      return moment(now).format('YYYY-MM-DD')
     },
     fileterPerchasedPlan() {
       const itemList = [
@@ -98,6 +100,7 @@ export default {
           count: this.orderInfo.price_total / this.orderInfo.price,
         },
       ]
+      console.log(itemList)
       return itemList
     },
     shipCost() {
