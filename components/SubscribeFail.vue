@@ -1,6 +1,6 @@
 <template>
   <div class="fail">
-    <div v-if="orderStatus === 'payment-fail'" class="fail__payment_fail">
+    <div v-if="resultStatus === 'payment-fail'" class="fail__payment_fail">
       <div class="fail__payment_fail_message">
         信用卡付款失敗，請再次確認信用卡資訊，或更換信用卡完成訂購手續，謝謝！
       </div>
@@ -23,7 +23,7 @@ export default {
     SubscribeFailWrapper,
   },
   props: {
-    orderStatus: {
+    resultStatus: {
       type: String,
       isRequired: true,
       default: 'order-fail',

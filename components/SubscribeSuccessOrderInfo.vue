@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOrderInfoContentRow.vue'
 
 export default {
@@ -85,10 +86,20 @@ export default {
   },
   computed: {
     orderDate() {
-      return new Date().format('yyyy-MM-dd')
+      const now = new Date()
+      return moment(now).format('YYYY-MM-DD')
     },
     fileterPerchasedPlan() {
-      return this.orderInfo.items.filter((item) => item.amount)
+      const itemList = [
+        {
+          id: 0,
+          name: this.orderInfo.item_desc,
+          price: this.orderInfo.price,
+          amount: this.orderInfo.amount,
+        },
+      ]
+
+      return itemList
     },
     shipCost() {
       if (this.orderInfo.delivery === '限時專送') return 0

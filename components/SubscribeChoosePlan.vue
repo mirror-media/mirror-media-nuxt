@@ -5,11 +5,11 @@
         <SubscribeChoosePlanCard
           v-for="plan in planList"
           :key="plan.id"
+          :planUrl="plan.id + 1"
           :title="plan.title"
           :detail="plan.detail"
           :originalPrice="plan.originalPrice"
           :newPrice="plan.newPrice"
-          @click.native="choosePlan(plan.id)"
         />
       </div>
 
@@ -26,13 +26,7 @@ export default {
     SubscribeChoosePlanCard,
     UiSubscribeInfo,
   },
-  props: {
-    choosePlan: {
-      type: Function,
-      isRequired: true,
-      default: () => {},
-    },
-  },
+
   data() {
     return {
       planList: [

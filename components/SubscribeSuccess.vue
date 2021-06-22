@@ -39,15 +39,12 @@ export default {
 .order-success {
   position: relative;
   padding: 13px 8px;
-
   @include media-breakpoint-up(sm) {
     padding: 18px 8px;
   }
-
   &__wrapper {
     max-width: 990px;
     margin: auto;
-
     p {
       padding: 0 17px;
       margin-bottom: 13px;
@@ -60,7 +57,6 @@ export default {
         margin-bottom: 18px;
       }
     }
-
     .order-info {
       margin-bottom: 18px;
       @include media-breakpoint-up(sm) {

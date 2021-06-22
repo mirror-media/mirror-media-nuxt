@@ -6,8 +6,8 @@
     </div>
     <div class="sim__input">
       <input
-        type="radio"
         v-model="simOrderStatus"
+        type="radio"
         value="success"
         @change="changeHandler"
       />
@@ -15,8 +15,8 @@
     </div>
     <div class="sim__input">
       <input
-        type="radio"
         v-model="simOrderStatus"
+        type="radio"
         value="order-fail"
         @change="changeHandler"
       />
@@ -24,24 +24,21 @@
     </div>
     <div class="sim__input">
       <input
-        type="radio"
         v-model="simOrderStatus"
+        type="radio"
         value="payment-fail"
         @change="changeHandler"
       />
       <span>payment-fail</span>
     </div>
+
+    <button @click="clickHandler">Skip Payment</button>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    setSimOrderStatus: {
-      type: Function,
-      isRequired: true,
-      default: () => {},
-    },
     validateOn: {
       type: Boolean,
       isRequired: true,
@@ -60,7 +57,12 @@ export default {
   },
   methods: {
     changeHandler(e) {
-      this.setSimOrderStatus(e.target.value)
+      this.simOrderStatus = e.target.value
+    },
+    clickHandler(e) {
+      this.$store.dispatch('subscribe/updateResultStatus', this.simOrderStatus)
+
+      this.$router.push('/subscribe/result')
     },
   },
 }
@@ -73,8 +75,20 @@ export default {
   top: 100px;
   right: 0;
   padding: 20px;
-  border: 1px solid red;
-  background: white;
+  border: 1px solid black;
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 5px;
+
+  .sim__input:nth-child(2) {
+    margin-top: 15px;
+  }
+
+  button {
+    border: 1px solid black;
+    background: lightblue;
+    padding: 2px 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
 }
 </style>

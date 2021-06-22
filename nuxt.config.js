@@ -248,6 +248,7 @@ module.exports = {
     '~/plugins/vueDirectivesGlobal.js',
     '~/plugins/requests/index.js',
     '~/plugins/user-behavior-log/index.client.js',
+    { src: '~/plugins/vuelidate', ssr: true },
   ],
 
   /**
@@ -258,6 +259,10 @@ module.exports = {
     {
       path: `/${API_PATH_FRONTEND}/gcs`,
       handler: '~/api/gcs.js',
+    },
+    {
+      path: `/${API_PATH_FRONTEND}/magazine-payment`,
+      handler: '~/api/magazine-payment.js',
     },
     {
       path: `/${API_PATH_FRONTEND}/combo`,

@@ -9,7 +9,7 @@
         <UiMerchandiseList
           :perchasedPlan="waitToEdittedPerchasedPlan"
           :showAll="true"
-          :class="{ error: bothCountZero }"
+          :class="{ error: bothCountZero || tooManyPlans }"
         />
 
         <div class="edit-perchase__dialog_controller">
@@ -69,6 +69,7 @@ export default {
     return {
       isToggled: false,
       bothCountZero: false,
+      tooManyPlans: false,
       waitToEdittedPerchasedPlan: [
         {
           id: 0,
@@ -105,6 +106,12 @@ export default {
         } else {
           this.bothCountZero = false
         }
+
+        if (parseInt(val[0].count) !== 0 && parseInt(val[1].count) !== 0) {
+          this.tooManyPlans = true
+        } else {
+          this.tooManyPlans = false
+        }
       },
       immediate: true,
       deep: true,
@@ -122,7 +129,7 @@ export default {
       // check if plan count are both zero
       // if yes, then show error
 
-      if (!this.bothCountZero) {
+      if (!this.bothCountZero && !this.tooManyPlans) {
         this.waitToEdittedPerchasedPlan.forEach((plan, index) => {
           this.perchasedPlan[index].count = plan.count
         })
