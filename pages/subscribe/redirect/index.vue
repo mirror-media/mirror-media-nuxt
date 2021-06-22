@@ -1,6 +1,6 @@
 <template>
   <div class="redirect-page">
-    <h1>頁面即將導向藍新支付</h1>
+    <h1>頁面即將導向藍新支付...</h1>
     <form
       id="data_set"
       name="newebpay"

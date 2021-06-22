@@ -1,22 +1,13 @@
 <template>
   <div class="subscribe-magazine-page">
     <template
-      v-if="
-        currentStep === 2 &&
-        (orderStatus === 'order-fail' || orderStatus === 'payment-fail')
-      "
+      v-if="resultStatus === 'order-fail' || resultStatus === 'payment-fail'"
     >
-      <SubscribeStepProgress
-        :currentStep="2"
-        v-if="
-          currentStep === 2 &&
-          (orderStatus === 'order-fail' || orderStatus === 'payment-fail')
-        "
-      />
-      <SubscribeFail :orderStatus="orderStatus" :orderId="orderId" />
+      <SubscribeStepProgress :currentStep="2" />
+      <SubscribeFail :resultStatus="resultStatus" :orderId="orderId" />
     </template>
 
-    <template v-if="currentStep === 3">
+    <template v-if="resultStatus === 'success'">
       <SubscribeStepProgress :currentStep="3" />
       <SubscribeSuccess :orderInfo="orderInfo" :orderId="orderId" />
     </template>
@@ -28,6 +19,16 @@ import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeSuccess from '~/components/SubscribeSuccess.vue'
 export default {
+  middleware({ store, redirect }) {
+    const resultStatus = store.getters['subscribe/getResultStatus']
+    if (
+      resultStatus !== 'success' &&
+      resultStatus !== 'order-fail' &&
+      resultStatus !== 'payment-fail'
+    ) {
+      redirect('/subscribe')
+    }
+  },
   components: {
     SubscribeStepProgress,
     SubscribeFail,
@@ -36,17 +37,16 @@ export default {
   data() {
     return {
       currentStep: 3,
-      orderStatus: 'order-fail',
       orderId: 'OOXX',
     }
   },
   computed: {
+    resultStatus() {
+      return this.$store.getters['subscribe/getResultStatus']
+    },
     orderInfo() {
       return this.$store.getters['subscribe/getOrderInfo']
     },
-  },
-  mounted() {
-    console.log(this.orderInfo)
   },
 }
 </script>

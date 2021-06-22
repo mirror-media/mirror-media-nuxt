@@ -20,7 +20,6 @@
     </div>
 
     <SubscribeSimFormStatus
-      :setSimOrderStatus="setSimOrderStatus"
       :validateOn="validateOn"
       :setValidateOn="setValidateOn"
     />
@@ -53,7 +52,7 @@ export default {
   data() {
     return {
       orderId: 'MI100048583',
-      orderStatus: 'normal', // normal, loading, order-fail, payment-fail, success
+      orderStatus: 'normal', // normal, loading
       simOrderStatus: 'success', //  order-fail, payment-fail, success
       validateOn: true,
     }
@@ -92,9 +91,6 @@ export default {
       }
     },
 
-    setSimOrderStatus(val) {
-      this.simOrderStatus = val
-    },
     setValidateOn() {
       this.validateOn = !this.validateOn
     },

@@ -1,5 +1,6 @@
 const state = () => ({
   readyToPay: false,
+  resultStatus: 'pending',
   orderInfo: {
     merchant_id: 'MS315799494',
     item_desc: '一年鏡週刊52期，加購5期方案',
@@ -42,6 +43,9 @@ const getters = {
   getPaymentPayload(state) {
     return state.paymentPayload
   },
+  getResultStatus(state) {
+    return state.resultStatus
+  },
 }
 
 const actions = {
@@ -55,6 +59,9 @@ const actions = {
   updatePaymentPayload({ commit }, newPaymentPayload) {
     commit('setPaymentPayload', newPaymentPayload)
   },
+  updateResultStatus({ commit }, newResultStatus) {
+    commit('setResultStatus', newResultStatus)
+  },
 }
 
 const mutations = {
@@ -67,6 +74,9 @@ const mutations = {
   },
   setPaymentPayload(state, newPaymentPayload) {
     state.paymentPayload = newPaymentPayload
+  },
+  setResultStatus(state, newResultStatus) {
+    state.resultStatus = newResultStatus
   },
 }
 
