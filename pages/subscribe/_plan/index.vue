@@ -2,8 +2,6 @@
   <div class="subscribe-magazine-page">
     <SubscribeStepProgress :currentStep="currentStep" />
 
-    <SubscribeChoosePlan v-if="currentStep === 1" :choosePlan="choosePlan" />
-
     <SubscribeForm
       v-if="
         currentStep === 2 &&
@@ -16,10 +14,10 @@
 
     <SubscribePayment
       v-if="currentStep === 2 && orderStatus === 'payment'"
-      :paymentHtml="paymentHtml"
+      :paymentPayload="paymentPayload"
     />
 
-    <SubscribeFail
+    <!-- <SubscribeFail
       v-if="
         currentStep === 2 &&
         (orderStatus === 'order-fail' || orderStatus === 'payment-fail')
@@ -32,7 +30,7 @@
       v-if="currentStep === 3 && orderStatus === 'success'"
       :orderInfo="orderInfo"
       :orderId="orderId"
-    />
+    /> -->
 
     <!-- loading mask -->
     <div
@@ -54,22 +52,30 @@
 
 <script>
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
-import SubscribeChoosePlan from '~/components/SubscribeChoosePlan.vue'
 import SubscribeForm from '~/components/SubscribeForm.vue'
-import SubscribeFail from '~/components/SubscribeFail.vue'
-import SubscribeSuccess from '~/components/SubscribeSuccess.vue'
+// import SubscribeFail from '~/components/SubscribeFail.vue'
+// import SubscribeSuccess from '~/components/SubscribeSuccess.vue'
 import SubscribeSimFormStatus from '~/components/SubscribeSimFormStatus.vue'
 import SubscribePayment from '~/components/SubscribePayment.vue'
 
 export default {
   components: {
     SubscribeStepProgress,
-    SubscribeChoosePlan,
+
     SubscribeForm,
-    SubscribeFail,
-    SubscribeSuccess,
+    // SubscribeFail,
+    // SubscribeSuccess,
     SubscribeSimFormStatus,
     SubscribePayment,
+  },
+  middleware({ route, redirect }) {
+    if (
+      process.server &&
+      route.params.plan !== '1' &&
+      route.params.plan !== '2'
+    ) {
+      redirect(`/subscribe/1`)
+    }
   },
   data() {
     return {
@@ -97,25 +103,36 @@ export default {
       ],
       simOrderStatus: 'success', //  order-fail, payment-fail, success
       validateOn: true,
-      orderInfo: {},
-      paymentHtml: 'Loading',
+
+      paymentPayload: {
+        MerchantID: '',
+        TradeInfo: '',
+        TradeSHA: '',
+        Version: '',
+      },
     }
   },
-
   methods: {
     choosePlan(choosedPlanId) {
       this.perchasedPlan[choosedPlanId].count++
       this.currentStep++
     },
     async proceedOrderPayment(orderPayload) {
-      this.orderInfo = orderPayload
+      // save orderInfo for successPage
+      this.$store.dispatch('subscribe/updateOrderInfo', orderPayload)
+
       this.orderStatus = 'loading'
       try {
-        const result = await this.payment(orderPayload)
-        this.orderStatus = 'payment'
-        console.log('付款結束')
+        const paymentPayload = await this.$axios.$post(
+          `/api/v2/magazine-payment`,
+          orderPayload
+        )
+        // save paymentPayload to store
+        // then jump to redirect page
+        this.$store.dispatch('subscribe/updateReadyToPay', true)
+        this.$store.dispatch('subscribe/updatePaymentPayload', paymentPayload)
+        this.$router.push(`/subscribe/redirect`)
 
-        this.paymentHtml = result
         // this.$routter.go('/subscribe-magazine/payment')
 
         // // payment success
@@ -126,20 +143,7 @@ export default {
         this.orderStatus = e.message
       }
     },
-    async payment(orderPayload) {
-      try {
-        const data = await this.$axios.$post(
-          `/api/v2/magazine-payment`,
-          orderPayload
-        )
 
-        return data
-      } catch (err) {
-        console.log('有問題啦！')
-        console.log(err)
-        return new Error('order-fail')
-      }
-    },
     setSimOrderStatus(val) {
       this.simOrderStatus = val
     },
