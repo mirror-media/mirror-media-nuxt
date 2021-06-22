@@ -93,14 +93,12 @@ export default {
       const itemList = [
         {
           id: 0,
-          title: this.orderInfo.item_desc,
-          detail: this.orderInfo.item_desc,
-          originalPrice: 3990,
-          newPrice: this.orderInfo.price,
-          count: this.orderInfo.price_total / this.orderInfo.price,
+          name: this.orderInfo.item_desc,
+          price: this.orderInfo.price,
+          amount: this.orderInfo.amount,
         },
       ]
-      console.log(itemList)
+
       return itemList
     },
     shipCost() {
