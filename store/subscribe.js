@@ -1,6 +1,6 @@
 const state = () => ({
   readyToPay: false,
-  resultStatus: 'pending',
+  resultStatus: 'success',
   orderInfo: {
     merchant_id: 'MS315799494',
     item_desc: '一年鏡週刊52期，加購5期方案',
