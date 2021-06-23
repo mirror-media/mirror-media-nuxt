@@ -1,30 +1,41 @@
 <template>
-  <div>即將回到鏡週刊</div>
+  <div @click="clickHandler" class="return">即將回到鏡週刊</div>
 </template>
 
 <script>
 export default {
   layout: 'empty',
-  middleware({ req, store, redirect }) {
-    let referer = ''
+  middleware({ req, store }) {
+    let referrer = ''
     if (process.server) {
-      referer = req.headers
+      referrer = req.headers.referrer
     }
-    console.log('referer: ' + referer)
-    if (referer !== 'https://core.newebpay.com/MPG/mpg_gateway') {
-      redirect('/subscribe')
-    }
+    console.log(referrer)
+    // if (referrer !== 'https://core.newebpay.com/MPG/mpg_gateway') {
+    //   redirect('/subscribe')
+    // }
 
     // is come from newebpay
     store.dispatch('subscribe/updateResultStatus', 'success')
   },
-
-  mounted() {
-    setTimeout(() => {
+  methods: {
+    clickHandler() {
       this.$router.push('/subscribe/result')
-    }, 1000)
+    },
+  },
+  mounted() {
+    // setTimeout(() => {
+    //   this.$router.push('/subscribe/result')
+    // }, 1000)
+    const referrer = document.referrer
+    console.log('referrer: ')
+    console.log(referrer)
   },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.return {
+  cursor: pointer;
+}
+</style>

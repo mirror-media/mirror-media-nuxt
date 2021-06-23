@@ -18,7 +18,6 @@
         <img :src="require('~/assets/loading.gif')" alt="" />
       </div>
     </div>
-
     <SubscribeSimFormStatus
       :validateOn="validateOn"
       :setValidateOn="setValidateOn"
@@ -79,12 +78,6 @@ export default {
         this.$store.dispatch('subscribe/updateReadyToPay', true)
         this.$store.dispatch('subscribe/updatePaymentPayload', paymentPayload)
         this.$router.push(`/subscribe/redirect`)
-
-        // this.$routter.go('/subscribe-magazine/payment')
-
-        // // payment success
-        // this.currentStep++
-        // this.orderStatus = 'success'
       } catch (e) {
         // payment fail
         this.orderStatus = e.message
