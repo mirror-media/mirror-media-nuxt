@@ -100,7 +100,7 @@ export default {
   data() {
     return {
       receiptPlan: '捐贈',
-      donateOrganization: '財團法人伊甸社會福利基金會',
+      donateOrganization: '',
       carrierType: 'mail',
       carrierNumber: '',
       carrierTitle: '',
@@ -166,6 +166,10 @@ export default {
     },
     donateOrganizationList() {
       return [
+        {
+          name: '請選擇',
+          value: '',
+        },
         {
           name: '財團法人伊甸社會福利基金會',
           value: '財團法人伊甸社會福利基金會',

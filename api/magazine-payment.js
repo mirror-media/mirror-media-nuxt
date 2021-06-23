@@ -4,9 +4,7 @@ const { ENV } = require('../configs/config.js')
 let DOMAIN = 'payment-dev.mirrormedia.mg'
 
 if (ENV === 'prod') {
-  DOMAIN = 'payment-dev.mirrormedia.mg'
-} else if (ENV === 'stag') {
-  DOMAIN = 'http://payment.mirrormedia.mg'
+  DOMAIN = 'payment.mirrormedia.mg'
 }
 
 // const { API_TIMEOUT, DOMAIN_NAME } = require('../configs/config.js')

@@ -19,16 +19,16 @@ import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeSuccess from '~/components/SubscribeSuccess.vue'
 export default {
-  middleware({ store, redirect }) {
-    const resultStatus = store.getters['subscribe/getResultStatus']
-    if (
-      resultStatus !== 'success' &&
-      resultStatus !== 'order-fail' &&
-      resultStatus !== 'payment-fail'
-    ) {
-      redirect('/subscribe')
-    }
-  },
+  // middleware({ store, redirect }) {
+  //   const resultStatus = store.getters['subscribe/getResultStatus']
+  //   if (
+  //     resultStatus !== 'success' &&
+  //     resultStatus !== 'order-fail' &&
+  //     resultStatus !== 'payment-fail'
+  //   ) {
+  //     redirect('/subscribe')
+  //   }
+  // },
   components: {
     SubscribeStepProgress,
     SubscribeFail,
