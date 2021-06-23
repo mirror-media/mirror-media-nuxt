@@ -29,6 +29,13 @@
                   @load="handleLoadStoryListRelated"
                 >
                   <UiStoryListRelated
+                    v-if="
+                      Object.prototype.hasOwnProperty.call(
+                        $GOExp || {},
+                        'normal-post-related-redesign'
+                      ) &&
+                      $GOExp['normal-post-related-redesign'].variant === '0'
+                    "
                     :items="relateds"
                     :images="relatedImages"
                     @sendGa="sendGaForClick('related')"
@@ -45,6 +52,20 @@
                       </ClientOnly>
                     </template>
                   </UiStoryListRelated>
+                  <UiStoryListRelatedRedesignWrapper
+                    v-else-if="
+                      Object.prototype.hasOwnProperty.call(
+                        $GOExp || {},
+                        'normal-post-related-redesign'
+                      ) &&
+                      $GOExp['normal-post-related-redesign'].variant === '1'
+                    "
+                    :relateds="relateds"
+                    :relatedImages="relatedImages"
+                    :canAdvertise="canAdvertise"
+                    :device="device"
+                    @sendGa="sendGaForClick('related')"
+                  />
                 </LazyRenderer>
               </template>
 
@@ -195,6 +216,7 @@ import ContainerCulturePost from '~/components/culture-post/ContainerCulturePost
 import ContainerStoryBody from '~/components/ContainerStoryBody.vue'
 import UiAdultContentWarning from '~/components/UiAdultContentWarning.vue'
 import UiStoryListRelated from '~/components/UiStoryListRelated.vue'
+import UiStoryListRelatedRedesignWrapper from '~/components/UiStoryListRelatedRedesignWrapper.vue'
 import FbPage from '~/components/FbPage.vue'
 import UiArticleListAside from '~/components/UiArticleListAside.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
@@ -241,6 +263,7 @@ export default {
     ContainerStoryBody,
     UiAdultContentWarning,
     UiStoryListRelated,
+    UiStoryListRelatedRedesignWrapper,
     FbPage,
     UiArticleListAside,
 
