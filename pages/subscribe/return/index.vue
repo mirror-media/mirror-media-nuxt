@@ -11,9 +11,9 @@ export default {
       referrer = req.headers.referrer
     }
     console.log(referrer)
-    if (referrer !== 'https://core.newebpay.com/') {
-      redirect('/subscribe')
-    }
+    // if (referrer !== 'https://core.newebpay.com/') {
+    //   redirect('/subscribe')
+    // }
 
     // is come from newebpay
     // then turn on access of result page
@@ -32,18 +32,23 @@ export default {
     },
   },
   async mounted() {
+    const referrer = document?.referrer
+    console.log('referrer')
+    console.log(referrer)
     const JwtToken = this.getDataFromSessionStorage('JwtToken')
     const MerchantOrderNo = this.getDataFromSessionStorage('MerchantOrderNo')
     const infoPayload = {
       merchant_order_no: MerchantOrderNo,
       jwt: JwtToken,
     }
-
+    console.log('infoPayload')
+    console.log(infoPayload)
     try {
       const info = await this.$axios.$post(
         `/api/v2/subscribe-magazine/info`,
         infoPayload
       )
+      console.log('info')
       console.log(info)
     } catch (e) {
       console.log(e)
