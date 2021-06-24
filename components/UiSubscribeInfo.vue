@@ -4,7 +4,11 @@
     <ul>
       <li v-for="info in infoList" :key="info.id">
         <p>{{ info.text }}</p>
-        <p v-for="infoChild in infoSubList(info)" :key="infoChild.id">
+        <p
+          v-for="infoChild in infoSubList(info)"
+          :key="infoChild.id"
+          class="subscribe-info__sub"
+        >
           {{ infoChild.text }}
         </p>
       </li>
@@ -19,19 +23,20 @@ export default {
       infoList: [
         {
           id: 0,
-          text: '完成訂購後約三週內可分別收到第一期雜誌。',
+          text: '- 完成訂購後，開始寄送期數將由服務人員提供。',
         },
         {
           id: 1,
-          text: '發票將於您完成訂購後七個工作天內寄達。',
+          text:
+            '- 雜誌每週三出刊，將於週四(含)前完成寄送，若當週五仍未收到，請來電02-6633-3882 查詢。',
         },
         {
           id: 2,
-          text: '如需更改收件地址，請於服務時間來電告知。',
+          text: '- 若需更址，請於週四中午12:00前來電，我們將於下週寄送新址。',
         },
         {
           id: 3,
-          text: '雜誌如有下列情事者，同意訂戶退貨：',
+          text: '- 雜誌如有下列情事者，同意訂戶退貨： ',
           child: [
             {
               id: 0,
@@ -93,6 +98,9 @@ export default {
       line-height: 2;
       letter-spacing: normal;
       color: #4a4a4a;
+      .subscribe-info__sub {
+        margin-left: 16px;
+      }
     }
   }
 }

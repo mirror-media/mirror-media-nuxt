@@ -4,10 +4,10 @@
       <div class="order-info__order_title">訂單資訊</div>
       <div class="order-info__order_content">
         <SubscribeSuccessOrderInfoContentRow title="訂單編號" :data="orderId" />
-        <SubscribeSuccessOrderInfoContentRow
+        <!-- <SubscribeSuccessOrderInfoContentRow
           title="續訂戶代碼"
           data="窩不知道"
-        />
+        /> -->
         <SubscribeSuccessOrderInfoContentRow
           title="訂單日期"
           :data="orderDate"
@@ -53,10 +53,10 @@
           title="通訊地址"
           :data="orderInfo.rec_addr"
         />
-        <SubscribeSuccessOrderInfoContentRow
+        <!-- <SubscribeSuccessOrderInfoContentRow
           title="派送備註"
           data="orderInfo.rec_remark"
-        />
+        /> -->
       </div>
     </div>
   </div>

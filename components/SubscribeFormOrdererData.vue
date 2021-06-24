@@ -231,6 +231,7 @@ export default {
     span {
       font-size: 18px;
       color: #4a4a4a;
+      margin-bottom: 0;
     }
   }
 

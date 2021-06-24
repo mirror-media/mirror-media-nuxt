@@ -88,7 +88,7 @@ export default {
         {
           id: 0,
           title: '一年方案',
-          detail: '一年鏡週刊52期，加購5期方案',
+          detail: '訂購紙本鏡週刊 52 期，加贈 5 期',
           originalPrice: 3990,
           newPrice: 2,
           // newPrice: 2880,
@@ -97,7 +97,7 @@ export default {
         {
           id: 1,
           title: '二年方案',
-          detail: '二年鏡週刊104期，加購10期方案',
+          detail: '訂購紙本鏡週刊 104 期，加贈 10 期',
           originalPrice: 7800,
           newPrice: 3,
           // newPrice: 5280,
@@ -106,7 +106,7 @@ export default {
       ],
       discount: {
         hasCode: false,
-        code: '',
+        code: 'MR000',
       },
       ordererData: {
         name: '',
