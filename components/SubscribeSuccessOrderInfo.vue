@@ -118,7 +118,7 @@ export default {
   min-height: 50vh;
   color: #4a4a4a;
   font-size: 15px;
-  font-family: PingFangTC;
+  font-family: 'PingFang TC';
 
   & > * + * {
     margin-top: 42px;

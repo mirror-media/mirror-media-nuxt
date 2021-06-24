@@ -48,7 +48,7 @@ export default {
 
 <style lang="scss" scoped>
 .fail {
-  font-family: PingFangTC;
+  font-family: 'PingFang TC';
   font-size: 15px;
   line-height: 1.87;
   text-align: justify;
