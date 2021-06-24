@@ -262,8 +262,12 @@ module.exports = {
       handler: '~/api/gcs.js',
     },
     {
-      path: `/${API_PATH_FRONTEND}/magazine-payment`,
-      handler: '~/api/magazine-payment.js',
+      path: `/${API_PATH_FRONTEND}/subscribe-magazine/payload`,
+      handler: '~/api/subscribe-magazine/payload.js',
+    },
+    {
+      path: `/${API_PATH_FRONTEND}/subscribe-magazine/info`,
+      handler: '~/api/subscribe-magazine/info.js',
     },
     {
       path: `/${API_PATH_FRONTEND}/combo`,

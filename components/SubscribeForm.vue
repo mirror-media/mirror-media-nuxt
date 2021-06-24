@@ -286,7 +286,6 @@ export default {
       if (this.validationPass() && this.acceptPermission) {
         const payload = this.getOrderPayload()
 
-        // console.log(payload)
         this.proceedOrderPayment(payload)
       }
     },

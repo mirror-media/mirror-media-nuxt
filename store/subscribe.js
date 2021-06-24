@@ -30,6 +30,8 @@ const state = () => ({
     TradeInfo: '',
     TradeSHA: '',
     Version: '',
+    JwtToken: '',
+    MerchantOrderNo: '',
   },
 })
 

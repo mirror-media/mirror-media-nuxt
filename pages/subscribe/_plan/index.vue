@@ -70,13 +70,15 @@ export default {
 
       try {
         const paymentPayload = await this.$axios.$post(
-          `/api/v2/magazine-payment`,
+          `/api/v2/subscribe-magazine/payload`,
           orderPayload
         )
+
         // save paymentPayload to store
         // then jump to redirect page
         this.$store.dispatch('subscribe/updateReadyToPay', true)
         this.$store.dispatch('subscribe/updatePaymentPayload', paymentPayload)
+
         this.$router.push(`/subscribe/redirect`)
       } catch (e) {
         // payment fail
