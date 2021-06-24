@@ -10,23 +10,25 @@
           ref="ordererDOM"
           type="訂購人"
           :setOrdererData="setOrdererData"
-          :setFormStatus="setFormStatus"
           :validateOn="validateOn"
+          :setFormStatus="setFormStatus"
         />
         <SubscribeFormOrdererData
           ref="receiverDOM"
           type="收件人"
           :setOrdererData="setOrdererData"
-          :setFormStatus="setFormStatus"
-          :validateOn="validateOn"
           :receiverDataIsSameAsOrderer="receiverDataIsSameAsOrderer"
           :setReceiverDataIsSameAsOrderer="setReceiverDataIsSameAsOrderer"
+          :validateOn="validateOn"
+          :setFormStatus="setFormStatus"
         />
 
-        <SubscribeFormShip :setShipPlan="setShipPlan" />
+        <SubscribeFormShip ref="shipDOM" :setShipPlan="setShipPlan" />
         <SubscribeFormReceipt
           ref="receiptDOM"
           :setReceiptData="setReceiptData"
+          :validateOn="validateOn"
+          :setFormStatus="setFormStatus"
         />
 
         <SubscribeFormAcceptPermission
@@ -144,6 +146,7 @@ export default {
       formStatus: {
         orderer: 'OK',
         receiver: 'OK',
+        receipt: 'OK',
       },
     }
   },
@@ -263,7 +266,8 @@ export default {
     },
     validationPass() {
       const validateArray = Object.values(this.formStatus)
-      if (validateArray.find((item) => item !== 'OK')) {
+      const result = validateArray.find((item) => item !== 'OK')
+      if (result) {
         return false
       } else {
         return true
@@ -278,14 +282,15 @@ export default {
       // check form's validationStatus
       this.ordererData = this.$refs.ordererDOM.check()
       this.receiverData = this.$refs.receiverDOM.check()
+      this.$refs.receiptDOM.check()
       this.$refs.permissionDOM.check()
+
       if (this.receiverDataIsSameAsOrderer) {
         this.receiverData = this.ordererData
       }
 
       if (this.validationPass() && this.acceptPermission) {
         const payload = this.getOrderPayload()
-
         this.proceedOrderPayment(payload)
       }
     },
@@ -424,7 +429,8 @@ export default {
   .error {
     animation-name: errorShake;
     animation-duration: 0.3s;
-    input {
+    input,
+    select {
       border: solid 2px rgba(232, 24, 49, 0.5);
     }
 

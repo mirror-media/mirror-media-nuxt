@@ -108,10 +108,6 @@ export default {
       type: Function,
       default: () => {},
     },
-    setFormStatus: {
-      type: Function,
-      default: () => {},
-    },
     receiverDataIsSameAsOrderer: {
       type: Boolean,
       default: false,
@@ -124,6 +120,10 @@ export default {
       // for testing
       type: Boolean,
       default: true,
+    },
+    setFormStatus: {
+      type: Function,
+      default: () => {},
     },
   },
   data() {

@@ -60,8 +60,6 @@ export default {
       merchant_order_no: MerchantOrderNo,
       jwt: JwtToken,
     }
-    console.log('infoPayload')
-    console.log(infoPayload)
 
     try {
       const info = await this.$axios.$post(

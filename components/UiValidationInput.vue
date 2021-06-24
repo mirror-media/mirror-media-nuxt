@@ -32,11 +32,20 @@ export default {
       type: String,
       default: '',
     },
-
+    // validation
+    validateField: {
+      type: String,
+      isRequired: true,
+      default: '',
+    },
     validateOn: {
       // for testing
       type: Boolean,
       default: true,
+    },
+    setReciptFormStatus: {
+      type: Function,
+      default: () => {},
     },
   },
   validations: {
@@ -53,6 +62,20 @@ export default {
     changeHandler(e) {
       this.$v.value.$touch()
       this.$emit('input', e.target.value)
+    },
+    check() {
+      if (this.isNeedToCheck) {
+        this.$v.$touch()
+        if (this.$v.$invalid) {
+          this.validationStatus = 'ERROR'
+        } else {
+          this.validationStatus = 'OK'
+        }
+      } else {
+        this.validationStatus = 'OK'
+      }
+
+      this.setReciptFormStatus(this.validateField, this.validationStatus)
     },
   },
 }

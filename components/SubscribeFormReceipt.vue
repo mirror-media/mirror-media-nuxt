@@ -16,8 +16,12 @@
 
         <div v-if="receiptPlan === '捐贈'" class="receipt__choose_item_detail">
           <UiSubscribeSelect
+            ref="donateOrganizationDOM"
             v-model="donateOrganization"
             :optionList="donateOrganizationList"
+            validateField="donateOrganization"
+            :validateOn="validateOn"
+            :setReciptFormStatus="setReciptFormStatus"
           />
         </div>
       </div>
@@ -34,14 +38,21 @@
           class="receipt__choose_item_detail"
         >
           <UiSubscribeSelect
+            ref="carrierTypeDOM"
             v-model="carrierType"
             :optionList="carrierTypeList"
+            validateField="carrierType"
+            :validionOn="true"
+            :setReciptFormStatus="setReciptFormStatus"
           />
 
           <UiValidationInput
-            :validionOn="true"
+            ref="carrierNumberDOM"
             v-model="carrierNumber"
             :placeholder="carrierNumberPlaceHolder"
+            validateField="carrierNumber"
+            :validionOn="true"
+            :setReciptFormStatus="setReciptFormStatus"
           />
         </div>
       </div>
@@ -58,15 +69,21 @@
           class="receipt__choose_item_detail"
         >
           <UiValidationInput
-            :validionOn="true"
+            ref="carrierTitleDOM"
             v-model="carrierTitle"
             placeholder="抬頭"
+            validateField="arrierTitle"
+            :validionOn="true"
+            :setReciptFormStatus="setReciptFormStatus"
           />
 
           <UiValidationInput
-            :validionOn="true"
+            ref="carrierUbnDOM"
             v-model="carrierUbn"
             placeholder="統一編號"
+            validateField="carrierUbn"
+            :validionOn="true"
+            :setReciptFormStatus="setReciptFormStatus"
           />
         </div>
       </div>
@@ -96,36 +113,32 @@ export default {
       type: Boolean,
       default: true,
     },
+    setFormStatus: {
+      type: Function,
+      default: () => {},
+    },
   },
   data() {
     return {
       receiptPlan: '捐贈',
       donateOrganization: '',
-      carrierType: 'mail',
+      carrierType: '',
       carrierNumber: '',
       carrierTitle: '',
       carrierUbn: '',
+      submitStatus: null,
+
+      receiptFormStatus: {
+        receiptPlan: 'OK',
+        donateOrganization: 'OK',
+        carrierType: 'OK',
+        carrierNumber: 'OK',
+        carrierTitle: 'OK',
+        carrierUbn: 'OK',
+      },
     }
   },
 
-  watch: {
-    $data: {
-      handler(val) {
-        const receiptData = {
-          receiptPlan: val.receiptPlan,
-          donateOrganization: val.donateOrganization,
-          carrierType: val.carrierType,
-          carrierNumber: val.carrierNumber,
-          carrierTitle: val.carrierTitle,
-          carrierUbn: val.carrierUbn,
-        }
-
-        // console.log(receiptData)
-        this.setReceiptData(receiptData)
-      },
-      deep: true,
-    },
-  },
   computed: {
     carrierNumberPlaceHolder() {
       let placeholder = ''
@@ -151,6 +164,10 @@ export default {
     carrierTypeList() {
       return [
         {
+          name: '請選擇',
+          value: '',
+        },
+        {
           name: 'email載具',
           value: 'mail',
         },
@@ -171,18 +188,73 @@ export default {
           value: '',
         },
         {
+          name: '財團法人台灣兒童暨家庭扶助基金會',
+          value: '財團法人台灣兒童暨家庭扶助基金會',
+        },
+        {
+          name: '財團法人創世社會福利基金會',
+          value: '財團法人創世社會福利基金會',
+        },
+        {
+          name: '財團法人台灣癌症基金會',
+          value: '財團法人台灣癌症基金會',
+        },
+        {
           name: '財團法人伊甸社會福利基金會',
           value: '財團法人伊甸社會福利基金會',
         },
         {
-          name: '財團法人中華民國兒童福利聯盟文教基金會',
-          value: '財團法人中華民國兒童福利聯盟文教基金會',
-        },
-        {
-          name: '財團法人私立脊髓損傷潛能發展中心',
-          value: '財團法人私立脊髓損傷潛能發展中心',
+          name: '財團法人門諾社會福利慈善事業基金會',
+          value: '財團法人門諾社會福利慈善事業基金會',
         },
       ]
+    },
+  },
+  watch: {
+    $data: {
+      handler(val) {
+        const receiptData = {
+          receiptPlan: val.receiptPlan,
+          donateOrganization: val.donateOrganization,
+          carrierType: val.carrierType,
+          carrierNumber: val.carrierNumber,
+          carrierTitle: val.carrierTitle,
+          carrierUbn: val.carrierUbn,
+        }
+
+        // console.log(receiptData)
+        this.setReceiptData(receiptData)
+      },
+      deep: true,
+    },
+  },
+  methods: {
+    setReciptFormStatus(type, formStatus) {
+      this.receiptFormStatus[type] = formStatus
+    },
+    validationPass() {
+      const validateArray = Object.values(this.receiptFormStatus)
+      if (validateArray.find((item) => item !== 'OK')) {
+        return 'ERROR'
+      } else {
+        return 'OK'
+      }
+    },
+    check() {
+      if (this.isNeedToCheck) {
+        // check subForm's validation
+        if (this.receiptPlan === '捐贈') {
+          this.$refs.donateOrganizationDOM.check()
+        } else if (this.receiptPlan === '二聯式發票（含載具）') {
+          this.$refs.carrierTypeDOM.check()
+          this.$refs.carrierNumberDOM.check()
+        } else if (this.receiptPlan === '三聯式發票') {
+          this.$refs.carrierTitleDOM.check()
+          this.$refs.carrierUbnDOM.check()
+        }
+      }
+
+      this.setFormStatus('receipt', this.validationPass())
     },
   },
 }
