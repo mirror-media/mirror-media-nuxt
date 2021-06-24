@@ -74,10 +74,17 @@ export default {
           orderPayload
         )
 
+        const infoPayload = {
+          JwtToken: paymentPayload.JwtToken,
+          MerchantOrderNo: paymentPayload.MerchantOrderNo,
+        }
+
+        this.$store.dispatch('subscribe/updatePaymentPayload', paymentPayload)
+        this.$store.dispatch('subscribe/updateInfoPayload', infoPayload)
+
         // save paymentPayload to store
         // then jump to redirect page
         this.$store.dispatch('subscribe/updateReadyToPay', true)
-        this.$store.dispatch('subscribe/updatePaymentPayload', paymentPayload)
 
         this.$router.push(`/subscribe/redirect`)
       } catch (e) {

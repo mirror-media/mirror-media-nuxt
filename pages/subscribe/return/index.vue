@@ -6,14 +6,19 @@
 export default {
   layout: 'empty',
   middleware({ req, store, redirect }) {
-    let referrer = ''
+    let referer = ''
     if (process.server) {
-      referrer = req.headers.referrer
+      referer = req.headers.referer
     }
-    console.log(referrer)
-    // if (referrer !== 'https://core.newebpay.com/') {
-    //   redirect('/subscribe')
-    // }
+    console.log('=============')
+
+    console.log(`referer is : ${referer}`)
+    if (referer !== 'https://core.newebpay.com/') {
+      console.log(`referer is not from newebpay`)
+      // redirect('/subscribe')
+    } else {
+      console.log(`referer is from newebpay`)
+    }
 
     // is come from newebpay
     // then turn on access of result page
@@ -32,17 +37,32 @@ export default {
     },
   },
   async mounted() {
+    // determine where this page redirect from
     const referrer = document?.referrer
     console.log('referrer')
     console.log(referrer)
+
+    // get order info from sessionStoaage
+    // use them to display order info in success page
+    const orderInfo = this.getDataFromSessionStorage('orderInfo')
+    this.$store.dispatch('subscribe/updateOrderInfo', JSON.parse(orderInfo))
+
+    // get infoPayload from sessionStorage
+    // use them to get payment info from backend
     const JwtToken = this.getDataFromSessionStorage('JwtToken')
     const MerchantOrderNo = this.getDataFromSessionStorage('MerchantOrderNo')
+    this.$store.dispatch('subscribe/updateInfoPayload', {
+      JwtToken,
+      MerchantOrderNo,
+    })
+
     const infoPayload = {
       merchant_order_no: MerchantOrderNo,
       jwt: JwtToken,
     }
     console.log('infoPayload')
     console.log(infoPayload)
+
     try {
       const info = await this.$axios.$post(
         `/api/v2/subscribe-magazine/info`,

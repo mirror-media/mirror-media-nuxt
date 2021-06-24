@@ -44,10 +44,14 @@ export default {
     },
   },
   mounted() {
-    // get token for this payment
-    // need this tokey while payment is over and get payment info
+    // save orderInfo into sessionStorage
+    const orderInfo = this.$store.getters['subscribe/getOrderInfo']
+    this.storeToSessionStorage('orderInfo', JSON.stringify(orderInfo))
+
+    // get orderNo and token for this payment
+    // save them into sessionStorage
     const { JwtToken, MerchantOrderNo } = this.$store.getters[
-      'subscribe/getPaymentPayload'
+      'subscribe/getInfoPayload'
     ]
     this.storeToSessionStorage('JwtToken', JwtToken)
     this.storeToSessionStorage('MerchantOrderNo', MerchantOrderNo)
@@ -57,10 +61,7 @@ export default {
 
     // submit newebpay form-post to redirect to newebpay page
     const formDOM = document.forms.newebpay
-
-    setTimeout(() => {
-      formDOM.submit()
-    }, 1000)
+    formDOM.submit()
   },
 }
 </script>

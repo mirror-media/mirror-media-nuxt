@@ -37,7 +37,6 @@ export default {
   data() {
     return {
       currentStep: 3,
-      orderId: 'OOXX',
     }
   },
   computed: {
@@ -45,7 +44,15 @@ export default {
       return this.$store.getters['subscribe/getResultStatus']
     },
     orderInfo() {
-      return this.$store.getters['subscribe/getOrderInfo']
+      const orderInfo = this.$store.getters['subscribe/getOrderInfo']
+      return orderInfo
+    },
+    orderId() {
+      const { MerchantOrderNo } = this.$store.getters[
+        'subscribe/getInfoPayload'
+      ]
+      console.log(MerchantOrderNo)
+      return MerchantOrderNo
     },
   },
 }
