@@ -90,7 +90,7 @@ export default {
           title: '一年方案',
           detail: '一年鏡週刊52期，加購5期方案',
           originalPrice: 3990,
-          newPrice: 3,
+          newPrice: 2,
           // newPrice: 2880,
           count: this.currentChoosedPlanId === 0 ? 1 : 0,
         },

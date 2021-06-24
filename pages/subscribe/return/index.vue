@@ -1,5 +1,5 @@
 <template>
-  <div @click="clickHandler" class="return">即將回到鏡週刊</div>
+  <div class="return">即將回到鏡週刊</div>
 </template>
 
 <script>
@@ -10,24 +10,16 @@ export default {
     if (process.server) {
       referer = req.headers.referer
     }
-    console.log('=============')
 
     console.log(`referer is : ${referer}`)
     if (referer !== 'https://core.newebpay.com/') {
       console.log(`referer is not from newebpay`)
-      // redirect('/subscribe')
+      redirect('/subscribe')
     } else {
       console.log(`referer is from newebpay`)
     }
-
-    // is come from newebpay
-    // then turn on access of result page
-    store.dispatch('subscribe/updateResultStatus', 'success')
   },
   methods: {
-    clickHandler() {
-      this.$router.push('/subscribe/result')
-    },
     getDataFromSessionStorage(name) {
       if (process.browser) {
         return sessionStorage.getItem(name)
@@ -37,11 +29,6 @@ export default {
     },
   },
   async mounted() {
-    // determine where this page redirect from
-    const referrer = document?.referrer
-    console.log('referrer')
-    console.log(referrer)
-
     // get order info from sessionStoaage
     // use them to display order info in success page
     const orderInfo = this.getDataFromSessionStorage('orderInfo')
@@ -68,9 +55,13 @@ export default {
       )
       console.log('info')
       console.log(info)
+
+      this.$store.dispatch('subscribe/updateResultStatus', 'success')
     } catch (e) {
-      console.log(e)
+      this.$store.dispatch('subscribe/updateResultStatus', 'payment-fail')
     }
+
+    this.$router.push('/subscribe/result')
   },
 }
 </script>

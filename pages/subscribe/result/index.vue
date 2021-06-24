@@ -55,6 +55,11 @@ export default {
       return MerchantOrderNo
     },
   },
+  mounted() {
+    setTimeout(() => {
+      this.$store.dispatch('subscribe/updateResultStatus', 'pending')
+    }, 10000)
+  },
 }
 </script>
 
