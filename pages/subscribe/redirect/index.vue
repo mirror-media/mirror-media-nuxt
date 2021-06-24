@@ -36,20 +36,15 @@ export default {
       return this.$store.getters['subscribe/getPaymentPayload']
     },
   },
-  methods: {
-    storeToSessionStorage(name, value) {
-      if (process.browser) {
-        sessionStorage.setItem(name, value)
-      }
-    },
-  },
   mounted() {
     // save orderInfo into sessionStorage
     const orderInfo = this.$store.getters['subscribe/getOrderInfo']
     this.storeToSessionStorage('orderInfo', JSON.stringify(orderInfo))
 
-    // get orderNo and token for this payment
-    // save them into sessionStorage
+    /*
+     * get orderNo and token for this payment
+     * save them into sessionStorage
+     */
     const { JwtToken, MerchantOrderNo } = this.$store.getters[
       'subscribe/getInfoPayload'
     ]
@@ -62,6 +57,13 @@ export default {
     // submit newebpay form-post to redirect to newebpay page
     const formDOM = document.forms.newebpay
     formDOM.submit()
+  },
+  methods: {
+    storeToSessionStorage(name, value) {
+      if (process.browser) {
+        sessionStorage.setItem(name, value)
+      }
+    },
   },
 }
 </script>

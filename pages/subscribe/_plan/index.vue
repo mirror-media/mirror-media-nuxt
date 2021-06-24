@@ -29,15 +29,12 @@
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeForm from '~/components/SubscribeForm.vue'
 import SubscribeSimFormStatus from '~/components/SubscribeSimFormStatus.vue'
-// import SubscribePayment from '~/components/SubscribePayment.vue'
 
 export default {
   components: {
     SubscribeStepProgress,
-
     SubscribeForm,
     SubscribeSimFormStatus,
-    // SubscribePayment,
   },
   middleware({ route, redirect }) {
     if (
@@ -81,13 +78,16 @@ export default {
         this.$store.dispatch('subscribe/updatePaymentPayload', paymentPayload)
         this.$store.dispatch('subscribe/updateInfoPayload', infoPayload)
 
-        // save paymentPayload to store
-        // then jump to redirect page
+        /*
+         * save paymentPayload to store
+         * then jump to redirect page
+         */
         this.$store.dispatch('subscribe/updateReadyToPay', true)
 
         this.$router.push(`/subscribe/redirect`)
       } catch (err) {
         console.error(err)
+
         // payment fail
         this.$store.dispatch('subscribe/updateResultStatus', 'order-fail')
         this.$router.push(`/subscribe/result`)

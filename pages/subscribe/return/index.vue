@@ -11,31 +11,24 @@ export default {
       referer = req.headers.referer
     }
 
-    console.log(`referer is : ${referer}`)
     if (referer !== 'https://core.newebpay.com/') {
-      console.log(`referer is not from newebpay`)
       redirect('/subscribe')
-    } else {
-      console.log(`referer is from newebpay`)
     }
   },
-  methods: {
-    getDataFromSessionStorage(name) {
-      if (process.browser) {
-        return sessionStorage.getItem(name)
-      } else {
-        return ''
-      }
-    },
-  },
   async mounted() {
-    // get order info from sessionStoaage
-    // use them to display order info in success page
+    /*
+     * get order info from sessionStoaage
+     * use them to display order info in success page
+     */
+
     const orderInfo = this.getDataFromSessionStorage('orderInfo')
     this.$store.dispatch('subscribe/updateOrderInfo', JSON.parse(orderInfo))
 
-    // get infoPayload from sessionStorage
-    // use them to get payment info from backend
+    /*
+     * get infoPayload from sessionStorage
+     * use them to get payment info from backend
+     */
+
     const JwtToken = this.getDataFromSessionStorage('JwtToken')
     const MerchantOrderNo = this.getDataFromSessionStorage('MerchantOrderNo')
     this.$store.dispatch('subscribe/updateInfoPayload', {
@@ -53,8 +46,8 @@ export default {
         `/api/v2/subscribe-magazine/info`,
         infoPayload
       )
-      console.log('info')
-      console.log(info)
+
+      console.log('info' + info)
 
       this.$store.dispatch('subscribe/updateResultStatus', 'success')
     } catch (e) {
@@ -62,6 +55,15 @@ export default {
     }
 
     this.$router.push('/subscribe/result')
+  },
+  methods: {
+    getDataFromSessionStorage(name) {
+      if (process.browser) {
+        return sessionStorage.getItem(name)
+      } else {
+        return ''
+      }
+    },
   },
 }
 </script>

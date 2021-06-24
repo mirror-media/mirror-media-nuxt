@@ -51,7 +51,6 @@ export default {
       const { MerchantOrderNo } = this.$store.getters[
         'subscribe/getInfoPayload'
       ]
-      console.log(MerchantOrderNo)
       return MerchantOrderNo
     },
   },
