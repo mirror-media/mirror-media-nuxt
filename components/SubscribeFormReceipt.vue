@@ -9,15 +9,18 @@
     <div class="receipt__choose">
       <div class="receipt__choose_item">
         <UiSubscribeRadioInput
-          v-model="receiptPlan"
+          v-model="receiptData.receiptPlan"
           radioValue="捐贈"
           radioName="捐贈"
         />
 
-        <div v-if="receiptPlan === '捐贈'" class="receipt__choose_item_detail">
+        <div
+          v-if="receiptData.receiptPlan === '捐贈'"
+          class="receipt__choose_item_detail"
+        >
           <UiSubscribeSelect
             ref="donateOrganizationDOM"
-            v-model="donateOrganization"
+            v-model="receiptData.donateOrganization"
             :optionList="donateOrganizationList"
             validateField="donateOrganization"
             :validateOn="validateOn"
@@ -28,18 +31,18 @@
 
       <div class="receipt__choose_item">
         <UiSubscribeRadioInput
-          v-model="receiptPlan"
+          v-model="receiptData.receiptPlan"
           radioValue="二聯式發票（含載具）"
           radioName="二聯式發票（含載具）"
         />
 
         <div
-          v-if="receiptPlan === '二聯式發票（含載具）'"
+          v-if="receiptData.receiptPlan === '二聯式發票（含載具）'"
           class="receipt__choose_item_detail"
         >
           <UiSubscribeSelect
             ref="carrierTypeDOM"
-            v-model="carrierType"
+            v-model="receiptData.carrierType"
             :optionList="carrierTypeList"
             validateField="carrierType"
             :validionOn="true"
@@ -48,7 +51,7 @@
 
           <UiValidationInput
             ref="carrierNumberDOM"
-            v-model="carrierNumber"
+            v-model="receiptData.carrierNumber"
             :placeholder="carrierNumberPlaceHolder"
             validateField="carrierNumber"
             :validionOn="true"
@@ -59,18 +62,18 @@
 
       <div class="receipt__choose_item">
         <UiSubscribeRadioInput
-          v-model="receiptPlan"
+          v-model="receiptData.receiptPlan"
           radioValue="三聯式發票"
           radioName="三聯式發票"
         />
 
         <div
-          v-if="receiptPlan === '三聯式發票'"
+          v-if="receiptData.receiptPlan === '三聯式發票'"
           class="receipt__choose_item_detail"
         >
           <UiValidationInput
             ref="carrierTitleDOM"
-            v-model="carrierTitle"
+            v-model="receiptData.carrierTitle"
             placeholder="抬頭"
             validateField="arrierTitle"
             :validionOn="true"
@@ -79,7 +82,7 @@
 
           <UiValidationInput
             ref="carrierUbnDOM"
-            v-model="carrierUbn"
+            v-model="receiptData.carrierUbn"
             placeholder="統一編號"
             validateField="carrierUbn"
             :validionOn="true"
@@ -120,12 +123,14 @@ export default {
   },
   data() {
     return {
-      receiptPlan: '捐贈',
-      donateOrganization: '',
-      carrierType: '',
-      carrierNumber: '',
-      carrierTitle: '',
-      carrierUbn: '',
+      receiptData: {
+        receiptPlan: '捐贈',
+        donateOrganization: '',
+        carrierType: 'mail',
+        carrierNumber: '',
+        carrierTitle: '',
+        carrierUbn: '',
+      },
       submitStatus: null,
 
       receiptFormStatus: {
@@ -142,7 +147,7 @@ export default {
   computed: {
     carrierNumberPlaceHolder() {
       let placeholder = ''
-      switch (this.carrierType) {
+      switch (this.receiptData.carrierType) {
         case 'mail':
           placeholder = 'example@gmail.com'
           break
@@ -163,10 +168,6 @@ export default {
     },
     carrierTypeList() {
       return [
-        {
-          name: '請選擇',
-          value: '',
-        },
         {
           name: 'email載具',
           value: 'mail',
@@ -211,19 +212,19 @@ export default {
     },
   },
   watch: {
-    $data: {
+    receiptData: {
       handler(val) {
-        const receiptData = {
-          receiptPlan: val.receiptPlan,
-          donateOrganization: val.donateOrganization,
-          carrierType: val.carrierType,
-          carrierNumber: val.carrierNumber,
-          carrierTitle: val.carrierTitle,
-          carrierUbn: val.carrierUbn,
-        }
+        this.setReceiptData(val)
 
-        // console.log(receiptData)
-        this.setReceiptData(receiptData)
+        // reset validation status after chagned value
+        this.receiptFormStatus = {
+          receiptPlan: 'OK',
+          donateOrganization: 'OK',
+          carrierType: 'OK',
+          carrierNumber: 'OK',
+          carrierTitle: 'OK',
+          carrierUbn: 'OK',
+        }
       },
       deep: true,
     },
@@ -243,12 +244,12 @@ export default {
     check() {
       if (this.isNeedToCheck) {
         // check subForm's validation
-        if (this.receiptPlan === '捐贈') {
+        if (this.receiptData.receiptPlan === '捐贈') {
           this.$refs.donateOrganizationDOM.check()
-        } else if (this.receiptPlan === '二聯式發票（含載具）') {
+        } else if (this.receiptData.receiptPlan === '二聯式發票（含載具）') {
           this.$refs.carrierTypeDOM.check()
           this.$refs.carrierNumberDOM.check()
-        } else if (this.receiptPlan === '三聯式發票') {
+        } else if (this.receiptData.receiptPlan === '三聯式發票') {
           this.$refs.carrierTitleDOM.check()
           this.$refs.carrierUbnDOM.check()
         }

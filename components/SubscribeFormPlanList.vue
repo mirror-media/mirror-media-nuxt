@@ -7,7 +7,7 @@
 
     <UiMerchandiseList :perchasedPlan="perchasedPlan" />
 
-    <div class="merchandise-list__discount_code">
+    <!-- <div class="merchandise-list__discount_code">
       <div class="merchandise-list__discount_code_row">
         <div class="merchandise-list__discount_code_check">
           <input v-model="discount.hasCode" type="checkbox" name="" />
@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <!-- <div class="merchandise-list__discount_code_row">
+      <div class="merchandise-list__discount_code_row">
         <div class="merchandise-list__discount_code_info">
           <p>
             - 續訂戶資格為實際訂閱紙本鏡週刊滿 1
@@ -36,8 +36,8 @@
             - 若您非續訂戶，服務人員將去電提醒告知，需請補足差額後方能完成訂閱。
           </p>
         </div>
-      </div> -->
-    </div>
+      </div>
+    </div> -->
   </div>
 </template>
 

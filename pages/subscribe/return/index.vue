@@ -47,7 +47,7 @@ export default {
         infoPayload
       )
 
-      console.log('info' + info)
+      console.log(info)
 
       this.$store.dispatch('subscribe/updateResultStatus', 'success')
     } catch (e) {

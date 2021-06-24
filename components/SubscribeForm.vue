@@ -130,7 +130,7 @@ export default {
       },
       receiptData: {
         receiptPlan: '捐贈',
-        donateOrganization: '財團法人伊甸社會福利基金會',
+        donateOrganization: '',
         carrierType: 'mail',
         carrierNumber: '',
         carrierTitle: '',
