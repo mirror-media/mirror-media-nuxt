@@ -1,5 +1,4 @@
 export default {
-  // A helper exp-{name}-{var} class will be added to the root element
   name: 'normal-post-related-redesign',
 
   // Google optimize experiment id

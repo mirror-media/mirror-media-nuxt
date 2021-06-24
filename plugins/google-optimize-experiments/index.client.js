@@ -1,9 +1,13 @@
-import { reducedENVIDExperiment } from './util'
+import { reducedENVIDExperiment, isExperimentActive } from './util'
 import experimentsOrigin from '~/experiments'
 const experiments = experimentsOrigin.map(reducedENVIDExperiment)
 
 export default (context, inject) => {
-  inject('GOExp', {})
+  inject('GOExp', {
+    isExperimentActive(experimentName = '') {
+      return isExperimentActive.call(this, experimentName)
+    },
+  })
 
   gtag('event', 'optimize.callback', {
     callback,
