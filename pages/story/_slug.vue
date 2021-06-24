@@ -28,14 +28,22 @@
                   class="story__list"
                   @load="handleLoadStoryListRelated"
                 >
-                  <UiStoryListRelated
+                  <UiStoryListRelatedRedesignWrapper
                     v-if="
                       Object.prototype.hasOwnProperty.call(
                         $GOExp || {},
                         'normal-post-related-redesign'
                       ) &&
-                      $GOExp['normal-post-related-redesign'].variant === '0'
+                      $GOExp['normal-post-related-redesign'].variant === '1'
                     "
+                    :relateds="relateds"
+                    :relatedImages="relatedImages"
+                    :canAdvertise="canAdvertise"
+                    :device="device"
+                    @sendGa="sendGaForClick('related')"
+                  />
+                  <UiStoryListRelated
+                    v-else
                     :items="relateds"
                     :images="relatedImages"
                     @sendGa="sendGaForClick('related')"
@@ -52,20 +60,6 @@
                       </ClientOnly>
                     </template>
                   </UiStoryListRelated>
-                  <UiStoryListRelatedRedesignWrapper
-                    v-else-if="
-                      Object.prototype.hasOwnProperty.call(
-                        $GOExp || {},
-                        'normal-post-related-redesign'
-                      ) &&
-                      $GOExp['normal-post-related-redesign'].variant === '1'
-                    "
-                    :relateds="relateds"
-                    :relatedImages="relatedImages"
-                    :canAdvertise="canAdvertise"
-                    :device="device"
-                    @sendGa="sendGaForClick('related')"
-                  />
                 </LazyRenderer>
               </template>
 
