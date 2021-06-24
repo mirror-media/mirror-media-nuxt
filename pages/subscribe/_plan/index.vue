@@ -50,7 +50,6 @@ export default {
   },
   data() {
     return {
-      orderId: 'MI100048583',
       orderStatus: 'normal', // normal, loading
       simOrderStatus: 'success', //  order-fail, payment-fail, success
       validateOn: true,
@@ -87,9 +86,11 @@ export default {
         this.$store.dispatch('subscribe/updateReadyToPay', true)
 
         this.$router.push(`/subscribe/redirect`)
-      } catch (e) {
+      } catch (err) {
+        console.error(err)
         // payment fail
-        this.orderStatus = e.message
+        this.$store.dispatch('subscribe/updateResultStatus', 'order-fail')
+        this.$router.push(`/subscribe/result`)
       }
     },
 

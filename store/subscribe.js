@@ -25,7 +25,6 @@ const getters = {
     return state.paymentPayload
   },
   getInfoPayload(state) {
-    console.log(state)
     return state.infoPayload
   },
   getResultStatus(state) {
