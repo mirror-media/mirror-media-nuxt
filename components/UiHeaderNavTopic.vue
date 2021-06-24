@@ -5,7 +5,7 @@
         <a
           v-for="topic in topics"
           :key="topic.id"
-          class="topic topic--normal"
+          class="topic-item topic-item--normal"
           :href="`/topic/${topic.id}`"
           @click="emitGa(`topic ${topic.name}`)"
         >
@@ -13,7 +13,7 @@
         </a>
       </div>
 
-      <a href="/section/topic" class="topic" @click="emitGa('topic 更多')">
+      <a href="/section/topic" class="topic-item" @click="emitGa('topic 更多')">
         <h2>更多</h2>
       </a>
 
@@ -86,7 +86,7 @@ export default {
     flex-wrap: wrap;
     max-width: 582px;
   }
-  .topic {
+  .topic-item {
     min-width: 90px;
     height: 100%;
     padding-left: 8px;

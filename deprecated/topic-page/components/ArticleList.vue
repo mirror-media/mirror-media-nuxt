@@ -117,7 +117,7 @@ export default {
     width calc( (100% - 60px) / 3 )
 </style>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 video::-internal-media-controls-download-button
   display none
 

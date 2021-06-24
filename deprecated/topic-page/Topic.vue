@@ -13,18 +13,10 @@
       >
         <!--   專題樣式：Wide  -->
         <template v-if="pageStyle === 'wide'">
-          <section>
-            <header-full
-              :commonData="commonData"
-              :sectionName="sectionName"
-              :sections="commonData.sections"
-            />
-          </section>
           <leading-watch :topic="topic" :type="`TOPIC`" />
           <article-list-full :articles="articles" />
           <more-full v-if="hasMore && !loading" @loadMore="loadMore" />
           <loading :show="loading" />
-          <footer-full :commonData="commonData" :sectionName="sectionName" />
           <share :right="`20px`" :bottom="`20px`" />
         </template>
 
@@ -55,11 +47,6 @@
         </template>
 
         <template v-else-if="topicType === 'portraitWall'">
-          <Header
-            :dfpHeaderLogoLoaded="dfpHeaderLogoLoaded"
-            :props="props"
-            :showDfpHeaderLogo="showDfpHeaderLogo"
-          />
           <div class="topic">
             <div class="topic-title">
               <h1 />
@@ -97,18 +84,10 @@
               :size="getValue($store, 'getters.adSize')"
             />
           </div>
-          <section class="footer container">
-            <app-footer style="padding: 0 2rem; margin-bottom: 40px" />
-          </section>
           <share :right="`20px`" :bottom="`20px`" />
         </template>
 
         <template v-else-if="topicType === 'group'">
-          <Header
-            :dfpHeaderLogoLoaded="dfpHeaderLogoLoaded"
-            :props="props"
-            :showDfpHeaderLogo="showDfpHeaderLogo"
-          />
           <div class="topic">
             <div class="topic-title">
               <h1 />
@@ -143,17 +122,9 @@
               :size="getValue($store, 'getters.adSize')"
             />
           </div>
-          <section class="footer container">
-            <app-footer style="padding: 0 2rem; margin-bottom: 40px" />
-          </section>
         </template>
 
         <template v-else>
-          <Header
-            :dfpHeaderLogoLoaded="dfpHeaderLogoLoaded"
-            :props="props"
-            :showDfpHeaderLogo="showDfpHeaderLogo"
-          />
           <div class="topic">
             <div class="topic-title">
               <h1 />
@@ -199,9 +170,6 @@
             :hasDFP="false"
           />
           <loading :show="loading" />
-          <!--<section class="footer container">
-            <app-footer style="padding: 0 2rem; margin-bottom: 40px;"></app-footer>
-          </section>-->
           <share :right="`20px`" :bottom="`20px`" />
         </template>
 
@@ -242,16 +210,12 @@ import PresidentElectionProgress from './components/PresidentElectionProgress.vu
 import PresidentElectionList from './components/PresidentElectionList.vue'
 import LeadingWatch from './components/LeadingWatch.vue'
 import GroupList from './components/GroupList.vue'
-import HeaderFull from './components/HeaderFull.vue'
-import Header from './components/Header.vue'
 import Leading from './components/Leading.vue'
 import Loading from './components/Loading.vue'
 import MoreFull from './components/MoreFull.vue'
 import PortraitWallList from './components/PortraitWallList.vue'
 import Share from './components/Share.vue'
 import WineWarning from './components/WineWarning.vue'
-import FooterFull from './components/FooterFull.vue'
-import Footer from './components/Footer.vue'
 import ArticleListFull from './components/ArticleListFull.vue'
 import ArticleList from './components/ArticleList.vue'
 import ProjectSliderContainer from './components/project/ProjectSliderContainer.vue'
@@ -433,14 +397,11 @@ const fetchAllArticlesByUuid = (store, uuid, type, useMetaEndpoint) => {
 
 export default {
   name: 'Topic',
-  layout: 'empty',
+  layout: 'default',
   components: {
-    'app-footer': Footer,
     'article-list': ArticleList,
     'article-list-full': ArticleListFull,
-    'footer-full': FooterFull,
     'group-list': GroupList,
-    'header-full': HeaderFull,
     leading: Leading,
     'leading-watch': LeadingWatch,
     loading: Loading,
@@ -454,7 +415,6 @@ export default {
     ProjectSliderContainer,
     PresidentElectionProgress,
     PresidentElectionList,
-    Header,
   },
 
   /*
@@ -1138,7 +1098,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 
 .topic
   position relative
