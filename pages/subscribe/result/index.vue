@@ -55,9 +55,8 @@ export default {
     },
   },
   destroyed() {
-    setTimeout(() => {
-      this.$store.dispatch('subscribe/updateResultStatus', 'pending')
-    }, 10000)
+    // turn off result page's access after leaving this page
+    this.$store.dispatch('subscribe/updateResultStatus', 'pending')
   },
 }
 </script>

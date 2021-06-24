@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <a href="/" class="fail-wrapper__button_wrapper">
+    <a href="/subscribe" class="fail-wrapper__button_wrapper">
       <UiSubscribeButton title="回前頁" :class="status + `_button`" />
     </a>
   </div>
@@ -65,7 +65,6 @@ export default {
 .subcribe-button {
   margin: 0 auto;
   width: 240px;
-  height: 48px;
 }
 
 .fail-wrapper__message {
@@ -102,7 +101,6 @@ export default {
 .order-fail_button {
   width: 100%;
   max-width: 270px;
-  height: 56px;
   margin: auto;
 
   @include media-breakpoint-up(sm) {
