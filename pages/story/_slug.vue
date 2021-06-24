@@ -30,8 +30,8 @@
                 >
                   <UiStoryListRelatedRedesignWrapper
                     v-if="
-                      Object.prototype.hasOwnProperty.call(
-                        $GOExp || {},
+                      $GOExp &&
+                      $GOExp.isExperimentActive(
                         'normal-post-related-redesign'
                       ) &&
                       $GOExp['normal-post-related-redesign'].variant === '1'
