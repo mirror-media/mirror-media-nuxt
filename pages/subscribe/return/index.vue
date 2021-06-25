@@ -6,6 +6,8 @@
 export default {
   layout: 'empty',
   middleware({ req, store, redirect }) {
+    console.log(req.headers)
+
     let referer = ''
     if (process.server) {
       referer = req.headers.referer
@@ -53,7 +55,7 @@ export default {
     } catch (e) {
       this.$store.dispatch('subscribe/updateResultStatus', 'payment-fail')
     }
-
+    console.log(document)
     this.$router.push('/subscribe/result')
   },
   methods: {
