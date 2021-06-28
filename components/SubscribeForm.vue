@@ -196,6 +196,10 @@ export default {
       this.formStatus[type] = formStatus
     },
     generateCarrierInt(carrierType) {
+      if (this.receiptData.donateOrganization) {
+        return ''
+      }
+
       switch (carrierType) {
         case 'mail':
           return 2
@@ -262,6 +266,9 @@ export default {
         carrier_number: this.receiptData.carrierNumber,
         carrier_title: this.receiptData.carrierTitle,
         carrier_ubn: this.receiptData.carrierUbn,
+
+        // 捐贈發票
+        love_code: parseInt(this.receiptData.donateOrganization),
       }
     },
     validationPass() {
@@ -291,7 +298,8 @@ export default {
 
       if (this.validationPass() && this.acceptPermission) {
         const payload = this.getOrderPayload()
-        this.proceedOrderPayment(payload)
+        // this.proceedOrderPayment(payload)
+        console.log(payload)
       }
     },
   },
