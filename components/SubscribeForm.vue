@@ -197,18 +197,18 @@ export default {
     },
     generateCarrierInt(carrierType) {
       if (this.receiptData.donateOrganization) {
-        return ''
+        return undefined
       }
 
       switch (carrierType) {
         case 'mail':
-          return 2
+          return '2'
 
         case '手機條碼':
-          return 0
+          return '0'
 
         case '自然人憑證':
-          return 1
+          return '1'
       }
     },
     generateItemData() {
@@ -268,7 +268,7 @@ export default {
         carrier_ubn: this.receiptData.carrierUbn,
 
         // 捐贈發票
-        love_code: parseInt(this.receiptData.donateOrganization),
+        love_code: this.receiptData.donateOrganization,
       }
     },
     validationPass() {
@@ -298,8 +298,9 @@ export default {
 
       if (this.validationPass() && this.acceptPermission) {
         const payload = this.getOrderPayload()
-        // this.proceedOrderPayment(payload)
-        console.log(payload)
+        const str = JSON.stringify(payload)
+        console.log(str)
+        this.proceedOrderPayment(payload)
       }
     },
   },
