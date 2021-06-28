@@ -50,8 +50,18 @@ export default {
       )
 
       console.log(info)
+      const { paymentStatus } = info.payment_status
 
-      this.$store.dispatch('subscribe/updateResultStatus', 'success')
+      switch (paymentStatus) {
+        case 'SUCCESS':
+          this.$store.dispatch('subscribe/updateResultStatus', 'success')
+
+          break
+
+        default:
+          this.$store.dispatch('subscribe/updateResultStatus', 'payment-fail')
+          break
+      }
     } catch (e) {
       this.$store.dispatch('subscribe/updateResultStatus', 'payment-fail')
     }
