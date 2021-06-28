@@ -34,7 +34,7 @@ export const actions = {
 
 function commitSectionsData(
   commit,
-  [responseSectionsData = {}, responseSectionsDataMember = {}] = []
+  [responseSectionsData = {}, responseSectionsDataMember = []] = []
 ) {
   commit(
     'sections/setSectionsData',
@@ -42,5 +42,5 @@ function commitSectionsData(
   )
   commit('sections/addMagazineToMemberSection')
 
-  commit('sections-member/setData', responseSectionsDataMember?.value ?? {})
+  commit('sections-member/setData', responseSectionsDataMember?.value ?? [])
 }
