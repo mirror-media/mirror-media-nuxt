@@ -26,8 +26,7 @@ export const actions = {
   async fetchGlobalData({ dispatch }) {
     return await Promise.allSettled([
       dispatch('sections/fetchSectionsData'),
-
-      // dispatch('sections-member/fetchData'),
+      dispatch('sections-member/fetchData'),
     ])
   },
 }
