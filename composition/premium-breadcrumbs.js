@@ -8,7 +8,7 @@ export function usePremiumBreadcrumbs() {
     const currentSectionData = store.state['sections-member'].data.find(
       findDataByName(currentSectionName)
     )
-    const text = currentSectionData.title
+    const text = currentSectionData?.title ?? ''
     return [
       {
         text: '會員專區',
