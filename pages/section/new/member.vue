@@ -111,8 +111,10 @@ export default {
 }
 
 .page-wrapper {
-  max-width: 1024px;
-  margin: 0 auto;
+  @include media-breakpoint-up(xl) {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
 }
 
 .category {
@@ -122,7 +124,7 @@ export default {
       margin: 24px 0 0 0;
     }
     @include media-breakpoint-up(xl) {
-      margin: 18px 0 0 -32px;
+      margin: 2px 0 0 -32px;
     }
   }
 }
@@ -158,9 +160,6 @@ export default {
     display: block;
     width: 100%;
     height: 10px;
-    @include media-breakpoint-up(xl) {
-      //display: none;
-    }
   }
 }
 </style>

@@ -55,7 +55,7 @@ export default {
     },
     infoBackgroundColor: {
       type: String,
-      default: 'white',
+      default: 'transparent',
     },
     infoDate: {
       type: Date,
@@ -75,23 +75,23 @@ export default {
 
 <style lang="scss" scoped>
 .article {
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.06);
   cursor: pointer;
-  width: 240px;
+  width: 100%;
   height: 100%;
-  border-radius: 6px;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   @include media-breakpoint-up(md) {
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.06);
     width: 320px;
+    border-radius: 6px;
+    overflow: hidden;
   }
 }
 
 .top-wrapper {
   position: relative;
   background-color: white;
-  height: 160px;
+  height: calc((100vw - 20px * 2) * 0.6642);
   @include media-breakpoint-up(md) {
     height: 213px;
   }
@@ -117,7 +117,7 @@ export default {
 }
 
 .bottom-wrapper {
-  padding: 12px 16px 16px;
+  padding: 12px 0 0 0;
   text-align: justify;
   display: flex;
   flex-direction: column;
@@ -125,6 +125,7 @@ export default {
   flex: 1 1 auto;
   @include media-breakpoint-up(md) {
     padding: 16px 24px 24px;
+    background-color: white !important;
   }
 
   &__description {
