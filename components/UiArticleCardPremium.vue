@@ -80,6 +80,7 @@ export default {
   width: 240px;
   height: 100%;
   border-radius: 6px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   @include media-breakpoint-up(md) {
