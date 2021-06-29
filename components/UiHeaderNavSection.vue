@@ -197,8 +197,25 @@ export default {
       }
     }
     &--member {
+      color: #e51731;
+      &:hover {
+        color: #db1730;
+      }
+      &.active {
+        color: #e51731;
+        &::after {
+          background-color: #e51731;
+        }
+      }
       @include media-breakpoint-up(xl) {
+        color: #fff;
         background-color: #e51731;
+        &:hover {
+          color: #fff;
+        }
+        &.active {
+          color: #fff;
+        }
       }
     }
     &--external {
