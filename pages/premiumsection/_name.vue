@@ -33,6 +33,7 @@ import UiBreadcrumb from '~/components/UiBreadcrumb.vue'
 import UiArticleCardPremiumCompact from '~/components/UiArticleCardPremiumCompact.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import { getStoryPath, stripHtmlTags } from '~/utils/article'
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '~/constants'
 
 export default {
   layout: 'premium',
@@ -64,18 +65,22 @@ export default {
   },
 
   computed: {
-    categoriesId() {
+    sectionData() {
       const routeName = this.$route.params.name
-      const categoriesId = (
+      return (
         this.$store.state['sections-member'].data.find(
           function getSectionByName(section) {
             return section.name === routeName
           }
         ) ?? {}
-      )?.categories?.map(function getCategoryById(category) {
+      )
+    },
+    categoriesId() {
+      return this.sectionData?.categories?.map(function getCategoryById(
+        category
+      ) {
         return category.id
       })
-      return categoriesId
     },
     listData() {
       return _.uniqBy(this.listData_, function identifyDuplicatedItemById(
@@ -162,6 +167,42 @@ export default {
         $state.error()
       }
     },
+  },
+
+  head() {
+    const title = `${this.sectionData.title} - ${SITE_TITLE}`
+    const description = this.sectionData.description || SITE_DESCRIPTION
+
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: title,
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: description,
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: description,
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${SITE_URL}/premiumsection/${this.sectionData.name}`,
+        },
+        {
+          hid: 'section-name',
+          name: 'section-name',
+          content: this.sectionData.name,
+        },
+      ],
+    }
   },
 }
 </script>
