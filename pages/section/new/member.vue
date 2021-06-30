@@ -38,6 +38,7 @@
 import UiBreadcrumb from '~/components/UiBreadcrumb.vue'
 import UiArticleCardPremium from '~/components/UiArticleCardPremium.vue'
 import { getStoryPath, stripHtmlTags } from '~/utils/article'
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '~/constants'
 
 export default {
   layout: 'premium',
@@ -82,6 +83,42 @@ export default {
         infoDate: new Date(item.publishedDate),
       }
     },
+  },
+
+  head() {
+    const title = `會員專區 - ${SITE_TITLE}`
+    const description = SITE_DESCRIPTION
+
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: title,
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: description,
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: description,
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${SITE_URL}/section/member`,
+        },
+        {
+          hid: 'section-name',
+          name: 'section-name',
+          content: '會員專區',
+        },
+      ],
+    }
   },
 }
 </script>
