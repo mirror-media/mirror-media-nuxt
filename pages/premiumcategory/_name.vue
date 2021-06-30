@@ -56,7 +56,6 @@ export default {
 
   data() {
     return {
-      breadcrumbs: [],
       listData_: [],
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
