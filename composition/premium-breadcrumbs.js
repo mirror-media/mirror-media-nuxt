@@ -12,7 +12,7 @@ export function usePremiumBreadcrumbs() {
     return ref([
       {
         text: '會員專區',
-        link: '/section/new/member',
+        link: '/section/member',
       },
       {
         text,
@@ -35,7 +35,7 @@ export function usePremiumBreadcrumbs() {
     return ref([
       {
         text: '會員專區',
-        link: '/section/new/member',
+        link: '/section/member',
       },
       {
         text: textSection,
