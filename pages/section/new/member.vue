@@ -2,18 +2,18 @@
   <section class="page">
     <div class="page-wrapper">
       <div
-        v-for="category in data"
-        :key="category.id"
-        class="page__category category"
+        v-for="section in data"
+        :key="section.id"
+        class="page__section section"
       >
         <UiBreadcrumb
-          class="category__breadcrumb"
-          :breadcrumbs="createCategoryBreadcrumb(category)"
+          class="section__breadcrumb"
+          :breadcrumbs="createSectionBreadcrumb(section)"
           :separatorColor="'#054F77'"
         />
-        <ol class="category__list list">
+        <ol class="section__list list">
           <li
-            v-for="article in category.latest"
+            v-for="article in section.latest"
             :key="article.id"
             class="list__item item"
           >
@@ -58,11 +58,11 @@ export default {
   },
 
   methods: {
-    createCategoryBreadcrumb(category) {
+    createSectionBreadcrumb(section) {
       return [
         {
-          text: category.title,
-          link: `/category/${category.name}`,
+          text: section.title,
+          link: `/premiumsection/${section.name}`,
           color: '#054F77',
         },
       ]
@@ -134,7 +134,7 @@ export default {
     padding: 60px 88px;
   }
 
-  &__category {
+  &__section {
     & + & {
       margin: 48px 0 0 0;
       @include media-breakpoint-up(md) {
@@ -154,7 +154,7 @@ export default {
   }
 }
 
-.category {
+.section {
   &__list {
     margin: 16px 0 0 0;
     @include media-breakpoint-up(md) {
