@@ -12,15 +12,16 @@ export const getters = {
     return (
       getters.sections
         .filter(getIsFeaturedSection)
-        .map(filterOutIsMemberOnlyCategories) ?? []
+        .map(filterOutIsMemberOnlyCategoriesInNormalSection) ?? []
     )
 
-    function filterOutIsMemberOnlyCategories(section) {
+    function filterOutIsMemberOnlyCategoriesInNormalSection(section) {
       return {
         ...section,
-        categories: section.categories.filter(
-          (category) => !category.isMemberOnly
-        ),
+        categories:
+          section.name === 'member'
+            ? section.categories
+            : section.categories.filter((category) => !category.isMemberOnly),
       }
     }
 
