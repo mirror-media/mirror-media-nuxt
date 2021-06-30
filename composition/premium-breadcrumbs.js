@@ -1,4 +1,4 @@
-import { useContext } from '@nuxtjs/composition-api'
+import { ref, useContext } from '@nuxtjs/composition-api'
 
 export function usePremiumBreadcrumbs() {
   const { route, store } = useContext()
@@ -9,7 +9,7 @@ export function usePremiumBreadcrumbs() {
       findDataByName(currentSectionName)
     )
     const text = currentSectionData?.title ?? ''
-    return [
+    return ref([
       {
         text: '會員專區',
         link: '/section/new/member',
@@ -18,7 +18,7 @@ export function usePremiumBreadcrumbs() {
         text,
         link: route.value.path,
       },
-    ]
+    ])
   } else if (route.value.name === 'category-name') {
     const currentCategoryName = getRouteParamsName(route)
     const currentCategoryData = store.getters[
@@ -32,7 +32,7 @@ export function usePremiumBreadcrumbs() {
     })
     const textSection = section.title
     const linkSection = `/premiumsection/${section.name}`
-    return [
+    return ref([
       {
         text: '會員專區',
         link: '/section/new/member',
@@ -45,7 +45,7 @@ export function usePremiumBreadcrumbs() {
         text: textCategory,
         link: route.value.path,
       },
-    ]
+    ])
   }
 }
 
