@@ -9,7 +9,24 @@ export const getters = {
     return state.data.items ?? []
   },
   displayedSections(state, getters) {
-    return getters.sections.filter((section) => section.isFeatured) ?? []
+    return (
+      getters.sections
+        .filter(getIsFeaturedSection)
+        .map(filterOutIsMemberOnlyCategories) ?? []
+    )
+
+    function filterOutIsMemberOnlyCategories(section) {
+      return {
+        ...section,
+        categories: section.categories.filter(
+          (category) => !category.isMemberOnly
+        ),
+      }
+    }
+
+    function getIsFeaturedSection(section) {
+      return section.isFeatured
+    }
   },
   sectionsMember(state, getters) {
     return getters.sections
