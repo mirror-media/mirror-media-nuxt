@@ -15,7 +15,7 @@ describe('customInfo props', function () {
     })
     expect(wrapper.find('.order-info__user').exists()).toBe(false)
   })
-  test('should show custom info if all the values in customInfo are not falsy', function () {
+  test('should show custom info if one of the values in customInfo is not falsy', function () {
     const wrapper = shallowMount(SubscribeSuccessOrderInfo, {
       propsData: {
         customerInfo: {
