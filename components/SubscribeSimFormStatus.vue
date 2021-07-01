@@ -60,6 +60,11 @@ export default {
       this.simOrderStatus = e.target.value
     },
     clickHandler(e) {
+      if (this.simOrderStatus === 'success') {
+        this.$store.dispatch('subscribe/updateOrderInfo', {
+          pur_name: 'test name',
+        })
+      }
       this.$store.dispatch('subscribe/updateResultStatus', this.simOrderStatus)
 
       this.$router.push('/subscribe/result')
