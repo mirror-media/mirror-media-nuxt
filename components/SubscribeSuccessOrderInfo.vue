@@ -83,6 +83,19 @@ export default {
       isRequired: true,
       default: 'orderId',
     },
+    customerInfo: {
+      type: Object,
+      default: () => {
+        return {
+          pur_name: '',
+          pur_email: '',
+          pur_cell: '',
+          rec_name: '',
+          rec_cell: '',
+          rec_addr: '',
+        }
+      },
+    },
   },
   computed: {
     orderDate() {
