@@ -34,6 +34,9 @@ export default {
     SubscribeFail,
     SubscribeSuccess,
   },
+  provide: {
+    subscribeFailButtonLink: '/subscribe',
+  },
   data() {
     return {
       currentStep: 3,
