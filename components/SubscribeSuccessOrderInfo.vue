@@ -22,7 +22,7 @@
         />
       </div>
     </div>
-    <div class="order-info__user">
+    <div v-if="shouldShowCustomerInfo" class="order-info__user">
       <div class="order-info__user_title">顧客資訊</div>
       <div class="order-info__user_content">
         <div class="order-info__user_content_title">訂購人</div>
@@ -123,6 +123,14 @@ export default {
     shipCost() {
       if (this.orderInfo.delivery === '限時專送') return 0
       return 20
+    },
+    shouldShowCustomerInfo() {
+      const isAnyValueInCustomInfoTruthy = Object.values(
+        this.customerInfo
+      ).reduce(function reduceWithAnyTruthy(acc, curr) {
+        return acc || curr
+      }, false)
+      return isAnyValueInCustomInfoTruthy
     },
   },
 }
