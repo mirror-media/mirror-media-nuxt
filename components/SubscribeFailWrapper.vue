@@ -45,11 +45,7 @@ export default {
       isRequired: false,
     },
   },
-  inject: {
-    subscribeFailButtonLink: {
-      default: '/',
-    },
-  },
+  inject: ['subscribeFailButtonLink'],
 }
 </script>
 
