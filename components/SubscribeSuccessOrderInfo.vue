@@ -27,31 +27,37 @@
       <div class="order-info__user_content">
         <div class="order-info__user_content_title">訂購人</div>
         <SubscribeSuccessOrderInfoContentRow
+          class="pur_name"
           title="姓名"
-          :data="orderInfo.pur_name"
+          :data="customerInfo.pur_name"
         />
         <SubscribeSuccessOrderInfoContentRow
+          class="pur_mail"
           title="電子信箱"
-          :data="orderInfo.pur_mail"
+          :data="customerInfo.pur_mail"
         />
         <SubscribeSuccessOrderInfoContentRow
+          class="pur_cell"
           title="聯絡電話"
-          :data="orderInfo.pur_cell"
+          :data="customerInfo.pur_cell"
         />
       </div>
       <div class="order-info__user_content">
         <div class="order-info__user_content_title">收件人</div>
         <SubscribeSuccessOrderInfoContentRow
+          class="rec_name"
           title="姓名"
-          :data="orderInfo.rec_name"
+          :data="customerInfo.rec_name"
         />
         <SubscribeSuccessOrderInfoContentRow
+          class="rec_cell"
           title="聯絡電話"
-          :data="orderInfo.rec_cell"
+          :data="customerInfo.rec_cell"
         />
         <SubscribeSuccessOrderInfoContentRow
+          class="rec_addr"
           title="通訊地址"
-          :data="orderInfo.rec_addr"
+          :data="customerInfo.rec_addr"
         />
         <!-- <SubscribeSuccessOrderInfoContentRow
           title="派送備註"
@@ -88,7 +94,7 @@ export default {
       default: () => {
         return {
           pur_name: '',
-          pur_email: '',
+          pur_mail: '',
           pur_cell: '',
           rec_name: '',
           rec_cell: '',

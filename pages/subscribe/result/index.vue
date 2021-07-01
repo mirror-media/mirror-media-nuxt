@@ -9,7 +9,11 @@
 
     <template v-if="resultStatus === 'success'">
       <SubscribeStepProgress :currentStep="3" />
-      <SubscribeSuccess :orderInfo="orderInfo" :orderId="orderId" />
+      <SubscribeSuccess
+        :orderInfo="orderInfo"
+        :orderId="orderId"
+        :customerInfo="customerInfo"
+      />
     </template>
   </div>
 </template>
@@ -46,6 +50,25 @@ export default {
     orderInfo() {
       const orderInfo = this.$store.getters['subscribe/getOrderInfo']
       return orderInfo
+    },
+    customerInfo() {
+      /* eslint-disable camelcase */
+      const {
+        pur_name = '',
+        pur_mail = '',
+        pur_cell = '',
+        rec_name = '',
+        rec_cell = '',
+        rec_addr = '',
+      } = this.$store.getters['subscribe/getOrderInfo']
+      return {
+        pur_name,
+        pur_mail,
+        pur_cell,
+        rec_name,
+        rec_cell,
+        rec_addr,
+      }
     },
     orderId() {
       const { MerchantOrderNo } = this.$store.getters[

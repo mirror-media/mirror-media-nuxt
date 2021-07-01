@@ -3,7 +3,11 @@
     <div class="order-success__wrapper">
       <p>您已完成付款，以下為本次訂購資訊，已同步寄送至您的信箱。</p>
 
-      <SubscribeSuccessOrderInfo :orderInfo="orderInfo" :orderId="orderId" />
+      <SubscribeSuccessOrderInfo
+        :orderInfo="orderInfo"
+        :orderId="orderId"
+        :customerInfo="customerInfo"
+      />
 
       <UiSubscribeInfo />
     </div>
@@ -30,6 +34,19 @@ export default {
       type: String,
       isRequired: true,
       default: 'orderId',
+    },
+    customerInfo: {
+      type: Object,
+      default: () => {
+        return {
+          pur_name: '',
+          pur_mail: '',
+          pur_cell: '',
+          rec_name: '',
+          rec_cell: '',
+          rec_addr: '',
+        }
+      },
     },
   },
 }
