@@ -6,7 +6,7 @@
         <p class="time__update-time">更新時間 {{ updateTimeFormat }}</p>
       </div>
       <div
-        v-if="writers.length || photographers.length"
+        v-if="writers.length || photographers.length || extendByline"
         class="info__people people"
       >
         <p v-if="writers.length" class="people__writers">
