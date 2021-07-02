@@ -102,6 +102,10 @@ export default {
         }
       },
     },
+    shipCost: {
+      type: Number,
+      default: 0,
+    },
   },
   computed: {
     orderDate() {
@@ -119,10 +123,6 @@ export default {
       ]
 
       return itemList
-    },
-    shipCost() {
-      if (this.orderInfo.delivery === '限時專送') return 0
-      return 20
     },
     shouldShowCustomerInfo() {
       const isAnyValueInCustomInfoTruthy = Object.values(

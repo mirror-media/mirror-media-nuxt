@@ -6,6 +6,7 @@
       <SubscribeSuccessOrderInfo
         :orderInfo="orderInfo"
         :customerInfo="customerInfo"
+        :shipCost="shipCost"
       />
 
       <UiSubscribeInfo />
@@ -41,6 +42,12 @@ export default {
           rec_addr: '',
         }
       },
+    },
+  },
+  computed: {
+    shipCost() {
+      if (this.orderInfo.delivery === '限時專送') return 0
+      return 20
     },
   },
 }
