@@ -19,7 +19,7 @@
         <SubscribeSuccessOrderInfoContentRowPurchasedList
           title="訂單內容"
           :totalCost="orderInfo.price_total"
-          :perchasedList="fileterPerchasedPlan"
+          :perchasedList="filteredPerchasedPlan"
           :shipCost="shipCost"
           class="order-info__order_content_perchased"
         />
@@ -102,6 +102,10 @@ export default {
         }
       },
     },
+    filteredPerchasedPlan: {
+      type: Array,
+      default: () => [],
+    },
     shipCost: {
       type: Number,
       default: 0,
@@ -111,18 +115,6 @@ export default {
     orderDate() {
       const now = new Date()
       return dayjs(now).format('YYYY-MM-DD')
-    },
-    fileterPerchasedPlan() {
-      const itemList = [
-        {
-          id: 0,
-          name: this.orderInfo.item_desc,
-          price: this.orderInfo.price,
-          amount: this.orderInfo.amount,
-        },
-      ]
-
-      return itemList
     },
     shouldShowCustomerInfo() {
       const isAnyValueInCustomInfoTruthy = Object.values(

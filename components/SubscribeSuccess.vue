@@ -6,6 +6,7 @@
       <SubscribeSuccessOrderInfo
         :orderInfo="orderInfo"
         :customerInfo="customerInfo"
+        :filteredPerchasedPlan="filteredPerchasedPlan"
         :shipCost="shipCost"
       />
 
@@ -45,6 +46,18 @@ export default {
     },
   },
   computed: {
+    filteredPerchasedPlan() {
+      const itemList = [
+        {
+          id: 0,
+          name: this.orderInfo.item_desc,
+          price: this.orderInfo.price,
+          amount: this.orderInfo.amount,
+        },
+      ]
+
+      return itemList
+    },
     shipCost() {
       if (this.orderInfo.delivery === '限時專送') return 0
       return 20
