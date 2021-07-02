@@ -18,9 +18,7 @@
         />
         <SubscribeSuccessOrderInfoContentRowPurchasedList
           title="訂單內容"
-          :totalCost="orderInfo.price_total"
-          :perchasedList="filteredPerchasedPlan"
-          :shipCost="shipCost"
+          :perchasedList="orderInfoPurchasedList"
           class="order-info__order_content_perchased"
         />
       </div>
@@ -88,6 +86,10 @@ export default {
       default: () => {
         return {}
       },
+    },
+    orderInfoPurchasedList: {
+      type: Array,
+      default: () => [],
     },
     customerInfo: {
       type: Object,

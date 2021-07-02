@@ -9,7 +9,11 @@
 
     <template v-if="resultStatus === 'success'">
       <SubscribeStepProgress :currentStep="3" />
-      <SubscribeSuccess :orderInfo="orderInfo" :customerInfo="customerInfo" />
+      <SubscribeSuccess
+        :orderInfo="orderInfo"
+        :orderInfoPurchasedList="orderInfoPurchasedList"
+        :customerInfo="customerInfo"
+      />
     </template>
   </div>
 </template>
@@ -53,6 +57,22 @@ export default {
         ...orderInfo,
         orderId: MerchantOrderNo,
       }
+    },
+    orderInfoPurchasedList() {
+      return [
+        {
+          text: `${this.orderInfo.item_desc} X ${this.orderInfo.amount}`,
+          price: this.orderInfo.price,
+        },
+        {
+          text: '運費',
+          price: this.orderInfo.delivery === '限時掛號' ? 20 : 0,
+        },
+        {
+          text: '總計',
+          price: this.orderInfo.price_total,
+        },
+      ]
     },
     customerInfo() {
       /* eslint-disable camelcase */

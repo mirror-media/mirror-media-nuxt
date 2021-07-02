@@ -5,9 +5,8 @@
 
       <SubscribeSuccessOrderInfo
         :orderInfo="orderInfo"
+        :orderInfoPurchasedList="orderInfoPurchasedList"
         :customerInfo="customerInfo"
-        :filteredPerchasedPlan="filteredPerchasedPlan"
-        :shipCost="shipCost"
       />
 
       <UiSubscribeInfo />
@@ -31,6 +30,10 @@ export default {
         return {}
       },
     },
+    orderInfoPurchasedList: {
+      type: Array,
+      default: () => [],
+    },
     customerInfo: {
       type: Object,
       default: () => {
@@ -43,24 +46,6 @@ export default {
           rec_addr: '',
         }
       },
-    },
-  },
-  computed: {
-    filteredPerchasedPlan() {
-      const itemList = [
-        {
-          id: 0,
-          name: this.orderInfo.item_desc,
-          price: this.orderInfo.price,
-          amount: this.orderInfo.amount,
-        },
-      ]
-
-      return itemList
-    },
-    shipCost() {
-      if (this.orderInfo.delivery === '限時專送') return 0
-      return 20
     },
   },
 }
