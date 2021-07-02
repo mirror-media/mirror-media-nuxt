@@ -105,7 +105,7 @@ export default {
   height: 48px;
   left: 336px;
   top: 349px;
-  background: #1d9fb8;
+  background: #054f77;
   border-radius: 2px;
   font-size: 18px;
   line-height: 25px;
