@@ -46,3 +46,33 @@ describe('customerInfo extract from orderInfo in subscribe store state', functio
     expect(wrapper.find('.rec_addr').props().data).toBe(mockOrderInfo.rec_addr)
   })
 })
+
+describe('orderId extract from infoPayload in subscribe store state', function () {
+  let storeOptions
+  const mockInfoPayload = {
+    MerchantOrderNo: 'mockMerchantOrderNo',
+  }
+  beforeEach(() => {
+    storeOptions = {
+      modules: {
+        subscribe: {
+          namespaced: true,
+          state: stateSubscribe(),
+          getters: getterSubscribe,
+        },
+      },
+    }
+    storeOptions.modules.subscribe.state.infoPayload = mockInfoPayload
+    storeOptions.modules.subscribe.state.resultStatus = 'success'
+  })
+
+  test('should display orderId extract from infoPayload in subscribe store state correctly', function () {
+    const wrapper = mount(page, {
+      localVue,
+      store: new Vuex.Store(storeOptions),
+    })
+    expect(wrapper.find('.order-id').props().data).toBe(
+      mockInfoPayload.MerchantOrderNo
+    )
+  })
+})

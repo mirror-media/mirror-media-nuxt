@@ -3,7 +3,11 @@
     <div class="order-info__order">
       <div class="order-info__order_title">訂單資訊</div>
       <div class="order-info__order_content">
-        <SubscribeSuccessOrderInfoContentRow title="訂單編號" :data="orderId" />
+        <SubscribeSuccessOrderInfoContentRow
+          class="order-id"
+          title="訂單編號"
+          :data="orderInfo.orderId"
+        />
         <!-- <SubscribeSuccessOrderInfoContentRow
           title="續訂戶代碼"
           data="窩不知道"
@@ -83,11 +87,6 @@ export default {
       default: () => {
         return {}
       },
-    },
-    orderId: {
-      type: String,
-      isRequired: true,
-      default: 'orderId',
     },
     customerInfo: {
       type: Object,

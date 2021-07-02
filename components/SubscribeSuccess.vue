@@ -5,7 +5,6 @@
 
       <SubscribeSuccessOrderInfo
         :orderInfo="orderInfo"
-        :orderId="orderId"
         :customerInfo="customerInfo"
       />
 
@@ -29,11 +28,6 @@ export default {
       default: () => {
         return {}
       },
-    },
-    orderId: {
-      type: String,
-      isRequired: true,
-      default: 'orderId',
     },
     customerInfo: {
       type: Object,
