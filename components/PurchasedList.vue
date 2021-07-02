@@ -5,7 +5,14 @@
       :key="rowItem.text"
       class="content_row__data_wrapper_row"
     >
-      <div>{{ rowItem.text }}</div>
+      <div>
+        <p>{{ rowItem.text }}</p>
+        <template v-if="rowItem.hints">
+          <p v-for="hint in rowItem.hints" :key="hint" class="hint">
+            {{ hint }}
+          </p>
+        </template>
+      </div>
       <div>NT$ {{ rowItem.price }}</div>
     </div>
   </div>
@@ -66,5 +73,12 @@ export default {
       }
     }
   }
+}
+
+.hint {
+  font-size: 14px;
+  line-height: 150%;
+  color: #9b9b9b;
+  margin: 12px 0 0 0;
 }
 </style>
