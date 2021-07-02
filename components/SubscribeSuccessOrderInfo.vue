@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import dayjs from 'dayjs'
 import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOrderInfoContentRow.vue'
 
 export default {
@@ -106,7 +106,7 @@ export default {
   computed: {
     orderDate() {
       const now = new Date()
-      return moment(now).format('YYYY-MM-DD')
+      return dayjs(now).format('YYYY-MM-DD')
     },
     fileterPerchasedPlan() {
       const itemList = [
