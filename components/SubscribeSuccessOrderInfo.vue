@@ -16,9 +16,8 @@
           title="訂單日期"
           :data="orderDate"
         />
-        <SubscribeSuccessOrderInfoContentRow
+        <SubscribeSuccessOrderInfoContentRowPurchasedList
           title="訂單內容"
-          data=""
           :totalCost="orderInfo.price_total"
           :perchasedList="fileterPerchasedPlan"
           :shipCost="shipCost"
@@ -75,10 +74,12 @@
 <script>
 import dayjs from 'dayjs'
 import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOrderInfoContentRow.vue'
+import SubscribeSuccessOrderInfoContentRowPurchasedList from '~/components/SubscribeSuccessOrderInfoContentRowPurchasedList.vue'
 
 export default {
   components: {
     SubscribeSuccessOrderInfoContentRow,
+    SubscribeSuccessOrderInfoContentRowPurchasedList,
   },
   props: {
     orderInfo: {
