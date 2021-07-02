@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <a href="/subscribe" class="fail-wrapper__button_wrapper">
+    <a :href="subscribeFailButtonLink" class="fail-wrapper__button_wrapper">
       <UiSubscribeButton title="回前頁" :class="status + `_button`" />
     </a>
   </div>
@@ -43,6 +43,11 @@ export default {
     data: {
       type: Object,
       isRequired: false,
+    },
+  },
+  inject: {
+    subscribeFailButtonLink: {
+      default: '/',
     },
   },
 }
