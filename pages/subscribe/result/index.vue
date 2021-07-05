@@ -9,7 +9,11 @@
 
     <template v-if="resultStatus === 'success'">
       <SubscribeStepProgress :currentStep="3" />
-      <SubscribeSuccess :orderInfo="orderInfo" :orderId="orderId" />
+      <SubscribeSuccess
+        :orderInfo="orderInfo"
+        :orderInfoPurchasedList="orderInfoPurchasedList"
+        :customerInfo="customerInfo"
+      />
     </template>
   </div>
 </template>
@@ -48,7 +52,49 @@ export default {
     },
     orderInfo() {
       const orderInfo = this.$store.getters['subscribe/getOrderInfo']
-      return orderInfo
+      const { MerchantOrderNo } = this.$store.getters[
+        'subscribe/getInfoPayload'
+      ]
+
+      return {
+        ...orderInfo,
+        orderId: MerchantOrderNo,
+      }
+    },
+    orderInfoPurchasedList() {
+      return [
+        {
+          text: `${this.orderInfo.item_desc} X ${this.orderInfo.amount}`,
+          price: this.orderInfo.price,
+        },
+        {
+          text: '運費',
+          price: this.orderInfo.delivery === '限時掛號' ? 20 : 0,
+        },
+        {
+          text: '總計',
+          price: this.orderInfo.price_total,
+        },
+      ]
+    },
+    customerInfo() {
+      /* eslint-disable camelcase */
+      const {
+        pur_name = '',
+        pur_mail = '',
+        pur_cell = '',
+        rec_name = '',
+        rec_cell = '',
+        rec_addr = '',
+      } = this.$store.getters['subscribe/getOrderInfo']
+      return {
+        pur_name,
+        pur_mail,
+        pur_cell,
+        rec_name,
+        rec_cell,
+        rec_addr,
+      }
     },
     orderId() {
       const { MerchantOrderNo } = this.$store.getters[

@@ -2,21 +2,24 @@
   <div class="content_row">
     <div class="content_row__title">{{ title }}</div>
     <div class="content_row__data">
-      {{ data }}
+      <PurchasedList :data="perchasedList" />
     </div>
   </div>
 </template>
 
 <script>
+import PurchasedList from '~/components/PurchasedList.vue'
+
 export default {
+  components: { PurchasedList },
   props: {
     title: {
       type: String,
       isRequired: true,
     },
-    data: {
-      type: String,
-      isRequired: false,
+    perchasedList: {
+      type: Array,
+      required: true,
     },
   },
   computed: {},
