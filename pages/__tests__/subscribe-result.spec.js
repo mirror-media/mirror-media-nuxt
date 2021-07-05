@@ -1,6 +1,6 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
-import page from '~/pages/subscribe/result'
+import page from '~/pages/papermag/result'
 import {
   getters as getterSubscribe,
   state as stateSubscribe,
