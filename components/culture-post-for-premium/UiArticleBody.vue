@@ -27,7 +27,8 @@
         class="invite-to-login-wrapper"
       >
         <div class="invite-to-login-wrapper__fade-out-effect" />
-        <UiPremiumInviteToLogin />
+        <UiPremiumInviteToSubscribe v-if="$route.query.ms" />
+        <UiPremiumInviteToLogin v-else />
       </div>
     </ClientOnly>
   </div>
@@ -36,6 +37,7 @@
 <script>
 import ContentHandler from './ContentHandler.vue'
 import UiPremiumInviteToLogin from '~/components/UiPremiumInviteToLogin.vue'
+import UiPremiumInviteToSubscribe from '~/components/UiPremiumInviteToSubscribe.vue'
 
 export default {
   name: 'UiArticleBody',
@@ -43,6 +45,7 @@ export default {
   components: {
     ContentHandler,
     UiPremiumInviteToLogin,
+    UiPremiumInviteToSubscribe,
   },
 
   props: {
