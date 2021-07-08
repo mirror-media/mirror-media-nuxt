@@ -133,13 +133,11 @@ export default {
 <style lang="scss" scoped>
 .order-info {
   position: relative;
-  padding: 23px 17px;
+  padding: 16px;
   border-radius: 4px;
   background-color: #f5f5f5;
-  min-height: 50vh;
-  color: #4a4a4a;
-  font-size: 15px;
-  font-family: 'PingFang TC';
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 16px;
 
   & > * + * {
     margin-top: 42px;
@@ -147,6 +145,10 @@ export default {
 
   @include media-breakpoint-up(sm) {
     padding: 22px 25px;
+  }
+  @include media-breakpoint-up(xl) {
+    padding: 24px;
+    font-size: 18px;
   }
 }
 
@@ -166,10 +168,7 @@ export default {
 
 .order-info__order_content,
 .order-info__user_content {
-  margin-top: 18px;
-  @include media-breakpoint-up(sm) {
-    margin-top: 23px;
-  }
+  margin-top: 24px;
 }
 
 .order-info__order_content_perchased {
