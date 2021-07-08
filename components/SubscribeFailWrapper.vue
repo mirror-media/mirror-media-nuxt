@@ -17,17 +17,23 @@
         </div>
       </div>
     </div>
-    <a :href="subscribeFailButtonLink" class="fail-wrapper__button_wrapper">
-      <UiSubscribeButton title="回前頁" :class="status + `_button`" />
+    <a
+      :href="subscribeFailButtonLink"
+      class="fail-wrapper__button_wrapper button-wrapper"
+    >
+      <UiMembershipButtonPrimary class="order-fail_button">
+        回前頁
+      </UiMembershipButtonPrimary>
     </a>
   </div>
 </template>
 
 <script>
-import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
+import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
+
 export default {
   components: {
-    UiSubscribeButton,
+    UiMembershipButtonPrimary,
   },
   props: {
     message: {
@@ -60,10 +66,10 @@ export default {
   color: #4a4a4a;
   display: flex;
   flex-direction: column;
-  padding: 20px 16px 24px 16px;
+  padding: 16px;
   margin: 0 8px;
-  @include media-breakpoint-up(sm) {
-    padding-left: 24px;
+  @include media-breakpoint-up(xl) {
+    padding: 24px;
   }
 }
 
@@ -81,17 +87,16 @@ export default {
 }
 
 .fail-wrapper__info {
-  margin-bottom: 48px;
+  margin-bottom: 24px;
+  @include media-breakpoint-up(xl) {
+    margin-bottom: 48px;
+  }
 
   &_row {
     display: flex;
 
     & + & {
       margin-top: 12px;
-
-      @include media-breakpoint-up(sm) {
-        margin-top: 20px;
-      }
     }
   }
 }
@@ -103,13 +108,9 @@ export default {
   }
 }
 
-.order-fail_button {
-  width: 100%;
-  max-width: 270px;
-  margin: auto;
-
-  @include media-breakpoint-up(sm) {
-    width: 321px;
-  }
+.button-wrapper {
+  width: 240px;
+  display: block;
+  margin: 0 auto;
 }
 </style>

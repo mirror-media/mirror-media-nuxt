@@ -13,7 +13,7 @@
           </p>
         </template>
       </div>
-      <div>NT$ {{ rowItem.price }}</div>
+      <div class="price">NT$ {{ rowItem.price }}</div>
     </div>
   </div>
 </template>
@@ -67,8 +67,10 @@ export default {
       &:last-child {
         padding-top: 10px;
         border-top: solid 1px #4a4a4a;
+        margin: 12px 0 0 0;
         @include media-breakpoint-up(sm) {
-          padding-top: 18px;
+          margin: 16px 0 0 0;
+          padding-top: 16px;
         }
       }
     }
@@ -76,9 +78,13 @@ export default {
 }
 
 .hint {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 150%;
   color: #9b9b9b;
   margin: 12px 0 0 0;
+}
+
+.price {
+  min-width: max-content;
 }
 </style>

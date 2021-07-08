@@ -31,10 +31,6 @@ export default {
   display: flex;
   & + & {
     margin-top: 12px;
-
-    @include media-breakpoint-up(sm) {
-      margin-top: 18px;
-    }
   }
 }
 

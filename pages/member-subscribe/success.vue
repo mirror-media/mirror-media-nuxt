@@ -9,8 +9,10 @@
           :orderInfoPurchasedList="orderInfoPurchasedList"
         />
         <div class="back-to-subscribe-link-wrapper">
-          <nuxt-link class="back-to-subscribe-link" to="/member-subscribe">
-            回購買文章頁
+          <nuxt-link to="/member-subscribe" class="back-to-subscribe-link">
+            <UiMembershipButtonPrimary>
+              回購買文章頁
+            </UiMembershipButtonPrimary>
           </nuxt-link>
         </div>
       </div>
@@ -21,9 +23,11 @@
 <script>
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeSuccessOrderInfo from '~/components/SubscribeSuccessOrderInfo.vue'
+import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 
 export default {
   components: {
+    UiMembershipButtonPrimary,
     SubscribeStepProgress,
     SubscribeSuccessOrderInfo,
   },
@@ -56,7 +60,7 @@ export default {
 <style lang="scss" scoped>
 .order-success {
   position: relative;
-  padding: 13px 8px;
+  padding: 20px 8px;
   @include media-breakpoint-up(sm) {
     padding: 18px 8px;
   }
@@ -66,13 +70,12 @@ export default {
     p {
       padding: 0 17px;
       margin-bottom: 13px;
-      font-size: 15px;
-      line-height: 1.87;
-      text-align: justify;
-      color: #4a4a4a;
+      font-size: 16px;
+      line-height: 150%;
+      color: rgba(0, 0, 0, 0.87);
       @include media-breakpoint-up(sm) {
         padding: 0 25px;
-        margin-bottom: 18px;
+        margin: 30px 24px 24px;
       }
     }
     .order-info {
@@ -93,22 +96,12 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 16px 0;
-  @include media-breakpoint-up(xl) {
-    padding: 24px 0;
+  @include media-breakpoint-up(md) {
+    padding: 27px 0 24px 0;
   }
 }
+
 .back-to-subscribe-link {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 240px;
-  height: 48px;
-  left: 336px;
-  top: 349px;
-  background: #054f77;
-  border-radius: 2px;
-  font-size: 18px;
-  line-height: 25px;
-  color: #ffffff;
 }
 </style>
