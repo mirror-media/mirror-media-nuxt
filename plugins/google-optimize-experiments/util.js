@@ -1,9 +1,7 @@
-const { ENV = 'dev' } = require('~/configs/config')
+import { ENV } from '~/configs/config'
+
 function getEnv() {
-  if (ENV === 'staging') {
-    return 'prod'
-  }
-  return ENV
+  return ENV ?? 'dev'
 }
 
 export function reducedENVIDExperiment(experiment) {

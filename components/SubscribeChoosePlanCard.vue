@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     changePlanHandler() {
-      this.$router.push(`/subscribe/${this.planUrl}`)
+      this.$router.push(`/papermag/${this.planUrl}`)
     },
   },
 }

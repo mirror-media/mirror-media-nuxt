@@ -3,7 +3,6 @@ import _ from 'lodash'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import moment from 'moment-timezone'
-import config from '../api/config'
 
 // import { OATH_PLAYLIST } from '../constants'
 import {
@@ -40,6 +39,11 @@ import watches from './modules/watches'
 
 Vue.use(Vuex)
 
+const config = {
+  DFPID: '40175602',
+  FB_APP_ID: '175313259598308',
+  FB_PAGES_ID: '1855418728011324',
+}
 const { DFPID, FB_APP_ID, FB_PAGES_ID } = config
 
 export function createStore() {

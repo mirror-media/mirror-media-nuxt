@@ -55,10 +55,16 @@ function checkCategoryHasMemberOnly({ categories = [] } = {}) {
   })
 }
 
+function getStoryPathByType(story) {
+  return story.type === 'project'
+    ? `/projects/${story.slug}`
+    : `/story/${story.slug}`
+}
+
 function getStoryPath(story = {}) {
   return checkCategoryHasMemberOnly(story)
     ? `/premium/${story.slug}`
-    : `/story/${story.slug}`
+    : getStoryPathByType(story)
 }
 
 export {

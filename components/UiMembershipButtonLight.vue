@@ -9,7 +9,7 @@
   width: 100%;
   height: 48px;
   border-radius: 2px;
-  background-color: #054f77;
+  background-color: #1d9fb8;
   color: white;
   font-size: 18px;
   display: flex;
@@ -19,19 +19,19 @@
     @include media-breakpoint-up(xl) {
       background: linear-gradient(
           0deg,
-          rgba(29, 159, 184, 0.3),
-          rgba(29, 159, 184, 0.3)
+          rgba(5, 79, 119, 0.3),
+          rgba(5, 79, 119, 0.3)
         ),
-        #054f77;
+        #1d9fb8;
     }
   }
   &:active {
     background: linear-gradient(
         0deg,
-        rgba(29, 159, 184, 0.5),
-        rgba(29, 159, 184, 0.5)
+        rgba(5, 79, 119, 0.5),
+        rgba(5, 79, 119, 0.5)
       ),
-      #054f77;
+      #1d9fb8;
   }
   &:disabled {
     background-color: #e3e3e3;

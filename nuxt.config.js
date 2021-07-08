@@ -307,7 +307,9 @@ module.exports = {
       '@nuxtjs/google-analytics',
       {
         id: () => {
-          return document.domain.match(/^(www|nuxt).mirrormedia.mg/gs)
+          return document.domain.match(
+            /^(www|www-staging|nuxt).mirrormedia.mg/gs
+          )
             ? 'UA-83609754-1'
             : 'UA-83609754-2'
         },
@@ -422,6 +424,7 @@ module.exports = {
   axios: {
     proxy: true,
   },
+
   // config for @mirror-media/nuxt-ssr-cache
   cache: {
     /**
