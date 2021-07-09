@@ -67,7 +67,7 @@ export default {
       }
       this.$store.dispatch('subscribe/updateResultStatus', this.simOrderStatus)
 
-      this.$router.push('/subscribe/result')
+      this.$router.push('/papermag/result')
     },
   },
 }
