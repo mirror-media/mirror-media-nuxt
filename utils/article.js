@@ -56,7 +56,7 @@ function checkCategoryHasMemberOnly({ categories = [] } = {}) {
 }
 
 function getStoryPathByType(story) {
-  return story.type === 'projects'
+  return story.style === 'projects'
     ? `/projects/${story.slug}`
     : `/story/${story.slug}`
 }
