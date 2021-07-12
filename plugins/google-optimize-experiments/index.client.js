@@ -29,7 +29,9 @@ export default (context, inject) => {
         context.route.fullPath
       }, the variant of the current session is number ${+variant + 1}`
     )
-    const experiment = experiments.find(function TODO(experiment) {
+    const experiment = experiments.find(function findExperimentById(
+      experiment
+    ) {
       return experiment.experimentID === experimentID
     })
     if (experiment) {
