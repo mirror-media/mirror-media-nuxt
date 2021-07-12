@@ -67,7 +67,7 @@
                   <a
                     :href="`${
                       section.customPath !== null
-                        ? '/' + (section.customPath || 'section')
+                        ? '/' + (section.customPath || 'premiumsection')
                         : ''
                     }/${section.name}`"
                     v-text="section.title"
@@ -134,7 +134,16 @@ export default {
 
   computed: {
     sectionsMember() {
-      return this.$store.getters['sections/sectionsMember']
+      return this.$store.state['sections-member'].data.concat([
+        {
+          id: 'mirrormagazine',
+          name: 'magazine',
+          customPath: null,
+          title: '電子雜誌',
+          categories: [],
+          shouldShowSeparator: true,
+        },
+      ])
     },
 
     isCurrentPagePremium() {

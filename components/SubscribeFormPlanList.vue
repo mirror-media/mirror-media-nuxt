@@ -7,16 +7,37 @@
 
     <UiMerchandiseList :perchasedPlan="perchasedPlan" />
 
-    <div class="merchandise-list__discount_code">
-      <div class="merchandise-list__discount_code_check">
-        <input v-model="discount.hasCode" type="checkbox" name="" />
-        <span>我有續訂折扣碼</span>
+    <!-- <div class="merchandise-list__discount_code">
+      <div class="merchandise-list__discount_code_row">
+        <div class="merchandise-list__discount_code_check">
+          <input v-model="discount.hasCode" type="checkbox" name="" />
+          <span>我有續訂折扣碼</span>
+        </div>
+
+        <div class="merchandise-list__discount_code_prompt">
+          <p>折扣80元、加購1期</p>
+        </div>
       </div>
-      <div class="merchandise-list__discount_code_input">
-        <input v-model="discount.code" type="text" placeholder="MI00000000" />
-        <p>折扣80元、加購1期</p>
+
+      <div class="merchandise-list__discount_code_row">
+        <div class="merchandise-list__discount_code_input">
+          <input v-model="discount.code" type="text" placeholder="MI00000000" />
+        </div>
       </div>
-    </div>
+
+      <div class="merchandise-list__discount_code_row">
+        <div class="merchandise-list__discount_code_info">
+          <p>
+            - 續訂戶資格為實際訂閱紙本鏡週刊滿 1
+            年（52期）並已有續訂戶代號，如不清楚續訂戶代號或是否符合續訂戶資格，請來電
+            02-6633-3882 查詢。
+          </p>
+          <p>
+            - 若您非續訂戶，服務人員將去電提醒告知，需請補足差額後方能完成訂閱。
+          </p>
+        </div>
+      </div>
+    </div> -->
   </div>
 </template>
 
@@ -60,7 +81,7 @@ export default {
       default: () => {
         return {
           hasCode: false,
-          code: '',
+          code: 'MR000',
         }
       },
     },
@@ -90,6 +111,10 @@ export default {
   @include media-breakpoint-up(sm) {
   }
   @include media-breakpoint-up(md) {
+  }
+
+  span {
+    margin-bottom: 0;
   }
 
   &__title {
@@ -130,13 +155,39 @@ export default {
       padding: 28px 0 61px;
     }
 
+    &_row {
+      margin-bottom: 10px;
+
+      &:first-child {
+        display: flex;
+        align-items: center;
+      }
+    }
+
     &_check {
-      margin-right: 18px;
+      margin-right: 48px;
       display: flex;
       align-items: center;
       @include media-breakpoint-up(md) {
-        margin-bottom: 10px;
       }
+    }
+
+    &_prompt {
+      font-size: 15px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: #064f77;
+    }
+
+    &_info {
+      font-family: 'Noto Sans TC';
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 17px;
     }
 
     &_input {
@@ -152,19 +203,6 @@ export default {
         border-radius: 4px;
         box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.1);
         background-color: #f5f5f5;
-      }
-      p {
-        position: absolute;
-        top: 51px;
-        left: 0;
-        margin-top: 4px;
-        font-size: 15px;
-        font-weight: normal;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        color: #064f77;
       }
     }
   }

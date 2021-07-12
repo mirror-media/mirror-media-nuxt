@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     changePlanHandler() {
-      this.$router.push(`/subscribe/${this.planUrl}`)
+      this.$router.push(`/papermag/${this.planUrl}`)
     },
   },
 }
@@ -82,7 +82,7 @@ export default {
       margin-right: 0;
     }
   }
-  font-family: PingFangTC;
+  font-family: 'PingFang TC';
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;

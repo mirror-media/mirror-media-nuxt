@@ -108,10 +108,6 @@ export default {
       type: Function,
       default: () => {},
     },
-    setFormStatus: {
-      type: Function,
-      default: () => {},
-    },
     receiverDataIsSameAsOrderer: {
       type: Boolean,
       default: false,
@@ -125,23 +121,21 @@ export default {
       type: Boolean,
       default: true,
     },
+    setFormStatus: {
+      type: Function,
+      default: () => {},
+    },
   },
   data() {
     return {
       submitStatus: null,
       validateSwitch: true,
-      // name: '',
-      // cellphone: '',
-      // phone: '',
-      // phoneExt: '',
-      // address: '',
-      // email: '',
-      name: 'Liyi',
-      cellphone: '0975679310',
-      phone: '4980000',
-      phoneExt: '03',
-      address: '中壢市中正路一段一號',
-      email: 'liyibass@gmail.com',
+      name: '',
+      cellphone: '',
+      phone: '',
+      phoneExt: '',
+      address: '',
+      email: '',
     }
   },
   validations: {
@@ -237,6 +231,7 @@ export default {
     span {
       font-size: 18px;
       color: #4a4a4a;
+      margin-bottom: 0;
     }
   }
 

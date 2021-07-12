@@ -37,10 +37,33 @@ export default {
     },
   },
   mounted() {
+    // save orderInfo into sessionStorage
+    const orderInfo = this.$store.getters['subscribe/getOrderInfo']
+    this.storeToSessionStorage('orderInfo', JSON.stringify(orderInfo))
+
+    /*
+     * get orderNo and token for this payment
+     * save them into sessionStorage
+     */
+    const { JwtToken, MerchantOrderNo } = this.$store.getters[
+      'subscribe/getInfoPayload'
+    ]
+    this.storeToSessionStorage('JwtToken', JwtToken)
+    this.storeToSessionStorage('MerchantOrderNo', MerchantOrderNo)
+
+    // turn off access of this redirect page
+    this.$store.dispatch('subscribe/updateReadyToPay', false)
+
+    // submit newebpay form-post to redirect to newebpay page
     const formDOM = document.forms.newebpay
-    setTimeout(() => {
-      formDOM.submit()
-    }, 1000)
+    formDOM.submit()
+  },
+  methods: {
+    storeToSessionStorage(name, value) {
+      if (process.browser) {
+        sessionStorage.setItem(name, value)
+      }
+    },
   },
 }
 </script>

@@ -6,6 +6,7 @@
       </div>
       <SubscribeFailWrapper :data="errorData" status="payment-fail" />
     </div>
+
     <div v-else class="fail__order_fail">
       <SubscribeFailWrapper
         message="訂單建立失敗，請再次下訂單，或聯繫客服專員（02-6633-3832 /
@@ -47,25 +48,23 @@ export default {
 
 <style lang="scss" scoped>
 .fail {
-  font-family: PingFangTC;
-  font-size: 15px;
-  line-height: 1.87;
-  text-align: justify;
+  font-size: 16px;
+  line-height: 150%;
+  color: rgba(0, 0, 0, 0.87);
   align-items: center;
   height: 50vh;
   max-width: 990px;
   margin: 0 auto;
 
-  @include media-breakpoint-up(sm) {
+  @include media-breakpoint-up(xl) {
     font-size: 18px;
-    line-height: 2.56;
   }
 }
 
 .fail__payment_fail_message {
   margin: 20px;
-  @include media-breakpoint-up(sm) {
-    margin: 24px;
+  @include media-breakpoint-up(xl) {
+    margin: 48px 32px 32px;
   }
 }
 

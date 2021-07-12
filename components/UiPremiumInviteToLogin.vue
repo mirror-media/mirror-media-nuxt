@@ -7,20 +7,17 @@
     >
       成為會員
     </a>
-    <p class="invite-to-login__paragraph paragraph">
-      <span>已經是會員了？</span>
-      <a
-        class="paragraph__login-now login-now"
-        :href="`/login?destination=${currentPagePath}`"
-      >
-        立即登入
-      </a>
-    </p>
+    <UiPremiumLoginNow class="invite-to-login__paragraph" />
   </div>
 </template>
 
 <script>
+import UiPremiumLoginNow from '~/components/UiPremiumLoginNow.vue'
+
 export default {
+  components: {
+    UiPremiumLoginNow,
+  },
   computed: {
     currentPagePath() {
       return this.$route.fullPath
@@ -90,21 +87,6 @@ export default {
   }
   @include media-breakpoint-up(xl) {
     width: 170px;
-  }
-}
-
-.paragraph {
-  font-size: 16px;
-  line-height: 21px;
-  text-align: center;
-  color: #9b9b9b;
-}
-
-.login-now {
-  border-bottom: 1px solid #9b9b9b;
-  &:hover {
-    color: #4a4a4a;
-    border-bottom: 1px solid #4a4a4a;
   }
 }
 </style>

@@ -6,11 +6,11 @@
         <p class="time__update-time">更新時間 {{ updateTimeFormat }}</p>
       </div>
       <div
-        v-if="writers.length || photographers.length"
+        v-if="writers.length || photographers.length || extendByline"
         class="info__people people"
       >
         <p v-if="writers.length" class="people__writers">
-          <span>記者／</span>
+          <span>記者｜</span>
           <UiLink
             v-for="writer in writers"
             :key="writer.id"
@@ -22,8 +22,11 @@
             {{ writer.name }}
           </UiLink>
         </p>
+        <p v-show="extendByline" class="people__extendByline">
+          <span>{{ extendByline }}</span>
+        </p>
         <p v-if="photographers.length" class="people__photographers">
-          <span>攝影／</span>
+          <span>攝影｜</span>
           <UiLink
             v-for="photographer in photographers"
             :key="photographer.id"
@@ -77,6 +80,10 @@ export default {
     writers: {
       type: Array,
       default: () => [],
+    },
+    extendByline: {
+      type: String,
+      default: '',
     },
     photographers: {
       type: Array,
@@ -140,7 +147,7 @@ export default {
 .people {
   font-size: 16px;
   line-height: 1.6;
-  &__photographers {
+  & p + p {
     margin: 8px 0 0 0;
   }
 }

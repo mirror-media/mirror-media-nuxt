@@ -44,6 +44,7 @@
         :publishTime="post.publishedDate"
         :updateTime="post.updatedAt"
         :writers="post.writers"
+        :extendByline="post.extendByline"
         :photographers="post.photographers"
         :tags="post.tags"
       />
@@ -136,6 +137,7 @@ export default {
         title = '',
         brief = {},
         writers = [],
+        extendByline = '',
         photographers = [],
         content = {},
         heroVideo = {},
@@ -157,6 +159,7 @@ export default {
       return {
         title,
         writers,
+        extendByline,
         photographers,
         brief: getBrief(),
         content: content.apiData || [],

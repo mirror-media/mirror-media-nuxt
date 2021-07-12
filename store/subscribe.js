@@ -1,35 +1,16 @@
 const state = () => ({
   readyToPay: false,
-  resultStatus: 'success',
-  orderInfo: {
-    merchant_id: 'MS315799494',
-    item_desc: '一年鏡週刊52期，加購5期方案',
-    amount: 1,
-    price: 2880,
-    discount_code: '',
-    pur_name: 'Liyi',
-    pur_cell: '0975679310',
-    pur_phone: '4980000 03',
-    pur_addr: '中壢市中正路一段一號',
-    pur_mail: 'liyibass@gmail.com',
-    rec_name: 'Liyi',
-    rec_cell: '0975679310',
-    rec_phone: '4980000 03',
-    rec_addr: '中壢市中正路一段一號',
-    rec_remark: '',
-    delivery: '限時專送',
-    prime_token: '',
-    price_total: 2880,
-    carrier_type: 2,
-    carrier_number: '',
-    carrier_title: '',
-    carrier_ubn: '',
-  },
+  resultStatus: 'pending',
+  orderInfo: {},
   paymentPayload: {
     MerchantID: '',
     TradeInfo: '',
     TradeSHA: '',
     Version: '',
+  },
+  infoPayload: {
+    JwtToken: '',
+    MerchantOrderNo: '',
   },
 })
 
@@ -42,6 +23,9 @@ const getters = {
   },
   getPaymentPayload(state) {
     return state.paymentPayload
+  },
+  getInfoPayload(state) {
+    return state.infoPayload
   },
   getResultStatus(state) {
     return state.resultStatus
@@ -59,6 +43,11 @@ const actions = {
   updatePaymentPayload({ commit }, newPaymentPayload) {
     commit('setPaymentPayload', newPaymentPayload)
   },
+
+  updateInfoPayload({ commit }, newInfoPayload) {
+    commit('setInfoPayload', newInfoPayload)
+  },
+
   updateResultStatus({ commit }, newResultStatus) {
     commit('setResultStatus', newResultStatus)
   },
@@ -74,6 +63,9 @@ const mutations = {
   },
   setPaymentPayload(state, newPaymentPayload) {
     state.paymentPayload = newPaymentPayload
+  },
+  setInfoPayload(state, newInfoPayload) {
+    state.infoPayload = newInfoPayload
   },
   setResultStatus(state, newResultStatus) {
     state.resultStatus = newResultStatus

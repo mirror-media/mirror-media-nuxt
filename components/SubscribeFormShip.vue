@@ -10,7 +10,7 @@
       <UiSubscribeRadioInput
         v-model="shipPlanName"
         radioValue="限時專送"
-        radioName="限時掛號 NT$ 0 / 期"
+        radioName="限時專送 NT$ 0 / 期"
       />
       <UiSubscribeRadioInput
         v-model="shipPlanName"

@@ -26,15 +26,14 @@ export const actions = {
   async fetchGlobalData({ dispatch }) {
     return await Promise.allSettled([
       dispatch('sections/fetchSectionsData'),
-
-      // dispatch('sections-member/fetchData'),
+      dispatch('sections-member/fetchData'),
     ])
   },
 }
 
 function commitSectionsData(
   commit,
-  [responseSectionsData = {}, responseSectionsDataMember = {}] = []
+  [responseSectionsData = {}, responseSectionsDataMember = []] = []
 ) {
   commit(
     'sections/setSectionsData',
@@ -42,5 +41,5 @@ function commitSectionsData(
   )
   commit('sections/addMagazineToMemberSection')
 
-  commit('sections-member/setData', responseSectionsDataMember?.value ?? {})
+  commit('sections-member/setData', responseSectionsDataMember?.value ?? [])
 }

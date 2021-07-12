@@ -18,7 +18,6 @@
         <img :src="require('~/assets/loading.gif')" alt="" />
       </div>
     </div>
-
     <SubscribeSimFormStatus
       :validateOn="validateOn"
       :setValidateOn="setValidateOn"
@@ -30,15 +29,12 @@
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeForm from '~/components/SubscribeForm.vue'
 import SubscribeSimFormStatus from '~/components/SubscribeSimFormStatus.vue'
-// import SubscribePayment from '~/components/SubscribePayment.vue'
 
 export default {
   components: {
     SubscribeStepProgress,
-
     SubscribeForm,
     SubscribeSimFormStatus,
-    // SubscribePayment,
   },
   middleware({ route, redirect }) {
     if (
@@ -51,7 +47,6 @@ export default {
   },
   data() {
     return {
-      orderId: 'MI100048583',
       orderStatus: 'normal', // normal, loading
       simOrderStatus: 'success', //  order-fail, payment-fail, success
       validateOn: true,
@@ -71,23 +66,31 @@ export default {
 
       try {
         const paymentPayload = await this.$axios.$post(
-          `/api/v2/magazine-payment`,
+          `/api/v2/subscribe-magazine/payload`,
           orderPayload
         )
-        // save paymentPayload to store
-        // then jump to redirect page
-        this.$store.dispatch('subscribe/updateReadyToPay', true)
+
+        const infoPayload = {
+          JwtToken: paymentPayload.JwtToken,
+          MerchantOrderNo: paymentPayload.MerchantOrderNo,
+        }
+
         this.$store.dispatch('subscribe/updatePaymentPayload', paymentPayload)
+        this.$store.dispatch('subscribe/updateInfoPayload', infoPayload)
+
+        /*
+         * save paymentPayload to store
+         * then jump to redirect page
+         */
+        this.$store.dispatch('subscribe/updateReadyToPay', true)
+
         this.$router.push(`/subscribe/redirect`)
+      } catch (err) {
+        console.error(err)
 
-        // this.$routter.go('/subscribe-magazine/payment')
-
-        // // payment success
-        // this.currentStep++
-        // this.orderStatus = 'success'
-      } catch (e) {
         // payment fail
-        this.orderStatus = e.message
+        this.$store.dispatch('subscribe/updateResultStatus', 'order-fail')
+        this.$router.push(`/subscribe/result`)
       }
     },
 
