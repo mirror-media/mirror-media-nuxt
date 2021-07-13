@@ -71,7 +71,7 @@ export default {
   padding: 0 17px;
 
   h2 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -81,7 +81,7 @@ export default {
     margin-bottom: 13px;
 
     @include media-breakpoint-up(sm) {
-      font-size: 26px;
+      font-size: 24px;
     }
   }
   ul {

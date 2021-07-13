@@ -160,8 +160,12 @@ export default {
 }
 
 .order-info__user_content_title {
-  font-size: 20px;
+  font-weight: 500;
+  font-size: 18px;
   margin-bottom: 18px;
+  @include media-breakpoint-up(sm) {
+    font-size: 20px;
+  }
 }
 
 .order-info__order_content,
