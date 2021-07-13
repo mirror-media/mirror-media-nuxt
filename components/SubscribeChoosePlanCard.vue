@@ -103,8 +103,7 @@ export default {
   &__devider {
     margin-bottom: 22px;
     width: 100%;
-    border-bottom: solid 1px #4a4a4a;
-    border-bottom: solid 1px #4a4a4a;
+    border-bottom: solid 1px #0000001a;
     @include media-breakpoint-up(sm) {
       margin-bottom: 18px;
     }

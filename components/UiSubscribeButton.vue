@@ -39,10 +39,16 @@ export default {
   max-width: 340px;
   border-radius: 4px;
   cursor: pointer;
-  background-color: #1b7aae;
+  background-color: #054f77;
 
-  &:active {
-    background: rgb(33, 78, 116);
+  &:active,
+  &:hover {
+    background: linear-gradient(
+        0deg,
+        rgba(29, 159, 184, 0.3),
+        rgba(29, 159, 184, 0.3)
+      ),
+      #054f77;
   }
 
   @include media-breakpoint-up(sm) {
