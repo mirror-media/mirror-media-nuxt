@@ -5,7 +5,7 @@ export default {
   experimentID: {
     local: '7s1xxrWcS9KEcEJ8Ttq4Qg',
     dev: 'ZP88t_4BQg6qYZ2wUfgC4w',
-    staging: 'WiNBNe1kTpmzI_fsR_6rbQ',
+    staging: 'jKvOBLdKTw2fJaDIbw3rLw',
     prod: '7vhXna74R_G8vihAeKZDTA',
   },
 }
