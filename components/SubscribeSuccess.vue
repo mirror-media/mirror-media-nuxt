@@ -64,7 +64,7 @@ export default {
     p {
       padding: 0 17px;
       margin-bottom: 13px;
-      font-size: 15px;
+      font-size: 18px;
       line-height: 1.87;
       text-align: justify;
       color: #4a4a4a;

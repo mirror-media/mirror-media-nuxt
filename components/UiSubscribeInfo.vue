@@ -71,13 +71,13 @@ export default {
   padding: 0 17px;
 
   h2 {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
     line-height: normal;
     letter-spacing: normal;
-    color: #4a4a4a;
+    color: #000000de;
     margin-bottom: 13px;
 
     @include media-breakpoint-up(sm) {
@@ -91,13 +91,13 @@ export default {
     li {
       max-width: 940px;
       margin: auto;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: normal;
       font-stretch: normal;
       font-style: normal;
       line-height: 2;
       letter-spacing: normal;
-      color: #4a4a4a;
+      color: #000000de;
       .subscribe-info__sub {
         margin-left: 8px;
       }
