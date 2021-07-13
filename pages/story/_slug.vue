@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!--    {{ $GOExp.nest.nestt }}-->
     <error
       v-if="$fetchState.error"
       :error="{
@@ -30,10 +31,6 @@
                 >
                   <UiStoryListRelatedRedesignWrapper
                     v-if="
-                      $GOExp &&
-                      $GOExp.isExperimentActive(
-                        'normal-post-related-redesign'
-                      ) &&
                       $GOExp['normal-post-related-redesign'].variant === '1'
                     "
                     :relateds="relateds"
