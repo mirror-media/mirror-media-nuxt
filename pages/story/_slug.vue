@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!--    {{ $GOExp.nest.nestt }}-->
     <error
       v-if="$fetchState.error"
       :error="{

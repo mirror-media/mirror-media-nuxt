@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { reducedENVIDExperiment } from './util'
 import experimentsOrigin from '~/experiments'
+import { GOOGLE_OPT_CONTAINER_ID } from '~/configs/config'
 const experiments = experimentsOrigin.map(reducedENVIDExperiment)
 
 export default (context, inject) => {
@@ -61,14 +62,27 @@ function setupGoogleOptimizeAtClientSide(experiments, context) {
   }
 
   function callback(variant, experimentID) {
-    console.log(
-      `[Google Optimize Experiments Plugin] Experiment with ID ${experimentID} is active on Google Optimize of current route ${
-        context.route.fullPath
-      }, the variant of the current session is number ${+variant + 1}`
-    )
     const experiment = experiments.find(findExperimentByID(experimentID))
     if (experiment) {
       Vue.set(context.app.$GOExp[experiment.name], 'variant', variant)
+      console.log(
+        `[Google Optimize Experiments Plugin] Experiment with
+          ID: ${experimentID}
+          Container: ${GOOGLE_OPT_CONTAINER_ID}
+          current route: ${context.route.fullPath}
+        is active on Google Optimize, the variant of the current session is number ${
+          +variant + 1
+        }`
+      )
+    } else {
+      console.warn(
+        `[Google Optimize Experiments Plugin] Experiment with
+          ID: ${experimentID}
+          Container: ${GOOGLE_OPT_CONTAINER_ID}
+          current route: ${context.route.fullPath}
+        is active on Google Optimize, but ID ${experimentID} on Google Optimize is not found in developer defined experiments ID, please check:`
+      )
+      console.warn(experiments)
     }
   }
 
