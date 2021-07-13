@@ -34,7 +34,7 @@ export default {
           id: 0,
           title: '一年方案',
           detail: '訂購紙本鏡週刊 52 期，加贈 5 期',
-          originalPrice: 3990,
+          originalPrice: 3900,
           newPrice: 2880,
         },
         {

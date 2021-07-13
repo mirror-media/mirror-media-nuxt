@@ -4,6 +4,7 @@
     :class="{ 'subscribe-button__light': isColorLight }"
   >
     {{ title }}
+    <p class="subcribe-button__hint">{{ hint }}</p>
   </div>
 </template>
 
@@ -13,6 +14,10 @@ export default {
     title: {
       type: String,
       isRequired: true,
+      default: '',
+    },
+    hint: {
+      type: String,
       default: '',
     },
     isColorLight: {
@@ -61,6 +66,14 @@ export default {
     &:active {
       background: rgb(155, 155, 155);
     }
+  }
+
+  &__hint {
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 18px;
+    color: #ffffff;
+    opacity: 0.66;
   }
 }
 </style>

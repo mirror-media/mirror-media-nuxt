@@ -10,6 +10,7 @@
 
     <UiSubscribeButton
       :title="`訂購${title}`"
+      hint="續訂另有優惠"
       @click.native="changePlanHandler"
     />
   </div>
