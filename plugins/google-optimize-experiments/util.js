@@ -5,7 +5,7 @@ function getEnv() {
 }
 
 export function reducedENVIDExperiment(experiment) {
-  return Object.assign(experiment, {
+  return Object.assign({}, experiment, {
     experimentID: experiment.experimentID[getEnv()],
   })
 }
