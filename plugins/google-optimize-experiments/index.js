@@ -1,8 +1,9 @@
 import Vue from 'vue'
-import { reducedENVIDExperiment } from './util'
+import { reducedEnvIdExperiment } from './util'
+import { ENV, GOOGLE_OPT_CONTAINER_ID } from '~/configs/config'
+
 import experimentsOrigin from '~/experiments'
-import { GOOGLE_OPT_CONTAINER_ID } from '~/configs/config'
-const experiments = experimentsOrigin.map(reducedENVIDExperiment)
+const experiments = experimentsOrigin.map(reducedEnvIdExperiment)
 
 export default (context, inject) => {
   initializePlugin(experiments, inject)
@@ -36,7 +37,7 @@ function initializePlugin(experiments, inject) {
   function groupExperimentByName(experiment) {
     return {
       [experiment.name]: {
-        experimentID: experiment.experimentID,
+        ...experiment,
       },
     }
   }
@@ -61,34 +62,49 @@ function setupGoogleOptimizeAtClientSide(experiments, context) {
     window.dataLayer.push(arguments)
   }
 
-  function callback(variant, experimentID) {
-    const experiment = experiments.find(findExperimentByID(experimentID))
-    if (experiment) {
-      Vue.set(context.app.$GOExp[experiment.name], 'variant', variant)
-      console.log(
+  function callback(variant, experimentId) {
+    const experiment = experiments.find(function getExperimentIncludeId(
+      experiment
+    ) {
+      return experiment.experimentIds.some(function compareId(idSetting) {
+        return idSetting.id === experimentId
+      })
+    })
+
+    if (!experiment) {
+      console.error(
         `[Google Optimize Experiments Plugin] Experiment with
-          ID: ${experimentID}
+          ID: ${experimentId}
           Container: ${GOOGLE_OPT_CONTAINER_ID}
           current route: ${context.route.fullPath}
-        is active on Google Optimize, the variant of the current session is number ${
+        is active on Google Optimize, but ID ${experimentId} on Google Optimize is not found in developer defined experiments ID, please check:`
+      )
+      console.error(experiments)
+      return
+    }
+
+    const isExperimentActiveCurrentEnv =
+      experiment?.experimentIdActive?.[0]?.id === experimentId
+    if (isExperimentActiveCurrentEnv) {
+      console.log(
+        `[Google Optimize Experiments Plugin] Experiment with
+          ID: ${experimentId}
+          Container: ${GOOGLE_OPT_CONTAINER_ID}
+          current route: ${context.route.fullPath}
+        is active on Google Optimize with current ENV: ${ENV}, the variant of the current session is number ${
           +variant + 1
         }`
       )
     } else {
       console.warn(
         `[Google Optimize Experiments Plugin] Experiment with
-          ID: ${experimentID}
+          ID: ${experimentId}
           Container: ${GOOGLE_OPT_CONTAINER_ID}
           current route: ${context.route.fullPath}
-        is active on Google Optimize, but ID ${experimentID} on Google Optimize is not found in developer defined experiments ID, please check:`
+        is active on Google Optimize, but ID ${experimentId} on Google Optimize is not active on current ENV: ${ENV}, please check:`
       )
       console.warn(experiments)
     }
-  }
-
-  function findExperimentByID(experimentID) {
-    return function (experiment) {
-      return experiment.experimentID === experimentID
-    }
+    Vue.set(context.app.$GOExp[experiment.name], 'variant', variant)
   }
 }
