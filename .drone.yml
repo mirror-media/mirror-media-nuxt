@@ -12,7 +12,7 @@ pipeline:
       Someone gave *{{build.branch}}* a little push.
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, staging, master]
 
   restoreCache:
     image: drillster/drone-volume-cache
@@ -24,7 +24,7 @@ pipeline:
       - /tmp/cache:/cache
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, staging, master]
 
   getGCSKeyFile:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
@@ -34,7 +34,7 @@ pipeline:
       - cp ../configs/mirror-media/mirror-media-nuxt/gcskeyfile.json ./gcskeyfile.json
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, staging, master]
 
 #  getCIConfig:
 #    image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
