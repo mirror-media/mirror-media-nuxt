@@ -66,7 +66,7 @@ export default {
 
       &:last-child {
         padding-top: 10px;
-        border-top: solid 1px #4a4a4a;
+        border-top: solid 1px #00000080;
         margin: 12px 0 0 0;
         @include media-breakpoint-up(sm) {
           margin: 16px 0 0 0;

@@ -77,11 +77,11 @@ export default {
     font-style: normal;
     line-height: normal;
     letter-spacing: normal;
-    color: #4a4a4a;
+    color: #000000de;
     margin-bottom: 13px;
 
     @include media-breakpoint-up(sm) {
-      font-size: 26px;
+      font-size: 24px;
     }
   }
   ul {
@@ -91,13 +91,13 @@ export default {
     li {
       max-width: 940px;
       margin: auto;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: normal;
       font-stretch: normal;
       font-style: normal;
       line-height: 2;
       letter-spacing: normal;
-      color: #4a4a4a;
+      color: #000000de;
       .subscribe-info__sub {
         margin-left: 8px;
       }
