@@ -100,7 +100,19 @@ pipeline:
       event: [push]
       branch: [master]
 
-  buildDev&Prod:
+  getStagingConfig:
+    image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
+    secrets: [google_credentials]
+    commands:
+      - rm -rf ../configs
+      - rm -rf ./configs/*
+      - gcloud source repos clone configs ../configs
+      - cp ../configs/mirror-media/mirror-media-nuxt/staging/config.js ./configs/config.js
+    when:
+      event: [push]
+      branch: [staging]
+
+  build:
     image: node:12.16.2-slim
     commands:
     - apt-get update && apt-get install -y node-gyp
@@ -108,7 +120,7 @@ pipeline:
     - yarn run build
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, staging, master]
 
   publish:
     image: plugins/gcr
@@ -119,7 +131,7 @@ pipeline:
     secrets: [google_credentials]
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, staging, master]
 
   deployDev:
     image: nytimes/drone-gke
@@ -147,7 +159,7 @@ pipeline:
     volumes:
       - /tmp/cache:/cache
     when:
-      branch: [dev, master]
+      branch: [dev, staging, master]
 
   finishSlack:
     image: plugins/slack
@@ -158,7 +170,7 @@ pipeline:
     when:
       status: [success, failure]
       event: [push]
-      branch: [dev, master]
+      branch: [dev, staging, master]
     template: >
       {{#success build.status}}
         *success* ${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER} was well served.
