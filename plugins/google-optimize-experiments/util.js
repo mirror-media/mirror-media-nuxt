@@ -4,12 +4,12 @@ function getEnv() {
   return ENV ?? 'dev'
 }
 
-export function reducedENVIDExperiment(experiment) {
+export function reducedEnvIdExperiment(experiment) {
   return Object.assign({}, experiment, {
-    experimentID: experiment.experimentID[getEnv()],
+    experimentIdActive: experiment.experimentIds.filter(
+      function remainExperimentWithCurrentENV(experiment) {
+        return experiment.ENV === getEnv()
+      }
+    ),
   })
-}
-
-export function isExperimentActive(experimentName = '') {
-  return Object.prototype.hasOwnProperty.call(this, experimentName)
 }
