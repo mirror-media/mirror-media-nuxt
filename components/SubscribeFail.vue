@@ -9,8 +9,7 @@
 
     <div v-else class="fail__order_fail">
       <SubscribeFailWrapper
-        message="訂單建立失敗，請再次下訂單，或聯繫客服專員（02-6633-3832 /
-       service@mirrormedia.mg）協助。"
+        message="訂單建立失敗，請再次下訂單，或來電客服專線 02-6633-3882 協助。"
         status="order-fail"
       />
     </div>
