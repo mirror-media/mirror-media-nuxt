@@ -17,7 +17,7 @@
       <span
         v-if="!$v.name.required && $v.name.$error && isNeedToCheck"
         class="error__message"
-        >欄位不得為空</span
+        >收件人姓名不可空白</span
       >
     </div>
 
@@ -35,7 +35,7 @@
         <span
           v-if="!$v.cellphone.required && $v.cellphone.$error && isNeedToCheck"
           class="error__message"
-          >欄位不得為空</span
+          >收件人聯絡電話不可空白</span
         >
       </div>
 
@@ -69,7 +69,7 @@
       <span
         v-if="!$v.address.required && $v.address.$error && isNeedToCheck"
         class="error__message"
-        >欄位不得為空</span
+        >收件人通訊地址不可空白</span
       >
     </div>
 
