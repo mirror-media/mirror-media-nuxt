@@ -125,7 +125,7 @@ export default {
         email: '',
       },
       shipPlan: {
-        name: '限時專送',
+        name: '一般配送',
         cost: 0,
       },
       receiptData: {

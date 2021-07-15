@@ -3,14 +3,14 @@
     <h2 class="subscribe-form__title">寄送方式</h2>
 
     <p class="ship__detail">
-      雜誌每週三出刊，週五前可收到雜誌。欲更改收件地址，請於上班時間來電告知。
+      因週刊派送屬一般投遞投遞非簽收件，如需簽收建議選擇以掛號寄送。
     </p>
 
     <div class="ship__choose">
       <UiSubscribeRadioInput
         v-model="shipPlanName"
-        radioValue="限時專送"
-        radioName="限時專送 NT$ 0 / 期"
+        radioValue="一般配送"
+        radioName="一般配送 NT$ 0 / 期"
       />
       <UiSubscribeRadioInput
         v-model="shipPlanName"
@@ -37,15 +37,15 @@ export default {
   },
   data() {
     return {
-      shipPlanName: '限時專送',
+      shipPlanName: '一般配送',
     }
   },
   watch: {
     shipPlanName(val) {
       switch (val) {
-        case '限時專送':
+        case '一般配送':
           this.setShipPlan({
-            name: '限時專送',
+            name: '一般配送',
             cost: 0,
           })
           break
@@ -59,7 +59,7 @@ export default {
 
         default:
           this.setShipPlan({
-            name: '限時專送',
+            name: '一般配送',
             cost: 0,
           })
           break
