@@ -516,18 +516,6 @@ module.exports = {
 
   router: {
     extendRoutes(routes, resolve) {
-      // Toggle on the feature of replace /login origin pages/login.vue page component with pages/loginNew.vue
-      const originalLoginRouteIndex = routes.findIndex(
-        function getRoutePathLogin(route) {
-          return route.path === '/login'
-        }
-      )
-      routes.splice(originalLoginRouteIndex, 1)
-      routes.push({
-        path: '/login',
-        component: resolve(__dirname, 'pages/loginNew.vue'),
-      })
-
       // Toggle on the feature of replace /topic origin pages/topic/_id.vue page component with deprecated/topic-page/Topic.vue
       const originalTopicRouteIndex = routes.findIndex(
         function getRouteNameTopic(route) {
