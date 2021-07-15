@@ -1,14 +1,24 @@
 <template>
   <div class="select" :class="{ error: $v.value.$error && isNeedToCheck }">
-    <select :value="$v.value.$model" @input="changeHandler">
-      <option
-        v-for="option in optionList"
-        :key="option.value"
-        :value="option.value"
+    <ul :value="$v.value.$model" @input="changeHandler">
+      <li
+        :key="choosenOptionName"
+        class="select__choosen"
+        @click="toggleOptionField"
       >
-        {{ option.name }}
-      </option>
-    </select>
+        {{ choosenOptionName }}
+      </li>
+      <section v-show="shouldShowOptionField">
+        <div class="select__devider" />
+        <li
+          v-for="option in optionList.slice(1)"
+          :key="option.value"
+          :value="option.value"
+        >
+          {{ option.name }}
+        </li>
+      </section>
+    </ul>
     <span
       v-if="!$v.value.required && $v.value.$error && isNeedToCheck"
       class="error__message"
@@ -21,7 +31,6 @@
 import { required } from 'vuelidate/lib/validators'
 export default {
   props: {
-    //
     value: {
       type: String,
       isRequired: true,
@@ -69,7 +78,9 @@ export default {
   },
   data() {
     return {
+      choosenOptionName: '請選擇',
       validationStatus: 'OK',
+      shouldShowOptionField: false,
     }
   },
   computed: {
@@ -96,6 +107,9 @@ export default {
 
       this.setReciptFormStatus(this.validateField, this.validationStatus)
     },
+    toggleOptionField() {
+      this.shouldShowOptionField = !this.shouldShowOptionField
+    },
   },
 }
 </script>
@@ -103,17 +117,77 @@ export default {
 <style lang="scss" scoped>
 .select {
   position: relative;
-  select {
-    height: 44px;
-    width: 100%;
-    padding: 11px 7px 11px;
-    border-radius: 4px;
-    box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.1);
-    background: #f5f5f5;
-    font-size: 15px;
+  height: 48px;
 
+  &__devider {
+    height: 12px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    margin-bottom: 4px;
+  }
+
+  &__choosen {
+    cursor: pointer;
+    user-select: none;
+    display: block;
+    width: 100%;
+    text-align: left;
+    position: relative;
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 18px;
+    padding: 0 12px !important;
     &:focus {
-      outline: none;
+      outline-style: none;
+      &::after {
+        transform: rotate(315deg);
+        top: 40%;
+      }
+    }
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      right: 12px;
+      top: 33%;
+      width: 12px;
+      height: 12px;
+      border-color: #054f77;
+      border-style: solid;
+      border-width: 1px 1px 0 0;
+      transform: rotate(135deg);
+    }
+  }
+
+  ul {
+    z-index: 2;
+    color: #1b1b1b;
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+    font-size: 18px;
+    padding: 12px 0;
+    &:focus {
+      border: 1px solid rgba(0, 0, 0, 0.87);
+      box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);
+    }
+    & li {
+      height: 100%;
+      background: #fff;
+      padding: 8px 12px;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      &:not(:first-child) {
+        &:hover {
+          background-color: #054f77;
+          color: #fff;
+        }
+      }
     }
   }
 }
