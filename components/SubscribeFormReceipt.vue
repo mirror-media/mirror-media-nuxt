@@ -2,9 +2,7 @@
   <div class="receipt">
     <h2 class="subscribe-form__title">電子發票</h2>
 
-    <p class="receipt__detail">
-      雜誌每週三出刊，週五前可收到雜誌。欲更改收件地址，請於上班時間來電告知。
-    </p>
+    <p class="receipt__detail">發票將於付款成功後 7 個工作天內寄達。</p>
 
     <div class="receipt__choose">
       <div class="receipt__choose_item">
