@@ -263,9 +263,9 @@ export default {
 
 <style lang="scss" scoped>
 .receipt {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.87;
-  color: #4a4a4a;
+  color: #000000a8;
   padding: 0 calc(25px - 8px);
 
   @include media-breakpoint-up(md) {

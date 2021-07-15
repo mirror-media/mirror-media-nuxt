@@ -3,9 +3,12 @@
     <h2 class="subscribe-form__title">{{ type }}</h2>
 
     <div v-if="!isOrderer" class="orderer-data__check">
-      <input type="checkbox" :value="disable" @change="setDisable" /><span
-        >同訂購人資訊</span
-      >
+      <input
+        type="checkbox"
+        :value="disable"
+        @change="setDisable"
+        placeholder="我是範例"
+      /><span>同訂購人資訊</span>
     </div>
 
     <div

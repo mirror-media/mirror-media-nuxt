@@ -42,7 +42,7 @@ export default {
   padding: 13px 13px 12px;
   width: 100%;
   max-width: 340px;
-  border-radius: 4px;
+  border-radius: 2px;
   cursor: pointer;
   background-color: #054f77;
 

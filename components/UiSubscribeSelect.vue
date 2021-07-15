@@ -104,12 +104,12 @@ export default {
 .select {
   position: relative;
   select {
-    height: 44px;
+    height: 48px;
     width: 100%;
-    padding: 11px 7px 11px;
-    border-radius: 4px;
-    box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.1);
-    background: #f5f5f5;
+    padding: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+    background: #ffffff;
     font-size: 15px;
 
     &:focus {

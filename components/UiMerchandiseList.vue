@@ -1,17 +1,17 @@
 <template>
-  <div class="merchandise-list">
-    <div class="merchandise-list__form_head form-row">
+  <div class="merchandise-list-detail">
+    <div class="merchandise-list-detail__form_head form-row">
       <div class="form-row__head_title">品名</div>
       <div class="form-row__head_title">數量</div>
       <div class="form-row__head_title">單價</div>
     </div>
 
-    <div class="merchandise-list__form_devider" />
+    <div class="merchandise-list-detail__form_devider" />
 
     <div
       v-for="perchased in filteredPerchasedPlan"
       :key="perchased.id"
-      class="merchandise-list__form_content form-row"
+      class="merchandise-list-detail__form_content form-row"
     >
       <div class="form-row__head_title">{{ perchased.detail }}</div>
       <div class="form-row__head_title">
@@ -77,8 +77,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.merchandise-list {
-  font-size: 15px;
+.merchandise-list-detail {
+  font-size: 16px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -103,12 +103,18 @@ export default {
       }
     }
   }
+  &__form_content {
+    align-items: center;
+    @include media-breakpoint-up(sm) {
+      font-size: 18px;
+    }
+  }
   &__form_head {
     margin-bottom: 13px;
   }
 
   &__form_devider {
-    border: solid 1px #4a4a4a;
+    border: 1px solid #00000080;
     margin-bottom: 18px;
   }
 }

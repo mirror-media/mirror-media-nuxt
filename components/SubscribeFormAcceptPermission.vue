@@ -77,7 +77,7 @@ export default {
     padding-left: 29px;
     font-size: 15px;
     line-height: 1.87;
-    color: #4a4a4a;
+    color: #000000a8;
   }
 }
 </style>
