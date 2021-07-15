@@ -41,6 +41,7 @@
     "express": "^4.16.4",
     "firebase": "^8.0.1",
     "firebase-admin": "^9.4.1",
+    "google-libphonenumber": "^3.2.21",
     "helmet": "^4.1.1",
     "http-terminator": "^2.0.3",
     "humps": "^2.0.1",
