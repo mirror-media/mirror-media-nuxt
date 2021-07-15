@@ -1,6 +1,6 @@
 <template>
   <div class="select" :class="{ error: $v.value.$error && isNeedToCheck }">
-    <ul :value="$v.value.$model" @input="changeHandler">
+    <ul>
       <li
         :key="choosenOptionName"
         class="select__choosen"
@@ -14,6 +14,7 @@
           v-for="option in optionList.slice(1)"
           :key="option.value"
           :value="option.value"
+          @click="changeHandler(option)"
         >
           {{ option.name }}
         </li>
@@ -89,9 +90,11 @@ export default {
     },
   },
   methods: {
-    changeHandler(e) {
+    changeHandler(option) {
       this.$v.value.$touch()
-      this.$emit('input', e.target.value)
+      this.$emit('input', option.value)
+      this.choosenOptionName = option.name
+      this.shouldShowOptionField = false
     },
     check() {
       if (this.isNeedToCheck) {
