@@ -95,6 +95,7 @@ export default {
       this.$emit('input', option.value)
       this.choosenOptionName = option.name
       this.shouldShowOptionField = false
+      this.$emit('handleChangeCarrierType')
     },
     check() {
       if (this.isNeedToCheck) {

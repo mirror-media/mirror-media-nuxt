@@ -47,6 +47,7 @@
             validateField="carrierType"
             :validionOn="true"
             :setReciptFormStatus="setReciptFormStatus"
+            @handleChangeCarrierType="handleChangeCarrierType"
           />
 
           <UiValidationInput
@@ -256,6 +257,9 @@ export default {
       }
 
       this.setFormStatus('receipt', this.validationPass())
+    },
+    handleChangeCarrierType() {
+      this.receiptData.carrierNumber = ''
     },
   },
 }
