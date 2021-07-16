@@ -20,10 +20,28 @@ export default {
 .subscribe-button-small {
   user-select: none;
   cursor: pointer;
-  padding: 8px 20px;
-  font-size: 15px;
-  color: #4a4a4a;
+  padding: 8px 16px;
+  font-size: 16px;
+  color: #054f77;
   border-radius: 4px;
-  background-color: #f5f5f5;
+  background: #ffffff;
+  border: 1px solid #054f77;
+  border-radius: 2px;
+  &:hover {
+    background: linear-gradient(
+        0deg,
+        rgba(5, 79, 119, 0.05),
+        rgba(5, 79, 119, 0.05)
+      ),
+      #ffffff;
+  }
+  &:active {
+    background: linear-gradient(
+        0deg,
+        rgba(5, 79, 119, 0.1),
+        rgba(5, 79, 119, 0.1)
+      ),
+      #ffffff;
+  }
 }
 </style>

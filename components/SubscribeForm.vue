@@ -361,19 +361,24 @@ export default {
   }
 
   &__title {
-    font-size: 26px;
+    font-size: 22px;
+    line-height: 34px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
-    line-height: normal;
     letter-spacing: normal;
-    color: #4a4a4a;
-    margin-bottom: 16px;
+    color: rgba(0, 0, 0, 0.87);
+    margin-bottom: 12px;
+
+    @include media-breakpoint-up(sm) {
+      font-size: 24px;
+      line-height: 31px;
+    }
   }
 
   span {
     display: block;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -382,57 +387,61 @@ export default {
     color: #4a4a4a;
     margin-bottom: 6px;
 
+    @include media-breakpoint-up(sm) {
+      font-size: 18px;
+    }
+
     &.radio {
       margin-bottom: 0;
     }
   }
-  select {
-    height: 44px;
-    width: 100%;
-    padding: 11px 7px 11px;
-    border-radius: 4px;
-    box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.1);
-    background: #f5f5f5;
-    font-size: 15px;
-
-    &:focus {
-      outline: none;
-    }
-  }
 
   input[type='text'] {
-    height: 44px;
+    height: 48px;
     width: 100%;
-    padding: 11px 7px 11px;
-    border-radius: 4px;
-    box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.1);
-    background: #f5f5f5;
+    padding: 12px;
+    border-radius: 2px;
+    background: #ffffff;
     font-size: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    font-size: 18px;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.87);
 
     &:focus {
       outline: none;
+      border: 1px solid rgba(0, 0, 0, 0.87);
     }
 
     &:disabled {
-      background: #ebebeb;
+      background: #e3e3e3;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    &::placeholder {
+      font-size: 18px;
+      line-height: 25px;
+      color: rgba(0, 0, 0, 0.3);
     }
   }
 
   input[type='checkbox'] {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border-radius: 2px;
     box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.2);
     background-color: #f5f5f5;
     margin-right: 8px;
+    color: #054f77;
   }
 
   input[type='radio'] {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     padding: 6px;
     border-radius: 11px;
     background-color: #f5f5f5;
+    color: #04295e;
   }
 
   .error {
@@ -440,12 +449,14 @@ export default {
     animation-duration: 0.3s;
     input,
     select {
-      border: solid 2px rgba(232, 24, 49, 0.5);
+      border: 1px solid #e51731;
     }
 
     &__message {
-      margin-top: 3px;
-      color: rgba(232, 24, 49, 0.5) !important;
+      margin-top: 8px;
+      color: #e51731 !important;
+      font-size: 16px;
+      line-height: 150%;
     }
   }
   @keyframes errorShake {

@@ -64,12 +64,12 @@ export default {
 
   &__devider {
     margin: 18px 0 19px;
-    border: solid 1px #4a4a4a;
+    border: 1px solid #00000080;
   }
 }
 
 .subscribe-form__title {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -77,5 +77,8 @@ export default {
   letter-spacing: normal;
   color: #4a4a4a;
   margin-bottom: 24px;
+  @include media-breakpoint-up(sm) {
+    font-size: 24px;
+  }
 }
 </style>
