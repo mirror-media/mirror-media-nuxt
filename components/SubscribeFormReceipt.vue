@@ -76,7 +76,7 @@
             ref="carrierTitleDOM"
             v-model="receiptData.carrierTitle"
             placeholder="抬頭"
-            validateField="arrierTitle"
+            validateField="carrierTitle"
             :validionOn="true"
             :setReciptFormStatus="setReciptFormStatus"
           />

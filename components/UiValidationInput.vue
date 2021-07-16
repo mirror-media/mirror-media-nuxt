@@ -1,7 +1,10 @@
 <template>
   <div
     class="validion-input"
-    :class="{ error: $v.value.$error && isNeedToCheck }"
+    :class="{
+      error:
+        ($v.value.$error || !isValidCarrierUbn) && hasChange && isNeedToCheck,
+    }"
   >
     <input
       :value="$v.value.$model"
@@ -11,7 +14,19 @@
     />
 
     <span
-      v-if="!$v.value.required && $v.value.$error && isNeedToCheck"
+      v-if="
+        validateField === 'carrierUbn' &&
+        isNeedToCheck &&
+        !isValidCarrierUbn &&
+        this.value &&
+        hasChange
+      "
+      class="error__message"
+      >請輸入正確統編格式</span
+    >
+
+    <span
+      v-else-if="!$v.value.required && $v.value.$error && isNeedToCheck"
       class="error__message"
       >欄位不得為空</span
     >
@@ -48,6 +63,11 @@ export default {
       default: () => {},
     },
   },
+  data() {
+    return {
+      hasChange: false,
+    }
+  },
   validations: {
     value: {
       required,
@@ -57,11 +77,17 @@ export default {
     isNeedToCheck() {
       return this.validateOn
     },
+    isValidCarrierUbn() {
+      const reg = /^\d{8}$/
+      return reg.test(this.value)
+    },
   },
   methods: {
     changeHandler(e) {
+      this.hasChange = true
       this.$v.value.$touch()
       this.$emit('input', e.target.value)
+      this.value = e.target.value
     },
     check() {
       if (this.isNeedToCheck) {
