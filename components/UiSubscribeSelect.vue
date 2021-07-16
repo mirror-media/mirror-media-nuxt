@@ -125,9 +125,9 @@ export default {
 
   &__devider {
     height: 12px;
-    width: 100%;
+    width: calc(100% - 24px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-    margin-bottom: 4px;
+    margin: 0 12px 4px 12px;
   }
 
   &__choosen {
