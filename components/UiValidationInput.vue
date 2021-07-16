@@ -14,21 +14,17 @@
     />
 
     <span
-      v-if="
-        validateField === 'carrierUbn' &&
-        isNeedToCheck &&
-        !isValidCarrierUbn &&
-        this.value &&
-        hasChange
-      "
+      v-if="isNeedToCheck && !isValidCarrierUbn && this.value && hasChange"
       class="error__message"
-      >請輸入正確統編格式</span
+      >請輸入有效的統一編號（8 碼）</span
     >
 
     <span
       v-else-if="!$v.value.required && $v.value.$error && isNeedToCheck"
       class="error__message"
-      >欄位不得為空</span
+      >{{
+        validateField === 'carrierNumber' ? '欄位' : placeholder
+      }}不得為空</span
     >
   </div>
 </template>
@@ -78,6 +74,7 @@ export default {
       return this.validateOn
     },
     isValidCarrierUbn() {
+      if (this.validateField !== 'carrierUbn') return true
       const reg = /^\d{8}$/
       return reg.test(this.value)
     },
