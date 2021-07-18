@@ -9,6 +9,7 @@
         <SubscribeFormOrdererData
           ref="ordererDOM"
           type="訂購人"
+          :ordererData="ordererData"
           :setOrdererData="setOrdererData"
           :validateOn="validateOn"
           :setFormStatus="setFormStatus"
@@ -16,6 +17,7 @@
         <SubscribeFormOrdererData
           ref="receiverDOM"
           type="收件人"
+          :ordererData="ordererData"
           :setOrdererData="setOrdererData"
           :receiverDataIsSameAsOrderer="receiverDataIsSameAsOrderer"
           :setReceiverDataIsSameAsOrderer="setReceiverDataIsSameAsOrderer"
