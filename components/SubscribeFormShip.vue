@@ -10,7 +10,7 @@
       <UiSubscribeRadioInput
         v-model="shipPlanName"
         radioValue="一般配送"
-        radioName="限時專送 NT$ 0 / 期"
+        radioName="一般配送 NT$ 0 / 期"
       />
       <UiSubscribeRadioInput
         v-model="shipPlanName"
@@ -37,15 +37,15 @@ export default {
   },
   data() {
     return {
-      shipPlanName: '限時專送',
+      shipPlanName: '一般配送',
     }
   },
   watch: {
     shipPlanName(val) {
       switch (val) {
-        case '限時專送':
+        case '一般配送':
           this.setShipPlan({
-            name: '限時專送',
+            name: '一般配送',
             cost: 0,
           })
           break
@@ -59,7 +59,7 @@ export default {
 
         default:
           this.setShipPlan({
-            name: '限時專送',
+            name: '一般配送',
             cost: 0,
           })
           break
