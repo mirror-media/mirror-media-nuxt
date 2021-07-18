@@ -418,6 +418,9 @@ export default {
     &:disabled {
       background: #e3e3e3;
       border: 1px solid rgba(0, 0, 0, 0.2);
+      color: rgba(0, 0, 0, 0.2);
+      font-size: 18px;
+      line-height: 25px;
     }
 
     &::placeholder {
