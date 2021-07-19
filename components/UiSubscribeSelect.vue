@@ -2,7 +2,11 @@
   <div
     v-click-outside="hideOption"
     class="select"
-    :class="{ error: $v.value.$error && isNeedToCheck, isFocused }"
+    :class="{
+      error: $v.value.$error && isNeedToCheck,
+      isFocused,
+      shouldShowOptionField,
+    }"
   >
     <ul>
       <li
@@ -199,11 +203,14 @@ export default {
   ul {
     border: 1px solid rgba(0, 0, 0, 0.87);
     box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);
-    li {
-      &::after {
-        transform: rotate(315deg);
-        top: 40%;
-      }
+  }
+}
+
+.shouldShowOptionField {
+  li {
+    &::after {
+      transform: rotate(315deg);
+      top: 40%;
     }
   }
 }
