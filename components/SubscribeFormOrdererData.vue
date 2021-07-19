@@ -1,13 +1,19 @@
 <template>
   <div class="orderer-data">
     <h2 class="subscribe-form__title">{{ type }}</h2>
-
-    <div v-if="!isOrderer" class="orderer-data__check">
-      <input type="checkbox" :value="disable" @change="setDisable" /><span
-        >同訂購人資訊</span
-      >
-    </div>
-
+    <template v-if="!isOrderer">
+      <p class="orderer-data__detail">
+        雜誌每週三出刊，週五前可收到雜誌。欲更改收件地址，請於上班時間來電告知。
+      </p>
+      <div class="orderer-data__check">
+        <input
+          type="checkbox"
+          :value="disable"
+          @change="setDisable"
+          placeholder="我是範例"
+        /><span>同訂購人資訊</span>
+      </div>
+    </template>
     <div
       class="orderer-data__input_wrapper half"
       :class="{ error: $v.name.$error && isNeedToCheck }"
@@ -222,6 +228,13 @@ export default {
 
   @include media-breakpoint-up(md) {
     padding: 0;
+  }
+
+  &__detail {
+    margin-bottom: 16px;
+    font-size: 16px;
+    line-height: 150%;
+    color: rgba(0, 0, 0, 0.66);
   }
 
   &__check {

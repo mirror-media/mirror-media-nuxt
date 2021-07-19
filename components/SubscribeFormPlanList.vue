@@ -101,7 +101,7 @@ export default {
 
 <style lang="scss" scoped>
 .merchandise-list {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -125,7 +125,7 @@ export default {
   .form-row {
     display: flex;
     justify-content: space-between;
-
+    color: red;
     &__head_title {
       flex: 1;
 
@@ -134,14 +134,6 @@ export default {
         max-width: 278px;
       }
     }
-  }
-  &__form_head {
-    margin-bottom: 13px;
-  }
-
-  &__form_devider {
-    border: solid 1px #4a4a4a;
-    margin-bottom: 18px;
   }
 
   &__discount_code {
