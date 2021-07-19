@@ -8,6 +8,8 @@
 
     <p v-if="isNeedToCheck" class="receipt__error">以下尚未勾選</p>
 
+    {{ receiptFormStatus }}
+
     <div class="receipt__choose">
       <div class="receipt__choose_item">
         <UiSubscribeRadioInput
@@ -127,7 +129,7 @@ export default {
   data() {
     return {
       receiptData: {
-        receiptPlan: '捐贈',
+        receiptPlan: '',
         donateOrganization: '',
         carrierType: 'mail',
         carrierNumber: '',
