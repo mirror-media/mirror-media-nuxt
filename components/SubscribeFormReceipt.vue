@@ -6,6 +6,8 @@
       雜誌每週三出刊，週五前可收到雜誌。欲更改收件地址，請於上班時間來電告知。
     </p>
 
+    <p v-if="isNeedToCheck" class="receipt__error">以下尚未勾選</p>
+
     <div class="receipt__choose">
       <div class="receipt__choose_item">
         <UiSubscribeRadioInput
@@ -281,6 +283,13 @@ export default {
     @include media-breakpoint-up(sm) {
       margin-bottom: 23px;
     }
+  }
+
+  &__error {
+    font-size: 16px;
+    line-height: 150%;
+    color: #e51731;
+    margin-bottom: 8px;
   }
 
   &__choose {
