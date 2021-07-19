@@ -11,6 +11,7 @@
       @input="changeHandler"
       type="text"
       :placeholder="placeholder"
+      :disabled="disable"
     />
 
     <span
@@ -58,6 +59,10 @@ export default {
       type: Function,
       default: () => {},
     },
+    carrierType: {
+      type: String,
+      default: '請選擇',
+    },
   },
   data() {
     return {
@@ -77,6 +82,9 @@ export default {
       if (this.validateField !== 'carrierUbn') return true
       const reg = /^\d{8}$/
       return reg.test(this.value)
+    },
+    disable() {
+      return this.carrierType === '請選擇'
     },
   },
   methods: {

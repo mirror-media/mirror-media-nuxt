@@ -60,6 +60,7 @@
           <UiValidationInput
             ref="carrierNumberDOM"
             v-model="receiptData.carrierNumber"
+            :carrierType="receiptData.carrierType"
             :placeholder="carrierNumberPlaceHolder"
             validateField="carrierNumber"
             :validionOn="true"
@@ -134,7 +135,7 @@ export default {
       receiptData: {
         receiptPlan: '',
         donateOrganization: '',
-        carrierType: 'mail',
+        carrierType: '請選擇',
         carrierNumber: '',
         carrierTitle: '',
         carrierUbn: '',
@@ -156,7 +157,7 @@ export default {
     carrierNumberPlaceHolder() {
       let placeholder = ''
       switch (this.receiptData.carrierType) {
-        case 'mail':
+        case 'Email 載具':
           placeholder = 'example@gmail.com'
           break
 
@@ -177,8 +178,12 @@ export default {
     carrierTypeList() {
       return [
         {
-          name: 'email載具',
-          value: 'mail',
+          name: '請選擇',
+          value: '',
+        },
+        {
+          name: 'Email 載具',
+          value: 'Email 載具',
         },
         {
           name: '手機條碼',
