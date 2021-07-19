@@ -6,9 +6,12 @@
       雜誌每週三出刊，週五前可收到雜誌。欲更改收件地址，請於上班時間來電告知。
     </p>
 
-    <p v-if="isNeedToCheck" class="receipt__error">以下尚未勾選</p>
-
-    {{ receiptFormStatus }}
+    <p
+      v-if="isNeedToCheck && receiptFormStatus.receiptPlan === 'ERROR'"
+      class="receipt__error"
+    >
+      以下尚未勾選
+    </p>
 
     <div class="receipt__choose">
       <div class="receipt__choose_item">
@@ -257,6 +260,8 @@ export default {
         } else if (this.receiptData.receiptPlan === '三聯式發票') {
           this.$refs.carrierTitleDOM.check()
           this.$refs.carrierUbnDOM.check()
+        } else {
+          this.receiptFormStatus.receiptPlan = 'ERROR'
         }
       }
 
