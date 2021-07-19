@@ -61,7 +61,7 @@ export default {
     },
     carrierType: {
       type: String,
-      default: '請選擇',
+      default: '',
     },
   },
   data() {
