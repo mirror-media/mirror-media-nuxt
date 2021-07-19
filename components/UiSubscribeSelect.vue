@@ -1,5 +1,9 @@
 <template>
-  <div class="select" :class="{ error: $v.value.$error && isNeedToCheck }">
+  <div
+    v-click-outside="hideOption"
+    class="select"
+    :class="{ error: $v.value.$error && isNeedToCheck, isFocused }"
+  >
     <ul>
       <li
         :key="choosenOptionName"
@@ -82,6 +86,7 @@ export default {
       choosenOptionName: '請選擇',
       validationStatus: 'OK',
       shouldShowOptionField: false,
+      isFocused: false,
     }
   },
   computed: {
@@ -113,6 +118,11 @@ export default {
     },
     toggleOptionField() {
       this.shouldShowOptionField = !this.shouldShowOptionField
+      this.isFocused = !this.isFocused
+    },
+    hideOption() {
+      this.shouldShowOptionField = false
+      this.isFocused = false
     },
   },
 }
@@ -141,19 +151,12 @@ export default {
     color: rgba(0, 0, 0, 0.87);
     font-size: 18px;
     padding: 0 12px !important;
-    &:focus {
-      outline-style: none;
-      &::after {
-        transform: rotate(315deg);
-        top: 40%;
-      }
-    }
     &::after {
       content: '';
       display: block;
       position: absolute;
       right: 12px;
-      top: 33%;
+      top: 20%;
       width: 12px;
       height: 12px;
       border-color: #054f77;
@@ -173,10 +176,6 @@ export default {
     border-radius: 2px;
     font-size: 18px;
     padding: 12px 0;
-    &:focus {
-      border: 1px solid rgba(0, 0, 0, 0.87);
-      box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);
-    }
     & li {
       height: 100%;
       background: #fff;
@@ -191,6 +190,19 @@ export default {
           background-color: #054f77;
           color: #fff;
         }
+      }
+    }
+  }
+}
+
+.isFocused {
+  ul {
+    border: 1px solid rgba(0, 0, 0, 0.87);
+    box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);
+    li {
+      &::after {
+        transform: rotate(315deg);
+        top: 40%;
       }
     }
   }
