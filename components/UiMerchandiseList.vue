@@ -1,5 +1,5 @@
 <template>
-  <div class="merchandise-list-detail">
+  <div class="merchandise-list-detail" :class="{ pop_up: isPopUp }">
     <div class="merchandise-list-detail__form_head form-row">
       <div class="form-row__head_title">品名</div>
       <div class="form-row__head_title">數量</div>
@@ -13,7 +13,7 @@
       :key="perchased.id"
       class="merchandise-list-detail__form_content form-row"
     >
-      <div class="form-row__head_title" :class="{ pop_up: isPopUp }">
+      <div class="form-row__head_title detail">
         {{ perchased.detail }}
       </div>
       <div class="form-row__head_title form-row__head_title_count">
@@ -150,6 +150,10 @@ export default {
         max-width: 278px;
       }
 
+      &:nth-child(2) {
+        text-align: center;
+      }
+
       &_count {
         display: flex;
         justify-content: space-evenly;
@@ -159,6 +163,9 @@ export default {
   }
   &__form_content {
     align-items: center;
+    &:not:not(:first-child):not(:last-child) {
+      margin-bottom: 16px;
+    }
     @include media-breakpoint-up(sm) {
       font-size: 18px;
     }
@@ -174,10 +181,16 @@ export default {
 }
 
 .pop_up {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  .detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .form-row:not(:first-child):not(:last-child) {
+    margin-bottom: 21px;
+  }
 }
 </style>
