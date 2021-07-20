@@ -13,7 +13,9 @@
       :key="perchased.id"
       class="merchandise-list-detail__form_content form-row"
     >
-      <div class="form-row__head_title">{{ perchased.detail }}</div>
+      <div class="form-row__head_title" :class="{ pop_up: isPopUp }">
+        {{ perchased.detail }}
+      </div>
       <div class="form-row__head_title">
         {{ perchased.count }}
       </div>
@@ -50,6 +52,10 @@ export default {
       },
     },
     showAll: {
+      type: Boolean,
+      default: false,
+    },
+    isPopUp: {
       type: Boolean,
       default: false,
     },
@@ -112,5 +118,13 @@ export default {
     border: 1px solid #00000080;
     margin-bottom: 18px;
   }
+}
+
+.pop_up {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 </style>

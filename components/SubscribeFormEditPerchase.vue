@@ -10,8 +10,8 @@
           :perchasedPlan="waitToEdittedPerchasedPlan"
           :showAll="true"
           :class="{ error: bothCountZero || tooManyPlans }"
+          :isPopUp="true"
         />
-
         <div class="edit-perchase__dialog_controller">
           <UiSubscribeButton
             :title="`取消`"
