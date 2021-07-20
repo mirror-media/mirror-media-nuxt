@@ -92,7 +92,6 @@ export default {
       this.hasChange = true
       this.$v.value.$touch()
       this.$emit('input', e.target.value)
-      this.value = e.target.value
     },
     check() {
       if (this.isNeedToCheck) {

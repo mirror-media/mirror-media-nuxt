@@ -1,6 +1,6 @@
 <template>
   <div class="accept-permission">
-    <div v-if="isError" class="accept-permission__error">以下尚未勾選</div>
+    <div v-show="isError" class="accept-permission__error">以下尚未勾選</div>
     <div class="accept-permission__check" :class="{ error: isError }">
       <input
         type="checkbox"

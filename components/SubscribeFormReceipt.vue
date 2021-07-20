@@ -5,7 +5,7 @@
     <p class="receipt__detail">發票將於付款成功後 7 個工作天內寄達。</p>
 
     <p
-      v-if="isNeedToCheck && receiptFormStatus.receiptPlan === 'ERROR'"
+      v-show="isNeedToCheck && receiptFormStatus.receiptPlan === 'ERROR'"
       class="receipt__error"
     >
       以下尚未勾選
