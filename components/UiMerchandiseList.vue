@@ -9,15 +9,27 @@
     <div class="merchandise-list-detail__form_devider" />
 
     <div
-      v-for="perchased in filteredPerchasedPlan"
+      v-for="perchased in tempPerchasedPlan"
       :key="perchased.id"
       class="merchandise-list-detail__form_content form-row"
     >
       <div class="form-row__head_title" :class="{ pop_up: isPopUp }">
         {{ perchased.detail }}
       </div>
-      <div class="form-row__head_title">
+      <div class="form-row__head_title form-row__head_title_count">
+        <UiSubscribeCountButton
+          v-show="isPopUp"
+          type="decrease"
+          :isDisable="isDisable(perchased.id)"
+          @click.native="setCount('decrease', perchased.id)"
+        />
         {{ perchased.count }}
+        <UiSubscribeCountButton
+          v-show="isPopUp"
+          type="increase"
+          :isDisable="false"
+          @click.native="setCount('increase', perchased.id)"
+        />
       </div>
       <div class="form-row__head_title">NT${{ perchased.newPrice }}</div>
     </div>
@@ -25,7 +37,11 @@
 </template>
 
 <script>
+import UiSubscribeCountButton from '~/components/UiSubscribeCountButton.vue'
 export default {
+  components: {
+    UiSubscribeCountButton,
+  },
   props: {
     perchasedPlan: {
       type: Array,
@@ -61,7 +77,12 @@ export default {
     },
   },
   data() {
-    return {}
+    return {
+      tempPerchasedPlan: [],
+    }
+  },
+  created() {
+    this.tempPerchasedPlan = this.filteredPerchasedPlan
   },
   computed: {
     filteredPerchasedPlan() {
@@ -72,6 +93,31 @@ export default {
       else {
         return this.perchasedPlan
       }
+    },
+  },
+  methods: {
+    setCount(direction, id) {
+      this.tempPerchasedPlan.map((plan) => {
+        if (plan.id === id) {
+          if (direction === 'decrease') {
+            if (this.isDisable(plan.id)) return
+            return plan.count--
+          }
+          plan.count++
+        }
+      })
+    },
+    isDisable(id) {
+      let isDisable = false
+      let total = 0
+      this.tempPerchasedPlan.map((plan) => {
+        total += plan.count
+        if (plan.id === id) {
+          isDisable = plan.count <= 0
+        }
+      })
+      if (total <= 1) return true
+      return isDisable
     },
   },
 }
@@ -94,6 +140,7 @@ export default {
   .form-row {
     display: flex;
     justify-content: space-between;
+    gap: 12px;
 
     &__head_title {
       flex: 1;
@@ -101,6 +148,12 @@ export default {
       &:first-child {
         flex: 3;
         max-width: 278px;
+      }
+
+      &_count {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
       }
     }
   }
