@@ -106,7 +106,7 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
-import LibPhoneNumber from 'google-libphonenumber'
+import { isValidPhoneNumber } from 'libphonenumber-js'
 
 export default {
   props: {
@@ -187,14 +187,7 @@ export default {
       }
     },
     isValidPhone() {
-      const phoneUtil = LibPhoneNumber.PhoneNumberUtil.getInstance()
-      try {
-        return (
-          phoneUtil.getNumberType(phoneUtil.parse(this.cellphone, 'TW')) === 1
-        )
-      } catch (error) {
-        return false
-      }
+      return isValidPhoneNumber(this.cellphone, 'TW')
     },
   },
 
