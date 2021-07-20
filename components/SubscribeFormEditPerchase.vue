@@ -11,6 +11,7 @@
           :showAll="true"
           :class="{ error: bothCountZero || tooManyPlans }"
           :isPopUp="true"
+          :setCount="setCount"
         />
         <div class="edit-perchase__dialog_controller">
           <UiSubscribeButton
@@ -121,6 +122,17 @@ export default {
   methods: {
     toggleHandler() {
       this.isToggled = !this.isToggled
+    },
+    setCount(direction, id) {
+      this.waitToEdittedPerchasedPlan.map((plan) => {
+        if (plan.id === id) {
+          if (direction === 'decrease') {
+            if (this.isDisable(plan.id)) return
+            return plan.count--
+          }
+          plan.count++
+        }
+      })
     },
     cancelModification() {
       this.isToggled = !this.isToggled

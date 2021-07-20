@@ -9,7 +9,7 @@
     <div class="merchandise-list-detail__form_devider" />
 
     <div
-      v-for="perchased in tempPerchasedPlan"
+      v-for="perchased in filteredPerchasedPlan"
       :key="perchased.id"
       class="merchandise-list-detail__form_content form-row"
     >
@@ -75,14 +75,10 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  data() {
-    return {
-      tempPerchasedPlan: [],
-    }
-  },
-  created() {
-    this.tempPerchasedPlan = this.filteredPerchasedPlan
+    setCount: {
+      type: Function,
+      default: () => {},
+    },
   },
   computed: {
     filteredPerchasedPlan() {
@@ -93,31 +89,6 @@ export default {
       else {
         return this.perchasedPlan
       }
-    },
-  },
-  methods: {
-    setCount(direction, id) {
-      this.tempPerchasedPlan.map((plan) => {
-        if (plan.id === id) {
-          if (direction === 'decrease') {
-            if (this.isDisable(plan.id)) return
-            return plan.count--
-          }
-          plan.count++
-        }
-      })
-    },
-    isDisable(id) {
-      let isDisable = false
-      let total = 0
-      this.tempPerchasedPlan.map((plan) => {
-        total += plan.count
-        if (plan.id === id) {
-          isDisable = plan.count <= 0
-        }
-      })
-      if (total <= 1) return true
-      return isDisable
     },
   },
 }
