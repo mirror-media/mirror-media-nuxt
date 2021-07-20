@@ -15,12 +15,7 @@
     >
       <div class="form-row__head_title">{{ perchased.detail }}</div>
       <div class="form-row__head_title">
-        <input
-          v-model="perchased.count"
-          type="number"
-          :min="showAll ? 0 : 1"
-          max="9"
-        />
+        {{ perchased.count }}
       </div>
       <div class="form-row__head_title">NT${{ perchased.newPrice }}</div>
     </div>
