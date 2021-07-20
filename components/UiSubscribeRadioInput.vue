@@ -10,8 +10,9 @@
       <span class="radio">{{ radioName }} </span>
     </div>
     <ul v-if="radioValue === '限時掛號'" class="radio-input__total">
-      <li>一年期加收 NT$ 1,040</li>
-      <li>二年期加收 NT$ 2,080</li>
+      <li v-for="hint in hints" :key="hint.text">
+        {{ hint }}
+      </li>
     </ul>
   </div>
 </template>
@@ -23,6 +24,10 @@ export default {
       type: String,
       isRequired: true,
       default: '',
+    },
+    hints: {
+      type: Array,
+      default: () => [],
     },
     radioValue: {
       type: String,
