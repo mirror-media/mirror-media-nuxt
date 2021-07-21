@@ -1,5 +1,5 @@
 <template>
-  <div class="merchandise-list-detail">
+  <div class="merchandise-list-detail" :class="{ pop_up: isPopUp }">
     <div class="merchandise-list-detail__form_head form-row">
       <div class="form-row__head_title">品名</div>
       <div class="form-row__head_title">數量</div>
@@ -13,13 +13,22 @@
       :key="perchased.id"
       class="merchandise-list-detail__form_content form-row"
     >
-      <div class="form-row__head_title">{{ perchased.detail }}</div>
-      <div class="form-row__head_title">
-        <input
-          v-model="perchased.count"
-          type="number"
-          :min="showAll ? 0 : 1"
-          max="9"
+      <div class="form-row__head_title detail">
+        {{ perchased.detail }}
+      </div>
+      <div class="form-row__head_title form-row__head_title_count">
+        <UiSubscribeCountButton
+          v-show="isPopUp"
+          type="decrease"
+          :isDisable="isDisable(perchased.id)"
+          @click.native="setCount('decrease', perchased.id)"
+        />
+        {{ perchased.count }}
+        <UiSubscribeCountButton
+          v-show="isPopUp"
+          type="increase"
+          :isDisable="false"
+          @click.native="setCount('increase', perchased.id)"
         />
       </div>
       <div class="form-row__head_title">NT${{ perchased.newPrice }}</div>
@@ -28,7 +37,11 @@
 </template>
 
 <script>
+import UiSubscribeCountButton from '~/components/UiSubscribeCountButton.vue'
 export default {
+  components: {
+    UiSubscribeCountButton,
+  },
   props: {
     perchasedPlan: {
       type: Array,
@@ -58,9 +71,14 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  data() {
-    return {}
+    isPopUp: {
+      type: Boolean,
+      default: false,
+    },
+    setCount: {
+      type: Function,
+      default: () => {},
+    },
   },
   computed: {
     filteredPerchasedPlan() {
@@ -93,6 +111,7 @@ export default {
   .form-row {
     display: flex;
     justify-content: space-between;
+    gap: 12px;
 
     &__head_title {
       flex: 1;
@@ -101,10 +120,23 @@ export default {
         flex: 3;
         max-width: 278px;
       }
+
+      &:nth-child(2) {
+        text-align: center;
+      }
+
+      &_count {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+      }
     }
   }
   &__form_content {
     align-items: center;
+    &:not:not(:first-child):not(:last-child) {
+      margin-bottom: 16px;
+    }
     @include media-breakpoint-up(sm) {
       font-size: 18px;
     }
@@ -116,6 +148,20 @@ export default {
   &__form_devider {
     border: 1px solid #00000080;
     margin-bottom: 18px;
+  }
+}
+
+.pop_up {
+  .detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .form-row:not(:first-child):not(:last-child) {
+    margin-bottom: 21px;
   }
 }
 </style>
