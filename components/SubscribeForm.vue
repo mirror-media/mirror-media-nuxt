@@ -5,6 +5,7 @@
         <SubscribeFormPlanList
           :perchasedPlan="perchasedPlan"
           :discount="discount"
+          :setHasCode="setHasCode"
         />
         <SubscribeFormOrdererData
           ref="ordererDOM"
@@ -106,7 +107,7 @@ export default {
       ],
       discount: {
         hasCode: false,
-        code: 'MR000',
+        code: '',
       },
       ordererData: {
         name: '',
@@ -194,6 +195,9 @@ export default {
     },
     setFormStatus(type, formStatus) {
       this.formStatus[type] = formStatus
+    },
+    setHasCode(newSataus) {
+      this.discount.hasCode = newSataus
     },
     generateCarrierInt(carrierType) {
       if (this.receiptData.donateOrganization) {
@@ -402,7 +406,6 @@ export default {
     padding: 12px;
     border-radius: 2px;
     background: #ffffff;
-    font-size: 15px;
     border: 1px solid rgba(0, 0, 0, 0.3);
     font-size: 18px;
     line-height: 25px;
