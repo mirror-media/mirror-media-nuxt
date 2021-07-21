@@ -5,7 +5,7 @@
       <SubscribeFormEditPerchase :perchasedPlan="perchasedPlan" />
     </div>
 
-    <UiMerchandiseList :perchasedPlan="perchasedPlan" />
+    <UiMerchandiseList :perchasedPlan="perchasedPlan" :isPopUp="false" />
 
     <div class="merchandise-list__discount_code">
       <div class="merchandise-list__discount_code_row">
