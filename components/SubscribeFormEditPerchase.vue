@@ -123,14 +123,10 @@ export default {
     toggleHandler() {
       this.isToggled = !this.isToggled
     },
-    setCount(direction, id) {
+    setCount(id, newCount) {
       this.waitToEdittedPerchasedPlan.map((plan) => {
         if (plan.id === id) {
-          if (direction === 'decrease') {
-            if (this.isDisable(plan.id)) return
-            return plan.count--
-          }
-          plan.count++
+          plan.count = newCount
         }
       })
     },
