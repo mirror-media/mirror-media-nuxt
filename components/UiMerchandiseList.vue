@@ -21,14 +21,14 @@
           v-show="isPopUp"
           type="decrease"
           :isDisable="isDisable(perchased.id)"
-          @click.native="setCount('decrease', perchased.id)"
+          @click.native="handleSetCount('decrease', perchased.id)"
         />
         {{ perchased.count }}
         <UiSubscribeCountButton
           v-show="isPopUp"
           type="increase"
           :isDisable="false"
-          @click.native="setCount('increase', perchased.id)"
+          @click.native="handleSetCount('increase', perchased.id)"
         />
       </div>
       <div class="form-row__head_title">NT${{ perchased.newPrice }}</div>
@@ -89,6 +89,31 @@ export default {
       else {
         return this.perchasedPlan
       }
+    },
+  },
+  methods: {
+    isDisable(id) {
+      let total = 0
+      let isDisable = false
+      this.perchasedPlan.map((plan) => {
+        total += plan.count
+        if (plan.id === id && plan.count <= 0) {
+          isDisable = true
+        }
+      })
+      if (total <= 1) return true
+      return isDisable
+    },
+    handleSetCount(direction, id) {
+      this.perchasedPlan.map((plan) => {
+        if (plan.id === id) {
+          if (direction === 'decrease') {
+            if (this.isDisable(plan.id)) return
+            return this.setCount(id, plan.count - 1)
+          }
+          this.setCount(id, plan.count + 1)
+        }
+      })
     },
   },
 }
