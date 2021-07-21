@@ -121,6 +121,10 @@ export default {
       isRequired: true,
       default: '訂購人',
     },
+    ordererData: {
+      type: Object,
+      default: () => {},
+    },
     setOrdererData: {
       type: Function,
       default: () => {},
@@ -201,12 +205,21 @@ export default {
     setDisable(e) {
       e.preventDefault()
       this.setReceiverDataIsSameAsOrderer(!this.receiverDataIsSameAsOrderer)
-      this.name = ''
-      this.cellphone = ''
-      this.phone = ''
-      this.phoneExt = ''
-      this.address = ''
-      this.email = ''
+      if (this.receiverDataIsSameAsOrderer) return
+      const {
+        name,
+        cellphone,
+        phone,
+        phoneExt,
+        address,
+        email,
+      } = this.ordererData
+      this.name = name
+      this.cellphone = cellphone
+      this.phone = phone
+      this.phoneExt = phoneExt
+      this.address = address
+      this.email = email
     },
     check() {
       if (this.isNeedToCheck) {
@@ -233,10 +246,57 @@ export default {
       }
     },
   },
-
   watch: {
-    cellphone() {
-      this.shouldShowPhoneError = true
+    ordererData: {
+      deep: true,
+      handler() {
+        if (this.receiverDataIsSameAsOrderer) {
+          const {
+            name,
+            cellphone,
+            phone,
+            phoneExt,
+            address,
+            email,
+          } = this.ordererData
+          this.name = name
+          this.cellphone = cellphone
+          this.phone = phone
+          this.phoneExt = phoneExt
+          this.address = address
+          this.email = email
+        }
+      },
+    },
+    name(val) {
+      if (this.getFormType === 'orderer') {
+        this.setOrdererData({ ...this.ordererData, name: val })
+      }
+    },
+    cellphone(val) {
+      if (this.getFormType === 'orderer') {
+        this.setOrdererData({ ...this.ordererData, cellphone: val })
+      }
+    },
+    phone(val) {
+      if (this.getFormType === 'orderer') {
+        this.setOrdererData({ ...this.ordererData, phone: val })
+      }
+    },
+    phoneExt(val) {
+      if (this.getFormType === 'orderer') {
+        this.setOrdererData({ ...this.ordererData, phoneExt: val })
+      }
+    },
+    address(val) {
+      if (this.getFormType === 'orderer') {
+        this.setOrdererData({ ...this.ordererData, address: val })
+      }
+    },
+    email(val) {
+      if (this.getFormType === 'orderer') {
+        this.setOrdererData({ ...this.ordererData, email: val })
+      }
     },
   },
 }
