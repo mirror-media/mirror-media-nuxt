@@ -23,14 +23,19 @@
       <span
         v-if="!$v.name.required && $v.name.$error && isNeedToCheck"
         class="error__message"
-        >欄位不得為空</span
+        >{{ type }}姓名不可空白</span
       >
     </div>
 
     <div class="phone">
       <div
         class="orderer-data__input_wrapper phone__cellphone"
-        :class="{ error: $v.cellphone.$error && isNeedToCheck }"
+        :class="{
+          error:
+            ($v.cellphone.$error || !isValidPhone) &&
+            isNeedToCheck &&
+            shouldShowPhoneError,
+        }"
       >
         <span>手機</span>
         <input
@@ -41,7 +46,12 @@
         <span
           v-if="!$v.cellphone.required && $v.cellphone.$error && isNeedToCheck"
           class="error__message"
-          >欄位不得為空</span
+          >{{ type }}聯絡電話不可空白</span
+        >
+        <span
+          v-else-if="!isValidPhone && isNeedToCheck && shouldShowPhoneError"
+          class="error__message"
+          >請輸入有效的聯絡電話</span
         >
       </div>
 
@@ -75,7 +85,7 @@
       <span
         v-if="!$v.address.required && $v.address.$error && isNeedToCheck"
         class="error__message"
-        >欄位不得為空</span
+        >{{ type }}通訊地址不可空白</span
       >
     </div>
 
@@ -89,12 +99,12 @@
       <span
         v-if="!$v.email.email && $v.email.$error && isNeedToCheck"
         class="error__message"
-        >電子信箱格式錯誤</span
+        >請輸入有效的 Email 地址</span
       >
       <span
         v-if="!$v.email.required && $v.email.$error && isNeedToCheck"
         class="error__message"
-        >欄位不得為空</span
+        >{{ type }}電子郵件不得為空</span
       >
     </div>
   </div>
@@ -102,6 +112,7 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
+import { isValidPhoneNumber } from 'libphonenumber-js'
 
 export default {
   props: {
@@ -142,6 +153,7 @@ export default {
       phoneExt: '',
       address: '',
       email: '',
+      shouldShowPhoneError: false,
     }
   },
   validations: {
@@ -180,6 +192,9 @@ export default {
           return 'orderer'
       }
     },
+    isValidPhone() {
+      return isValidPhoneNumber(this.cellphone, 'TW')
+    },
   },
 
   methods: {
@@ -216,6 +231,12 @@ export default {
         address: this.address,
         email: this.email,
       }
+    },
+  },
+
+  watch: {
+    cellphone() {
+      this.shouldShowPhoneError = true
     },
   },
 }
