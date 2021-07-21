@@ -178,14 +178,23 @@ export default {
           currentValue.newPrice * currentValue.count
         )
       }
-
       return this.perchasedPlan.reduce(reducer)
     },
+    discountPrice() {
+      return this.discount.hasCode ? 80 : 0
+    },
     shipping() {
-      return this.shipPlan?.cost || 0
+      let year, count
+      this.perchasedPlan.map((plan) => {
+        if (plan.count !== 0) {
+          count = plan.count
+          year = plan.title === '二年方案' ? 2 : 1
+        }
+      })
+      return this.shipPlan?.cost * year * 52 * count || 0
     },
     total() {
-      return this.price + this.shipping
+      return this.price + this.shipping - this.discountPrice
     },
     discountList() {
       let title

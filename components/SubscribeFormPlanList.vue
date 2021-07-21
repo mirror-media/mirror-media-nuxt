@@ -149,6 +149,11 @@ export default {
       this.discount.code = e.target.value.replace(/[^\d]/g, '')
     },
   },
+  watch: {
+    shouldShowDiscountCode(val) {
+      if (!val) this.setHasCode(false)
+    },
+  },
 }
 </script>
 
