@@ -1,5 +1,6 @@
 <template>
   <div class="accept-permission">
+    <div v-show="isError" class="accept-permission__error">以下尚未勾選</div>
     <div class="accept-permission__check" :class="{ error: isError }">
       <input
         type="checkbox"
@@ -61,6 +62,12 @@ export default {
 .accept-permission {
   position: relative;
 
+  &__error {
+    color: #e51731;
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+
   &__check {
     display: flex;
     align-items: center;
@@ -73,6 +80,9 @@ export default {
     &.error {
       input {
         outline: solid 2px rgba(232, 24, 49, 0.5);
+      }
+      span {
+        color: #e51731;
       }
     }
   }

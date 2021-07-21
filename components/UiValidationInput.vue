@@ -1,19 +1,31 @@
 <template>
   <div
     class="validion-input"
-    :class="{ error: $v.value.$error && isNeedToCheck }"
+    :class="{
+      error:
+        ($v.value.$error || !isValidCarrierUbn) && hasChange && isNeedToCheck,
+    }"
   >
     <input
       :value="$v.value.$model"
       @input="changeHandler"
       type="text"
       :placeholder="placeholder"
+      :disabled="disable"
     />
 
     <span
-      v-if="!$v.value.required && $v.value.$error && isNeedToCheck"
+      v-if="isNeedToCheck && !isValidCarrierUbn && this.value && hasChange"
       class="error__message"
-      >欄位不得為空</span
+      >請輸入有效的統一編號（8 碼）</span
+    >
+
+    <span
+      v-else-if="!$v.value.required && $v.value.$error && isNeedToCheck"
+      class="error__message"
+      >{{
+        validateField === 'carrierNumber' ? '欄位' : placeholder
+      }}不得為空</span
     >
   </div>
 </template>
@@ -47,6 +59,15 @@ export default {
       type: Function,
       default: () => {},
     },
+    carrierType: {
+      type: String,
+      default: '',
+    },
+  },
+  data() {
+    return {
+      hasChange: false,
+    }
   },
   validations: {
     value: {
@@ -57,9 +78,18 @@ export default {
     isNeedToCheck() {
       return this.validateOn
     },
+    isValidCarrierUbn() {
+      if (this.validateField !== 'carrierUbn') return true
+      const reg = /^\d{8}$/
+      return reg.test(this.value)
+    },
+    disable() {
+      return this.carrierType === '請選擇'
+    },
   },
   methods: {
     changeHandler(e) {
+      this.hasChange = true
       this.$v.value.$touch()
       this.$emit('input', e.target.value)
     },
