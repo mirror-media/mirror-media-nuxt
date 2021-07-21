@@ -10,12 +10,16 @@
       <UiSubscribeRadioInput
         v-model="shipPlanName"
         radioValue="一般配送"
-        radioName="限時專送 NT$ 0 / 期"
+        radioName="一般配送 NT$ 0 / 期"
       />
       <UiSubscribeRadioInput
         v-model="shipPlanName"
         radioValue="限時掛號"
-        radioName="限時掛號 NT$ 20 / 期"
+        :radioName="`限時掛號 NT$ ${registeredCost} / 期`"
+        :hints="[
+          `一年期加收 NT$ ${numberWithComma(registeredCost * 52)}`,
+          `二年期加收 NT$ ${numberWithComma(registeredCost * 52 * 2)}`,
+        ]"
       />
     </div>
   </div>
@@ -37,15 +41,21 @@ export default {
   },
   data() {
     return {
-      shipPlanName: '限時專送',
+      shipPlanName: '一般配送',
+      registeredCost: 20,
     }
+  },
+  methods: {
+    numberWithComma(number) {
+      return number.toLocaleString()
+    },
   },
   watch: {
     shipPlanName(val) {
       switch (val) {
-        case '限時專送':
+        case '一般配送':
           this.setShipPlan({
-            name: '限時專送',
+            name: '一般配送',
             cost: 0,
           })
           break
@@ -53,13 +63,13 @@ export default {
         case '限時掛號':
           this.setShipPlan({
             name: '限時掛號',
-            cost: 20,
+            cost: this.registeredCost,
           })
           break
 
         default:
           this.setShipPlan({
-            name: '限時專送',
+            name: '一般配送',
             cost: 0,
           })
           break
