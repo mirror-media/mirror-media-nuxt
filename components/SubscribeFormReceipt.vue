@@ -4,6 +4,13 @@
 
     <p class="receipt__detail">發票將於付款成功後 7 個工作天內寄達。</p>
 
+    <p
+      v-show="isNeedToCheck && receiptFormStatus.receiptPlan === 'ERROR'"
+      class="receipt__error"
+    >
+      以下尚未勾選
+    </p>
+
     <div class="receipt__choose">
       <div class="receipt__choose_item">
         <UiSubscribeRadioInput
@@ -45,11 +52,13 @@
             validateField="carrierType"
             :validionOn="true"
             :setReciptFormStatus="setReciptFormStatus"
+            @handleChangeCarrierType="handleChangeCarrierType"
           />
 
           <UiValidationInput
             ref="carrierNumberDOM"
             v-model="receiptData.carrierNumber"
+            :carrierType="receiptData.carrierType"
             :placeholder="carrierNumberPlaceHolder"
             validateField="carrierNumber"
             :validionOn="true"
@@ -73,7 +82,7 @@
             ref="carrierTitleDOM"
             v-model="receiptData.carrierTitle"
             placeholder="抬頭"
-            validateField="arrierTitle"
+            validateField="carrierTitle"
             :validionOn="true"
             :setReciptFormStatus="setReciptFormStatus"
           />
@@ -122,9 +131,9 @@ export default {
   data() {
     return {
       receiptData: {
-        receiptPlan: '捐贈',
+        receiptPlan: '',
         donateOrganization: '',
-        carrierType: 'mail',
+        carrierType: '請選擇',
         carrierNumber: '',
         carrierTitle: '',
         carrierUbn: '',
@@ -146,7 +155,7 @@ export default {
     carrierNumberPlaceHolder() {
       let placeholder = ''
       switch (this.receiptData.carrierType) {
-        case 'mail':
+        case 'Email 載具':
           placeholder = 'example@gmail.com'
           break
 
@@ -167,8 +176,12 @@ export default {
     carrierTypeList() {
       return [
         {
-          name: 'email載具',
-          value: 'mail',
+          name: '請選擇',
+          value: '',
+        },
+        {
+          name: 'Email 載具',
+          value: 'Email 載具',
         },
         {
           name: '手機條碼',
@@ -250,10 +263,15 @@ export default {
         } else if (this.receiptData.receiptPlan === '三聯式發票') {
           this.$refs.carrierTitleDOM.check()
           this.$refs.carrierUbnDOM.check()
+        } else {
+          this.receiptFormStatus.receiptPlan = 'ERROR'
         }
       }
 
       this.setFormStatus('receipt', this.validationPass())
+    },
+    handleChangeCarrierType() {
+      this.receiptData.carrierNumber = ''
     },
   },
 }
@@ -275,6 +293,13 @@ export default {
     @include media-breakpoint-up(sm) {
       margin-bottom: 23px;
     }
+  }
+
+  &__error {
+    font-size: 16px;
+    line-height: 150%;
+    color: #e51731;
+    margin-bottom: 8px;
   }
 
   &__choose {

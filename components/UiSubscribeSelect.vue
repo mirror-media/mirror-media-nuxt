@@ -1,14 +1,33 @@
 <template>
-  <div class="select" :class="{ error: $v.value.$error && isNeedToCheck }">
-    <select :value="$v.value.$model" @input="changeHandler">
-      <option
-        v-for="option in optionList"
-        :key="option.value"
-        :value="option.value"
+  <div
+    v-click-outside="hideOption"
+    class="select"
+    :class="{
+      error: $v.value.$error && isNeedToCheck,
+      isFocused,
+      shouldShowOptionField,
+    }"
+  >
+    <ul>
+      <li
+        :key="choosenOptionName"
+        class="select__choosen"
+        @click="toggleOptionField"
       >
-        {{ option.name }}
-      </option>
-    </select>
+        {{ choosenOptionName }}
+      </li>
+      <section v-show="shouldShowOptionField">
+        <div class="select__devider" />
+        <li
+          v-for="option in optionList.slice(1)"
+          :key="option.value"
+          :value="option.value"
+          @click="changeHandler(option)"
+        >
+          {{ option.name }}
+        </li>
+      </section>
+    </ul>
     <span
       v-if="!$v.value.required && $v.value.$error && isNeedToCheck"
       class="error__message"
@@ -21,7 +40,6 @@
 import { required } from 'vuelidate/lib/validators'
 export default {
   props: {
-    //
     value: {
       type: String,
       isRequired: true,
@@ -69,7 +87,10 @@ export default {
   },
   data() {
     return {
+      choosenOptionName: '請選擇',
       validationStatus: 'OK',
+      shouldShowOptionField: false,
+      isFocused: false,
     }
   },
   computed: {
@@ -78,9 +99,12 @@ export default {
     },
   },
   methods: {
-    changeHandler(e) {
+    changeHandler(option) {
       this.$v.value.$touch()
-      this.$emit('input', e.target.value)
+      this.$emit('input', option.value)
+      this.choosenOptionName = option.name
+      this.shouldShowOptionField = false
+      this.$emit('handleChangeCarrierType')
     },
     check() {
       if (this.isNeedToCheck) {
@@ -96,6 +120,14 @@ export default {
 
       this.setReciptFormStatus(this.validateField, this.validationStatus)
     },
+    toggleOptionField() {
+      this.shouldShowOptionField = !this.shouldShowOptionField
+      this.isFocused = !this.isFocused
+    },
+    hideOption() {
+      this.shouldShowOptionField = false
+      this.isFocused = false
+    },
   },
 }
 </script>
@@ -103,17 +135,82 @@ export default {
 <style lang="scss" scoped>
 .select {
   position: relative;
-  select {
-    height: 48px;
+  height: 48px;
+
+  &__devider {
+    height: 12px;
+    width: calc(100% - 24px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    margin: 0 12px 4px 12px;
+  }
+
+  &__choosen {
+    cursor: pointer;
+    user-select: none;
+    display: block;
     width: 100%;
-    padding: 12px;
+    text-align: left;
+    position: relative;
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 18px;
+    padding: 0 12px !important;
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      right: 12px;
+      top: 20%;
+      width: 12px;
+      height: 12px;
+      border-color: #054f77;
+      border-style: solid;
+      border-width: 1px 1px 0 0;
+      transform: rotate(135deg);
+    }
+  }
+
+  ul {
+    z-index: 2;
+    color: #1b1b1b;
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 2px;
-    background: #ffffff;
-    font-size: 15px;
+    font-size: 18px;
+    padding: 12px 0;
+    & li {
+      height: 100%;
+      background: #fff;
+      padding: 8px 12px;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      &:not(:first-child) {
+        &:hover {
+          background-color: #054f77;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
 
-    &:focus {
-      outline: none;
+.isFocused {
+  ul {
+    border: 1px solid rgba(0, 0, 0, 0.87);
+    box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.shouldShowOptionField {
+  li {
+    &::after {
+      transform: rotate(315deg);
+      top: 40%;
     }
   }
 }
