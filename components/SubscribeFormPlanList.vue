@@ -195,7 +195,7 @@ export default {
     position: relative;
     display: flex;
     align-items: center;
-    padding: 12px 0 61px;
+    padding: 12px 0 0px;
     @include media-breakpoint-up(md) {
       flex-direction: column;
       align-items: flex-start;

@@ -377,6 +377,11 @@ export default {
       max-width: 550px;
     }
 
+    &:first-child {
+      margin-bottom: 60px;
+      color: red;
+    }
+
     & > div {
       margin-bottom: 42px;
     }
