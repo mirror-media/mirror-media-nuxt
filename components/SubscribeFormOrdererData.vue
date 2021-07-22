@@ -21,7 +21,7 @@
       <span>姓名</span>
       <input v-model.trim="$v.name.$model" type="text" :disabled="disable" />
       <span
-        v-if="!$v.name.required && $v.name.$error && isNeedToCheck"
+        v-show="!$v.name.required && $v.name.$error && isNeedToCheck"
         class="error__message"
         >{{ type }}姓名不可空白</span
       >
@@ -42,6 +42,7 @@
           v-model.trim="$v.cellphone.$model"
           :disabled="disable"
           type="text"
+          @input="handleInputCellphone"
         />
         <span
           v-if="!$v.cellphone.required && $v.cellphone.$error && isNeedToCheck"
@@ -83,7 +84,7 @@
       <span>通訊地址</span>
       <input v-model.trim="$v.address.$model" :disabled="disable" type="text" />
       <span
-        v-if="!$v.address.required && $v.address.$error && isNeedToCheck"
+        v-show="!$v.address.required && $v.address.$error && isNeedToCheck"
         class="error__message"
         >{{ type }}通訊地址不可空白</span
       >
@@ -97,12 +98,12 @@
       <span>電子信箱</span>
       <input v-model.trim="$v.email.$model" :disabled="disable" type="text" />
       <span
-        v-if="!$v.email.email && $v.email.$error && isNeedToCheck"
+        v-show="!$v.email.email && $v.email.$error && isNeedToCheck"
         class="error__message"
         >請輸入有效的 Email 地址</span
       >
       <span
-        v-if="!$v.email.required && $v.email.$error && isNeedToCheck"
+        v-show="!$v.email.required && $v.email.$error && isNeedToCheck"
         class="error__message"
         >{{ type }}電子郵件不得為空</span
       >
@@ -197,6 +198,7 @@ export default {
       }
     },
     isValidPhone() {
+      console.log(isValidPhoneNumber(this.cellphone, 'TW'))
       return isValidPhoneNumber(this.cellphone, 'TW')
     },
   },
@@ -244,6 +246,9 @@ export default {
         address: this.address,
         email: this.email,
       }
+    },
+    handleInputCellphone() {
+      this.shouldShowPhoneError = true
     },
   },
   watch: {
