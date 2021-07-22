@@ -45,7 +45,7 @@
           class="merchandise-list__discount_code_row"
         >
           <div class="merchandise-list__discount_code_prompt">
-            <p>折扣80元、加購1期</p>
+            <p>折扣 80 元、贈送 1 期</p>
           </div>
         </div>
 
