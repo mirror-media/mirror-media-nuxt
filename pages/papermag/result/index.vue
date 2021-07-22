@@ -25,12 +25,13 @@ import SubscribeSuccess from '~/components/SubscribeSuccess.vue'
 export default {
   middleware({ store, redirect }) {
     const resultStatus = store.getters['subscribe/getResultStatus']
+    console.log(resultStatus)
     if (
       resultStatus !== 'success' &&
       resultStatus !== 'order-fail' &&
       resultStatus !== 'payment-fail'
     ) {
-      redirect('/subscribe')
+      redirect('/papermag')
     }
   },
   components: {
