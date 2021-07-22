@@ -5,6 +5,7 @@
         <SubscribeFormPlanList
           :perchasedPlan="perchasedPlan"
           :discount="discount"
+          :setHasCode="setHasCode"
         />
         <SubscribeFormOrdererData
           ref="ordererDOM"
@@ -45,6 +46,12 @@
           :price="price"
           :shipping="shipping"
           :total="total"
+          :hasCode="discount.hasCode"
+        />
+        <SubscribeDiscount
+          v-for="discount in discountList"
+          :key="discount.title"
+          :discount="discount"
         />
       </div>
     </div>
@@ -52,6 +59,7 @@
 </template>
 
 <script>
+import SubscribeDiscount from '~/components/SubscribeDiscount.vue'
 import SubscribeFormPlanList from '~/components/SubscribeFormPlanList.vue'
 import SubscribeFormPerchaseInfo from '~/components/SubscribeFormPerchaseInfo.vue'
 import SubscribeFormOrdererData from '~/components/SubscribeFormOrdererData.vue'
@@ -61,6 +69,7 @@ import SubscribeFormAcceptPermission from '~/components/SubscribeFormAcceptPermi
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 export default {
   components: {
+    SubscribeDiscount,
     SubscribeFormPlanList,
     SubscribeFormPerchaseInfo,
     SubscribeFormOrdererData,
@@ -92,8 +101,7 @@ export default {
           title: '一年方案',
           detail: '訂購紙本鏡週刊 52 期，加贈 5 期',
           originalPrice: 3990,
-          newPrice: 2,
-          // newPrice: 2880,
+          newPrice: 2800,
           count: this.currentChoosedPlanId === 0 ? 1 : 0,
         },
         {
@@ -101,14 +109,13 @@ export default {
           title: '二年方案',
           detail: '訂購紙本鏡週刊 104 期，加贈 10 期',
           originalPrice: 7800,
-          newPrice: 3,
-          // newPrice: 5280,
+          newPrice: 5200,
           count: this.currentChoosedPlanId === 1 ? 1 : 0,
         },
       ],
       discount: {
         hasCode: false,
-        code: 'MR000',
+        code: '',
       },
       ordererData: {
         name: '',
@@ -171,14 +178,39 @@ export default {
           currentValue.newPrice * currentValue.count
         )
       }
-
       return this.perchasedPlan.reduce(reducer)
     },
+    discountPrice() {
+      return this.discount.hasCode ? 80 : 0
+    },
     shipping() {
-      return this.shipPlan?.cost || 0
+      let year, count
+      this.perchasedPlan.map((plan) => {
+        if (plan.count !== 0) {
+          count = plan.count
+          year = plan.title === '二年方案' ? 2 : 1
+        }
+      })
+      return this.shipPlan?.cost * year * 52 * count || 0
     },
     total() {
-      return this.price + this.shipping
+      return this.price + this.shipping - this.discountPrice
+    },
+    discountList() {
+      let title
+      this.perchasedPlan.map((plan) => {
+        if (plan.count !== 0) {
+          title = plan.title
+        }
+      })
+      const year = title === '二年方案' ? 2 : 1
+      const discountList = [
+        { title: `符合${title}優惠`, content: `贈送 ${year * 5} 期` },
+      ]
+      if (this.discount.hasCode) {
+        discountList.push({ title: '符合續訂優惠', content: `贈送 ${year} 期` })
+      }
+      return discountList
     },
   },
   methods: {
@@ -196,6 +228,9 @@ export default {
     },
     setFormStatus(type, formStatus) {
       this.formStatus[type] = formStatus
+    },
+    setHasCode(newSataus) {
+      this.discount.hasCode = newSataus
     },
     generateCarrierInt(carrierType) {
       if (this.receiptData.donateOrganization) {
@@ -342,6 +377,11 @@ export default {
       max-width: 550px;
     }
 
+    &:first-child {
+      margin-bottom: 60px;
+      color: red;
+    }
+
     & > div {
       margin-bottom: 42px;
     }
@@ -404,7 +444,6 @@ export default {
     padding: 12px;
     border-radius: 2px;
     background: #ffffff;
-    font-size: 15px;
     border: 1px solid rgba(0, 0, 0, 0.3);
     font-size: 18px;
     line-height: 25px;

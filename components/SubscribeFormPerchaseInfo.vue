@@ -10,6 +10,11 @@
       <span>NT$ {{ shipping }}</span>
     </div>
 
+    <div v-show="hasCode" class="perchase-info__row discount">
+      <span>續訂戶折扣</span>
+      <span>-NT$ 80</span>
+    </div>
+
     <div class="perchase-info__devider" />
 
     <div class="perchase-info__row">
@@ -38,6 +43,10 @@ export default {
       isRequired: true,
       default: 0,
     },
+    hasCode: {
+      type: Boolean,
+      default: false,
+    },
   },
 }
 </script>
@@ -56,6 +65,10 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-bottom: 14px;
+
+    &.discount span {
+      color: #054f77;
+    }
 
     &:last-child {
       margin-bottom: 0;

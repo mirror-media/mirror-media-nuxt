@@ -31,7 +31,7 @@
           @click.native="handleSetCount('increase', perchased.id)"
         />
       </div>
-      <div class="form-row__head_title">NT${{ perchased.newPrice }}</div>
+      <div class="form-row__head_title">NT$ {{ perchased.newPrice }}</div>
     </div>
   </div>
 </template>
