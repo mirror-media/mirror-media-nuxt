@@ -1,7 +1,7 @@
 <template>
   <div
     class="subcribe-button"
-    :class="{ 'subscribe-button__light': isColorLight }"
+    :class="{ 'subscribe-button__light': isColorLight, disabled: isDisabled }"
   >
     {{ title }}
     <p class="subcribe-button__hint">{{ hint }}</p>
@@ -21,6 +21,10 @@ export default {
       default: '',
     },
     isColorLight: {
+      type: Boolean,
+      default: false,
+    },
+    isDisabled: {
       type: Boolean,
       default: false,
     },
@@ -66,6 +70,12 @@ export default {
     &:active {
       background: rgb(155, 155, 155);
     }
+  }
+
+  &.disabled {
+    background: #e3e3e3;
+    color: rgba(0, 0, 0, 0.2);
+    cursor: not-allowed;
   }
 
   &__hint {

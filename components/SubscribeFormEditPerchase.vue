@@ -13,6 +13,7 @@
           :isPopUp="true"
           :setCount="setCount"
         />
+
         <div class="edit-perchase__dialog_controller">
           <UiSubscribeButton
             :title="`取消`"
@@ -21,6 +22,7 @@
           />
           <UiSubscribeButton
             :title="`確認修改`"
+            :isDisabled="isButtonDisabled"
             @click.native="acceptModification"
           />
         </div>
@@ -143,6 +145,12 @@ export default {
         })
         this.isToggled = !this.isToggled
       }
+    },
+  },
+
+  computed: {
+    isButtonDisabled() {
+      return this.bothCountZero || this.tooManyPlans
     },
   },
 }
