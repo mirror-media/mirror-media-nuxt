@@ -63,6 +63,8 @@ export default {
       if (this.simOrderStatus === 'success') {
         this.$store.dispatch('subscribe/updateOrderInfo', {
           pur_name: 'test name',
+          discount: 80,
+          discount_code: 12345,
         })
       }
       this.$store.dispatch('subscribe/updateResultStatus', this.simOrderStatus)

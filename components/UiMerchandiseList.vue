@@ -31,7 +31,7 @@
           @click.native="handleSetCount('increase', perchased.id)"
         />
       </div>
-      <div class="form-row__head_title">NT${{ perchased.newPrice }}</div>
+      <div class="form-row__head_title">NT$ {{ perchased.newPrice }}</div>
     </div>
   </div>
 </template>
@@ -53,7 +53,7 @@ export default {
             title: '一年方案',
             detail: '一年鏡週刊52期，加購5期方案',
             originalPrice: 3990,
-            newPrice: 2880,
+            newPrice: 2800,
             count: 0,
           },
           {
@@ -61,7 +61,7 @@ export default {
             title: '二年方案',
             detail: '二年鏡週刊104期，加購10期方案',
             originalPrice: 7800,
-            newPrice: 5280,
+            newPrice: 5200,
             count: 0,
           },
         ]

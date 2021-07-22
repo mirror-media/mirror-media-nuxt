@@ -28,7 +28,7 @@ export default {
     // block access direct from url
     const isReadyToPay = store.getters['subscribe/isReadyToPay']
     if (!isReadyToPay) {
-      redirect('/subscribe')
+      redirect('/papermag')
     }
   },
   computed: {

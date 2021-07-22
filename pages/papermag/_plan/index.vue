@@ -42,7 +42,7 @@ export default {
       route.params.plan !== '1' &&
       route.params.plan !== '2'
     ) {
-      redirect(`/subscribe/1`)
+      redirect(`/papermag`)
     }
   },
   data() {
@@ -90,7 +90,7 @@ export default {
 
         // payment fail
         this.$store.dispatch('subscribe/updateResultStatus', 'order-fail')
-        this.$router.push(`/subscribe/result`)
+        this.$router.push(`/papermag/result`)
       }
     },
 
