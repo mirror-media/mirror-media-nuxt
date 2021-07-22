@@ -10,9 +10,9 @@
       <span>NT$ {{ shipping }}</span>
     </div>
 
-    <div v-show="hasCode" class="perchase-info__row discount">
+    <div v-show="discount" class="perchase-info__row discount">
       <span>續訂戶折扣</span>
-      <span>-NT$ 80</span>
+      <span>-NT$ {{ discount }}</span>
     </div>
 
     <div class="perchase-info__devider" />
@@ -43,9 +43,9 @@ export default {
       isRequired: true,
       default: 0,
     },
-    hasCode: {
-      type: Boolean,
-      default: false,
+    discount: {
+      type: Number,
+      default: 0,
     },
   },
 }

@@ -46,7 +46,7 @@
           :price="price"
           :shipping="shipping"
           :total="total"
-          :hasCode="discount.hasCode"
+          :discount="discountPrice"
         />
         <SubscribeDiscount
           v-for="discount in discountList"
@@ -181,7 +181,13 @@ export default {
       return this.perchasedPlan.reduce(reducer)
     },
     discountPrice() {
-      return this.discount.hasCode ? 80 : 0
+      let count
+      this.perchasedPlan.map((plan) => {
+        if (plan.count !== 0) {
+          count = plan.count
+        }
+      })
+      return this.discount.hasCode ? 80 * count : 0
     },
     shipping() {
       let year, count
