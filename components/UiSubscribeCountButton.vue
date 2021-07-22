@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     symbol() {
-      return this.type === 'increase' ? '+' : '-'
+      return this.type === 'increase' ? '＋' : '－'
     },
   },
 }
@@ -38,6 +38,7 @@ export default {
   border-radius: 50%;
   background: #ffffff;
   border: 1px solid #054f77;
+  padding: 6px 7px;
 
   &:hover {
     background: linear-gradient(
