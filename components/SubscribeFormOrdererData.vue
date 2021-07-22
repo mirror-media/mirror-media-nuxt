@@ -19,7 +19,12 @@
       :class="{ error: $v.name.$error && isNeedToCheck }"
     >
       <span>姓名</span>
-      <input v-model.trim="$v.name.$model" type="text" :disabled="disable" />
+      <input
+        v-model.trim="$v.name.$model"
+        type="text"
+        :placeholder="`${type}姓名`"
+        :disabled="disable"
+      />
       <span
         v-show="!$v.name.required && $v.name.$error && isNeedToCheck"
         class="error__message"
@@ -41,6 +46,7 @@
         <input
           v-model.trim="$v.cellphone.$model"
           :disabled="disable"
+          placeholder="0912345678"
           type="text"
           @input="handleInputCellphone"
         />
@@ -64,6 +70,7 @@
             :disabled="disable"
             class="multi__phone"
             type="text"
+            placeholder="023456789"
           />
           <span>-</span>
           <input
@@ -82,7 +89,12 @@
       :class="{ error: $v.address.$error && isNeedToCheck }"
     >
       <span>通訊地址</span>
-      <input v-model.trim="$v.address.$model" :disabled="disable" type="text" />
+      <input
+        v-model.trim="$v.address.$model"
+        :disabled="disable"
+        type="text"
+        :placeholder="`${type}通訊地址`"
+      />
       <span
         v-show="!$v.address.required && $v.address.$error && isNeedToCheck"
         class="error__message"
@@ -96,7 +108,12 @@
       :class="{ error: $v.email.$error && isNeedToCheck }"
     >
       <span>電子信箱</span>
-      <input v-model.trim="$v.email.$model" :disabled="disable" type="text" />
+      <input
+        v-model.trim="$v.email.$model"
+        :disabled="disable"
+        type="text"
+        :placeholder="`${type}電子信箱`"
+      />
       <span
         v-show="!$v.email.email && $v.email.$error && isNeedToCheck"
         class="error__message"
@@ -198,7 +215,6 @@ export default {
       }
     },
     isValidPhone() {
-      console.log(isValidPhoneNumber(this.cellphone, 'TW'))
       return isValidPhoneNumber(this.cellphone, 'TW')
     },
   },
