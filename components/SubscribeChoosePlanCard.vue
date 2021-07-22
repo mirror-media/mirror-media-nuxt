@@ -46,7 +46,7 @@ export default {
     newPrice: {
       type: Number,
       isRequired: true,
-      default: 2880,
+      default: 2800,
     },
   },
   methods: {

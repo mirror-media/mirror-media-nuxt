@@ -63,20 +63,26 @@ export default {
       }
     },
     orderInfoPurchasedList() {
-      return [
+      const list = [
         {
           text: `${this.orderInfo.item_desc} X ${this.orderInfo.amount}`,
           price: this.orderInfo.price,
         },
         {
           text: '運費',
-          price: this.orderInfo.delivery === '限時掛號' ? 20 : 0,
-        },
-        {
-          text: '總計',
-          price: this.orderInfo.price_total,
+          price: this.orderInfo.shipping,
         },
       ]
+      if (this.orderInfo.discount)
+        list.push({
+          text: '續訂戶折扣',
+          price: this.orderInfo.discount,
+        })
+      list.push({
+        text: '總計',
+        price: this.orderInfo.price_total,
+      })
+      return list
     },
     customerInfo() {
       /* eslint-disable camelcase */

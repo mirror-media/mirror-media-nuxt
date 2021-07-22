@@ -4,6 +4,7 @@
       v-for="rowItem in data"
       :key="rowItem.text"
       class="content_row__data_wrapper_row"
+      :class="{ discount: rowItem.text === '續訂戶折扣' }"
     >
       <div>
         <p>{{ rowItem.text }}</p>
@@ -13,7 +14,10 @@
           </p>
         </template>
       </div>
-      <div class="price">NT$ {{ rowItem.price }}</div>
+      <div class="price">
+        <span v-if="rowItem.text === '續訂戶折扣'">-</span>NT$
+        {{ rowItem.price }}
+      </div>
     </div>
   </div>
 </template>
@@ -86,5 +90,9 @@ export default {
 
 .price {
   min-width: max-content;
+}
+
+.discount {
+  color: #054f77;
 }
 </style>

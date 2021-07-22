@@ -8,10 +8,11 @@
           title="訂單編號"
           :data="orderInfo.orderId"
         />
-        <!-- <SubscribeSuccessOrderInfoContentRow
+        <SubscribeSuccessOrderInfoContentRow
+          v-if="orderInfo.discountPrice"
           title="續訂戶代碼"
-          data="窩不知道"
-        /> -->
+          :data="`MJ000 ${orderInfo.discount_code}`"
+        />
         <SubscribeSuccessOrderInfoContentRow
           title="訂單日期"
           :data="orderDate"

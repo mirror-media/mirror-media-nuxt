@@ -257,7 +257,7 @@ export default {
     generateItemData() {
       let itemDest = '一年鏡週刊52期，加購5期方案'
       let amount = 1
-      let price = 2880
+      let price = 2800
 
       this.perchasedPlan.forEach((item) => {
         if (item.count > 0) {
@@ -284,6 +284,7 @@ export default {
         amount: parseInt(amount),
         price,
         discount_code: this.discount.code,
+        discount: this.discountPrice,
 
         // 購買者相關
         pur_name: this.ordererData.name,
@@ -299,6 +300,7 @@ export default {
         rec_addr: this.receiverData.address,
         rec_remark: '', // TODO
         delivery: this.shipPlan.name,
+        deliveryCost: this.shipping,
 
         // 付款相關
         prime_token: '',
