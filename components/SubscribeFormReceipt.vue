@@ -226,7 +226,10 @@ export default {
     receiptData: {
       handler(val) {
         this.setReceiptData(val)
-
+        if (val.receiptPlan !== '二聯式發票（含載具）') {
+          this.receiptData.carrierType = '請選擇'
+          this.receiptData.carrierNumber = ''
+        }
         // reset validation status after chagned value
         this.receiptFormStatus = {
           receiptPlan: 'OK',

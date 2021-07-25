@@ -3,7 +3,8 @@
     class="validion-input"
     :class="{
       error:
-        ($v.value.$error || !isValidCarrierUbn) && hasChange && isNeedToCheck,
+        ((!$v.value.required && $v.value.$error) || !isValidInput) &&
+        isNeedToCheck,
     }"
   >
     <input
@@ -14,10 +15,10 @@
       :disabled="disable"
     />
 
-    <template v-if="isNeedToCheck && this.value && hasChange">
-      <span v-show="!isValidCarrierUbn" class="error__message"
-        >請輸入有效的統一編號（8 碼）</span
-      >
+    <template v-if="isNeedToCheck && this.value">
+      <span v-show="!isValidInput" class="error__message">{{
+        invalidMessage
+      }}</span>
     </template>
 
     <span
@@ -31,7 +32,7 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required, email } from 'vuelidate/lib/validators'
 export default {
   props: {
     //
@@ -71,6 +72,7 @@ export default {
   },
   validations: {
     value: {
+      email,
       required,
     },
   },
@@ -78,10 +80,35 @@ export default {
     isNeedToCheck() {
       return this.validateOn
     },
-    isValidCarrierUbn() {
-      if (this.validateField !== 'carrierUbn') return true
-      const reg = /^\d{8}$/
-      return reg.test(this.value)
+    isValidInput() {
+      if (!this.hasChange || this.validateField === 'carrierTitle') return true
+      if (this.validateField === 'carrierUbn') {
+        const reg = /^\d{8}$/
+        return reg.test(this.value)
+      }
+      let reg, result
+      switch (this.carrierType) {
+        case '手機條碼':
+          reg = /^\/(\d|[A-Z]|\.|\+|[-]){7}$/
+          result = reg.test(this.value)
+          break
+        case '自然人憑證':
+          reg = /^[A-Z]{2}\d{14}$/
+          result = reg.test(this.value)
+          break
+        case 'Email 載具':
+          result = this.$v.value.email
+          break
+        default:
+          result = true
+      }
+      return result
+    },
+    invalidMessage() {
+      if (this.validateField === 'carrierUbn') {
+        return '請輸入有效的統一編號（8 碼）'
+      }
+      return `請輸入有效的${this.carrierType}`
     },
     disable() {
       return this.carrierType === '請選擇'
@@ -96,7 +123,7 @@ export default {
     check() {
       if (this.isNeedToCheck) {
         this.$v.$touch()
-        if (this.$v.$invalid) {
+        if (!this.$v.value.required || !this.isValidInput) {
           this.validationStatus = 'ERROR'
         } else {
           this.validationStatus = 'OK'
