@@ -14,11 +14,11 @@
       :disabled="disable"
     />
 
-    <span
-      v-if="isNeedToCheck && !isValidCarrierUbn && this.value && hasChange"
-      class="error__message"
-      >請輸入有效的統一編號（8 碼）</span
-    >
+    <template v-if="isNeedToCheck && this.value && hasChange">
+      <span v-show="!isValidCarrierUbn" class="error__message"
+        >請輸入有效的統一編號（8 碼）</span
+      >
+    </template>
 
     <span
       v-else-if="!$v.value.required && $v.value.$error && isNeedToCheck"

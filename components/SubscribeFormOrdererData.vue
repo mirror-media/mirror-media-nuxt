@@ -242,7 +242,7 @@ export default {
     check() {
       if (this.isNeedToCheck) {
         this.$v.$touch()
-        if (this.$v.$invalid) {
+        if (this.$v.$invalid || !this.isValidPhone) {
           this.submitStatus = 'ERROR'
         } else {
           this.submitStatus = 'OK'
