@@ -84,7 +84,7 @@ export default {
          */
         this.$store.dispatch('subscribe/updateReadyToPay', true)
 
-        this.$router.push(`/subscribe/redirect`)
+        this.$router.push(`/papermag/redirect`)
       } catch (err) {
         console.error(err)
 
