@@ -63,7 +63,7 @@ export default {
 
   &__name {
     color: #9b9b9b;
-    width: 30px;
+    width: 35px;
     height: 42px;
     font-size: 15px;
     @include media-breakpoint-up(sm) {
