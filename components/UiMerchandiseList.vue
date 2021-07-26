@@ -13,9 +13,7 @@
       :key="perchased.id"
       class="merchandise-list-detail__form_content form-row"
     >
-      <div class="form-row__head_title detail">
-        {{ perchased.detail }}
-      </div>
+      <div class="form-row__head_title detail">{{ perchased.detail }}</div>
       <div class="form-row__head_title form-row__head_title_count">
         <UiSubscribeCountButton
           v-show="isPopUp"
@@ -84,6 +82,7 @@ export default {
   },
   computed: {
     filteredPerchasedPlan() {
+      console.log(this.perchasedPlan)
       if (!this.showAll)
         return this.perchasedPlan.filter((plan) => {
           return plan.count > 0
@@ -140,12 +139,19 @@ export default {
     justify-content: space-between;
     gap: 12px;
 
+    * {
+      align-self: flex-start;
+    }
+
     &__head_title {
       flex: 1;
 
       &:first-child {
-        flex: 3;
-        max-width: 278px;
+        flex: 1;
+        @include media-breakpoint-up(sm) {
+          flex: 3;
+          max-width: 278px;
+        }
       }
 
       &:nth-child(2) {
@@ -169,12 +175,12 @@ export default {
     }
   }
   &__form_head {
-    margin-bottom: 13px;
+    margin-bottom: 12px;
   }
 
   &__form_devider {
     border: 1px solid #00000080;
-    margin-bottom: 18px;
+    margin-bottom: 12px;
   }
 }
 
@@ -187,6 +193,13 @@ export default {
     -webkit-box-orient: vertical;
   }
 
+  .merchandise-list-detail__form_devider {
+    margin-bottom: 16px;
+    @include media-breakpoint-up(sm) {
+      margin-bottom: 15px;
+    }
+  }
+
   .form-row {
     &:not(:first-child):not(:last-child) {
       margin-bottom: 21px;
@@ -194,6 +207,9 @@ export default {
 
     &__head_title:first-child {
       flex: 1;
+      @include media-breakpoint-up(sm) {
+        flex: 2;
+      }
     }
   }
 }
