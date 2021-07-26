@@ -33,14 +33,14 @@ export default {
         {
           id: 0,
           title: '一年方案',
-          detail: '訂購紙本鏡週刊 52 期，加贈 5 期',
+          detail: '訂購紙本鏡週刊 52 期',
           originalPrice: 3900,
           newPrice: 2800,
         },
         {
           id: 1,
           title: '二年方案',
-          detail: '訂購紙本鏡週刊 104 期，加贈 10 期',
+          detail: '訂購紙本鏡週刊 104 期',
           originalPrice: 7800,
           newPrice: 5200,
         },

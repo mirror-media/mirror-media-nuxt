@@ -99,7 +99,7 @@ export default {
         {
           id: 0,
           title: '一年方案',
-          detail: '訂購紙本鏡週刊 52 期，加贈 5 期',
+          detail: '訂購紙本鏡週刊 52 期',
           originalPrice: 3990,
           newPrice: 2800,
           count: this.currentChoosedPlanId === 0 ? 1 : 0,
@@ -107,7 +107,7 @@ export default {
         {
           id: 1,
           title: '二年方案',
-          detail: '訂購紙本鏡週刊 104 期，加贈 10 期',
+          detail: '訂購紙本鏡週刊 104 期',
           originalPrice: 7800,
           newPrice: 5200,
           count: this.currentChoosedPlanId === 1 ? 1 : 0,
@@ -255,7 +255,7 @@ export default {
       }
     },
     generateItemData() {
-      let itemDest = '一年鏡週刊52期，加購5期方案'
+      let itemDest = '一年鏡週刊52期'
       let amount = 1
       let price = 2800
 

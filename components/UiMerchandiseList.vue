@@ -53,7 +53,7 @@ export default {
           {
             id: 0,
             title: '一年方案',
-            detail: '一年鏡週刊52期，加購5期方案',
+            detail: '一年鏡週刊52期',
             originalPrice: 3990,
             newPrice: 2800,
             count: 0,
@@ -61,7 +61,7 @@ export default {
           {
             id: 1,
             title: '二年方案',
-            detail: '二年鏡週刊104期，加購10期方案',
+            detail: '二年鏡週刊104期',
             originalPrice: 7800,
             newPrice: 5200,
             count: 0,
@@ -187,8 +187,14 @@ export default {
     -webkit-box-orient: vertical;
   }
 
-  .form-row:not(:first-child):not(:last-child) {
-    margin-bottom: 21px;
+  .form-row {
+    &:not(:first-child):not(:last-child) {
+      margin-bottom: 21px;
+    }
+
+    &__head_title:first-child {
+      flex: 1;
+    }
   }
 }
 </style>
