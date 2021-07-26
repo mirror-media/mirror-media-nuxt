@@ -40,7 +40,7 @@ export default {
     SubscribeSuccess,
   },
   provide: {
-    subscribeFailButtonLink: '/subscribe',
+    subscribeFailButtonLink: '/papermag',
   },
   data() {
     return {
