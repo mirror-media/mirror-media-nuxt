@@ -20,7 +20,7 @@
             class="merchandise-list__discount_code_input"
             :class="{ focus: isInputFocused, disabled: discount.hasCode }"
           >
-            <label for="discount-code">MJ000</label>
+            <label for="discount-code">MR000</label>
             <input
               v-model="discount.code"
               type="text"
@@ -193,11 +193,8 @@ export default {
 
   &__discount_code {
     position: relative;
-    display: flex;
-    align-items: center;
     padding: 12px 0 0px;
     @include media-breakpoint-up(md) {
-      flex-direction: column;
       align-items: flex-start;
       padding: 28px 0 61px;
     }
