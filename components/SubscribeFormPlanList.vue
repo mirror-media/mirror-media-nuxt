@@ -20,7 +20,7 @@
             class="merchandise-list__discount_code_input"
             :class="{ focus: isInputFocused, disabled: discount.hasCode }"
           >
-            <label for="discount-code">MJ000</label>
+            <label for="discount-code">MR000</label>
             <input
               v-model="discount.code"
               type="text"
