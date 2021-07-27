@@ -53,7 +53,7 @@ export default {
           {
             id: 0,
             title: '一年方案',
-            detail: '一288052期',
+            detail: '一年鏡週刊52期',
             originalPrice: 3990,
             newPrice: 2800,
             count: 0,
