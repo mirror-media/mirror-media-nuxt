@@ -61,7 +61,7 @@ export default {
             title: '二年方案',
             detail: '二年鏡週刊104期',
             originalPrice: 7800,
-            newPrice: 5200,
+            newPrice: 5280,
             count: 0,
           },
         ]
