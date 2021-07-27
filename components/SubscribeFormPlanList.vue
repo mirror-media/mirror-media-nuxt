@@ -193,15 +193,17 @@ export default {
 
   &__discount_code {
     position: relative;
-    padding: 12px 0 0px;
+    padding: 24px 0 0px;
     @include media-breakpoint-up(md) {
-      align-items: flex-start;
-      padding: 28px 0 61px;
+      padding: 24px 0 0px;
     }
 
     &_row {
-      margin-bottom: 8px;
       width: 100%;
+
+      &:not(:last-child) {
+        margin-bottom: 8px;
+      }
 
       &:first-child {
         display: flex;
