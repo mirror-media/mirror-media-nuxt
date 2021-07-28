@@ -59,6 +59,11 @@ const CAMPAIGN_LINK = {
   title: '活動專區',
   href: 'https://www.mirrormedia.mg/category/campaign',
 }
+const WEBAUTHORIZE_LINK = {
+  name: 'webauthorize',
+  title: '內容授權',
+  href: '/story/webauthorize/',
+}
 const DOWNLOAD_APP_LINK = {
   name: 'download',
   title: '下載APP',
@@ -75,6 +80,7 @@ const PROMOTION_LINKS = [
   AUTH_LINK,
   AD_LINK,
   CAMPAIGN_LINK,
+  WEBAUTHORIZE_LINK,
   DOWNLOAD_APP_LINK,
   MEDIA_DISCIPLINE_LINK,
 ]

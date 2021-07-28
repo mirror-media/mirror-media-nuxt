@@ -80,10 +80,8 @@ export default {
   flex-wrap: wrap;
   a {
     display: flex;
-    &:not(.footer-campaign)::after {
-      content: '-';
-      padding-right: 4px;
-      padding-left: 4px;
+    &:not(.footer-webauthorize) {
+      padding-right: 8px;
     }
   }
   .footer-magazine,
@@ -97,9 +95,6 @@ export default {
     font-size: 16px;
     font-weight: 700;
     a {
-      &:not(.footer-campaign)::after {
-        content: none;
-      }
       + a {
         margin: 0 0 0 26px;
       }
@@ -109,6 +104,10 @@ export default {
     .footer-download,
     .footer-discipline {
       display: initial;
+    }
+    .footer-webauthorize,
+    .footer-ad {
+      display: none;
     }
   }
 }
