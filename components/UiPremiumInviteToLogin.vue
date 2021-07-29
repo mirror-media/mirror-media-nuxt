@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     currentPagePath() {
-      return this.$route.fullPath
+      return this.$route?.fullPath
     },
   },
 }
