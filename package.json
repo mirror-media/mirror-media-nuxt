@@ -10,7 +10,9 @@
     "start": "cross-env NODE_ENV=production node server/index.js",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "test": "jest"
+    "test": "jest",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "engines": {
     "node": ">= 12"
@@ -76,17 +78,24 @@
     "vuelidate": "^0.7.6"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.8",
     "@nuxtjs/eslint-config": "^4.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/style-resources": "^1.0.0",
     "@nuxtjs/svg": "^0.1.12",
+    "@storybook/addon-actions": "^6.3.6",
+    "@storybook/addon-essentials": "^6.3.6",
+    "@storybook/addon-links": "^6.3.6",
+    "@storybook/vue": "^6.3.6",
     "@vue/babel-preset-jsx": "^1.1.2",
     "@vue/test-utils": "^1.1.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^26.6.3",
+    "babel-loader": "^8.2.2",
     "babel-plugin-lodash": "^3.3.4",
     "core-js": "^3.6.5",
+    "css-loader": "^5.2.0",
     "dayjs": "^1.8.35",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
@@ -103,6 +112,9 @@
     "nodemon": "^2.0.4",
     "prettier": "^2.1.1",
     "sass-loader": "^10.0.2",
-    "vue-jest": "^4.0.0-0"
+    "sass-resources-loader": "^2.2.3",
+    "style-loader": "^2.0.0",
+    "vue-jest": "^4.0.0-0",
+    "vue-loader": "^15.9.7"
   }
 }
