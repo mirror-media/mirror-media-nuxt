@@ -185,7 +185,7 @@ export default {
 
     this.story = externalResponse.value?.items?.[0] ?? {}
     this.story.extendByline = `文｜${this.story.extendByline}`
-    this.story.categories = [{ title: '合作媒體' }]
+    this.story.categories = [{ title: '時事' }]
   },
 
   data() {
@@ -457,7 +457,7 @@ export default {
         { property: 'dable:item_id', content: this.storySlug },
         { property: 'dable:author', content: partnerDisplay },
         { property: 'dable:image', content: thumb },
-        { property: 'article:section', content: '合作媒體' },
+        { property: 'article:section', content: '時事' },
         { property: 'article:section2', content: partnerDisplay },
         { property: 'article:published_time', content: publishedDateIso },
       ],

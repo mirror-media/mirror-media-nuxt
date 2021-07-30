@@ -988,8 +988,8 @@ test('send GA events', async function () {
 })
 
 describe('getLabel method', () => {
-  test('return "合作媒體" if the argument has a partner key', () => {
-    expect(getLabel({ partner: {} })).toBe('合作媒體')
+  test('return "時事" if the argument has a partner key', () => {
+    expect(getLabel({ partner: {} })).toBe('時事')
   })
 
   test('return section title if the argument has a sections key and does not have a partner key', () => {
