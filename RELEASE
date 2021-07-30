@@ -153,4 +153,8 @@
 2021/07/14
   - release version: master_kwhsiung_1567 1.3.26
   - features: adjust related post a/b test
+2021/07/29
+  - release version: master_kwhsiung_1705 1.3.27
+  - features: adjust time out 1.5 sec to 3 sec
+  
 
