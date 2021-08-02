@@ -702,7 +702,7 @@ function getImg({ heroImage, ogImage, heroVideo, partner, thumb } = {}) {
 
 function getLabel({ sections = [], categories = [], partner } = {}) {
   if (partner) {
-    return '合作媒體'
+    return '時事'
   }
 
   if (sections.length > 0) {
