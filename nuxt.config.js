@@ -293,7 +293,7 @@ module.exports = {
    * Nuxt.js dev-modules
    */
   buildModules: [
-    '@nuxtjs/composition-api',
+    '@nuxtjs/composition-api/module',
 
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
