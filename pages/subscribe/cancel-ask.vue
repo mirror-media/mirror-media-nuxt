@@ -4,11 +4,13 @@
       :isAsk="true"
       title="取消訂閱"
       description="請問您為何想取消訂閱鏡週刊 Premium 服務？"
+      @back="handleBack"
     />
     <SubscribeCancel
       :isAsk="false"
       title="取消訂閱提示"
       description="由於您先前於 APP 購買，如要取消訂閱，請至 App Store (iOS 系統) 或 Google Play (Android 系統) 操作"
+      @back="handleBack"
     />
   </div>
 </template>
@@ -18,6 +20,11 @@ import SubscribeCancel from '~/components/SubscribeCancel.vue'
 
 export default {
   components: { SubscribeCancel },
+  methods: {
+    handleBack() {
+      window.location.assign('/subscribe/set')
+    },
+  },
 }
 </script>
 

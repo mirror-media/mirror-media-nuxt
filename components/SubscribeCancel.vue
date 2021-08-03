@@ -50,12 +50,16 @@
         rows="3"
       />
       <div class="subscribe-cancel__ask_form_button_group">
-        <UiMembershipButtonSecondary>返回</UiMembershipButtonSecondary>
+        <UiMembershipButtonSecondary @click.native="() => $emit('back')"
+          >返回</UiMembershipButtonSecondary
+        >
         <UiMembershipButtonPrimary>確認取消訂閱</UiMembershipButtonPrimary>
       </div>
     </template>
     <template v-else>
-      <UiMembershipButtonPrimary class="subscribe-cancel__back"
+      <UiMembershipButtonPrimary
+        class="subscribe-cancel__back"
+        @click.native="() => $emit('back')"
         >回訂閱紀錄</UiMembershipButtonPrimary
       >
     </template>

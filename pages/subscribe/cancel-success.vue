@@ -4,6 +4,7 @@
       :isAsk="false"
       title="成功取消訂閱"
       description="您已取消訂閱<span class='cancel-success__description_blue'>鏡週刊 Premium 服務-年訂閱方案</span>。取消將在本次收費週期 2021/6/30 結束時生效。"
+      @back="handleBack"
     />
   </div>
 </template>
@@ -13,6 +14,11 @@ import SubscribeCancel from '~/components/SubscribeCancel.vue'
 
 export default {
   components: { SubscribeCancel },
+  methods: {
+    handleBack() {
+      window.location.assign('/subscribe/set')
+    },
+  },
 }
 </script>
 

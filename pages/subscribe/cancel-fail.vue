@@ -3,9 +3,8 @@
     <SubscribeCancel
       :isAsk="false"
       title="取消訂閱失敗"
-      description="請重新操作或聯繫客服由專人為您服務。</br>
-service@mirrormedia.mg</br>
-02-6633-3805"
+      description="請重新操作或聯繫客服由專人為您服務。</br>service@mirrormedia.mg</br>02-6633-3805"
+      @back="handleBack"
     />
   </div>
 </template>
@@ -15,6 +14,11 @@ import SubscribeCancel from '~/components/SubscribeCancel.vue'
 
 export default {
   components: { SubscribeCancel },
+  methods: {
+    handleBack() {
+      window.location.assign('/subscribe/set')
+    },
+  },
 }
 </script>
 
