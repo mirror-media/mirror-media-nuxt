@@ -26,7 +26,7 @@ export default {
   min-height: calc(100vw - 150px);
   padding: 40px 20px 0 20px;
   @include media-breakpoint-up(sm) {
-    min-height: calc(100vw - 252px);
+    min-height: calc(100vw - 850px);
     padding: 80px;
   }
 }

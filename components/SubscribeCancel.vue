@@ -1,7 +1,7 @@
 <template>
   <div class="subscribe-cancel">
     <div class="subscribe-cancel__title" v-text="title" />
-    <div class="subscribe-cancel__description" v-text="description" />
+    <div class="subscribe-cancel__description" v-html="description" />
     <template v-if="isAsk" class="subscribe-cancel__ask_form">
       <label for="content">
         <input
@@ -119,6 +119,10 @@ export default {
   &__description {
     margin: 4px 0 24px 0;
     color: rgba(0, 0, 0, 0.66);
+
+    & >>> .blue {
+      color: red;
+    }
   }
 
   label {
