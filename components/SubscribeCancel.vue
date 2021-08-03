@@ -53,7 +53,9 @@
         <UiMembershipButtonSecondary @click.native="() => $emit('back')"
           >返回</UiMembershipButtonSecondary
         >
-        <UiMembershipButtonPrimary>確認取消訂閱</UiMembershipButtonPrimary>
+        <UiMembershipButtonPrimary @click.native="handleSubmit"
+          >確認取消訂閱</UiMembershipButtonPrimary
+        >
       </div>
     </template>
     <template v-else>
@@ -97,6 +99,14 @@ export default {
   computed: {
     shouldShowTextarea() {
       return this.reason.includes('其他')
+    },
+  },
+  methods: {
+    handleSubmit() {
+      if (this.shouldShowTextarea) {
+        this.reason.push({ detail: this.otherDetail })
+      }
+      this.$emit('submit', this.reason)
     },
   },
 }

@@ -5,6 +5,7 @@
       title="取消訂閱"
       description="請問您為何想取消訂閱鏡週刊 Premium 服務？"
       @back="handleBack"
+      @submit="handleSubmit"
     />
     <SubscribeCancel
       :isAsk="false"
@@ -20,9 +21,17 @@ import SubscribeCancel from '~/components/SubscribeCancel.vue'
 
 export default {
   components: { SubscribeCancel },
+  data() {
+    return {
+      reason: [],
+    }
+  },
   methods: {
     handleBack() {
       window.location.assign('/subscribe/set')
+    },
+    handleSubmit(reason) {
+      this.reason = reason
     },
   },
 }
