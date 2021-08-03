@@ -74,7 +74,7 @@ export default {
 
 .footer-promotion-links {
   color: rgba(0, 0, 0, 0.4);
-  font-size: 19.2px;
+  font-size: 18px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
