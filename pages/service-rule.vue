@@ -6,7 +6,7 @@
     </div>
     <div class="service-rule__content">
       <div class="service-rule__content_wrapper">
-        <div v-for="paragraph in story.content.apiData" :key="paragraph.id">
+        <div v-for="paragraph in paragraphList" :key="paragraph.id">
           <UiStoryContentHandler :paragraph="filterHTML(paragraph)" />
         </div>
       </div>
@@ -15,7 +15,9 @@
           <input type="checkbox" v-model="isChecked" :checked="isChecked" />
           <span>我同意以上條款</span>
         </label>
-        <UiMembershipButtonPrimary :disabled="!isChecked"
+        <UiMembershipButtonPrimary
+          :disabled="!isChecked"
+          @click.native="handleSubmit"
           >繼續登入</UiMembershipButtonPrimary
         >
       </div>
@@ -24,6 +26,7 @@
 </template>
 
 <script>
+import Cookie from 'vue-cookie'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiStoryContentHandler from '~/components/UiStoryContentHandler.vue'
 
@@ -88,6 +91,11 @@ export default {
       isChecked: false,
     }
   },
+  computed: {
+    paragraphList() {
+      return this.story.content?.apiData
+    },
+  },
   methods: {
     filterHTML(paragraph) {
       const content = paragraph.content[0]
@@ -100,6 +108,12 @@ export default {
         )
       }
       return { ...paragraph, content: newContent }
+    },
+    handleSubmit(e) {
+      e.preventDefault()
+      Cookie.set('read-service-rule', true, { expires: '30m' })
+      const destination = this.$route.query.destination || '/'
+      window.location.replace(`/login?destination=${destination}`)
     },
   },
 }
