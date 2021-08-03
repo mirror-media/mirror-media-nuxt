@@ -1,0 +1,33 @@
+<template>
+  <div class="cancel-ask">
+    <SubscribeCancel
+      :isAsk="true"
+      title="取消訂閱"
+      description="請問您為何想取消訂閱鏡週刊 Premium 服務？"
+    />
+    <SubscribeCancel
+      :isAsk="false"
+      title="取消訂閱提示"
+      description="由於您先前於 APP 購買，如要取消訂閱，請至 App Store (iOS 系統) 或 Google Play (Android 系統) 操作"
+    />
+  </div>
+</template>
+
+<script>
+import SubscribeCancel from '~/components/SubscribeCancel.vue'
+
+export default {
+  components: { SubscribeCancel },
+}
+</script>
+
+<style lang="scss" scoped>
+.cancel-ask {
+  min-height: calc(100vw - 150px);
+  padding: 40px 20px 0 20px;
+  @include media-breakpoint-up(sm) {
+    min-height: calc(100vw - 252px);
+    padding: 80px;
+  }
+}
+</style>
