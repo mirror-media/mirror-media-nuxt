@@ -36,53 +36,38 @@ export default {
     UiStoryContentHandler,
   },
   async fetch() {
-    const processPostResponse = (response) => {
-      if (response.status === 'fulfilled') {
-        this.story = response.value.items?.[0] ?? {}
-
-        const isTitleExist = this.story.title
-        const isContentExist = (this.story?.content?.apiData ?? []).length > 0
-        if (!isTitleExist || !isContentExist) {
-          if (process.server) {
-            this.$nuxt.context.res.statusCode = 404
-          }
-          throw new Error('not found')
-        }
-
-        return true
-      } else {
-        const { statusCode, message } = response.reason
-
-        if (process.server) {
-          this.$nuxt.context.res.statusCode = statusCode
-        }
-        throw new Error(message)
-      }
-    }
-
     const fetchPartnersAndTopicsData = async () => {
-      await Promise.all([
-        this.$store.dispatch('partners/fetchPartnersData'),
-        this.$store.dispatch('topics/fetchTopicsData'),
-      ])
+      await Promise.all([this.$store.dispatch('topics/fetchTopicsData')])
     }
 
     const [postResponse] = await Promise.allSettled([
-      this.$fetchPostsFromMembershipGateway(
-        {
-          slug: 'service-rule',
-          isAudioSiteOnly: false,
-          clean: 'content',
-          related: 'article',
-        },
-        this.$store.state.membership.userToken
-      ),
+      this.$fetchPosts({
+        slug: 'service-rule',
+        isAudioSiteOnly: false,
+        clean: 'content',
+        related: 'article',
+      }),
       fetchPartnersAndTopicsData(),
     ])
-    const canContinueProcessing = processPostResponse(postResponse)
 
-    if (canContinueProcessing) {
-      this.membershipTokenState = postResponse.value.tokenState
+    if (postResponse.status === 'fulfilled') {
+      this.story = postResponse.value.items?.[0] ?? {}
+
+      const isTitleExist = this.story.title
+      const isContentExist = (this.story?.content?.apiData ?? []).length > 0
+      if (!isTitleExist || !isContentExist) {
+        if (process.server) {
+          this.$nuxt.context.res.statusCode = 404
+        }
+        throw new Error('not found')
+      }
+    } else {
+      const { statusCode, message } = postResponse.reason
+
+      if (process.server) {
+        this.$nuxt.context.res.statusCode = statusCode
+      }
+      throw new Error(message)
     }
   },
   data() {
@@ -111,7 +96,7 @@ export default {
     },
     handleSubmit(e) {
       e.preventDefault()
-      Cookie.set('read-service-rule', true, { expires: '30m' })
+      Cookie.set('read-service-rule', true, { expires: 10 * 365 * 24 + 'h' })
       const destination = this.$route.query.destination || '/'
       window.location.replace(`/login?destination=${destination}`)
     },
