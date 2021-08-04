@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import Cookie from 'vue-cookie'
 import UiLoginBanner from '~/components/UiLoginBanner.vue'
 import UiLoginIntro from '~/components/UiLoginIntro.vue'
 import ContainerLoginForm from '~/components/ContainerLoginForm.vue'
@@ -89,11 +88,6 @@ export default {
   async beforeMount() {
     await loginDestination.set(this.$route)
     await this.handleFederatedRedirectResult()
-    // check if there is cookie for service-rule
-    if (!Cookie.get('read-service-rule')) {
-      const destination = this.$route.query.destination || '/'
-      window.location.replace(`/service-rule?destination=${destination}`)
-    }
   },
   methods: {
     async handleError({ type, email, error }) {
