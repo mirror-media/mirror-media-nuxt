@@ -1,7 +1,11 @@
 <template>
   <div
     class="subcribe-button"
-    :class="{ 'subscribe-button__light': isColorLight, disabled: isDisabled }"
+    :class="{
+      'subscribe-button__grey': color === 'grey',
+      'subscribe-button__light': color === 'light',
+      disabled: isDisabled,
+    }"
   >
     {{ title }}
     <p class="subcribe-button__hint">{{ hint }}</p>
@@ -20,9 +24,9 @@ export default {
       type: String,
       default: '',
     },
-    isColorLight: {
-      type: Boolean,
-      default: false,
+    color: {
+      type: String,
+      default: 'original',
     },
     isDisabled: {
       type: Boolean,
@@ -64,11 +68,31 @@ export default {
     padding: 15px 15px 15px;
   }
 
-  &.subscribe-button__light {
+  &.subscribe-button__grey {
     color: #4a4a4a;
     background: rgb(217, 217, 217);
     &:active {
       background: rgb(155, 155, 155);
+    }
+  }
+
+  &.subscribe-button__light {
+    background: #1d9fb8;
+    &:hover {
+      background: linear-gradient(
+          0deg,
+          rgba(5, 79, 119, 0.3),
+          rgba(5, 79, 119, 0.3)
+        ),
+        #1d9fb8;
+    }
+    &:active {
+      background: linear-gradient(
+          0deg,
+          rgba(5, 79, 119, 0.5),
+          rgba(5, 79, 119, 0.5)
+        ),
+        #1d9fb8;
     }
   }
 

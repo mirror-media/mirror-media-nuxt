@@ -17,7 +17,7 @@
         <div class="edit-perchase__dialog_controller">
           <UiSubscribeButton
             :title="`取消`"
-            :isColorLight="true"
+            color="grey"
             @click.native="cancelModification"
           />
           <UiSubscribeButton
