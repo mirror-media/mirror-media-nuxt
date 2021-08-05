@@ -2,8 +2,6 @@
   <div class="receipt">
     <h2 class="subscribe-form__title">電子發票</h2>
 
-    <p class="receipt__detail">發票將於付款成功後 7 個工作天內寄達。</p>
-
     <p
       v-show="isNeedToCheck && receiptFormStatus.receiptPlan === 'ERROR'"
       class="receipt__error"
