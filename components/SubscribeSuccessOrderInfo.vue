@@ -11,7 +11,7 @@
         <SubscribeSuccessOrderInfoContentRow
           v-if="orderInfo.discountPrice"
           title="續訂戶代碼"
-          :data="`MR000 ${orderInfo.discount_code}`"
+          :data="`MR ${orderInfo.discount_code}`"
         />
         <SubscribeSuccessOrderInfoContentRow
           title="訂單日期"
