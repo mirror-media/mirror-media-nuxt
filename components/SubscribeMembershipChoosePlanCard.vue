@@ -1,10 +1,6 @@
 <template>
   <div class="plan-card">
-    <img
-      v-if="title === 'Premium 會員'"
-      class="plan-card__bedge"
-      src="../assets/bedge.svg"
-    />
+    <img v-if="isPremium" class="plan-card__bedge" src="../assets/bedge.svg" />
     <div class="plan-card__info">
       <h6 class="plan-card__info_title">{{ title }}</h6>
 
@@ -16,7 +12,7 @@
     </div>
 
     <div class="plan-card__button_group">
-      <template v-if="title === 'Premium 會員'">
+      <template v-if="isPremium">
         <UiSubscribeButton
           :title="buttons[0].title"
           :hint="buttons[0].hint"
@@ -67,12 +63,18 @@ export default {
       this.$router.push(`/papermag/${this.planUrl}`)
     },
   },
+  computed: {
+    isPremium() {
+      return this.title === 'Premium 會員' || this.title === '變更為年訂閱方案'
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .plan-card {
   width: 100%;
+  max-width: 463px;
   box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.06), 0px 4px 12px rgba(0, 0, 0, 0.06);
   border-radius: 4px;
   padding: 24px 20px 16px;

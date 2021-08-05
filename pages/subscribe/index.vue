@@ -2,10 +2,16 @@
   <div class="subscribe-choose">
     <SubscribeStepProgress :currentStep="1" />
     <div class="subscribe-choose__wrapper">
-      <div class="subscribe-choose__wrapper_title">方案選擇</div>
+      <div
+        v-if="memberStatus !== 'month'"
+        class="subscribe-choose__wrapper_title"
+        :class="{ basic: memberStatus === 'basic' }"
+      >
+        方案選擇
+      </div>
       <div class="subscribe-choose__wrapper_plans">
         <SubscribeMembershipChoosePlanCard
-          v-for="plan in planList"
+          v-for="plan in planShowed"
           :key="plan.title"
           :title="plan.title"
           :details="plan.details"
@@ -14,7 +20,7 @@
       </div>
     </div>
     <UiSubscribeInfo type="membership" :infoList="infoList" />
-    <SubscribeSimMemberStatus v-model="memberStatus" />
+    <SubscribeSimMemberStatus v-if="shouldShowSim" v-model="memberStatus" />
   </div>
 </template>
 
@@ -23,6 +29,7 @@ import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeSimMemberStatus from '~/components/SubscribeSimMemberStatus.vue'
+const { ENV } = require('../../configs/config')
 
 export default {
   components: {
@@ -76,8 +83,13 @@ export default {
           id: 0,
           text: '月方案計算天數為 30 日，年方案計算天數為 365 日。',
         },
+                {
+          id: 2,
+          text:
+            '月訂閱方案不適用消費者保護法第十九條第一項通訊交易七日解除權之規定，所以月費會員可取消繼續訂閱但無法申請當月退費。',
+        },
         {
-          id: 1,
+          id: 2,
           text:
             '月訂閱方案不適用消費者保護法第十九條第一項通訊交易七日解除權之規定，所以月費會員可取消繼續訂閱但無法申請當月退費。',
         },
@@ -89,10 +101,34 @@ export default {
       ],
     }
   },
+
+月訂閱方案經會員授權扣款購買即為完成服務，所以月費會員無法退費，但可取消繼續訂閱。
+訂閱購買的同時會開啓自動續費(扣款)，在訂閱到期時將依據原訂閱方案自動扣款，並延續訂閱。
+訂閱相關問題請 email 至會員專屬客服信箱 MM-onlineservice@mirrormedia.mg，我們會盡快為您協助處理。
+更多詳細內容，請至服務條款。
   computed: {
     planShowed() {
-      // switch(memberStatus) {},
-      return this.planList
+      let planShowed = []
+      const newButton = []
+      switch (this.memberStatus) {
+        case 'month':
+          newButton.push(this.planList[0].buttons[0])
+          planShowed.push({
+            ...this.planList[0],
+            title: '變更為年訂閱方案',
+            buttons: newButton,
+          })
+          break
+        case 'basic':
+          planShowed.push(this.planList[0])
+          break
+        default:
+          planShowed = this.planList
+      }
+      return planShowed
+    },
+    shouldShowSim() {
+      return ENV !== 'prod'
     },
   },
 }
@@ -102,27 +138,33 @@ export default {
 .subscribe-choose {
   &__wrapper {
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 60px 20px 0 20px;
     @include media-breakpoint-up(sm) {
-      padding: 0 48px;
+      padding: 60px 48px 0 48px;
     }
     @include media-breakpoint-up(md) {
       max-width: 960px;
-      padding: 0;
+      padding: 60px 0px 0 0px;
     }
 
     &_title {
-      margin: 60px 0 32px 0;
+      padding-bottom: 32px;
       font-weight: 500;
       font-size: 32px;
       line-height: 45px;
       letter-spacing: 1.2px;
       color: rgba(0, 0, 0, 0.87);
+
+      &.basic {
+        width: 463px;
+        margin: auto;
+      }
     }
 
     &_plans {
       display: flex;
       flex-direction: column;
+      justify-content: center;
       gap: 16px;
       margin-bottom: 48px;
       @include media-breakpoint-up(md) {
