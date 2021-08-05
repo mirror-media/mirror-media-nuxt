@@ -19,6 +19,7 @@
       </div>
     </div>
     <SubscribeSimFormStatus
+      v-if="showSimFormStatus"
       :validateOn="validateOn"
       :setValidateOn="setValidateOn"
     />
@@ -26,6 +27,7 @@
 </template>
 
 <script>
+import { ENV } from '~/configs/config'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeForm from '~/components/SubscribeForm.vue'
 import SubscribeSimFormStatus from '~/components/SubscribeSimFormStatus.vue'
@@ -56,6 +58,9 @@ export default {
     currentChoosedPlanId() {
       const plan = this.$route.params.plan
       return parseInt(plan) - 1
+    },
+    showSimFormStatus() {
+      return ENV === 'local'
     },
   },
   methods: {
