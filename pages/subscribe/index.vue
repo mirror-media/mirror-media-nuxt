@@ -16,6 +16,7 @@
           :title="plan.title"
           :details="plan.details"
           :buttons="plan.buttons"
+          :ps="ps"
         />
       </div>
     </div>
@@ -83,29 +84,30 @@ export default {
           id: 0,
           text: '月方案計算天數為 30 日，年方案計算天數為 365 日。',
         },
-                {
-          id: 2,
+        {
+          id: 1,
           text:
-            '月訂閱方案不適用消費者保護法第十九條第一項通訊交易七日解除權之規定，所以月費會員可取消繼續訂閱但無法申請當月退費。',
+            '月訂閱方案經會員授權扣款購買即為完成服務，所以月費會員無法退費，但可取消繼續訂閱。',
         },
         {
           id: 2,
           text:
-            '月訂閱方案不適用消費者保護法第十九條第一項通訊交易七日解除權之規定，所以月費會員可取消繼續訂閱但無法申請當月退費。',
+            '訂閱購買的同時會開啓自動續費(扣款)，在訂閱到期時將依據原訂閱方案自動扣款，並延續訂閱。',
         },
         {
-          id: 2,
+          id: 3,
           text:
             '訂閱相關問題請 email 至會員專屬客服信箱 <a href = "mailto: MM-onlineservice@mirrormedia.mg" class="membership-subscribe__blue">MM-onlineservice@mirrormedia.mg</a>，我們會盡快為您協助處理。',
+        },
+        {
+          id: 4,
+          text:
+            '更多詳細內容，請至<a href = "/story/service-rule/" class="membership-subscribe__blue">服務條款</a>。',
         },
       ],
     }
   },
 
-月訂閱方案經會員授權扣款購買即為完成服務，所以月費會員無法退費，但可取消繼續訂閱。
-訂閱購買的同時會開啓自動續費(扣款)，在訂閱到期時將依據原訂閱方案自動扣款，並延續訂閱。
-訂閱相關問題請 email 至會員專屬客服信箱 MM-onlineservice@mirrormedia.mg，我們會盡快為您協助處理。
-更多詳細內容，請至服務條款。
   computed: {
     planShowed() {
       let planShowed = []
