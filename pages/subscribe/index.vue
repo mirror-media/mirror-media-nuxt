@@ -14,6 +14,7 @@
       </div>
     </div>
     <UiSubscribeInfo type="membership" :infoList="infoList" />
+    <SubscribeSimMemberStatus v-model="memberStatus" />
   </div>
 </template>
 
@@ -21,15 +22,18 @@
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
+import SubscribeSimMemberStatus from '~/components/SubscribeSimMemberStatus.vue'
 
 export default {
   components: {
     SubscribeStepProgress,
     UiSubscribeInfo,
     SubscribeMembershipChoosePlanCard,
+    SubscribeSimMemberStatus,
   },
   data() {
     return {
+      memberStatus: 'not-member',
       planList: [
         {
           title: 'Premium 會員',
@@ -85,6 +89,12 @@ export default {
       ],
     }
   },
+  computed: {
+    planShowed() {
+      // switch(memberStatus) {},
+      return this.planList
+    },
+  },
 }
 </script>
 
@@ -114,11 +124,20 @@ export default {
       display: flex;
       flex-direction: column;
       gap: 16px;
+      margin-bottom: 48px;
       @include media-breakpoint-up(md) {
         flex-direction: row;
         gap: 24px;
+        margin-bottom: 60px;
       }
     }
+  }
+}
+
+.subscribe-info {
+  margin-bottom: 48px;
+  @include media-breakpoint-up(md) {
+    margin-bottom: 60px;
   }
 }
 </style>
