@@ -1,5 +1,7 @@
 <template>
-  <div class="count-button" :class="{ disable: isDisable }">{{ symbol }}</div>
+  <div class="count-button" :class="{ disable: isDisable }">
+    <p>{{ symbol }}</p>
+  </div>
 </template>
 
 <script>
@@ -29,16 +31,23 @@ export default {
   cursor: pointer;
   width: 32px;
   height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
   font-size: 17px;
   line-height: 20px;
   color: #054f77;
   border-radius: 50%;
   background: #ffffff;
   border: 1px solid #054f77;
-  padding: 6px 7px;
+  position: relative;
+
+  p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
   &:hover {
     background: linear-gradient(
