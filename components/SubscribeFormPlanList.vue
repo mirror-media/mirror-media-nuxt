@@ -45,7 +45,7 @@
           class="merchandise-list__discount_code_row"
         >
           <div class="merchandise-list__discount_code_prompt">
-            <p>折扣 80 元、贈送 1 期</p>
+            <p>折扣 80 元、贈送 {{ choosenPlanYear }} 期</p>
           </div>
         </div>
 
@@ -135,6 +135,15 @@ export default {
     },
     buttonTitle() {
       return this.discount.hasCode ? '移除' : '使用'
+    },
+    choosenPlanYear() {
+      let year = 1
+      this.perchasedPlan.forEach((plan) => {
+        if (plan.count > 0) {
+          year = plan.title === '一年方案' ? 1 : 2
+        }
+      })
+      return year
     },
   },
   methods: {
