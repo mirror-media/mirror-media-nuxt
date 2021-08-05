@@ -132,6 +132,10 @@ export default {
     shouldShowSim() {
       return ENV !== 'prod'
     },
+    ps() {
+      if (this.memberStatus === 'month') return '升級將在本次收費週期結束時生效'
+      return ''
+    },
   },
 }
 </script>

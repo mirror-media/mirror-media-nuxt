@@ -25,6 +25,7 @@
           color="light"
           @click.native="changePlanHandler"
         />
+        <div v-if="ps !== ''" class="plan-card__button_group_ps">{{ ps }}</div>
       </template>
       <template v-else>
         <UiMembershipButtonSecondary>加入會員</UiMembershipButtonSecondary>
@@ -56,6 +57,11 @@ export default {
       type: Array,
       isRequired: true,
       default: () => [],
+    },
+    ps: {
+      type: String,
+      isRequired: true,
+      default: '',
     },
   },
   methods: {
@@ -130,10 +136,18 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 12px;
+
     .subcribe-button {
       max-width: 100%;
       height: 71px;
       padding: 12px;
+    }
+
+    &_ps {
+      font-size: 13px;
+      line-height: 18px;
+      text-align: center;
+      color: rgba(0, 0, 0, 0.5);
     }
   }
 }
