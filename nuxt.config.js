@@ -250,6 +250,7 @@ module.exports = {
     '~/plugins/user-behavior-log/index.client.js',
     { src: '~/plugins/vuelidate', ssr: true },
     '~/plugins/google-optimize-experiments/index.js',
+    '~/plugins/xstate-inspector.client.js',
   ],
 
   /**
@@ -293,7 +294,7 @@ module.exports = {
    * Nuxt.js dev-modules
    */
   buildModules: [
-    '@nuxtjs/composition-api',
+    '@nuxtjs/composition-api/module',
 
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',

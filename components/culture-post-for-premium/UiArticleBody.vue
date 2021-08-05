@@ -28,14 +28,29 @@
       </ClientOnly>
     </article>
     <ClientOnly>
-      <div
-        v-if="pageState === 'premiumPageNotLogin'"
-        class="invite-to-login-wrapper"
-      >
-        <div class="invite-to-login-wrapper__fade-out-effect" />
-        <UiPremiumInviteToSubscribe v-if="$route.query.ms" />
-        <UiPremiumInviteToLogin v-else />
-      </div>
+      <template v-if="!isMemberSubscribeFeatureToggled($route)">
+        <div
+          v-if="pageState === 'premiumPageNotLogin'"
+          class="invite-to-login-wrapper"
+        >
+          <div class="invite-to-login-wrapper__fade-out-effect" />
+          <UiPremiumInviteToLogin />
+        </div>
+      </template>
+      <template v-else>
+        <div class="invite-to-login-wrapper">
+          <div class="invite-to-login-wrapper__fade-out-effect" />
+          <UiPremiumInviteToSubscribe
+            v-if="
+              stateMembershipSubscribe &&
+              [
+                '會員訂閱功能.會員文章頁.未登入',
+                '會員訂閱功能.會員文章頁.已登入.未訂閱',
+              ].some(stateMembershipSubscribe.matches)
+            "
+          />
+        </div>
+      </template>
     </ClientOnly>
   </div>
 </template>
@@ -44,6 +59,8 @@
 import ContentHandler from './ContentHandler.vue'
 import UiPremiumInviteToLogin from '~/components/UiPremiumInviteToLogin.vue'
 import UiPremiumInviteToSubscribe from '~/components/UiPremiumInviteToSubscribe.vue'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
+import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
 
 export default {
   name: 'UiArticleBody',
@@ -52,6 +69,15 @@ export default {
     ContentHandler,
     UiPremiumInviteToLogin,
     UiPremiumInviteToSubscribe,
+  },
+
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+      isMemberSubscribeFeatureToggled,
+    }
   },
 
   props: {

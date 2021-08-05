@@ -10,6 +10,7 @@ const createWrapper = createWrapperHelper({
   mocks: {
     $route: {
       name: '',
+      query: {},
     },
   },
 })
