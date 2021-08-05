@@ -20,16 +20,16 @@
             class="merchandise-list__discount_code_input"
             :class="{ focus: isInputFocused, disabled: discount.hasCode }"
           >
-            <label for="discount-code">MR000</label>
+            <label for="discount-code">MR</label>
             <input
               v-model="discount.code"
               type="text"
-              placeholder="12345"
+              placeholder="12345678"
               @focus="toggleIsInputFocused"
               @input="handleInput"
               @blur="toggleIsInputFocused"
               id="discount-code"
-              maxlength="5"
+              maxlength="8"
               :disabled="discount.hasCode"
             />
           </div>
@@ -45,7 +45,7 @@
           class="merchandise-list__discount_code_row"
         >
           <div class="merchandise-list__discount_code_prompt">
-            <p>折扣 80 元、贈送 1 期</p>
+            <p>折扣 80 元、贈送 {{ choosenPlanYear }} 期</p>
           </div>
         </div>
 
@@ -131,10 +131,19 @@ export default {
       })
     },
     isDisabled() {
-      return this.discount.code.length !== 5
+      return this.discount.code.length !== 8
     },
     buttonTitle() {
       return this.discount.hasCode ? '移除' : '使用'
+    },
+    choosenPlanYear() {
+      let year = 1
+      this.perchasedPlan.forEach((plan) => {
+        if (plan.count > 0) {
+          year = plan.title === '一年方案' ? 1 : 2
+        }
+      })
+      return year
     },
   },
   methods: {
