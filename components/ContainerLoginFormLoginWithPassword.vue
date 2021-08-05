@@ -38,6 +38,7 @@ import UiMembershipButtonPrimary from './UiMembershipButtonPrimary.vue'
 import UiMembershipButtonSecondary from './UiMembershipButtonSecondary.vue'
 import UiMembershipLoadingIcon from './UiMembershipLoadingIcon.vue'
 import UiMembershipLink from './UiMembershipLink.vue'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
@@ -46,6 +47,13 @@ export default {
     UiMembershipButtonSecondary,
     UiMembershipLoadingIcon,
     UiMembershipLink,
+  },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+    }
   },
   props: {
     email: {
@@ -71,18 +79,21 @@ export default {
 
     async handleSubmit() {
       this.isLoading = true
+      this.sendMembershipSubscribe('送出')
       try {
         const { user = {} } = await this.$fire.auth.signInWithEmailAndPassword(
           this.email,
           this.password
         )
         this.isLoading = false
+        this.sendMembershipSubscribe('登入成功')
         this.$emit('loginSuccess', user)
       } catch (e) {
         this.isLoading = false
         if (e.code === 'auth/wrong-password') {
           this.shouldShowErrorHint = true
         } else {
+          this.sendMembershipSubscribe('登入失敗')
           this.$emit('loginFail', e)
         }
       }

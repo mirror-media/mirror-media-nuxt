@@ -15,12 +15,20 @@ import {
 import { DOMAIN_NAME } from '~/configs/config'
 import { DABLE_WIDGET_IDS } from '~/constants/ads'
 import { checkCategoryHasMemberOnly } from '~/utils/article'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   layout: 'empty',
   middleware: ['handle-story-premium-redirect-and-cache-control'],
   components: {
     ContainerCulturePost,
+  },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+    }
   },
   async fetch() {
     /*

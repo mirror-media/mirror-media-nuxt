@@ -61,6 +61,8 @@ import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondar
 import UiMembershipLink from '~/components/UiMembershipLink.vue'
 import userCreate from '~/apollo/mutations/userCreate.gql'
 import loginDestination from '~/utils/login-destination'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
+import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
 
 export default {
   apollo: {
@@ -76,6 +78,13 @@ export default {
   middleware({ store, redirect }) {
     if (store.getters['membership/isLoggedIn']) {
       redirect('/section/member')
+    }
+  },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
     }
   },
   data() {
@@ -146,7 +155,11 @@ export default {
       await this.handleError(error)
     },
     async handleLoginSuccess() {
-      await loginDestination.redirect()
+      if (isMemberSubscribeFeatureToggled(this.$route)) {
+        this.sendMembershipSubscribe('自動跳轉')
+      } else {
+        await loginDestination.redirect()
+      }
     },
     async handleLoginFail(error) {
       this.state = 'loginError'

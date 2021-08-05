@@ -1,21 +1,31 @@
 <template>
   <p class="login-now-wrapper">
     <span>已經是會員了？</span>
-    <a
+    <button
+      role="link"
       class="login-now-wrapper__login-now login-now"
-      :href="`/login?destination=${currentPagePath}`"
+      @click.prevent="sendMembershipSubscribe('立即登入')"
     >
       立即登入
-    </a>
+    </button>
   </p>
 </template>
 
 <script>
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
+
 export default {
   computed: {
     currentPagePath() {
       return this.$route?.fullPath
     },
+  },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+    }
   },
 }
 </script>
