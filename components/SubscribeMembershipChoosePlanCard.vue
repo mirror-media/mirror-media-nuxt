@@ -1,5 +1,10 @@
 <template>
   <div class="plan-card">
+    <img
+      v-if="title === 'Premium 會員'"
+      class="plan-card__bedge"
+      src="../assets/bedge.svg"
+    />
     <div class="plan-card__info">
       <h6 class="plan-card__info_title">{{ title }}</h6>
 
@@ -74,8 +79,15 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
   @include media-breakpoint-up(sm) {
     padding: 32px 32px 24px;
+  }
+
+  &__bedge {
+    position: absolute;
+    top: 0;
+    right: 24px;
   }
 
   &__info {
