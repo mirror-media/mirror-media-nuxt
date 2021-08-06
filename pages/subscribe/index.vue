@@ -2,13 +2,13 @@
   <div class="subscribe-choose">
     <SubscribeStepProgress :currentStep="1" />
     <div class="subscribe-choose__wrapper">
-      <div
+      <h2
         v-if="memberStatus !== 'month'"
         class="subscribe-choose__wrapper_title"
         :class="{ basic: memberStatus === 'basic' }"
       >
         方案選擇
-      </div>
+      </h2>
       <div class="subscribe-choose__wrapper_plans">
         <SubscribeMembershipChoosePlanCard
           v-for="plan in planShowed"
@@ -16,7 +16,7 @@
           :title="plan.title"
           :details="plan.details"
           :buttons="plan.buttons"
-          :ps="ps"
+          :hintUnderButton="hintUnderButton"
         />
       </div>
     </div>
@@ -132,9 +132,13 @@ export default {
     shouldShowSim() {
       return ENV !== 'prod'
     },
-    ps() {
-      if (this.memberStatus === 'month') return '升級將在本次收費週期結束時生效'
-      return ''
+    hintUnderButton() {
+      switch (this.memberStatus) {
+        case 'month':
+          return '升級將在本次收費週期結束時生效'
+        default:
+          return null
+      }
     },
   },
 }

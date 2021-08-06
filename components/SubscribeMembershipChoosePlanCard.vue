@@ -25,7 +25,12 @@
           color="light"
           @click.native="changePlanHandler"
         />
-        <div v-if="ps !== ''" class="plan-card__button_group_ps">{{ ps }}</div>
+        <div
+          v-if="hintUnderButton"
+          class="plan-card__button_group_hint_under_button"
+        >
+          {{ hintUnderButton }}
+        </div>
       </template>
       <template v-else>
         <UiMembershipButtonSecondary>加入會員</UiMembershipButtonSecondary>
@@ -58,15 +63,15 @@ export default {
       isRequired: true,
       default: () => [],
     },
-    ps: {
+    hintUnderButton: {
       type: String,
       isRequired: true,
-      default: '',
+      default: null,
     },
   },
   methods: {
     changePlanHandler() {
-      this.$router.push(`/papermag/${this.planUrl}`)
+      this.$router.push(`/subscribe/info`)
     },
   },
   computed: {
@@ -143,7 +148,7 @@ export default {
       padding: 12px;
     }
 
-    &_ps {
+    &_hint_under_button {
       font-size: 13px;
       line-height: 18px;
       text-align: center;
