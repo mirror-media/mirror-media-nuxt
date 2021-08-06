@@ -1,6 +1,16 @@
 <template>
   <div class="count-button" :class="{ disable: isDisable }">
-    <p>{{ symbol }}</p>
+    <img
+      v-if="isAdd"
+      :src="require('~/assets/count-button-increase.svg')"
+      alt="＋"
+    />
+    <img
+      v-else
+      :src="require('~/assets/count-button-decrease.svg')"
+      alt="−"
+      class="count-button__decrease"
+    />
   </div>
 </template>
 
@@ -18,8 +28,8 @@ export default {
     },
   },
   computed: {
-    symbol() {
-      return this.type === 'increase' ? '＋' : '－'
+    isAdd() {
+      return this.type === 'increase'
     },
   },
 }
@@ -42,7 +52,7 @@ export default {
   border: 1px solid #054f77;
   position: relative;
 
-  p {
+  img {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -71,6 +81,12 @@ export default {
     background: #e3e3e3;
     border: 1px solid rgba(0, 0, 0, 0.2);
     color: rgba(0, 0, 0, 0.2);
+
+    img {
+      filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(71deg)
+        brightness(99%) contrast(101%);
+      opacity: 0.2;
+    }
   }
 }
 </style>
