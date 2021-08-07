@@ -102,7 +102,7 @@ export default {
   },
   computed: {
     shouldShowSim() {
-      return process.env.NODE_ENV !== ('production' || 'staging')
+      return process.env.ENV !== 'production' && process.env.ENV !== 'staging'
     },
     shouldShowTextarea() {
       return this.reason.includes('其他')
