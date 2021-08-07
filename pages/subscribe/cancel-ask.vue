@@ -1,20 +1,72 @@
 <template>
   <div class="cancel-ask">
-    <SubscribeCancel
-      v-if="isPayByApp"
-      :isAsk="false"
-      title="取消訂閱提示"
-      description="由於您先前於 APP 購買，如要取消訂閱，請至 App Store (iOS 系統) 或 Google Play (Android 系統) 操作"
-      @back="handleBack"
-    />
-    <SubscribeCancel
-      v-else
-      :isAsk="true"
-      title="取消訂閱"
-      description="請問您為何想取消訂閱鏡週刊 Premium 服務？"
-      @back="handleBack"
-      @submit="handleSubmit"
-    />
+    <SubscribeWrapper v-if="isPayByApp">
+      <h6 class="cancel-ask__title">取消訂閱提示</h6>
+      <p class="cancel-ask__description">
+        由於您先前於 APP 購買，如要取消訂閱，請至 App Store (iOS 系統) 或 Google
+        Play (Android 系統) 操作
+      </p>
+      <UiMembershipButtonPrimary
+        class="subscribe-cancel__back"
+        @click.native="handleBack"
+        >回訂閱紀錄</UiMembershipButtonPrimary
+      >
+    </SubscribeWrapper>
+    <SubscribeWrapper v-else @back="handleBack" @submit="handleSubmit">
+      <h6 class="cancel-ask__title">取消訂閱</h6>
+      <p class="cancel-ask__description">
+        請問您為何想取消訂閱鏡週刊 Premium 服務？
+      </p>
+      <label>
+        <input type="checkbox" id="content" value="文章無法滿足需求" />
+        文章無法滿足需求</label
+      >
+      <label for="other-media">
+        <input
+          type="checkbox"
+          id="other-media"
+          value="已訂閱其他媒體"
+          v-model="reason"
+        />
+        已訂閱其他媒體</label
+      >
+      <label for="user-experience">
+        <input
+          type="checkbox"
+          id="user-experience"
+          value="使用體驗不佳"
+          v-model="reason"
+        />
+        使用體驗不佳</label
+      >
+      <label for="change-plan">
+        <input
+          type="checkbox"
+          id="change-plan"
+          value="想改用單篇付費方式繼續閱讀"
+          v-model="reason"
+        />
+        想改用單篇付費方式繼續閱讀</label
+      >
+      <label for="other">
+        <input type="checkbox" id="other" value="其他" v-model="reason" />
+        其他</label
+      >
+      <textarea
+        v-if="shouldShowTextarea"
+        v-model="otherDetail"
+        placeholder="請輸入您的回饋..."
+        rows="3"
+      />
+      <div class="cancel-ask__button_group">
+        <UiMembershipButtonSecondary @click.native="handleBack"
+          >返回</UiMembershipButtonSecondary
+        >
+        <UiMembershipButtonPrimary @click.native="handleSubmit"
+          >確認取消訂閱</UiMembershipButtonPrimary
+        >
+      </div>
+    </SubscribeWrapper>
     <SubscribeCancelSimForm
       v-if="shouldShowSim"
       :isPayByApp="isPayByApp"
@@ -26,29 +78,41 @@
 </template>
 
 <script>
-import SubscribeCancel from '~/components/SubscribeCancel.vue'
+import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import SubscribeCancelSimForm from '~/components/SubscribeCancelSimForm.vue'
+import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
+import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
+// import UiMembershipCheckoutLabel from '~/components/UiMembershipCheckoutLabel.vue'
 
 export default {
-  components: { SubscribeCancel, SubscribeCancelSimForm },
+  components: {
+    SubscribeWrapper,
+    SubscribeCancelSimForm,
+    UiMembershipButtonPrimary,
+    UiMembershipButtonSecondary,
+    // UiMembershipCheckoutLabel,
+  },
   data() {
     return {
       isPayByApp: false,
       reason: [],
       cancelStatus: 'success',
+      otherDetail: '',
     }
   },
   computed: {
     shouldShowSim() {
       return process.env.NODE_ENV !== ('production' || 'staging')
     },
+    shouldShowTextarea() {
+      return this.reason.includes('其他')
+    },
   },
   methods: {
     handleBack() {
       window.location.assign('/subscribe/set')
     },
-    handleSubmit(reason) {
-      this.reason = reason
+    handleSubmit() {
       if (this.cancelStatus === 'success') {
         return window.location.assign('/subscribe/cancel-success')
       }
@@ -71,6 +135,73 @@ export default {
   @include media-breakpoint-up(sm) {
     min-height: calc(100vw - 850px);
     padding: 80px;
+  }
+
+  &__title {
+    font-size: 20px;
+    line-height: 32px;
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  &__description {
+    margin: 4px 0 24px 0;
+    color: rgba(0, 0, 0, 0.66);
+  }
+
+  label {
+    display: block;
+    color: rgba(0, 0, 0, 0.87);
+
+    input {
+      height: 16px;
+      width: 16px;
+      margin-right: 8px;
+    }
+
+    &:not(:first-child) {
+      margin-top: 8px;
+    }
+  }
+
+  textarea {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+    width: 100%;
+    height: 99px;
+    padding: 12px;
+    margin-top: 8px;
+    resize: none;
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.3);
+    }
+
+    &:focus {
+      border: 1px solid rgba(0, 0, 0, 0.87);
+      outline: none;
+    }
+  }
+
+  &__button_group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 32px;
+    .button {
+      width: 64px;
+      height: 38px;
+      padding: 8px 12px;
+      font-size: 16px;
+      line-height: 22px;
+      &:nth-child(2) {
+        width: 128px;
+      }
+    }
+  }
+
+  &__back {
+    margin: 0 auto;
+    width: 240px;
+    height: 48px;
   }
 }
 </style>
