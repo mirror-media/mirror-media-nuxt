@@ -17,41 +17,23 @@
       <p class="cancel-ask__description">
         請問您為何想取消訂閱鏡週刊 Premium 服務？
       </p>
-      <label>
-        <input type="checkbox" id="content" value="文章無法滿足需求" />
-        文章無法滿足需求</label
-      >
-      <label for="other-media">
-        <input
-          type="checkbox"
-          id="other-media"
-          value="已訂閱其他媒體"
-          v-model="reason"
-        />
-        已訂閱其他媒體</label
-      >
-      <label for="user-experience">
-        <input
-          type="checkbox"
-          id="user-experience"
-          value="使用體驗不佳"
-          v-model="reason"
-        />
-        使用體驗不佳</label
-      >
-      <label for="change-plan">
-        <input
-          type="checkbox"
-          id="change-plan"
-          value="想改用單篇付費方式繼續閱讀"
-          v-model="reason"
-        />
-        想改用單篇付費方式繼續閱讀</label
-      >
-      <label for="other">
-        <input type="checkbox" id="other" value="其他" v-model="reason" />
-        其他</label
-      >
+      <UiMembershipCheckoutLabel
+        content="文章無法滿足需求"
+        @change="handleChange"
+      />
+      <UiMembershipCheckoutLabel
+        content="已訂閱其他媒體"
+        @change="handleChange"
+      />
+      <UiMembershipCheckoutLabel
+        content="使用體驗不佳"
+        @change="handleChange"
+      />
+      <UiMembershipCheckoutLabel
+        content="想改用單篇付費方式繼續閱讀"
+        @change="handleChange"
+      />
+      <UiMembershipCheckoutLabel content="其他" @change="handleChange" />
       <textarea
         v-if="shouldShowTextarea"
         v-model="otherDetail"
@@ -82,7 +64,7 @@ import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import SubscribeCancelSimForm from '~/components/SubscribeCancelSimForm.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
-// import UiMembershipCheckoutLabel from '~/components/UiMembershipCheckoutLabel.vue'
+import UiMembershipCheckoutLabel from '~/components/UiMembershipCheckoutLabel.vue'
 
 export default {
   components: {
@@ -90,7 +72,7 @@ export default {
     SubscribeCancelSimForm,
     UiMembershipButtonPrimary,
     UiMembershipButtonSecondary,
-    // UiMembershipCheckoutLabel,
+    UiMembershipCheckoutLabel,
   },
   data() {
     return {
@@ -123,6 +105,12 @@ export default {
     },
     setCancelStatus(val) {
       this.cancelStatus = val
+    },
+    handleChange(value) {
+      if (value.type === 'add') {
+        return this.reason.push(value.value)
+      }
+      this.reason = this.reason.filter((item) => item !== value.value)
     },
   },
 }
