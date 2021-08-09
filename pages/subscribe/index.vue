@@ -30,7 +30,7 @@ import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeSimMemberStatus from '~/components/SubscribeSimMemberStatus.vue'
-const { ENV } = require('../../configs/config')
+const { ENV } = require('~/configs/config')
 
 export default {
   components: {
@@ -111,21 +111,93 @@ export default {
   computed: {
     planShowed() {
       let planShowed = []
-      const newButton = []
       switch (this.memberStatus) {
         case 'month':
-          newButton.push(this.planList[0].buttons[0])
-          planShowed.push({
-            ...this.planList[0],
-            title: '變更為年訂閱方案',
-            buttons: newButton,
-          })
+          planShowed = [
+            {
+              title: '變更為年訂閱方案',
+              details: [
+                '支持鏡週刊報導精神',
+                '暢讀鏡週刊全站內容',
+                '會員專區零廣告純淨閱覽',
+                '專區好文不分頁流暢閱讀',
+                '免費閱覽最新電子版週刊',
+                '月方案定價 $99 元，限時優惠 $49 元',
+                '年方案定價 $1,188 元，限時優惠 $499 元',
+              ],
+              buttons: [
+                {
+                  title: '訂閱年方案',
+                  hint: '優惠 $499 元',
+                },
+              ],
+            },
+          ]
           break
         case 'basic':
-          planShowed.push(this.planList[0])
+          planShowed = [
+            {
+              title: 'Premium 會員',
+              details: [
+                '支持鏡週刊報導精神',
+                '暢讀鏡週刊全站內容',
+                '會員專區零廣告純淨閱覽',
+                '專區好文不分頁流暢閱讀',
+                '免費閱覽最新電子版週刊',
+                '月方案定價 $99 元，限時優惠 $49 元',
+                '年方案定價 $1,188 元，限時優惠 $499 元',
+              ],
+              buttons: [
+                {
+                  title: '訂閱年方案',
+                  hint: '優惠 $499 元',
+                },
+                {
+                  title: '訂閱月方案',
+                  hint: '優惠 $49 元',
+                },
+              ],
+            },
+          ]
           break
         default:
-          planShowed = this.planList
+          planShowed = [
+            {
+              title: 'Premium 會員',
+              details: [
+                '支持鏡週刊報導精神',
+                '暢讀鏡週刊全站內容',
+                '會員專區零廣告純淨閱覽',
+                '專區好文不分頁流暢閱讀',
+                '免費閱覽最新電子版週刊',
+                '月方案定價 $99 元，限時優惠 $49 元',
+                '年方案定價 $1,188 元，限時優惠 $499 元',
+              ],
+              buttons: [
+                {
+                  title: '訂閱年方案',
+                  hint: '優惠 $499 元',
+                },
+                {
+                  title: '訂閱月方案',
+                  hint: '優惠 $49 元',
+                },
+              ],
+            },
+            {
+              title: 'Basic 會員',
+              details: [
+                '支持鏡週刊報導精神',
+                '好文解鎖 無須綁定 隨心所欲',
+                '$1 元可享單篇好文 14 天無限瀏覽',
+              ],
+              buttons: [
+                {
+                  title: '加入會員',
+                },
+              ],
+            },
+          ]
       }
       return planShowed
     },
