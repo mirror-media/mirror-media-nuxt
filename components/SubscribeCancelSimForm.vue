@@ -7,7 +7,7 @@
     </div>
     <div class="sim__input">
       <input
-        v-model="cancelStatus"
+        v-model="innerCancelStatus"
         type="radio"
         value="success"
         @change="changeHandler"
@@ -16,7 +16,7 @@
     </div>
     <div class="sim__input">
       <input
-        v-model="cancelStatus"
+        v-model="innerCancelStatus"
         type="radio"
         value="fail"
         @change="changeHandler"
@@ -50,8 +50,14 @@ export default {
       default: () => {},
     },
   },
+  data() {
+    return {
+      innerCancelStatus: this.cancelStatus,
+    }
+  },
   methods: {
     changeHandler(e) {
+      this.innerCancelStatus = e.target.value
       this.setCancelStatus(e.target.value)
     },
     clickHandler() {
