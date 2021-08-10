@@ -8,7 +8,7 @@
             <p>每月$99元，暢享零廣告閱讀體驗、優質報導吃到飽</p>
             <UiMembershipButtonPrimary
               class="plan__button"
-              @click.native="sendMembershipSubscribe('加入Premium會員')"
+              @click.native="$emit('subscribePremium')"
             >
               加入Premium會員
             </UiMembershipButtonPrimary>
@@ -20,7 +20,7 @@
           <p>或以$1元立即解鎖本篇報導，享14天內無限次觀看</p>
           <UiMembershipButtonLight
             class="plan__button"
-            @click.native="sendMembershipSubscribe('解鎖這篇報導')"
+            @click.native="$emit('subscribePost')"
           >
             解鎖單篇報導
           </UiMembershipButtonLight>
@@ -28,8 +28,9 @@
       </div>
     </div>
     <UiPremiumLoginNow
-      v-if="stateMembershipSubscribe.matches('會員訂閱功能.會員文章頁.未登入')"
+      v-if="shouldShowLoginNow"
       class="invite-to-subscribe__login-now"
+      @login="$emit('login')"
     />
   </div>
 </template>
@@ -38,7 +39,6 @@
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiMembershipButtonLight from '~/components/UiMembershipButtonLight.vue'
 import UiPremiumLoginNow from '~/components/UiPremiumLoginNow.vue'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
@@ -46,13 +46,11 @@ export default {
     UiMembershipButtonLight,
     UiPremiumLoginNow,
   },
-
-  setup() {
-    const { state, send } = useMemberSubscribeMachine()
-    return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
-    }
+  props: {
+    shouldShowLoginNow: {
+      type: Boolean,
+      default: true,
+    },
   },
 }
 </script>

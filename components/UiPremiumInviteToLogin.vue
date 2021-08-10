@@ -3,11 +3,14 @@
     <h1 class="invite-to-login__title title">歡迎加入鏡會員，閱讀完整文章</h1>
     <a
       class="invite-to-login__become-member-link become-member-link"
-      :href="`/login?destination=${currentPagePath}`"
+      :href="loginUrl"
     >
       成為會員
     </a>
-    <UiPremiumLoginNow class="invite-to-login__paragraph" />
+    <UiPremiumLoginNow
+      class="invite-to-login__paragraph"
+      @login="navigateToLoginPage"
+    />
   </div>
 </template>
 
@@ -19,8 +22,14 @@ export default {
     UiPremiumLoginNow,
   },
   computed: {
-    currentPagePath() {
-      return this.$route?.fullPath
+    loginUrl() {
+      const currentPagePath = this.$route?.fullPath
+      return `/login?destination=${currentPagePath}`
+    },
+  },
+  methods: {
+    navigateToLoginPage() {
+      window.location.assign(this.loginUrl)
     },
   },
 }

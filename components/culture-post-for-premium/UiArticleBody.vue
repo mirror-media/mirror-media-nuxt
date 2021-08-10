@@ -48,6 +48,12 @@
                 '會員訂閱功能.會員文章頁.已登入.未訂閱',
               ].some(stateMembershipSubscribe.matches)
             "
+            :shouldShowLoginNow="
+              stateMembershipSubscribe.matches('會員訂閱功能.會員文章頁.未登入')
+            "
+            @subscribePremium="sendMembershipSubscribe('加入Premium會員')"
+            @subscribePost="sendMembershipSubscribe('解鎖這篇報導')"
+            @login="sendMembershipSubscribe('立即登入')"
           />
         </div>
       </template>

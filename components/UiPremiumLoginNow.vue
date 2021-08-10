@@ -4,7 +4,7 @@
     <button
       role="link"
       class="login-now-wrapper__login-now login-now"
-      @click.prevent="sendMembershipSubscribe('立即登入')"
+      @click.prevent="$emit('login')"
     >
       立即登入
     </button>
@@ -12,22 +12,7 @@
 </template>
 
 <script>
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
-
-export default {
-  computed: {
-    currentPagePath() {
-      return this.$route?.fullPath
-    },
-  },
-  setup() {
-    const { state, send } = useMemberSubscribeMachine()
-    return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
-    }
-  },
-}
+export default {}
 </script>
 
 <style lang="scss" scoped>
