@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import { ENV } from '~/configs/config'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import SubscribeCancelSimForm from '~/components/SubscribeCancelSimForm.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
@@ -84,7 +85,7 @@ export default {
   },
   computed: {
     shouldShowSim() {
-      return process.env.ENV !== 'production' && process.env.ENV !== 'staging'
+      return ENV !== 'production' && ENV !== 'staging'
     },
     shouldShowTextarea() {
       return this.reason.includes('其他')
