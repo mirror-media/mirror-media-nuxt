@@ -36,7 +36,7 @@ export default function createMachine(router, route, store) {
 }
 
 function createNavigation(router, route, path) {
-  if (shouldStopNavigation(route, path)) {
+  if (!path || shouldStopNavigation(route, path)) {
     return
   }
   router.push(path)
