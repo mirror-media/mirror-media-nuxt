@@ -22,6 +22,10 @@
             :validateOn="validateOn"
             :setFormStatus="setFormStatus"
           />
+          <p class="subscribe-info__form_left_hint">
+            按下開始結帳後，頁面將會跳離，抵達由藍新金流 NewebPay
+            所提供的線上結帳頁面，完成後將會再跳回到鏡週刊
+          </p>
           <UiSubscribeButton title="開始結帳" @click.native="submitHandler" />
         </div>
         <div class="subscribe-info__form_right">
@@ -180,6 +184,13 @@ export default {
           color: rgba(0, 0, 0, 0.66);
         }
       }
+
+      &_hint {
+        font-size: 16px;
+        line-height: 150%;
+        color: rgba(0, 0, 0, 0.5);
+        margin: 24px 0;
+      }
     }
 
     &_right {
@@ -195,6 +206,9 @@ export default {
 }
 
 /deep/ {
+  .receipt {
+    margin-bottom: 24px !important;
+  }
   input[type='text'] {
     height: 48px;
     width: 100%;
