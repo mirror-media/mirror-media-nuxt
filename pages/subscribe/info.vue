@@ -1,0 +1,273 @@
+<template>
+  <div class="subscribe-info">
+    <SubscribeStepProgress :currentStep="2" />
+
+    <div class="subscribe-info__form">
+      <div class="subscribe-info__form_wrapper">
+        <div class="subscribe-info__form_left">
+          <MembershipFormPlanList
+            @back="handleBack"
+            :perchasedPlan="perchasedPlan"
+          />
+          <div class="subscribe-info__form_left_email">
+            <h1 class="subscribe-info__form_left_email_title">電子信箱</h1>
+            <p class="subscribe-info__form_left_email_description">
+              我們會將訂單資訊寄至信箱給您。若您更改信箱，我們將一併更改您個人資料的聯絡信箱。
+            </p>
+            <input type="text" placeholder="name@example.com" />
+          </div>
+          <SubscribeFormReceipt
+            ref="receiptDOM"
+            :setReceiptData="setReceiptData"
+            :validateOn="validateOn"
+            :setFormStatus="setFormStatus"
+          />
+          <UiSubscribeButton title="開始結帳" @click.native="submitHandler" />
+        </div>
+        <div class="subscribe-info__form_right">
+          <MembershipFormPerchaseInfo :perchasedPlan="perchasedPlan" />
+        </div>
+      </div>
+    </div>
+
+    <!-- loading mask -->
+    <div v-if="orderStatus === 'loading'" class="subscribe-info__loading">
+      <div class="subscribe-info__loading_icon">
+        <img :src="require('~/assets/loading.gif')" alt="" />
+      </div>
+    </div>
+    <SubscribeSimFormStatus
+      v-if="showSimFormStatus"
+      :validateOn="validateOn"
+      :setValidateOn="setValidateOn"
+    />
+  </div>
+</template>
+
+<script>
+import { ENV } from '~/configs/config'
+import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
+import SubscribeSimFormStatus from '~/components/SubscribeSimFormStatus.vue'
+import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
+import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
+import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
+import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
+
+export default {
+  components: {
+    SubscribeStepProgress,
+    SubscribeSimFormStatus,
+    MembershipFormPlanList,
+    MembershipFormPerchaseInfo,
+    SubscribeFormReceipt,
+    UiSubscribeButton,
+  },
+  data() {
+    return {
+      perchasedPlan: [
+        {
+          id: 1,
+          detail: '鏡週刊 Premium 會員 (月方案)',
+          price: 99,
+          newPrice: 49,
+        },
+      ],
+      orderStatus: 'normal', // normal, loading
+      simOrderStatus: 'success', //  order-fail, payment-fail, success
+      validateOn: true,
+    }
+  },
+  computed: {
+    showSimFormStatus() {
+      return ENV === 'local'
+    },
+  },
+  methods: {
+    handleBack() {
+      this.$router.push('/subscribe')
+    },
+    setValidateOn() {
+      this.validateOn = !this.validateOn
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.subscribe-info {
+  position: relative;
+  &__loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &_icon {
+      width: 100px;
+      height: 100px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  &__form {
+    padding: 10px 8px;
+    @include media-breakpoint-up(md) {
+      padding: 40px 8px;
+    }
+
+    &_wrapper {
+      max-width: 850px;
+      margin: auto;
+      display: flex;
+      flex-direction: column-reverse;
+      @include media-breakpoint-up(md) {
+        flex-direction: row;
+      }
+      @include media-breakpoint-up(lg) {
+        max-width: 991px;
+      }
+    }
+
+    &_left {
+      width: 100%;
+      flex: 2;
+      flex-shrink: 0;
+      margin-right: 41px;
+      @include media-breakpoint-up(md) {
+        max-width: 550px;
+      }
+
+      div:first-child {
+        @include media-breakpoint-up(md) {
+          margin-bottom: 60px;
+        }
+      }
+
+      & > div {
+        margin-bottom: 48px;
+      }
+
+      & > .subcribe-button {
+        max-width: 490px;
+        margin: auto;
+      }
+
+      &_email {
+        &_title {
+          margin-bottom: 8px;
+          color: rgba(0, 0, 0, 0.87);
+          font-size: 22px;
+          line-height: 31px;
+          @include media-breakpoint-up(md) {
+            font-size: 24px;
+            line-height: 34px;
+            margin-bottom: 5px;
+          }
+        }
+
+        &_description {
+          margin-bottom: 12px;
+          font-size: 16px;
+          line-height: 150%;
+          color: rgba(0, 0, 0, 0.66);
+        }
+      }
+    }
+
+    &_right {
+      width: 100%;
+      flex: 1;
+      margin-bottom: 28px;
+
+      @include media-breakpoint-up(md) {
+        max-width: 400px;
+      }
+    }
+  }
+}
+
+/deep/ {
+  input[type='text'] {
+    height: 48px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 2px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    font-size: 18px;
+    line-height: 25px;
+    color: rgba(0, 0, 0, 0.87);
+
+    &:focus {
+      outline: none;
+      border: 1px solid rgba(0, 0, 0, 0.87);
+    }
+
+    &:disabled {
+      background: #e3e3e3;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      color: rgba(0, 0, 0, 0.2);
+      font-size: 18px;
+      line-height: 25px;
+      &::placeholder {
+        color: rgb(227, 227, 227);
+      }
+    }
+
+    &::placeholder {
+      font-size: 18px;
+      line-height: 25px;
+      color: rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  input[type='radio'] {
+    width: 20px;
+    height: 20px;
+    padding: 6px;
+    border-radius: 11px;
+    background-color: #f5f5f5;
+    color: #04295e;
+  }
+
+  .error {
+    animation-name: errorShake;
+    animation-duration: 0.3s;
+    input,
+    select {
+      border: 1px solid #e51731;
+    }
+
+    &__message {
+      margin-top: 8px;
+      color: #e51731 !important;
+      font-size: 16px;
+      line-height: 150%;
+    }
+  }
+
+  .subscribe-form__title {
+    font-size: 22px;
+    line-height: 34px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    color: rgba(0, 0, 0, 0.87);
+    margin-bottom: 12px;
+
+    @include media-breakpoint-up(sm) {
+      font-size: 24px;
+      line-height: 31px;
+    }
+  }
+}
+</style>
