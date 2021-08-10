@@ -43,7 +43,8 @@ export default {
         會員文章頁: {
           id: '會員文章頁',
           initial: '起點',
-          entry: ['setFromPost'],
+          entry: ['navigateToPremiumPage'],
+          exit: ['setFromPost'],
           states: {
             /*
              * '起點': {
