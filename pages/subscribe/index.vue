@@ -30,7 +30,7 @@ import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeSimMemberStatus from '~/components/SubscribeSimMemberStatus.vue'
-const { ENV } = require('~/configs/config')
+import { ENV } from '~/configs/config'
 
 export default {
   components: {
