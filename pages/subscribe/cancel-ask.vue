@@ -85,7 +85,7 @@ export default {
   },
   computed: {
     shouldShowSim() {
-      return ENV !== 'production' && ENV !== 'staging'
+      return ENV !== 'prod' && ENV !== 'staging'
     },
     shouldShowTextarea() {
       return this.reason.includes('其他')
