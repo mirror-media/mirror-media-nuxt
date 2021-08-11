@@ -26,7 +26,7 @@ export default function createMachine(router, route, store) {
         createNavigation(router, route, '/subscribe')
       },
       navigateToSubscribeInfo() {
-        createNavigation(router, route, '/member-subscribe/info')
+        createNavigation(router, route, '/subscribe/info')
       },
     },
   }).withContext({
