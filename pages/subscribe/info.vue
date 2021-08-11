@@ -9,12 +9,30 @@
             @back="handleBack"
             :perchasedPlan="perchasedPlan"
           />
-          <div class="subscribe-info__form_left_email">
+          <div
+            class="subscribe-info__form_left_email"
+            :class="{ error: $v.email.$error }"
+          >
             <h1 class="subscribe-info__form_left_email_title">電子信箱</h1>
             <p class="subscribe-info__form_left_email_description">
               我們會將訂單資訊寄至信箱給您。若您更改信箱，我們將一併更改您個人資料的聯絡信箱。
             </p>
-            <input type="text" placeholder="name@example.com" />
+            <input
+              type="text"
+              placeholder="name@example.com"
+              v-model="email"
+              @input="$v.email.$touch"
+            />
+            <span
+              v-show="!$v.email.email && $v.email.$error"
+              class="error__message"
+              >請輸入有效的 Email 地址</span
+            >
+            <span
+              v-show="!$v.email.required && $v.email.$error"
+              class="error__message"
+              >電子郵件不得為空</span
+            >
           </div>
           <SubscribeFormReceipt
             ref="receiptDOM"
@@ -33,25 +51,21 @@
         </div>
       </div>
     </div>
-
-    <!-- loading mask -->
-    <div v-if="orderStatus === 'loading'" class="subscribe-info__loading">
-      <div class="subscribe-info__loading_icon">
-        <img :src="require('~/assets/loading.gif')" alt="" />
-      </div>
-    </div>
-    <SubscribeSimFormStatus
+    <MembershipInfoSim
       v-if="showSimFormStatus"
       :validateOn="validateOn"
       :setValidateOn="setValidateOn"
+      :orderStatus="orderStatus"
+      :setOrderStatus="setOrderStatus"
     />
   </div>
 </template>
 
 <script>
+import { required, email } from 'vuelidate/lib/validators'
 import { ENV } from '~/configs/config'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
-import SubscribeSimFormStatus from '~/components/SubscribeSimFormStatus.vue'
+import MembershipInfoSim from '~/components/MembershipInfoSim.vue'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
@@ -60,7 +74,7 @@ import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 export default {
   components: {
     SubscribeStepProgress,
-    SubscribeSimFormStatus,
+    MembershipInfoSim,
     MembershipFormPlanList,
     MembershipFormPerchaseInfo,
     SubscribeFormReceipt,
@@ -76,10 +90,27 @@ export default {
           newPrice: 49,
         },
       ],
-      orderStatus: 'normal', // normal, loading
-      simOrderStatus: 'success', //  order-fail, payment-fail, success
+      email: '',
+      receiptData: {
+        receiptPlan: '捐贈',
+        donateOrganization: '',
+        carrierType: 'mail',
+        carrierNumber: '',
+        carrierTitle: '',
+        carrierUbn: '',
+      },
+      orderStatus: 'success', //  fail, success
       validateOn: true,
+      formStatus: {
+        receipt: 'OK',
+      },
     }
+  },
+  validations: {
+    email: {
+      email,
+      required,
+    },
   },
   computed: {
     showSimFormStatus() {
@@ -92,6 +123,29 @@ export default {
     },
     setValidateOn() {
       this.validateOn = !this.validateOn
+    },
+    setReceiptData(editedReceiptData) {
+      this.receiptData = editedReceiptData
+    },
+    setFormStatus(type, formStatus) {
+      this.formStatus[type] = formStatus
+    },
+    setOrderStatus(val) {
+      this.orderStatus = val
+    },
+    submitHandler(e) {
+      e.preventDefault()
+      this.$refs.receiptDOM.check()
+      this.$v.email.$touch()
+      console.log(this.orderStatus)
+      if (
+        this.validateOn &&
+        (this.$v.email.$error || this.formStatus.receipt !== 'OK')
+      )
+        return
+      if (this.orderStatus === 'success')
+        return this.$router.push('/subscribe/success')
+      this.$router.push('/subscribe/fail')
     },
   },
 }
