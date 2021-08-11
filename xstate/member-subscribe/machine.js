@@ -23,10 +23,10 @@ export default function createMachine(router, route, store) {
         createNavigation(router, route, context.isFromPost)
       },
       navigateToSubscribePlans() {
-        createNavigation(router, route, '/subscribe')
+        createNavigation(router, route, '/subscribe?ms=true')
       },
       navigateToSubscribeInfo() {
-        createNavigation(router, route, '/subscribe/info')
+        createNavigation(router, route, '/subscribe/info?ms=true')
       },
     },
   }).withContext({
