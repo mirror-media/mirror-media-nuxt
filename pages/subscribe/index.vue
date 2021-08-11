@@ -31,6 +31,7 @@ import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipC
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeSimMemberStatus from '~/components/SubscribeSimMemberStatus.vue'
 import { ENV } from '~/configs/config'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
@@ -38,6 +39,13 @@ export default {
     UiSubscribeInfo,
     SubscribeMembershipChoosePlanCard,
     SubscribeSimMemberStatus,
+  },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+    }
   },
   data() {
     return {
