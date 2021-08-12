@@ -110,6 +110,9 @@ export function useMemberSubscribeMachine() {
     if (route.value.name === 'premium-slug') {
       service.value.send('到會員文章頁')
     }
+    if (route.value.name === 'subscribe') {
+      service.value.send('到方案購買頁')
+    }
   }
   return useService(service.value)
 }

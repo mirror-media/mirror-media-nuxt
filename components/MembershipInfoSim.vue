@@ -1,6 +1,7 @@
 <template>
   <div class="sim">
     <div class="sim__input">
+      <p>驗收時請先關閉表單驗證，以利快速驗收</p>
       <input type="checkbox" :checked="validateOn" @change="setValidateOn" />
       <span>validate field</span>
     </div>
