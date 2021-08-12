@@ -1,12 +1,18 @@
 <template>
-  <section>
-    <h1>購買失敗</h1>
-    <button @click="sendMembershipSubscribe('回前頁')">回前頁</button>
-  </section>
+  <div>
+    <SubscribeStepProgress :currentStep="2" />
+    <SubscribeFail
+      :resultStatus="resultStatus"
+      :orderId="orderId"
+      message="訂單建立失敗，請再次下訂單，或來電客服專線 02-6633-3882 協助。"
+    />
+  </div>
 </template>
 
 <script>
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
+import SubscribeFail from '~/components/SubscribeFail.vue'
+import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 
 export default {
   setup() {
@@ -15,6 +21,19 @@ export default {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
     }
+  },
+  components: {
+    SubscribeFail,
+    SubscribeStepProgress,
+  },
+  data() {
+    return {
+      orderId: 202012213,
+      resultStatus: 'payment-fail',
+    }
+  },
+  provide: {
+    subscribeFailButtonLink: '/subscribe',
   },
 }
 </script>
