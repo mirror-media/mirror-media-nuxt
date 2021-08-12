@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import page from '../profile.vue'
+import page from '../profile/index.vue'
 import ContainerMembershipProfileForm from '~/components/ContainerMembershipProfileForm.vue'
 import ContainerMembershipProfileSuccess from '~/components/ContainerMembershipProfileSuccess.vue'
 import ContainerMembershipProfileError from '~/components/ContainerMembershipProfileError.vue'

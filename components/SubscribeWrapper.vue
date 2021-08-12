@@ -1,11 +1,11 @@
 <template>
-  <div class="subscribe-cancel">
+  <div class="subscribe-wrapper">
     <slot />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.subscribe-cancel {
+.subscribe-wrapper {
   margin: 0 auto;
   font-size: 18px;
   line-height: 150%;
