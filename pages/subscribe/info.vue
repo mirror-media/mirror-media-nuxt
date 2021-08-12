@@ -6,8 +6,8 @@
       <div class="subscribe-info__form_wrapper">
         <div class="subscribe-info__form_left">
           <MembershipFormPlanList
-            @back="handleBack"
             :perchasedPlan="perchasedPlan"
+            @back="handleBack"
           />
           <div
             class="subscribe-info__form_left_email"
@@ -18,9 +18,9 @@
               我們會將訂單資訊寄至信箱給您。若您更改信箱，我們將一併更改您個人資料的聯絡信箱。
             </p>
             <input
+              v-model="email"
               type="text"
               placeholder="name@example.com"
-              v-model="email"
               @input="$v.email.$touch"
             />
             <span
@@ -70,6 +70,7 @@ import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
@@ -79,6 +80,13 @@ export default {
     MembershipFormPerchaseInfo,
     SubscribeFormReceipt,
     UiSubscribeButton,
+  },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+    }
   },
   data() {
     return {
@@ -144,8 +152,8 @@ export default {
       )
         return
       if (this.orderStatus === 'success')
-        return this.$router.push('/subscribe/success')
-      this.$router.push('/subscribe/fail')
+        return this.sendMembershipSubscribe('付款成功')
+      this.sendMembershipSubscribe('付款失敗')
     },
   },
 }

@@ -23,15 +23,22 @@ export default function createMachine(router, route, store) {
         createNavigation(router, route, context.isFromPost)
       },
       navigateToSubscribePlans() {
-        createNavigation(router, route, '/member-subscribe')
+        createNavigation(router, route, '/subscribe?ms=true')
       },
       navigateToSubscribeInfo() {
-        createNavigation(router, route, '/member-subscribe/info')
+        createNavigation(router, route, '/subscribe/info?ms=true')
+      },
+      navigateToSubscribeSuccess() {
+        createNavigation(router, route, '/subscribe/success?ms=true')
+      },
+      navigateToSubscribeFail() {
+        createNavigation(router, route, '/subscribe/fail?ms=true')
       },
     },
   }).withContext({
     ...machine.context,
     isLoggedIn: store.getters['membership/isLoggedIn'],
+    subscription: mockFetchSubscription(),
   })
 }
 
@@ -48,4 +55,8 @@ function createNavigation(router, route, path) {
       return route.value.path.startsWith(path)
     }
   }
+}
+
+function mockFetchSubscription() {
+  return localStorage.getItem('subscription') ?? null
 }

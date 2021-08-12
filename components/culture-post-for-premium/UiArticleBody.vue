@@ -38,16 +38,18 @@
         </div>
       </template>
       <template v-else>
-        <div class="invite-to-login-wrapper">
+        <div
+          v-if="
+            stateMembershipSubscribe &&
+            [
+              '會員訂閱功能.會員文章頁.未登入',
+              '會員訂閱功能.會員文章頁.已登入.未訂閱',
+            ].some(stateMembershipSubscribe.matches)
+          "
+          class="invite-to-login-wrapper"
+        >
           <div class="invite-to-login-wrapper__fade-out-effect" />
           <UiPremiumInviteToSubscribe
-            v-if="
-              stateMembershipSubscribe &&
-              [
-                '會員訂閱功能.會員文章頁.未登入',
-                '會員訂閱功能.會員文章頁.已登入.未訂閱',
-              ].some(stateMembershipSubscribe.matches)
-            "
             :shouldShowLoginNow="
               stateMembershipSubscribe.matches('會員訂閱功能.會員文章頁.未登入')
             "

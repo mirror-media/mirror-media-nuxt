@@ -16,14 +16,14 @@
         <UiSubscribeButton
           :title="buttons[0].title"
           :hint="buttons[0].hint"
-          @click.native="changePlanHandler"
+          @click.native="changePlanHandler(buttons[0])"
         />
         <UiSubscribeButton
           v-if="buttons[1]"
           :title="buttons[1].title"
           :hint="buttons[1].hint"
           color="light"
-          @click.native="changePlanHandler"
+          @click.native="changePlanHandler(buttons[1])"
         />
         <div
           v-if="hintUnderButton"
@@ -69,14 +69,14 @@ export default {
       default: null,
     },
   },
-  methods: {
-    changePlanHandler() {
-      this.$router.push(`/subscribe/info`)
-    },
-  },
   computed: {
     isPremium() {
       return this.title === 'Premium 會員' || this.title === '變更為年訂閱方案'
+    },
+  },
+  methods: {
+    changePlanHandler(plan) {
+      this.$emit('subscribePlan', plan)
     },
   },
 }
