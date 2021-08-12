@@ -9,17 +9,19 @@
       >
         方案選擇
       </h2>
-      <div class="subscribe-choose__wrapper_plans">
-        <SubscribeMembershipChoosePlanCard
-          v-for="plan in planShowed"
-          :key="plan.title"
-          :title="plan.title"
-          :details="plan.details"
-          :buttons="plan.buttons"
-          :hintUnderButton="hintUnderButton"
-          @subscribePlan="handleSubscribePlan"
-        />
-      </div>
+      <ClientOnly>
+        <div class="subscribe-choose__wrapper_plans">
+          <SubscribeMembershipChoosePlanCard
+            v-for="plan in planShowed"
+            :key="plan.title"
+            :title="plan.title"
+            :details="plan.details"
+            :buttons="plan.buttons"
+            :hintUnderButton="hintUnderButton"
+            @subscribePlan="handleSubscribePlan"
+          />
+        </div>
+      </ClientOnly>
     </div>
     <UiSubscribeInfo type="membership" :infoList="infoList" />
     <SubscribeSimMemberStatus v-if="shouldShowSim" v-model="memberStatus" />
@@ -27,6 +29,7 @@
 </template>
 
 <script>
+import { computed } from '@nuxtjs/composition-api'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
@@ -43,9 +46,11 @@ export default {
   },
   setup() {
     const { state, send } = useMemberSubscribeMachine()
+    const memberStatus = useMemberStatus()
     return {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
+      memberStatus,
       handleSubscribePlan(plan) {
         send(getEventType(plan.title))
 
@@ -58,10 +63,31 @@ export default {
         }
       },
     }
+
+    function useMemberStatus() {
+      const { state } = useMemberSubscribeMachine()
+      const memberStatus = computed(() => computeMemberStatus(state?.value))
+      return memberStatus
+
+      function computeMemberStatus(state) {
+        const parentState = '會員訂閱功能.方案購買流程.方案購買頁'
+        if (state?.matches(`${parentState}.未登入`)) {
+          return 'not-member'
+        } else if (state?.matches(`${parentState}.已登入`)) {
+          const parentState = '會員訂閱功能.方案購買流程.方案購買頁.已登入'
+          if (state?.matches(`${parentState}.月或年方案選擇`)) {
+            return 'basic'
+          } else if (state?.matches(`${parentState}.年方案選擇`)) {
+            return 'month'
+          } else {
+            return 'year'
+          }
+        }
+      }
+    }
   },
   data() {
     return {
-      memberStatus: 'not-member',
       planList: [
         {
           title: 'Premium 會員',
