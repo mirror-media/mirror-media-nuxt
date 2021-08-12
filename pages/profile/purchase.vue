@@ -21,7 +21,7 @@
         @load-more-record="handleMoreRecord"
       />
     </SubscribeWrapper>
-    <template>
+    <template v-else>
       <div class="purchase__message">找不到相關紀錄</div>
       <div class="purchase__upgrade">
         <div class="purchase__upgrade_title">
@@ -30,7 +30,11 @@
         <div class="purchase__upgrade_content">
           每月 $49 元，暢享專區零廣告閱讀、優質報導看到飽
         </div>
-        <UiMembershipButtonPrimary>升級 Premium 會員</UiMembershipButtonPrimary>
+        <a href="/subscribe">
+          <UiMembershipButtonPrimary
+            >升級 Premium 會員</UiMembershipButtonPrimary
+          ></a
+        >
       </div>
     </template>
     <MembershipSimFormStatus

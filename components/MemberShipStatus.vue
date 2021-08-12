@@ -6,10 +6,14 @@
         <img src="~/assets/premium.svg" v-if="isPremium" />
       </div>
       <div class="membership-status__title_button_group">
-        <UiMembershipButtonPrimary v-if="memberShipStatus.name === 'month'"
-          >升級為年訂閱方案</UiMembershipButtonPrimary
+        <a href="/subscribe">
+          <UiMembershipButtonPrimary v-if="memberShipStatus.name === 'month'"
+            >升級為年訂閱方案</UiMembershipButtonPrimary
+          ></a
         >
-        <UiMembershipButtonSecondary>付款設定</UiMembershipButtonSecondary>
+        <a href="/subscribe/set">
+          <UiMembershipButtonSecondary>付款設定</UiMembershipButtonSecondary></a
+        >
       </div>
     </div>
     <div v-if="isPremium" class="membership-status__form">
