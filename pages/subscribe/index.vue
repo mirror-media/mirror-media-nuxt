@@ -1,26 +1,42 @@
 <template>
   <div class="subscribe-choose">
     <SubscribeStepProgress :currentStep="1" />
-    <div class="subscribe-choose__wrapper">
-      <h2
-        v-if="memberStatus !== 'month'"
-        class="subscribe-choose__wrapper_title"
-        :class="{ basic: memberStatus === 'basic' }"
-      >
-        方案選擇
-      </h2>
-      <div class="subscribe-choose__wrapper_plans">
-        <SubscribeMembershipChoosePlanCard
-          v-for="plan in planShowed"
-          :key="plan.title"
-          :title="plan.title"
-          :details="plan.details"
-          :buttons="plan.buttons"
-          :hintUnderButton="hintUnderButton"
-        />
+    <template v-if="memberStatus !== 'year'">
+      <div class="subscribe-choose__wrapper">
+        <h2
+          v-if="memberStatus !== 'month'"
+          class="subscribe-choose__wrapper_title"
+          :class="{ basic: memberStatus === 'basic' }"
+        >
+          方案選擇
+        </h2>
+        <div class="subscribe-choose__wrapper_plans">
+          <SubscribeMembershipChoosePlanCard
+            v-for="plan in planShowed"
+            :key="plan.title"
+            :title="plan.title"
+            :details="plan.details"
+            :buttons="plan.buttons"
+            :hintUnderButton="hintUnderButton"
+          />
+        </div>
       </div>
+      <UiSubscribeInfo type="membership" :infoList="infoList" />
+    </template>
+    <div v-else class="subscribe-choose__year">
+      <SubscribeWrapper>
+        <h6 class="subscribe-choose__year_title">取想要變更方案嗎？</h6>
+        <div class="subscribe-choose__year_description">
+          您目前訂閱的方案為<span>鏡週刊 Premium 服務-年訂閱方案</span
+          >。如需變更，請先取消目前的方案，再重新訂閱新的方案。
+        </div>
+        <UiMembershipButtonPrimary
+          class="subscribe-choose__year_back"
+          @click.native="handleSet"
+          >前往付款設定</UiMembershipButtonPrimary
+        >
+      </SubscribeWrapper>
     </div>
-    <UiSubscribeInfo type="membership" :infoList="infoList" />
     <SubscribeSimMemberStatus v-if="shouldShowSim" v-model="memberStatus" />
   </div>
 </template>
@@ -30,6 +46,8 @@ import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeSimMemberStatus from '~/components/SubscribeSimMemberStatus.vue'
+import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
+import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import { ENV } from '~/configs/config'
 
 export default {
@@ -38,6 +56,8 @@ export default {
     UiSubscribeInfo,
     SubscribeMembershipChoosePlanCard,
     SubscribeSimMemberStatus,
+    SubscribeWrapper,
+    UiMembershipButtonPrimary,
   },
   data() {
     return {
@@ -107,7 +127,6 @@ export default {
       ],
     }
   },
-
   computed: {
     planShowed() {
       let planShowed = []
@@ -213,6 +232,11 @@ export default {
       }
     },
   },
+  methods: {
+    handleSet() {
+      this.$router.push('/subscribe/set')
+    },
+  },
 }
 </script>
 
@@ -254,6 +278,36 @@ export default {
         gap: 24px;
         margin-bottom: 60px;
       }
+    }
+  }
+
+  &__year {
+    min-height: calc(100vw - 150px);
+    padding: 40px 20px 0 20px;
+    @include media-breakpoint-up(sm) {
+      min-height: calc(100vw - 850px);
+      padding: 80px;
+    }
+
+    &_title {
+      font-size: 20px;
+      line-height: 32px;
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    &_description {
+      margin: 4px 0 24px 0;
+      color: rgba(0, 0, 0, 0.66);
+    }
+
+    &_back {
+      margin: 0 auto;
+      width: 240px;
+      height: 48px;
+    }
+
+    span {
+      color: #054f77;
     }
   }
 }
