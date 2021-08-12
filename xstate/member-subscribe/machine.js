@@ -28,6 +28,12 @@ export default function createMachine(router, route, store) {
       navigateToSubscribeInfo() {
         createNavigation(router, route, '/subscribe/info?ms=true')
       },
+      navigateToSubscribeSuccess() {
+        createNavigation(router, route, '/subscribe/success?ms=true')
+      },
+      navigateToSubscribeFail() {
+        createNavigation(router, route, '/subscribe/fail?ms=true')
+      },
     },
   }).withContext({
     ...machine.context,

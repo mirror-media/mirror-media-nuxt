@@ -278,6 +278,7 @@ export default {
               },
             },
             付款成功頁: {
+              entry: ['navigateToSubscribeSuccess'],
               on: {
                 點擊導引連結: [
                   {
@@ -291,6 +292,7 @@ export default {
               },
             },
             付款失敗頁: {
+              entry: ['navigateToSubscribeFail'],
               on: {
                 回前頁: '確認訂購頁',
               },
