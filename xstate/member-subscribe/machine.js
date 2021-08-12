@@ -38,6 +38,7 @@ export default function createMachine(router, route, store) {
   }).withContext({
     ...machine.context,
     isLoggedIn: store.getters['membership/isLoggedIn'],
+    subscription: mockFetchSubscription(),
   })
 }
 
@@ -54,4 +55,8 @@ function createNavigation(router, route, path) {
       return route.value.path.startsWith(path)
     }
   }
+}
+
+function mockFetchSubscription() {
+  return localStorage.getItem('subscription') ?? null
 }

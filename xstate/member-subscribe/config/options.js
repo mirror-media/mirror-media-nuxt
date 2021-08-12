@@ -25,7 +25,10 @@ export default {
       },
     }),
     subscribe: assign({
-      subscription: (context) => context.subscriptionOrder,
+      subscription: (context) => {
+        mockPostSubscription(context.subscriptionOrder)
+        return context.subscriptionOrder
+      },
       subscriptionOrder: null,
     }),
     cancelSubscribe: assign({
@@ -41,4 +44,8 @@ export default {
       redirectDestination: 'sub',
     }),
   },
+}
+
+function mockPostSubscription(subscription) {
+  localStorage.setItem('subscription', subscription)
 }
