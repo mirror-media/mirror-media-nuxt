@@ -17,6 +17,7 @@
           :details="plan.details"
           :buttons="plan.buttons"
           :hintUnderButton="hintUnderButton"
+          @subscribePlan="handleSubscribePlan"
         />
       </div>
     </div>
@@ -45,6 +46,17 @@ export default {
     return {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
+      handleSubscribePlan(plan) {
+        send(getEventType(plan.title))
+
+        function getEventType(planTitle) {
+          const eventMap = {
+            訂閱年方案: '年訂閱',
+            訂閱月方案: '月訂閱',
+          }
+          return eventMap[planTitle]
+        }
+      },
     }
   },
   data() {
