@@ -1,5 +1,9 @@
 <template>
   <div class="sim">
+    <p style="font-size: 12px">
+      由於已開始將 /subscribe 頁面流程整合，本功能先暫時關閉
+    </p>
+    <p style="font-size: 12px">請透過實際走流程達到改變會員訂閱資格。</p>
     <div class="sim__input">
       <input
         v-model="simOrderStatus"
