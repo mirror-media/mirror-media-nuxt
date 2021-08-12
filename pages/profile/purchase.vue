@@ -202,7 +202,7 @@ export default {
       return this.payRecordMetaCount > this.payRecords.length
     },
     showSimFormStatus() {
-      return ENV === 'local'
+      return ENV !== 'prod'
     },
     isPremium() {
       const status = this.memberShipStatus.name
