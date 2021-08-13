@@ -140,12 +140,14 @@ export default {
   &__button_group {
     display: flex;
     flex-direction: column;
-    gap: 12px;
 
     .subcribe-button {
       max-width: 100%;
       height: 71px;
       padding: 12px;
+      &:nth-child(2) {
+        margin-top: 12px;
+      }
     }
 
     &_hint_under_button {
