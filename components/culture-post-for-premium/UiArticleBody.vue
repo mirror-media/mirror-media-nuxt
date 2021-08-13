@@ -203,7 +203,7 @@ export default {
     bottom: 100%;
     width: 100vw;
     height: 300px;
-    background: linear-gradient(180deg, transparent 0%, white 80%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, white 80%);
     left: -20px;
     @include media-breakpoint-up(md) {
       left: calc((100vw - 608px) / 2 * -1);
