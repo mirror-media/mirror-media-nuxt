@@ -1,12 +1,68 @@
 <template>
   <section>
-    <h1>購買成功</h1>
-    <button @click="sendMembershipSubscribe('點擊導引連結')">回文章頁</button>
+    <SubscribeStepProgress :currentStep="3" />
+    <div class="subscribe-success">
+      <div class="subscribe-success__message">
+        您已完成付款，以下為本次訂購資訊，已同步寄送至您的信箱。
+      </div>
+      <div class="subscribe-success__info">
+        <h1 class="subscribe-success__info_title">訂單資訊</h1>
+        <SubscribeSuccessOrderInfoContentRow
+          title="訂單編號"
+          :data="orderInfo.orderId"
+        />
+        <SubscribeSuccessOrderInfoContentRow
+          title="訂單日期"
+          :data="orderDate"
+        />
+        <SubscribeSuccessOrderInfoContentRow
+          v-if="orderInfo.discountPrice"
+          title="優惠折扣碼"
+          :data="orderInfo.discountPrice"
+        />
+        <SubscribeSuccessOrderInfoContentRow
+          title="訂閱起訖"
+          :data="orderInfo.during"
+          class="during"
+        />
+        <div class="subscribe-success__info_row">
+          <div class="subscribe-success__info_row_title">訂閱方案</div>
+          <div class="subscribe-success__info_row_data">
+            <MembershipFormPerchaseInfo
+              :data="perchasedList"
+              :showTitle="false"
+            />
+          </div>
+        </div>
+        <div class="subscribe-success__info_button">
+          <UiSubscribeButton
+            v-if="hasLink"
+            title="回購買文章頁"
+            @click.native="sendMembershipSubscribe('點擊導引連結')"
+          />
+          <template v-else>
+            <UiSubscribeButton
+              title="瀏覽 Premium 會員文章"
+              @click.native="linkToPremium"
+            />
+            <UiMembershipButtonSecondary @click.native="linkToRecord"
+              >回訂閱紀錄</UiMembershipButtonSecondary
+            >
+          </template>
+        </div>
+      </div>
+    </div>
+    <button class="sim" @click="toggleHasLink">toggle 顯示按鈕</button>
   </section>
 </template>
 
 <script>
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
+import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
+import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOrderInfoContentRow.vue'
+import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
+import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
+import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 
 export default {
   setup() {
@@ -16,5 +72,155 @@ export default {
       sendMembershipSubscribe: send,
     }
   },
+  components: {
+    SubscribeStepProgress,
+    SubscribeSuccessOrderInfoContentRow,
+    MembershipFormPerchaseInfo,
+    UiSubscribeButton,
+    UiMembershipButtonSecondary,
+  },
+  data() {
+    return {
+      orderInfo: {
+        orderId: '202012213',
+        discountPrice: 'MJ00012345',
+        during: '2021-05-03～2021-06-03',
+      },
+      orderDate: '2019-12-25',
+      hasLink: false,
+    }
+  },
+  methods: {
+    toggleHasLink() {
+      this.hasLink = !this.hasLink
+    },
+    linkToPremium() {
+      this.$router.push('/section/member')
+    },
+    linkToRecord() {
+      this.$router.push('/profile/purchase')
+    },
+  },
 }
 </script>
+
+<style lang="scss" scoped>
+.subscribe-success {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 8px;
+  color: rgba(0, 0, 0, 0.87);
+  @include media-breakpoint-up(sm) {
+    padding: 48px 5px;
+    font-size: 18px;
+    line-heipht: 27px;
+  }
+
+  &__message {
+    margin: 0 16px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 150%;
+    @include media-breakpoint-up(sm) {
+      margin: 0 24px 24px 24px;
+      font-size: 18px;
+    }
+  }
+
+  &__info {
+    padding: 16px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    @include media-breakpoint-up(sm) {
+      padding: 24px;
+    }
+
+    &_title {
+      margin-bottom: 24px;
+      font-size: 22px;
+      line-height: 31px;
+      @include media-breakpoint-up(sm) {
+        font-size: 24px;
+        line-height: 34px;
+      }
+    }
+
+    &_row {
+      margin-top: 24px;
+      margin-bottom: 51px;
+      @include media-breakpoint-up(sm) {
+        display: flex;
+        margin-top: 12px;
+        margin-bottom: 24px;
+      }
+
+      &_title {
+        @include media-breakpoint-up(sm) {
+          min-width: 180px;
+        }
+      }
+
+      &_data {
+        flex: 1;
+
+        .perchase-info {
+          padding: 0px;
+          margin-top: 4px;
+          @include media-breakpoint-up(sm) {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+
+    .during {
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 24px;
+      @include media-breakpoint-up(sm) {
+        flex-direction: row;
+        gap: 0px;
+        margin-top: 12px;
+      }
+    }
+
+    &_button {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-direction: column;
+      @include media-breakpoint-up(sm) {
+        flex-direction: row;
+      }
+      .subcribe-button,
+      .button {
+        width: 240px;
+        height: 48px;
+        padding-top: 12px;
+        margin: 0 auto;
+        @include media-breakpoint-up(sm) {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  /deep/ .content_row__title {
+    min-width: 100px;
+    @include media-breakpoint-up(sm) {
+      min-width: 180px;
+    }
+  }
+}
+
+.sim {
+  z-index: 9999;
+  position: fixed;
+  top: 100px;
+  right: 0;
+  padding: 10px;
+  border: 1px solid black;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+}
+</style>

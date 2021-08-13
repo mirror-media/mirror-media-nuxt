@@ -1,6 +1,6 @@
 <template>
   <div class="perchase-info">
-    <div class="subscribe-form__title">訂單資訊</div>
+    <div v-if="showTitle" class="subscribe-form__title">訂單資訊</div>
     <div class="perchase-info__row">
       <span>{{ perchasedPlan[0].detail }}</span>
       <span>NT$ {{ perchasedPlan[0].newPrice }}</span>
@@ -35,6 +35,11 @@ export default {
           },
         ]
       },
+    },
+    showTitle: {
+      type: Boolean,
+      require: false,
+      default: true,
     },
   },
 }
