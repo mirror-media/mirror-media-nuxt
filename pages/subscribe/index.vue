@@ -1,43 +1,47 @@
 <template>
   <div class="subscribe-choose">
     <SubscribeStepProgress :currentStep="1" />
-    <template v-if="memberStatus !== 'year'">
-      <div class="subscribe-choose__wrapper">
-        <h2
-          v-if="memberStatus !== 'month'"
-          class="subscribe-choose__wrapper_title"
-          :class="{ basic: memberStatus === 'basic' }"
-        >
-          方案選擇
-        </h2>
-        <div class="subscribe-choose__wrapper_plans">
-          <SubscribeMembershipChoosePlanCard
-            v-for="plan in planShowed"
-            :key="plan.title"
-            :title="plan.title"
-            :details="plan.details"
-            :buttons="plan.buttons"
-            :hintUnderButton="hintUnderButton"
-          />
+    <ClientOnly>
+      <template v-if="memberStatus !== 'year'">
+        <div class="subscribe-choose__wrapper">
+          <h2
+            v-if="memberStatus !== 'month'"
+            class="subscribe-choose__wrapper_title"
+            :class="{ basic: memberStatus === 'basic' }"
+          >
+            方案選擇
+          </h2>
+          <div class="subscribe-choose__wrapper_plans">
+            <SubscribeMembershipChoosePlanCard
+              v-for="plan in planShowed"
+              :key="plan.title"
+              :title="plan.title"
+              :details="plan.details"
+              :buttons="plan.buttons"
+              :hintUnderButton="hintUnderButton"
+            />
+          </div>
         </div>
-      </div>
-      <UiSubscribeInfo type="membership" :infoList="infoList" />
-    </template>
-    <div v-else class="subscribe-choose__year">
-      <SubscribeWrapper>
-        <h6 class="subscribe-choose__year_title">取想要變更方案嗎？</h6>
-        <div class="subscribe-choose__year_description">
-          您目前訂閱的方案為<span>鏡週刊 Premium 服務-年訂閱方案</span
-          >。如需變更，請先取消目前的方案，再重新訂閱新的方案。
+        <UiSubscribeInfo type="membership" :infoList="infoList" />
+      </template>
+      <template v-else>
+        <div class="subscribe-choose__year">
+          <SubscribeWrapper>
+            <h6 class="subscribe-choose__year_title">取想要變更方案嗎？</h6>
+            <div class="subscribe-choose__year_description">
+              您目前訂閱的方案為<span>鏡週刊 Premium 服務-年訂閱方案</span
+              >。如需變更，請先取消目前的方案，再重新訂閱新的方案。
+            </div>
+            <UiMembershipButtonPrimary
+              class="subscribe-choose__year_back"
+              @click.native="handleSet"
+              >前往付款設定</UiMembershipButtonPrimary
+            >
+          </SubscribeWrapper>
         </div>
-        <UiMembershipButtonPrimary
-          class="subscribe-choose__year_back"
-          @click.native="handleSet"
-          >前往付款設定</UiMembershipButtonPrimary
-        >
-      </SubscribeWrapper>
-    </div>
-    <SubscribeSimMemberStatus v-if="shouldShowSim" v-model="memberStatus" />
+        <SubscribeSimMemberStatus v-if="shouldShowSim" v-model="memberStatus" />
+      </template>
+    </ClientOnly>
   </div>
 </template>
 
