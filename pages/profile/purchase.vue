@@ -333,7 +333,7 @@ export default {
     padding: 0;
     @include media-breakpoint-up(md) {
       border: 1px solid rgba(0, 0, 0, 0.1);
-      padding: 24px 24px 16px 24px;
+      padding: 40px;
     }
 
     div {
