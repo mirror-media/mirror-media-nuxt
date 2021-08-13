@@ -46,7 +46,7 @@ function createNavigation(router, route, path) {
   if (!path || shouldStopNavigation(route, path)) {
     return
   }
-  router.push(path)
+  router.replace(path)
 
   function shouldStopNavigation(route, path) {
     return isCurrentRoutePathMatching()
