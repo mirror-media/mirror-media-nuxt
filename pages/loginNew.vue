@@ -15,7 +15,9 @@
           @loginFail="handleLoginFail"
         />
       </div>
-      <button class="login__sim" @click="toggleHint">toggle hint</button>
+      <button v-if="showSim" class="login__sim" @click="toggleHint">
+        toggle hint
+      </button>
     </template>
     <template v-else-if="state === 'registerSuccess'">
       <div class="result-wrapper">
@@ -65,6 +67,7 @@ import userCreate from '~/apollo/mutations/userCreate.gql'
 import loginDestination from '~/utils/login-destination'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
+import { ENV } from '~/configs/config'
 
 export default {
   apollo: {
@@ -100,6 +103,11 @@ export default {
   async beforeMount() {
     await loginDestination.set(this.$route)
     await this.handleFederatedRedirectResult()
+  },
+  computed: {
+    showSim() {
+      return ENV !== 'prod'
+    },
   },
   methods: {
     async handleError({ type, email, error }) {
