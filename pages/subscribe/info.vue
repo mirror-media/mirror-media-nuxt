@@ -47,7 +47,10 @@
           <UiSubscribeButton title="開始結帳" @click.native="submitHandler" />
         </div>
         <div class="subscribe-info__form_right">
-          <MembershipFormPerchaseInfo :perchasedPlan="perchasedPlan" />
+          <MembershipFormPerchaseInfo
+            :perchasedPlan="perchasedPlan"
+            :showTitle="true"
+          />
         </div>
       </div>
     </div>
