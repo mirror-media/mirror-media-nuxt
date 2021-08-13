@@ -19,6 +19,7 @@
               :details="plan.details"
               :buttons="plan.buttons"
               :hintUnderButton="hintUnderButton"
+              @subscribePlan="handleSubscribePlan"
             />
           </div>
         </div>
