@@ -52,7 +52,9 @@
         </div>
       </div>
     </div>
-    <button class="sim" @click="toggleHasLink">toggle 顯示按鈕</button>
+    <button v-if="showSim" class="sim" @click="toggleHasLink">
+      toggle 顯示按鈕
+    </button>
   </section>
 </template>
 
@@ -63,6 +65,7 @@ import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOr
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
+import { ENV } from '~/configs/config'
 
 export default {
   setup() {
@@ -89,6 +92,11 @@ export default {
       orderDate: '2019-12-25',
       hasLink: false,
     }
+  },
+  computed: {
+    showSim() {
+      return ENV !== 'prod'
+    },
   },
   methods: {
     toggleHasLink() {
