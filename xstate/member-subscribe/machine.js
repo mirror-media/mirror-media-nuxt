@@ -52,7 +52,7 @@ function createNavigation(router, route, path) {
     return isCurrentRoutePathMatching()
 
     function isCurrentRoutePathMatching() {
-      return route.value.path.startsWith(path)
+      return route.value.fullPath.startsWith(path)
     }
   }
 }
