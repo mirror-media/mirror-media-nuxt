@@ -84,6 +84,9 @@ export default {
           return eventMap[planTitle]
         }
       },
+      handleSet() {
+        send('點擊前往付款設定頁')
+      },
     }
 
     function useMemberStatus() {
@@ -278,11 +281,6 @@ export default {
         default:
           return null
       }
-    },
-  },
-  methods: {
-    handleSet() {
-      this.$router.push('/subscribe/set')
     },
   },
 }

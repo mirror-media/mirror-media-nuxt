@@ -34,6 +34,9 @@ export default function createMachine(router, route, store) {
       navigateToSubscribeFail() {
         createNavigation(router, route, '/subscribe/fail?ms=true')
       },
+      navigateToSubscribeSet() {
+        createNavigation(router, route, '/subscribe/set?ms=true')
+      },
     },
   }).withContext({
     ...machine.context,

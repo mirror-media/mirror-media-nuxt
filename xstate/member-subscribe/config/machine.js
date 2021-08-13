@@ -425,6 +425,7 @@ export default {
         付款設定頁: {
           id: '付款設定頁',
           initial: '起點',
+          entry: ['navigateToSubscribeSet'],
           states: {
             /*
              * '起點': {
