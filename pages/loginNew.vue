@@ -8,12 +8,14 @@
       <div class="container container--form">
         <ContainerLoginForm
           :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
+          :showHint="showHint"
           @registerSuccess="handleRegisterSuccess"
           @registerFail="handleRegisterFail"
           @loginSuccess="handleLoginSuccess"
           @loginFail="handleLoginFail"
         />
       </div>
+      <button class="login__sim" @click="toggleHint">toggle hint</button>
     </template>
     <template v-else-if="state === 'registerSuccess'">
       <div class="result-wrapper">
@@ -92,6 +94,7 @@ export default {
       state: 'form',
       registerSuccessTimerCount: 3,
       isFederatedRedirectResultLoading: true,
+      showHint: false,
     }
   },
   async beforeMount() {
@@ -186,6 +189,9 @@ export default {
         })
       }
     },
+    toggleHint() {
+      this.showHint = !this.showHint
+    },
   },
 }
 </script>
@@ -262,5 +268,16 @@ export default {
       max-width: 327px;
     }
   }
+}
+
+.login__sim {
+  z-index: 9999;
+  position: fixed;
+  top: 100px;
+  right: 0;
+  padding: 10px;
+  border: 1px solid black;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
 }
 </style>
