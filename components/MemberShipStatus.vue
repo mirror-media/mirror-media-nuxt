@@ -9,9 +9,13 @@
         <a href="/subscribe">
           <UiMembershipButtonPrimary v-if="memberShipStatus.name === 'month'"
             >變更為年訂閱方案</UiMembershipButtonPrimary
+          >
+          <UiMembershipButtonPrimary
+            v-else-if="memberShipStatus.name === 'single-post'"
+            >升級 Premium 會員</UiMembershipButtonPrimary
           ></a
         >
-        <a href="/subscribe/set">
+        <a v-if="memberShipStatus.name !== 'single-post'" href="/subscribe/set">
           <UiMembershipButtonSecondary>付款設定</UiMembershipButtonSecondary></a
         >
       </div>
