@@ -114,7 +114,7 @@ export default {
       return ENV === 'local'
     },
     isCounting() {
-      return this.hasSend && this.status === 'success' && this.frozenTime
+      return this.hasSend && this.status === 'success' && this.frozenTime > 0
     },
     buttonWording() {
       if (!this.isCounting) return '送出'
@@ -128,6 +128,15 @@ export default {
     setOrderStatus(val) {
       this.status = val
     },
+    countDown() {
+      this.frozenTime = 30
+      const clock = window.setInterval(() => {
+        this.frozenTime--
+        if (this.frozenTime <= 0) {
+          window.clearInterval(clock)
+        }
+      }, 1000)
+    },
     handleSubmit() {
       if (this.isLoading || this.isDisable) return
       this.isLoading = true
@@ -135,13 +144,7 @@ export default {
         this.isLoading = false
         this.hasSend = true
         if (this.status !== 'success') return
-        this.frozenTime = 30
-        const clock = window.setInterval(() => {
-          this.frozenTime--
-          if (this.frozenTime <= 0) {
-            window.clearInterval(clock)
-          }
-        }, 1000)
+        this.countDown()
       }, 3000)
     },
   },
