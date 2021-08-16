@@ -37,6 +37,9 @@ export default function createMachine(router, route, store) {
       navigateToSubscribeSet() {
         createNavigation(router, route, '/subscribe/set?ms=true')
       },
+      navigateToProfilePurchase() {
+        createNavigation(router, route, '/profile/purchase?ms=true')
+      },
     },
   }).withContext({
     ...machine.context,

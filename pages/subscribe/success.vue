@@ -45,9 +45,11 @@
               title="瀏覽 Premium 會員文章"
               @click.native="linkToPremium"
             />
-            <UiMembershipButtonSecondary @click.native="linkToRecord"
-              >回訂閱紀錄</UiMembershipButtonSecondary
+            <UiMembershipButtonSecondary
+              @click.native="sendMembershipSubscribe('回訂閱紀錄')"
             >
+              回訂閱紀錄
+            </UiMembershipButtonSecondary>
           </template>
         </div>
       </div>
@@ -104,9 +106,6 @@ export default {
     },
     linkToPremium() {
       this.$router.push('/section/member')
-    },
-    linkToRecord() {
-      this.$router.push('/profile/purchase')
     },
   },
 }

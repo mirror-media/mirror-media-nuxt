@@ -289,6 +289,7 @@ export default {
                     target: '#付款紀錄頁',
                   },
                 ],
+                回訂閱紀錄: '#付款紀錄頁',
               },
             },
             付款失敗頁: {
@@ -303,6 +304,7 @@ export default {
         付款紀錄頁: {
           id: '付款紀錄頁',
           initial: '起點',
+          entry: ['navigateToProfilePurchase'],
           states: {
             /*
              * '起點': {
