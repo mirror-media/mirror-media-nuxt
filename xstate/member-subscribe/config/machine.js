@@ -279,18 +279,50 @@ export default {
             },
             付款成功頁: {
               entry: ['navigateToSubscribeSuccess'],
-              on: {
-                點擊導引連結: [
-                  {
-                    target: '#會員文章頁',
-                    cond: '是否從會員文章頁來的',
+              initial: '起點',
+              states: {
+                起點: {
+                  on: {
+                    '': [
+                      {
+                        target: '是從會員文章頁來的',
+                        cond: '是否從會員文章頁來的',
+                      },
+                      {
+                        target: '不是從會員文章頁來的',
+                      },
+                    ],
                   },
-                  {
-                    target: '#付款紀錄頁',
+                },
+                是從會員文章頁來的: {
+                  on: {
+                    回購買文章頁: '#會員文章頁',
                   },
-                ],
-                回訂閱紀錄: '#付款紀錄頁',
+                },
+                不是從會員文章頁來的: {
+                  on: {
+                    '瀏覽 Premium 會員文章': {
+                      actions: ['navigateToSectionMember'],
+                    },
+                    回訂閱紀錄: '#付款紀錄頁',
+                  },
+                },
               },
+
+              /*
+               * on: {
+               *   點擊導引連結: [
+               *     {
+               *       target: '#會員文章頁',
+               *       cond: '是否從會員文章頁來的',
+               *     },
+               *     {
+               *       target: '#付款紀錄頁',
+               *     },
+               *   ],
+               *   回訂閱紀錄: '#付款紀錄頁',
+               * },
+               */
             },
             付款失敗頁: {
               entry: ['navigateToSubscribeFail'],

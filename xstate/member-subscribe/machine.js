@@ -40,6 +40,9 @@ export default function createMachine(router, route, store) {
       navigateToProfilePurchase() {
         createNavigation(router, route, '/profile/purchase?ms=true')
       },
+      navigateToSectionMember() {
+        window.location.assign('/section/member')
+      },
     },
   }).withContext({
     ...machine.context,

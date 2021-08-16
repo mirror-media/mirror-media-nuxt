@@ -36,14 +36,14 @@
         </div>
         <div class="subscribe-success__info_button">
           <UiSubscribeButton
-            v-if="hasLink"
+            v-if="isNavigateFromPremiumPage"
             title="回購買文章頁"
-            @click.native="sendMembershipSubscribe('點擊導引連結')"
+            @click.native="sendMembershipSubscribe('回購買文章頁')"
           />
           <template v-else>
             <UiSubscribeButton
               title="瀏覽 Premium 會員文章"
-              @click.native="linkToPremium"
+              @click.native="sendMembershipSubscribe('瀏覽 Premium 會員文章')"
             />
             <UiMembershipButtonSecondary
               @click.native="sendMembershipSubscribe('回訂閱紀錄')"
@@ -56,6 +56,14 @@
     </div>
     <button v-if="showSim" class="sim" @click="toggleHasLink">
       toggle 顯示按鈕
+      <br />
+      (由於流程已整合完畢，本功能先關閉)
+      <br />
+      (你可以透過兩種不同起點看到不同按鈕狀態)
+      <br />
+      (1. 從 /premium/oscar-test?ms=true 為起點)
+      <br />
+      (2. 從 /subscribe?ms=true 為起點)
     </button>
   </section>
 </template>
@@ -75,6 +83,9 @@ export default {
     return {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
+      isNavigateFromPremiumPage: state.value.matches(
+        '會員訂閱功能.方案購買流程.付款成功頁.是從會員文章頁來的'
+      ),
     }
   },
   components: {
@@ -92,6 +103,8 @@ export default {
         during: '2021-05-03～2021-06-03',
       },
       orderDate: '2019-12-25',
+
+      // TODO: remove due to not use anymore
       hasLink: false,
     }
   },
@@ -101,11 +114,9 @@ export default {
     },
   },
   methods: {
+    // TODO: remove due to not use anymore
     toggleHasLink() {
       this.hasLink = !this.hasLink
-    },
-    linkToPremium() {
-      this.$router.push('/section/member')
     },
   },
 }
