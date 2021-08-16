@@ -8,35 +8,142 @@
         </p>
         <p>這個 Email 將會自動綁定您目前的帳號。</p>
       </div>
-      <div class="validate-email__wrapper_form">
-        <input v-model="email" type="text" placeholder="name@example.com" />
-        <div class="error__message">請輸入有效的 Email 地址</div>
-        <div class="error__message">電子郵件不得為空</div>
-        <div class="validate-email__wrapper_form_status">
-          <div class="validate-email__wrapper_form_status_loading">
-            正在寄出信件...
+      <div
+        class="validate-email__wrapper_form"
+        :class="{ error: $v.email.$error }"
+      >
+        <div>
+          <input
+            v-model="email"
+            type="text"
+            placeholder="name@example.com"
+            @input="$v.email.$touch"
+          />
+          <div
+            v-show="!$v.email.email && $v.email.$error"
+            class="error__message"
+          >
+            請輸入有效的 Email 地址
           </div>
-          <div class="validate-email__wrapper_form_status_success">
-            Email 已成功寄出
-          </div>
-          <div class="validate-email__wrapper_form_status_hint">
-            沒收到信嗎？請檢查垃圾信件匣，或等候 30 秒重新寄送
-          </div>
-          <div class="validate-email__wrapper_form_status_error">
-            Email 寄出失敗，請重新再試
+          <div
+            v-show="!$v.email.required && $v.email.$error"
+            class="error__message"
+          >
+            電子郵件不得為空
           </div>
         </div>
-        <UiMembershipButtonPrimary>送出</UiMembershipButtonPrimary>
+        <div class="validate-email__wrapper_form_status">
+          <div
+            v-if="isLoading"
+            class="validate-email__wrapper_form_status_loading"
+          >
+            正在寄出信件...
+          </div>
+          <template v-if="hasSend">
+            <template v-if="!isLoading && status === 'success'">
+              <div class="validate-email__wrapper_form_status_success">
+                Email 已成功寄出
+              </div>
+              <div class="validate-email__wrapper_form_status_hint">
+                沒收到信嗎？請檢查垃圾信件匣，或等候 30 秒重新寄送
+              </div>
+            </template>
+            <div
+              v-if="!isLoading && status === 'fail'"
+              class="validate-email__wrapper_form_status_error"
+            >
+              Email 寄出失敗，請重新再試
+            </div>
+          </template>
+        </div>
+
+        <UiMembershipButtonPrimary
+          :disabled="isDisable"
+          @click.native="handleSubmit"
+          ><UiMembershipLoadingIcon v-if="isLoading" />
+          <p v-else>{{ buttonWording }}</p></UiMembershipButtonPrimary
+        >
       </div>
     </div>
+    <MembershipInfoSim
+      v-if="showSimFormStatus"
+      :validateOn="validateOn"
+      :setValidateOn="setValidateOn"
+      :orderStatus="status"
+      :setOrderStatus="setOrderStatus"
+    />
   </div>
 </template>
 
 <script>
+import { required, email } from 'vuelidate/lib/validators'
+import MembershipInfoSim from '~/components/MembershipInfoSim.vue'
+import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
+import { ENV } from '~/configs/config'
+
 export default {
   components: {
     UiMembershipButtonPrimary,
+    MembershipInfoSim,
+    UiMembershipLoadingIcon,
+  },
+  data() {
+    return {
+      email: '',
+      isLoading: false,
+      status: 'success',
+      hasSend: false,
+      validateOn: true,
+      frozenTime: 0,
+    }
+  },
+  validations: {
+    email: {
+      email,
+      required,
+    },
+  },
+  computed: {
+    isDisable() {
+      const validate =
+        !this.validateOn || (this.$v.email.email && this.$v.email.required)
+      return !validate || this.isCounting
+    },
+    showSimFormStatus() {
+      return ENV === 'local'
+    },
+    isCounting() {
+      return this.hasSend && this.status === 'success' && this.frozenTime
+    },
+    buttonWording() {
+      if (!this.isCounting) return '送出'
+      return `重新寄送...(${this.frozenTime} 秒)`
+    },
+  },
+  methods: {
+    setValidateOn() {
+      this.validateOn = !this.validateOn
+    },
+    setOrderStatus(val) {
+      this.status = val
+    },
+    handleSubmit() {
+      if (this.isLoading || this.isDisable) return
+      this.isLoading = true
+      window.setTimeout(() => {
+        this.isLoading = false
+        this.hasSend = true
+        if (this.status !== 'success') return
+        this.frozenTime = 30
+        const clock = window.setInterval(() => {
+          this.frozenTime--
+          if (this.frozenTime <= 0) {
+            window.clearInterval(clock)
+          }
+        }, 1000)
+      }, 3000)
+    },
   },
 }
 </script>
@@ -135,5 +242,9 @@ export default {
       }
     }
   }
+}
+
+.error input {
+  border: 1px solid #e51731 !important;
 }
 </style>
