@@ -8,7 +8,7 @@
       <div class="membership-status__title_button_group">
         <a href="/subscribe">
           <UiMembershipButtonPrimary v-if="memberShipStatus.name === 'month'"
-            >升級為年訂閱方案</UiMembershipButtonPrimary
+            >變更為年訂閱方案</UiMembershipButtonPrimary
           ></a
         >
         <a href="/subscribe/set">
