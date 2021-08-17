@@ -33,7 +33,9 @@
         </div>
       </template>
       <template v-else>
-        <UiMembershipButtonSecondary>加入會員</UiMembershipButtonSecondary>
+        <UiMembershipButtonSecondary @click.native="$emit('login')">
+          加入會員
+        </UiMembershipButtonSecondary>
       </template>
     </div>
   </div>

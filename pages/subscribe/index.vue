@@ -20,6 +20,7 @@
               :buttons="plan.buttons"
               :hintUnderButton="hintUnderButton"
               @subscribePlan="handleSubscribePlan"
+              @login="sendMembershipSubscribe('點擊免費加入會員')"
             />
           </div>
         </div>
