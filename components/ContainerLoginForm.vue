@@ -4,6 +4,7 @@
       v-if="state === 'initial'"
       :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
       :email.sync="email"
+      :showHint="showHint"
       @verifyEmailSignInMethod="handleVerifyEmailSignInMethod"
       @goToRegister="handleGoToRegister"
     />
@@ -59,6 +60,10 @@ export default {
     isFederatedRedirectResultLoading: {
       type: Boolean,
       default: true,
+    },
+    showHint: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

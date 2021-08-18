@@ -8,12 +8,16 @@
       <div class="container container--form">
         <ContainerLoginForm
           :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
+          :showHint="showHint"
           @registerSuccess="handleRegisterSuccess"
           @registerFail="handleRegisterFail"
           @loginSuccess="handleLoginSuccess"
           @loginFail="handleLoginFail"
         />
       </div>
+      <button v-if="showSim" class="login__sim" @click="toggleHint">
+        toggle hint
+      </button>
     </template>
     <template v-else-if="state === 'registerSuccess'">
       <div class="result-wrapper">
@@ -63,6 +67,7 @@ import userCreate from '~/apollo/mutations/userCreate.gql'
 import loginDestination from '~/utils/login-destination'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
+import { ENV } from '~/configs/config'
 
 export default {
   apollo: {
@@ -92,11 +97,17 @@ export default {
       state: 'form',
       registerSuccessTimerCount: 3,
       isFederatedRedirectResultLoading: true,
+      showHint: false,
     }
   },
   async beforeMount() {
     await loginDestination.set(this.$route)
     await this.handleFederatedRedirectResult()
+  },
+  computed: {
+    showSim() {
+      return ENV !== 'prod'
+    },
   },
   methods: {
     async handleError({ type, email, error }) {
@@ -186,6 +197,9 @@ export default {
         })
       }
     },
+    toggleHint() {
+      this.showHint = !this.showHint
+    },
   },
 }
 </script>
@@ -262,5 +276,16 @@ export default {
       max-width: 327px;
     }
   }
+}
+
+.login__sim {
+  z-index: 9999;
+  position: fixed;
+  top: 100px;
+  right: 0;
+  padding: 10px;
+  border: 1px solid black;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
 }
 </style>
