@@ -111,7 +111,7 @@ export default {
       return !validate || this.isCounting
     },
     showSimFormStatus() {
-      return ENV === 'local'
+      return ENV !== 'prod'
     },
     isCounting() {
       return this.hasSend && this.status === 'success' && this.frozenTime > 0
