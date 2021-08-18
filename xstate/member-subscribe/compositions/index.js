@@ -96,7 +96,11 @@ const service = ref()
 export function useMemberSubscribeMachine() {
   const { route } = useContext()
   if (!isMemberSubscribeFeatureToggled(route) || process.server) {
-    return {}
+    // mock object of bypass everything
+    return {
+      state: new Proxy({}, { get: () => () => {} }),
+      send: () => {},
+    }
   }
 
   if (!service.value) {
