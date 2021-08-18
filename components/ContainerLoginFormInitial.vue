@@ -10,9 +10,6 @@
         class="federated-login__google"
       />
     </div>
-    <div v-if="showHint" class="login-form__hint">
-      由於您曾以 Google 帳號登入，請點擊上方「以 Google 帳號繼續」重試。
-    </div>
     <div class="login-form__separator separator">
       <span>或</span>
     </div>
@@ -62,10 +59,6 @@ export default {
     email: {
       type: String,
       default: '',
-    },
-    showHint: {
-      type: Boolean,
-      default: false,
     },
   },
   data() {
@@ -123,13 +116,6 @@ export default {
     padding: 32px 48px 24px;
   }
 
-  &__hint {
-    font-size: 16px;
-    line-height: 150%;
-    text-align: center;
-    color: #e51731;
-    margin: 12px 0 24px 0;
-  }
   &__separator {
     margin: 16px 0 0 0;
   }
