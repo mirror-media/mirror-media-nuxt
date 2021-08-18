@@ -98,7 +98,7 @@ export function useMemberSubscribeMachine() {
   if (!isMemberSubscribeFeatureToggled(route) || process.server) {
     // mock object of bypass everything
     return {
-      state: new Proxy({}, { get: () => () => {} }),
+      state: ref(new Proxy({}, { get: () => () => {} })),
       send: () => {},
     }
   }
