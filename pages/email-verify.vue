@@ -18,6 +18,7 @@
             type="text"
             placeholder="name@example.com"
             @input="$v.email.$touch"
+            :disabled="!alterableEmail"
           />
           <div
             v-show="!$v.email.email && $v.email.$error"
@@ -72,6 +73,9 @@
       :orderStatus="status"
       :setOrderStatus="setOrderStatus"
     />
+    <button @click="toggleAlterable" class="sim-for-alterable">
+      toggle alterable
+    </button>
   </div>
 </template>
 
@@ -96,6 +100,7 @@ export default {
       hasSend: false,
       validateOn: true,
       frozenTime: 0,
+      alterableEmail: true,
     }
   },
   validations: {
@@ -107,7 +112,9 @@ export default {
   computed: {
     isDisable() {
       const validate =
-        !this.validateOn || (this.$v.email.email && this.$v.email.required)
+        !this.validateOn ||
+        (this.$v.email.email && this.$v.email.required) ||
+        !this.alterableEmail
       return !validate || this.isCounting
     },
     showSimFormStatus() {
@@ -127,6 +134,9 @@ export default {
     },
     setOrderStatus(val) {
       this.status = val
+    },
+    toggleAlterable() {
+      this.alterableEmail = !this.alterableEmail
     },
     countDown() {
       this.frozenTime = 30
@@ -214,7 +224,7 @@ export default {
         font-size: 18px;
         line-height: 25px;
         &::placeholder {
-          color: rgb(227, 227, 227);
+          color: rgba(0, 0, 0, 0.2);
         }
       }
     }
@@ -249,5 +259,23 @@ export default {
 
 .error input {
   border: 1px solid #e51731 !important;
+}
+
+.sim-for-alterable {
+  z-index: 9999;
+  position: fixed;
+  top: 185px;
+  right: 0;
+  padding: 10px;
+  border: 1px solid black;
+  background: rgba(5, 79, 119, 0.3);
+  border-radius: 5px;
+  button:focus {
+    outline: 0 !important;
+  }
+}
+
+button:focus {
+  outline: 0 !important;
 }
 </style>
