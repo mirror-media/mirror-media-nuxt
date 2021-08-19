@@ -11,7 +11,8 @@
       />
     </div>
     <div v-if="showHint" class="login-form__hint">
-      由於您曾以 Google 帳號登入，請點擊上方「以 Google 帳號繼續」重試。
+      由於您曾以 {{ authOrg }} 帳號登入，請點擊上方「以
+      {{ authOrg }} 帳號繼續」重試。
     </div>
     <div class="login-form__separator separator">
       <span>或</span>
@@ -73,6 +74,7 @@ export default {
       isEmailInputValid: false,
       isSubmitButtonClicked: false,
       isLoading: false,
+      authOrg: 'Google',
     }
   },
   methods: {
@@ -85,14 +87,27 @@ export default {
           this.email
         )
 
+        console.log(responseArray)
+
         const isEmailExistWithEmailLinkSignInMethod =
           responseArray?.[0] === 'emailLink'
         const isEmailExistWithEmailPasswordSignInMethod =
           responseArray?.[0] === 'password'
+        const isEmailHasBeenUsedByGoogleAuth =
+          responseArray?.[0] === 'google.com'
+        const isEmailHasBeenUsedByFacebookAuth =
+          responseArray?.[0] === 'facebook.com'
+
         if (isEmailExistWithEmailLinkSignInMethod) {
           this.$emit('verifyEmailSignInMethod', 'emailLink')
         } else if (isEmailExistWithEmailPasswordSignInMethod) {
           this.$emit('verifyEmailSignInMethod', 'password')
+        } else if (isEmailHasBeenUsedByGoogleAuth) {
+          this.authOrg = 'Google'
+          this.$emit('verifyEmailSignInMethod', 'google.com')
+        } else if (isEmailHasBeenUsedByFacebookAuth) {
+          this.authOrg = 'Facebook'
+          this.$emit('verifyEmailSignInMethod', 'facebook.com')
         } else {
           this.$emit('goToRegister')
         }

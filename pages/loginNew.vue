@@ -9,6 +9,7 @@
         <ContainerLoginForm
           :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
           :showHint="showHint"
+          @toggleHint="toggleHint"
           @registerSuccess="handleRegisterSuccess"
           @registerFail="handleRegisterFail"
           @loginSuccess="handleLoginSuccess"

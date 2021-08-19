@@ -78,9 +78,18 @@ export default {
         case 'emailLink':
           this.state = 'recoverPassword'
           break
+
         case 'password':
           this.state = 'login'
           break
+
+        // this email has been used by google/facebook auth
+        case 'google.com':
+        case 'facebook.com':
+          this.email = '' // clear email input field (TODO)
+          this.$emit('toggleHint')
+          break
+
         default:
           this.state = 'initial'
           break
