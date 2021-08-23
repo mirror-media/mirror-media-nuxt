@@ -1,50 +1,53 @@
 <template>
   <div class="purchase">
-    <h1 class="purchase__title">訂閱紀錄</h1>
-    <SubscribeWrapper v-if="memberShipStatus.name !== 'not-at-all'">
-      <MemberShipStatus
-        :isMobile="isMobile"
-        :memberShipStatus="memberShipStatus"
-        :isPremium="isPremium"
-      />
-      <MembershipPosts
-        v-if="postList.length && !isPremium"
-        :postList="postList"
-        :showMorePostButton="showMorePostButton"
-        @load-more-post="handleMorePost"
-      />
-      <MembershipPayRecord
-        v-if="payRecords.length"
-        :payRecords="payRecords"
-        :isMobile="isMobile"
-        :showMorePayRecordButton="showMorePayRecordButton"
-        @load-more-record="handleMoreRecord"
-      />
-    </SubscribeWrapper>
-    <template v-else>
-      <div class="purchase__message">找不到相關紀錄</div>
-      <div class="purchase__upgrade">
-        <div class="purchase__upgrade_title">
-          準備好升級為鏡週刊 Premium 會員了嗎？
-        </div>
-        <div class="purchase__upgrade_content">
-          每月 $49 元，暢享專區零廣告閱讀、優質報導看到飽
-        </div>
-        <a href="/subscribe">
+    <ClientOnly>
+      <h1 class="purchase__title">訂閱紀錄</h1>
+      <SubscribeWrapper v-if="memberShipStatus.name !== 'not-at-all'">
+        <MemberShipStatus
+          :isMobile="isMobile"
+          :memberShipStatus="memberShipStatus"
+          :isPremium="isPremium"
+          @upgradeInSinglePost="sendMembershipSubscribe('升級Premium會員')"
+          @upgradeToSubscribeYearly="sendMembershipSubscribe('升級年訂閱')"
+          @navigateToSubscribeSet="sendMembershipSubscribe('付款設定')"
+        />
+        <MembershipPosts
+          v-if="postList.length && !isPremium"
+          :postList="postList"
+          :showMorePostButton="showMorePostButton"
+          @load-more-post="handleMorePost"
+        />
+        <MembershipPayRecord
+          v-if="payRecords.length"
+          :payRecords="payRecords"
+          :isMobile="isMobile"
+          :showMorePayRecordButton="showMorePayRecordButton"
+          @load-more-record="handleMoreRecord"
+        />
+      </SubscribeWrapper>
+      <div v-else>
+        <div class="purchase__message">找不到相關紀錄</div>
+        <div class="purchase__upgrade">
+          <div class="purchase__upgrade_title">
+            準備好升級為鏡週刊 Premium 會員了嗎？
+          </div>
+          <div class="purchase__upgrade_content">
+            每月 $49 元，暢享專區零廣告閱讀、優質報導看到飽
+          </div>
           <UiMembershipButtonPrimary
-            >升級 Premium 會員</UiMembershipButtonPrimary
-          ></a
-        >
+            @click.native="sendMembershipSubscribe('升級Premium會員')"
+          >
+            升級 Premium 會員
+          </UiMembershipButtonPrimary>
+        </div>
       </div>
-    </template>
-    <MembershipSimFormStatus
-      v-if="showSimFormStatus"
-      @change-status="setMembershipStatus"
-    />
+      <MembershipSimFormStatus v-if="showSimFormStatus" />
+    </ClientOnly>
   </div>
 </template>
 
 <script>
+import { computed } from '@nuxtjs/composition-api'
 import { ENV } from '~/configs/config'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import MemberShipStatus from '~/components/MemberShipStatus.vue'
@@ -52,6 +55,7 @@ import MembershipPosts from '~/components/MembershipPosts.vue'
 import MembershipPayRecord from '~/components/MembershipPayRecord.vue'
 import MembershipSimFormStatus from '~/components/MembershipSimFormStatus.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
@@ -62,14 +66,65 @@ export default {
     MembershipSimFormStatus,
     UiMembershipButtonPrimary,
   },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    const memberShipStatus = useMemberShipStatus()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+      memberShipStatus,
+    }
+
+    function useMemberShipStatus() {
+      const { state } = useMemberSubscribeMachine()
+      const memberShipStatus = computed(() =>
+        computeMemberShipStatus(state?.value)
+      )
+      return memberShipStatus
+
+      function computeMemberShipStatus(state) {
+        const parentState = '會員訂閱功能.付款紀錄頁.已登入'
+        if (state?.matches(`${parentState}.已登入（無購買紀錄）`)) {
+          return {
+            name: 'not-at-all',
+            dueDate: null,
+            nextPayDate: null,
+            payMethod: null,
+          }
+        } else if (state?.matches(`${parentState}.已登入（只有單篇購買過）`)) {
+          return {
+            name: 'single-post',
+            dueDate: null,
+            nextPayDate: null,
+            payMethod: null,
+          }
+        } else if (state?.matches(`${parentState}.已登入（已訂閱月方案）`)) {
+          return {
+            name: 'month',
+            dueDate: '至 2022/12/29',
+            nextPayDate: '2022/7/30',
+            payMethod: '信用卡自動續扣(2924)',
+          }
+        } else if (state?.matches(`${parentState}.已登入（已訂閱年方案）`)) {
+          return {
+            name: 'year',
+            dueDate: '至 2022/12/29',
+            nextPayDate: '2022/7/30',
+            payMethod: '信用卡自動續扣(2924)',
+          }
+        } else {
+          return {
+            name: 'not-at-all',
+            dueDate: null,
+            nextPayDate: null,
+            payMethod: null,
+          }
+        }
+      }
+    }
+  },
   data() {
     return {
-      memberShipStatus: {
-        name: 'single-post',
-        dueDate: null,
-        nextPayDate: null,
-        payMethod: null,
-      },
       postList: [
         {
           id: 1,
@@ -189,11 +244,6 @@ export default {
       isMobile: false,
     }
   },
-  mounted() {
-    if (this.$store.state.viewport.width <= 568) {
-      this.isMobile = true
-    }
-  },
   computed: {
     showMorePostButton() {
       return this.postMetaCount > this.postList.length
@@ -205,9 +255,14 @@ export default {
       return ENV !== 'prod'
     },
     isPremium() {
-      const status = this.memberShipStatus.name
+      const status = this.memberShipStatus?.name
       return status === 'year' || status === 'month' || status === 'disturb'
     },
+  },
+  mounted() {
+    if (this.$store.state.viewport.width <= 568) {
+      this.isMobile = true
+    }
   },
   methods: {
     handleMorePost() {
@@ -227,35 +282,6 @@ export default {
         methodNote: '(1092)',
         price: 490,
       })
-    },
-    setMembershipStatus(val) {
-      this.memberShipStatus.name = val
-      switch (val) {
-        case 'year':
-          this.memberShipStatus = {
-            name: 'year',
-            dueDate: '至 2022/12/29',
-            nextPayDate: '2022/7/30',
-            payMethod: '信用卡自動續扣(2924)',
-          }
-          break
-        case 'month':
-          this.memberShipStatus = {
-            name: 'month',
-            dueDate: '至 2022/12/29',
-            nextPayDate: '2022/7/30',
-            payMethod: '信用卡自動續扣(2924)',
-          }
-          break
-        case 'disturb':
-          this.memberShipStatus = {
-            name: 'disturb',
-            dueDate: '至 2022/12/29',
-            nextPayDate: null,
-            payMethod: null,
-          }
-          break
-      }
     },
   },
 }

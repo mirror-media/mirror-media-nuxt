@@ -3,20 +3,23 @@
     <div class="membership-status__title" :class="{ mobile: isMobile }">
       <div class="membership-status__title_status">
         {{ title }}
-        <img src="~/assets/premium.svg" v-if="isPremium" />
+        <img v-if="isPremium" src="~/assets/premium.svg" />
       </div>
       <div class="membership-status__title_button_group">
-        <a href="/subscribe">
-          <UiMembershipButtonPrimary v-if="memberShipStatus.name === 'month'"
-            >變更為年訂閱方案</UiMembershipButtonPrimary
-          >
-          <UiMembershipButtonPrimary
-            v-else-if="memberShipStatus.name === 'single-post'"
-            >升級 Premium 會員</UiMembershipButtonPrimary
-          ></a
+        <UiMembershipButtonPrimary
+          v-if="memberShipStatus.name === 'month'"
+          @click.native="$emit('upgradeToSubscribeYearly')"
+          >變更為年訂閱方案</UiMembershipButtonPrimary
         >
-        <a v-if="memberShipStatus.name !== 'single-post'" href="/subscribe/set">
-          <UiMembershipButtonSecondary>付款設定</UiMembershipButtonSecondary></a
+        <UiMembershipButtonPrimary
+          v-else-if="memberShipStatus.name === 'single-post'"
+          @click.native="$emit('upgradeInSinglePost')"
+          >升級 Premium 會員</UiMembershipButtonPrimary
+        >
+        <UiMembershipButtonSecondary
+          v-if="memberShipStatus.name !== 'single-post'"
+          @click.native="$emit('navigateToSubscribeSet')"
+          >付款設定</UiMembershipButtonSecondary
         >
       </div>
     </div>
@@ -38,8 +41,8 @@
       </div>
     </div>
     <div
-      class="membership-status__form_hint"
       v-if="memberShipStatus.name === 'disturb'"
+      class="membership-status__form_hint"
     >
       提醒您，您的訂閱將於本期結束後自動取消。
     </div>
