@@ -52,6 +52,7 @@ import MembershipPosts from '~/components/MembershipPosts.vue'
 import MembershipPayRecord from '~/components/MembershipPayRecord.vue'
 import MembershipSimFormStatus from '~/components/MembershipSimFormStatus.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
@@ -61,6 +62,13 @@ export default {
     MembershipPayRecord,
     MembershipSimFormStatus,
     UiMembershipButtonPrimary,
+  },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+    }
   },
   data() {
     return {
@@ -189,11 +197,6 @@ export default {
       isMobile: false,
     }
   },
-  mounted() {
-    if (this.$store.state.viewport.width <= 568) {
-      this.isMobile = true
-    }
-  },
   computed: {
     showMorePostButton() {
       return this.postMetaCount > this.postList.length
@@ -208,6 +211,11 @@ export default {
       const status = this.memberShipStatus.name
       return status === 'year' || status === 'month' || status === 'disturb'
     },
+  },
+  mounted() {
+    if (this.$store.state.viewport.width <= 568) {
+      this.isMobile = true
+    }
   },
   methods: {
     handleMorePost() {

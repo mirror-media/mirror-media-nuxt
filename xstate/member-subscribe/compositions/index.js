@@ -117,6 +117,9 @@ export function useMemberSubscribeMachine() {
     if (route.value.name === 'subscribe') {
       service.value.send('到方案購買頁')
     }
+    if (route.value.name === 'profile-purchase') {
+      service.value.send('到付款紀錄頁')
+    }
   }
   return useService(service.value)
 }
