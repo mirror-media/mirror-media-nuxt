@@ -6,7 +6,9 @@
         <img v-if="isPremium" src="~/assets/premium.svg" />
       </div>
       <div class="membership-status__title_button_group">
-        <UiMembershipButtonPrimary v-if="memberShipStatus.name === 'month'"
+        <UiMembershipButtonPrimary
+          v-if="memberShipStatus.name === 'month'"
+          @click.native="$emit('upgradeToSubscribeYearly')"
           >變更為年訂閱方案</UiMembershipButtonPrimary
         >
         <UiMembershipButtonPrimary
@@ -14,8 +16,10 @@
           @click.native="$emit('upgradeInSinglePost')"
           >升級 Premium 會員</UiMembershipButtonPrimary
         >
-        <a v-if="memberShipStatus.name !== 'single-post'" href="/subscribe/set">
-          <UiMembershipButtonSecondary>付款設定</UiMembershipButtonSecondary></a
+        <UiMembershipButtonSecondary
+          v-if="memberShipStatus.name !== 'single-post'"
+          @click.native="$emit('navigateToSubscribeSet')"
+          >付款設定</UiMembershipButtonSecondary
         >
       </div>
     </div>

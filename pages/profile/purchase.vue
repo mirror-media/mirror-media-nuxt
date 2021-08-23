@@ -8,6 +8,8 @@
           :memberShipStatus="memberShipStatus"
           :isPremium="isPremium"
           @upgradeInSinglePost="sendMembershipSubscribe('升級Premium會員')"
+          @upgradeToSubscribeYearly="sendMembershipSubscribe('升級年訂閱')"
+          @navigateToSubscribeSet="sendMembershipSubscribe('付款設定')"
         />
         <MembershipPosts
           v-if="postList.length && !isPremium"
