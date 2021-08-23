@@ -7,6 +7,7 @@
           :isMobile="isMobile"
           :memberShipStatus="memberShipStatus"
           :isPremium="isPremium"
+          @upgradeInSinglePost="sendMembershipSubscribe('升級Premium會員')"
         />
         <MembershipPosts
           v-if="postList.length && !isPremium"
