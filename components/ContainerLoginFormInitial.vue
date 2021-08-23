@@ -83,6 +83,10 @@ export default {
 
       this.isLoading = true
       try {
+        /*
+         * determine which method( 3rd party auth like facebook/google, or password)
+         * is been used by this email.
+         */
         const responseArray = await this.$fire.auth.fetchSignInMethodsForEmail(
           this.email
         )
@@ -90,7 +94,7 @@ export default {
         console.log(responseArray)
 
         const isEmailExistWithEmailLinkSignInMethod =
-          responseArray?.[0] === 'emailLink'
+          responseArray?.[0] === 'emailLink' // not used (for now)
         const isEmailExistWithEmailPasswordSignInMethod =
           responseArray?.[0] === 'password'
         const isEmailHasBeenUsedByGoogleAuth =

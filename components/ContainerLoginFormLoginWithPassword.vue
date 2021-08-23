@@ -85,6 +85,8 @@ export default {
           this.email,
           this.password
         )
+        console.log(user.emailVerified)
+
         this.isLoading = false
         this.sendMembershipSubscribe('登入成功')
         this.$emit('loginSuccess', user)
