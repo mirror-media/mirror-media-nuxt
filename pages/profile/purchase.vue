@@ -31,11 +31,11 @@
           <div class="purchase__upgrade_content">
             每月 $49 元，暢享專區零廣告閱讀、優質報導看到飽
           </div>
-          <a href="/subscribe">
-            <UiMembershipButtonPrimary
-              >升級 Premium 會員</UiMembershipButtonPrimary
-            ></a
+          <UiMembershipButtonPrimary
+            @click.native="sendMembershipSubscribe('升級Premium會員')"
           >
+            升級 Premium 會員
+          </UiMembershipButtonPrimary>
         </div>
       </div>
       <MembershipSimFormStatus v-if="showSimFormStatus" />
