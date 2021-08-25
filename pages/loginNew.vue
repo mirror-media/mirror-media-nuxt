@@ -179,6 +179,7 @@ export default {
       }
     },
     async handleLoginFail(error) {
+      console.log('error from handleLoginFail')
       this.sendMembershipSubscribe('登入失敗')
       this.state = 'loginError'
       await this.handleError(error)
@@ -195,6 +196,7 @@ export default {
         }
       } catch (e) {
         this.isFederatedRedirectResultLoading = false
+        console.log('error from handleFederatedRedirectResult')
         await this.handleLoginFail({
           type: 'signInFailFederated',
           email: e.email,
