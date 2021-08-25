@@ -37,6 +37,15 @@ export default function createMachine(router, route, store) {
       navigateToSubscribeSet() {
         createNavigation(router, route, '/subscribe/set?ms=true')
       },
+      navigateToSubscribeCancelAsk() {
+        createNavigation(router, route, '/subscribe/cancel-ask?ms=true')
+      },
+      navigateToSubscribeCancelSuccess() {
+        createNavigation(router, route, '/subscribe/cancel-success?ms=true')
+      },
+      navigateToSubscribeCancelFail() {
+        createNavigation(router, route, '/subscribe/cancel-fail?ms=true')
+      },
       navigateToProfilePurchase() {
         createNavigation(router, route, '/profile/purchase?ms=true')
       },

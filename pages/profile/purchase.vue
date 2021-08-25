@@ -9,7 +9,7 @@
           :isPremium="isPremium"
           @upgradeInSinglePost="sendMembershipSubscribe('升級Premium會員')"
           @upgradeToSubscribeYearly="sendMembershipSubscribe('升級年訂閱')"
-          @navigateToSubscribeSet="sendMembershipSubscribe('付款設定')"
+          @navigateToSubscribeSet="handleNavigateToSubscribeSet"
         />
         <MembershipPosts
           v-if="postList.length && !isPremium"
@@ -73,6 +73,9 @@ export default {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
       memberShipStatus,
+      handleNavigateToSubscribeSet() {
+        window.location.assign('/subscribe/set?ms=true')
+      },
     }
 
     function useMemberShipStatus() {
@@ -111,6 +114,15 @@ export default {
             dueDate: '至 2022/12/29',
             nextPayDate: '2022/7/30',
             payMethod: '信用卡自動續扣(2924)',
+          }
+        } else if (
+          state?.matches(`${parentState}.已登入（已訂閱但取消下期）`)
+        ) {
+          return {
+            name: 'disturb',
+            dueDate: '至 2022/12/29',
+            nextPayDate: null,
+            payMethod: null,
           }
         } else {
           return {

@@ -7,6 +7,8 @@ export default {
     是單篇付款過的會員: (context) => context.subscription === '解鎖這篇報導',
     是月訂閱的會員: (context) => context.subscription === '月訂閱',
     是年訂閱的會員: (context) => context.subscription === '年訂閱',
+    是訂閱但取消下期的會員: (context) =>
+      context.subscription === '訂閱但取消下期',
 
     是否已確認訂購方案: (context) => context.subscriptionOrder,
 
@@ -32,7 +34,10 @@ export default {
       subscriptionOrder: null,
     }),
     cancelSubscribe: assign({
-      subscription: null,
+      subscription: () => {
+        mockRemoveSubscription()
+        return null
+      },
     }),
     setFromPost: assign({
       isFromPost: true,
@@ -48,4 +53,8 @@ export default {
 
 function mockPostSubscription(subscription) {
   localStorage.setItem('subscription', subscription)
+}
+
+function mockRemoveSubscription() {
+  localStorage.setItem('subscription', '訂閱但取消下期')
 }

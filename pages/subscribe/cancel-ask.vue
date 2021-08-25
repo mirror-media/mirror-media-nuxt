@@ -66,6 +66,7 @@ import SubscribeCancelSimForm from '~/components/SubscribeCancelSimForm.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import UiMembershipCheckoutLabel from '~/components/UiMembershipCheckoutLabel.vue'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
@@ -74,6 +75,13 @@ export default {
     UiMembershipButtonPrimary,
     UiMembershipButtonSecondary,
     UiMembershipCheckoutLabel,
+  },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+    }
   },
   data() {
     return {
@@ -97,9 +105,10 @@ export default {
     },
     handleSubmit() {
       if (this.cancelStatus === 'success') {
-        return window.location.assign('/subscribe/cancel-success')
+        // return window.location.assign('/subscribe/cancel-success')
+        this.sendMembershipSubscribe('確認取消訂閱成功')
       }
-      window.location.assign('/subscribe/cancel-fail')
+      this.sendMembershipSubscribe('確認取消訂閱失敗')
     },
     setIsPayByApp(val) {
       this.isPayByApp = val

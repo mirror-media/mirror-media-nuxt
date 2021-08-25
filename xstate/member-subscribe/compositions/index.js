@@ -120,6 +120,12 @@ export function useMemberSubscribeMachine() {
     if (route.value.name === 'profile-purchase') {
       service.value.send('到付款紀錄頁')
     }
+    if (route.value.name === 'subscribe-set') {
+      service.value.send('到付款設定頁')
+    }
+    if (route.value.name === 'subscribe-cancel-ask') {
+      service.value.send('到取消訂閱（原因詢問）頁')
+    }
   }
   return useService(service.value)
 }

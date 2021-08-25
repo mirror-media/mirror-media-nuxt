@@ -382,6 +382,10 @@ export default {
                         cond: '是年訂閱的會員',
                       },
                       {
+                        target: '已登入（已訂閱但取消下期）',
+                        cond: '是訂閱但取消下期的會員',
+                      },
+                      {
                         target: '已登入（無購買紀錄）',
                       },
                     ],
@@ -409,6 +413,11 @@ export default {
                 '已登入（已訂閱月方案）': {
                   on: {
                     升級年訂閱: '#方案購買流程',
+                    付款設定: '#付款設定頁',
+                  },
+                },
+                '已登入（已訂閱但取消下期）': {
+                  on: {
                     付款設定: '#付款設定頁',
                   },
                 },
@@ -510,6 +519,10 @@ export default {
                         cond: '是年訂閱的會員',
                       },
                       {
+                        target: '正處於月或年訂閱狀態',
+                        cond: '是訂閱但取消下期的會員',
+                      },
+                      {
                         target: '#付款紀錄頁',
                       },
                     ],
@@ -534,6 +547,7 @@ export default {
         '取消訂閱（原因詢問）頁': {
           id: '取消訂閱（原因詢問）頁',
           initial: '起點',
+          entry: ['navigateToSubscribeCancelAsk'],
           states: {
             起點: {
               on: {
@@ -563,12 +577,16 @@ export default {
                   on: {
                     '': [
                       {
-                        target: '正處於月或年訂閱狀態',
+                        target: '正處於訂閱狀態',
                         cond: '是月訂閱的會員',
                       },
                       {
-                        target: '正處於月或年訂閱狀態',
+                        target: '正處於訂閱狀態',
                         cond: '是年訂閱的會員',
+                      },
+                      {
+                        target: '正處於訂閱狀態',
+                        cond: '是訂閱但取消下期的會員',
                       },
                       {
                         target: '#付款紀錄頁',
@@ -576,12 +594,11 @@ export default {
                     ],
                   },
                 },
-                正處於月或年訂閱狀態: {
+                正處於訂閱狀態: {
                   on: {
                     確認取消訂閱成功: {
                       target: '#取消訂閱（原因詢問）頁.取消成功',
-
-                      // actions: ['cancelSubscribe']
+                      actions: ['cancelSubscribe'],
                     },
                     確認取消訂閱失敗: '#取消訂閱（原因詢問）頁.取消失敗',
                   },
@@ -595,11 +612,13 @@ export default {
                */
             },
             取消成功: {
+              entry: ['navigateToSubscribeCancelSuccess'],
               on: {
                 回訂閱紀錄: '#付款紀錄頁',
               },
             },
             取消失敗: {
+              entry: ['navigateToSubscribeCancelFail'],
               on: {
                 回訂閱紀錄: '#付款紀錄頁',
               },
