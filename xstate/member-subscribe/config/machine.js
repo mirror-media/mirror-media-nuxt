@@ -300,12 +300,16 @@ export default {
                   },
                 },
                 不是從會員文章頁來的: {
-                  on: {
-                    '瀏覽 Premium 會員文章': {
-                      actions: ['navigateToSectionMember'],
-                    },
-                    回訂閱紀錄: '#付款紀錄頁',
-                  },
+                  type: 'final',
+
+                  /*
+                   * on: {
+                   *   '瀏覽 Premium 會員文章': {
+                   *     actions: ['navigateToSectionMember'],
+                   *   },
+                   *   回訂閱紀錄: '#付款紀錄頁',
+                   * },
+                   */
                 },
               },
 
