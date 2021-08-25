@@ -103,14 +103,13 @@ export default {
       this.isLoading = true
       try {
         /*
+         * (handle email/password auth)
          * determine which method( 3rd party auth like facebook/google, or password)
-         * is been used by this email.
+         * is been used by this email before.
          */
         const responseArray = await this.$fire.auth.fetchSignInMethodsForEmail(
           this.email
         )
-
-        console.log(responseArray)
 
         /*
          * Hint, If email verify is active in the future,
@@ -137,7 +136,6 @@ export default {
           this.$emit('goToRegister')
         }
       } catch (e) {
-        console.log('error from LoginFormInitial')
         console.error(e)
       }
       this.isLoading = false

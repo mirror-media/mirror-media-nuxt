@@ -107,7 +107,6 @@ export default {
 
   methods: {
     async handleError({ type, email, error }) {
-      console.log('error from handleError')
       // eslint-disable-next-line no-console
       console.error(error)
       this.$sendMembershipErrorLog({
@@ -140,7 +139,6 @@ export default {
             },
           })
         } catch (e) {
-          console.log('error from postCreateUserForRegister')
           await this.handleError({
             type: 'gatewayFailUserCreate',
             email,
@@ -160,7 +158,6 @@ export default {
       }
     },
     async handleRegisterFail(error) {
-      console.log('error from handleRegisterFail')
       this.state = 'registerError'
       await this.handleError(error)
     },
@@ -173,7 +170,6 @@ export default {
       }
     },
     async handleLoginFail(error) {
-      console.log('error from handleLoginFail')
       this.sendMembershipSubscribe('登入失敗')
       this.state = 'loginError'
       await this.handleError(error)
@@ -189,6 +185,8 @@ export default {
           await this.handleLoginSuccess()
         }
       } catch (e) {
+        this.isFederatedRedirectResultLoading = false
+
         /*
          * (3rd party auth error happends here)
          * if login with Google or email/password before,
@@ -217,16 +215,14 @@ export default {
               break
           }
           this.showHint = true
-          return // no need to show error page
+        } else {
+          // handle other 3rd party auth error
+          await this.handleLoginFail({
+            type: 'signInFailFederated',
+            email: e.email,
+            error: e,
+          })
         }
-
-        this.isFederatedRedirectResultLoading = false
-        console.log('error from handleFederatedRedirectResult')
-        await this.handleLoginFail({
-          type: 'signInFailFederated',
-          email: e.email,
-          error: e,
-        })
       }
     },
     setShowHint(boolean) {
