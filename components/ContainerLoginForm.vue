@@ -81,13 +81,14 @@ export default {
 
         case 'password':
           this.state = 'login'
+          this.$emit('setShowHint', false)
           break
 
         // this email has been used by google/facebook auth
         case 'google.com':
         case 'facebook.com':
           this.email = '' // clear email input field (TODO)
-          this.$emit('toggleHint')
+          this.$emit('setShowHint', true)
           break
 
         default:

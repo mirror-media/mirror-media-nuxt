@@ -11,8 +11,7 @@
       />
     </div>
     <div v-if="showHint" class="login-form__hint">
-      由於您曾以 {{ authOrg }} 帳號登入，請點擊上方「以
-      {{ authOrg }} 帳號繼續」重試。
+      {{ hint }}
     </div>
     <div class="login-form__separator separator">
       <span>或</span>
@@ -77,6 +76,23 @@ export default {
       authOrg: 'Google',
     }
   },
+  computed: {
+    hint() {
+      let hint = ''
+      switch (this.authOrg) {
+        case 'Google':
+        case 'Facebook':
+          hint = `由於您曾以 ${this.authOrg} 帳號登入，請點擊上方「以 ${this.authOrg} 帳號繼續」重試。`
+          break
+
+        case 'email':
+          hint = `由於您曾以email帳號密碼登入，請輸入下方email重試。`
+      }
+
+      return hint
+    },
+  },
+
   methods: {
     async handleSubmit() {
       this.isSubmitButtonClicked = true
@@ -92,7 +108,8 @@ export default {
         )
 
         console.log(responseArray)
-
+        // Hint, If email verify is active in the future,
+        // responseArray would have multi value (TODO)
         const isEmailExistWithEmailLinkSignInMethod =
           responseArray?.[0] === 'emailLink' // not used (for now)
         const isEmailExistWithEmailPasswordSignInMethod =
@@ -105,6 +122,7 @@ export default {
         if (isEmailExistWithEmailLinkSignInMethod) {
           this.$emit('verifyEmailSignInMethod', 'emailLink')
         } else if (isEmailExistWithEmailPasswordSignInMethod) {
+          this.authOrg = 'email'
           this.$emit('verifyEmailSignInMethod', 'password')
         } else if (isEmailHasBeenUsedByGoogleAuth) {
           this.authOrg = 'Google'

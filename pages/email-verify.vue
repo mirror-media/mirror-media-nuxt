@@ -150,12 +150,32 @@ export default {
     handleSubmit() {
       if (this.isLoading || this.isDisable) return
       this.isLoading = true
-      window.setTimeout(() => {
-        this.isLoading = false
-        this.hasSend = true
-        if (this.status !== 'success') return
-        this.countDown()
-      }, 3000)
+
+      const currentUser = this.$fire.auth.currentUser
+      const { emailVerified } = currentUser
+
+      if (!emailVerified) {
+        // send verify email
+      } else {
+      }
+
+      currentUser
+        .sendEmailVerification()
+        .then(function () {
+          // 驗證信發送完成
+          window.alert('驗證信已發送到您的信箱，請查收。')
+        })
+        .catch((error) => {
+          // 驗證信發送失敗
+          console.log(error.message)
+        })
+      console.log(currentUser)
+      // window.setTimeout(() => {
+      //   this.isLoading = false
+      //   this.hasSend = true
+      //   if (this.status !== 'success') return
+      //   this.countDown()
+      // }, 3000)
     },
   },
 }

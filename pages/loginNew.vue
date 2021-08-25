@@ -9,6 +9,7 @@
         <ContainerLoginForm
           :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
           :showHint="showHint"
+          @setShowHint="setShowHint"
           @toggleHint="toggleHint"
           @registerSuccess="handleRegisterSuccess"
           @registerFail="handleRegisterFail"
@@ -197,6 +198,9 @@ export default {
           error: e,
         })
       }
+    },
+    setShowHint(boolean) {
+      this.showHint = boolean
     },
     toggleHint() {
       this.showHint = !this.showHint
