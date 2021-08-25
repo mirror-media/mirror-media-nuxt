@@ -216,6 +216,7 @@ export default {
               this.prevAuthMethod = prevAuthMethod
               break
           }
+          this.showHint = true
           return // no need to show error page
         }
 
