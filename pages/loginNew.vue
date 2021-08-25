@@ -113,6 +113,7 @@ export default {
   },
   methods: {
     async handleError({ type, email, error }) {
+      console.log('error from handleError')
       // eslint-disable-next-line no-console
       console.error(error)
       this.$sendMembershipErrorLog({
@@ -145,6 +146,7 @@ export default {
             },
           })
         } catch (e) {
+          console.log('error from postCreateUserForRegister')
           await this.handleError({
             type: 'gatewayFailUserCreate',
             email,
@@ -164,6 +166,7 @@ export default {
       }
     },
     async handleRegisterFail(error) {
+      console.log('error from handleRegisterFail')
       this.state = 'registerError'
       await this.handleError(error)
     },

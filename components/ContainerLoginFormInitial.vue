@@ -137,6 +137,7 @@ export default {
           this.$emit('goToRegister')
         }
       } catch (e) {
+        console.log('error from LoginFormInitial')
         console.error(e)
 
         /*
