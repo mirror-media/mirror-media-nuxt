@@ -85,6 +85,7 @@ import MembershipInfoSim from '~/components/MembershipInfoSim.vue'
 import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import { ENV } from '~/configs/config'
+import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settings-app-config'
 
 export default {
   components: {
@@ -154,28 +155,50 @@ export default {
       const currentUser = this.$fire.auth.currentUser
       const { emailVerified } = currentUser
 
-      if (!emailVerified) {
-        // send verify email
-      } else {
+      if (emailVerified) {
+        this.isLoading = false
+        return
       }
 
+      // send verify email
       currentUser
-        .sendEmailVerification()
-        .then(function () {
+        .sendEmailVerification(this.createActionCodeSettings())
+        .then(() => {
           // 驗證信發送完成
+
+          this.isLoading = false
+          this.hasSend = true
+          this.status = 'success'
           window.alert('驗證信已發送到您的信箱，請查收。')
+          this.countDown()
         })
         .catch((error) => {
           // 驗證信發送失敗
+          this.hasSend = true
+          this.isLoading = false
+          this.status = 'fail'
           console.log(error.message)
         })
-      console.log(currentUser)
-      // window.setTimeout(() => {
-      //   this.isLoading = false
-      //   this.hasSend = true
-      //   if (this.status !== 'success') return
-      //   this.countDown()
-      // }, 3000)
+    },
+    createActionCodeSettings() {
+      return {
+        /*
+         * URL you want to redirect back to. The domain (www.example.com) for this
+         * URL must be in the authorized domains list in the Firebase Console.
+         */
+        url: createUrl(),
+
+        // This must be true.
+        handleCodeInApp: true,
+
+        ...actionCodeSettingsAppConfig,
+      }
+
+      function createUrl() {
+        const origin = window.location.origin
+        const path = '/subscribe/info'
+        return `${origin}${path}`
+      }
     },
   },
 }
