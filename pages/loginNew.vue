@@ -9,17 +9,15 @@
         <ContainerLoginForm
           :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
           :showHint="showHint"
+          :prevAuthMethod="prevAuthMethod"
           @setShowHint="setShowHint"
-          @toggleHint="toggleHint"
+          @setPrevAuthMethod="setPrevAuthMethod"
           @registerSuccess="handleRegisterSuccess"
           @registerFail="handleRegisterFail"
           @loginSuccess="handleLoginSuccess"
           @loginFail="handleLoginFail"
         />
       </div>
-      <button v-if="showSim" class="login__sim" @click="toggleHint">
-        toggle hint
-      </button>
     </template>
     <template v-else-if="state === 'registerSuccess'">
       <div class="result-wrapper">
@@ -69,7 +67,6 @@ import userCreate from '~/apollo/mutations/userCreate.gql'
 import loginDestination from '~/utils/login-destination'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
-import { ENV } from '~/configs/config'
 
 export default {
   apollo: {
@@ -99,6 +96,7 @@ export default {
       state: 'form',
       registerSuccessTimerCount: 3,
       isFederatedRedirectResultLoading: true,
+      prevAuthMethod: '',
       showHint: false,
     }
   },
@@ -106,11 +104,7 @@ export default {
     await loginDestination.set(this.$route)
     await this.handleFederatedRedirectResult()
   },
-  computed: {
-    showSim() {
-      return ENV !== 'prod'
-    },
-  },
+
   methods: {
     async handleError({ type, email, error }) {
       console.log('error from handleError')
@@ -195,6 +189,36 @@ export default {
           await this.handleLoginSuccess()
         }
       } catch (e) {
+        /*
+         * (3rd party auth error happends here)
+         * if login with Google or email/password before,
+         * and next time login with Facebook(same email as above)
+         * it'll cause error, e.code = auth/account-exists-with-different-credential
+         */
+        if (e.code === 'auth/account-exists-with-different-credential') {
+          const responseArray = await this.$fire.auth.fetchSignInMethodsForEmail(
+            e.email
+          )
+          const prevAuthMethod = responseArray?.[0]
+
+          switch (prevAuthMethod) {
+            case 'google.com':
+              this.prevAuthMethod = 'Google'
+              break
+            case 'facebook.com':
+              this.prevAuthMethod = 'Facebook'
+              break
+            case 'password':
+              this.prevAuthMethod = 'email'
+              break
+
+            default:
+              this.prevAuthMethod = prevAuthMethod
+              break
+          }
+          return // no need to show error page
+        }
+
         this.isFederatedRedirectResultLoading = false
         console.log('error from handleFederatedRedirectResult')
         await this.handleLoginFail({
@@ -207,8 +231,8 @@ export default {
     setShowHint(boolean) {
       this.showHint = boolean
     },
-    toggleHint() {
-      this.showHint = !this.showHint
+    setPrevAuthMethod(method) {
+      this.prevAuthMethod = method
     },
   },
 }
@@ -286,16 +310,5 @@ export default {
       max-width: 327px;
     }
   }
-}
-
-.login__sim {
-  z-index: 9999;
-  position: fixed;
-  top: 100px;
-  right: 0;
-  padding: 10px;
-  border: 1px solid black;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 5px;
 }
 </style>

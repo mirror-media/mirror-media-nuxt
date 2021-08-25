@@ -67,22 +67,25 @@ export default {
       type: Boolean,
       default: false,
     },
+    prevAuthMethod: {
+      type: String,
+      default: 'Google',
+    },
   },
   data() {
     return {
       isEmailInputValid: false,
       isSubmitButtonClicked: false,
       isLoading: false,
-      authOrg: 'Google',
     }
   },
   computed: {
     hint() {
       let hint = ''
-      switch (this.authOrg) {
+      switch (this.prevAuthMethod) {
         case 'Google':
         case 'Facebook':
-          hint = `由於您曾以 ${this.authOrg} 帳號登入，請點擊上方「以 ${this.authOrg} 帳號繼續」重試。`
+          hint = `由於您曾以 ${this.prevAuthMethod} 帳號登入，請點擊上方「以 ${this.prevAuthMethod} 帳號繼續」重試。`
           break
 
         case 'email':
@@ -125,13 +128,10 @@ export default {
         if (isEmailExistWithEmailLinkSignInMethod) {
           this.$emit('verifyEmailSignInMethod', 'emailLink')
         } else if (isEmailExistWithEmailPasswordSignInMethod) {
-          this.authOrg = 'email'
           this.$emit('verifyEmailSignInMethod', 'password')
         } else if (isEmailHasBeenUsedByGoogleAuth) {
-          this.authOrg = 'Google'
           this.$emit('verifyEmailSignInMethod', 'google.com')
         } else if (isEmailHasBeenUsedByFacebookAuth) {
-          this.authOrg = 'Facebook'
           this.$emit('verifyEmailSignInMethod', 'facebook.com')
         } else {
           this.$emit('goToRegister')
@@ -139,15 +139,6 @@ export default {
       } catch (e) {
         console.log('error from LoginFormInitial')
         console.error(e)
-
-        /*
-         * when login with google before, next time login with facebook(same email)
-         * will cause error, e.code = auth/account-exists-with-different-credential
-         */
-        if (e.code === 'auth/account-exists-with-different-credential') {
-          this.authOrg = 'Google'
-          this.$emit('verifyEmailSignInMethod', 'google.com')
-        }
       }
       this.isLoading = false
     },

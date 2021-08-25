@@ -5,6 +5,7 @@
       :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
       :email.sync="email"
       :showHint="showHint"
+      :prevAuthMethod="prevAuthMethod"
       @verifyEmailSignInMethod="handleVerifyEmailSignInMethod"
       @goToRegister="handleGoToRegister"
     />
@@ -65,6 +66,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    prevAuthMethod: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -81,14 +86,22 @@ export default {
 
         case 'password':
           this.state = 'login'
-          this.$emit('setShowHint', false)
+          this.$emit('setPrevAuthMethod', 'email')
+          this.$emit('setShowHint', true)
           break
 
-        // this email has been used by google/facebook auth
         case 'google.com':
-        case 'facebook.com':
-          this.email = '' // clear email input field (TODO)
+          this.$emit('setPrevAuthMethod', 'Google')
           this.$emit('setShowHint', true)
+          this.email = '' // clear email input field (TODO)
+
+          break
+
+        case 'facebook.com':
+          this.$emit('setPrevAuthMethod', 'Facebook')
+          this.$emit('setShowHint', true)
+          this.email = '' // clear email input field (TODO)
+
           break
 
         default:
@@ -101,6 +114,7 @@ export default {
     },
     handleBackToInitial() {
       this.state = 'initial'
+      this.$emit('setShowHint', false)
     },
   },
 }
