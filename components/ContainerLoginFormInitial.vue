@@ -108,8 +108,11 @@ export default {
         )
 
         console.log(responseArray)
-        // Hint, If email verify is active in the future,
-        // responseArray would have multi value (TODO)
+
+        /*
+         * Hint, If email verify is active in the future,
+         * responseArray would have multi value (TODO)
+         */
         const isEmailExistWithEmailLinkSignInMethod =
           responseArray?.[0] === 'emailLink' // not used (for now)
         const isEmailExistWithEmailPasswordSignInMethod =

@@ -129,6 +129,17 @@ export default {
       return `重新寄送...(${this.frozenTime} 秒)`
     },
   },
+  mounted() {
+    const currentUser = this.$fire.auth.currentUser
+    console.log('currentUser:')
+    console.log(currentUser)
+    if (currentUser?.email) {
+      this.email = currentUser.email
+      this.alterableEmail = false
+    } else {
+      this.alterableEmail = true
+    }
+  },
   methods: {
     setValidateOn() {
       this.validateOn = !this.validateOn
@@ -165,12 +176,11 @@ export default {
         .sendEmailVerification(this.createActionCodeSettings())
         .then(() => {
           // 驗證信發送完成
-
           this.isLoading = false
           this.hasSend = true
           this.status = 'success'
-          window.alert('驗證信已發送到您的信箱，請查收。')
           this.countDown()
+          window.alert('驗證信已發送到您的信箱，請查收。')
         })
         .catch((error) => {
           // 驗證信發送失敗
