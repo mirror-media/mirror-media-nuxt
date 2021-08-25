@@ -159,36 +159,42 @@ export default {
         }
       }, 1000)
     },
-    handleSubmit() {
+    async handleSubmit() {
       if (this.isLoading || this.isDisable) return
       this.isLoading = true
 
       const currentUser = this.$fire.auth.currentUser
-      const { emailVerified } = currentUser
-
-      if (emailVerified) {
+      if (currentUser.emailVerified) {
+        // Although this page is not accessable when user.email has been verified, still check it just in case
         this.isLoading = false
         return
       }
 
-      // send verify email
-      currentUser
-        .sendEmailVerification(this.createActionCodeSettings())
-        .then(() => {
-          // 驗證信發送完成
-          this.isLoading = false
-          this.hasSend = true
-          this.status = 'success'
-          this.countDown()
-          window.alert('驗證信已發送到您的信箱，請查收。')
-        })
-        .catch((error) => {
-          // 驗證信發送失敗
-          this.hasSend = true
-          this.isLoading = false
-          this.status = 'fail'
-          console.log(error.message)
-        })
+      try {
+        if (!currentUser.email) {
+          /*
+           * if email doesn't exist, it means currentUser may be FB account (which don't have email)
+           * need to update user with entered email first
+           */
+          await currentUser.updateProfile({ email: this.email })
+        }
+
+        // send verify email
+        await currentUser.sendEmailVerification(this.createActionCodeSettings())
+
+        // 驗證信發送完成
+        this.isLoading = false
+        this.hasSend = true
+        this.status = 'success'
+        this.countDown()
+        window.alert('驗證信已發送到您的信箱，請查收。')
+      } catch (error) {
+        // 驗證信發送失敗
+        this.hasSend = true
+        this.isLoading = false
+        this.status = 'fail'
+        console.log(error.message)
+      }
     },
     createActionCodeSettings() {
       return {
