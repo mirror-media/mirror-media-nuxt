@@ -138,6 +138,15 @@ export default {
         }
       } catch (e) {
         console.error(e)
+
+        /*
+         * when login with google before, next time login with facebook(same email)
+         * will cause error, e.code = auth/account-exists-with-different-credential
+         */
+        if (e.code === 'auth/account-exists-with-different-credential') {
+          this.authOrg = 'Google'
+          this.$emit('verifyEmailSignInMethod', 'google.com')
+        }
       }
       this.isLoading = false
     },
