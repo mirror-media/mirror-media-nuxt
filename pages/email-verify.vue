@@ -164,11 +164,16 @@ export default {
       this.isLoading = true
 
       const currentUser = this.$fire.auth.currentUser
-      if (currentUser.emailVerified) {
+      if (currentUser?.emailVerified) {
         // Although this page is not accessable when user.email has been verified, still check it just in case
         this.isLoading = false
         return
       }
+
+      console.log('currentUser.email')
+      console.log(currentUser?.email)
+      console.log('this.email')
+      console.log(this.email)
 
       try {
         if (!currentUser.email) {
@@ -176,7 +181,9 @@ export default {
            * if email doesn't exist, it means currentUser may be FB account (which don't have email)
            * need to update user with entered email first
            */
-          await currentUser.updateProfile({ email: this.email })
+          await currentUser.updateEmail(this.email)
+          console.log('updated email')
+          console.log(currentUser)
         }
 
         // send verify email
