@@ -19,6 +19,9 @@ export default function createMachine(router, route, store) {
           `/login?destination=${route.value.fullPath}&ms=true`
         )
       },
+      navigateToServiceRule() {
+        createNavigation(router, route, '/service-rule?ms=true')
+      },
       navigateToPremiumPage(context) {
         createNavigation(router, route, context.isFromPost)
       },
@@ -56,6 +59,7 @@ export default function createMachine(router, route, store) {
   }).withContext({
     ...machine.context,
     isLoggedIn: store.getters['membership/isLoggedIn'],
+    isTosAgreed: mockFetchIsTosAgreed(),
     subscription: mockFetchSubscription(),
   })
 }
@@ -77,4 +81,8 @@ function createNavigation(router, route, path) {
 
 function mockFetchSubscription() {
   return localStorage.getItem('subscription') ?? null
+}
+
+function mockFetchIsTosAgreed() {
+  return !!localStorage.getItem('read-service-rule')
 }

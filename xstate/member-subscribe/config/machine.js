@@ -1,3 +1,5 @@
+import { send } from 'xstate'
+
 export default {
   id: `
     鏡週刊會員訂閱（由「未登入」且「未訂閱」狀態開始出發）。
@@ -10,6 +12,7 @@ export default {
   context: {
     // true, false
     isLoggedIn: false,
+    isTosAgreed: false,
 
     // null, 'post', '月訂閱', '年訂閱'
     subscription: null,
@@ -630,48 +633,67 @@ export default {
       },
     },
 
-    '登入功能（獨立頁或 lightbox）': {
-      id: '登入功能（獨立頁或 lightbox）',
-      initial: '登入表單',
-      entry: ['navigateToLoginPage'],
+    登入導引流程: {
+      id: '登入導引流程',
+      initial: '登入功能（獨立頁或 lightbox）',
       states: {
-        登入表單: {
-          on: {
-            送出: '登入中',
-          },
-        },
-        登入中: {
-          on: {
-            登入成功: {
-              target: '登入成功頁',
-              actions: ['login'],
+        '登入功能（獨立頁或 lightbox）': {
+          id: '登入功能（獨立頁或 lightbox）',
+          initial: '登入表單',
+          entry: ['navigateToLoginPage'],
+          states: {
+            登入表單: {
+              on: {
+                送出: '登入中',
+              },
             },
-            登入失敗: '登入失敗頁',
+            登入中: {
+              on: {
+                登入成功: [
+                  {
+                    cond: '是否已同意服務條款',
+                    actions: ['login', send('自動跳轉')],
+                  },
+                  {
+                    target: '#服務條款頁',
+                    actions: ['login'],
+                  },
+                ],
+                登入失敗: '登入失敗頁',
+              },
+            },
+            登入失敗頁: {
+              on: {
+                回上一頁: '登入表單',
+              },
+            },
           },
         },
-        登入成功頁: {
+        服務條款頁: {
+          id: '服務條款頁',
+          entry: ['navigateToServiceRule'],
           on: {
-            自動跳轉: [
-              {
-                target: '#方案購買流程',
-                cond: '訂購',
-              },
-              {
-                target: '#方案購買流程',
-                cond: '方案',
-              },
-              {
-                target: '#referral',
-                actions: ['navigateToPremiumPage'],
-              },
-            ],
+            同意服務條款並繼續登入: {
+              actions: ['agreeTos', send('自動跳轉')],
+            },
           },
         },
-        登入失敗頁: {
-          on: {
-            回上一頁: '登入表單',
+      },
+      on: {
+        自動跳轉: [
+          {
+            target: '#方案購買流程',
+            cond: '訂購',
           },
-        },
+          {
+            target: '#方案購買流程',
+            cond: '方案',
+          },
+          {
+            target: '#referral',
+            actions: ['navigateToPremiumPage'],
+          },
+        ],
       },
     },
   },

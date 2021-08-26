@@ -164,7 +164,6 @@ export default {
     async handleLoginSuccess() {
       if (isMemberSubscribeFeatureToggled(this.$route)) {
         this.sendMembershipSubscribe('登入成功')
-        this.sendMembershipSubscribe('自動跳轉')
       } else {
         await loginDestination.redirect()
       }

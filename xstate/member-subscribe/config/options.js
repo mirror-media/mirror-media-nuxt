@@ -3,6 +3,7 @@ import { assign } from 'xstate'
 export default {
   guards: {
     是否已登入: (context) => context.isLoggedIn,
+    是否已同意服務條款: (context) => context.isTosAgreed,
 
     是單篇付款過的會員: (context) => context.subscription === '解鎖這篇報導',
     是月訂閱的會員: (context) => context.subscription === '月訂閱',
@@ -20,6 +21,9 @@ export default {
   actions: {
     login: assign({
       isLoggedIn: true,
+    }),
+    agreeTos: assign({
+      isTosAgreed: true,
     }),
     orderSubscribe: assign({
       subscriptionOrder: (context, event) => {
