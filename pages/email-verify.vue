@@ -130,13 +130,26 @@ export default {
       return `重新寄送...(${this.frozenTime} 秒)`
     },
   },
-  mounted() {
+  async mounted() {
     const currentUser = this.$fire.auth.currentUser
     console.log('currentUser:')
     console.log(currentUser)
+
     if (currentUser?.email) {
       this.email = currentUser.email
       this.alterableEmail = false
+
+      // if user is sign in with facebook, then email is changable
+      const responseArray = await this.$fire.auth.fetchSignInMethodsForEmail(
+        currentUser.email
+      )
+      const isEmailHasBeenUsedByFacebookAuth =
+        responseArray &&
+        responseArray.find((signInMethod) => signInMethod === 'facebook.com')
+
+      if (isEmailHasBeenUsedByFacebookAuth) {
+        this.alterableEmail = true
+      }
     } else {
       this.alterableEmail = true
     }
