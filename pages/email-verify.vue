@@ -53,7 +53,7 @@
               v-if="!isLoading && status === 'fail'"
               class="validate-email__wrapper_form_status_error"
             >
-              Email 寄出失敗，請重新再試
+              {{ failInfo }}
             </div>
           </template>
         </div>
@@ -102,6 +102,7 @@ export default {
       validateOn: true,
       frozenTime: 0,
       alterableEmail: true,
+      failInfo: 'Email 寄出失敗，請重新再試',
     }
   },
   validations: {
@@ -135,7 +136,7 @@ export default {
     console.log(currentUser)
     if (currentUser?.email) {
       this.email = currentUser.email
-      this.alterableEmail = false
+      // this.alterableEmail = false
     } else {
       this.alterableEmail = true
     }
@@ -176,7 +177,7 @@ export default {
       console.log(this.email)
 
       try {
-        if (!currentUser.email) {
+        if (currentUser.email) {
           /*
            * if email doesn't exist, it means currentUser may be FB account (which don't have email)
            * need to update user with entered email first
@@ -201,6 +202,16 @@ export default {
         this.isLoading = false
         this.status = 'fail'
         console.log(error.message)
+
+        if (
+          error.message ===
+          'The email address is already in use by another account.'
+        ) {
+          this.failInfo =
+            '此 Email 已經被註冊，若您是這個 Email 的擁有者，請重新以 Google 帳號登入'
+        } else {
+          this.failInfo = 'Email 寄出失敗，請重新再試'
+        }
       }
     },
     createActionCodeSettings() {
