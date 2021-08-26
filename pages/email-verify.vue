@@ -136,7 +136,7 @@ export default {
     console.log(currentUser)
     if (currentUser?.email) {
       this.email = currentUser.email
-      // this.alterableEmail = false
+      this.alterableEmail = false
     } else {
       this.alterableEmail = true
     }
