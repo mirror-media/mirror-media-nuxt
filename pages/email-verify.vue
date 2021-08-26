@@ -177,7 +177,7 @@ export default {
       console.log(this.email)
 
       try {
-        if (currentUser.email) {
+        if (!currentUser.email) {
           /*
            * if email doesn't exist, it means currentUser may be FB account (which don't have email)
            * need to update user with entered email first
