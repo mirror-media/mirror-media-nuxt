@@ -85,7 +85,7 @@ export default {
       switch (this.prevAuthMethod) {
         case 'Google':
         case 'Facebook':
-          hint = `由於您曾以 ${this.prevAuthMethod} 帳號登入，請點擊上方「以 ${this.prevAuthMethod} 帳號繼續」重試。`
+          hint = `由於您曾以 ${this.prevAuthMethod} 帳號登入，請點擊上方「使用${this.prevAuthMethod}帳號繼續」重試。`
           break
 
         case 'email':
@@ -113,16 +113,23 @@ export default {
 
         /*
          * Hint, If email verify is active in the future,
-         * responseArray would have multi value (TODO)
+         * responseArray would have multi value
          */
         const isEmailExistWithEmailLinkSignInMethod =
-          responseArray?.[0] === 'emailLink' // not used (for now)
+          responseArray &&
+          responseArray.find((signInMethod) => signInMethod === 'emailLink')
+
         const isEmailExistWithEmailPasswordSignInMethod =
-          responseArray?.[0] === 'password'
+          responseArray &&
+          responseArray.find((signInMethod) => signInMethod === 'password')
+
         const isEmailHasBeenUsedByGoogleAuth =
-          responseArray?.[0] === 'google.com'
+          responseArray &&
+          responseArray.find((signInMethod) => signInMethod === 'google.com')
+
         const isEmailHasBeenUsedByFacebookAuth =
-          responseArray?.[0] === 'facebook.com'
+          responseArray &&
+          responseArray.find((signInMethod) => signInMethod === 'facebook.com')
 
         if (isEmailExistWithEmailLinkSignInMethod) {
           this.$emit('verifyEmailSignInMethod', 'emailLink')
