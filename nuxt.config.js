@@ -287,6 +287,10 @@ module.exports = {
       path: `/${API_PATH_FRONTEND}/membership/v1`,
       handler: '~/api/membership-proxy-v1.js',
     },
+    {
+      path: `/${API_PATH_FRONTEND}/member-subscription/v0`,
+      handler: '~/api/member-subscription-proxy.js',
+    },
     { path: `/${API_PATH_FRONTEND}`, handler: '~/api/index.js' },
   ],
 
