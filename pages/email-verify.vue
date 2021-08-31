@@ -17,8 +17,8 @@
             v-model="email"
             type="text"
             placeholder="name@example.com"
-            @input="$v.email.$touch"
             :disabled="!alterableEmail"
+            @input="$v.email.$touch"
           />
           <div
             v-show="!$v.email.email && $v.email.$error"
@@ -73,7 +73,7 @@
       :orderStatus="status"
       :setOrderStatus="setOrderStatus"
     />
-    <button @click="toggleAlterable" class="sim-for-alterable">
+    <button class="sim-for-alterable" @click="toggleAlterable">
       toggle alterable
     </button>
   </div>
@@ -86,12 +86,20 @@ import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import { ENV } from '~/configs/config'
 import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settings-app-config'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
     UiMembershipButtonPrimary,
     MembershipInfoSim,
     UiMembershipLoadingIcon,
+  },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+    }
   },
   data() {
     return {
@@ -209,6 +217,7 @@ export default {
         this.status = 'success'
         this.countDown()
         window.alert('驗證信已發送到您的信箱，請查收。')
+        this.sendMembershipSubscribe('假裝驗證信箱並繼續流程')
       } catch (error) {
         // 驗證信發送失敗
         this.hasSend = true

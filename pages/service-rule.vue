@@ -102,7 +102,7 @@ export default {
     handleSubmit(e) {
       e.preventDefault()
       localStorage.setItem('read-service-rule', 'true')
-      this.sendMembershipSubscribe('同意服務條款並繼續登入')
+      this.sendMembershipSubscribe('同意服務條款並繼續')
     },
   },
 }

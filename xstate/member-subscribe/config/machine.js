@@ -276,11 +276,15 @@ export default {
                   on: {
                     '': [
                       {
-                        target: '確認訂購表單頁',
-                        cond: '是否已驗證信箱',
+                        target: '信箱驗證頁',
+                        cond: '是否未驗證信箱',
                       },
                       {
-                        target: '信箱驗證頁',
+                        target: '服務條款頁',
+                        cond: '是否未同意服務條款',
+                      },
+                      {
+                        target: '確認訂購表單頁',
                       },
                     ],
                   },
@@ -296,7 +300,25 @@ export default {
                   },
                 },
                 信箱驗證頁: {
+                  id: '信箱驗證頁',
                   entry: ['navigateToEmailVerify'],
+                  on: {
+                    // TODO: remove this shortcut event for demo purpose
+                    假裝驗證信箱並繼續流程: {
+                      target: '起點',
+                      actions: ['verifyEmail'],
+                    },
+                  },
+                },
+                服務條款頁: {
+                  id: '服務條款頁',
+                  entry: ['navigateToServiceRule'],
+                  on: {
+                    同意服務條款並繼續: {
+                      target: '起點',
+                      actions: ['agreeTos'],
+                    },
+                  },
                 },
               },
             },
