@@ -480,6 +480,10 @@ module.exports = {
         browserHttpEndpoint: '/api/v2/membership/v1/graphql',
       },
       userClient: '~/apollo-config-user-client.js',
+      memberSubscription: {
+        httpEndpoint: 'http://localhost:3000/api/v2/member-subscription/v0',
+        browserHttpEndpoint: '/api/v2/member-subscription/v0',
+      },
     },
   },
 

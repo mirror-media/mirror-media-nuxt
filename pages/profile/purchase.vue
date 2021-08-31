@@ -48,6 +48,7 @@
 
 <script>
 import { computed } from '@nuxtjs/composition-api'
+import { fetchMemberSubscriptions } from '~/apollo/queries/member.gql'
 import { ENV } from '~/configs/config'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import MemberShipStatus from '~/components/MemberShipStatus.vue'
@@ -56,7 +57,6 @@ import MembershipPayRecord from '~/components/MembershipPayRecord.vue'
 import MembershipSimFormStatus from '~/components/MembershipSimFormStatus.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
-
 export default {
   components: {
     SubscribeWrapper,
@@ -134,6 +134,20 @@ export default {
         }
       }
     }
+  },
+  apollo: {
+    $client: 'memberSubscription',
+  },
+
+  async fetch() {
+    // Call to the graphql mutation
+    const memberData = await this.$apollo.mutate({
+      mutation: fetchMemberSubscriptions,
+      variables: {
+        firebaseId: 'testFirebaseId',
+      },
+    })
+    console.log(memberData)
   },
   data() {
     return {

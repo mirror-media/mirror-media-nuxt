@@ -1,0 +1,16 @@
+query fetchMemberSubscriptions($firebaseId: String) {
+  member(where: { firebaseId: $firebaseId }) {
+    firebaseId
+    email
+    subscription {
+      postId
+      paymentMethod
+      oneTimeEndDatetime
+      newebpayPayment {
+        paymentMethod
+        paymentTime
+        amount
+      }
+    }
+  }
+}
