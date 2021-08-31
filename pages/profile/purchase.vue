@@ -48,7 +48,7 @@
 
 <script>
 import { computed } from '@nuxtjs/composition-api'
-import { fetchMemberSubscriptions } from '~/apollo/queries/member.gql'
+import { fetchMemberSubscriptions } from '~/apollo/queries/memberSubscription.gql'
 import { ENV } from '~/configs/config'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import MemberShipStatus from '~/components/MemberShipStatus.vue'

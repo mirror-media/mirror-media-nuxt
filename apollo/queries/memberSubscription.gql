@@ -2,7 +2,8 @@ query fetchMemberSubscriptions($firebaseId: String) {
   member(where: { firebaseId: $firebaseId }) {
     firebaseId
     email
-    subscription {
+    subscription(orderBy: [{ periodFirstDatetime: desc }]) {
+      frequency
       postId
       paymentMethod
       oneTimeEndDatetime

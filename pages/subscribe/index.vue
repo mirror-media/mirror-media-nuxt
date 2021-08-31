@@ -57,7 +57,7 @@ import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import { ENV } from '~/configs/config'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
-
+// import { fetchMemberSubscriptionType } from '~/utils/memberSubscription'
 export default {
   components: {
     SubscribeStepProgress,
@@ -283,6 +283,10 @@ export default {
           return null
       }
     },
+  },
+  async created() {
+    // const memberType = await this.$fetchMemberSubscriptionType(this)
+    // console.log(memberType)
   },
 }
 </script>
