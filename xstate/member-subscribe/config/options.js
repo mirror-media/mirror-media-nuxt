@@ -4,6 +4,7 @@ export default {
   guards: {
     是否已登入: (context) => context.isLoggedIn,
     是否已同意服務條款: (context) => context.isTosAgreed,
+    是否已驗證信箱: (context) => context.isEmailVerified,
 
     是單篇付款過的會員: (context) => context.subscription === '解鎖這篇報導',
     是月訂閱的會員: (context) => context.subscription === '月訂閱',

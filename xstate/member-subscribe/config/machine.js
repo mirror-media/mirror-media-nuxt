@@ -13,6 +13,7 @@ export default {
     // true, false
     isLoggedIn: false,
     isTosAgreed: false,
+    isEmailVerified: false,
 
     // null, 'post', '月訂閱', '年訂閱'
     subscription: null,
@@ -271,16 +272,38 @@ export default {
             },
             確認訂購頁: {
               id: '確認訂購頁',
-              entry: ['navigateToSubscribeInfo'],
-              on: {
-                付款成功: {
-                  target: '付款成功頁',
-                  actions: ['subscribe'],
+              initial: '起點',
+              states: {
+                起點: {
+                  on: {
+                    '': [
+                      {
+                        target: '確認訂購表單頁',
+                        cond: '是否已驗證信箱',
+                      },
+                      {
+                        target: '信箱驗證頁',
+                      },
+                    ],
+                  },
                 },
-                付款失敗: '付款失敗頁',
+                確認訂購表單頁: {
+                  entry: ['navigateToSubscribeInfo'],
+                  on: {
+                    付款成功: {
+                      target: '#付款成功頁',
+                      actions: ['subscribe'],
+                    },
+                    付款失敗: '#付款失敗頁',
+                  },
+                },
+                信箱驗證頁: {
+                  entry: ['navigateToEmailVerify'],
+                },
               },
             },
             付款成功頁: {
+              id: '付款成功頁',
               entry: ['navigateToSubscribeSuccess'],
               initial: '起點',
               states: {
@@ -332,6 +355,7 @@ export default {
                */
             },
             付款失敗頁: {
+              id: '付款失敗頁',
               entry: ['navigateToSubscribeFail'],
               on: {
                 回前頁: '確認訂購頁',

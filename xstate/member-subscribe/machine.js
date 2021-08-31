@@ -12,6 +12,9 @@ export default function createMachine(router, route, store) {
       setFromPost: assign({
         isFromPost: route.value.fullPath,
       }),
+      setUserEmailVerification: assign({
+        isEmailVerified: !!store.state.membership.userEmailVerified,
+      }),
       navigateToLoginPage() {
         createNavigation(
           router,
@@ -52,6 +55,9 @@ export default function createMachine(router, route, store) {
       navigateToProfilePurchase() {
         createNavigation(router, route, '/profile/purchase?ms=true')
       },
+      navigateToEmailVerify() {
+        createNavigation(router, route, '/email-verify?ms=true')
+      },
       navigateToSectionMember() {
         window.location.assign('/section/member')
       },
@@ -60,6 +66,7 @@ export default function createMachine(router, route, store) {
     ...machine.context,
     isLoggedIn: store.getters['membership/isLoggedIn'],
     isTosAgreed: mockFetchIsTosAgreed(),
+    isEmailVerified: !!store.state.membership.userEmailVerified,
     subscription: mockFetchSubscription(),
   })
 }
