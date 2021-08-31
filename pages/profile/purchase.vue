@@ -48,7 +48,6 @@
 
 <script>
 import { computed } from '@nuxtjs/composition-api'
-import { fetchMemberSubscriptions } from '~/apollo/queries/memberSubscription.gql'
 import { ENV } from '~/configs/config'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import MemberShipStatus from '~/components/MemberShipStatus.vue'
@@ -135,20 +134,7 @@ export default {
       }
     }
   },
-  apollo: {
-    $client: 'memberSubscription',
-  },
 
-  async fetch() {
-    // Call to the graphql mutation
-    const memberData = await this.$apollo.mutate({
-      mutation: fetchMemberSubscriptions,
-      variables: {
-        firebaseId: 'testFirebaseId',
-      },
-    })
-    console.log(memberData)
-  },
   data() {
     return {
       postList: [
@@ -284,6 +270,11 @@ export default {
       const status = this.memberShipStatus?.name
       return status === 'year' || status === 'month' || status === 'disturb'
     },
+  },
+  async created() {
+    // Call to the graphql mutation
+    const memberData = await this.$fetchMemberSubscriptionList(this)
+    console.log(memberData)
   },
   mounted() {
     if (this.$store.state.viewport.width <= 568) {

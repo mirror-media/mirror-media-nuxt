@@ -2,7 +2,10 @@ import { camelizeKeys } from 'humps'
 import _ from 'lodash'
 import axios from 'axios'
 import qs from 'qs'
-import { fetchMemberSubscriptionType } from '~/utils/memberSubscription'
+import {
+  fetchMemberSubscriptionType,
+  fetchMemberSubscriptionList,
+} from '~/utils/memberSubscription'
 
 import {
   API_TIMEOUT,
@@ -298,5 +301,8 @@ export default (context, inject) => {
 
   inject('fetchMemberSubscriptionType', async (vueComponent) => {
     return await fetchMemberSubscriptionType(vueComponent)
+  })
+  inject('fetchMemberSubscriptionList', async (vueComponent) => {
+    return await fetchMemberSubscriptionList(vueComponent)
   })
 }

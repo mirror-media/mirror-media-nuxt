@@ -2,12 +2,11 @@ import { fetchMemberSubscriptions } from '~/apollo/queries/memberSubscription.gq
 
 async function fetchMemberSubscriptionType(vueComponent) {
   // determine whether user is logged in or not
-  const currentUser = vueComponent.$fire.auth.currentUser
-  if (!currentUser) return 'not-member'
+  const firebaseId = getUserFirebaseId(vueComponent.$fire)
 
-  // get user's firebaseId, then fetch it's subscription state
-  const firebaseId = currentUser.uid
+  if (!firebaseId) return 'not-member' // no user is logged in
 
+  // get user's subscription state
   try {
     const result = await fireGqlRequest(
       fetchMemberSubscriptions,
@@ -48,6 +47,41 @@ async function fetchMemberSubscriptionType(vueComponent) {
   }
 }
 
+async function fetchMemberSubscriptionList(vueComponent) {
+  const firebaseId = getUserFirebaseId(vueComponent.$fire)
+
+  try {
+    // get user's subscription state
+    const result = await fireGqlRequest(
+      fetchMemberSubscriptions,
+      {
+        firebaseId,
+      },
+      vueComponent.$apolloProvider
+    )
+
+    // handle gql error
+    if (result.error) {
+      console.log(result.error)
+      return {}
+    }
+
+    // check member's latest subscription state
+    const memberData = result?.data?.member
+    return memberData
+  } catch (error) {
+    // handle network error
+    console.log(error)
+    return {}
+  }
+}
+
+function getUserFirebaseId(fire) {
+  const currentUser = fire.auth.currentUser
+
+  return currentUser?.uid || null
+}
+
 async function fireGqlRequest(query, variables, apolloProvider) {
   const apollo = apolloProvider.clients.memberSubscription
 
@@ -57,4 +91,4 @@ async function fireGqlRequest(query, variables, apolloProvider) {
   })
 }
 
-export { fetchMemberSubscriptionType }
+export { fetchMemberSubscriptionType, fetchMemberSubscriptionList }
