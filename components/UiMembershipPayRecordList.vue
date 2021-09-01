@@ -47,6 +47,7 @@ export default {
 
     &_date {
       flex: 1;
+      font-family: 'PingFang TC';
     }
     &_number {
       flex: 2;

@@ -2,7 +2,7 @@
   <div class="purchase">
     <ClientOnly>
       <h1 class="purchase__title">訂閱紀錄</h1>
-      <SubscribeWrapper v-if="memberShipStatus.name !== 'not-at-all'">
+      <SubscribeWrapper v-if="memberShipStatus.name === 'not-at-all'">
         <MemberShipStatus
           :isMobile="isMobile"
           :memberShipStatus="memberShipStatus"
@@ -48,6 +48,7 @@
 
 <script>
 import { computed } from '@nuxtjs/composition-api'
+import { getMemberPayRecords } from '~/utils/memberSubscription'
 import { ENV } from '~/configs/config'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import MemberShipStatus from '~/components/MemberShipStatus.vue'
@@ -271,10 +272,11 @@ export default {
       return status === 'year' || status === 'month' || status === 'disturb'
     },
   },
+
   async created() {
     // Call to the graphql mutation
     const memberData = await this.$fetchMemberSubscriptionList(this)
-    console.log(memberData)
+    this.payRecords = getMemberPayRecords(memberData)
   },
   mounted() {
     if (this.$store.state.viewport.width <= 568) {

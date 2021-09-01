@@ -3,6 +3,7 @@ query fetchMemberSubscriptions($firebaseId: String) {
     firebaseId
     email
     subscription(orderBy: [{ periodFirstDatetime: desc }]) {
+      orderNumber
       frequency
       postId
       paymentMethod
@@ -11,6 +12,7 @@ query fetchMemberSubscriptions($firebaseId: String) {
         paymentMethod
         paymentTime
         amount
+        cardInfoLastFour
       }
     }
   }

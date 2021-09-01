@@ -2,8 +2,7 @@ import { fetchMemberSubscriptions } from '~/apollo/queries/memberSubscription.gq
 
 async function fetchMemberSubscriptionType(vueComponent) {
   // determine whether user is logged in or not
-  const firebaseId = getUserFirebaseId(vueComponent.$fire)
-
+  const firebaseId = await getUserFirebaseId(vueComponent)
   if (!firebaseId) return 'not-member' // no user is logged in
 
   // get user's subscription state
@@ -13,7 +12,7 @@ async function fetchMemberSubscriptionType(vueComponent) {
       {
         firebaseId,
       },
-      vueComponent.$apolloProvider
+      vueComponent
     )
 
     // handle gql error
@@ -43,12 +42,14 @@ async function fetchMemberSubscriptionType(vueComponent) {
   } catch (error) {
     // handle network error
     console.log(error)
+
     return 'not-member'
   }
 }
 
 async function fetchMemberSubscriptionList(vueComponent) {
-  const firebaseId = getUserFirebaseId(vueComponent.$fire)
+  const firebaseId = await getUserFirebaseId(vueComponent)
+  if (!firebaseId) return null
 
   try {
     // get user's subscription state
@@ -57,7 +58,7 @@ async function fetchMemberSubscriptionList(vueComponent) {
       {
         firebaseId,
       },
-      vueComponent.$apolloProvider
+      vueComponent
     )
 
     // handle gql error
@@ -71,24 +72,73 @@ async function fetchMemberSubscriptionList(vueComponent) {
     return memberData
   } catch (error) {
     // handle network error
-    console.log(error)
+    console.log(error.message)
+
     return {}
   }
 }
 
-function getUserFirebaseId(fire) {
-  const currentUser = fire.auth.currentUser
-
+async function getUserFirebaseId(vueComponent) {
+  const currentUser = await vueComponent.$fire.auth.currentUser
   return currentUser?.uid || null
 }
 
-async function fireGqlRequest(query, variables, apolloProvider) {
-  const apollo = apolloProvider.clients.memberSubscription
+async function fireGqlRequest(query, variables, vueComponent) {
+  const result = await vueComponent.$apolloProvider.clients.memberSubscription.mutate(
+    {
+      mutation: query,
+      variables,
+    }
+  )
 
-  return await apollo.mutate({
-    mutation: query,
-    variables,
-  })
+  return result
 }
 
-export { fetchMemberSubscriptionType, fetchMemberSubscriptionList }
+function getMemberPayRecords(memberData) {
+  if (!memberData) return []
+
+  const payRecords = []
+  memberData.subscription.forEach((subscription) => {
+    subscription.newebpayPayment?.forEach((newebpayPayment) => {
+      const payRecord = {
+        number: subscription.orderNumber,
+        date: getFormatDate(newebpayPayment.paymentTime),
+        type: getSubscriptionType(subscription.frequency),
+        method: newebpayPayment.paymentMethod,
+        methodNote: `(${newebpayPayment.cardInfoLastFour || ''})`,
+        price: newebpayPayment.amount,
+      }
+      payRecords.push(payRecord)
+    })
+  })
+
+  return payRecords
+}
+
+function getSubscriptionType(type) {
+  switch (type) {
+    case 'yearly':
+      return '年訂閱'
+    case 'monthly':
+      return '月訂閱'
+    case 'one_time':
+      return '單篇訂閱'
+    default:
+      break
+  }
+}
+
+function getFormatDate(dateString) {
+  const date = new Date(dateString)
+  const year = date.getFullYear()
+  const month = ('0' + date.getMonth()).slice(-2)
+  const day = ('0' + date.getDate()).slice(-2)
+
+  return `${year}/${month}/${day}`
+}
+
+export {
+  fetchMemberSubscriptionType,
+  fetchMemberSubscriptionList,
+  getMemberPayRecords,
+}
