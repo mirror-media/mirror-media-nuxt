@@ -284,8 +284,10 @@ export default {
     },
   },
   async created() {
+    // ======To Kevin Start=======
     // const memberType = await this.$fetchMemberSubscriptionType(this)
     // console.log(memberType)
+    // ======To Kevin End=======
   },
 }
 </script>

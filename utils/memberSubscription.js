@@ -119,6 +119,21 @@ function getMemberPayRecords(memberData) {
 
   return payRecords
 }
+function getMemberSubscribePosts(memberData) {
+  if (!memberData) return []
+
+  const postList = []
+  memberData.subscription.forEach((subscription) => {
+    const post = {
+      id: subscription.postId,
+      title: subscription.postId,
+      url: '/',
+      deadline: getFormatDate(subscription.oneTimeEndDatetime),
+    }
+    postList.push(post)
+  })
+  return postList
+}
 
 function getSubscriptionType(type) {
   switch (type) {
@@ -143,8 +158,32 @@ function getFormatDate(dateString) {
   return `${year}/${month}/${day}`
 }
 
+function isMemberPremium(memberShipStatus) {
+  const status = memberShipStatus?.name
+  return status === 'yearly' || status === 'monthly' || status === 'disturb'
+}
+
+function getMemberShipStatus(memberData) {
+  if (!memberData) return []
+
+  const latestSubscription = memberData.subscription[0]
+  const status = latestSubscription.frequency
+
+  const memberShipStatus = {
+    name: status,
+    dueDate: getFormatDate(latestSubscription.periodEndDatetime),
+    nextPayDate: getFormatDate(latestSubscription.periodNextPayDatetime),
+    payMethod: latestSubscription.paymentMethod,
+  }
+
+  return memberShipStatus
+}
+
 export {
   fetchMemberSubscriptionType,
   fetchMemberSubscriptionList,
   getMemberPayRecords,
+  getMemberSubscribePosts,
+  getMemberShipStatus,
+  isMemberPremium,
 }

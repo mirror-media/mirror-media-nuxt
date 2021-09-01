@@ -2,7 +2,7 @@
   <div class="purchase">
     <ClientOnly>
       <h1 class="purchase__title">訂閱紀錄</h1>
-      <SubscribeWrapper v-if="memberShipStatus.name === 'not-at-all'">
+      <SubscribeWrapper v-if="memberShipStatus.name !== 'not-at-all'">
         <MemberShipStatus
           :isMobile="isMobile"
           :memberShipStatus="memberShipStatus"
@@ -48,7 +48,12 @@
 
 <script>
 import { computed } from '@nuxtjs/composition-api'
-import { getMemberPayRecords } from '~/utils/memberSubscription'
+import {
+  getMemberPayRecords,
+  getMemberSubscribePosts,
+  getMemberShipStatus,
+  isMemberPremium,
+} from '~/utils/memberSubscription'
 import { ENV } from '~/configs/config'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import MemberShipStatus from '~/components/MemberShipStatus.vue'
@@ -138,38 +143,7 @@ export default {
 
   data() {
     return {
-      postList: [
-        {
-          id: 1,
-          title: '【搞懂特別股】股神也押寶大賺　特別股成投資市場新寵',
-          href: '/',
-          deadline: '2022/12/3 15:02',
-        },
-        {
-          id: 2,
-          title: '【全文】當蘋果落下　香港新聞自由告終',
-          href: '/',
-          deadline: '2021/5/29 12:29',
-        },
-        {
-          id: 3,
-          title: '【鏡相人間】臉被偷走之後　台灣Deepfake事件獨家調查',
-          href: '/',
-          deadline: '2022/12/3 15:02',
-        },
-        {
-          id: 4,
-          title: '【名媛教育番外篇】孫怡談台灣《Vogue》改版：紙本才是實驗場！',
-          href: '/',
-          deadline: '2022/12/3 15:02',
-        },
-        {
-          id: 5,
-          title: '【國安法下的香港人3】香港的膏肓　阿樂',
-          href: '/',
-          deadline: '2022/12/3 15:02',
-        },
-      ],
+      postList: [],
       postMetaCount: 6,
       payRecords: [],
       payRecordMetaCount: 11,
@@ -193,8 +167,20 @@ export default {
   },
 
   async created() {
-    // Call to the graphql mutation
     const memberData = await this.$fetchMemberSubscriptionList(this)
+
+    // ======To Kevin Start=======
+    const newMemberShipStatus = getMemberShipStatus(memberData)
+    const memberIsPremium = isMemberPremium(newMemberShipStatus)
+    console.log(newMemberShipStatus)
+    console.log(memberIsPremium)
+
+    // ======To Kevin End=======
+
+    if (!memberIsPremium) {
+      this.postList = getMemberSubscribePosts(memberData)
+    }
+
     this.payRecords = getMemberPayRecords(memberData)
   },
   mounted() {
