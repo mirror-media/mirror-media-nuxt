@@ -112,6 +112,11 @@ function getMemberPayRecords(memberData) {
     })
   })
 
+  // sort all records by date_dsc
+  payRecords.sort((recordA, recordB) => {
+    return new Date(recordB.date) - new Date(recordA.date)
+  })
+
   return payRecords
 }
 
@@ -130,8 +135,9 @@ function getSubscriptionType(type) {
 
 function getFormatDate(dateString) {
   const date = new Date(dateString)
+
   const year = date.getFullYear()
-  const month = ('0' + date.getMonth()).slice(-2)
+  const month = ('0' + (date.getMonth() + 1)).slice(-2)
   const day = ('0' + date.getDate()).slice(-2)
 
   return `${year}/${month}/${day}`

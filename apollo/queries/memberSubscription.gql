@@ -8,7 +8,7 @@ query fetchMemberSubscriptions($firebaseId: String) {
       postId
       paymentMethod
       oneTimeEndDatetime
-      newebpayPayment {
+      newebpayPayment(orderBy: [{ paymentTime: desc }]) {
         paymentMethod
         paymentTime
         amount
