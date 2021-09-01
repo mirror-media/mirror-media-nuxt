@@ -79,7 +79,10 @@ export default {
     UiLoginIntro,
     ContainerLoginForm,
   },
-  middleware({ store, redirect }) {
+  middleware({ store, redirect, route }) {
+    if (isMemberSubscribeFeatureToggled(route)) {
+      return
+    }
     if (store.getters['membership/isLoggedIn']) {
       redirect('/section/member')
     }
@@ -166,7 +169,8 @@ export default {
         this.sendMembershipSubscribe('登入成功')
         this.sendMembershipSubscribe('自動跳轉')
       } else {
-        await loginDestination.redirect()
+        // await loginDestination.redirect()
+        await Promise.resolve()
       }
     },
     async handleLoginFail(error) {
