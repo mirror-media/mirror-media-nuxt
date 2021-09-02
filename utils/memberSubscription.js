@@ -82,8 +82,9 @@ async function fetchMemberSubscriptionList(vueComponent) {
 }
 
 async function getUserFirebaseId(vueComponent) {
-  const currentUser = await vueComponent.$fire.auth.currentUser
-  return currentUser?.uid || null
+  const currentUserUid = await vueComponent.$store.state.membership.userUid
+
+  return currentUserUid || null
 }
 
 async function fireGqlRequest(query, variables, vueComponent) {

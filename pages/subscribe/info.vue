@@ -160,10 +160,13 @@ export default {
     },
   },
   async created() {
+    // ======To Kevin Start=======
     const isMemberCheckedServiceRule = await this.$fetchMemberServiceRuleStatus(
       this
     )
     console.log(isMemberCheckedServiceRule)
+
+    // ======To Kevin End=======
   },
 }
 </script>
