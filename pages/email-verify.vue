@@ -138,30 +138,23 @@ export default {
       return `重新寄送...(${this.frozenTime} 秒)`
     },
   },
-  async mounted() {
+  mounted() {
     const currentUser = this.$fire.auth.currentUser
-    console.log('currentUser:')
-    console.log(currentUser)
+    this.email = currentUser.email
 
-    if (currentUser?.email) {
-      this.email = currentUser.email
-      this.alterableEmail = false
+    const { providerData } = currentUser
+    let isReadOnly = false
+    providerData.forEach((provider) => {
+      const logFrom = provider.providerId
 
-      // if user is sign in with facebook, then email is changable
-      const responseArray = await this.$fire.auth.fetchSignInMethodsForEmail(
-        currentUser.email
-      )
-      const isEmailHasBeenUsedByFacebookAuth =
-        responseArray &&
-        responseArray.find((signInMethod) => signInMethod === 'facebook.com')
-
-      if (isEmailHasBeenUsedByFacebookAuth) {
-        this.alterableEmail = true
+      if (logFrom === 'password') {
+        isReadOnly = true
       }
-    } else {
-      this.alterableEmail = true
-    }
+    })
+
+    this.alterableEmail = !isReadOnly
   },
+
   methods: {
     setValidateOn() {
       this.validateOn = !this.validateOn
@@ -192,24 +185,12 @@ export default {
         return
       }
 
-      console.log('currentUser.email')
-      console.log(currentUser?.email)
-      console.log('this.email')
-      console.log(this.email)
-
       try {
-        if (!currentUser.email) {
-          /*
-           * if email doesn't exist, it means currentUser may be FB account (which don't have email)
-           * need to update user with entered email first
-           */
-          await currentUser.updateEmail(this.email)
-          console.log('updated email')
-          console.log(currentUser)
-        }
-
         // send verify email
-        await currentUser.sendEmailVerification(this.createActionCodeSettings())
+        await currentUser.verifyBeforeUpdateEmail(
+          this.email,
+          this.createActionCodeSettings()
+        )
 
         // 驗證信發送完成
         this.isLoading = false
