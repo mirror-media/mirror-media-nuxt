@@ -21,3 +21,11 @@ query fetchMemberSubscriptions($firebaseId: String) {
     }
   }
 }
+query fetchMember($firebaseId: String) {
+  member(where: { firebaseId: $firebaseId }) {
+    firebaseId
+    email
+    type
+    tos
+  }
+}

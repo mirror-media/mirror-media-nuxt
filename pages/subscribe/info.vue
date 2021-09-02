@@ -159,6 +159,12 @@ export default {
       this.sendMembershipSubscribe('付款失敗')
     },
   },
+  async created() {
+    const isMemberCheckedServiceRule = await this.$fetchMemberServiceRuleStatus(
+      this
+    )
+    console.log(isMemberCheckedServiceRule)
+  },
 }
 </script>
 

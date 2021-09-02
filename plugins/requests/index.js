@@ -5,6 +5,7 @@ import qs from 'qs'
 import {
   fetchMemberSubscriptionType,
   fetchMemberSubscriptionList,
+  fetchMemberServiceRuleStatus,
 } from '~/utils/memberSubscription'
 
 import {
@@ -304,5 +305,8 @@ export default (context, inject) => {
   })
   inject('fetchMemberSubscriptionList', async (vueComponent) => {
     return await fetchMemberSubscriptionList(vueComponent)
+  })
+  inject('fetchMemberServiceRuleStatus', async (vueComponent) => {
+    return await fetchMemberServiceRuleStatus(vueComponent)
   })
 }

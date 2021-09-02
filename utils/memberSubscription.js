@@ -1,4 +1,7 @@
-import { fetchMemberSubscriptions } from '~/apollo/queries/memberSubscription.gql'
+import {
+  fetchMemberSubscriptions,
+  fetchMember,
+} from '~/apollo/queries/memberSubscription.gql'
 
 async function fetchMemberSubscriptionType(vueComponent) {
   // determine whether user is logged in or not
@@ -119,6 +122,7 @@ function getMemberPayRecords(memberData) {
 
   return payRecords
 }
+
 function getMemberSubscribePosts(memberData) {
   if (!memberData) return []
 
@@ -183,6 +187,38 @@ function isMemberPremium(memberShipStatus) {
   return status === 'yearly' || status === 'monthly' || status === 'disturb'
 }
 
+async function fetchMemberServiceRuleStatus(vueComponent) {
+  // determine whether user is logged in or not
+  const firebaseId = await getUserFirebaseId(vueComponent)
+  if (!firebaseId) return null
+
+  // get user's subscription state
+  try {
+    const result = await fireGqlRequest(
+      fetchMember,
+      {
+        firebaseId,
+      },
+      vueComponent
+    )
+
+    // handle gql error
+    if (result.error) {
+      console.log(result.error)
+      return false
+    }
+
+    // check member's tos
+    const member = result?.data?.member
+    return !!member.tos
+  } catch (error) {
+    // handle network error
+    console.log(error)
+
+    return false
+  }
+}
+
 export {
   fetchMemberSubscriptionType,
   fetchMemberSubscriptionList,
@@ -190,4 +226,5 @@ export {
   getMemberSubscribePosts,
   getMemberShipStatus,
   isMemberPremium,
+  fetchMemberServiceRuleStatus,
 }
