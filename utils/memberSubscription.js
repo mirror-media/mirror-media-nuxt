@@ -158,11 +158,10 @@ function getFormatDate(dateString) {
   return `${year}/${month}/${day}`
 }
 
-function isMemberPremium(memberShipStatus) {
-  const status = memberShipStatus?.name
-  return status === 'yearly' || status === 'monthly' || status === 'disturb'
-}
-
+/*
+ * Hint: How to verify member is premium or not?
+ * https://mirrormedia.slack.com/archives/C028CE3BGA1/p1630551612076200
+ */
 function getMemberShipStatus(memberData) {
   if (!memberData) return []
 
@@ -177,6 +176,11 @@ function getMemberShipStatus(memberData) {
   }
 
   return memberShipStatus
+}
+
+function isMemberPremium(memberShipStatus) {
+  const status = memberShipStatus?.name
+  return status === 'yearly' || status === 'monthly' || status === 'disturb'
 }
 
 export {
