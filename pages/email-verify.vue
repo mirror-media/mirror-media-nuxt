@@ -141,7 +141,7 @@ export default {
   mounted() {
     const currentUser = this.$fire.auth.currentUser
     this.email = currentUser.email
-
+    console.log(currentUser)
     const { providerData } = currentUser
     let isReadOnly = false
     providerData.forEach((provider) => {
@@ -186,11 +186,18 @@ export default {
       }
 
       try {
-        // send verify email
-        await currentUser.verifyBeforeUpdateEmail(
-          this.email,
-          this.createActionCodeSettings()
-        )
+        if (currentUser.email !== this.email) {
+          // send verify email and update it
+          await currentUser.verifyBeforeUpdateEmail(
+            this.email,
+            this.createActionCodeSettings()
+          )
+        } else {
+          // send verify email
+          await currentUser.sendEmailVerification(
+            this.createActionCodeSettings()
+          )
+        }
 
         // 驗證信發送完成
         this.isLoading = false
