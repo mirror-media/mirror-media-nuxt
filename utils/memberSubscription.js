@@ -25,15 +25,16 @@ async function fetchMemberSubscriptionType(vueComponent) {
     }
 
     // check member's latest subscription state
-    const member = result?.data?.member
-    const latestSubscription = member.subscription[0]
+    const memberData = result?.data?.member
+    const latestSubscription = getLatestSubscription(memberData)
+
     const subscriptionFrequency = latestSubscription.frequency
 
     switch (subscriptionFrequency) {
       case 'one_time':
         return 'basic'
 
-      case 'monthy':
+      case 'monthly':
         return 'month'
 
       case 'yearly':
@@ -170,7 +171,7 @@ function getFormatDate(dateString) {
 function getMemberShipStatus(memberData) {
   if (!memberData) return []
 
-  const latestSubscription = memberData.subscription[0]
+  const latestSubscription = getLatestSubscription(memberData)
   const status = latestSubscription.frequency
 
   const memberShipStatus = {
@@ -218,6 +219,10 @@ async function fetchMemberServiceRuleStatus(vueComponent) {
 
     return false
   }
+}
+
+function getLatestSubscription(memberData) {
+  return memberData?.subscription[0]
 }
 
 export {
