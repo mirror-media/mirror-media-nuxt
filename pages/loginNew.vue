@@ -169,7 +169,7 @@ export default {
         this.sendMembershipSubscribe('登入成功')
         this.sendMembershipSubscribe('自動跳轉')
       } else {
-        // await loginDestination.redirect()
+        await loginDestination.redirect()
         await Promise.resolve()
       }
     },
@@ -190,7 +190,7 @@ export default {
         }
       } catch (e) {
         this.isFederatedRedirectResultLoading = false
-
+        console.log(e)
         /*
          * (3rd party auth error happends here)
          * if login with Google or email/password before,
