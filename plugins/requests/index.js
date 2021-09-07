@@ -314,7 +314,7 @@ export default (context, inject) => {
   inject('setMemberServiceRuleStatusToTrue', async () => {
     return await setMemberServiceRuleStatusToTrue(context)
   })
-  inject('cancelMemberSubscription', async () => {
-    return await cancelMemberSubscription(context)
+  inject('cancelMemberSubscription', async (reason) => {
+    return await cancelMemberSubscription(context, reason)
   })
 }

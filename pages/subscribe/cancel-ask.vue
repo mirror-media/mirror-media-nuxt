@@ -98,15 +98,24 @@ export default {
     shouldShowTextarea() {
       return this.reason.includes('其他')
     },
+    reasonString() {
+      return this.reason.length
+        ? `取消原因：${this.reason.join('、')}。`
+        : '取消原因：未填寫。'
+    },
   },
   methods: {
     handleBack() {
       window.location.assign('/subscribe/set')
     },
     async handleSubmit() {
-      // fire cancel mutation
-      const result = await this.$cancelMemberSubscription(this)
-      console.log(result)
+      // ======To Kevin Start=======
+      const updatedCancelStatus = await this.$cancelMemberSubscription(
+        this.reasonString
+      )
+      console.log(updatedCancelStatus)
+      // ======To Kevin End=======
+
       if (this.cancelStatus === 'success') {
         // return window.location.assign('/subscribe/cancel-success')
         this.sendMembershipSubscribe('確認取消訂閱成功')

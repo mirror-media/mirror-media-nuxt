@@ -76,7 +76,7 @@ async function getMemberDetailData(context) {
   }
 }
 
-async function cancelMemberSubscription(context) {
+async function cancelMemberSubscription(context, reason) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
@@ -84,25 +84,27 @@ async function cancelMemberSubscription(context) {
     // get user's newest subscription
     const subscriptions = await getMemberAllSubscriptions(firebaseId)
     const newestSubscription = subscriptions[0]
-    console.log(subscriptions)
+
     if (newestSubscription.frequency === 'one_time') return
 
-    // change subscription.isCanceled to true
-    const result = await fireUnsubscribeMutation(newestSubscription.id)
+    // change subscription.isCanceled to true (carry unsubscribe reason)
+    const result = await fireGqlRequest(unsubscribe, {
+      id: newestSubscription.id,
+      note: reason,
+    })
 
-    return result
+    // handle gql error
+    if (result.error) {
+      console.log(result.error)
+      return 'fail'
+    }
+
+    return 'success'
   } catch (error) {
     // handle network error
-    console.error(error)
-
-    return {}
+    console.log(error)
+    return 'fail'
   }
-}
-
-async function fireUnsubscribeMutation(subscriptionId) {
-  return await fireGqlRequest(unsubscribe, {
-    id: subscriptionId,
-  })
 }
 
 async function getMemberAllSubscriptions(firebaseId) {

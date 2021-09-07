@@ -3,10 +3,11 @@ query fetchMemberSubscriptions($firebaseId: String) {
     firebaseId
     email
     type
-    subscription(orderBy: [{ periodFirstDatetime: desc }]) {
+    subscription(orderBy: [{ periodEndDatetime: desc }]) {
       id
       orderNumber
       frequency
+      periodFirstDatetime
       postId
       paymentMethod
       oneTimeEndDatetime
@@ -41,11 +42,12 @@ mutation setMemberTosToTrue($id: ID!) {
   }
 }
 
-mutation unsubscribe($id: ID!) {
-  updatesubscription(id: $id, data: { isCanceled: true }) {
+mutation unsubscribe($id: ID!, $note: String) {
+  updatesubscription(id: $id, data: { isCanceled: true, note: $note }) {
     id
     frequency
     isActive
     isCanceled
+    note
   }
 }
