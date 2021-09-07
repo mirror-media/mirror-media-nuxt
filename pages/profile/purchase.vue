@@ -167,9 +167,9 @@ export default {
   },
 
   async created() {
-    const memberData = await this.$getMemberDetailData(this)
-
-    // ======To Kevin Start=======
+    const memberData = await this.$getMemberDetailData()
+    console.log(memberData)
+    // // ======To Kevin Start=======
     const newMemberShipStatus = getMemberShipStatus(memberData)
     const memberIsPremium = isMemberPremium(newMemberShipStatus)
     console.log(newMemberShipStatus)

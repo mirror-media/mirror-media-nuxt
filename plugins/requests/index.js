@@ -301,16 +301,16 @@ export default (context, inject) => {
     }
   })
 
-  inject('getMemberSubscriptionType', async (vueComponent) => {
-    return await getMemberSubscriptionType(vueComponent)
+  inject('getMemberSubscriptionType', async () => {
+    return await getMemberSubscriptionType(context)
   })
-  inject('getMemberDetailData', async (vueComponent) => {
-    return await getMemberDetailData(vueComponent)
+  inject('getMemberDetailData', async () => {
+    return await getMemberDetailData(context)
   })
-  inject('getMemberServiceRuleStatus', async (vueComponent) => {
-    return await getMemberServiceRuleStatus(vueComponent)
+  inject('getMemberServiceRuleStatus', async () => {
+    return await getMemberServiceRuleStatus(context)
   })
-  inject('cancelMemberSubscription', async (vueComponent) => {
-    return await cancelMemberSubscription(vueComponent)
+  inject('cancelMemberSubscription', async () => {
+    return await cancelMemberSubscription(context)
   })
 }

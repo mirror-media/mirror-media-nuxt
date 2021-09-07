@@ -1,3 +1,5 @@
+import { print } from 'graphql/language/printer'
+import axios from 'axios'
 import {
   fetchMemberSubscriptions,
   fetchMemberBasicInfo,
@@ -5,17 +7,20 @@ import {
   unsubscribe,
 } from '~/apollo/queries/memberSubscription.gql'
 
-async function getMemberSubscriptionType(vueComponent) {
+import { API_PATH_FRONTEND } from '~/configs/config.js'
+const baseUrl = process.browser
+  ? `//${location.host}/`
+  : 'http://localhost:3000/'
+const apiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0`
+
+async function getMemberSubscriptionType(context) {
   // determine whether user is logged in or not
-  const firebaseId = await getUserFirebaseId(vueComponent)
+  const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return 'not-member' // no user is logged in
 
   // get user's subscription state
   try {
-    const subscriptions = await getMemberAllSubscriptions(
-      firebaseId,
-      vueComponent
-    )
+    const subscriptions = await getMemberAllSubscriptions(firebaseId)
 
     if (!subscriptions.length) {
       return 'not-member'
@@ -46,18 +51,14 @@ async function getMemberSubscriptionType(vueComponent) {
   }
 }
 
-async function getMemberDetailData(vueComponent) {
-  const firebaseId = await getUserFirebaseId(vueComponent)
+async function getMemberDetailData(context) {
+  const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
   try {
-    const result = await fireGqlRequest(
-      fetchMemberSubscriptions,
-      {
-        firebaseId,
-      },
-      vueComponent
-    )
+    const result = await fireGqlRequest(fetchMemberSubscriptions, {
+      firebaseId,
+    })
 
     // handle gql error
     if (result.error) {
@@ -69,30 +70,24 @@ async function getMemberDetailData(vueComponent) {
     return memberData
   } catch (error) {
     // handle network error
-    console.log(error.message)
+    console.log(error)
 
     return {}
   }
 }
 
-async function cancelMemberSubscription(vueComponent) {
-  const firebaseId = await getUserFirebaseId(vueComponent)
+async function cancelMemberSubscription(context) {
+  const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
   try {
     // get user's newest subscription
-    const subscriptions = await getMemberAllSubscriptions(
-      firebaseId,
-      vueComponent
-    )
+    const subscriptions = await getMemberAllSubscriptions(firebaseId)
     const newestSubscription = subscriptions[0]
     if (newestSubscription.frequency === 'one_time') return
 
     // change subscription.isCanceled to true
-    const result = await fireUnsubscribeMutation(
-      newestSubscription.id,
-      vueComponent
-    )
+    const result = await fireUnsubscribeMutation(newestSubscription.id)
 
     return result
   } catch (error) {
@@ -103,27 +98,19 @@ async function cancelMemberSubscription(vueComponent) {
   }
 }
 
-async function fireUnsubscribeMutation(subscriptionId, vueComponent) {
+async function fireUnsubscribeMutation(subscriptionId) {
   console.log(unsubscribe)
-  return await fireGqlRequest(
-    unsubscribe,
-    {
-      id: subscriptionId,
-    },
-    vueComponent
-  )
+  return await fireGqlRequest(unsubscribe, {
+    id: subscriptionId,
+  })
 }
 
-async function getMemberAllSubscriptions(firebaseId, vueComponent) {
+async function getMemberAllSubscriptions(firebaseId) {
   try {
     // get user's subscription state
-    const result = await fireGqlRequest(
-      fetchMemberSubscriptions,
-      {
-        firebaseId,
-      },
-      vueComponent
-    )
+    const result = await fireGqlRequest(fetchMemberSubscriptions, {
+      firebaseId,
+    })
 
     // handle gql error
     if (result.error) {
@@ -142,23 +129,30 @@ async function getMemberAllSubscriptions(firebaseId, vueComponent) {
   }
 }
 
-async function getUserFirebaseId(vueComponent) {
-  const currentUserUid = await vueComponent.$store.state.membership.userUid
+function getUserFirebaseId(context) {
+  const currentUserUid = context.store?.state?.membership?.userUid
 
   return currentUserUid || null
 }
 
-async function fireGqlRequest(query, variables, vueComponent, firebaseToken) {
+async function fireGqlRequest(query, variables, firebaseToken) {
   if (firebaseToken) {
     console.log(firebaseToken)
   }
 
-  const result = await vueComponent.$apolloProvider.clients.memberSubscription.mutate(
-    {
-      mutation: query,
+  const { data: result } = await axios({
+    url: apiUrl,
+    method: 'post',
+    data: {
+      query: print(query),
       variables,
-    }
-  )
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${firebaseToken}`,
+        'request-from': 'gql',
+      },
+    },
+  })
 
   return result
 }
@@ -253,20 +247,16 @@ function isMemberPremium(memberShipStatus) {
   return status === 'yearly' || status === 'monthly' || status === 'disturb'
 }
 
-async function getMemberServiceRuleStatus(vueComponent) {
+async function getMemberServiceRuleStatus(context) {
   // determine whether user is logged in or not
-  const firebaseId = await getUserFirebaseId(vueComponent)
+  const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
   // get user's subscription state
   try {
-    const result = await fireGqlRequest(
-      fetchMemberBasicInfo,
-      {
-        firebaseId,
-      },
-      vueComponent
-    )
+    const result = await fireGqlRequest(fetchMemberBasicInfo, {
+      firebaseId,
+    })
 
     // handle gql error
     if (result.error) {
@@ -285,16 +275,16 @@ async function getMemberServiceRuleStatus(vueComponent) {
   }
 }
 
-async function setMemberServiceRuleStatusToTrue(vueComponent) {
+async function setMemberServiceRuleStatusToTrue(context) {
   // determine whether user is logged in or not
-  const firebaseId = await getUserFirebaseId(vueComponent)
+  const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
   // get member's israfel ID
-  const memberIsrafelId = await getMemberIsrafelId(vueComponent, firebaseId)
+  const memberIsrafelId = await getMemberIsrafelId(firebaseId)
   // TODO： put member's israfelID to vuex
 
-  const firebaseToken = getFirebaseToken(vueComponent)
+  const firebaseToken = getFirebaseToken(context)
 
   // fire mutation, set member's tos(service rule) to true
   try {
@@ -303,7 +293,6 @@ async function setMemberServiceRuleStatusToTrue(vueComponent) {
       {
         id: memberIsrafelId,
       },
-      vueComponent,
       firebaseToken
     )
 
@@ -321,21 +310,17 @@ async function setMemberServiceRuleStatusToTrue(vueComponent) {
   }
 }
 
-async function getMemberIsrafelId(vueComponent, firebaseId) {
+async function getMemberIsrafelId(firebaseId) {
   // TODO： put member's israfelID to vuex
-  const result = await fireGqlRequest(
-    fetchMemberBasicInfo,
-    {
-      firebaseId,
-    },
-    vueComponent
-  )
+  const result = await fireGqlRequest(fetchMemberBasicInfo, {
+    firebaseId,
+  })
   const memberIsrafelId = result?.data?.member?.id
   return memberIsrafelId
 }
 
-function getFirebaseToken(vueComponent) {
-  return vueComponent.$store.state?.membership?.userToken
+function getFirebaseToken(context) {
+  return context.store?.state?.membership?.userToken
 }
 
 function getLatestSubscription(memberData) {
