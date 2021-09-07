@@ -4,6 +4,7 @@ query fetchMemberSubscriptions($firebaseId: String) {
     email
     type
     subscription(orderBy: [{ periodFirstDatetime: desc }]) {
+      id
       orderNumber
       frequency
       postId
@@ -37,5 +38,14 @@ mutation setMemberTosToTrue($firebaseId: ID!) {
     email
     type
     tos
+  }
+}
+
+mutation unsubscribe($id: ID!) {
+  updatesubscription(id: $id, data: { isCanceled: true }) {
+    id
+    frequency
+    isActive
+    isCanceled
   }
 }

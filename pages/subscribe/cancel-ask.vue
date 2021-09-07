@@ -103,9 +103,10 @@ export default {
     handleBack() {
       window.location.assign('/subscribe/set')
     },
-    handleSubmit() {
+    async handleSubmit() {
       // fire cancel mutation
-
+      const result = await this.$cancelMemberSubscription(this)
+      console.log(result)
       if (this.cancelStatus === 'success') {
         // return window.location.assign('/subscribe/cancel-success')
         this.sendMembershipSubscribe('確認取消訂閱成功')

@@ -6,6 +6,7 @@ import {
   getMemberSubscriptionType,
   getMemberDetailData,
   getMemberServiceRuleStatus,
+  cancelMemberSubscription,
 } from '~/utils/memberSubscription'
 
 import {
@@ -308,5 +309,8 @@ export default (context, inject) => {
   })
   inject('getMemberServiceRuleStatus', async (vueComponent) => {
     return await getMemberServiceRuleStatus(vueComponent)
+  })
+  inject('cancelMemberSubscription', async (vueComponent) => {
+    return await cancelMemberSubscription(vueComponent)
   })
 }

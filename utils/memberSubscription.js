@@ -2,6 +2,7 @@ import {
   fetchMemberSubscriptions,
   fetchMemberBasicInfo,
   setMemberTosToTrue,
+  unsubscribe,
 } from '~/apollo/queries/memberSubscription.gql'
 
 async function getMemberSubscriptionType(vueComponent) {
@@ -79,19 +80,38 @@ async function cancelMemberSubscription(vueComponent) {
   if (!firebaseId) return null
 
   try {
-    // get user's subscription state
+    // get user's newest subscription
     const subscriptions = await getMemberAllSubscriptions(
       firebaseId,
       vueComponent
     )
+    const newestSubscription = subscriptions[0]
+    if (newestSubscription.frequency === 'one_time') return
 
-    console.log(subscriptions)
+    // change subscription.isCanceled to true
+    const result = await fireUnsubscribeMutation(
+      newestSubscription.id,
+      vueComponent
+    )
+
+    return result
   } catch (error) {
     // handle network error
-    console.log(error.message)
+    console.error(error)
 
     return {}
   }
+}
+
+async function fireUnsubscribeMutation(subscriptionId, vueComponent) {
+  console.log(unsubscribe)
+  return await fireGqlRequest(
+    unsubscribe,
+    {
+      id: subscriptionId,
+    },
+    vueComponent
+  )
 }
 
 async function getMemberAllSubscriptions(firebaseId, vueComponent) {
