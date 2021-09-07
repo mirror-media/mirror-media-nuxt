@@ -161,7 +161,7 @@ export default {
   },
   async created() {
     // ======To Kevin Start=======
-    const isMemberCheckedServiceRule = await this.$fetchMemberServiceRuleStatus(
+    const isMemberCheckedServiceRule = await this.$getMemberServiceRuleStatus(
       this
     )
     console.log(isMemberCheckedServiceRule)

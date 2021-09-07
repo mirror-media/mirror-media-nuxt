@@ -3,9 +3,9 @@ import _ from 'lodash'
 import axios from 'axios'
 import qs from 'qs'
 import {
-  fetchMemberSubscriptionType,
-  fetchMemberSubscriptionList,
-  fetchMemberServiceRuleStatus,
+  getMemberSubscriptionType,
+  getMemberDetailData,
+  getMemberServiceRuleStatus,
 } from '~/utils/memberSubscription'
 
 import {
@@ -300,13 +300,13 @@ export default (context, inject) => {
     }
   })
 
-  inject('fetchMemberSubscriptionType', async (vueComponent) => {
-    return await fetchMemberSubscriptionType(vueComponent)
+  inject('getMemberSubscriptionType', async (vueComponent) => {
+    return await getMemberSubscriptionType(vueComponent)
   })
-  inject('fetchMemberSubscriptionList', async (vueComponent) => {
-    return await fetchMemberSubscriptionList(vueComponent)
+  inject('getMemberDetailData', async (vueComponent) => {
+    return await getMemberDetailData(vueComponent)
   })
-  inject('fetchMemberServiceRuleStatus', async (vueComponent) => {
-    return await fetchMemberServiceRuleStatus(vueComponent)
+  inject('getMemberServiceRuleStatus', async (vueComponent) => {
+    return await getMemberServiceRuleStatus(vueComponent)
   })
 }

@@ -4,31 +4,24 @@ import {
   setMemberTosToTrue,
 } from '~/apollo/queries/memberSubscription.gql'
 
-async function fetchMemberSubscriptionType(vueComponent) {
+async function getMemberSubscriptionType(vueComponent) {
   // determine whether user is logged in or not
   const firebaseId = await getUserFirebaseId(vueComponent)
   if (!firebaseId) return 'not-member' // no user is logged in
 
   // get user's subscription state
   try {
-    const result = await fireGqlRequest(
-      fetchMemberSubscriptions,
-      {
-        firebaseId,
-      },
+    const subscriptions = await getMemberAllSubscriptions(
+      firebaseId,
       vueComponent
     )
 
-    // handle gql error
-    if (result.error) {
-      console.log(result.error)
+    if (!subscriptions.length) {
       return 'not-member'
     }
 
     // check member's latest subscription state
-    const memberData = result?.data?.member
-    const latestSubscription = getLatestSubscription(memberData)
-
+    const latestSubscription = subscriptions[0]
     const subscriptionFrequency = latestSubscription.frequency
 
     switch (subscriptionFrequency) {
@@ -52,12 +45,11 @@ async function fetchMemberSubscriptionType(vueComponent) {
   }
 }
 
-async function fetchMemberSubscriptionList(vueComponent) {
+async function getMemberDetailData(vueComponent) {
   const firebaseId = await getUserFirebaseId(vueComponent)
   if (!firebaseId) return null
 
   try {
-    // get user's subscription state
     const result = await fireGqlRequest(
       fetchMemberSubscriptions,
       {
@@ -72,7 +64,6 @@ async function fetchMemberSubscriptionList(vueComponent) {
       return {}
     }
 
-    // check member's latest subscription state
     const memberData = result?.data?.member
     return memberData
   } catch (error) {
@@ -80,6 +71,54 @@ async function fetchMemberSubscriptionList(vueComponent) {
     console.log(error.message)
 
     return {}
+  }
+}
+
+async function cancelMemberSubscription(vueComponent) {
+  const firebaseId = await getUserFirebaseId(vueComponent)
+  if (!firebaseId) return null
+
+  try {
+    // get user's subscription state
+    const subscriptions = await getMemberAllSubscriptions(
+      firebaseId,
+      vueComponent
+    )
+
+    console.log(subscriptions)
+  } catch (error) {
+    // handle network error
+    console.log(error.message)
+
+    return {}
+  }
+}
+
+async function getMemberAllSubscriptions(firebaseId, vueComponent) {
+  try {
+    // get user's subscription state
+    const result = await fireGqlRequest(
+      fetchMemberSubscriptions,
+      {
+        firebaseId,
+      },
+      vueComponent
+    )
+
+    // handle gql error
+    if (result.error) {
+      console.log(result.error)
+      return []
+    }
+
+    // get member's all subscriptions
+    const subscriptions = result?.data?.member?.subscription
+    return subscriptions
+  } catch (error) {
+    // handle network error
+    console.log(error.message)
+
+    return []
   }
 }
 
@@ -194,7 +233,7 @@ function isMemberPremium(memberShipStatus) {
   return status === 'yearly' || status === 'monthly' || status === 'disturb'
 }
 
-async function fetchMemberServiceRuleStatus(vueComponent) {
+async function getMemberServiceRuleStatus(vueComponent) {
   // determine whether user is logged in or not
   const firebaseId = await getUserFirebaseId(vueComponent)
   if (!firebaseId) return null
@@ -284,12 +323,13 @@ function getLatestSubscription(memberData) {
 }
 
 export {
-  fetchMemberSubscriptionType,
-  fetchMemberSubscriptionList,
+  getMemberSubscriptionType,
+  getMemberDetailData,
   getMemberPayRecords,
   getMemberSubscribePosts,
   getMemberShipStatus,
   isMemberPremium,
-  fetchMemberServiceRuleStatus,
+  getMemberServiceRuleStatus,
   setMemberServiceRuleStatusToTrue,
+  cancelMemberSubscription,
 }
