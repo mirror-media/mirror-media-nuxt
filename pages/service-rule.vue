@@ -27,7 +27,7 @@
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiStoryContentHandler from '~/components/UiStoryContentHandler.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
-
+import { setMemberServiceRuleStatusToTrue } from '~/utils/memberSubscription'
 export default {
   components: {
     UiMembershipButtonPrimary,
@@ -101,6 +101,8 @@ export default {
     },
     handleSubmit(e) {
       e.preventDefault()
+      setMemberServiceRuleStatusToTrue(this)
+
       localStorage.setItem('read-service-rule', 'true')
       this.sendMembershipSubscribe('同意服務條款並繼續')
     },

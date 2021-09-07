@@ -21,8 +21,18 @@ query fetchMemberSubscriptions($firebaseId: String) {
     }
   }
 }
-query fetchMember($firebaseId: String) {
+query fetchMemberBasicInfo($firebaseId: String) {
   member(where: { firebaseId: $firebaseId }) {
+    id
+    firebaseId
+    email
+    type
+    tos
+  }
+}
+
+mutation setMemberTosToTrue($firebaseId: ID!) {
+  updatemember(firebaseId: $firebaseId, data: { tos: true }) {
     firebaseId
     email
     type
