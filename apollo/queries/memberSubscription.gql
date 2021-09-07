@@ -32,8 +32,8 @@ query fetchMemberBasicInfo($firebaseId: String) {
   }
 }
 
-mutation setMemberTosToTrue($firebaseId: ID!) {
-  updatemember(firebaseId: $firebaseId, data: { tos: true }) {
+mutation setMemberTosToTrue($id: ID!) {
+  updatemember(id: $id, data: { tos: true }) {
     firebaseId
     email
     type

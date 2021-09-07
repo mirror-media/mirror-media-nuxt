@@ -6,6 +6,7 @@ import {
   getMemberSubscriptionType,
   getMemberDetailData,
   getMemberServiceRuleStatus,
+  setMemberServiceRuleStatusToTrue,
   cancelMemberSubscription,
 } from '~/utils/memberSubscription'
 
@@ -309,6 +310,9 @@ export default (context, inject) => {
   })
   inject('getMemberServiceRuleStatus', async () => {
     return await getMemberServiceRuleStatus(context)
+  })
+  inject('setMemberServiceRuleStatusToTrue', async () => {
+    return await setMemberServiceRuleStatusToTrue(context)
   })
   inject('cancelMemberSubscription', async () => {
     return await cancelMemberSubscription(context)

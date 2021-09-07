@@ -84,6 +84,7 @@ async function cancelMemberSubscription(context) {
     // get user's newest subscription
     const subscriptions = await getMemberAllSubscriptions(firebaseId)
     const newestSubscription = subscriptions[0]
+    console.log(subscriptions)
     if (newestSubscription.frequency === 'one_time') return
 
     // change subscription.isCanceled to true
@@ -99,7 +100,6 @@ async function cancelMemberSubscription(context) {
 }
 
 async function fireUnsubscribeMutation(subscriptionId) {
-  console.log(unsubscribe)
   return await fireGqlRequest(unsubscribe, {
     id: subscriptionId,
   })
@@ -136,10 +136,6 @@ function getUserFirebaseId(context) {
 }
 
 async function fireGqlRequest(query, variables, firebaseToken) {
-  if (firebaseToken) {
-    console.log(firebaseToken)
-  }
-
   const { data: result } = await axios({
     url: apiUrl,
     method: 'post',
@@ -302,7 +298,7 @@ async function setMemberServiceRuleStatusToTrue(context) {
     }
 
     // check member's tos
-    const member = result?.data?.member
+    const member = result?.data?.updatemember
     return !!member.tos
   } catch (error) {
     // handle network error
