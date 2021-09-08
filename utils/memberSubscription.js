@@ -44,9 +44,7 @@ async function getMemberSubscriptionType(context) {
         return 'basic'
     }
   } catch (error) {
-    // handle network error
-    console.log(error)
-
+    console.error(error)
     return 'not-member'
   }
 }
@@ -60,18 +58,10 @@ async function getMemberDetailData(context) {
       firebaseId,
     })
 
-    // handle gql error
-    if (result.error) {
-      console.log(result.error)
-      return {}
-    }
-
     const memberData = result?.data?.member
     return memberData
   } catch (error) {
-    // handle network error
-    console.log(error)
-
+    console.error(error)
     return {}
   }
 }
@@ -88,21 +78,14 @@ async function cancelMemberSubscription(context, reason) {
     if (newestSubscription.frequency === 'one_time') return
 
     // change subscription.isCanceled to true (carry unsubscribe reason)
-    const result = await fireGqlRequest(unsubscribe, {
+    await fireGqlRequest(unsubscribe, {
       id: newestSubscription.id,
       note: reason,
     })
 
-    // handle gql error
-    if (result.error) {
-      console.log(result.error)
-      return 'fail'
-    }
-
     return 'success'
   } catch (error) {
-    // handle network error
-    console.log(error)
+    console.error(error)
     return 'fail'
   }
 }
@@ -114,18 +97,12 @@ async function getMemberAllSubscriptions(firebaseId) {
       firebaseId,
     })
 
-    // handle gql error
-    if (result.error) {
-      console.log(result.error)
-      return []
-    }
-
     // get member's all subscriptions
     const subscriptions = result?.data?.member?.subscription
     return subscriptions
   } catch (error) {
     // handle network error
-    console.log(error.message)
+    console.error(error)
 
     return []
   }
@@ -151,6 +128,10 @@ async function fireGqlRequest(query, variables, firebaseToken) {
       },
     },
   })
+
+  if (result.errors) {
+    throw new Error(result.errors[0].message)
+  }
 
   return result
 }
@@ -256,19 +237,11 @@ async function getMemberServiceRuleStatus(context) {
       firebaseId,
     })
 
-    // handle gql error
-    if (result.error) {
-      console.log(result.error)
-      return false
-    }
-
     // check member's tos
     const member = result?.data?.member
     return !!member.tos
   } catch (error) {
-    // handle network error
-    console.log(error)
-
+    console.error(error)
     return false
   }
 }
@@ -294,17 +267,11 @@ async function setMemberServiceRuleStatusToTrue(context) {
       firebaseToken
     )
 
-    // handle gql error
-    if (result.error) {
-      console.log(result.error)
-    }
-
     // check member's tos
     const member = result?.data?.updatemember
     return !!member.tos
   } catch (error) {
-    // handle network error
-    console.log(error)
+    console.error(error)
   }
 }
 

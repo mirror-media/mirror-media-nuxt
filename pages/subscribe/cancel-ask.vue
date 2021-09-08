@@ -114,6 +114,7 @@ export default {
         this.reasonString
       )
       console.log(updatedCancelStatus)
+      this.cancelStatus = updatedCancelStatus
       // ======To Kevin End=======
 
       if (this.cancelStatus === 'success') {
