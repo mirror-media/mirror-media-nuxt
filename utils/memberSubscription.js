@@ -297,6 +297,27 @@ function getLatestSubscription(memberData) {
   return memberData?.subscription[0]
 }
 
+async function isMemberPaidSubscriptionWithMobile(context) {
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return null
+
+  try {
+    // get user's newest subscription
+    const subscriptions = await getMemberAllSubscriptions(firebaseId)
+    const { frequency, paymentMethod } = subscriptions[0]
+    if (frequency === 'one_time') return false
+
+    if (paymentMethod === 'applepay' || paymentMethod === 'applepay') {
+      return true
+    } else {
+      return false
+    }
+  } catch (error) {
+    console.error(error)
+    return false
+  }
+}
+
 export {
   getMemberSubscriptionType,
   getMemberDetailData,
@@ -307,4 +328,5 @@ export {
   getMemberServiceRuleStatus,
   setMemberServiceRuleStatusToTrue,
   cancelMemberSubscription,
+  isMemberPaidSubscriptionWithMobile,
 }

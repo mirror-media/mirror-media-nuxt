@@ -34,6 +34,18 @@ query fetchMemberBasicInfo($firebaseId: String) {
   }
 }
 
+query fetchSubscriptionPayments($firebaseId: String) {
+  member(where: { firebaseId: $firebaseId }) {
+    email
+    subscription(orderBy: [{ periodEndDatetime: desc }]) {
+      orderNumber
+      frequency
+      periodEndDatetime
+      paymentMethod
+    }
+  }
+}
+
 mutation setMemberTosToTrue($id: ID!) {
   updatemember(id: $id, data: { tos: true }) {
     firebaseId

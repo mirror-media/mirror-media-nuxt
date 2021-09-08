@@ -67,7 +67,7 @@ import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vu
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import UiMembershipCheckoutLabel from '~/components/UiMembershipCheckoutLabel.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
-
+import { isMemberPaidSubscriptionWithMobile } from '~/utils/memberSubscription'
 export default {
   components: {
     SubscribeWrapper,
@@ -81,6 +81,15 @@ export default {
     return {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
+    }
+  },
+  async asyncData(context) {
+    // check if user's newest subscription is paid by mobile
+    const isMemberPaidWithMobile = await isMemberPaidSubscriptionWithMobile(
+      context
+    )
+    return {
+      isPayByApp: isMemberPaidWithMobile,
     }
   },
   data() {
