@@ -77,11 +77,17 @@ async function cancelMemberSubscription(context, reason) {
 
     if (newestSubscription.frequency === 'one_time') return
 
+    const firebaseToken = getFirebaseToken(context)
+
     // change subscription.isCanceled to true (carry unsubscribe reason)
-    await fireGqlRequest(unsubscribe, {
-      id: newestSubscription.id,
-      note: reason,
-    })
+    await fireGqlRequest(
+      unsubscribe,
+      {
+        id: newestSubscription.id,
+        note: reason,
+      },
+      firebaseToken
+    )
 
     return 'success'
   } catch (error) {
@@ -121,11 +127,10 @@ async function fireGqlRequest(query, variables, firebaseToken) {
     data: {
       query: print(query),
       variables,
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${firebaseToken}`,
-        'request-from': 'gql',
-      },
+    },
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${firebaseToken}`,
     },
   })
 
