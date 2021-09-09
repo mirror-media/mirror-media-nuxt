@@ -104,9 +104,9 @@ export function useMemberSubscribeMachine() {
   }
 
   if (!service.value) {
-    const { store } = useContext()
+    const { store, app } = useContext()
     const router = useRouter()
-    const machine = createMachine(router, route, store)
+    const machine = createMachine(router, route, store, app.apolloProvider)
     const resolvedState = createResolvedState(machine)
     service.value = interpret(machine, {
       devTools: true,

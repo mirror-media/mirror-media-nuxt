@@ -1,8 +1,9 @@
 import { assign, createMachine as createMachineXState } from 'xstate'
 import machine from './config/machine'
 import options from './config/options'
+import { setMemberTosToTrue } from '~/apollo/queries/memberSubscription.gql'
 
-export default function createMachine(router, route, store) {
+export default function createMachine(router, route, store, apolloProvider) {
   return createMachineXState(machine, {
     guards: {
       ...options.guards,
@@ -61,6 +62,22 @@ export default function createMachine(router, route, store) {
       navigateToSectionMember() {
         window.location.assign('/section/member')
       },
+
+      agreeTos: assign({
+        isTosAgreed: async () => {
+          const {
+            data,
+          } = await apolloProvider.clients.memberSubscription.mutate({
+            mutation: setMemberTosToTrue,
+            variables: {
+              id: store.state['membership-subscribe'].basicInfo.id,
+            },
+          })
+          const tos = data?.updateMember?.tos ?? false
+          store.commit('membership-subscribe/SET_BASIC_INFO', { tos })
+          return tos
+        },
+      }),
     },
   }).withContext({
     ...machine.context,
