@@ -58,7 +58,7 @@
     </p>
 
     <div class="story__member-info">
-      4/1起會員獨享15類專屬內容，現在加入會員立刻免費解鎖，在無廣告的閱讀環境下，享受突破同溫層的深入報導，邀您<strong
+      10/5鏡週刊訂閱制正式上線，誠摯邀請您的加入，一起邁向新的新聞里程碑，在無廣告的閱讀環境下，享受突破同溫層的深入報導，邀您<strong
         @click="enterMemberSectionPage"
         >立即加入</strong
       >。
