@@ -35,7 +35,7 @@ import localforage from 'localforage'
 import loginDestination from '~/utils/login-destination'
 import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
-import userCreate from '~/apollo/mutations/userCreate.gql'
+import { userCreate } from '~/apollo/mutations/userCreate.gql'
 
 /*
  * Firebase Authenticate with Firebase Using Email Link flow.

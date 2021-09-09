@@ -63,14 +63,14 @@ import UiLoginIntro from '~/components/UiLoginIntro.vue'
 import ContainerLoginForm from '~/components/ContainerLoginForm.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import UiMembershipLink from '~/components/UiMembershipLink.vue'
-import userCreate from '~/apollo/mutations/userCreate.gql'
+import { createMemberProfile } from '~/apollo/mutations/userCreate.gql'
 import loginDestination from '~/utils/login-destination'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
 
 export default {
   apollo: {
-    $client: 'userClient',
+    $client: 'memberSubscription',
   },
   components: {
     UiMembershipLink,
@@ -135,10 +135,9 @@ export default {
       if (uid) {
         try {
           await this.$apollo.mutate({
-            mutation: userCreate,
+            mutation: createMemberProfile,
             variables: {
               email,
-              firebaseId: uid,
             },
           })
         } catch (e) {

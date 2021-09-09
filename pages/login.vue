@@ -111,7 +111,7 @@ import ContainerMembershipLoginWithEmail from '~/components/ContainerMembershipL
 import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
 import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipSpinner from '~/components/UiMembershipSpinner.vue'
-import userCreate from '~/apollo/mutations/userCreate.gql'
+import { userCreate } from '~/apollo/mutations/userCreate.gql'
 import loginDestination from '~/utils/login-destination'
 
 export default {
