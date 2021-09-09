@@ -65,7 +65,7 @@ export default function createMachine(router, route, store) {
   }).withContext({
     ...machine.context,
     isLoggedIn: store.getters['membership/isLoggedIn'],
-    isTosAgreed: mockFetchIsTosAgreed(),
+    isTosAgreed: store.state['membership-subscribe'].basicInfo.tos,
     isEmailVerified: !!store.state.membership.userEmailVerified,
     subscription: mockFetchSubscription(),
   })
@@ -88,8 +88,4 @@ function createNavigation(router, route, path) {
 
 function mockFetchSubscription() {
   return localStorage.getItem('subscription') ?? null
-}
-
-function mockFetchIsTosAgreed() {
-  return !!localStorage.getItem('read-service-rule')
 }

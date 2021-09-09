@@ -3,6 +3,7 @@ query fetchMemberSubscriptions($firebaseId: String) {
     firebaseId
     email
     type
+    tos
     subscription(orderBy: [{ periodEndDatetime: desc }]) {
       id
       orderNumber
