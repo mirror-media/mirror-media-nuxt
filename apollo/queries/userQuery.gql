@@ -1,5 +1,20 @@
-query ($firebaseId: String!){
-  member(firebaseId: $firebaseId) {
+# query ($firebaseId: String!){
+#   member(firebaseId: $firebaseId) {
+#     firebaseId
+#     email
+#     name
+#     gender
+#     birthday
+#     phone
+#     country
+#     city
+#     district
+#     address
+#   }
+# }
+query fetchMemberProfile($firebaseId: String!) {
+  member(where: { firebaseId: $firebaseId }) {
+    id
     firebaseId
     email
     name

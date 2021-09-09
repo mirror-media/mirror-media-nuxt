@@ -290,6 +290,8 @@ async function getMemberIsrafelId(firebaseId) {
 }
 
 function getFirebaseToken(context) {
+  console.log(context.store.state.membership)
+
   return context.store?.state?.membership?.userToken
 }
 

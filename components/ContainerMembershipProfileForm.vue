@@ -189,13 +189,13 @@ import twDistrictsData from 'mirror-media-constants/lib/taiwan-districts.json'
 import dayjs from 'dayjs'
 import UiMembershipDropdownMenu from '~/components/UiMembershipDropdownMenu.vue'
 import userUpdate from '~/apollo/mutations/userUpdate.gql'
-import userQuery from '~/apollo/queries/userQuery.gql'
+import { fetchMemberProfile } from '~/apollo/queries/userQuery.gql'
 
 export default {
   apollo: {
-    $client: 'userClient',
+    $client: 'memberSubscription',
     member: {
-      query: userQuery,
+      query: fetchMemberProfile,
       fetchPolicy: 'no-cache',
       variables() {
         return {
@@ -218,17 +218,20 @@ export default {
           } else {
             switch (gender) {
               case 'A_1':
+              case 'M':
                 return '男'
               case 'A_2':
+              case 'F':
                 return '女'
               case 'A_3':
+              case 'NA':
                 return '不透露'
               default:
                 return null
             }
           }
         }
-
+        this.id = data?.member?.id
         this.name = data?.member?.name ?? null
 
         const gender = getGender(data?.member?.gender)
@@ -317,6 +320,7 @@ export default {
   },
   data() {
     return {
+      id: undefined,
       name: undefined,
       gender: undefined,
       genderDefaultIndex: undefined,
@@ -495,11 +499,11 @@ export default {
       const getGender = () => {
         switch (this.gender) {
           case '不透露':
-            return 3
+            return 'NA'
           case '男':
-            return 1
+            return 'M'
           case '女':
-            return 2
+            return 'F'
           default:
             return null
         }
@@ -544,9 +548,10 @@ export default {
       }
 
       return {
-        firebaseId: this.$store.state.membership.userUid,
+        // firebaseId: this.$store.state.membership.userUid,
+        id: this.id,
         name: this.name || '',
-        gender: getGender() || 0,
+        gender: getGender() || undefined,
         birthday: getBirthday(),
         phone: this.phone || '',
         country: getAddress().country || '',
