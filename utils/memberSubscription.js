@@ -142,7 +142,7 @@ async function fireGqlRequest(query, variables, firebaseToken) {
 }
 
 function getMemberPayRecords(memberData) {
-  if (!memberData) return []
+  if (!memberData || !memberData.subscription) return []
 
   const payRecords = []
   memberData.subscription.forEach((subscription) => {
@@ -168,7 +168,7 @@ function getMemberPayRecords(memberData) {
 }
 
 function getMemberSubscribePosts(memberData) {
-  if (!memberData) return []
+  if (!memberData || !memberData.subscription) return []
 
   const postList = []
   memberData.subscription.forEach((subscription) => {
@@ -211,9 +211,11 @@ function getFormatDate(dateString) {
  * https://mirrormedia.slack.com/archives/C028CE3BGA1/p1630551612076200
  */
 function getMemberShipStatus(memberData) {
-  if (!memberData) return []
+  if (!memberData) return {}
 
   const latestSubscription = getLatestSubscription(memberData)
+  if (!latestSubscription) return {}
+
   const status = latestSubscription.frequency
 
   const memberShipStatus = {
@@ -297,7 +299,7 @@ function getFirebaseToken(context) {
 }
 
 function getLatestSubscription(memberData) {
-  return memberData?.subscription[0]
+  return memberData?.subscription?.[0]
 }
 
 async function isMemberPaidSubscriptionWithMobile(context) {
