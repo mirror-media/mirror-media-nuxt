@@ -258,6 +258,7 @@ async function setMemberServiceRuleStatusToTrue(context) {
 
   // get member's israfel ID
   const memberIsrafelId = await getMemberIsrafelId(firebaseId)
+
   // TODO： put member's israfelID to vuex
 
   const firebaseToken = getFirebaseToken(context)
@@ -306,18 +307,18 @@ async function isMemberPaidSubscriptionWithMobile(context) {
   try {
     // get user's newest subscription
     const subscriptions = await getMemberAllSubscriptions(firebaseId)
-    const { frequency, paymentMethod } = subscriptions[0]
-    if (frequency === 'one_time') return false
-
-    if (paymentMethod === 'applepay' || paymentMethod === 'applepay') {
-      return true
-    } else {
-      return false
-    }
+    return isSubscriptionPayByMobileAppStore(subscriptions[0])
   } catch (error) {
     console.error(error)
     return false
   }
+}
+
+function isSubscriptionPayByMobileAppStore(subscription) {
+  const { frequency, paymentMethod } = subscription
+  if (frequency === 'one_time') return false
+
+  return paymentMethod === 'applepay' || paymentMethod === 'applepay'
 }
 
 export {
@@ -331,4 +332,5 @@ export {
   setMemberServiceRuleStatusToTrue,
   cancelMemberSubscription,
   isMemberPaidSubscriptionWithMobile,
+  isSubscriptionPayByMobileAppStore,
 }
