@@ -229,7 +229,7 @@ export default {
          * URL you want to redirect back to. The domain (www.example.com) for this
          * URL must be in the authorized domains list in the Firebase Console.
          */
-        url: createUrl(),
+        url: createUrl(this.email),
 
         // This must be true.
         handleCodeInApp: true,
@@ -237,10 +237,18 @@ export default {
         ...actionCodeSettingsAppConfig,
       }
 
-      function createUrl() {
+      function createUrl(email) {
         const origin = window.location.origin
-        const path = '/subscribe/info'
-        return `${origin}${path}`
+        const path = '/verify-success'
+
+        /*
+         * when verified and redirect to verify-success page,
+         * we need this email to check which page-state should show
+         * (for more detail, see pages/verify-success.vue)
+         */
+
+        const queryString = email ? `?email=${email}` : ''
+        return `${origin}${path}${queryString}`
       }
     },
   },
