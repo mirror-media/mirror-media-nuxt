@@ -1,5 +1,3 @@
-import { fetchMemberBasicInfo } from '~/apollo/queries/memberSubscription.gql'
-
 export const state = () => ({
   canAdvertise: true,
 })
@@ -20,15 +18,7 @@ export const actions = {
         token,
       })
 
-      const {
-        data,
-      } = await app.apolloProvider.clients.memberSubscription.query({
-        query: fetchMemberBasicInfo,
-        variables: {
-          firebaseId: state.membership.userUid,
-        },
-      })
-      commit('membership-subscribe/SET_BASIC_INFO', data.member)
+      await dispatch('membership-subscribe/FETCH_BASIC_INFO')
     }
 
     const sectionsResponse = await dispatch('fetchGlobalData')

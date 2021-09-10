@@ -154,7 +154,14 @@ export default {
     async handleRegisterSuccess(user) {
       try {
         await this.postCreateUserForRegister(user)
-        this.showRegisterSuccessAndRedirectToSectionMember()
+
+        if (isMemberSubscribeFeatureToggled(this.$route)) {
+          await this.$store.dispatch('membership-subscribe/FETCH_BASIC_INFO')
+          this.sendMembershipSubscribe('登入成功')
+          this.sendMembershipSubscribe('自動跳轉')
+        } else {
+          this.showRegisterSuccessAndRedirectToSectionMember()
+        }
       } catch {
         this.state = 'registerError'
       }
@@ -190,6 +197,7 @@ export default {
       } catch (e) {
         this.isFederatedRedirectResultLoading = false
         console.log(e)
+
         /*
          * (3rd party auth error happends here)
          * if login with Google or email/password before,

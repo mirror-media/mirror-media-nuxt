@@ -1,5 +1,3 @@
-import { fetchMemberBasicInfo } from '~/apollo/queries/memberSubscription.gql'
-
 export const state = () => ({
   user: {},
   userUid: undefined,
@@ -39,21 +37,13 @@ export const mutations = {
 }
 
 export const actions = {
-  async ON_AUTH_STATE_CHANGED_ACTION({ commit, rootState }, { authUser }) {
+  async ON_AUTH_STATE_CHANGED_ACTION({ commit, dispatch }, { authUser }) {
     const token = authUser && (await authUser.getIdToken())
     commit('ON_AUTH_STATE_CHANGED_MUTATION', { authUser, token })
 
-    if (rootState.membership.userUid) {
-      const {
-        data,
-      } = await this.app.apolloProvider.clients.memberSubscription.query({
-        query: fetchMemberBasicInfo,
-        variables: {
-          firebaseId: rootState.membership.userUid,
-        },
-      })
-      commit('membership-subscribe/SET_BASIC_INFO', data.member)
-    }
+    await dispatch('membership-subscribe/FETCH_BASIC_INFO', null, {
+      root: true,
+    })
   },
 }
 
