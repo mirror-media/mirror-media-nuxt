@@ -285,9 +285,8 @@ export default {
   },
   async created() {
     // ======To Kevin Start=======
-    const memberType = await this.$getMemberSubscriptionType(this)
+    const memberType = await this.$getMemberType()
     console.log(memberType)
-    console.log(this.$store.state.membership)
     // ======To Kevin End=======
   },
 }

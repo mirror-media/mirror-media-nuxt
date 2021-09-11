@@ -13,33 +13,26 @@ const baseUrl = process.browser
   : 'http://localhost:3000/'
 const apiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0`
 
-async function getMemberSubscriptionType(context) {
+async function getMemberType(context) {
   // determine whether user is logged in or not
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return 'not-member' // no user is logged in
 
-  // get user's subscription state
   try {
-    const subscriptions = await getMemberAllSubscriptions(firebaseId)
+    const {
+      data: { member: memberBasicInfo },
+    } = await fireGqlRequest(fetchMemberBasicInfo, { firebaseId }, context)
 
-    if (!subscriptions.length) {
-      return 'not-member'
-    }
-
-    // check member's latest subscription state
-    const latestSubscription = subscriptions[0]
-    const subscriptionFrequency = latestSubscription.frequency
-
-    switch (subscriptionFrequency) {
-      case 'one_time':
+    switch (memberBasicInfo.type) {
+      case 'subscribe_one_time':
         return 'basic'
-
-      case 'monthly':
+      case 'subscribe_monthly':
         return 'month'
-
-      case 'yearly':
+      case 'subscribe_yearly':
         return 'year'
-
+      case 'marketing':
+        return 'marketing'
+      case 'none':
       default:
         return 'basic'
     }
@@ -54,9 +47,13 @@ async function getMemberDetailData(context) {
   if (!firebaseId) return null
 
   try {
-    const result = await fireGqlRequest(fetchMemberSubscriptions, {
-      firebaseId,
-    })
+    const result = await fireGqlRequest(
+      fetchMemberSubscriptions,
+      {
+        firebaseId,
+      },
+      context
+    )
 
     const memberData = result?.data?.member
     return memberData
@@ -72,12 +69,10 @@ async function cancelMemberSubscription(context, reason) {
 
   try {
     // get user's newest subscription
-    const subscriptions = await getMemberAllSubscriptions(firebaseId)
+    const subscriptions = await getMemberAllSubscriptions(firebaseId, context)
     const newestSubscription = subscriptions[0]
 
     if (newestSubscription.frequency === 'one_time') return
-
-    const firebaseToken = getFirebaseToken(context)
 
     // change subscription.isCanceled to true (carry unsubscribe reason)
     await fireGqlRequest(
@@ -86,7 +81,7 @@ async function cancelMemberSubscription(context, reason) {
         id: newestSubscription.id,
         note: reason,
       },
-      firebaseToken
+      context
     )
 
     return 'success'
@@ -96,16 +91,21 @@ async function cancelMemberSubscription(context, reason) {
   }
 }
 
-async function getMemberAllSubscriptions(firebaseId) {
+async function getMemberAllSubscriptions(firebaseId, context) {
   try {
     // get user's subscription state
-    const result = await fireGqlRequest(fetchMemberSubscriptions, {
-      firebaseId,
-    })
+    const result = await fireGqlRequest(
+      fetchMemberSubscriptions,
+      {
+        firebaseId,
+      },
+      context
+    )
 
     // get member's all subscriptions
     const subscriptions = result?.data?.member?.subscription
-    return subscriptions
+
+    return subscriptions || []
   } catch (error) {
     // handle network error
     console.error(error)
@@ -120,7 +120,9 @@ function getUserFirebaseId(context) {
   return currentUserUid || null
 }
 
-async function fireGqlRequest(query, variables, firebaseToken) {
+async function fireGqlRequest(query, variables, context) {
+  const firebaseToken = getFirebaseToken(context)
+
   const { data: result } = await axios({
     url: apiUrl,
     method: 'post',
@@ -240,9 +242,13 @@ async function getMemberServiceRuleStatus(context) {
 
   // get user's subscription state
   try {
-    const result = await fireGqlRequest(fetchMemberBasicInfo, {
-      firebaseId,
-    })
+    const result = await fireGqlRequest(
+      fetchMemberBasicInfo,
+      {
+        firebaseId,
+      },
+      context
+    )
 
     // check member's tos
     const member = result?.data?.member
@@ -259,11 +265,9 @@ async function setMemberServiceRuleStatusToTrue(context) {
   if (!firebaseId) return null
 
   // get member's israfel ID
-  const memberIsrafelId = await getMemberIsrafelId(firebaseId)
+  const memberIsrafelId = await getMemberIsrafelId(firebaseId, context)
 
   // TODO： put member's israfelID to vuex
-
-  const firebaseToken = getFirebaseToken(context)
 
   // fire mutation, set member's tos(service rule) to true
   try {
@@ -272,7 +276,7 @@ async function setMemberServiceRuleStatusToTrue(context) {
       {
         id: memberIsrafelId,
       },
-      firebaseToken
+      context
     )
 
     // check member's tos
@@ -283,18 +287,20 @@ async function setMemberServiceRuleStatusToTrue(context) {
   }
 }
 
-async function getMemberIsrafelId(firebaseId) {
+async function getMemberIsrafelId(firebaseId, context) {
   // TODO： put member's israfelID to vuex
-  const result = await fireGqlRequest(fetchMemberBasicInfo, {
-    firebaseId,
-  })
+  const result = await fireGqlRequest(
+    fetchMemberBasicInfo,
+    {
+      firebaseId,
+    },
+    context
+  )
   const memberIsrafelId = result?.data?.member?.id
   return memberIsrafelId
 }
 
 function getFirebaseToken(context) {
-  console.log(context.store.state.membership)
-
   return context.store?.state?.membership?.userToken
 }
 
@@ -324,7 +330,6 @@ function isSubscriptionPayByMobileAppStore(subscription) {
 }
 
 export {
-  getMemberSubscriptionType,
   getMemberDetailData,
   getMemberPayRecords,
   getMemberSubscribePosts,
@@ -335,4 +340,5 @@ export {
   cancelMemberSubscription,
   isMemberPaidSubscriptionWithMobile,
   isSubscriptionPayByMobileAppStore,
+  getMemberType,
 }

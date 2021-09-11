@@ -3,11 +3,11 @@ import _ from 'lodash'
 import axios from 'axios'
 import qs from 'qs'
 import {
-  getMemberSubscriptionType,
   getMemberDetailData,
   getMemberServiceRuleStatus,
   setMemberServiceRuleStatusToTrue,
   cancelMemberSubscription,
+  getMemberType,
 } from '~/utils/memberSubscription'
 
 import {
@@ -302,9 +302,6 @@ export default (context, inject) => {
     }
   })
 
-  inject('getMemberSubscriptionType', async () => {
-    return await getMemberSubscriptionType(context)
-  })
   inject('getMemberDetailData', async () => {
     return await getMemberDetailData(context)
   })
@@ -316,5 +313,8 @@ export default (context, inject) => {
   })
   inject('cancelMemberSubscription', async (reason) => {
     return await cancelMemberSubscription(context, reason)
+  })
+  inject('getMemberType', async () => {
+    return await getMemberType(context)
   })
 }
