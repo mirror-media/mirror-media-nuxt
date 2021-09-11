@@ -178,6 +178,9 @@
     >
       刪除會員
     </a>
+    <p class="cancel-membership-hint">
+      提醒您，若您有訂閱會員專區單篇文章，刪除帳號可能導致無法閱讀文章
+    </p>
   </div>
 </template>
 
@@ -724,6 +727,7 @@ export default {
   color: #d0021b;
   font-size: 18px;
   font-weight: 700;
+  margin-bottom: 12px;
 }
 
 .update-password-button {
@@ -745,5 +749,13 @@ export default {
       #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.66);
   }
+}
+
+.cancel-membership-hint {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #888888;
 }
 </style>
