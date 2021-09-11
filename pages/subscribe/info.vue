@@ -127,6 +127,20 @@ export default {
     showSimFormStatus() {
       return ENV === 'local'
     },
+    frequency() {
+      // workaround
+      const planDetail = this.perchasedPlan?.[0]?.detail
+      switch (planDetail) {
+        case '鏡週刊 Premium 會員 (年方案)':
+          return 'yearly'
+
+        case '鏡週刊 Premium 會員 (月方案)':
+          return 'monthly'
+
+        default:
+          return 'one_time'
+      }
+    },
   },
   methods: {
     handleBack() {
@@ -144,7 +158,7 @@ export default {
     setOrderStatus(val) {
       this.orderStatus = val
     },
-    submitHandler(e) {
+    async submitHandler(e) {
       e.preventDefault()
       this.$refs.receiptDOM.check()
       this.$v.email.$touch()
@@ -156,10 +170,42 @@ export default {
         return
 
       // emit apiGateWay
+      const result = await this.getPaymentDataFromApiGateWay()
+
+      // TOTO: encrypt
+      console.log(result)
+
+      // TODO: fire form post
 
       if (this.orderStatus === 'success')
         return this.sendMembershipSubscribe('付款成功')
       this.sendMembershipSubscribe('付款失敗')
+    },
+    async getPaymentDataFromApiGateWay() {
+      let gateWayPayload
+      const isPremiumPurchase =
+        this.frequency === 'yearly' || this.frequency === 'monthly'
+
+      if (isPremiumPurchase) {
+        gateWayPayload = {
+          email: this.email,
+          frequency: 'monthly',
+          paymentMethod: 'newebpay',
+          status: 'paying',
+          promoteId: 12345, // 折扣碼
+        }
+      } else {
+        // one_time
+        gateWayPayload = {
+          email: this.email,
+          paymentMethod: 'newebpay',
+          status: 'paying',
+          promoteId: 12345, // 折扣碼
+          postId: 'qwerty',
+        }
+      }
+      const { data } = await this.$getPaymentDataOfSubscription(gateWayPayload)
+      return data
     },
   },
   async created() {

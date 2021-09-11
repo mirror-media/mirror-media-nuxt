@@ -8,6 +8,7 @@ import {
   setMemberServiceRuleStatusToTrue,
   cancelMemberSubscription,
   getMemberType,
+  getPaymentDataOfSubscription,
 } from '~/utils/memberSubscription'
 
 import {
@@ -316,5 +317,8 @@ export default (context, inject) => {
   })
   inject('getMemberType', async () => {
     return await getMemberType(context)
+  })
+  inject('getPaymentDataOfSubscription', async (gateWayPayload) => {
+    return await getPaymentDataOfSubscription(context, gateWayPayload)
   })
 }

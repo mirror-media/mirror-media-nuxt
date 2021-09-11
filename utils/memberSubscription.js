@@ -7,6 +7,8 @@ import {
 import {
   setMemberTosToTrue,
   unsubscribe,
+  fetchPaymentDataOfSubscriptionRecurring,
+  fetchPaymentDataOfSubscriptionOneTime,
 } from '~/apollo/mutations/memberSubscriptionMutation.gql'
 
 import { API_PATH_FRONTEND } from '~/configs/config.js'
@@ -331,6 +333,26 @@ function isSubscriptionPayByMobileAppStore(subscription) {
   return paymentMethod === 'applepay' || paymentMethod === 'applepay'
 }
 
+async function getPaymentDataOfSubscription(context, gateWayPayload) {
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return null
+
+  try {
+    const { frequency } = gateWayPayload
+    let query
+    if (frequency === 'yearly' || frequency === 'monthly') {
+      query = fetchPaymentDataOfSubscriptionRecurring
+    } else {
+      query = fetchPaymentDataOfSubscriptionOneTime
+    }
+
+    return await fireGqlRequest(query, gateWayPayload, context)
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
 export {
   getMemberDetailData,
   getMemberPayRecords,
@@ -343,4 +365,5 @@ export {
   isMemberPaidSubscriptionWithMobile,
   isSubscriptionPayByMobileAppStore,
   getMemberType,
+  getPaymentDataOfSubscription,
 }
