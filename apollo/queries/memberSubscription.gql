@@ -1,4 +1,4 @@
-query fetchMemberSubscriptions($firebaseId: String) {
+query fetchMemberSubscriptions($firebaseId: String!) {
   member(where: { firebaseId: $firebaseId }) {
     firebaseId
     email
@@ -24,7 +24,7 @@ query fetchMemberSubscriptions($firebaseId: String) {
     }
   }
 }
-query fetchMemberBasicInfo($firebaseId: String) {
+query fetchMemberBasicInfo($firebaseId: String!) {
   member(where: { firebaseId: $firebaseId }) {
     id
     firebaseId
@@ -34,7 +34,7 @@ query fetchMemberBasicInfo($firebaseId: String) {
   }
 }
 
-query fetchSubscriptionPayments($firebaseId: String) {
+query fetchSubscriptionPayments($firebaseId: String!) {
   member(where: { firebaseId: $firebaseId }) {
     email
     subscription(orderBy: [{ periodEndDatetime: desc }]) {
