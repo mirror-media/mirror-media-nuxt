@@ -45,22 +45,3 @@ query fetchSubscriptionPayments($firebaseId: String!) {
     }
   }
 }
-
-mutation setMemberTosToTrue($id: ID!) {
-  updatemember(id: $id, data: { tos: true }) {
-    firebaseId
-    email
-    type
-    tos
-  }
-}
-
-mutation unsubscribe($id: ID!, $note: String) {
-  updatesubscription(id: $id, data: { isCanceled: true, note: $note }) {
-    id
-    frequency
-    isActive
-    isCanceled
-    note
-  }
-}

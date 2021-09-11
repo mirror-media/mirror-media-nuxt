@@ -154,6 +154,9 @@ export default {
         (this.$v.email.$error || this.formStatus.receipt !== 'OK')
       )
         return
+
+      // emit apiGateWay
+
       if (this.orderStatus === 'success')
         return this.sendMembershipSubscribe('付款成功')
       this.sendMembershipSubscribe('付款失敗')

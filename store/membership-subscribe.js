@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { fetchMemberBasicInfo } from '~/apollo/queries/memberSubscription.gql'
+import { fetchMemberBasicInfo } from '~/apollo/queries/memberSubscriptionQuery.gql'
 
 export const state = () => ({
   basicInfo: {},

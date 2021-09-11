@@ -1,0 +1,61 @@
+mutation setMemberTosToTrue($id: ID!) {
+  updatemember(id: $id, data: { tos: true }) {
+    firebaseId
+    email
+    type
+    tos
+  }
+}
+
+mutation unsubscribe($id: ID!, $note: String) {
+  updatesubscription(id: $id, data: { isCanceled: true, note: $note }) {
+    id
+    frequency
+    isActive
+    isCanceled
+    note
+  }
+}
+
+mutation fetchPaymentDataOfSubscriptionRecurring(
+  $email: String!
+  $frequency: subscriptionFrequencyType!
+  $paymentMethod: subscriptionPaymentMethodType!
+  $status: createSubscriptionStatusType!
+  $promoteId: String!
+) {
+  createSubscriptionRecurring(
+    data: {
+      email: $email
+      frequency: $frequency
+      paymentMethod: $paymentMethod
+      status: $status
+    }
+  ) {
+    subscription {
+      frequency
+    }
+    newebpayPayload
+  }
+}
+
+mutation fetchPaymentDataOfSubscriptionOneTime(
+  $email: String!
+  $paymentMethod: subscriptionPaymentMethodType!
+  $status: createSubscriptionStatusType!
+  $postId: String!
+) {
+  createsSubscriptionOneTime(
+    data: {
+      email: $email
+      paymentMethod: $paymentMethod
+      status: $status
+      postId: $postId
+    }
+  ) {
+    subscription {
+      frequency
+    }
+    newebpayPayload
+  }
+}

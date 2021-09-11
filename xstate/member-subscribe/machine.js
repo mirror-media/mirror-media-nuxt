@@ -1,7 +1,7 @@
 import { assign, createMachine as createMachineXState } from 'xstate'
 import machine from './config/machine'
 import options from './config/options'
-import { setMemberTosToTrue } from '~/apollo/queries/memberSubscription.gql'
+import { setMemberTosToTrue } from '~/apollo/mutations/memberSubscriptionMutation.gql'
 
 export default function createMachine(router, route, store, apolloProvider) {
   return createMachineXState(machine, {

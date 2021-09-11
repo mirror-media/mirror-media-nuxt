@@ -3,9 +3,11 @@ import axios from 'axios'
 import {
   fetchMemberSubscriptions,
   fetchMemberBasicInfo,
+} from '~/apollo/queries/memberSubscriptionQuery.gql'
+import {
   setMemberTosToTrue,
   unsubscribe,
-} from '~/apollo/queries/memberSubscription.gql'
+} from '~/apollo/mutations/memberSubscriptionMutation.gql'
 
 import { API_PATH_FRONTEND } from '~/configs/config.js'
 const baseUrl = process.browser
