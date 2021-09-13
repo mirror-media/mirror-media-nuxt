@@ -22,6 +22,8 @@ export const mutations = {
       if (Object.keys(claims).length !== 0) {
         const { firebase } = claims
         state.userSignInInfo = firebase
+      } else {
+        state.userSignInInfo = {}
       }
 
       if (token) {
