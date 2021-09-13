@@ -302,12 +302,9 @@ export default {
                 信箱驗證頁: {
                   id: '信箱驗證頁',
                   entry: ['navigateToEmailVerify'],
+                  type: 'final',
                   on: {
-                    // TODO: remove this shortcut event for demo purpose
-                    假裝驗證信箱並繼續流程: {
-                      target: '起點',
-                      actions: ['verifyEmail'],
-                    },
+                    假裝驗證信箱並繼續流程: undefined,
                   },
                 },
                 服務條款頁: {
