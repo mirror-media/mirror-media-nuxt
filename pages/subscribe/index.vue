@@ -58,6 +58,7 @@ import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vu
 import { ENV } from '~/configs/config'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
+  middleware: ['handle-go-to-marketing'],
   components: {
     SubscribeStepProgress,
     UiSubscribeInfo,
@@ -287,6 +288,7 @@ export default {
     // ======To Kevin Start=======
     const memberType = await this.$getMemberType()
     console.log(memberType)
+
     // ======To Kevin End=======
   },
 }

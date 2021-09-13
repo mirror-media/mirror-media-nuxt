@@ -63,6 +63,7 @@ import MembershipSimFormStatus from '~/components/MembershipSimFormStatus.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
+  middleware: ['handle-go-to-marketing'],
   components: {
     SubscribeWrapper,
     MemberShipStatus,
@@ -169,6 +170,7 @@ export default {
   async created() {
     const memberData = await this.$getMemberDetailData()
     console.log(memberData)
+
     // // ======To Kevin Start=======
     const newMemberShipStatus = getMemberShipStatus(memberData)
     const memberIsPremium = isMemberPremium(newMemberShipStatus)

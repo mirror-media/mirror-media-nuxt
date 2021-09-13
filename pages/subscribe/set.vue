@@ -30,6 +30,7 @@ import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
+  middleware: ['handle-go-to-marketing'],
   setup() {
     const { state, send } = useMemberSubscribeMachine()
     return {

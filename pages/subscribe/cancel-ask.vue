@@ -69,6 +69,7 @@ import UiMembershipCheckoutLabel from '~/components/UiMembershipCheckoutLabel.vu
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import { isMemberPaidSubscriptionWithMobile } from '~/utils/memberSubscription'
 export default {
+  middleware: ['handle-go-to-marketing'],
   components: {
     SubscribeWrapper,
     SubscribeCancelSimForm,
@@ -124,6 +125,7 @@ export default {
       )
       console.log(updatedCancelStatus)
       this.cancelStatus = updatedCancelStatus
+
       // ======To Kevin End=======
 
       if (this.cancelStatus === 'success') {
