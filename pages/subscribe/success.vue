@@ -77,6 +77,7 @@ import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondar
 import { ENV } from '~/configs/config'
 
 export default {
+  middleware: ['handle-go-to-marketing'],
   setup() {
     const { state, send } = useMemberSubscribeMachine()
     return {

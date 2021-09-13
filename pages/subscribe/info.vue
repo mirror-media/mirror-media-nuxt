@@ -76,6 +76,7 @@ import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
+  middleware: ['handle-go-to-marketing'],
   components: {
     SubscribeStepProgress,
     MembershipInfoSim,
@@ -142,6 +143,15 @@ export default {
       }
     },
   },
+  async created() {
+    // ======To Kevin Start=======
+    const isMemberCheckedServiceRule = await this.$getMemberServiceRuleStatus(
+      this
+    )
+    console.log(isMemberCheckedServiceRule)
+
+    // ======To Kevin End=======
+  },
   methods: {
     handleBack() {
       this.$router.push('/subscribe')
@@ -207,15 +217,6 @@ export default {
       const { data } = await this.$getPaymentDataOfSubscription(gateWayPayload)
       return data
     },
-  },
-  async created() {
-    // ======To Kevin Start=======
-    const isMemberCheckedServiceRule = await this.$getMemberServiceRuleStatus(
-      this
-    )
-    console.log(isMemberCheckedServiceRule)
-
-    // ======To Kevin End=======
   },
 }
 </script>
