@@ -84,7 +84,9 @@ export default function createMachine(router, route, store, apolloProvider) {
     isLoggedIn: store.getters['membership/isLoggedIn'],
     isTosAgreed: store.state['membership-subscribe'].basicInfo.tos,
     isEmailVerified: !!store.state.membership.userEmailVerified,
-    subscription: mockFetchSubscription(),
+    subscription: getSubscription(
+      store.state['membership-subscribe'].basicInfo.type
+    ),
   })
 }
 
@@ -103,6 +105,12 @@ function createNavigation(router, route, path) {
   }
 }
 
-function mockFetchSubscription() {
-  return localStorage.getItem('subscription') ?? null
+function getSubscription(memberType) {
+  const mapping = {
+    subscribe_yearly: '年訂閱',
+    subscribe_monthly: '月訂閱',
+    subscribe_one_time: '解鎖這篇報導',
+    none: null,
+  }
+  return mapping[memberType]
 }
