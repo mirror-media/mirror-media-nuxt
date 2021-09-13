@@ -50,9 +50,9 @@
 import { computed } from '@nuxtjs/composition-api'
 import {
   getMemberPayRecords,
-  getMemberSubscribePosts,
+  // getMemberSubscribePosts,
   getMemberShipStatus,
-  isMemberPremium,
+  formatMemberType,
 } from '~/utils/memberSubscription'
 import { ENV } from '~/configs/config'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
@@ -168,22 +168,35 @@ export default {
   },
 
   async created() {
+    // ======To Kevin Start=======
     const memberData = await this.$getMemberDetailData()
     console.log(memberData)
+    if (!memberData) return
 
-    // // ======To Kevin Start=======
+    // getMemberShipStatus for xState(?)
     const newMemberShipStatus = getMemberShipStatus(memberData)
-    const memberIsPremium = isMemberPremium(newMemberShipStatus)
     console.log(newMemberShipStatus)
-    console.log(memberIsPremium)
+
+    // get member's type
+    const memberType = formatMemberType(memberData.type)
+    console.log(memberType)
+
+    // get subscription list
+    let subscriptionList
+    if (memberType === 'basic') {
+      subscriptionList = memberData?.subscription?.filter((subscription) => {
+        return subscription.frequency === 'one_time'
+      })
+    } else {
+      subscriptionList = [memberData?.subscription?.[0]]
+    }
+    console.log(subscriptionList)
+
+    // get all payment history
+    const payRecords = getMemberPayRecords(memberData?.subscription)
+    console.log(payRecords)
 
     // ======To Kevin End=======
-
-    if (!memberIsPremium) {
-      this.postList = getMemberSubscribePosts(memberData)
-    }
-
-    this.payRecords = getMemberPayRecords(memberData)
   },
   mounted() {
     if (this.$store.state.viewport.width <= 568) {

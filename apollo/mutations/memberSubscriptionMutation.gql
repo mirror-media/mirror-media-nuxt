@@ -22,7 +22,7 @@ mutation fetchPaymentDataOfSubscriptionRecurring(
   $frequency: subscriptionFrequencyType!
   $paymentMethod: subscriptionPaymentMethodType!
   $status: createSubscriptionStatusType!
-  $promoteId: String!
+  $promoteId: String
 ) {
   createSubscriptionRecurring(
     data: {
@@ -43,6 +43,7 @@ mutation fetchPaymentDataOfSubscriptionOneTime(
   $email: String!
   $paymentMethod: subscriptionPaymentMethodType!
   $status: createSubscriptionStatusType!
+  $promoteId: String
   $postId: String!
 ) {
   createsSubscriptionOneTime(

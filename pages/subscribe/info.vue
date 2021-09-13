@@ -214,8 +214,7 @@ export default {
           postId: 'qwerty',
         }
       }
-      const { data } = await this.$getPaymentDataOfSubscription(gateWayPayload)
-      return data
+      return await this.$getPaymentDataOfSubscription(gateWayPayload)
     },
   },
 }

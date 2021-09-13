@@ -26,23 +26,26 @@ async function getMemberType(context) {
     const {
       data: { member: memberBasicInfo },
     } = await fireGqlRequest(fetchMemberBasicInfo, { firebaseId }, context)
-
-    switch (memberBasicInfo.type) {
-      case 'subscribe_one_time':
-        return 'basic'
-      case 'subscribe_monthly':
-        return 'month'
-      case 'subscribe_yearly':
-        return 'year'
-      case 'marketing':
-        return 'marketing'
-      case 'none':
-      default:
-        return 'basic'
-    }
+    return formatMemberType(memberBasicInfo.type)
   } catch (error) {
     console.error(error)
     return 'not-member'
+  }
+}
+
+function formatMemberType(israfelMemberType) {
+  switch (israfelMemberType) {
+    case 'subscribe_one_time':
+      return 'basic'
+    case 'subscribe_monthly':
+      return 'month'
+    case 'subscribe_yearly':
+      return 'year'
+    case 'marketing':
+      return 'marketing'
+    case 'none':
+    default:
+      return 'basic'
   }
 }
 
@@ -147,11 +150,12 @@ async function fireGqlRequest(query, variables, context) {
   return result
 }
 
-function getMemberPayRecords(memberData) {
-  if (!memberData || !memberData.subscription) return []
+function getMemberPayRecords(subscriptionList) {
+  console.log(subscriptionList)
+  if (!subscriptionList?.length) return []
 
   const payRecords = []
-  memberData.subscription.forEach((subscription) => {
+  subscriptionList.forEach((subscription) => {
     subscription.newebpayPayment?.forEach((newebpayPayment) => {
       const payRecord = {
         number: subscription.orderNumber,
@@ -164,7 +168,7 @@ function getMemberPayRecords(memberData) {
       payRecords.push(payRecord)
     })
   })
-
+  console.log(payRecords)
   // sort all records by date_dsc
   payRecords.sort((recordA, recordB) => {
     return new Date(recordB.date) - new Date(recordA.date)
@@ -232,11 +236,6 @@ function getMemberShipStatus(memberData) {
   }
 
   return memberShipStatus
-}
-
-function isMemberPremium(memberShipStatus) {
-  const status = memberShipStatus?.name
-  return status === 'yearly' || status === 'monthly' || status === 'disturb'
 }
 
 async function getMemberServiceRuleStatus(context) {
@@ -358,7 +357,6 @@ export {
   getMemberPayRecords,
   getMemberSubscribePosts,
   getMemberShipStatus,
-  isMemberPremium,
   getMemberServiceRuleStatus,
   setMemberServiceRuleStatusToTrue,
   cancelMemberSubscription,
@@ -366,4 +364,5 @@ export {
   isSubscriptionPayByMobileAppStore,
   getMemberType,
   getPaymentDataOfSubscription,
+  formatMemberType,
 }
