@@ -24,6 +24,7 @@ import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vu
 
 export default {
   components: { SubscribeWrapper, UiMembershipButtonPrimary },
+  middleware: ['handle-forbid-to-marketing'],
   methods: {
     handleBack() {
       window.location.assign('/section/member')
