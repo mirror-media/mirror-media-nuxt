@@ -13,13 +13,13 @@
         />
         <MembershipPosts
           v-if="postList.length && !isPremium"
-          :postList="postList"
+          :postList="showedPostList"
           :showMorePostButton="showMorePostButton"
           @load-more-post="handleMorePost"
         />
         <MembershipPayRecord
           v-if="payRecords.length"
-          :payRecords="payRecords"
+          :payRecords="showedPayRecords"
           :isMobile="isMobile"
           :showMorePayRecordButton="showMorePayRecordButton"
           @load-more-record="handleMoreRecord"
@@ -86,54 +86,18 @@ export default {
         const parentState = '會員訂閱功能.付款紀錄頁.已登入'
         if (state?.matches(`${parentState}.已登入（無購買紀錄）`)) {
           return 'not-at-all'
-          // return {
-          //   name: 'not-at-all',
-          //   dueDate: null,
-          //   nextPayDate: null,
-          //   payMethod: null,
-          // }
         } else if (state?.matches(`${parentState}.已登入（只有單篇購買過）`)) {
           return 'single-post'
-          // return {
-          //   name: 'single-post',
-          //   dueDate: null,
-          //   nextPayDate: null,
-          //   payMethod: null,
-          // }
         } else if (state?.matches(`${parentState}.已登入（已訂閱月方案）`)) {
           return 'month'
-          // return {
-          //   name: 'month',
-          //   dueDate: '至 2022/12/29',
-          //   nextPayDate: '2022/7/30',
-          //   payMethod: '信用卡自動續扣(2924)',
-          // }
         } else if (state?.matches(`${parentState}.已登入（已訂閱年方案）`)) {
           return 'year'
-          // return {
-          //   name: 'year',
-          //   dueDate: '至 2022/12/29',
-          //   nextPayDate: '2022/7/30',
-          //   payMethod: '信用卡自動續扣(2924)',
-          // }
         } else if (
           state?.matches(`${parentState}.已登入（已訂閱但取消下期）`)
         ) {
           return 'disturb'
-          // return {
-          //   name: 'disturb',
-          //   dueDate: '至 2022/12/29',
-          //   nextPayDate: null,
-          //   payMethod: null,
-          // }
         } else {
           return 'not-at-all'
-          // return {
-          //   name: 'not-at-all',
-          //   dueDate: null,
-          //   nextPayDate: null,
-          //   payMethod: null,
-          // }
         }
       }
     }
@@ -142,9 +106,9 @@ export default {
   data() {
     return {
       postList: [],
-      postMetaCount: 6,
+      postMetaCount: 5,
       payRecords: [],
-      payRecordMetaCount: 11,
+      payRecordMetaCount: 4,
       isMobile: false,
       memberShipStatus: {
         name: 'not-at-all',
@@ -156,14 +120,20 @@ export default {
   },
   computed: {
     showMorePostButton() {
-      return this.postMetaCount > this.postList.length
+      return this.postMetaCount < this.postList.length
     },
     showMorePayRecordButton() {
-      return this.payRecordMetaCount > this.payRecords.length
+      return this.payRecordMetaCount < this.payRecords.length
     },
     isPremium() {
       const status = this.memberShipStatusName
       return status === 'year' || status === 'month' || status === 'disturb'
+    },
+    showedPostList() {
+      return this.postList.slice(0, this.postMetaCount)
+    },
+    showedPayRecords() {
+      return this.payRecords.slice(0, this.payRecordMetaCount)
     },
   },
 
@@ -173,10 +143,10 @@ export default {
       this.memberShipStatus = await this.$getPremiumMemberShipStatus()
     } else {
       // fetch onetime subscription list
-      this.postList = await this.$getMemberOneTimeSubscriptions()
+      this.postList = await this.$getMemberOneTimeSubscriptions({})
     }
 
-    this.payRecords = await this.$getSubscriptionPayments()
+    this.payRecords = await this.$getSubscriptionPayments({})
   },
   mounted() {
     if (this.$store.state.viewport.width <= 568) {
@@ -185,22 +155,10 @@ export default {
   },
   methods: {
     handleMorePost() {
-      this.postList.push({
-        id: 6,
-        title: '【鏡相人間】臉被偷走之後　台灣Deepfake事件獨家調查',
-        href: '/',
-        deadline: '2022/12/3 15:02',
-      })
+      this.postMetaCount += 5
     },
     handleMoreRecord() {
-      this.payRecords.push({
-        number: 'M202107160001',
-        date: '2022/12/29',
-        type: '年訂閱',
-        method: '信用卡自動續扣',
-        methodNote: '(1092)',
-        price: 490,
-      })
+      this.payRecordMetaCount += 5
     },
   },
 }
