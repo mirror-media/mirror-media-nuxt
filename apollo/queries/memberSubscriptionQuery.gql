@@ -53,11 +53,13 @@ query fetchRecurringSubscription($firebaseId: String!) {
   member(where: { firebaseId: $firebaseId }) {
     email
     type
+
     subscription(
       first: 1
       where: { frequency_in: [yearly, monthly], isActive: true }
       orderBy: [{ periodEndDatetime: desc }]
     ) {
+      isCanceled
       frequency
       orderNumber
       paymentMethod

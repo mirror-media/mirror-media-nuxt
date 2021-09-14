@@ -367,7 +367,7 @@ function getMemberSubscribePosts(subscriptionList) {
   return postList
 }
 
-async function getSubscriptionRecurring(context, loadmoreConfig) {
+async function getPremiumMemberShipStatus(context, loadmoreConfig) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
@@ -389,14 +389,24 @@ async function getSubscriptionRecurring(context, loadmoreConfig) {
       periodEndDatetime,
       periodNextPayDatetime,
       newebpayPayment,
+      isCanceled,
     } = subscription[0]
     const { paymentMethod, cardInfoLastFour } = newebpayPayment[0]
 
-    return {
-      frequency: formatMemberType(frequency),
-      dueDate: `至 ${getFormatDate(periodEndDatetime)}`,
-      nextPayDate: getFormatDate(periodNextPayDatetime),
-      paymentMethod: `${paymentMethod}(${cardInfoLastFour})`,
+    if (isCanceled) {
+      return {
+        name: 'disturb',
+        dueDate: `至 ${getFormatDate(periodEndDatetime)}`,
+        nextPayDate: null,
+        payMethod: null,
+      }
+    } else {
+      return {
+        name: formatMemberType(frequency),
+        dueDate: `至 ${getFormatDate(periodEndDatetime)}`,
+        nextPayDate: getFormatDate(periodNextPayDatetime),
+        payMethod: `${paymentMethod}(${cardInfoLastFour})`,
+      }
     }
   } catch (error) {
     // handle network error
@@ -442,5 +452,5 @@ export {
   formatMemberType,
   getMemberOneTimeSubscriptions,
   getSubscriptionPayments,
-  getSubscriptionRecurring,
+  getPremiumMemberShipStatus,
 }

@@ -2,7 +2,7 @@
   <div class="purchase">
     <ClientOnly>
       <h1 class="purchase__title">訂閱紀錄</h1>
-      <SubscribeWrapper v-if="memberShipStatus.name !== 'not-at-all'">
+      <SubscribeWrapper v-if="memberShipStatusName !== 'not-at-all'">
         <MemberShipStatus
           :isMobile="isMobile"
           :memberShipStatus="memberShipStatus"
@@ -66,68 +66,74 @@ export default {
   },
   setup() {
     const { state, send } = useMemberSubscribeMachine()
-    const memberShipStatus = useMemberShipStatus()
+    const memberShipStatusName = useMemberShipStatusName()
     return {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
-      memberShipStatus,
+      memberShipStatusName,
       handleNavigateToSubscribeSet() {
         window.location.assign('/subscribe/set?ms=true')
       },
     }
-    function useMemberShipStatus() {
+    function useMemberShipStatusName() {
       const { state } = useMemberSubscribeMachine()
-      const memberShipStatus = computed(() =>
-        computeMemberShipStatus(state?.value)
+      const memberShipStatusName = computed(() =>
+        computeMemberShipStatusName(state?.value)
       )
-      return memberShipStatus
+      return memberShipStatusName
 
-      function computeMemberShipStatus(state) {
+      function computeMemberShipStatusName(state) {
         const parentState = '會員訂閱功能.付款紀錄頁.已登入'
         if (state?.matches(`${parentState}.已登入（無購買紀錄）`)) {
-          return {
-            name: 'not-at-all',
-            dueDate: null,
-            nextPayDate: null,
-            payMethod: null,
-          }
+          return 'not-at-all'
+          // return {
+          //   name: 'not-at-all',
+          //   dueDate: null,
+          //   nextPayDate: null,
+          //   payMethod: null,
+          // }
         } else if (state?.matches(`${parentState}.已登入（只有單篇購買過）`)) {
-          return {
-            name: 'single-post',
-            dueDate: null,
-            nextPayDate: null,
-            payMethod: null,
-          }
+          return 'single-post'
+          // return {
+          //   name: 'single-post',
+          //   dueDate: null,
+          //   nextPayDate: null,
+          //   payMethod: null,
+          // }
         } else if (state?.matches(`${parentState}.已登入（已訂閱月方案）`)) {
-          return {
-            name: 'month',
-            dueDate: '至 2022/12/29',
-            nextPayDate: '2022/7/30',
-            payMethod: '信用卡自動續扣(2924)',
-          }
+          return 'month'
+          // return {
+          //   name: 'month',
+          //   dueDate: '至 2022/12/29',
+          //   nextPayDate: '2022/7/30',
+          //   payMethod: '信用卡自動續扣(2924)',
+          // }
         } else if (state?.matches(`${parentState}.已登入（已訂閱年方案）`)) {
-          return {
-            name: 'year',
-            dueDate: '至 2022/12/29',
-            nextPayDate: '2022/7/30',
-            payMethod: '信用卡自動續扣(2924)',
-          }
+          return 'year'
+          // return {
+          //   name: 'year',
+          //   dueDate: '至 2022/12/29',
+          //   nextPayDate: '2022/7/30',
+          //   payMethod: '信用卡自動續扣(2924)',
+          // }
         } else if (
           state?.matches(`${parentState}.已登入（已訂閱但取消下期）`)
         ) {
-          return {
-            name: 'disturb',
-            dueDate: '至 2022/12/29',
-            nextPayDate: null,
-            payMethod: null,
-          }
+          return 'disturb'
+          // return {
+          //   name: 'disturb',
+          //   dueDate: '至 2022/12/29',
+          //   nextPayDate: null,
+          //   payMethod: null,
+          // }
         } else {
-          return {
-            name: 'not-at-all',
-            dueDate: null,
-            nextPayDate: null,
-            payMethod: null,
-          }
+          return 'not-at-all'
+          // return {
+          //   name: 'not-at-all',
+          //   dueDate: null,
+          //   nextPayDate: null,
+          //   payMethod: null,
+          // }
         }
       }
     }
@@ -140,6 +146,12 @@ export default {
       payRecords: [],
       payRecordMetaCount: 11,
       isMobile: false,
+      memberShipStatus: {
+        name: 'not-at-all',
+        dueDate: null,
+        nextPayDate: null,
+        payMethod: null,
+      },
     }
   },
   computed: {
@@ -150,7 +162,7 @@ export default {
       return this.payRecordMetaCount > this.payRecords.length
     },
     isPremium() {
-      const status = this.memberShipStatus?.name
+      const status = this.memberShipStatusName
       return status === 'year' || status === 'month' || status === 'disturb'
     },
   },
@@ -158,18 +170,13 @@ export default {
   async created() {
     if (this.isPremium) {
       // fetch recurring subscription's duration
-      const newMemberShipStatus = await this.$getSubscriptionRecurring()
-      console.log(newMemberShipStatus)
+      this.memberShipStatus = await this.$getPremiumMemberShipStatus()
     } else {
       // fetch onetime subscription list
       this.postList = await this.$getMemberOneTimeSubscriptions()
     }
 
     this.payRecords = await this.$getSubscriptionPayments()
-
-    // ======To Kevin Start=======
-
-    // ======To Kevin End=======
   },
   mounted() {
     if (this.$store.state.viewport.width <= 568) {
