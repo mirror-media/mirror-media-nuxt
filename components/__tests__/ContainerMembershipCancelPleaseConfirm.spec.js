@@ -70,6 +70,7 @@ describe('buttons in the page', function () {
   test('should emit success event after confirm cancel button clicked', async function () {
     const wrapper = shallowMount(ContainerMembershipCancelPleaseConfirm, {
       mocks: {
+        store: new Vuex.Store(storeOptions),
         $apollo: {
           mutate: jest.fn(() => Promise.resolve({ error: null })),
         },

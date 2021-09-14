@@ -30,7 +30,7 @@ import userDelete from '~/apollo/mutations/userDelete.gql'
 
 export default {
   apollo: {
-    $client: 'userClient',
+    $client: 'memberSubscription',
   },
   computed: {
     currentMemberEmail() {
@@ -43,10 +43,11 @@ export default {
     },
     async handleConfirmCancelButtonClick() {
       try {
+        const memberId = this.$store.state['membership-subscribe']?.basicInfo.id
         const response = await this.$apollo.mutate({
           mutation: userDelete,
           variables: {
-            firebaseId: this.$store.state.membership.userUid,
+            id: memberId,
           },
         })
 

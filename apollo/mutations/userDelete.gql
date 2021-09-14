@@ -5,7 +5,7 @@
 # }
 
 mutation deleteMemberProfile($id: ID!) {
-  updatemember(id: $id) {
+  updatemember(id: $id, data: { state: inactive }) {
     email
   }
 }

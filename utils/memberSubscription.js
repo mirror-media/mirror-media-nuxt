@@ -353,7 +353,7 @@ async function getMemberOneTimeSubscriptions(context, loadmoreConfig) {
 }
 
 function getMemberSubscribePosts(subscriptionList) {
-  if (!subscriptionList.length) return []
+  if (!subscriptionList?.length) return []
   const postList = []
   subscriptionList.forEach((subscription) => {
     const post = {
