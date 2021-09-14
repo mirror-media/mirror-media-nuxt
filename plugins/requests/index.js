@@ -9,6 +9,8 @@ import {
   cancelMemberSubscription,
   getMemberType,
   getPaymentDataOfSubscription,
+  getMemberOneTimeSubscriptions,
+  getSubscriptionPayments,
 } from '~/utils/memberSubscription'
 
 import {
@@ -320,5 +322,11 @@ export default (context, inject) => {
   })
   inject('getPaymentDataOfSubscription', async (gateWayPayload) => {
     return await getPaymentDataOfSubscription(context, gateWayPayload)
+  })
+  inject('getMemberOneTimeSubscriptions', async (gateWayPayload) => {
+    return await getMemberOneTimeSubscriptions(context, gateWayPayload)
+  })
+  inject('getSubscriptionPayments', async (gateWayPayload) => {
+    return await getSubscriptionPayments(context, gateWayPayload)
   })
 }

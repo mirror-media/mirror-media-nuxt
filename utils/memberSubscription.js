@@ -3,6 +3,8 @@ import axios from 'axios'
 import {
   fetchMemberSubscriptions,
   fetchMemberBasicInfo,
+  fetchOneTimeSubscriptions,
+  fetchSubscriptionPayments,
 } from '~/apollo/queries/memberSubscriptionQuery.gql'
 import {
   setMemberTosToTrue,
@@ -36,11 +38,17 @@ async function getMemberType(context) {
 function formatMemberType(israfelMemberType) {
   switch (israfelMemberType) {
     case 'subscribe_one_time':
+    case 'single-post':
       return 'basic'
+
     case 'subscribe_monthly':
+    case 'month':
       return 'month'
+
     case 'subscribe_yearly':
+    case 'year':
       return 'year'
+
     case 'marketing':
       return 'marketing'
     case 'none':
@@ -151,11 +159,12 @@ async function fireGqlRequest(query, variables, context) {
 }
 
 function getMemberPayRecords(subscriptionList) {
-  console.log(subscriptionList)
   if (!subscriptionList?.length) return []
 
   const payRecords = []
+  console.log(subscriptionList)
   subscriptionList.forEach((subscription) => {
+    console.log(subscription)
     subscription.newebpayPayment?.forEach((newebpayPayment) => {
       const payRecord = {
         number: subscription.orderNumber,
@@ -175,22 +184,6 @@ function getMemberPayRecords(subscriptionList) {
   })
 
   return payRecords
-}
-
-function getMemberSubscribePosts(memberData) {
-  if (!memberData || !memberData.subscription) return []
-
-  const postList = []
-  memberData.subscription.forEach((subscription) => {
-    const post = {
-      id: subscription.postId,
-      title: subscription.postId,
-      url: '/',
-      deadline: getFormatDate(subscription.oneTimeEndDatetime),
-    }
-    postList.push(post)
-  })
-  return postList
 }
 
 function getSubscriptionType(type) {
@@ -220,23 +213,6 @@ function getFormatDate(dateString) {
  * Hint: How to verify member is premium or not?
  * https://mirrormedia.slack.com/archives/C028CE3BGA1/p1630551612076200
  */
-function getMemberShipStatus(memberData) {
-  if (!memberData) return {}
-
-  const latestSubscription = getLatestSubscription(memberData)
-  if (!latestSubscription) return {}
-
-  const status = latestSubscription.frequency
-
-  const memberShipStatus = {
-    name: status,
-    dueDate: getFormatDate(latestSubscription.periodEndDatetime),
-    nextPayDate: getFormatDate(latestSubscription.periodNextPayDatetime),
-    payMethod: latestSubscription.paymentMethod,
-  }
-
-  return memberShipStatus
-}
 
 async function getMemberServiceRuleStatus(context) {
   // determine whether user is logged in or not
@@ -307,10 +283,6 @@ function getFirebaseToken(context) {
   return context.store?.state?.membership?.userToken
 }
 
-function getLatestSubscription(memberData) {
-  return memberData?.subscription?.[0]
-}
-
 async function isMemberPaidSubscriptionWithMobile(context) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
@@ -352,11 +324,73 @@ async function getPaymentDataOfSubscription(context, gateWayPayload) {
   }
 }
 
+async function getMemberOneTimeSubscriptions(context, loadmoreConfig) {
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return null
+
+  try {
+    // get user's subscription state
+    const result = await fireGqlRequest(
+      fetchOneTimeSubscriptions,
+      {
+        firebaseId,
+      },
+      context
+    )
+
+    // get member's all subscriptions
+    const subscriptions = result?.data?.member?.subscription
+    return getMemberSubscribePosts(subscriptions)
+  } catch (error) {
+    // handle network error
+    console.error(error)
+
+    return []
+  }
+}
+
+function getMemberSubscribePosts(subscriptionList) {
+  if (!subscriptionList.length) return []
+  const postList = []
+  subscriptionList.forEach((subscription) => {
+    const post = {
+      id: subscription.postId,
+      title: subscription.postId,
+      url: '/',
+      deadline: getFormatDate(subscription.oneTimeEndDatetime),
+    }
+    postList.push(post)
+  })
+  return postList
+}
+
+async function getSubscriptionPayments(context, loadmoreConfig) {
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return null
+
+  try {
+    // get user's subscription state
+    const result = await fireGqlRequest(
+      fetchSubscriptionPayments,
+      {
+        firebaseId,
+      },
+      context
+    )
+
+    // get member's all subscriptions
+    const subscriptions = result?.data?.member?.subscription
+    return getMemberPayRecords(subscriptions)
+  } catch (error) {
+    // handle network error
+    console.error(error)
+
+    return []
+  }
+}
+
 export {
   getMemberDetailData,
-  getMemberPayRecords,
-  getMemberSubscribePosts,
-  getMemberShipStatus,
   getMemberServiceRuleStatus,
   setMemberServiceRuleStatusToTrue,
   cancelMemberSubscription,
@@ -365,4 +399,6 @@ export {
   getMemberType,
   getPaymentDataOfSubscription,
   formatMemberType,
+  getMemberOneTimeSubscriptions,
+  getSubscriptionPayments,
 }

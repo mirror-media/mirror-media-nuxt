@@ -48,13 +48,8 @@
 
 <script>
 import { computed } from '@nuxtjs/composition-api'
-import {
-  getMemberPayRecords,
-  // getMemberSubscribePosts,
-  getMemberShipStatus,
-  formatMemberType,
-} from '~/utils/memberSubscription'
-import { ENV } from '~/configs/config'
+import { formatMemberType } from '~/utils/memberSubscription'
+
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import MemberShipStatus from '~/components/MemberShipStatus.vue'
 import MembershipPosts from '~/components/MembershipPosts.vue'
@@ -159,7 +154,7 @@ export default {
       return this.payRecordMetaCount > this.payRecords.length
     },
     showSimFormStatus() {
-      return ENV !== 'prod'
+      return false
     },
     isPremium() {
       const status = this.memberShipStatus?.name
@@ -168,33 +163,18 @@ export default {
   },
 
   async created() {
-    // ======To Kevin Start=======
-    const memberData = await this.$getMemberDetailData()
-    console.log(memberData)
-    if (!memberData) return
-
-    // getMemberShipStatus for xState(?)
-    const newMemberShipStatus = getMemberShipStatus(memberData)
-    console.log(newMemberShipStatus)
-
-    // get member's type
-    const memberType = formatMemberType(memberData.type)
-    console.log(memberType)
-
-    // get subscription list
-    let subscriptionList
-    if (memberType === 'basic') {
-      subscriptionList = memberData?.subscription?.filter((subscription) => {
-        return subscription.frequency === 'one_time'
-      })
+    console.log(this.memberShipStatus)
+    const currentMemberType = formatMemberType(this.memberShipStatus.name)
+    if (currentMemberType === 'year' || currentMemberType === 'month') {
+      // fetch recurring subscription's duration
     } else {
-      subscriptionList = [memberData?.subscription?.[0]]
+      // fetch onetime subscription list
+      this.postList = await this.$getMemberOneTimeSubscriptions()
     }
-    console.log(subscriptionList)
 
-    // get all payment history
-    const payRecords = getMemberPayRecords(memberData?.subscription)
-    console.log(payRecords)
+    this.payRecords = await this.$getSubscriptionPayments()
+
+    // ======To Kevin Start=======
 
     // ======To Kevin End=======
   },
