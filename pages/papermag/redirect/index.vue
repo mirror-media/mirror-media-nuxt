@@ -1,28 +1,20 @@
 <template>
   <div class="redirect-page">
-    <h1>頁面即將導向藍新支付...</h1>
-    <form
-      id="data_set"
-      name="newebpay"
-      method="post"
-      action="https://core.newebpay.com/MPG/mpg_gateway"
-    >
-      <input
-        type="hidden"
-        name="MerchantID"
-        :value="paymentPayload.MerchantID"
-      />
-      <input type="hidden" name="TradeInfo" :value="paymentPayload.TradeInfo" />
-      <input type="hidden" name="TradeSha" :value="paymentPayload.TradeSHA" />
-      <input type="hidden" name="Version" :value="paymentPayload.Version" />
-
-      <button>Submit</button>
-    </form>
+    <NewebpayForm
+      :merchantId="paymentPayload.MerchantID"
+      :tradeInfo="paymentPayload.TradeInfo"
+      :tradeSHA="paymentPayload.TradeSHA"
+      :version="paymentPayload.Version"
+    />
   </div>
 </template>
 
 <script>
+import NewebpayForm from '~/components/NewebpayForm.vue'
 export default {
+  components: {
+    NewebpayForm,
+  },
   layout: 'empty',
   middleware({ store, redirect }) {
     // block access direct from url
@@ -68,15 +60,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.redirect-page {
-  h1 {
-    text-align: center;
-    font-size: 36px;
-  }
-
-  button {
-    display: none;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
