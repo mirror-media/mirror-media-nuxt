@@ -41,22 +41,20 @@
           </UiMembershipButtonPrimary>
         </div>
       </div>
-      <MembershipSimFormStatus v-if="showSimFormStatus" />
     </ClientOnly>
   </div>
 </template>
 
 <script>
 import { computed } from '@nuxtjs/composition-api'
-import { formatMemberType } from '~/utils/memberSubscription'
 
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import MemberShipStatus from '~/components/MemberShipStatus.vue'
 import MembershipPosts from '~/components/MembershipPosts.vue'
 import MembershipPayRecord from '~/components/MembershipPayRecord.vue'
-import MembershipSimFormStatus from '~/components/MembershipSimFormStatus.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
+
 export default {
   middleware: ['handle-go-to-marketing'],
   components: {
@@ -64,7 +62,6 @@ export default {
     MemberShipStatus,
     MembershipPosts,
     MembershipPayRecord,
-    MembershipSimFormStatus,
     UiMembershipButtonPrimary,
   },
   setup() {
@@ -78,7 +75,6 @@ export default {
         window.location.assign('/subscribe/set?ms=true')
       },
     }
-
     function useMemberShipStatus() {
       const { state } = useMemberSubscribeMachine()
       const memberShipStatus = computed(() =>
@@ -153,9 +149,6 @@ export default {
     showMorePayRecordButton() {
       return this.payRecordMetaCount > this.payRecords.length
     },
-    showSimFormStatus() {
-      return false
-    },
     isPremium() {
       const status = this.memberShipStatus?.name
       return status === 'year' || status === 'month' || status === 'disturb'
@@ -163,10 +156,10 @@ export default {
   },
 
   async created() {
-    console.log(this.memberShipStatus)
-    const currentMemberType = formatMemberType(this.memberShipStatus.name)
-    if (currentMemberType === 'year' || currentMemberType === 'month') {
+    if (this.isPremium) {
       // fetch recurring subscription's duration
+      const newMemberShipStatus = await this.$getSubscriptionRecurring()
+      console.log(newMemberShipStatus)
     } else {
       // fetch onetime subscription list
       this.postList = await this.$getMemberOneTimeSubscriptions()

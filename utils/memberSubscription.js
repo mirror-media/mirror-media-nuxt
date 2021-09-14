@@ -5,6 +5,7 @@ import {
   fetchMemberBasicInfo,
   fetchOneTimeSubscriptions,
   fetchSubscriptionPayments,
+  fetchRecurringSubscription,
 } from '~/apollo/queries/memberSubscriptionQuery.gql'
 import {
   setMemberTosToTrue,
@@ -38,15 +39,18 @@ async function getMemberType(context) {
 function formatMemberType(israfelMemberType) {
   switch (israfelMemberType) {
     case 'subscribe_one_time':
+    case 'one_time':
     case 'single-post':
       return 'basic'
 
     case 'subscribe_monthly':
     case 'month':
+    case 'monthly':
       return 'month'
 
     case 'subscribe_yearly':
     case 'year':
+    case 'yearly':
       return 'year'
 
     case 'marketing':
@@ -162,9 +166,8 @@ function getMemberPayRecords(subscriptionList) {
   if (!subscriptionList?.length) return []
 
   const payRecords = []
-  console.log(subscriptionList)
+
   subscriptionList.forEach((subscription) => {
-    console.log(subscription)
     subscription.newebpayPayment?.forEach((newebpayPayment) => {
       const payRecord = {
         number: subscription.orderNumber,
@@ -177,7 +180,7 @@ function getMemberPayRecords(subscriptionList) {
       payRecords.push(payRecord)
     })
   })
-  console.log(payRecords)
+
   // sort all records by date_dsc
   payRecords.sort((recordA, recordB) => {
     return new Date(recordB.date) - new Date(recordA.date)
@@ -364,6 +367,44 @@ function getMemberSubscribePosts(subscriptionList) {
   return postList
 }
 
+async function getSubscriptionRecurring(context, loadmoreConfig) {
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return null
+
+  try {
+    // get user's subscription state
+    const {
+      data: {
+        member: { subscription },
+      },
+    } = await fireGqlRequest(
+      fetchRecurringSubscription,
+      {
+        firebaseId,
+      },
+      context
+    )
+    const {
+      frequency,
+      periodEndDatetime,
+      periodNextPayDatetime,
+      newebpayPayment,
+    } = subscription[0]
+    const { paymentMethod, cardInfoLastFour } = newebpayPayment[0]
+
+    return {
+      frequency: formatMemberType(frequency),
+      dueDate: `至 ${getFormatDate(periodEndDatetime)}`,
+      nextPayDate: getFormatDate(periodNextPayDatetime),
+      paymentMethod: `${paymentMethod}(${cardInfoLastFour})`,
+    }
+  } catch (error) {
+    // handle network error
+    console.error(error)
+
+    return {}
+  }
+}
 async function getSubscriptionPayments(context, loadmoreConfig) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
@@ -401,4 +442,5 @@ export {
   formatMemberType,
   getMemberOneTimeSubscriptions,
   getSubscriptionPayments,
+  getSubscriptionRecurring,
 }

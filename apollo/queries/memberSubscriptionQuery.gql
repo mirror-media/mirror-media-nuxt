@@ -49,6 +49,27 @@ query fetchOneTimeSubscriptions($firebaseId: String!) {
     }
   }
 }
+query fetchRecurringSubscription($firebaseId: String!) {
+  member(where: { firebaseId: $firebaseId }) {
+    email
+    type
+    subscription(
+      first: 1
+      where: { frequency_in: [yearly, monthly], isActive: true }
+      orderBy: [{ periodEndDatetime: desc }]
+    ) {
+      frequency
+      orderNumber
+      paymentMethod
+      periodEndDatetime
+      periodNextPayDatetime
+      newebpayPayment(orderBy: [{ paymentTime: desc }]) {
+        paymentMethod
+        cardInfoLastFour
+      }
+    }
+  }
+}
 
 query fetchSubscriptionPayments($firebaseId: String!) {
   member(where: { firebaseId: $firebaseId }) {
