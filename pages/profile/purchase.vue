@@ -32,7 +32,7 @@
             準備好升級為鏡週刊 Premium 會員了嗎？
           </div>
           <div class="purchase__upgrade_content">
-            每月 $49 元，暢享專區零廣告閱讀、優質報導看到飽
+            限時優惠每月$49元，優質報導零廣告看到飽
           </div>
           <UiMembershipButtonPrimary
             @click.native="sendMembershipSubscribe('升級Premium會員')"

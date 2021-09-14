@@ -98,7 +98,7 @@ export default {
         {
           id: 1,
           detail: '鏡週刊 Premium 會員 (月方案)',
-          price: 99,
+          price: '原價 NT$99',
           newPrice: 49,
         },
       ],
