@@ -9,7 +9,7 @@
     >
       <input type="hidden" name="MerchantID" :value="merchantId" />
       <input type="hidden" name="TradeInfo" :value="tradeInfo" />
-      <input type="hidden" name="TradeSha" :value="tradeSHA" />
+      <input type="hidden" name="TradeSha" :value="tradeSha" />
       <input type="hidden" name="Version" :value="version" />
 
       <button>Submit</button>
@@ -30,7 +30,7 @@ export default {
       isRequired: true,
       default: '',
     },
-    tradeSHA: {
+    tradeSha: {
       type: String,
       isRequired: true,
       default: '',

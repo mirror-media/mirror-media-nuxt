@@ -3,7 +3,7 @@
     <NewebpayForm
       :merchantId="paymentPayload.MerchantID"
       :tradeInfo="paymentPayload.TradeInfo"
-      :tradeSHA="paymentPayload.TradeSHA"
+      :tradeSha="paymentPayload.TradeSha"
       :version="paymentPayload.Version"
     />
   </div>
@@ -30,7 +30,7 @@ export default {
         MerchantID: queryString.MerchantID,
         TradeInfo: queryString.TradeInfo,
         TradeSha: queryString.TradeSha,
-        Version: parseInt(queryString.Version),
+        Version: parseFloat(queryString.Version),
       }
     },
   },

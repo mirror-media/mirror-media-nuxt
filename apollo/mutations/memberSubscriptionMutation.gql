@@ -33,7 +33,7 @@ mutation fetchPaymentDataOfSubscriptionRecurring(
   $frequency: subscriptionFrequencyType!
   $paymentMethod: subscriptionPaymentMethodType!
   $status: createSubscriptionStatusType!
-  $promoteId: String
+  $promoteId: Int
 ) {
   createSubscriptionRecurring(
     data: {
@@ -41,7 +41,9 @@ mutation fetchPaymentDataOfSubscriptionRecurring(
       frequency: $frequency
       paymentMethod: $paymentMethod
       status: $status
+      promoteId: $promoteId
     }
+    info: { returnToPath: "這是什麼鬼" }
   ) {
     subscription {
       frequency

@@ -314,14 +314,23 @@ async function getPaymentDataOfSubscription(context, gateWayPayload) {
 
   try {
     const { frequency } = gateWayPayload
+    const isRecurringPurchase =
+      frequency === 'yearly' || frequency === 'monthly'
     let query
-    if (frequency === 'yearly' || frequency === 'monthly') {
+
+    if (isRecurringPurchase) {
       query = fetchPaymentDataOfSubscriptionRecurring
     } else {
       query = fetchPaymentDataOfSubscriptionOneTime
     }
 
-    return await fireGqlRequest(query, gateWayPayload, context)
+    const { data } = await fireGqlRequest(query, gateWayPayload, context)
+
+    if (isRecurringPurchase) {
+      return data.createSubscriptionRecurring?.newebpayPayload
+    } else {
+      return data.createSubscriptionOneTime?.newebpayPayload
+    }
   } catch (error) {
     console.error(error)
     return null
