@@ -3886,10 +3886,10 @@
     cache-manager-memcached-store "^2.1.0"
     cache-manager-redis "^0.6.0"
 
-"@mirrormedia/newebpay-node@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@mirrormedia/newebpay-node/-/newebpay-node-1.0.5.tgz#8c64f18e5dd164fd7eb51ad1d52dd0435f021539"
-  integrity sha512-8ajIfmz1tj1aVgU0IsYD6lTbuan5zD+FRif28fmgin+4NgLabJSZ5QuVktXxAL9nNSlAVeald//PczHamFhNHA==
+"@mirrormedia/newebpay-node@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@mirrormedia/newebpay-node/-/newebpay-node-1.0.6.tgz#41f37597aabe54bae5c00d7f0048150570ca3975"
+  integrity sha512-Je9wr38Yl7/eG4vAF90hqbfo64PrWCP/dbQvwiUIXw5r0djK7c1qU797SvU6vL5TQ4j8n6Of9F15QcZtCvH8cw==
   dependencies:
     crypto "^1.0.1"
     querystring "^0.2.1"

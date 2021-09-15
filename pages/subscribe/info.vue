@@ -67,13 +67,6 @@
         </div>
       </div>
     </div>
-    <MembershipInfoSim
-      v-if="showSimFormStatus"
-      :validateOn="validateOn"
-      :setValidateOn="setValidateOn"
-      :orderStatus="orderStatus"
-      :setOrderStatus="setOrderStatus"
-    />
   </div>
 </template>
 
@@ -83,7 +76,6 @@ import NewebPay from '@mirrormedia/newebpay-node'
 import { required, email } from 'vuelidate/lib/validators'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import { ENV, NEWEBPAY_KEY, NEWEBPAY_IV } from '~/configs/config'
-import MembershipInfoSim from '~/components/MembershipInfoSim.vue'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
@@ -94,7 +86,6 @@ export default {
   middleware: ['handle-go-to-marketing'],
   components: {
     SubscribeStepProgress,
-    MembershipInfoSim,
     MembershipFormPlanList,
     MembershipFormPerchaseInfo,
     SubscribeFormReceipt,
@@ -157,6 +148,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      promoteId: 0, // NOTE： 折扣碼必須有值，如果undefined（發query的時候沒有附帶在variables中）會報錯
       email: '',
       receiptData: {
         receiptPlan: '捐贈',
@@ -294,16 +286,17 @@ export default {
           frequency: 'monthly',
           paymentMethod: 'newebpay',
           status: 'paying',
-          promoteId: 12345, // 折扣碼
+          promoteId: this.promoteId, // 折扣碼 (TODO)
         }
       } else {
         // one_time
+        const subscribePostId = this.perchasedPlan?.[0]?.id
         gateWayPayload = {
           email: this.email,
           paymentMethod: 'newebpay',
           status: 'paying',
-          promoteId: 12345, // 折扣碼
-          postId: 'qwerty',
+          promoteId: this.promoteId, // 折扣碼 (TODO)
+          postId: subscribePostId,
         }
       }
       return await this.$getPaymentDataOfSubscription(gateWayPayload)

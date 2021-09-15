@@ -329,7 +329,7 @@ async function getPaymentDataOfSubscription(context, gateWayPayload) {
     if (isRecurringPurchase) {
       return data.createSubscriptionRecurring?.newebpayPayload
     } else {
-      return data.createSubscriptionOneTime?.newebpayPayload
+      return data.createsSubscriptionOneTime?.newebpayPayload
     }
   } catch (error) {
     console.error(error)
