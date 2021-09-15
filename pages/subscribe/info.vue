@@ -232,7 +232,6 @@ export default {
         Version: 1.6,
       }
       const queryString = qs.stringify(paymentPayload)
-
       this.$router.push(`/subscribe/redirect?${queryString}`)
 
       /*

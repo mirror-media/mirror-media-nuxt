@@ -7,5 +7,6 @@
 mutation deleteMemberProfile($id: ID!) {
   updatemember(id: $id, data: { state: inactive }) {
     email
+    state
   }
 }
