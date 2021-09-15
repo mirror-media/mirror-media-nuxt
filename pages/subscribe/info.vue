@@ -254,24 +254,23 @@ export default {
     },
     async updateHandler(e) {
       e.preventDefault()
-      this.isLoading = true
+      try {
+        this.isLoading = true
 
-      // get this member's current subscription id
-      const currentSubscription = await this.$getPremiumMemberSubscriptionInfo()
-      if (!currentSubscription) return
+        // get this member's current subscription id
+        const currentSubscription = await this.$getPremiumMemberSubscriptionInfo()
+        if (!currentSubscription) return
 
-      // update subscription from month to year
-      const result = await this.$updateSubscriptionFromMonthToYear(
-        currentSubscription.id
-      )
-      this.isLoading = false
-      if (result === 'success') {
+        // update subscription from month to year
+        await this.$updateSubscriptionFromMonthToYear(currentSubscription.id)
+        this.isLoading = false
+
         window.alert('方案已升級為年訂閱，下次扣款日立即生效。')
         window.location.assign('/section/member')
-      } else {
-        console.log('some error happended')
+      } catch (error) {
+        console.error(error)
+        this.isLoading = false
       }
-
       /*
        * if (this.orderStatus === 'success')
        *   return this.sendMembershipSubscribe('付款成功')

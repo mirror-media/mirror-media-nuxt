@@ -138,15 +138,19 @@ export default {
   },
 
   async created() {
-    if (this.isPremium) {
-      // fetch recurring subscription's duration
-      this.memberShipStatus = await this.$getPremiumMemberShipStatus()
-    } else {
-      // fetch onetime subscription list
-      this.postList = await this.$getMemberOneTimeSubscriptions({})
-    }
+    try {
+      if (this.isPremium) {
+        // fetch recurring subscription's duration
+        this.memberShipStatus = await this.$getPremiumMemberShipStatus()
+      } else {
+        // fetch onetime subscription list
+        this.postList = await this.$getMemberOneTimeSubscriptions({})
+      }
 
-    this.payRecords = await this.$getSubscriptionPayments({})
+      this.payRecords = await this.$getSubscriptionPayments({})
+    } catch (error) {
+      console.error(error)
+    }
   },
   mounted() {
     if (this.$store.state.viewport.width <= 568) {

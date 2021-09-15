@@ -126,7 +126,6 @@ async function getMemberAllSubscriptions(firebaseId, context) {
   } catch (error) {
     // handle network error
     console.error(error)
-
     return []
   }
 }
@@ -172,8 +171,8 @@ function getMemberPayRecords(subscriptionList) {
     subscription.newebpayPayment?.forEach((newebpayPayment) => {
       const payRecord = {
         number: subscription.orderNumber,
-        date: getFormatDate(newebpayPayment.paymentTime),
-        type: getSubscriptionType(subscription.frequency),
+        date: getFormatDateWording(newebpayPayment.paymentTime),
+        type: getSubscriptionTypeWording(subscription.frequency),
         method: newebpayPayment.paymentMethod,
         methodNote: `(${newebpayPayment.cardInfoLastFour || ''})`,
         price: newebpayPayment.amount,
@@ -190,7 +189,7 @@ function getMemberPayRecords(subscriptionList) {
   return payRecords
 }
 
-function getSubscriptionType(type) {
+function getSubscriptionTypeWording(type) {
   switch (type) {
     case 'yearly':
       return '年訂閱'
@@ -203,7 +202,7 @@ function getSubscriptionType(type) {
   }
 }
 
-function getFormatDate(dateString) {
+function getFormatDateWording(dateString) {
   const date = new Date(dateString)
 
   const year = date.getFullYear()
@@ -245,7 +244,7 @@ async function getMemberServiceRuleStatus(context) {
 async function setMemberServiceRuleStatusToTrue(context) {
   // determine whether user is logged in or not
   const firebaseId = await getUserFirebaseId(context)
-  if (!firebaseId) return null
+  if (!firebaseId) return
 
   // get member's israfel ID
   const memberIsrafelId = await getMemberIsrafelId(firebaseId, context)
@@ -253,21 +252,18 @@ async function setMemberServiceRuleStatusToTrue(context) {
   // TODO： put member's israfelID to vuex
 
   // fire mutation, set member's tos(service rule) to true
-  try {
-    const result = await fireGqlRequest(
-      setMemberTosToTrue,
-      {
-        id: memberIsrafelId,
-      },
-      context
-    )
 
-    // check member's tos
-    const member = result?.data?.updatemember
-    return !!member.tos
-  } catch (error) {
-    console.error(error)
-  }
+  const result = await fireGqlRequest(
+    setMemberTosToTrue,
+    {
+      id: memberIsrafelId,
+    },
+    context
+  )
+
+  // check member's tos
+  const member = result?.data?.updatemember
+  return !!member.tos
 }
 
 async function getMemberIsrafelId(firebaseId, context) {
@@ -335,25 +331,18 @@ async function getMemberOneTimeSubscriptions(context, loadmoreConfig) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
-  try {
-    // get user's subscription state
-    const result = await fireGqlRequest(
-      fetchOneTimeSubscriptions,
-      {
-        firebaseId,
-      },
-      context
-    )
+  // get user's subscription state
+  const result = await fireGqlRequest(
+    fetchOneTimeSubscriptions,
+    {
+      firebaseId,
+    },
+    context
+  )
 
-    // get member's all subscriptions
-    const subscriptions = result?.data?.member?.subscription
-    return getMemberSubscribePosts(subscriptions)
-  } catch (error) {
-    // handle network error
-    console.error(error)
-
-    return []
-  }
+  // get member's all subscriptions
+  const subscriptions = result?.data?.member?.subscription
+  return getMemberSubscribePosts(subscriptions)
 }
 
 function getMemberSubscribePosts(subscriptionList) {
@@ -364,7 +353,7 @@ function getMemberSubscribePosts(subscriptionList) {
       id: subscription.postId,
       title: subscription.postId,
       url: '/',
-      deadline: getFormatDate(subscription.oneTimeEndDatetime),
+      deadline: getFormatDateWording(subscription.oneTimeEndDatetime),
     }
     postList.push(post)
   })
@@ -375,48 +364,43 @@ async function getPremiumMemberShipStatus(context, loadmoreConfig) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
-  try {
-    // get user's subscription state
-    const {
-      data: {
-        member: { subscription },
-      },
-    } = await fireGqlRequest(
-      fetchRecurringSubscription,
-      {
-        firebaseId,
-      },
-      context
-    )
-    const {
-      frequency,
-      periodEndDatetime,
-      periodNextPayDatetime,
-      newebpayPayment,
-      isCanceled,
-    } = subscription[0]
-    const { paymentMethod, cardInfoLastFour } = newebpayPayment[0]
+  // get user's subscription state
+  const {
+    data: {
+      member: { subscription },
+    },
+  } = await fireGqlRequest(
+    fetchRecurringSubscription,
+    {
+      firebaseId,
+    },
+    context
+  )
 
-    if (isCanceled) {
-      return {
-        name: 'disturb',
-        dueDate: `至 ${getFormatDate(periodEndDatetime)}`,
-        nextPayDate: null,
-        payMethod: null,
-      }
-    } else {
-      return {
-        name: formatMemberType(frequency),
-        dueDate: `至 ${getFormatDate(periodEndDatetime)}`,
-        nextPayDate: getFormatDate(periodNextPayDatetime),
-        payMethod: `${paymentMethod}(${cardInfoLastFour})`,
-      }
+  // destructure subscription and format it
+  const {
+    frequency,
+    periodEndDatetime,
+    periodNextPayDatetime,
+    newebpayPayment,
+    isCanceled,
+  } = subscription[0]
+  const { paymentMethod, cardInfoLastFour } = newebpayPayment[0]
+
+  if (isCanceled) {
+    return {
+      name: 'disturb',
+      dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
+      nextPayDate: null,
+      payMethod: null,
     }
-  } catch (error) {
-    // handle network error
-    console.error(error)
-
-    return {}
+  } else {
+    return {
+      name: formatMemberType(frequency),
+      dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
+      nextPayDate: getFormatDateWording(periodNextPayDatetime),
+      payMethod: `${paymentMethod}(${cardInfoLastFour})`,
+    }
   }
 }
 async function getSubscriptionPayments(context, loadmoreConfig) {
@@ -448,47 +432,33 @@ async function getPremiumMemberSubscriptionInfo(context) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
-  try {
-    // get user's subscription state
-    const {
-      data: {
-        member: { subscription },
-      },
-    } = await fireGqlRequest(
-      fetchRecurringSubscription,
-      {
-        firebaseId,
-      },
-      context
-    )
-    return subscription[0]
-  } catch (error) {
-    // handle network error
-    console.error(error)
-
-    return {}
-  }
+  // get user's subscription state
+  const {
+    data: {
+      member: { subscription },
+    },
+  } = await fireGqlRequest(
+    fetchRecurringSubscription,
+    {
+      firebaseId,
+    },
+    context
+  )
+  return subscription[0]
 }
+
 async function updateSubscriptionFromMonthToYear(context, subscriptionId) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
-  try {
-    // get user's subscription state
-    await fireGqlRequest(
-      setSubscriptionFromMonthToYear,
-      {
-        id: subscriptionId,
-      },
-      context
-    )
-    return 'success'
-  } catch (error) {
-    // handle network error
-    console.error(error)
-
-    return 'fail'
-  }
+  // get user's subscription state
+  await fireGqlRequest(
+    setSubscriptionFromMonthToYear,
+    {
+      id: subscriptionId,
+    },
+    context
+  )
 }
 
 export {

@@ -100,14 +100,17 @@ export default {
     },
     async handleSubmit(e) {
       e.preventDefault()
+      try {
+        // ======To Kevin Start=======
+        const updatedTos = await this.$setMemberServiceRuleStatusToTrue()
+        console.log(updatedTos)
+        // ======To Kevin End=======
 
-      // ======To Kevin Start=======
-      const updatedTos = await this.$setMemberServiceRuleStatusToTrue()
-      console.log(updatedTos)
-      // ======To Kevin End=======
-
-      localStorage.setItem('read-service-rule', 'true')
-      this.sendMembershipSubscribe('同意服務條款並繼續')
+        localStorage.setItem('read-service-rule', 'true')
+        this.sendMembershipSubscribe('同意服務條款並繼續')
+      } catch (error) {
+        console.error(error)
+      }
     },
   },
 }
