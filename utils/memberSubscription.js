@@ -87,28 +87,25 @@ async function cancelMemberSubscription(context, reason) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
-  try {
-    // get user's newest subscription
-    const subscriptions = await getMemberAllSubscriptions(firebaseId, context)
-    const newestSubscription = subscriptions[0]
+  // get user's newest subscription
+  const subscriptions = await getMemberAllSubscriptions(firebaseId, context)
+  const newestSubscription = subscriptions[0]
 
-    if (newestSubscription.frequency === 'one_time') return
-
-    // change subscription.isCanceled to true (carry unsubscribe reason)
-    await fireGqlRequest(
-      unsubscribe,
-      {
-        id: newestSubscription.id,
-        note: reason,
-      },
-      context
+  if (newestSubscription.frequency === 'one_time') {
+    throw new Error(
+      'the newest subscription is one_time, no need to unsubscribe'
     )
-
-    return 'success'
-  } catch (error) {
-    console.error(error)
-    return 'fail'
   }
+
+  // change subscription.isCanceled to true (carry unsubscribe reason)
+  await fireGqlRequest(
+    unsubscribe,
+    {
+      id: newestSubscription.id,
+      note: reason,
+    },
+    context
+  )
 }
 
 async function getMemberAllSubscriptions(firebaseId, context) {

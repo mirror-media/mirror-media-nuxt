@@ -49,14 +49,14 @@
           <UiSubscribeButton
             v-if="isMonthUpgradeToYear"
             title="更新訂閱"
-            @click.native="updateHandler"
             :isLoading="isLoading"
+            @click.native="updateHandler"
           />
           <UiSubscribeButton
             v-else
             title="開始結帳"
-            @click.native="submitHandler"
             :isLoading="isLoading"
+            @click.native="submitHandler"
           />
         </div>
         <div class="subscribe-info__form_right">
@@ -148,7 +148,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      promoteId: undefined, // NOTE： 折扣碼必須有值，如果undefined（發query的時候沒有附帶在variables中）會報錯
+      promoteId: 0, // NOTE： 折扣碼必須有值，如果undefined（發query的時候沒有附帶在variables中）會報錯
       email: '',
       receiptData: {
         receiptPlan: '捐贈',

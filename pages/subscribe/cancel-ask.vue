@@ -49,6 +49,9 @@
         >
       </div>
     </SubscribeWrapper>
+
+    <UiLoadingCover v-if="isLoading" />
+
     <SubscribeCancelSimForm
       v-if="shouldShowSim"
       :isPayByApp="isPayByApp"
@@ -66,8 +69,10 @@ import SubscribeCancelSimForm from '~/components/SubscribeCancelSimForm.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import UiMembershipCheckoutLabel from '~/components/UiMembershipCheckoutLabel.vue'
+import UiLoadingCover from '~/components/UiLoadingCover.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import { isMemberPaidSubscriptionWithMobile } from '~/utils/memberSubscription'
+
 export default {
   middleware: ['handle-go-to-marketing'],
   components: {
@@ -76,6 +81,7 @@ export default {
     UiMembershipButtonPrimary,
     UiMembershipButtonSecondary,
     UiMembershipCheckoutLabel,
+    UiLoadingCover,
   },
   setup() {
     const { state, send } = useMemberSubscribeMachine()
@@ -95,6 +101,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       isPayByApp: false,
       reason: [],
       cancelStatus: 'success',
@@ -120,19 +127,19 @@ export default {
     },
     async handleSubmit() {
       // ======To Kevin Start=======
-      const updatedCancelStatus = await this.$cancelMemberSubscription(
-        this.reasonString
-      )
-      console.log(updatedCancelStatus)
-      this.cancelStatus = updatedCancelStatus
-
       // ======To Kevin End=======
+      try {
+        this.isLoading = true
+        await this.$cancelMemberSubscription(this.reasonString)
 
-      if (this.cancelStatus === 'success') {
-        // return window.location.assign('/subscribe/cancel-success')
+        this.isLoading = false
+        this.cancelStatus = 'success'
         this.sendMembershipSubscribe('確認取消訂閱成功')
+      } catch (error) {
+        console.error(error)
+        this.isLoading = false
+        this.sendMembershipSubscribe('確認取消訂閱失敗')
       }
-      this.sendMembershipSubscribe('確認取消訂閱失敗')
     },
     setIsPayByApp(val) {
       this.isPayByApp = val
