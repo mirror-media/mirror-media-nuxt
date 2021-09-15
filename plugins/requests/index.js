@@ -12,6 +12,8 @@ import {
   getMemberOneTimeSubscriptions,
   getSubscriptionPayments,
   getPremiumMemberShipStatus,
+  getPremiumMemberSubscriptionInfo,
+  updateSubscriptionFromMonthToYear,
 } from '~/utils/memberSubscription'
 
 import {
@@ -332,5 +334,11 @@ export default (context, inject) => {
   })
   inject('getPremiumMemberShipStatus', async (gateWayPayload) => {
     return await getPremiumMemberShipStatus(context, gateWayPayload)
+  })
+  inject('getPremiumMemberSubscriptionInfo', async (gateWayPayload) => {
+    return await getPremiumMemberSubscriptionInfo(context, gateWayPayload)
+  })
+  inject('updateSubscriptionFromMonthToYear', async (subscriptionId) => {
+    return await updateSubscriptionFromMonthToYear(context, subscriptionId)
   })
 }

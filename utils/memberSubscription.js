@@ -12,6 +12,7 @@ import {
   unsubscribe,
   fetchPaymentDataOfSubscriptionRecurring,
   fetchPaymentDataOfSubscriptionOneTime,
+  setSubscriptionFromMonthToYear,
 } from '~/apollo/mutations/memberSubscriptionMutation.gql'
 
 import { API_PATH_FRONTEND } from '~/configs/config.js'
@@ -440,6 +441,53 @@ async function getSubscriptionPayments(context, loadmoreConfig) {
   }
 }
 
+async function getPremiumMemberSubscriptionInfo(context) {
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return null
+
+  try {
+    // get user's subscription state
+    const {
+      data: {
+        member: { subscription },
+      },
+    } = await fireGqlRequest(
+      fetchRecurringSubscription,
+      {
+        firebaseId,
+      },
+      context
+    )
+    return subscription[0]
+  } catch (error) {
+    // handle network error
+    console.error(error)
+
+    return {}
+  }
+}
+async function updateSubscriptionFromMonthToYear(context, subscriptionId) {
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return null
+
+  try {
+    // get user's subscription state
+    await fireGqlRequest(
+      setSubscriptionFromMonthToYear,
+      {
+        id: subscriptionId,
+      },
+      context
+    )
+    return 'success'
+  } catch (error) {
+    // handle network error
+    console.error(error)
+
+    return 'fail'
+  }
+}
+
 export {
   getMemberDetailData,
   getMemberServiceRuleStatus,
@@ -453,4 +501,6 @@ export {
   getMemberOneTimeSubscriptions,
   getSubscriptionPayments,
   getPremiumMemberShipStatus,
+  getPremiumMemberSubscriptionInfo,
+  updateSubscriptionFromMonthToYear,
 }
