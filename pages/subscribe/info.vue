@@ -50,11 +50,13 @@
             v-if="isMonthUpgradeToYear"
             title="更新訂閱"
             @click.native="updateHandler"
+            :isLoading="isLoading"
           />
           <UiSubscribeButton
             v-else
             title="開始結帳"
             @click.native="submitHandler"
+            :isLoading="isLoading"
           />
         </div>
         <div class="subscribe-info__form_right">
@@ -271,7 +273,8 @@ export default {
       )
       this.isLoading = false
       if (result === 'success') {
-        console.log('success')
+        window.alert('方案已升級為年訂閱，下次扣款日立即生效。')
+        window.location.assign('/section/member')
       } else {
         console.log('some error happended')
       }
