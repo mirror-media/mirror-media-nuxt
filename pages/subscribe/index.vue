@@ -284,13 +284,6 @@ export default {
       }
     },
   },
-  async created() {
-    // ======To Kevin Start=======
-    const memberType = await this.$getMemberType()
-    console.log(memberType)
-
-    // ======To Kevin End=======
-  },
 }
 </script>
 

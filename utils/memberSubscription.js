@@ -142,25 +142,28 @@ function getUserFirebaseId(context) {
 
 async function fireGqlRequest(query, variables, context) {
   const firebaseToken = getFirebaseToken(context)
+  try {
+    const { data: result } = await axios({
+      url: apiUrl,
+      method: 'post',
+      data: {
+        query: print(query),
+        variables,
+      },
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${firebaseToken}`,
+      },
+    })
 
-  const { data: result } = await axios({
-    url: apiUrl,
-    method: 'post',
-    data: {
-      query: print(query),
-      variables,
-    },
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${firebaseToken}`,
-    },
-  })
+    if (result.errors) {
+      throw new Error(result.errors[0].message)
+    }
 
-  if (result.errors) {
-    throw new Error(result.errors[0].message)
+    return result
+  } catch (error) {
+    throw new Error(error.message)
   }
-
-  return result
 }
 
 function getMemberPayRecords(subscriptionList) {
@@ -312,28 +315,22 @@ async function getPaymentDataOfSubscription(context, gateWayPayload) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
-  try {
-    const { frequency } = gateWayPayload
-    const isRecurringPurchase =
-      frequency === 'yearly' || frequency === 'monthly'
-    let query
+  const { frequency } = gateWayPayload
+  const isRecurringPurchase = frequency === 'yearly' || frequency === 'monthly'
+  let query
 
-    if (isRecurringPurchase) {
-      query = fetchPaymentDataOfSubscriptionRecurring
-    } else {
-      query = fetchPaymentDataOfSubscriptionOneTime
-    }
+  if (isRecurringPurchase) {
+    query = fetchPaymentDataOfSubscriptionRecurring
+  } else {
+    query = fetchPaymentDataOfSubscriptionOneTime
+  }
 
-    const { data } = await fireGqlRequest(query, gateWayPayload, context)
+  const { data } = await fireGqlRequest(query, gateWayPayload, context)
 
-    if (isRecurringPurchase) {
-      return data.createSubscriptionRecurring?.newebpayPayload
-    } else {
-      return data.createsSubscriptionOneTime?.newebpayPayload
-    }
-  } catch (error) {
-    console.error(error)
-    return null
+  if (isRecurringPurchase) {
+    return data.createSubscriptionRecurring?.newebpayPayload
+  } else {
+    return data.createsSubscriptionOneTime?.newebpayPayload
   }
 }
 

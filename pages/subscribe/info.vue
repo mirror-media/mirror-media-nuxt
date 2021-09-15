@@ -148,7 +148,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      promoteId: 0, // NOTE： 折扣碼必須有值，如果undefined（發query的時候沒有附帶在variables中）會報錯
+      promoteId: undefined, // NOTE： 折扣碼必須有值，如果undefined（發query的時候沒有附帶在variables中）會報錯
       email: '',
       receiptData: {
         receiptPlan: '捐贈',
@@ -220,33 +220,37 @@ export default {
     },
     async submitHandler(e) {
       e.preventDefault()
-      this.isLoading = true
-      this.$refs.receiptDOM.check()
-      this.$v.email.$touch()
-      if (
-        this.validateOn &&
-        (this.$v.email.$error || this.formStatus.receipt !== 'OK')
-      ) {
-        this.isLoading = false
-        return
+      try {
+        this.isLoading = true
+        this.$refs.receiptDOM.check()
+        this.$v.email.$touch()
+        if (
+          this.validateOn &&
+          (this.$v.email.$error || this.formStatus.receipt !== 'OK')
+        ) {
+          this.isLoading = false
+          return
+        }
+
+        // emit apiGateWay
+        const result = await this.getPaymentDataFromApiGateWay()
+        const tradeInfo = qs.parse(result)
+
+        // encrypt tradeInfo
+        const encryptPaymentPayload = this.encryptTradeInfo(tradeInfo)
+
+        // carry encrypted paymentPayload to redirect page
+        const queryString = qs.stringify(encryptPaymentPayload)
+        this.$router.push(`/subscribe/redirect?${queryString}`)
+
+        /*
+         * if (this.orderStatus === 'success')
+         *   return this.sendMembershipSubscribe('付款成功')
+         * this.sendMembershipSubscribe('付款失敗')
+         */
+      } catch (error) {
+        console.error(error)
       }
-
-      // emit apiGateWay
-      const result = await this.getPaymentDataFromApiGateWay()
-      const tradeInfo = qs.parse(result)
-
-      // encrypt tradeInfo
-      const encryptPaymentPayload = this.encryptTradeInfo(tradeInfo)
-
-      // carry encrypted paymentPayload to redirect page
-      const queryString = qs.stringify(encryptPaymentPayload)
-      this.$router.push(`/subscribe/redirect?${queryString}`)
-
-      /*
-       * if (this.orderStatus === 'success')
-       *   return this.sendMembershipSubscribe('付款成功')
-       * this.sendMembershipSubscribe('付款失敗')
-       */
     },
     async updateHandler(e) {
       e.preventDefault()
