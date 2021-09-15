@@ -7,7 +7,7 @@
         <span class="cancel-success__description_blue">
           鏡週刊 Premium 服務-年訂閱方案
         </span>
-        。取消將在本次收費週期 2021/6/30 結束時生效。
+        。將在本次收費週期 2021/6/30 結束時生效。
       </div>
       <UiMembershipButtonPrimary
         class="ancel-success__back"

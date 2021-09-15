@@ -40,16 +40,14 @@
             title="回購買文章頁"
             @click.native="sendMembershipSubscribe('回購買文章頁')"
           />
-          <template v-else>
-            <a href="/section/member">
-              <UiSubscribeButton title="瀏覽 Premium 會員文章" />
-            </a>
-            <a href="/profile/purchase?ms=true">
-              <UiMembershipButtonSecondary>
-                回訂閱紀錄
-              </UiMembershipButtonSecondary>
-            </a>
-          </template>
+          <a v-else href="/section/member">
+            <UiSubscribeButton title="瀏覽 Premium 會員文章" />
+          </a>
+          <a href="/profile/purchase?ms=true">
+            <UiMembershipButtonSecondary>
+              回訂閱紀錄
+            </UiMembershipButtonSecondary>
+          </a>
         </div>
       </div>
     </div>

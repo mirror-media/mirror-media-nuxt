@@ -1,11 +1,13 @@
 <template>
   <div class="invite-to-subscribe">
-    <h1>加入鏡週刊Premium會員，閱讀完整文章</h1>
+    <h1>歡迎加入鏡週刊 會員專區</h1>
     <div class="invite-to-subscribe__plans plans">
       <div class="plans__plan">
         <div class="plans__plan plan plan--highlight-border">
           <div>
-            <p>每月$99元，暢享零廣告閱讀體驗、優質報導吃到飽</p>
+            <div class="plan__description">
+              <p>限時優惠每月$49元<br />全站看到飽</p>
+            </div>
             <UiMembershipButtonPrimary
               class="plan__button"
               @click.native="$emit('subscribePremium')"
@@ -17,7 +19,9 @@
       </div>
       <div class="plans__plan plan">
         <div>
-          <p>或以$1元立即解鎖本篇報導，享14天內無限次觀看</p>
+          <div class="plan__description">
+            <p>$1元解鎖單篇，享14天無限次觀看</p>
+          </div>
           <UiMembershipButtonLight
             class="plan__button"
             @click.native="$emit('subscribePost')"
@@ -98,6 +102,9 @@ h1 {
   }
 
   &__plan {
+    & > div {
+      min-width: 234px;
+    }
     & + & {
       margin: 8px 0 0 0;
       @include media-breakpoint-up(xl) {
@@ -139,6 +146,14 @@ h1 {
     > div {
       background-color: white;
       padding: 16px;
+    }
+  }
+  &__description {
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    * {
+      flex: 1;
     }
   }
   &__button {
