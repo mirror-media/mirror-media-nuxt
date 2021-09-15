@@ -88,7 +88,7 @@ export default function createMachine(router, route, store, apolloProvider) {
   }).withContext({
     ...machine.context,
     isLoggedIn: store.getters['membership/isLoggedIn'],
-    isTosAgreed: store.state['membership-subscribe'].basicInfo.tos,
+    isTosAgreed: store.state['membership-subscribe'].basicInfo?.tos ?? false,
     isEmailVerified: !!store.state.membership.userEmailVerified,
     subscription: getSubscription(
       store.state['membership-subscribe'].basicInfo.type

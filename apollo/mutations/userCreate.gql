@@ -5,7 +5,10 @@ mutation userCreate($email: String, $firebaseId: String!) {
 }
 mutation createMemberProfile($email: String!) {
   createmember(data: { email: $email }) {
-    email
+    id
     firebaseId
+    email
+    type
+    tos
   }
 }

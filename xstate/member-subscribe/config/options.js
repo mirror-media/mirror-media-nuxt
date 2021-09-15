@@ -29,6 +29,12 @@ export default {
   actions: {
     login: assign({
       isLoggedIn: true,
+      isEmailVerified: (context, event) => {
+        return event?.userData?.firebase?.userEmailVerified ?? false
+      },
+      isTosAgreed: (context, event) => {
+        return event?.userData?.israfel?.basicInfo?.tos ?? false
+      },
     }),
     verifyEmail: assign({
       isEmailVerified: true,

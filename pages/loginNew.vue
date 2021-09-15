@@ -134,7 +134,7 @@ export default {
       const { email, uid } = user
       if (uid) {
         try {
-          await this.$apollo.mutate({
+          return await this.$apollo.mutate({
             mutation: createMemberProfile,
             variables: {
               email,
@@ -153,11 +153,20 @@ export default {
 
     async handleRegisterSuccess(user) {
       try {
-        await this.postCreateUserForRegister(user)
+        const { data } = await this.postCreateUserForRegister(user)
+        this.$store.commit(
+          'membership-subscribe/SET_BASIC_INFO',
+          data.createmember
+        )
 
         if (isMemberSubscribeFeatureToggled(this.$route)) {
-          await this.$store.dispatch('membership-subscribe/FETCH_BASIC_INFO')
-          this.sendMembershipSubscribe('登入成功')
+          this.sendMembershipSubscribe({
+            type: '登入成功',
+            userData: {
+              firebase: this.$store.state.membership,
+              israfel: this.$store.state['membership-subscribe'],
+            },
+          })
           this.sendMembershipSubscribe('自動跳轉')
         } else {
           this.showRegisterSuccessAndRedirectToSectionMember()
@@ -172,7 +181,14 @@ export default {
     },
     async handleLoginSuccess() {
       if (isMemberSubscribeFeatureToggled(this.$route)) {
-        this.sendMembershipSubscribe('登入成功')
+        await this.$store.dispatch('membership-subscribe/FETCH_BASIC_INFO')
+        this.sendMembershipSubscribe({
+          type: '登入成功',
+          userData: {
+            firebase: this.$store.state.membership,
+            israfel: this.$store.state['membership-subscribe'],
+          },
+        })
         this.sendMembershipSubscribe('自動跳轉')
       } else {
         await loginDestination.redirect()

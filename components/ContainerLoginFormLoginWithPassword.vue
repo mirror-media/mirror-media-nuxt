@@ -86,16 +86,17 @@ export default {
           this.password
         )
         console.log(user.emailVerified)
+        await this.$store.dispatch('membership/ON_AUTH_STATE_CHANGED_ACTION', {
+          authUser: user,
+        })
 
         this.isLoading = false
-        this.sendMembershipSubscribe('登入成功')
         this.$emit('loginSuccess', user)
       } catch (e) {
         this.isLoading = false
         if (e.code === 'auth/wrong-password') {
           this.shouldShowErrorHint = true
         } else {
-          this.sendMembershipSubscribe('登入失敗')
           this.$emit('loginFail', e)
         }
       }

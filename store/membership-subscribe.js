@@ -7,11 +7,7 @@ export const state = () => ({
 
 export const mutations = {
   SET_BASIC_INFO(state, value = {}) {
-    const basicInfo = Object.assign({}, state.basicInfo, value)
-    Vue.set(state, 'basicInfo', basicInfo)
-  },
-  SET_IS_EMAIL_VERIFIED(state, value) {
-    Vue.set(state, 'isEmailVerified', value)
+    Vue.set(state, 'basicInfo', value)
   },
 }
 
@@ -22,6 +18,7 @@ export const actions = {
         const {
           data,
         } = await this.app.apolloProvider.clients.memberSubscription.query({
+          fetchPolicy: 'no-cache',
           query: fetchMemberBasicInfo,
           variables: {
             firebaseId: rootState.membership.userUid,
@@ -30,6 +27,8 @@ export const actions = {
         commit('SET_BASIC_INFO', data.member)
       } catch (e) {
         console.error(e)
+
+        // throw e
       }
     }
   },
