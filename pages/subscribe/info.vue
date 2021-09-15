@@ -88,21 +88,57 @@ export default {
   },
   setup() {
     const { state, send } = useMemberSubscribeMachine()
+    const perchasedPlan = usePerchasedPlan()
     return {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
+      perchasedPlan,
+    }
+
+    function usePerchasedPlan() {
+      const { state } = useMemberSubscribeMachine()
+      const prefix = '會員訂閱功能.方案購買流程.確認訂購頁.確認訂購表單頁'
+
+      if (state?.value?.matches(`${prefix}.準備單篇訂閱`)) {
+        return [
+          {
+            id: state.value.context.subscriptionOrderOneTimePostId,
+            detail: '鏡週刊Basic會員（單篇）',
+            hint: '單篇 $1 元，享 14 天內無限次觀看',
+            price: '原價 NT$1',
+            newPrice: 1,
+          },
+        ]
+      } else if (state?.value?.matches(`${prefix}.準備月訂閱`)) {
+        return [
+          {
+            id: 1,
+            detail: '鏡週刊Premium會員（月方案）',
+            hint: '每月 $49 元，信用卡自動續扣',
+            price: '原價 NT$99',
+            newPrice: 49,
+          },
+        ]
+      } else if (
+        state?.value?.matches(`${prefix}.準備年訂閱`) ||
+        state?.value?.matches(`${prefix}.準備將月訂閱升級年訂閱`)
+      ) {
+        return [
+          {
+            id: 1,
+            detail: '鏡週刊Premium會員（年方案）',
+            hint: '每月 $499 元，信用卡自動續扣',
+            price: '原價 NT$1188',
+            newPrice: 499,
+          },
+        ]
+      } else {
+        return [{}]
+      }
     }
   },
   data() {
     return {
-      perchasedPlan: [
-        {
-          id: 1,
-          detail: '鏡週刊 Premium 會員 (月方案)',
-          price: '原價 NT$99',
-          newPrice: 49,
-        },
-      ],
       email: '',
       receiptData: {
         receiptPlan: '捐贈',
@@ -199,9 +235,11 @@ export default {
 
       this.$router.push(`/subscribe/redirect?${queryString}`)
 
-      // if (this.orderStatus === 'success')
-      //   return this.sendMembershipSubscribe('付款成功')
-      // this.sendMembershipSubscribe('付款失敗')
+      /*
+       * if (this.orderStatus === 'success')
+       *   return this.sendMembershipSubscribe('付款成功')
+       * this.sendMembershipSubscribe('付款失敗')
+       */
     },
     async getPaymentDataFromApiGateWay() {
       let gateWayPayload

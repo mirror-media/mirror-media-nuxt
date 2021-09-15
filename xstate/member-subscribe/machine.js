@@ -13,6 +13,12 @@ export default function createMachine(router, route, store, apolloProvider) {
       setFromPost: assign({
         isFromPost: route.value.fullPath,
       }),
+      orderSubscribeOneTimePostId: assign({
+        subscriptionOrderOneTimePostId: (context, event) => {
+          const { postId } = event
+          return postId
+        },
+      }),
       setUserEmailVerification: assign({
         isEmailVerified: !!store.state.membership.userEmailVerified,
       }),

@@ -18,6 +18,7 @@ export default {
 
     // null, '解鎖這篇報導', '月訂閱', '年訂閱'
     subscriptionOrder: null,
+    subscriptionOrderOneTimePostId: null,
 
     redirectDestination: undefined,
 
@@ -126,7 +127,10 @@ export default {
                     加入Premium會員: '#方案購買流程',
                     解鎖這篇報導: {
                       target: '#方案購買流程',
-                      actions: ['orderSubscribe'],
+                      actions: [
+                        'orderSubscribe',
+                        'orderSubscribeOneTimePostId',
+                      ],
                     },
                   },
                 },
@@ -291,6 +295,35 @@ export default {
                 },
                 確認訂購表單頁: {
                   entry: ['navigateToSubscribeInfo'],
+                  initial: '起點',
+                  states: {
+                    起點: {
+                      on: {
+                        '': [
+                          {
+                            target: '準備將月訂閱升級年訂閱',
+                            cond: '訂購方案為月訂閱升級年訂閱',
+                          },
+                          {
+                            target: '準備單篇訂閱',
+                            cond: '訂購方案為單篇訂閱',
+                          },
+                          {
+                            target: '準備月訂閱',
+                            cond: '訂購方案為月訂閱',
+                          },
+                          {
+                            target: '準備年訂閱',
+                            cond: '訂購方案為年訂閱',
+                          },
+                        ],
+                      },
+                    },
+                    準備單篇訂閱: {},
+                    準備月訂閱: {},
+                    準備年訂閱: {},
+                    準備將月訂閱升級年訂閱: {},
+                  },
                   on: {
                     付款成功: {
                       target: '#付款成功頁',

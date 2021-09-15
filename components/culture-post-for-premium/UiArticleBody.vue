@@ -54,7 +54,12 @@
               stateMembershipSubscribe.matches('會員訂閱功能.會員文章頁.未登入')
             "
             @subscribePremium="sendMembershipSubscribe('加入Premium會員')"
-            @subscribePost="sendMembershipSubscribe('解鎖這篇報導')"
+            @subscribePost="
+              sendMembershipSubscribe({
+                type: '解鎖這篇報導',
+                postId,
+              })
+            "
             @login="sendMembershipSubscribe('立即登入')"
           />
         </div>
@@ -89,6 +94,10 @@ export default {
   },
 
   props: {
+    postId: {
+      type: String,
+      default: '',
+    },
     brief: {
       type: Array,
       default: () => [],
