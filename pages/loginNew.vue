@@ -146,6 +146,7 @@ export default {
            * when create member in israfel by gateway occurred an error
            * we need to delete this member's firebase account
            */
+          user.delete()
 
           await this.handleError({
             type: 'gatewayFailUserCreate',
