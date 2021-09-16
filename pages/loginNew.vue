@@ -141,6 +141,12 @@ export default {
             },
           })
         } catch (e) {
+          /*
+           * (TODO)
+           * when create member in israfel by gateway occurred an error
+           * we need to delete this member's firebase account
+           */
+
           await this.handleError({
             type: 'gatewayFailUserCreate',
             email,

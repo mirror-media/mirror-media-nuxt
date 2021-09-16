@@ -7,6 +7,7 @@
         <div class="subscribe-info__form_left">
           <MembershipFormPlanList
             :perchasedPlan="perchasedPlan"
+            :isMonthUpgradeToYear="isMonthUpgradeToYear"
             @back="handleBack"
           />
           <div
@@ -42,12 +43,16 @@
             :validateOn="validateOn"
             :setFormStatus="setFormStatus"
           />
-          <p class="subscribe-info__form_left_hint">
+          <p
+            v-if="!isMonthUpgradeToYear"
+            class="subscribe-info__form_left_hint"
+          >
             按下開始結帳後，頁面將會跳離，抵達由藍新金流 NewebPay
             所提供的線上結帳頁面，完成後將會再跳回到鏡週刊
           </p>
           <UiSubscribeButton
             v-if="isMonthUpgradeToYear"
+            class="change-plan-btn"
             title="確認變更方案"
             :isLoading="isLoading"
             @click.native="updateHandler"
@@ -266,7 +271,9 @@ export default {
         this.isLoading = false
 
         window.alert('方案已升級為年訂閱，下次扣款日立即生效。')
-        window.location.assign('/section/member')
+
+        // TODO: redirect to success page (TO KEVIN)
+        this.$router.push('/subscribe/success')
       } catch (error) {
         console.error(error)
         this.isLoading = false
@@ -407,6 +414,15 @@ export default {
         line-height: 150%;
         color: rgba(0, 0, 0, 0.5);
         margin: 24px 0;
+      }
+
+      .change-plan-btn {
+        width: 380px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0%;
       }
     }
 
