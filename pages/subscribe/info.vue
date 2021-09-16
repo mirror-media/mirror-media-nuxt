@@ -48,7 +48,7 @@
           </p>
           <UiSubscribeButton
             v-if="isMonthUpgradeToYear"
-            title="更新訂閱"
+            title="確認變更方案"
             :isLoading="isLoading"
             @click.native="updateHandler"
           />
