@@ -78,6 +78,7 @@ export default {
   middleware: ['handle-go-to-marketing'],
   setup() {
     const { state, send } = useMemberSubscribeMachine()
+    send('付款成功')
     return {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,

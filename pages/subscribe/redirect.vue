@@ -11,6 +11,9 @@
 
 <script>
 import NewebpayForm from '~/components/NewebpayForm.vue'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
+import { persistStorageState } from '~/xstate/member-subscribe/util'
+
 export default {
   components: {
     NewebpayForm,
@@ -21,6 +24,13 @@ export default {
     const isReadyToPay = store.getters['subscribe/isReadyToPay']
     if (!isReadyToPay) {
       // redirect('/papermag')
+    }
+  },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
     }
   },
   computed: {
@@ -35,6 +45,9 @@ export default {
     },
   },
   mounted() {
+    this.sendMembershipSubscribe('付款')
+    persistStorageState(this.stateMembershipSubscribe)
+
     // submit newebpay form-post to redirect to newebpay page
     const formDOM = document.forms.newebpay
     formDOM.submit()

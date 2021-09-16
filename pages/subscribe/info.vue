@@ -241,7 +241,7 @@ export default {
 
         // carry encrypted paymentPayload to redirect page
         const queryString = qs.stringify(encryptPaymentPayload)
-        this.$router.push(`/subscribe/redirect?${queryString}`)
+        this.$router.push(`/subscribe/redirect?ms=true${queryString}`)
 
         /*
          * if (this.orderStatus === 'success')
@@ -271,6 +271,7 @@ export default {
         console.error(error)
         this.isLoading = false
       }
+
       /*
        * if (this.orderStatus === 'success')
        *   return this.sendMembershipSubscribe('付款成功')
