@@ -1,8 +1,19 @@
 <template>
   <div class="dots-wrapper">
-    <span v-for="dot in 3" :key="dot" class="dot" />
+    <span v-for="dot in 3" :key="dot" class="dot" :class="{ dark: isDark }" />
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    isDark: {
+      type: Boolean,
+      default: false,
+    },
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 @keyframes lightUp {
@@ -31,6 +42,10 @@
     &:nth-child(#{$i}) {
       animation-delay: #{($i - 1) * 0.25}s;
     }
+  }
+
+  &.dark {
+    background: #d0021b !important;
   }
 }
 </style>

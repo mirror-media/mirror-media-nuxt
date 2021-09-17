@@ -84,6 +84,7 @@ describe('buttons in the page', function () {
       store: new Vuex.Store(storeOptions),
     })
     await wrapper.get('.confirm-cancel-button').trigger('click')
+    await wrapper.vm.$nextTick()
     expect(wrapper.emitted().success).toBeTruthy()
   })
 })
