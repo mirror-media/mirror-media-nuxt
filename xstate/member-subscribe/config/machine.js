@@ -78,7 +78,11 @@ export default {
                 },
                 解鎖這篇報導: {
                   target: '#登入功能（獨立頁或 lightbox）',
-                  actions: ['orderSubscribe', 'setRedirectToForm'],
+                  actions: [
+                    'orderSubscribe',
+                    'setRedirectToForm',
+                    'orderSubscribeOneTimePostId',
+                  ],
                 },
                 立即登入: {
                   target: '#登入功能（獨立頁或 lightbox）',
