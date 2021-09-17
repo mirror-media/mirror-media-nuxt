@@ -224,6 +224,8 @@ export default {
     },
     async submitHandler(e) {
       e.preventDefault()
+      if (this.isLoading) return
+
       try {
         this.isLoading = true
         this.$refs.receiptDOM.check()
@@ -261,6 +263,8 @@ export default {
     },
     async updateHandler(e) {
       e.preventDefault()
+      if (this.isLoading) return
+
       try {
         this.isLoading = true
 
