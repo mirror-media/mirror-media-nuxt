@@ -77,10 +77,9 @@
 
 <script>
 import qs from 'qs'
-import NewebPay from '@mirrormedia/newebpay-node'
 import { required, email } from 'vuelidate/lib/validators'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
-import { ENV, NEWEBPAY_KEY, NEWEBPAY_IV } from '~/configs/config'
+import { ENV } from '~/configs/config'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
@@ -241,12 +240,15 @@ export default {
         const result = await this.getPaymentDataFromApiGateWay()
         const tradeInfo = qs.parse(result)
 
-        // encrypt tradeInfo
-        const encryptPaymentPayload = this.encryptTradeInfo(tradeInfo)
+        // // encrypt tradeInfo
+        const encryptPaymentPayload = await this.$axios.$post(
+          '/api/newebpay/encrypt',
+          tradeInfo
+        )
 
         // carry encrypted paymentPayload to redirect page
         const queryString = qs.stringify(encryptPaymentPayload)
-        this.$router.push(`/subscribe/redirect?ms=true${queryString}`)
+        this.$router.push(`/subscribe/redirect?ms=true&${queryString}`)
 
         /*
          * if (this.orderStatus === 'success')
@@ -311,11 +313,6 @@ export default {
         }
       }
       return await this.$getPaymentDataOfSubscription(gateWayPayload)
-    },
-    encryptTradeInfo(tradeInfo) {
-      const newebpay = new NewebPay(NEWEBPAY_KEY, NEWEBPAY_IV)
-
-      return newebpay.getEncryptedFormPostData(tradeInfo)
     },
   },
 }

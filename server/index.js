@@ -30,6 +30,8 @@ async function start() {
   app.use(bodyParser.json())
   app.use(requestIp.mw())
 
+  app.use('/api/newebpay', require('./newebpay'))
+
   // Give nuxt middleware to express
   app.use(nuxt.render)
 
