@@ -1,17 +1,20 @@
 <template>
   <div class="subscribe-info">
-    <SubscribeStepProgress :currentStep="2" />
+    <SubscribeStepProgress
+      :currentStep="2"
+      :isUpgradeFromMonthToYear="isUpgradeFromMonthToYear"
+    />
 
     <div class="subscribe-info__form">
       <div class="subscribe-info__form_wrapper">
         <div class="subscribe-info__form_left">
           <MembershipFormPlanList
             :perchasedPlan="perchasedPlan"
-            :isMonthUpgradeToYear="isMonthUpgradeToYear"
+            :isUpgradeFromMonthToYear="isUpgradeFromMonthToYear"
             @back="handleBack"
           />
           <div
-            v-if="!isMonthUpgradeToYear"
+            v-if="!isUpgradeFromMonthToYear"
             class="subscribe-info__form_left_email"
             :class="{ error: $v.email.$error }"
           >
@@ -37,21 +40,21 @@
             >
           </div>
           <SubscribeFormReceipt
-            v-if="!isMonthUpgradeToYear"
+            v-if="!isUpgradeFromMonthToYear"
             ref="receiptDOM"
             :setReceiptData="setReceiptData"
             :validateOn="validateOn"
             :setFormStatus="setFormStatus"
           />
           <p
-            v-if="!isMonthUpgradeToYear"
+            v-if="!isUpgradeFromMonthToYear"
             class="subscribe-info__form_left_hint"
           >
             按下開始結帳後，頁面將會跳離，抵達由藍新金流 NewebPay
             所提供的線上結帳頁面，完成後將會再跳回到鏡週刊
           </p>
           <UiSubscribeButton
-            v-if="isMonthUpgradeToYear"
+            v-if="isUpgradeFromMonthToYear"
             class="change-plan-btn"
             title="確認變更方案"
             :isLoading="isLoading"
@@ -179,7 +182,7 @@ export default {
     showSimFormStatus() {
       return ENV === 'local'
     },
-    isMonthUpgradeToYear() {
+    isUpgradeFromMonthToYear() {
       const currentMemberType = formatMemberType(
         this.$store.state['membership-subscribe']?.basicInfo?.type
       )

@@ -3,7 +3,7 @@
     <div class="membership-form__title">
       <h2 class="membership-form__title">訂購項目</h2>
       <UiSubscribeButtonSmall
-        v-if="!isMonthUpgradeToYear"
+        v-if="!isUpgradeFromMonthToYear"
         title="更換方案"
         @click.native="() => $emit('back')"
       />
@@ -37,7 +37,7 @@ export default {
         ]
       },
     },
-    isMonthUpgradeToYear: {
+    isUpgradeFromMonthToYear: {
       type: Boolean,
       default: false,
     },
