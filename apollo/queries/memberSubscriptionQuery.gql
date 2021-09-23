@@ -5,7 +5,7 @@ query fetchMemberSubscriptions($firebaseId: String!) {
     email
     type
     tos
-    subscription(orderBy: [{ periodEndDatetime: desc }]) {
+    subscription(orderBy: { periodEndDatetime: desc }) {
       id
       orderNumber
       frequency
@@ -16,7 +16,7 @@ query fetchMemberSubscriptions($firebaseId: String!) {
       isActive
       periodEndDatetime
       periodNextPayDatetime
-      newebpayPayment(orderBy: [{ paymentTime: desc }]) {
+      newebpayPayment(orderBy: { paymentTime: desc }) {
         paymentMethod
         paymentTime
         amount
@@ -40,7 +40,7 @@ query fetchOneTimeSubscriptions($firebaseId: String!) {
     email
     subscription(
       where: { frequency: one_time }
-      orderBy: [{ periodEndDatetime: desc }]
+      orderBy: { periodEndDatetime: desc }
     ) {
       frequency
       orderNumber
@@ -57,7 +57,7 @@ query fetchRecurringSubscription($firebaseId: String!) {
     subscription(
       first: 1
       where: { frequency_in: [yearly, monthly], isActive: true }
-      orderBy: [{ periodEndDatetime: desc }]
+      orderBy: { periodEndDatetime: desc }
     ) {
       id
       isCanceled
@@ -77,13 +77,13 @@ query fetchRecurringSubscription($firebaseId: String!) {
 query fetchSubscriptionPayments($firebaseId: String!) {
   member(where: { firebaseId: $firebaseId }) {
     email
-    subscription(orderBy: [{ periodEndDatetime: desc }]) {
+    subscription(orderBy: { periodEndDatetime: desc }) {
       orderNumber
       frequency
       periodEndDatetime
       oneTimeEndDatetime
       paymentMethod
-      newebpayPayment(orderBy: [{ paymentTime: desc }]) {
+      newebpayPayment(orderBy: { paymentTime: desc }) {
         paymentMethod
         paymentTime
         amount
