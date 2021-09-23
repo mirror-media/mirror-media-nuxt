@@ -64,7 +64,10 @@ export default {
             id: memberId,
           },
         })
-        await this.$fire.auth.signOut()
+
+        // delete firebase auth
+        const currentUser = this.$fire.auth.currentUser
+        currentUser?.delete()
 
         // clear the firebase current user state in the store
         this.$store.commit('membership/ON_AUTH_STATE_CHANGED_MUTATION', {
