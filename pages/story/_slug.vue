@@ -46,7 +46,7 @@
                   >
                     <template v-if="canAdvertise" #ads>
                       <ClientOnly>
-                        <MicroAd
+                        <MicroAdWithLabel
                           v-for="unit in microAdUnits[device]"
                           :key="unit.name"
                           :unitId="unit.id"
@@ -212,7 +212,7 @@ import UiArticleListAside from '~/components/UiArticleListAside.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
-import MicroAd from '~/components/MicroAd.vue'
+import MicroAdWithLabel from '~/components/MicroAdWithLabel.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import AppOpenNotification from '~/components/AppOpenNotification.vue'
 import UiFooter from '~/components/UiFooter.vue'
@@ -260,7 +260,7 @@ export default {
     ContainerGptAd,
     UiStickyAd,
     ContainerFullScreenAds,
-    MicroAd,
+    MicroAdWithLabel,
 
     AppOpenNotification,
     UiWineWarning,
@@ -1195,6 +1195,7 @@ aside {
 }
 
 #_popIn_recommend {
+  position: relative;
   &::v-deep {
     ._popIn_recommend_container {
       padding-bottom: 0;
@@ -1237,6 +1238,22 @@ aside {
       @include media-breakpoint-up(xl) {
         width: 20%;
         padding-top: calc(20% * 0.75);
+      }
+      &::after {
+        content: '特企';
+        z-index: 999999;
+        padding: 4px;
+        background: rgba(188, 188, 188, 1);
+        color: #ffffff;
+        font-weight: 300;
+        font-size: 12px;
+        line-height: 12px;
+        position: absolute;
+        transform: translate(0, -100%);
+        @include media-breakpoint-up(md) {
+          font-size: 14px;
+          line-height: 14px;
+        }
       }
     }
   }
