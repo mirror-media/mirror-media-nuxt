@@ -387,9 +387,16 @@ async function getPremiumMemberShipStatus(context, loadmoreConfig) {
   } = subscription[0]
   const { paymentMethod, cardInfoLastFour } = newebpayPayment[0]
 
-  if (isCanceled) {
+  if (isCanceled && frequency === 'yearly') {
     return {
-      name: 'disturb',
+      name: 'disturb-yearly',
+      dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
+      nextPayDate: null,
+      payMethod: null,
+    }
+  } else if (isCanceled && frequency === 'monthly') {
+    return {
+      name: 'disturb-monthly',
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: null,
       payMethod: null,

@@ -77,7 +77,10 @@ export default {
       return this.isPremium ? '會員等級：Premium會員' : '會員等級：Basic 會員'
     },
     premiumPlan() {
-      return this.memberShipStatus.name === 'year' ? '年訂閱' : '月訂閱'
+      return this.memberShipStatus.name === 'year' ||
+        this.memberShipStatus.name === 'disturb-yearly'
+        ? '年訂閱'
+        : '月訂閱'
     },
   },
   methods: {
