@@ -379,9 +379,18 @@ async function getMemberSubscribePosts(subscriptionList) {
   return postList
 }
 
-async function getPremiumMemberShipStatus(context, loadmoreConfig) {
+async function getMemberShipStatus(context, memberShipStatusName) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
+
+  if (memberShipStatusName === 'single-post') {
+    return {
+      name: 'single-post',
+      dueDate: null,
+      nextPayDate: null,
+      payMethod: null,
+    }
+  }
 
   // get user's subscription state
   const {
@@ -499,7 +508,7 @@ export {
   formatMemberType,
   getMemberOneTimeSubscriptions,
   getSubscriptionPayments,
-  getPremiumMemberShipStatus,
+  getMemberShipStatus,
   getPremiumMemberSubscriptionInfo,
   updateSubscriptionFromMonthToYear,
 }

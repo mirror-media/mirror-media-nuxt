@@ -129,6 +129,10 @@ export default {
       const status = this.memberShipStatusName
       return status === 'year' || status === 'month' || status === 'disturb'
     },
+    isBasic() {
+      const status = this.memberShipStatusName
+      return status === 'single-post'
+    },
     showedPostList() {
       return this.postList.slice(0, this.postMetaCount)
     },
@@ -139,15 +143,17 @@ export default {
 
   async created() {
     try {
-      if (this.isPremium) {
-        // fetch recurring subscription's duration
-        this.memberShipStatus = await this.$getPremiumMemberShipStatus()
-      } else {
-        // fetch onetime subscription list
-        this.postList = await this.$getMemberOneTimeSubscriptions({})
-      }
+      if (this.isPremium || this.isBasic) {
+        this.memberShipStatus = await this.$getMemberShipStatus(
+          this.memberShipStatusName
+        )
+        if (this.isBasic) {
+          // fetch onetime subscription list
+          this.postList = await this.$getMemberOneTimeSubscriptions({})
+        }
 
-      this.payRecords = await this.$getSubscriptionPayments({})
+        this.payRecords = await this.$getSubscriptionPayments({})
+      }
     } catch (error) {
       console.error(error)
     }
