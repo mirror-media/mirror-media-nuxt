@@ -21,7 +21,7 @@ import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 
 export default {
-  middleware: ['handle-go-to-marketing'],
+  middleware: ['handle-go-to-marketing', 'handle-forbid-direct-navigate'],
   components: { SubscribeWrapper, UiMembershipButtonPrimary },
   methods: {
     handleBack() {

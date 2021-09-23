@@ -90,7 +90,7 @@ import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import { formatMemberType } from '~/utils/memberSubscription'
 export default {
-  middleware: ['handle-go-to-marketing'],
+  middleware: ['handle-go-to-marketing', 'handle-forbid-direct-navigate'],
   components: {
     SubscribeStepProgress,
     MembershipFormPlanList,
