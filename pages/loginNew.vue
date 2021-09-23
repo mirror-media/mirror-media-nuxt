@@ -63,7 +63,6 @@ import UiLoginIntro from '~/components/UiLoginIntro.vue'
 import ContainerLoginForm from '~/components/ContainerLoginForm.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import UiMembershipLink from '~/components/UiMembershipLink.vue'
-import { createMemberProfile } from '~/apollo/mutations/userCreate.gql'
 import loginDestination from '~/utils/login-destination'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
@@ -130,41 +129,28 @@ export default {
         }
       }, 1000)
     },
-    async postCreateUserForRegister(user = {}) {
-      const { email, uid } = user
-      if (uid) {
-        try {
-          return await this.$apollo.mutate({
-            mutation: createMemberProfile,
-            variables: {
-              email,
-            },
-          })
-        } catch (e) {
-          /*
-           * (TODO)
-           * when create member in israfel by gateway occurred an error
-           * we need to delete this member's firebase account
-           */
-          user.delete()
 
+    async handleRegisterSuccess(authUser) {
+      try {
+        const result = await this.$store.dispatch(
+          'membership/LOGIN_PAGE_ON_AUTH_STATE_CHANGED_ACTION',
+          {
+            authUser,
+            mode: 'register',
+            isNewUser: true,
+          }
+        )
+
+        // If error happend when comunicated with Israfel
+        if (result.error) {
           await this.handleError({
             type: 'gatewayFailUserCreate',
-            email,
-            error: e,
+            email: authUser.email,
+            error: result.error,
           })
-          throw e
+          this.state = 'registerError'
+          return
         }
-      }
-    },
-
-    async handleRegisterSuccess(user) {
-      try {
-        const { data } = await this.postCreateUserForRegister(user)
-        this.$store.commit(
-          'membership-subscribe/SET_BASIC_INFO',
-          data.createmember
-        )
 
         if (isMemberSubscribeFeatureToggled(this.$route)) {
           this.sendMembershipSubscribe({
@@ -186,9 +172,29 @@ export default {
       this.state = 'registerError'
       await this.handleError(error)
     },
-    async handleLoginSuccess() {
+    async handleLoginSuccess(authUser, isNewUser) {
+      const result = await this.$store.dispatch(
+        'membership/LOGIN_PAGE_ON_AUTH_STATE_CHANGED_ACTION',
+        {
+          authUser,
+          mode: 'login',
+          isNewUser,
+        }
+      )
+
+      // If error happend when comunicated with Israfel
+      if (result.error) {
+        await this.handleError({
+          type: 'gatewayFailUserCreate',
+          email: authUser.email,
+          error: result.error,
+        })
+        this.state = 'loginError'
+        return
+      }
+
       if (isMemberSubscribeFeatureToggled(this.$route)) {
-        await this.$store.dispatch('membership-subscribe/FETCH_BASIC_INFO')
+        // fetch member's basic info from Israfel
         this.sendMembershipSubscribe({
           type: '登入成功',
           userData: {
@@ -211,11 +217,10 @@ export default {
       try {
         const result = await this.$fire.auth.getRedirectResult()
         this.isFederatedRedirectResultLoading = false
+
         if (result.user !== null) {
-          if (result?.additionalUserInfo?.isNewUser) {
-            await this.postCreateUserForRegister(result.user)
-          }
-          await this.handleLoginSuccess()
+          const isNewUser = !!result?.additionalUserInfo?.isNewUser
+          await this.handleLoginSuccess(result.user, isNewUser)
         }
       } catch (e) {
         this.isFederatedRedirectResultLoading = false

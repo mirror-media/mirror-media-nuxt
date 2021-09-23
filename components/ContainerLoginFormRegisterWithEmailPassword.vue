@@ -121,9 +121,7 @@ export default {
           this.email,
           this.password
         )
-        await this.$store.dispatch('membership/ON_AUTH_STATE_CHANGED_ACTION', {
-          authUser: user,
-        })
+
         this.isLoading = false
         this.$emit('registerSuccess', user)
       } catch (e) {

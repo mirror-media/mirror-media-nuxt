@@ -1,3 +1,5 @@
+import { createMemberProfile } from '~/apollo/mutations/userCreate.gql'
+
 export const state = () => ({
   user: {},
   userUid: undefined,
@@ -39,12 +41,108 @@ export const mutations = {
 }
 
 export const actions = {
-  async ON_AUTH_STATE_CHANGED_ACTION({ commit, dispatch }, { authUser }) {
+  /*
+   * this action triggered everytime when auth state has changed
+   */
+  async ON_AUTH_STATE_CHANGED_ACTION(
+    { commit, dispatch, rootState },
+    { authUser }
+  ) {
+    // because login has it's own fetch action, so disable it in here
+    const isInLoginPage = this.app?.context?.route?.path === '/login'
+    if (isInLoginPage) return
+
+    try {
+      // step 1: put authUser into Vuex
+      await dispatch('SET_AUTH_STATE_TO_VUEX', { authUser })
+
+      const hasMemberAuthDataInVuex = rootState.membership.userUid
+
+      if (hasMemberAuthDataInVuex) {
+        // step 2: fetch it data from israfel, them put it into Vuex
+        await dispatch('membership-subscribe/FETCH_BASIC_INFO', null, {
+          root: true,
+        })
+      }
+    } catch (error) {
+      // this.$fire.auth.signOut()
+      console.error(error)
+    }
+  },
+  async SET_AUTH_STATE_TO_VUEX({ commit }, { authUser }) {
     const token = authUser && (await authUser.getIdToken())
     commit('ON_AUTH_STATE_CHANGED_MUTATION', { authUser, token })
-    await dispatch('membership-subscribe/FETCH_BASIC_INFO', null, {
-      root: true,
-    })
+  },
+  async LOGIN_PAGE_ON_AUTH_STATE_CHANGED_ACTION(
+    { dispatch, rootState },
+    { authUser, mode = 'login', isNewUser = false }
+  ) {
+    const isNotInLoginPage = this.app?.context?.route?.path !== '/login'
+    if (isNotInLoginPage) return
+
+    try {
+      // step 1: put authUser into Vuex
+      await dispatch('SET_AUTH_STATE_TO_VUEX', { authUser })
+
+      // step 2: if it is a new user(register or first login by 3 party login), create it member is israfel
+      if (mode === 'register' || isNewUser) {
+        // create member in israfel
+        await createMemberDataInIsrafel.bind(this)()
+      }
+
+      // step 3: fetch it data from israfel, them put it into Vuex
+      const hasMemberAuthDataInVuex = rootState.membership.userUid
+      if (hasMemberAuthDataInVuex) {
+        // fetch member's basic info in Israfel
+        await dispatch('membership-subscribe/FETCH_BASIC_INFO', null, {
+          root: true,
+        })
+      }
+
+      return {
+        state: 'success',
+      }
+    } catch (error) {
+      /*
+       * there are 2 error situation:
+       * 1: has firebase auth, but no member data in Israfel(login)
+       * 2: has created new firebase autn, but member email is duplicated (regiser)
+       * no metter what situation is,
+       * we still need to delete this member's firebase account
+       */
+      const currentUser = this.$fire.auth.currentUser
+      currentUser?.delete()
+
+      // clear Vuex's authState
+      await dispatch('SET_AUTH_STATE_TO_VUEX', { authUser: null })
+      return {
+        state: 'fail',
+        error,
+      }
+    }
+
+    async function createMemberDataInIsrafel() {
+      const { email, uid } = authUser
+      if (uid) {
+        try {
+          return await this.app.apolloProvider.clients.memberSubscription.mutate(
+            {
+              mutation: createMemberProfile,
+              variables: {
+                email,
+              },
+            }
+          )
+        } catch (error) {
+          const message =
+            error.message.search('Unique constraint failed') !== -1
+              ? "this member's email has been used in Israfel"
+              : error.message
+
+          throw new Error(message)
+        }
+      }
+    }
   },
 }
 
