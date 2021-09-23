@@ -247,7 +247,7 @@ export default {
 
         // // encrypt tradeInfo
         const encryptPaymentPayload = await this.$axios.$post(
-          '/api/newebpay/encrypt',
+          `${window.location.origin}/api/newebpay/encrypt`,
           tradeInfo
         )
 
