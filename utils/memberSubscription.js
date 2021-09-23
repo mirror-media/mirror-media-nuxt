@@ -15,7 +15,7 @@ import {
   setSubscriptionFromMonthToYear,
 } from '~/apollo/mutations/memberSubscriptionMutation.gql'
 
-import { API_PATH_FRONTEND } from '~/configs/config.js'
+import { API_PATH_FRONTEND, K3_API_FOR_GET_POSTS } from '~/configs/config.js'
 const baseUrl = process.browser
   ? `//${location.host}/`
   : 'http://localhost:3000/'
@@ -345,14 +345,33 @@ async function getMemberOneTimeSubscriptions(context, loadmoreConfig) {
   return getMemberSubscribePosts(subscriptions)
 }
 
-function getMemberSubscribePosts(subscriptionList) {
+async function getMemberSubscribePosts(subscriptionList) {
   if (!subscriptionList?.length) return []
   const postList = []
-  subscriptionList.forEach((subscription) => {
+
+  // get subscription-ontime's id array
+  const postIdList = subscriptionList.map((subscription) => {
+    return subscription.postId
+  })
+  const whereObjForSearch = {
+    where: {
+      _id: {
+        $in: postIdList,
+      },
+    },
+  }
+
+  // fetch post's info via post id
+  const {
+    data: { _items },
+  } = await axios.get(K3_API_FOR_GET_POSTS, { params: whereObjForSearch })
+
+  // put post title/url into postList
+  subscriptionList.forEach((subscription, index) => {
     const post = {
       id: subscription.postId,
-      title: subscription.postId,
-      url: '/',
+      title: _items[index].title,
+      url: `/story/${_items[index].slug}`,
       deadline: getFormatDateWording(subscription.oneTimeEndDatetime),
     }
     postList.push(post)
