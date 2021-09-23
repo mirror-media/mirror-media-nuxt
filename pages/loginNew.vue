@@ -65,7 +65,6 @@ import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondar
 import UiMembershipLink from '~/components/UiMembershipLink.vue'
 import loginDestination from '~/utils/login-destination'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
-import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
 
 export default {
   apollo: {
@@ -78,10 +77,7 @@ export default {
     UiLoginIntro,
     ContainerLoginForm,
   },
-  middleware({ store, redirect, route }) {
-    if (isMemberSubscribeFeatureToggled(route)) {
-      return
-    }
+  middleware({ store, redirect }) {
     if (store.getters['membership/isLoggedIn']) {
       redirect('/section/member')
     }
@@ -91,6 +87,9 @@ export default {
     return {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
+      isMemberSubscribeFeatureToggled() {
+        return state.value.matches('登入功能（獨立頁或 lightbox）')
+      },
     }
   },
   data() {
@@ -152,7 +151,7 @@ export default {
           return
         }
 
-        if (isMemberSubscribeFeatureToggled(this.$route)) {
+        if (this.isMemberSubscribeFeatureToggled(this.$route)) {
           this.sendMembershipSubscribe({
             type: '登入成功',
             userData: {
@@ -193,7 +192,7 @@ export default {
         return
       }
 
-      if (isMemberSubscribeFeatureToggled(this.$route)) {
+      if (this.isMemberSubscribeFeatureToggled(this.$route)) {
         // fetch member's basic info from Israfel
         this.sendMembershipSubscribe({
           type: '登入成功',
