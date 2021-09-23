@@ -253,7 +253,7 @@ export default {
 
         // carry encrypted paymentPayload to redirect page
         const queryString = qs.stringify(encryptPaymentPayload)
-        this.$router.push(`/subscribe/redirect?ms=true&${queryString}`)
+        this.$router.push(`/subscribe/redirect?${queryString}`)
 
         /*
          * if (this.orderStatus === 'success')

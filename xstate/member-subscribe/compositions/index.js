@@ -56,7 +56,7 @@
 //   if (shouldStopNavigation(route, path)) {
 //     return
 //   }
-//   router.push(`${path}?ms=true`)
+//   router.push(`${path}`)
 //
 //   function shouldStopNavigation(route, path) {
 //     return isCurrentRoutePathMatching()
@@ -95,7 +95,11 @@ const service = ref()
 
 export function useMemberSubscribeMachine() {
   const { route } = useContext()
-  if (!isMemberSubscribeFeatureToggled(route) || process.server) {
+  if (
+    process.env.NODE_ENV === 'test' || // disable the feature in Jest environment
+    !isMemberSubscribeFeatureToggled(route) ||
+    process.server
+  ) {
     // mock object of bypass everything
     return {
       state: ref(new Proxy({}, { get: () => () => {} })),

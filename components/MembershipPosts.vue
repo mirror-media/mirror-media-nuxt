@@ -15,7 +15,7 @@
       >
         <div>
           <!-- TODO: replace this mock href with real link if we finish data fetching -->
-          <a href="/premium/oscar-test?ms=true">{{ post.title }}</a>
+          <a href="/premium/oscar-test">{{ post.title }}</a>
         </div>
         <div>{{ post.deadline }}</div>
       </div>

@@ -1,9 +1,8 @@
 import { State } from 'xstate'
 import { ENV } from '~/configs/config'
 
-export function isMemberSubscribeFeatureToggled(route) {
-  const _route = route.value ?? route
-  return (ENV === 'local' || ENV === 'dev') && Boolean(_route.query.ms)
+export function isMemberSubscribeFeatureToggled() {
+  return ENV === 'local' || ENV === 'dev' || ENV === 'staging'
 }
 
 const storageKey = 'member-subscribe-state'

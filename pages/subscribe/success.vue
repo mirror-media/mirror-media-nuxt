@@ -43,7 +43,7 @@
           <a v-else href="/section/member">
             <UiSubscribeButton title="瀏覽 Premium 會員文章" />
           </a>
-          <a href="/profile/purchase?ms=true">
+          <a href="/profile/purchase">
             <UiMembershipButtonSecondary>
               回訂閱紀錄
             </UiMembershipButtonSecondary>
@@ -58,9 +58,9 @@
       <br />
       (你可以透過兩種不同起點看到不同按鈕狀態)
       <br />
-      (1. 從 /premium/oscar-test?ms=true 為起點)
+      (1. 從 /premium/oscar-test 為起點)
       <br />
-      (2. 從 /subscribe?ms=true 為起點)
+      (2. 從 /subscribe 為起點)
     </button>
   </section>
 </template>

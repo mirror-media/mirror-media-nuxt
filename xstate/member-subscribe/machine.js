@@ -26,44 +26,44 @@ export default function createMachine(router, route, store, apolloProvider) {
         createNavigation(
           router,
           route,
-          `/login?destination=${route.value.fullPath}&ms=true`
+          `/login?destination=${route.value.fullPath}`
         )
       },
       navigateToServiceRule() {
-        createNavigation(router, route, '/service-rule?ms=true')
+        createNavigation(router, route, '/service-rule')
       },
       navigateToPremiumPage(context) {
         createNavigation(router, route, context.isFromPost)
       },
       navigateToSubscribePlans() {
-        createNavigation(router, route, '/subscribe?ms=true')
+        createNavigation(router, route, '/subscribe')
       },
       navigateToSubscribeInfo() {
-        createNavigation(router, route, '/subscribe/info?ms=true')
+        createNavigation(router, route, '/subscribe/info')
       },
       navigateToSubscribeSuccess() {
-        createNavigation(router, route, '/subscribe/success?ms=true')
+        createNavigation(router, route, '/subscribe/success')
       },
       navigateToSubscribeFail() {
-        createNavigation(router, route, '/subscribe/fail?ms=true')
+        createNavigation(router, route, '/subscribe/fail')
       },
       navigateToSubscribeSet() {
-        createNavigation(router, route, '/subscribe/set?ms=true')
+        createNavigation(router, route, '/subscribe/set')
       },
       navigateToSubscribeCancelAsk() {
-        createNavigation(router, route, '/subscribe/cancel-ask?ms=true')
+        createNavigation(router, route, '/subscribe/cancel-ask')
       },
       navigateToSubscribeCancelSuccess() {
-        createNavigation(router, route, '/subscribe/cancel-success?ms=true')
+        createNavigation(router, route, '/subscribe/cancel-success')
       },
       navigateToSubscribeCancelFail() {
-        createNavigation(router, route, '/subscribe/cancel-fail?ms=true')
+        createNavigation(router, route, '/subscribe/cancel-fail')
       },
       navigateToProfilePurchase() {
-        createNavigation(router, route, '/profile/purchase?ms=true')
+        createNavigation(router, route, '/profile/purchase')
       },
       navigateToEmailVerify() {
-        createNavigation(router, route, '/email-verify?ms=true')
+        createNavigation(router, route, '/email-verify')
       },
       navigateToSectionMember() {
         window.location.assign('/section/member')

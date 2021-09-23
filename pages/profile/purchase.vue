@@ -72,7 +72,7 @@ export default {
       sendMembershipSubscribe: send,
       memberShipStatusName,
       handleNavigateToSubscribeSet() {
-        window.location.assign('/subscribe/set?ms=true')
+        window.location.assign('/subscribe/set')
       },
     }
     function useMemberShipStatusName() {

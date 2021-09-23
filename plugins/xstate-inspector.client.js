@@ -2,7 +2,7 @@ import { inspect } from '@xstate/inspect'
 import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
 
 export default function (context) {
-  if (isMemberSubscribeFeatureToggled(context.route)) {
+  if (isMemberSubscribeFeatureToggled() && Boolean(context.route.query.ms)) {
     inspect({
       /*
        * options

@@ -27,7 +27,7 @@ export default {
   components: { SubscribeWrapper, UiMembershipButtonPrimary },
   methods: {
     handleBack() {
-      window.location.assign('/profile/purchase?ms=true')
+      window.location.assign('/profile/purchase')
     },
   },
 }
