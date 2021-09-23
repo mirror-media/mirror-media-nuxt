@@ -102,10 +102,10 @@ export default {
            * to ensure that user info is store in vuex
            * maybe this is a info: https://stackoverflow.com/questions/54591187/onauthstatechanged-doesnt-get-called-when-email-is-verified-in-flutter
            */
-          await this.$store.dispatch(
-            'membership/ON_AUTH_STATE_CHANGED_ACTION',
-            { authUser: result.user }
-          )
+          // await this.$store.dispatch(
+          //   'membership/ON_AUTH_STATE_CHANGED_ACTION',
+          //   { authUser: result.user }
+          // )
 
           await this.$apollo.mutate({
             mutation: userCreate,
