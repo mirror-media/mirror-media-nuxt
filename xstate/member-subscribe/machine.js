@@ -116,6 +116,7 @@ function getSubscription(memberType) {
     subscribe_yearly: '年訂閱',
     subscribe_monthly: '月訂閱',
     subscribe_one_time: '解鎖這篇報導',
+    marketing: 'marketing',
     none: null,
   }
   return mapping[memberType]

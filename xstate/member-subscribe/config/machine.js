@@ -121,6 +121,10 @@ export default {
                         cond: '是年訂閱的會員',
                       },
                       {
+                        target: 'marketing 資格訂閱',
+                        cond: '是marketing會員',
+                      },
+                      {
                         target: '未訂閱',
                       },
                     ],
@@ -145,6 +149,9 @@ export default {
                   type: 'final',
                 },
                 年訂閱: {
+                  type: 'final',
+                },
+                'marketing 資格訂閱': {
                   type: 'final',
                 },
               },

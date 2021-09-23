@@ -11,6 +11,7 @@ export default {
     是年訂閱的會員: (context) => context.subscription === '年訂閱',
     是訂閱但取消下期的會員: (context) =>
       context.subscription === '訂閱但取消下期',
+    是marketing會員: (context) => context.subscription === 'marketing',
 
     是否已確認訂購方案: (context) => context.subscriptionOrder,
     訂購方案為單篇訂閱: (context) =>
