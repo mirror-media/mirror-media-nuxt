@@ -211,7 +211,7 @@ export default {
 
   methods: {
     handleBack() {
-      this.$router.push('/subscribe')
+      window.location.assign('/subscribe')
     },
     setValidateOn() {
       this.validateOn = !this.validateOn
