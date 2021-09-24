@@ -20,16 +20,16 @@
           title="優惠折扣碼"
           :data="orderInfo.discountPrice"
         />
-        <SubscribeSuccessOrderInfoContentRow
-          title="訂閱起訖"
-          :data="orderInfo.during"
-          class="during"
-        />
+        <!--        <SubscribeSuccessOrderInfoContentRow-->
+        <!--          title="訂閱起訖"-->
+        <!--          :data="orderInfo.during"-->
+        <!--          class="during"-->
+        <!--        />-->
         <div class="subscribe-success__info_row">
           <div class="subscribe-success__info_row_title">訂閱方案</div>
           <div class="subscribe-success__info_row_data">
             <MembershipFormPerchaseInfo
-              :data="perchasedList"
+              :perchasedPlan="perchasedList"
               :showTitle="false"
             />
           </div>
@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOrderInfoContentRow.vue'
@@ -97,11 +98,9 @@ export default {
   data() {
     return {
       orderInfo: {
-        orderId: '202012213',
-        discountPrice: 'MJ00012345',
-        during: '2021-05-03～2021-06-03',
+        orderId: this.$route.query.orderNumber ?? '',
       },
-      orderDate: '2019-12-25',
+      orderDate: dayjs(new Date()).format('YYYY-MM-DD'),
 
       // TODO: remove due to not use anymore
       hasLink: false,
@@ -109,6 +108,46 @@ export default {
     }
   },
   computed: {
+    perchasedList() {
+      switch (this.$route.query.code) {
+        case 'one_time': {
+          return [
+            {
+              detail: '鏡週刊Basic會員（單篇）',
+              hint: '單篇 $1 元，享 14 天內無限次觀看',
+              price: '原價 NT$1',
+              newPrice: 1,
+              key: 'basic',
+            },
+          ]
+        }
+        case 'monthly': {
+          return [
+            {
+              detail: '鏡週刊Premium會員（月方案）',
+              hint: '每月 $49 元，信用卡自動續扣',
+              price: '原價 NT$99',
+              newPrice: 49,
+              key: 'month',
+            },
+          ]
+        }
+        case 'yearly': {
+          return [
+            {
+              detail: '鏡週刊Premium會員（年方案）',
+              hint: '每月 $499 元，信用卡自動續扣',
+              price: '原價 NT$1188',
+              newPrice: 499,
+              key: 'year',
+            },
+          ]
+        }
+        default: {
+          return [{}]
+        }
+      }
+    },
     successMessage() {
       if (this.isUpgradeFromMonthToYear) {
         return '您已完成變更方案，以下為本次變更資訊，您的新方案將於下期開始進行。'
