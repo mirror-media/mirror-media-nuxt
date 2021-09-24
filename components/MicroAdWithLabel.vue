@@ -64,7 +64,7 @@ export default {
   figure::before {
     content: '特企';
     display: inline;
-    z-index: 999999;
+    z-index: 2;
     padding: 4px;
     background: rgba(188, 188, 188, 1);
     color: #ffffff;
