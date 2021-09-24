@@ -1,9 +1,9 @@
 <template>
   <div v-if="brief[0]" class="brief">
-    <div v-for="paragraph in brief" :key="paragraph">
-      <template v-if="isString(paragraph[0])">
+    <div v-for="paragraph in brief" :key="paragraph.id">
+      <template v-if="isString(paragraph.content)">
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <div v-html="paragraph" />
+        <div class="brief__paragraph" v-html="paragraph.content" />
       </template>
       <template v-else>
         <UiStoryContentHandler :key="paragraph.id" :paragraph="paragraph" />
@@ -20,8 +20,8 @@ export default {
   },
   props: {
     brief: {
-      type: Object,
-      default: () => {},
+      type: Array,
+      default: () => [],
       require: true,
     },
   },
@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.brief {
+.brief::v-deep {
   margin-top: 28px;
   padding: 16px 24px;
   background: #054f77;
@@ -45,6 +45,14 @@ export default {
   @include media-breakpoint-up(md) {
     margin-top: 55px;
     padding: 24px 32px;
+  }
+
+  &__paragraph {
+    margin-top: 32px;
+  }
+
+  *:not(:first-child) {
+    margin-top: 32px;
   }
 }
 </style>
