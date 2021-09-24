@@ -8,7 +8,6 @@
     >
       以下尚未勾選
     </p>
-
     <div class="receipt__choose">
       <div class="receipt__choose_item">
         <UiSubscribeRadioInput
@@ -131,7 +130,7 @@ export default {
       receiptData: {
         receiptPlan: '',
         donateOrganization: '',
-        carrierType: '請選擇',
+        carrierType: '',
         carrierNumber: '',
         carrierTitle: '',
         carrierUbn: '',
@@ -152,16 +151,17 @@ export default {
   computed: {
     carrierNumberPlaceHolder() {
       let placeholder = ''
+
       switch (this.receiptData.carrierType) {
-        case 'Email 載具':
+        case '2': // 'Email 載具'
           placeholder = 'example@gmail.com'
           break
 
-        case '手機條碼':
+        case '0': // '手機條碼'
           placeholder = '斜線字元 /，後接 7 個大寫英數字或特殊符號'
           break
 
-        case '自然人憑證':
+        case '1': // '自然人憑證'
           placeholder = '2 個大寫英文字元，後接 14 個數字'
           break
       }
@@ -179,15 +179,15 @@ export default {
         },
         {
           name: 'Email 載具',
-          value: 'Email 載具',
+          value: '2',
         },
         {
           name: '手機條碼',
-          value: '手機條碼',
+          value: '0',
         },
         {
           name: '自然人憑證',
-          value: '自然人憑證',
+          value: '1',
         },
       ]
     },

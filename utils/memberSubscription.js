@@ -20,6 +20,7 @@ const baseUrl = process.browser
   ? `//${location.host}/`
   : 'http://localhost:3000/'
 const apiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0`
+const k3ApiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0/postInfo`
 
 async function getMemberType(context) {
   // determine whether user is logged in or not
@@ -362,6 +363,7 @@ async function getMemberSubscribePosts(subscriptionList) {
   }
 
   // fetch post's info via post id
+  console.log(k3ApiUrl)
   const {
     data: { _items },
   } = await axios.get(K3_API_FOR_GET_POSTS, { params: whereObjForSearch })

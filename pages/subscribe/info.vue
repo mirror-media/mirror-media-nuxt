@@ -160,7 +160,7 @@ export default {
       receiptData: {
         receiptPlan: '捐贈',
         donateOrganization: '',
-        carrierType: 'mail',
+        carrierType: '',
         carrierNumber: '',
         carrierTitle: '',
         carrierUbn: '',
@@ -187,7 +187,8 @@ export default {
         this.$store.state['membership-subscribe']?.basicInfo?.type
       )
       const choosedPlanType = formatMemberType(this.perchasedPlan[0]?.key)
-
+      console.log(currentMemberType)
+      console.log(choosedPlanType)
       if (currentMemberType === 'month' && choosedPlanType === 'year') {
         return true
       } else {
@@ -197,6 +198,42 @@ export default {
     frequency() {
       const planFrequency = this.perchasedPlan?.[0]?.key
       return formatMemberType(planFrequency)
+    },
+    validReceiptData() {
+      let validReceiptData
+      switch (this.receiptData.receiptPlan) {
+        case '捐贈':
+          validReceiptData = {
+            donateOrganization: this.receiptData.donateOrganization,
+            carrierType: '',
+            carrierNumber: '',
+            carrierTitle: '',
+            carrierUbn: '',
+          }
+          break
+
+        case '二聯式發票（含載具）':
+          validReceiptData = {
+            donateOrganization: '',
+            carrierType: this.receiptData.carrierType,
+            carrierNumber: this.receiptData.carrierNumber,
+            carrierTitle: '',
+            carrierUbn: '',
+          }
+          break
+
+        case '三聯式發票':
+          validReceiptData = {
+            donateOrganization: '',
+            carrierType: '',
+            carrierNumber: '',
+            carrierTitle: this.receiptData.carrierTitle,
+            carrierUbn: this.receiptData.carrierUbn,
+          }
+          break
+      }
+
+      return validReceiptData
     },
   },
   async created() {
@@ -307,6 +344,11 @@ export default {
           paymentMethod: 'newebpay',
           status: 'paying',
           promoteId: this.promoteId, // 折扣碼 (TODO)
+          loveCode: parseInt(this.validReceiptData.donateOrganization),
+          carrierType: parseInt(this.validReceiptData.carrierType),
+          carrierNum: this.validReceiptData.carrierNumber,
+          buyerName: this.validReceiptData.carrierTitle,
+          buyerUBN: this.validReceiptData.carrierUbn,
         }
       } else {
         // one_time
@@ -317,8 +359,14 @@ export default {
           status: 'paying',
           promoteId: this.promoteId, // 折扣碼 (TODO)
           postId: subscribePostId,
+          loveCode: parseInt(this.validReceiptData.donateOrganization),
+          carrierType: parseInt(this.validReceiptData.carrierType),
+          carrierNum: this.validReceiptData.carrierNumber,
+          buyerName: this.validReceiptData.carrierTitle,
+          buyerUBN: this.validReceiptData.carrierUbn,
         }
       }
+      console.log(gateWayPayload)
       return await this.$getPaymentDataOfSubscription(gateWayPayload)
     },
   },
