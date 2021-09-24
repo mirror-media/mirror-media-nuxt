@@ -1,11 +1,8 @@
 <template>
   <div class="wrapper">
     <article class="article-body">
-      <ContentHandler
-        v-for="item in contentWithBriefAhead"
-        :key="item.id"
-        :item="item"
-      />
+      <UiPremiumBrief :brief="brief" />
+      <ContentHandler v-for="item in content" :key="item.id" :item="item" />
 
       <ClientOnly>
         <template v-if="pageState === 'premiumPageIsLogin'">
@@ -70,6 +67,7 @@
 
 <script>
 import ContentHandler from './ContentHandler.vue'
+import UiPremiumBrief from './UiPremiumBrief.vue'
 import UiPremiumInviteToLogin from '~/components/UiPremiumInviteToLogin.vue'
 import UiPremiumInviteToSubscribe from '~/components/UiPremiumInviteToSubscribe.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
@@ -82,6 +80,7 @@ export default {
     ContentHandler,
     UiPremiumInviteToLogin,
     UiPremiumInviteToSubscribe,
+    UiPremiumBrief,
   },
 
   setup() {
@@ -118,12 +117,6 @@ export default {
           'storyPage',
         ].includes(value)
       },
-    },
-  },
-
-  computed: {
-    contentWithBriefAhead() {
-      return this.brief.concat(this.content)
     },
   },
   methods: {

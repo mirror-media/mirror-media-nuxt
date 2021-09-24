@@ -404,7 +404,8 @@ export {
 
   @each $name, $color in $sections-color {
     &.#{$name} {
-      .story__category::before {
+      .story__category::before,
+      .story__brief {
         background-color: $color;
       }
     }
@@ -499,7 +500,7 @@ export {
     font-size: 19.2px; // 1.2rem
     font-weight: 700;
     line-height: 36px;
-    background-color: rgba(5, 79, 119, 1);
+    background-color: #000;
     &::v-deep {
       .g-story-paragraph {
         color: #fff;
