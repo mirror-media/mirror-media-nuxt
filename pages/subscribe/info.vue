@@ -282,6 +282,7 @@ export default {
         const result = await this.getPaymentDataFromApiGateWay()
         const tradeInfo = qs.parse(result)
 
+        console.log(window.location)
         // // encrypt tradeInfo
         const encryptPaymentPayload = await this.$axios.$post(
           `${window.location.origin}/api/newebpay/encrypt`,
