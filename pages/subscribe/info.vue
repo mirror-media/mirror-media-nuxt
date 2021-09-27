@@ -105,6 +105,9 @@ export default {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
       perchasedPlan,
+      isUpgradeFromMonthToYear: !!state?.value?.matches(
+        '會員訂閱功能.方案購買流程.確認訂購頁.確認訂購表單頁.準備將月訂閱升級年訂閱'
+      ),
     }
 
     function usePerchasedPlan() {
@@ -181,19 +184,6 @@ export default {
   computed: {
     showSimFormStatus() {
       return ENV === 'local'
-    },
-    isUpgradeFromMonthToYear() {
-      const currentMemberType = formatMemberType(
-        this.$store.state['membership-subscribe']?.basicInfo?.type
-      )
-      const choosedPlanType = formatMemberType(this.perchasedPlan[0]?.key)
-      console.log(currentMemberType)
-      console.log(choosedPlanType)
-      if (currentMemberType === 'month' && choosedPlanType === 'year') {
-        return true
-      } else {
-        return false
-      }
     },
     frequency() {
       const planFrequency = this.perchasedPlan?.[0]?.key
