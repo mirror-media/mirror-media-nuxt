@@ -53,7 +53,7 @@ mutation fetchPaymentDataOfSubscriptionRecurring(
       buyerName: $buyerName
       buyerUBN: $buyerUBN
     }
-    info: { returnToPath: "這是什麼鬼" }
+    info: { returnToPath: "" }
   ) {
     subscription {
       frequency
@@ -88,9 +88,9 @@ mutation fetchPaymentDataOfSubscriptionOneTime(
       buyerUBN: $buyerUBN
     }
     info: {
-      postSlug: "我是postSlug"
-      postTitle: "我是postTitle"
-      returnToPath: "這是什麼鬼"
+      postSlug: ""
+      postTitle: ""
+      returnToPath: ""
     }
   ) {
     subscription {
