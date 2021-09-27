@@ -73,7 +73,7 @@ export default {
 
           this.$router.push(`/login?destination=%2F${destination}`)
         } else {
-          this.$router.push('/subscribe/info')
+          this.$router.push('/subscribe')
         }
       } else {
         this.$router.push(`/login?destination=%2F${destination}`)
