@@ -282,10 +282,9 @@ export default {
         const result = await this.getPaymentDataFromApiGateWay()
         const tradeInfo = qs.parse(result)
 
-        console.log(window.location)
         // // encrypt tradeInfo
         const encryptPaymentPayload = await this.$axios.$post(
-          `${window.location.origin}/api/newebpay/encrypt`,
+          `${window.location.origin}/api/v2/newebpay/v1`,
           tradeInfo
         )
 
@@ -367,7 +366,7 @@ export default {
           buyerUBN: this.validReceiptData.carrierUbn,
         }
       }
-      console.log(gateWayPayload)
+
       return await this.$getPaymentDataOfSubscription(gateWayPayload)
     },
   },

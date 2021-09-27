@@ -291,7 +291,11 @@ module.exports = {
       path: `/${API_PATH_FRONTEND}/member-subscription/v0`,
       handler: '~/api/member-subscription-proxy.js',
     },
-    { path: `/${API_PATH_FRONTEND}`, handler: '~/api/index.js' },
+    {
+      path: `/${API_PATH_FRONTEND}/newebpay/v1`,
+      handler: '~/api/newebpay.js',
+    },
+    { path: `/${API_PATH_FRONTEND}`, handler: '~/api/index.js' }, // this proxy MUST be in the last of serverMiddleware
   ],
 
   /**
