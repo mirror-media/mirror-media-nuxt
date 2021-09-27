@@ -83,7 +83,7 @@ export default {
     return {
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
-      isNavigateFromPremiumPage: state.value.matches(
+      isNavigateFromPremiumPage: !!state?.value?.matches(
         '會員訂閱功能.方案購買流程.付款成功頁.是從會員文章頁來的'
       ),
     }
