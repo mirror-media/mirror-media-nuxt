@@ -5,8 +5,11 @@
       <h6 class="plan-card__info_title">{{ title }}</h6>
 
       <ul class="plan-card__info_details">
-        <li v-for="detail in details" :key="detail">
-          <img src="~/assets/list-style-ckeck.svg" />{{ detail }}
+        <li v-for="detail in details" :key="detail.text">
+          <img src="~/assets/list-style-ckeck.svg" />
+          <span :class="{ hightlight: detail.isHightlight }">
+            {{ detail.text }}
+          </span>
         </li>
       </ul>
     </div>
@@ -135,6 +138,10 @@ export default {
         &:not(:last-child) {
           padding-bottom: 12px;
         }
+      }
+
+      .hightlight {
+        color: #054f77;
       }
     }
   }
