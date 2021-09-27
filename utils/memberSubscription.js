@@ -489,7 +489,7 @@ async function updateSubscriptionFromMonthToYear(context, subscriptionId) {
   if (!firebaseId) return null
 
   // get user's subscription state
-  await fireGqlRequest(
+  return await fireGqlRequest(
     setSubscriptionFromMonthToYear,
     {
       id: subscriptionId,

@@ -303,13 +303,18 @@ export default {
         if (!currentSubscription) return
 
         // update subscription from month to year
-        await this.$updateSubscriptionFromMonthToYear(currentSubscription.id)
+        const updatedSubscription = await this.$updateSubscriptionFromMonthToYear(
+          currentSubscription.id
+        )
         this.isLoading = false
 
         window.alert('方案已升級為年訂閱，下次扣款日立即生效。')
 
-        // TODO: redirect to success page (TO KEVIN)
-        this.$router.push('/subscribe/success')
+        const orderNumber =
+          updatedSubscription?.data?.updatesubscription?.orderNumber
+        this.$router.push(
+          `/subscribe/success?orderNumber=${orderNumber}&code=yearly`
+        )
       } catch (error) {
         console.error(error)
         this.isLoading = false
