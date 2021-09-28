@@ -16,8 +16,9 @@ import {
 } from '~/apollo/mutations/memberSubscriptionMutation.gql'
 
 import { API_PATH_FRONTEND, K3_API_FOR_GET_POSTS } from '~/configs/config.js'
+
 const baseUrl = process.browser
-  ? `//${location.host}/`
+  ? `${location.origin}/`
   : 'http://localhost:3000/'
 const apiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0`
 const k3ApiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0/postInfo`
