@@ -346,9 +346,10 @@ module.exports = {
          * exposed apiKey in config is not a security risk
          * see: https://stackoverflow.com/a/37484053
          */
-        config:
-          ENV === 'prod' || ENV === 'staging'
-            ? {
+        config: (function getFirebaseConfig(ENV) {
+          switch (ENV) {
+            case 'prod': {
+              return {
                 apiKey: 'AIzaSyDluvbZhIQgcicqXVarLkdP4PG6maZlEMI',
                 authDomain: 'mirromedia-app.firebaseapp.com',
                 databaseURL: 'https://mirromedia-app.firebaseio.com',
@@ -358,7 +359,22 @@ module.exports = {
                 appId: '1:231032158952:web:975862d0b50f8bdd1d275d',
                 measurementId: 'G-Q1GK3C4WNR',
               }
-            : {
+            }
+
+            case 'staging': {
+              return {
+                apiKey: 'AIzaSyD-cFjoIjlEn7-dZtl3zw7OYCRPerl5URs',
+                authDomain: 'mirrormedia-staging.firebaseapp.com',
+                projectId: 'mirrormedia-staging',
+                storageBucket: 'mirrormedia-staging.appspot.com',
+                messagingSenderId: '388524095772',
+                appId: '1:388524095772:web:e3739160c042909827a2d9',
+              }
+            }
+
+            case 'dev':
+            default: {
+              return {
                 apiKey: 'AIzaSyAavk46-8OQ4B2cv0TOqxOMjd5Fe4tIauc',
                 authDomain: 'mirrormediaapptest.firebaseapp.com',
                 databaseURL: 'https://mirrormediaapptest.firebaseio.com',
@@ -367,7 +383,10 @@ module.exports = {
                 messagingSenderId: '305253456270',
                 appId: '1:305253456270:web:21f9851dd09f60ebfbacdf',
                 measurementId: 'G-EY5CYC602Z',
-              },
+              }
+            }
+          }
+        })(ENV),
         services: {
           auth: {
             ssr: {
