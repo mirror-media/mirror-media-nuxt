@@ -100,14 +100,14 @@ pipeline:
       event: [push]
       branch: [master]
 
-  getProdBConfig:
+  getProdNextConfig:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
     secrets: [google_credentials]
     commands:
       - rm -rf ../configs
       - rm -rf ./configs/*
       - gcloud source repos clone configs ../configs
-      - cp ../configs/mirror-media/mirror-media-nuxt/prod-b/config.js ./configs/config.js
+      - cp ../configs/mirror-media/mirror-media-nuxt/prod-next/config.js ./configs/config.js
     when:
       event: [push]
       branch: [1.45.x]
