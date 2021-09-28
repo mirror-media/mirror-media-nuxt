@@ -21,7 +21,7 @@ steps:
       - cp
       - "-R"
       - ./configs.build/mirror-media/mirror-media-nuxt/gcskeyfile.json
-      - ./configs/gcskeyfile.json
+      - ./gcskeyfile.json
   - name: gcr.io/cloud-builders/gcloud
     args:
       - source
