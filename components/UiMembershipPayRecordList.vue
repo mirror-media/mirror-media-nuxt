@@ -3,8 +3,13 @@
     <div class="pay-list__content">
       <div class="pay-list__content_date">{{ pay.date }}</div>
       <div class="pay-list__content_number">
-        <div class="pay-list__content_number_type">{{ pay.type }}</div>
         <div class="pay-list__content_number_number">{{ pay.number }}</div>
+        <div v-if="!isTitleRow" class="pay-list__content_number_type">
+          {{ pay.type }}・<span
+            :class="{ 'warning-highlight': paymentStatus.warningHightlight }"
+            >{{ paymentStatus.text }}</span
+          >
+        </div>
       </div>
       <div class="pay-list__content_method">
         {{ pay.method }}
@@ -23,6 +28,19 @@ export default {
       require: true,
       default: () => {},
     },
+    isTitleRow: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    paymentStatus() {
+      if (this.pay?.status === 'SUCCESS') {
+        return { text: '付款成功' }
+      } else if (this.pay?.status?.length) {
+        return { text: '付款失敗', warningHightlight: true }
+      } else return { text: '' }
+    },
   },
   methods: {
     price(price) {
@@ -31,6 +49,9 @@ export default {
       }
       return price
     },
+  },
+  mounted() {
+    console.log(this.pay)
   },
 }
 </script>
@@ -54,9 +75,9 @@ export default {
       gap: 4px;
       @include media-breakpoint-up(sm) {
         display: flex;
-        flex-direction: row-reverse;
+        flex-direction: column;
         justify-content: flex-end;
-        align-items: flex-end;
+        align-items: flex-start;
       }
 
       &_type {
@@ -64,6 +85,10 @@ export default {
           font-size: 13px;
           line-height: 18px;
           color: rgba(0, 0, 0, 0.3);
+        }
+
+        .warning-highlight {
+          color: #e51731;
         }
       }
 

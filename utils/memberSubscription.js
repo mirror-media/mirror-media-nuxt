@@ -178,6 +178,7 @@ function getMemberPayRecords(subscriptionList) {
         method: newebpayPayment.paymentMethod,
         methodNote: `(${newebpayPayment.cardInfoLastFour || ''})`,
         price: newebpayPayment.amount,
+        status: newebpayPayment.status,
       }
       payRecords.push(payRecord)
     })

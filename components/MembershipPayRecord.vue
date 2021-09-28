@@ -4,7 +4,11 @@
       <div class="pay-record__title_status">付款紀錄</div>
     </div>
     <div class="pay-record__form">
-      <UiMembershipPayRecordList v-show="!isMobile" :pay="payListTitle" />
+      <UiMembershipPayRecordList
+        v-show="!isMobile"
+        :pay="payListTitle"
+        :isTitleRow="true"
+      />
       <UiMembershipPayRecordList
         v-for="(pay, index) in payRecords"
         :key="index"
