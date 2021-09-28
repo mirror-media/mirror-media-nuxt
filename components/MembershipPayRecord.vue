@@ -13,8 +13,8 @@
       />
       <div
         v-show="showMorePayRecordButton"
-        @click="$emit('load-more-record')"
         class="pay-record__form_row load-more"
+        @click="$emit('load-more-record')"
       >
         展開更多
         <img src="~/assets/arrow-down-default.svg" />

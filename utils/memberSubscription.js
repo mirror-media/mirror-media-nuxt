@@ -415,8 +415,10 @@ async function getMemberShipStatus(context, memberShipStatusName) {
     newebpayPayment,
     isCanceled,
   } = subscription[0]
-  const { paymentMethod, cardInfoLastFour } = newebpayPayment[0]
-
+  const { paymentMethod, cardInfoLastFour } = newebpayPayment?.[0] || {
+    paymentMethod: null,
+    cardInfoLastFour: null,
+  }
   if (isCanceled && frequency === 'yearly') {
     return {
       name: 'disturb-yearly',

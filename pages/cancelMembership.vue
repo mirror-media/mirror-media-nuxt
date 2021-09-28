@@ -15,10 +15,13 @@
 </template>
 
 <script>
+import { ENV } from '../configs/config.js'
 import ContainerMembershipCancelHoldUp from '~/components/ContainerMembershipCancelHoldUp.vue'
 import ContainerMembershipCancelPleaseConfirm from '~/components/ContainerMembershipCancelPleaseConfirm.vue'
 import ContainerMembershipCancelSuccess from '~/components/ContainerMembershipCancelSuccess.vue'
 import ContainerMembershipCancelError from '~/components/ContainerMembershipCancelError.vue'
+
+const IS_SUBSCRIPTION_FUNCTION_IS_ON = ENV !== 'prod'
 
 export default {
   components: {
@@ -29,6 +32,8 @@ export default {
   },
   middleware: ['authenticate'],
   async asyncData(context) {
+    if (IS_SUBSCRIPTION_FUNCTION_IS_ON) return
+
     const memberType = await context.$getMemberType()
 
     const isPremiumOrVip =

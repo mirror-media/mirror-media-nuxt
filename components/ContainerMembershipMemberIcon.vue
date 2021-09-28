@@ -13,7 +13,12 @@
         class="logged-in-wrapper__dropdown-menu dropdown-menu"
       >
         <a href="/profile" class="dropdown-menu__list">個人資料</a>
-        <a href="/profile/purchase" class="dropdown-menu__list">訂閱紀錄</a>
+        <a
+          v-if="inSubscriptionFunctionIsOn"
+          href="/profile/purchase"
+          class="dropdown-menu__list"
+          >訂閱紀錄</a
+        >
         <button
           class="dropdown-menu__sign-out-button sign-out-button"
           @click="handleSignOutButtonClick"
@@ -33,8 +38,9 @@
 </template>
 
 <script>
+import { ENV } from '../configs/config.js'
 import SvgMembershipMemberIconLoggedIn from '~/assets/membership-member-icon-logged-in.svg?inline'
-
+const IS_SUBSCRIPTION_FUNCTION_IS_ON = ENV !== 'prod'
 export default {
   components: {
     SvgMembershipMemberIconLoggedIn,
@@ -42,6 +48,7 @@ export default {
   data() {
     return {
       shouldShowDropdownMenu: false,
+      inSubscriptionFunctionIsOn: IS_SUBSCRIPTION_FUNCTION_IS_ON,
     }
   },
   computed: {
