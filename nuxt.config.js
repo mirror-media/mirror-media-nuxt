@@ -350,14 +350,13 @@ module.exports = {
           switch (ENV) {
             case 'prod': {
               return {
-                apiKey: 'AIzaSyDluvbZhIQgcicqXVarLkdP4PG6maZlEMI',
-                authDomain: 'mirromedia-app.firebaseapp.com',
-                databaseURL: 'https://mirromedia-app.firebaseio.com',
-                projectId: 'mirromedia-app',
-                storageBucket: 'mirromedia-app.appspot.com',
-                messagingSenderId: '231032158952',
-                appId: '1:231032158952:web:975862d0b50f8bdd1d275d',
-                measurementId: 'G-Q1GK3C4WNR',
+                apiKey: 'AIzaSyBZVaJXDbtc6O6Iy36OeYDG8Cd9pB2vq54',
+                authDomain: 'mirror-weekly.firebaseapp.com',
+                projectId: 'mirror-weekly',
+                storageBucket: 'mirror-weekly.appspot.com',
+                messagingSenderId: '814835936704',
+                appId: '1:814835936704:web:ce5288f6d1c0f71828ec25',
+                measurementId: 'G-2FDRC4S37L',
               }
             }
 
