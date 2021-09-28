@@ -28,13 +28,7 @@ steps:
       - repos
       - clone
       - default
-      - default.build
-  - name: bash
-    args:
-      - cp
-      - "-R"
-      - ./default.build/plate-vue/config.js
-      - ./deprecated/topic-page/api/config.js
+      - default
   - name: bash
     args:
       - cp
