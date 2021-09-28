@@ -160,7 +160,7 @@ pipeline:
       tier: frontend
     when:
       event: [push]
-      branch: [dev, 1.45.x]
+      branch: [dev]
 
   rebuildCache:
     image: drillster/drone-volume-cache
