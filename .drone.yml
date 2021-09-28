@@ -12,7 +12,7 @@ pipeline:
       Someone gave *{{build.branch}}* a little push.
     when:
       event: [push]
-      branch: [dev, staging, master]
+      branch: [dev, staging, master, 1.45.x]
 
   restoreCache:
     image: drillster/drone-volume-cache
@@ -24,7 +24,7 @@ pipeline:
       - /tmp/cache:/cache
     when:
       event: [push]
-      branch: [dev, staging, master]
+      branch: [dev, staging, master, 1.45.x]
 
   getGCSKeyFile:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
@@ -34,56 +34,56 @@ pipeline:
       - cp ../configs/mirror-media/mirror-media-nuxt/gcskeyfile.json ./gcskeyfile.json
     when:
       event: [push]
-      branch: [dev, staging, master]
+      branch: [dev, staging, master, 1.45.X]
 
-#  getCIConfig:
-#    image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
-#    secrets: [google_credentials]
-#    commands:
-#    - rm -rf ../configs
-#    - rm -rf ./configs/*
-#    - gcloud source repos clone configs ../configs
-#    - cp ../configs/mirror-media/mirror-media-nuxt/ci/config.js ./configs/config.js
-#    when:
-#      event: [push, pull_request]
-#      branch: [dev]
-#
-#  buildCI:
-#    image: node:12.16.2-slim
-#    commands:
-#    - apt-get update && apt-get install -y node-gyp
-#    - yarn install
-#    - yarn run build
-#    when:
-#      event: [push, pull_request]
-#      branch: [dev]
-#
-#  lighouseCI:
-#    image: node:12.16.2-slim
-#    secrets: [lhci_github_app_token, lhci_build_context__git_remote]
-#    commands:
-#      - echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google.list
-#      - apt-get update && apt-get install -y gnupg2
-#      - apt-get update && apt-get install -y wget
-#      - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
-#      - apt-get update && apt-get install -y google-chrome-stable
-#      - export CHROME_PATH=$(which google-chrome-stable)
-#      - export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
-#      - apt-get update && apt-get -y install procps
-#      - npm install -g @lhci/cli@0.4.x
-#      - lhci autorun
-#    when:
-#      event: [push, pull_request]
-#      branch: [dev]
+  #  getCIConfig:
+  #    image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
+  #    secrets: [google_credentials]
+  #    commands:
+  #    - rm -rf ../configs
+  #    - rm -rf ./configs/*
+  #    - gcloud source repos clone configs ../configs
+  #    - cp ../configs/mirror-media/mirror-media-nuxt/ci/config.js ./configs/config.js
+  #    when:
+  #      event: [push, pull_request]
+  #      branch: [dev]
+  #
+  #  buildCI:
+  #    image: node:12.16.2-slim
+  #    commands:
+  #    - apt-get update && apt-get install -y node-gyp
+  #    - yarn install
+  #    - yarn run build
+  #    when:
+  #      event: [push, pull_request]
+  #      branch: [dev]
+  #
+  #  lighouseCI:
+  #    image: node:12.16.2-slim
+  #    secrets: [lhci_github_app_token, lhci_build_context__git_remote]
+  #    commands:
+  #      - echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google.list
+  #      - apt-get update && apt-get install -y gnupg2
+  #      - apt-get update && apt-get install -y wget
+  #      - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+  #      - apt-get update && apt-get install -y google-chrome-stable
+  #      - export CHROME_PATH=$(which google-chrome-stable)
+  #      - export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
+  #      - apt-get update && apt-get -y install procps
+  #      - npm install -g @lhci/cli@0.4.x
+  #      - lhci autorun
+  #    when:
+  #      event: [push, pull_request]
+  #      branch: [dev]
 
   getDevConfig:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
     secrets: [google_credentials]
     commands:
-    - rm -rf ../configs
-    - rm -rf ./configs/*
-    - gcloud source repos clone configs ../configs
-    - cp ../configs/mirror-media/mirror-media-nuxt/dev/config.js ./configs/config.js
+      - rm -rf ../configs
+      - rm -rf ./configs/*
+      - gcloud source repos clone configs ../configs
+      - cp ../configs/mirror-media/mirror-media-nuxt/dev/config.js ./configs/config.js
     when:
       event: [push]
       branch: [dev]
@@ -92,13 +92,25 @@ pipeline:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
     secrets: [google_credentials]
     commands:
-    - rm -rf ../configs
-    - rm -rf ./configs/*
-    - gcloud source repos clone configs ../configs
-    - cp ../configs/mirror-media/mirror-media-nuxt/prod/config.js ./configs/config.js
+      - rm -rf ../configs
+      - rm -rf ./configs/*
+      - gcloud source repos clone configs ../configs
+      - cp ../configs/mirror-media/mirror-media-nuxt/prod/config.js ./configs/config.js
     when:
       event: [push]
       branch: [master]
+
+  getProdBConfig:
+    image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
+    secrets: [google_credentials]
+    commands:
+      - rm -rf ../configs
+      - rm -rf ./configs/*
+      - gcloud source repos clone configs ../configs
+      - cp ../configs/mirror-media/mirror-media-nuxt/prod-b/config.js ./configs/config.js
+    when:
+      event: [push]
+      branch: [1.45.x]
 
   getStagingConfig:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
@@ -115,12 +127,12 @@ pipeline:
   build:
     image: node:12.16.2-slim
     commands:
-    - apt-get update && apt-get install -y node-gyp
-    - yarn install
-    - yarn run build
+      - apt-get update && apt-get install -y node-gyp
+      - yarn install
+      - yarn run build
     when:
       event: [push]
-      branch: [dev, staging, master]
+      branch: [dev, staging, master, 1.45.x]
 
   publish:
     image: plugins/gcr
@@ -131,7 +143,7 @@ pipeline:
     secrets: [google_credentials]
     when:
       event: [push]
-      branch: [dev, staging, master]
+      branch: [dev, staging, master, 1.45.x]
 
   deployDev:
     image: nytimes/drone-gke
@@ -148,7 +160,7 @@ pipeline:
       tier: frontend
     when:
       event: [push]
-      branch: [dev]
+      branch: [dev, 1.45.x]
 
   rebuildCache:
     image: drillster/drone-volume-cache
@@ -159,7 +171,7 @@ pipeline:
     volumes:
       - /tmp/cache:/cache
     when:
-      branch: [dev, staging, master]
+      branch: [dev, staging, master, 1.45.x]
 
   finishSlack:
     image: plugins/slack
@@ -170,7 +182,7 @@ pipeline:
     when:
       status: [success, failure]
       event: [push]
-      branch: [dev, staging, master]
+      branch: [dev, staging, master, 1.45.x]
     template: >
       {{#success build.status}}
         *success* ${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER} was well served.
