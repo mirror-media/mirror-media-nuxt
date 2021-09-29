@@ -10,7 +10,7 @@ export default ENV === 'prod' || ENV === 'staging'
         installApp: false,
         minimumVersion: '12',
       },
-      dynamicLinkDomain: 'mirrormedia.page.link',
+      dynamicLinkDomain: 'mirrorweekly.page.link',
     }
   : {
       iOS: {

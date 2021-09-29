@@ -71,7 +71,7 @@ export default {
                 installApp: true,
                 minimumVersion: '12',
               },
-              dynamicLinkDomain: 'mirrormedia.page.link',
+              dynamicLinkDomain: 'mirrorweekly.page.link',
             }
           : {
               iOS: {
