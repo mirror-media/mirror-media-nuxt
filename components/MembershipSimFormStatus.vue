@@ -5,7 +5,7 @@
       <input
         v-model="simMembershipStatus"
         type="radio"
-        value="not-at-all"
+        value="none"
         @change="changeHandler"
       />
       <span>無訂閱紀錄</span>
@@ -14,7 +14,7 @@
       <input
         v-model="simMembershipStatus"
         type="radio"
-        value="single-post"
+        value="subscribe_one_time"
         @change="changeHandler"
       />
       <span>basic單篇</span>

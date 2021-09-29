@@ -43,24 +43,21 @@ function formatMemberType(israfelMemberType) {
   switch (israfelMemberType) {
     case 'subscribe_one_time':
     case 'one_time':
-    case 'single-post':
-      return 'basic'
+      return 'subscribe_one_time'
 
     case 'subscribe_monthly':
-    case 'month':
     case 'monthly':
-      return 'month'
+      return 'subscribe_monthly'
 
     case 'subscribe_yearly':
-    case 'year':
     case 'yearly':
-      return 'year'
+      return 'subscribe_yearly'
 
     case 'marketing':
       return 'marketing'
     case 'none':
     default:
-      return 'basic'
+      return 'none'
   }
 }
 
@@ -386,9 +383,9 @@ async function getMemberShipStatus(context, memberShipStatusName) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
-  if (memberShipStatusName === 'single-post') {
+  if (memberShipStatusName === 'subscribe_one_time') {
     return {
-      name: 'single-post',
+      name: 'subscribe_one_time',
       dueDate: null,
       nextPayDate: null,
       payMethod: null,
@@ -411,6 +408,7 @@ async function getMemberShipStatus(context, memberShipStatusName) {
   // destructure subscription and format it
   const {
     frequency,
+    nextFrequency,
     periodEndDatetime,
     periodNextPayDatetime,
     newebpayPayment,
@@ -420,27 +418,39 @@ async function getMemberShipStatus(context, memberShipStatusName) {
     paymentMethod: null,
     cardInfoLastFour: null,
   }
+
   if (isCanceled && frequency === 'yearly') {
     return {
-      name: 'disturb-yearly',
+      name: 'subscribe_yearly_disturb',
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: null,
       payMethod: null,
     }
   } else if (isCanceled && frequency === 'monthly') {
     return {
-      name: 'disturb-monthly',
+      name: 'subscribe_monthly_disturb',
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: null,
       payMethod: null,
     }
   } else {
     return {
-      name: formatMemberType(frequency),
+      name: generateMemberShipStatusName(),
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: getFormatDateWording(periodNextPayDatetime),
       payMethod: `${paymentMethod}(${cardInfoLastFour})`,
     }
+  }
+
+  function generateMemberShipStatusName() {
+    let nameTale = ''
+    if (frequency === 'monthly' && nextFrequency === 'yearly') {
+      nameTale = '_update_to_yearly'
+    } else if (frequency === 'yearly' && nextFrequency === 'monthly') {
+      nameTale = '_update_to_monthly'
+    }
+
+    return `${memberShipStatusName}${nameTale}`
   }
 }
 async function getSubscriptionPayments(context, loadmoreConfig) {

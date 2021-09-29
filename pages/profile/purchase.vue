@@ -2,7 +2,7 @@
   <div class="purchase">
     <ClientOnly>
       <h1 class="purchase__title">訂閱紀錄</h1>
-      <SubscribeWrapper v-if="memberShipStatusName !== 'not-at-all'">
+      <SubscribeWrapper v-if="memberShipStatusName !== 'none'">
         <MemberShipStatus
           :isMobile="isMobile"
           :memberShipStatus="memberShipStatus"
@@ -85,19 +85,19 @@ export default {
       function computeMemberShipStatusName(state) {
         const parentState = '會員訂閱功能.付款紀錄頁.已登入'
         if (state?.matches(`${parentState}.已登入（無購買紀錄）`)) {
-          return 'not-at-all'
+          return 'none'
         } else if (state?.matches(`${parentState}.已登入（只有單篇購買過）`)) {
-          return 'single-post'
+          return 'subscribe_one_time'
         } else if (state?.matches(`${parentState}.已登入（已訂閱月方案）`)) {
-          return 'month'
+          return 'subscribe_monthly'
         } else if (state?.matches(`${parentState}.已登入（已訂閱年方案）`)) {
-          return 'year'
+          return 'subscribe_yearly'
         } else if (
           state?.matches(`${parentState}.已登入（已訂閱但取消下期）`)
         ) {
           return 'disturb'
         } else {
-          return 'not-at-all'
+          return 'none'
         }
       }
     }
@@ -111,7 +111,7 @@ export default {
       payRecordMetaCount: 4,
       isMobile: false,
       memberShipStatus: {
-        name: 'not-at-all',
+        name: 'none',
         dueDate: null,
         nextPayDate: null,
         payMethod: null,
@@ -127,11 +127,15 @@ export default {
     },
     isPremium() {
       const status = this.memberShipStatusName
-      return status === 'year' || status === 'month' || status === 'disturb'
+      return (
+        status === 'subscribe_yearly' ||
+        status === 'subscribe_monthly' ||
+        status === 'disturb'
+      )
     },
     isBasic() {
       const status = this.memberShipStatusName
-      return status === 'single-post'
+      return status === 'subscribe_one_time'
     },
     showedPostList() {
       return this.postList.slice(0, this.postMetaCount)

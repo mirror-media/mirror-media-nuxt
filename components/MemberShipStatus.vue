@@ -7,17 +7,17 @@
       </div>
       <div class="membership-status__title_button_group">
         <UiMembershipButtonPrimary
-          v-if="memberShipStatus.name === 'month'"
+          v-if="canUpdateToYearly"
           @click.native="$emit('upgradeToSubscribeYearly')"
           >變更為年訂閱方案</UiMembershipButtonPrimary
         >
         <UiMembershipButtonPrimary
-          v-else-if="memberShipStatus.name === 'single-post'"
+          v-else-if="memberShipStatus.name === 'subscribe_one_time'"
           @click.native="$emit('upgradeInSinglePost')"
           >升級 Premium 會員</UiMembershipButtonPrimary
         >
         <UiMembershipButtonSecondary
-          v-if="memberShipStatus.name !== 'single-post'"
+          v-if="memberShipStatus.name !== 'subscribe_one_time'"
           @click.native="$emit('navigateToSubscribeSet')"
           >付款設定</UiMembershipButtonSecondary
         >
@@ -40,11 +40,14 @@
         <div>{{ nullTodash(memberShipStatus.payMethod) }}</div>
       </div>
     </div>
+    <div v-if="isDisturb" class="membership-status__form_hint">
+      提醒您，您的訂閱將於本期結束後自動取消。
+    </div>
     <div
-      v-if="memberShipStatus.name === 'disturb'"
+      v-if="updatePrompt.isReadyToUpdate"
       class="membership-status__form_hint"
     >
-      提醒您，您的訂閱將於本期結束後自動取消。
+      {{ updatePrompt.updateHint }}
     </div>
   </div>
 </template>
@@ -77,10 +80,39 @@ export default {
       return this.isPremium ? '會員等級：Premium會員' : '會員等級：Basic 會員'
     },
     premiumPlan() {
-      return this.memberShipStatus.name === 'year' ||
-        this.memberShipStatus.name === 'disturb-yearly'
+      return this.memberShipStatus.name === 'subscribe_yearly' ||
+        this.memberShipStatus.name === 'subscribe_yearly_update_to_monthly' ||
+        this.memberShipStatus.name === 'subscribe_yearly_disturb'
         ? '年訂閱'
         : '月訂閱'
+    },
+    canUpdateToYearly() {
+      return (
+        this.memberShipStatus.name === 'subscribe_monthly' ||
+        this.memberShipStatus.name === 'subscribe_monthly_disturb'
+      )
+    },
+    isDisturb() {
+      return (
+        this.memberShipStatus.name === 'subscribe_monthly_disturb' ||
+        this.memberShipStatus.name === 'subscribe_yearly_disturb' ||
+        this.memberShipStatus.name === 'disturb'
+      )
+    },
+    updatePrompt() {
+      if (this.memberShipStatus.name === 'subscribe_monthly_update_to_yearly') {
+        return {
+          isReadyToUpdate: true,
+          updateHint: `您已成功完成年訂閱方案變更，年訂閱將於本次週期結束後生效。`,
+        }
+      } else if (
+        this.memberShipStatus.name === 'subscribe_yearly_update_to_monthly'
+      ) {
+        return {
+          isReadyToUpdate: true,
+          updateHint: `您已成功完成月訂閱方案變更，月訂閱將於本次週期結束後生效。`,
+        }
+      } else return { isReadyToUpdate: false }
     },
   },
   methods: {
