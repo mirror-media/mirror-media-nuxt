@@ -141,16 +141,6 @@ export default {
   mounted() {
     const currentUser = this.$fire.auth.currentUser
 
-    /*
-     * if this member has no email (for fb login with no email)
-     * give it an empty email
-     */
-    if (currentUser.email?.includes('[0x001] ')) {
-      this.email = ''
-    } else {
-      this.email = currentUser.email
-    }
-
     const { providerData } = currentUser
 
     let isReadOnly = false

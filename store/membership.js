@@ -129,7 +129,6 @@ export const actions = {
       if (!email) {
         feededEmail = `[0x001] - firebaseId:${uid}`
       }
-      console.log(`feededEmail:${feededEmail}`)
       if (uid) {
         try {
           return await this.app.apolloProvider.clients.memberSubscription.mutate(

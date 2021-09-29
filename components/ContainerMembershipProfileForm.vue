@@ -352,7 +352,16 @@ export default {
   },
   computed: {
     currentMemberEmail() {
-      return this.$store.state.membership.userEmail
+      /*
+       * if this member has no email (for fb login with no email)
+       * it's stored email will be like `[0x001] - firebaseId:${uid}`
+       * if we find this kind of email, justgive it an empty email
+       */
+      if (this.$store.state.membership.userEmail?.includes('[0x001] ')) {
+        return ''
+      } else {
+        return this.$store.state.membership.userEmail
+      }
     },
 
     countriesTwIndex() {
