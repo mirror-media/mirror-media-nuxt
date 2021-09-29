@@ -127,9 +127,9 @@ export const actions = {
       // if facebook authUser has no email,then feed email field with prompt
       let feededEmail = email
       if (!email) {
-        feededEmail = `[0x0001] - firebaseId:${uid}`
+        feededEmail = `[0x001] - firebaseId:${uid}`
       }
-
+      console.log(`feededEmail:${feededEmail}`)
       if (uid) {
         try {
           return await this.app.apolloProvider.clients.memberSubscription.mutate(
