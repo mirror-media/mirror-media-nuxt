@@ -123,13 +123,20 @@ export const actions = {
 
     async function createMemberDataInIsrafel() {
       const { email, uid } = authUser
+
+      // if facebook authUser has no email,then feed email field with prompt
+      let feededEmail = email
+      if (!email) {
+        feededEmail = `[0x0001] - firebaseId:${uid}`
+      }
+
       if (uid) {
         try {
           return await this.app.apolloProvider.clients.memberSubscription.mutate(
             {
               mutation: createMemberProfile,
               variables: {
-                email,
+                feededEmail,
               },
             }
           )

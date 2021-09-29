@@ -66,6 +66,7 @@ export default {
       if (this.isLoggedIn) {
         if (this.emailIsDifferent) {
           await this.$fire.auth.signOut()
+
           // clear the firebase current user state in the store
           this.$store.commit('membership/ON_AUTH_STATE_CHANGED_MUTATION', {
             authUser: {},
