@@ -1,5 +1,6 @@
 import { print } from 'graphql/language/printer'
 import axios from 'axios'
+import qs from 'qs'
 import {
   fetchMemberSubscriptions,
   fetchMemberBasicInfo,
@@ -15,13 +16,13 @@ import {
   setSubscriptionFromMonthToYear,
 } from '~/apollo/mutations/memberSubscriptionMutation.gql'
 
-import { API_PATH_FRONTEND, K3_API_FOR_GET_POSTS } from '~/configs/config.js'
+import { API_PATH_FRONTEND } from '~/configs/config.js'
 
 const baseUrl = process.browser
   ? `${location.origin}/`
   : 'http://localhost:3000/'
 const apiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0`
-const k3ApiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0/postInfo`
+const k3ApiUrl = `${baseUrl}${API_PATH_FRONTEND}/getposts`
 
 async function getMemberType(context) {
   // determine whether user is logged in or not
@@ -365,10 +366,14 @@ async function getMemberSubscribePosts(subscriptionList) {
   }
 
   // fetch post's info via post id
-  console.log(k3ApiUrl)
+  const result = await axios.get(
+    `${k3ApiUrl}?${_buildQuery(whereObjForSearch)}`
+  )
+  console.log(result)
+
   const {
     data: { _items },
-  } = await axios.get(K3_API_FOR_GET_POSTS, { params: whereObjForSearch })
+  } = await axios.get(k3ApiUrl, { params: whereObjForSearch })
 
   // put post title/url into postList
   subscriptionList.forEach((subscription, index) => {
@@ -502,6 +507,36 @@ async function updateSubscriptionFromMonthToYear(context, subscriptionId) {
   )
 }
 
+function _buildQuery(params = {}) {
+  let query = {}
+  const whitelist = [
+    'where',
+    'embedded',
+    'max_results',
+    'page',
+    'sort',
+    'related',
+    'clean',
+    'clientInfo',
+    'id',
+    'keyword',
+    'offset',
+  ]
+  whitelist.forEach((ele) => {
+    if (Object.prototype.hasOwnProperty.call(params, ele)) {
+      if (ele === 'where' || ele === 'embedded') {
+        query[ele] = JSON.stringify(params[ele])
+      } else if (ele === 'id') {
+        query[ele] =
+          typeof params[ele] === 'string' ? params[ele] : params[ele].join(',')
+      } else {
+        query[ele] = params[ele]
+      }
+    }
+  })
+  query = qs.stringify(query)
+  return query
+}
 export {
   getMemberDetailData,
   getMemberServiceRuleStatus,

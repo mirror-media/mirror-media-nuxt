@@ -50,9 +50,6 @@ export default {
       return price
     },
   },
-  mounted() {
-    console.log(this.pay)
-  },
 }
 </script>
 
