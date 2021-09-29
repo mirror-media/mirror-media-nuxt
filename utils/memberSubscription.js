@@ -443,14 +443,11 @@ async function getMemberShipStatus(context, memberShipStatusName) {
   }
 
   function generateMemberShipStatusName() {
-    let nameTale = ''
     if (frequency === 'monthly' && nextFrequency === 'yearly') {
-      nameTale = '_update_to_yearly'
+      return 'subscribe_monthly_update_to_yearly'
     } else if (frequency === 'yearly' && nextFrequency === 'monthly') {
-      nameTale = '_update_to_monthly'
-    }
-
-    return `${memberShipStatusName}${nameTale}`
+      return 'subscribe_yearly_update_to_monthly'
+    } else return memberShipStatusName
   }
 }
 async function getSubscriptionPayments(context, loadmoreConfig) {
