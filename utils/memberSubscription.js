@@ -1,6 +1,5 @@
 import { print } from 'graphql/language/printer'
 import axios from 'axios'
-import qs from 'qs'
 import {
   fetchMemberSubscriptions,
   fetchMemberBasicInfo,
@@ -366,11 +365,6 @@ async function getMemberSubscribePosts(subscriptionList) {
   }
 
   // fetch post's info via post id
-  const result = await axios.get(
-    `${k3ApiUrl}?${_buildQuery(whereObjForSearch)}`
-  )
-  console.log(result)
-
   const {
     data: { _items },
   } = await axios.get(k3ApiUrl, { params: whereObjForSearch })
@@ -507,36 +501,6 @@ async function updateSubscriptionFromMonthToYear(context, subscriptionId) {
   )
 }
 
-function _buildQuery(params = {}) {
-  let query = {}
-  const whitelist = [
-    'where',
-    'embedded',
-    'max_results',
-    'page',
-    'sort',
-    'related',
-    'clean',
-    'clientInfo',
-    'id',
-    'keyword',
-    'offset',
-  ]
-  whitelist.forEach((ele) => {
-    if (Object.prototype.hasOwnProperty.call(params, ele)) {
-      if (ele === 'where' || ele === 'embedded') {
-        query[ele] = JSON.stringify(params[ele])
-      } else if (ele === 'id') {
-        query[ele] =
-          typeof params[ele] === 'string' ? params[ele] : params[ele].join(',')
-      } else {
-        query[ele] = params[ele]
-      }
-    }
-  })
-  query = qs.stringify(query)
-  return query
-}
 export {
   getMemberDetailData,
   getMemberServiceRuleStatus,
