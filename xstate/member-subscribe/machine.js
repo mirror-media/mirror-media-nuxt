@@ -2,11 +2,18 @@ import { assign, createMachine as createMachineXState } from 'xstate'
 import machine from './config/machine'
 import options from './config/options'
 import { setMemberTosToTrue } from '~/apollo/mutations/memberSubscriptionMutation.gql'
+import { shouldIdentifyMarketingByEmail } from '~/middleware/utils'
 
 export default function createMachine(router, route, store, apolloProvider) {
   return createMachineXState(machine, {
     guards: {
       ...options.guards,
+      是marketing會員: (context) => {
+        return (
+          context.subscription === 'marketing' ||
+          shouldIdentifyMarketingByEmail(store)
+        )
+      },
     },
     actions: {
       ...options.actions,
