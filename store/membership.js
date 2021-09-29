@@ -136,7 +136,7 @@ export const actions = {
             {
               mutation: createMemberProfile,
               variables: {
-                feededEmail,
+                email: feededEmail,
               },
             }
           )
