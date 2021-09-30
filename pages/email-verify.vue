@@ -224,7 +224,7 @@ export default {
           this.failInfo =
             '此 Email 已經被註冊，若您是這個 Email 的擁有者，請重新以 Google 帳號登入'
         } else {
-          this.failInfo = 'Email 寄出失敗，請重新再試'
+          this.failInfo = 'Email 寄出失敗，請重新再試' + error.message
         }
       }
     },
