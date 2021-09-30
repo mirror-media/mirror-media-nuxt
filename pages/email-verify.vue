@@ -142,6 +142,7 @@ export default {
     const currentUser = this.$fire.auth.currentUser
 
     const { providerData } = currentUser
+    this.email = currentUser.email
 
     let isReadOnly = false
     providerData.forEach((provider) => {
