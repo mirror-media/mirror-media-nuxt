@@ -180,6 +180,11 @@ export default {
           text:
             '更多詳細內容，請至<a href = "/story/service-rule/" class="membership-subscribe__blue">服務條款</a>。',
         },
+        {
+          id: 5,
+          text:
+            '本抽獎活動為機會中獎活動，依中華民國稅法規定，中獎金額超過 NT$1,000元，中獎人須併入個人年度綜合所得稅申報；若中獎金額超過 NT$20,010元，中獎人須自行負擔10%之機會中獎所得稅（非中華民國境內居住之個人為20%）並配合本公司辦理代扣繳相關事宜(得獎者應先繳納中獎所得稅後，本公司方將中獎獎項提供予得獎人)。</br>中獎人須提供姓名、身分證字號、戶籍地址及身分證正、反面影本，以供本公司依法向稅捐機關進行年度申報作業。',
+        },
       ],
     }
   },
@@ -337,12 +342,17 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 16px;
       margin-bottom: 48px;
       @include media-breakpoint-up(md) {
         flex-direction: row;
-        gap: 24px;
         margin-bottom: 60px;
+      }
+      div + div {
+        margin-top: 16px;
+        @include media-breakpoint-up(md) {
+          margin-top: 0;
+          margin-left: 24px;
+        }
       }
     }
   }
