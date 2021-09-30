@@ -37,12 +37,12 @@
       <template v-else>
         <div
           v-if="
-            isArticleContentTruncatedByGateway &&
-            stateMembershipSubscribe &&
-            [
-              '會員訂閱功能.會員文章頁.未登入',
-              '會員訂閱功能.會員文章頁.已登入.未訂閱',
-            ].some(stateMembershipSubscribe.matches)
+            isArticleContentTruncatedByGateway ||
+            (stateMembershipSubscribe &&
+              [
+                '會員訂閱功能.會員文章頁.未登入',
+                '會員訂閱功能.會員文章頁.已登入.未訂閱',
+              ].some(stateMembershipSubscribe.matches))
           "
           class="invite-to-login-wrapper"
         >
