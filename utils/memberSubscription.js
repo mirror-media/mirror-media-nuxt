@@ -43,17 +43,14 @@ function formatMemberType(israfelMemberType) {
   switch (israfelMemberType) {
     case 'subscribe_one_time':
     case 'one_time':
-    case 'basic':
       return 'subscribe_one_time'
 
     case 'subscribe_monthly':
     case 'monthly':
-    case 'month':
       return 'subscribe_monthly'
 
     case 'subscribe_yearly':
     case 'yearly':
-    case 'year':
       return 'subscribe_yearly'
 
     case 'marketing':
