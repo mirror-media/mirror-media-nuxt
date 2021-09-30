@@ -136,7 +136,7 @@ export default {
           return [
             {
               detail: '鏡週刊Premium會員（年方案）',
-              hint: '每月 $499 元，信用卡自動續扣',
+              hint: '每年 $499 元，信用卡自動續扣',
               price: '原價 NT$1188',
               newPrice: 499,
               key: 'year',
@@ -251,10 +251,16 @@ export default {
     &_button {
       display: flex;
       justify-content: center;
-      gap: 12px;
       flex-direction: column;
       @include media-breakpoint-up(sm) {
         flex-direction: row;
+      }
+      a + a {
+        margin-top: 12px;
+        @include media-breakpoint-up(sm) {
+          margin-top: 0;
+          margin-left: 12px;
+        }
       }
       .subcribe-button,
       .button {

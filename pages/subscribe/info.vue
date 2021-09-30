@@ -143,7 +143,7 @@ export default {
           {
             id: 1,
             detail: '鏡週刊Premium會員（年方案）',
-            hint: '每月 $499 元，信用卡自動續扣',
+            hint: '每年 $499 元，信用卡自動續扣',
             price: '原價 NT$1188',
             newPrice: 499,
             key: 'yearly',

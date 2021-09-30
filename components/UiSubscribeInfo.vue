@@ -42,7 +42,10 @@ export default {
 .subscribe-info {
   max-width: 940px;
   margin: auto;
-  padding: 0 17px;
+  padding: 0 17px 48px 17px;
+  @include media-breakpoint-up(sm) {
+    padding: 0 17px 60px 17px;
+  }
 
   h2 {
     font-size: 22px;
