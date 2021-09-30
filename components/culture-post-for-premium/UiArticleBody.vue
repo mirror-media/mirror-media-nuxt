@@ -37,6 +37,7 @@
       <template v-else>
         <div
           v-if="
+            isArticleContentTruncatedByGateway &&
             stateMembershipSubscribe &&
             [
               '會員訂閱功能.會員文章頁.未登入',
@@ -117,6 +118,10 @@ export default {
           'storyPage',
         ].includes(value)
       },
+    },
+    isArticleContentTruncatedByGateway: {
+      type: Boolean,
+      default: true,
     },
   },
   methods: {

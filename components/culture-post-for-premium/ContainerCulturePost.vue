@@ -55,6 +55,7 @@
         :postId="post.id"
         :brief="post.brief"
         :content="post.content"
+        :isArticleContentTruncatedByGateway="post.isTruncated"
         :pageState="articleBodyPageState"
       />
 
@@ -151,6 +152,7 @@ export default {
         relateds = [],
         sections = [],
         tags = [],
+        isTruncated = true,
       } = this.story
 
       const heroVideoSrc = heroVideo.video?.url || ''
@@ -181,6 +183,7 @@ export default {
         relateds,
         sectionLabelFirst: sections?.[0]?.title,
         tags,
+        isTruncated,
       }
 
       function getBrief() {
