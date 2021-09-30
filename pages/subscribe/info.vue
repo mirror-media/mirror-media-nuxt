@@ -88,7 +88,6 @@ import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
-import { formatMemberType } from '~/utils/memberSubscription'
 export default {
   middleware: ['handle-go-to-marketing', 'handle-forbid-direct-navigate'],
   components: {
@@ -133,7 +132,7 @@ export default {
             hint: '每月 $49 元，信用卡自動續扣',
             price: '原價 NT$99',
             newPrice: 49,
-            key: 'month',
+            key: 'monthly',
           },
         ]
       } else if (
@@ -147,7 +146,7 @@ export default {
             hint: '每月 $499 元，信用卡自動續扣',
             price: '原價 NT$1188',
             newPrice: 499,
-            key: 'year',
+            key: 'yearly',
           },
         ]
       } else {
@@ -187,7 +186,12 @@ export default {
     },
     frequency() {
       const planFrequency = this.perchasedPlan?.[0]?.key
-      return formatMemberType(planFrequency)
+      const map = {
+        basic: 'one_time',
+        monthly: 'monthly',
+        yearly: 'yearly',
+      }
+      return map[planFrequency]
     },
     validReceiptData() {
       let validReceiptData
@@ -330,12 +334,12 @@ export default {
     async getPaymentDataFromApiGateWay() {
       let gateWayPayload
       const isPremiumPurchase =
-        this.frequency === 'year' || this.frequency === 'month'
+        this.frequency === 'yearly' || this.frequency === 'monthly'
 
       if (isPremiumPurchase) {
         gateWayPayload = {
           email: this.email,
-          frequency: 'monthly',
+          frequency: this.frequency,
           paymentMethod: 'newebpay',
           status: 'paying',
           promoteId: this.promoteId, // 折扣碼 (TODO)
