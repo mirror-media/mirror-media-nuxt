@@ -41,7 +41,6 @@
             >
           </SubscribeWrapper>
         </div>
-        <SubscribeSimMemberStatus v-if="shouldShowSim" v-model="memberStatus" />
       </template>
     </ClientOnly>
   </div>
@@ -52,10 +51,8 @@ import { computed } from '@nuxtjs/composition-api'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
-import SubscribeSimMemberStatus from '~/components/SubscribeSimMemberStatus.vue'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
-import { ENV } from '~/configs/config'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
   middleware: ['handle-go-to-marketing'],
@@ -63,7 +60,6 @@ export default {
     SubscribeStepProgress,
     UiSubscribeInfo,
     SubscribeMembershipChoosePlanCard,
-    SubscribeSimMemberStatus,
     SubscribeWrapper,
     UiMembershipButtonPrimary,
   },
@@ -296,9 +292,7 @@ export default {
       }
       return planShowed
     },
-    shouldShowSim() {
-      return ENV !== 'prod'
-    },
+
     hintUnderButton() {
       switch (this.memberStatus) {
         case 'month':
