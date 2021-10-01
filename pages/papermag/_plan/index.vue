@@ -18,25 +18,17 @@
         <img :src="require('~/assets/loading.gif')" alt="" />
       </div>
     </div>
-    <SubscribeSimFormStatus
-      v-if="showSimFormStatus"
-      :validateOn="validateOn"
-      :setValidateOn="setValidateOn"
-    />
   </div>
 </template>
 
 <script>
-import { ENV } from '~/configs/config'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeForm from '~/components/SubscribeForm.vue'
-import SubscribeSimFormStatus from '~/components/SubscribeSimFormStatus.vue'
 
 export default {
   components: {
     SubscribeStepProgress,
     SubscribeForm,
-    SubscribeSimFormStatus,
   },
   middleware({ route, redirect }) {
     if (
@@ -50,7 +42,6 @@ export default {
   data() {
     return {
       orderStatus: 'normal', // normal, loading
-      simOrderStatus: 'success', //  order-fail, payment-fail, success
       validateOn: true,
     }
   },
@@ -58,9 +49,6 @@ export default {
     currentChoosedPlanId() {
       const plan = this.$route.params.plan
       return parseInt(plan) - 1
-    },
-    showSimFormStatus() {
-      return ENV === 'local'
     },
   },
   methods: {

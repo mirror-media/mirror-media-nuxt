@@ -82,7 +82,6 @@
 import qs from 'qs'
 import { required, email } from 'vuelidate/lib/validators'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
-import { ENV } from '~/configs/config'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
@@ -181,9 +180,6 @@ export default {
     },
   },
   computed: {
-    showSimFormStatus() {
-      return ENV === 'local'
-    },
     frequency() {
       const planFrequency = this.perchasedPlan?.[0]?.key
       const map = {

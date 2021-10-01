@@ -51,17 +51,6 @@
         </div>
       </div>
     </div>
-    <button v-if="showSim" class="sim" @click="toggleHasLink">
-      toggle 顯示按鈕
-      <br />
-      (由於流程已整合完畢，本功能先關閉)
-      <br />
-      (你可以透過兩種不同起點看到不同按鈕狀態)
-      <br />
-      (1. 從 /premium/oscar-test 為起點)
-      <br />
-      (2. 從 /subscribe 為起點)
-    </button>
   </section>
 </template>
 
@@ -73,7 +62,6 @@ import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOr
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
-import { ENV } from '~/configs/config'
 
 export default {
   middleware: ['handle-go-to-marketing'],
@@ -154,9 +142,6 @@ export default {
       } else {
         return '您已完成付款，以下為本次訂購資訊，已同步寄送至您的信箱。'
       }
-    },
-    showSim() {
-      return ENV !== 'prod'
     },
   },
   methods: {
@@ -281,16 +266,5 @@ export default {
       min-width: 180px;
     }
   }
-}
-
-.sim {
-  z-index: 9999;
-  position: fixed;
-  top: 100px;
-  right: 0;
-  padding: 10px;
-  border: 1px solid black;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 5px;
 }
 </style>

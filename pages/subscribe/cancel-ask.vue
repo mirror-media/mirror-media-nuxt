@@ -51,21 +51,11 @@
     </SubscribeWrapper>
 
     <UiLoadingCover v-if="isLoading" />
-
-    <SubscribeCancelSimForm
-      v-if="shouldShowSim"
-      :isPayByApp="isPayByApp"
-      :cancelStatus="cancelStatus"
-      :setIsPayByApp="setIsPayByApp"
-      :setCancelStatus="setCancelStatus"
-    />
   </div>
 </template>
 
 <script>
-import { ENV } from '~/configs/config'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
-import SubscribeCancelSimForm from '~/components/SubscribeCancelSimForm.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import UiMembershipCheckoutLabel from '~/components/UiMembershipCheckoutLabel.vue'
@@ -77,7 +67,6 @@ export default {
   middleware: ['handle-go-to-marketing'],
   components: {
     SubscribeWrapper,
-    SubscribeCancelSimForm,
     UiMembershipButtonPrimary,
     UiMembershipButtonSecondary,
     UiMembershipCheckoutLabel,
@@ -109,9 +98,6 @@ export default {
     }
   },
   computed: {
-    shouldShowSim() {
-      return ENV !== 'prod' && ENV !== 'staging'
-    },
     shouldShowTextarea() {
       return this.reason.includes('其他')
     },

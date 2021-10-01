@@ -66,32 +66,19 @@
         >
       </div>
     </div>
-    <MembershipInfoSim
-      v-if="showSimFormStatus"
-      :validateOn="validateOn"
-      :setValidateOn="setValidateOn"
-      :orderStatus="status"
-      :setOrderStatus="setOrderStatus"
-    />
-    <button class="sim-for-alterable" @click="toggleAlterable">
-      toggle alterable
-    </button>
   </div>
 </template>
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
-import MembershipInfoSim from '~/components/MembershipInfoSim.vue'
 import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
-import { ENV } from '~/configs/config'
 import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settings-app-config'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
     UiMembershipButtonPrimary,
-    MembershipInfoSim,
     UiMembershipLoadingIcon,
   },
   setup() {
@@ -126,9 +113,6 @@ export default {
         (this.$v.email.email && this.$v.email.required) ||
         !this.alterableEmail
       return !validate || this.isCounting
-    },
-    showSimFormStatus() {
-      return ENV !== 'prod'
     },
     isCounting() {
       return this.hasSend && this.status === 'success' && this.frozenTime > 0
@@ -358,23 +342,5 @@ export default {
 
 .error input {
   border: 1px solid #e51731 !important;
-}
-
-.sim-for-alterable {
-  z-index: 9999;
-  position: fixed;
-  top: 185px;
-  right: 0;
-  padding: 10px;
-  border: 1px solid black;
-  background: rgba(5, 79, 119, 0.3);
-  border-radius: 5px;
-  button:focus {
-    outline: 0 !important;
-  }
-}
-
-button:focus {
-  outline: 0 !important;
 }
 </style>
