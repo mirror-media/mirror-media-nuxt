@@ -1,8 +1,8 @@
 import { State } from 'xstate'
-import { ENV } from '~/configs/config'
 
+// TODO: feature is always toggled now, we should remove this function
 export function isMemberSubscribeFeatureToggled() {
-  return ENV === 'local' || ENV === 'dev' || ENV === 'staging'
+  return true
 }
 
 const storageKey = 'member-subscribe-state'
