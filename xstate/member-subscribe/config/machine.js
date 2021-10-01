@@ -130,21 +130,8 @@ export default {
                     ],
                   },
                 },
-                未訂閱: {
-                  on: {
-                    加入Premium會員: '#方案購買流程',
-                    解鎖這篇報導: {
-                      target: '#方案購買流程',
-                      actions: [
-                        'orderSubscribe',
-                        'orderSubscribeOneTimePostId',
-                      ],
-                    },
-                  },
-                },
-                有解鎖本篇文章: {
-                  type: 'final',
-                },
+                未訂閱: {},
+                有解鎖本篇文章: {},
                 月訂閱: {
                   type: 'final',
                 },
@@ -153,6 +140,13 @@ export default {
                 },
                 'marketing 資格訂閱': {
                   type: 'final',
+                },
+              },
+              on: {
+                加入Premium會員: '#方案購買流程',
+                解鎖這篇報導: {
+                  target: '#方案購買流程',
+                  actions: ['orderSubscribe', 'orderSubscribeOneTimePostId'],
                 },
               },
             },
