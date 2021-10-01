@@ -165,6 +165,7 @@ export default {
         carrierNumber: '',
         carrierTitle: '',
         carrierUbn: '',
+        category: '',
       },
       orderStatus: 'success', //  fail, success
       validateOn: true,
@@ -340,10 +341,11 @@ export default {
           status: 'paying',
           promoteId: this.promoteId, // 折扣碼 (TODO)
           loveCode: parseInt(this.validReceiptData.donateOrganization),
-          carrierType: parseInt(this.validReceiptData.carrierType),
+          carrierType: this.validReceiptData.carrierType,
           carrierNum: this.validReceiptData.carrierNumber,
           buyerName: this.validReceiptData.carrierTitle,
           buyerUBN: this.validReceiptData.carrierUbn,
+          category: getCategory.bind(this)(),
         }
       } else {
         // one_time
@@ -355,14 +357,28 @@ export default {
           promoteId: this.promoteId, // 折扣碼 (TODO)
           postId: subscribePostId,
           loveCode: parseInt(this.validReceiptData.donateOrganization),
-          carrierType: parseInt(this.validReceiptData.carrierType),
+          carrierType: this.validReceiptData.carrierType,
           carrierNum: this.validReceiptData.carrierNumber,
           buyerName: this.validReceiptData.carrierTitle,
           buyerUBN: this.validReceiptData.carrierUbn,
+          category: getCategory.bind(this)(),
         }
       }
+      console.log(gateWayPayload)
 
       return await this.$getPaymentDataOfSubscription(gateWayPayload)
+
+      function getCategory() {
+        switch (this.receiptData.receiptPlan) {
+          case '三聯式發票':
+            return 'b2b'
+
+          case '捐贈':
+          default:
+          case '二聯式發票（含載具）':
+            return 'b2c'
+        }
+      }
     },
   },
 }
