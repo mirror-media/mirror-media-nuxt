@@ -289,7 +289,12 @@ export default {
          * this.sendMembershipSubscribe('付款失敗')
          */
       } catch (error) {
-        console.error(error)
+        console.error(error.message)
+        window.alert('您的訂閱流程發生了錯誤，請稍後再試')
+        const e = new Error()
+        e.massage = 'not found'
+        e.code = '404'
+        throw e
       }
     },
     async updateHandler(e) {
@@ -364,7 +369,6 @@ export default {
           category: getCategory.bind(this)(),
         }
       }
-      console.log(gateWayPayload)
 
       return await this.$getPaymentDataOfSubscription(gateWayPayload)
 
