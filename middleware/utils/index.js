@@ -14,9 +14,12 @@ export function shouldIdentifyMarketingByEmail(store) {
 }
 
 function isEmailDomainMirrorMedia(email) {
-  return ['mnews.tw', 'mirrormedia.mg', 'mirrorfiction.com'].some(
-    function checkEmailDomain(domain) {
-      return email.endsWith(domain)
-    }
-  )
+  return [
+    'mnews.tw',
+    'mnews.com.tw',
+    'mirrormedia.mg',
+    'mirrorfiction.com',
+  ].some(function checkEmailDomain(domain) {
+    return email.endsWith(domain)
+  })
 }
