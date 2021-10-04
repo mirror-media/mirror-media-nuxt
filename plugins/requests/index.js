@@ -14,6 +14,7 @@ import {
   getMemberShipStatus,
   getPremiumMemberSubscriptionInfo,
   updateSubscriptionFromMonthToYear,
+  isMemberPaidSubscriptionWithMobile,
 } from '~/utils/memberSubscription'
 
 import {
@@ -340,5 +341,8 @@ export default (context, inject) => {
   })
   inject('updateSubscriptionFromMonthToYear', async (subscriptionId) => {
     return await updateSubscriptionFromMonthToYear(context, subscriptionId)
+  })
+  inject('isMemberPaidSubscriptionWithMobile', async () => {
+    return await isMemberPaidSubscriptionWithMobile(context)
   })
 }
