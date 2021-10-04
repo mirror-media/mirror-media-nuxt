@@ -56,7 +56,7 @@ import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vu
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
-  middleware: ['handle-go-to-marketing'],
+  middleware: ['authenticate', 'handle-go-to-marketing'],
   components: {
     SubscribeWrapper,
     MemberShipStatus,
