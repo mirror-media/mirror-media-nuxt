@@ -86,21 +86,24 @@ async function cancelMemberSubscription(context, reason) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
-  // get user's newest subscription
-  const subscriptions = await getMemberAllSubscriptions(firebaseId, context)
-  const newestSubscription = subscriptions[0]
-
-  if (newestSubscription.frequency === 'one_time') {
-    throw new Error(
-      'the newest subscription is one_time, no need to unsubscribe'
-    )
-  }
+  // get user's subscription state
+  const {
+    data: {
+      member: { subscription },
+    },
+  } = await fireGqlRequest(
+    fetchRecurringSubscription,
+    {
+      firebaseId,
+    },
+    context
+  )
 
   // change subscription.isCanceled to true (carry unsubscribe reason)
   await fireGqlRequest(
     unsubscribe,
     {
-      id: newestSubscription.id,
+      id: subscription.id,
       note: reason,
     },
     context
