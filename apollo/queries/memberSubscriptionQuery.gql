@@ -39,7 +39,7 @@ query fetchOneTimeSubscriptions($firebaseId: String!) {
   member(where: { firebaseId: $firebaseId }) {
     email
     subscription(
-      where: { frequency: one_time }
+      where: { frequency: one_time, isActive: true }
       orderBy: { oneTimeEndDatetime: desc }
     ) {
       frequency
