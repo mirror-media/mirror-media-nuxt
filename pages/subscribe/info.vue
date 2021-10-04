@@ -388,6 +388,12 @@ export default {
       }
     },
   },
+  watch: {
+    'receiptData.carrierType'() {
+      if (this.receiptData.carrierType === '2')
+        this.receiptData.carrierNumber = this.$store.state.membership.userEmail
+    },
+  },
 }
 </script>
 
