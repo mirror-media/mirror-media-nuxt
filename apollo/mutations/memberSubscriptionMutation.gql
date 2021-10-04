@@ -36,10 +36,11 @@ mutation fetchPaymentDataOfSubscriptionRecurring(
   $status: createSubscriptionStatusType!
   $promoteId: Int
   $loveCode: Int
-  $carrierType: Int
+  $carrierType: String
   $carrierNum: String
   $buyerName: String
   $buyerUBN: String
+  $category: subscriptionCategoryType
 ) {
   createSubscriptionRecurring(
     data: {
@@ -53,6 +54,7 @@ mutation fetchPaymentDataOfSubscriptionRecurring(
       carrierNum: $carrierNum
       buyerName: $buyerName
       buyerUBN: $buyerUBN
+      category: $category
     }
     info: { returnToPath: "" }
   ) {
@@ -70,10 +72,11 @@ mutation fetchPaymentDataOfSubscriptionOneTime(
   $promoteId: Int
   $postId: String!
   $loveCode: Int
-  $carrierType: Int
+  $carrierType: String
   $carrierNum: String
   $buyerName: String
   $buyerUBN: String
+  $category: subscriptionCategoryType
 ) {
   createsSubscriptionOneTime(
     data: {
@@ -87,12 +90,9 @@ mutation fetchPaymentDataOfSubscriptionOneTime(
       carrierNum: $carrierNum
       buyerName: $buyerName
       buyerUBN: $buyerUBN
+      category: $category
     }
-    info: {
-      postSlug: ""
-      postTitle: ""
-      returnToPath: ""
-    }
+    info: { postSlug: "", postTitle: "", returnToPath: "" }
   ) {
     subscription {
       frequency

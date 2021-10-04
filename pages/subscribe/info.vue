@@ -165,6 +165,7 @@ export default {
         carrierNumber: '',
         carrierTitle: '',
         carrierUbn: '',
+        category: '',
       },
       orderStatus: 'success', //  fail, success
       validateOn: true,
@@ -288,7 +289,12 @@ export default {
          * this.sendMembershipSubscribe('付款失敗')
          */
       } catch (error) {
-        console.error(error)
+        console.error(error.message)
+        window.alert('您的訂閱流程發生了錯誤，請稍後再試')
+        const e = new Error()
+        e.massage = 'not found'
+        e.code = '404'
+        throw e
       }
     },
     async updateHandler(e) {
@@ -340,10 +346,11 @@ export default {
           status: 'paying',
           promoteId: this.promoteId, // 折扣碼 (TODO)
           loveCode: parseInt(this.validReceiptData.donateOrganization),
-          carrierType: parseInt(this.validReceiptData.carrierType),
+          carrierType: this.validReceiptData.carrierType,
           carrierNum: this.validReceiptData.carrierNumber,
           buyerName: this.validReceiptData.carrierTitle,
           buyerUBN: this.validReceiptData.carrierUbn,
+          category: getCategory.bind(this)(),
         }
       } else {
         // one_time
@@ -355,14 +362,27 @@ export default {
           promoteId: this.promoteId, // 折扣碼 (TODO)
           postId: subscribePostId,
           loveCode: parseInt(this.validReceiptData.donateOrganization),
-          carrierType: parseInt(this.validReceiptData.carrierType),
+          carrierType: this.validReceiptData.carrierType,
           carrierNum: this.validReceiptData.carrierNumber,
           buyerName: this.validReceiptData.carrierTitle,
           buyerUBN: this.validReceiptData.carrierUbn,
+          category: getCategory.bind(this)(),
         }
       }
 
       return await this.$getPaymentDataOfSubscription(gateWayPayload)
+
+      function getCategory() {
+        switch (this.receiptData.receiptPlan) {
+          case '三聯式發票':
+            return 'b2b'
+
+          case '捐贈':
+          default:
+          case '二聯式發票（含載具）':
+            return 'b2c'
+        }
+      }
     },
   },
 }
