@@ -81,6 +81,11 @@ export default {
     UiMembershipButtonPrimary,
     UiMembershipLoadingIcon,
   },
+  middleware({ store, redirect }) {
+    if (store.state.membership.userEmailVerified) {
+      redirect('/subscribe')
+    }
+  },
   setup() {
     const { state, send } = useMemberSubscribeMachine()
     return {
