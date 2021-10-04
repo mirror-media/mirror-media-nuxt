@@ -378,12 +378,12 @@ export default {
       function getCategory() {
         switch (this.receiptData.receiptPlan) {
           case '三聯式發票':
-            return 'b2b'
+            return 'B2B'
 
           case '捐贈':
           default:
           case '二聯式發票（含載具）':
-            return 'b2c'
+            return 'B2C'
         }
       }
     },
