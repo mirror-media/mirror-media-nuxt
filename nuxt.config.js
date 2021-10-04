@@ -469,7 +469,7 @@ module.exports = {
         pat instanceof RegExp ? pat.test(route) : route.startsWith(pat)
       )
       if (shouldCacheCurrentRoute) {
-        const prefixForGrep = 'mirror-media-nuxt'
+        const prefixForGrep = 'mirror-media-nuxt-sub'
         const version = require('./package.json').version
         const prefix = `${prefixForGrep}_${ENV}@${version}:`
         return `${prefix}${route}`
