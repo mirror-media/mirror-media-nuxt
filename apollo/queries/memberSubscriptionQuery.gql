@@ -89,7 +89,7 @@ query fetchSubscriptionPayments($firebaseId: String!) {
         paymentTime
         amount
         cardInfoLastFour
-        status
+        createdAt
       }
     }
   }
