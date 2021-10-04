@@ -40,7 +40,7 @@ mutation fetchPaymentDataOfSubscriptionRecurring(
   $carrierNum: String
   $buyerName: String
   $buyerUBN: String
-  $category: subscriptionCategoryType
+  $category: subscriptionCategoryType!
 ) {
   createSubscriptionRecurring(
     data: {
@@ -76,7 +76,7 @@ mutation fetchPaymentDataOfSubscriptionOneTime(
   $carrierNum: String
   $buyerName: String
   $buyerUBN: String
-  $category: subscriptionCategoryType
+  $category: subscriptionCategoryType!
 ) {
   createsSubscriptionOneTime(
     data: {
