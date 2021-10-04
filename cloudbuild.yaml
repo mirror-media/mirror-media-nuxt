@@ -47,4 +47,4 @@ timeout: 1800s
 images:
   - gcr.io/$PROJECT_ID/mirror-media-nuxt
 options:
-  machineType: "N1_HIGHCPU_8"
+  machineType: "N1_HIGHCPU_32"
