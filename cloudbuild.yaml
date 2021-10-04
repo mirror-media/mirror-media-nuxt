@@ -28,7 +28,7 @@ steps:
       - "-R"
       - ./configs.build/mirror-media/mirror-media-nuxt/$BRANCH_NAME/config.js
       - ./configs/config.js
-  - name: bash rm configs
+  - name: bash
     args:
       - rm
       - "-R"
