@@ -9,7 +9,9 @@ module.exports = function handleHeaders(req, res, next) {
     /^\/(video_category|externals)\//gs.test(url) ||
     new RegExp(PREVIEW_QUERY, 'gs').test(url) ||
     // membership page paths
-    /(login|finishSignUp|profile|cancelMembership|magazine)/gs.test(url) ||
+    /(login|finishSignUp|profile|cancelMembership|magazine|subscribe)/gs.test(
+      url
+    ) ||
     // deprecated topic page, due to ads in different device environments
     /topic/gs.test(url) ||
     // membership api paths
