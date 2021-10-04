@@ -13,10 +13,6 @@
           title="續訂戶代碼"
           :data="`MR ${orderInfo.discount_code}`"
         />
-        <SubscribeSuccessOrderInfoContentRow
-          title="訂單日期"
-          :data="orderDate"
-        />
         <SubscribeSuccessOrderInfoContentRowPurchasedList
           title="訂單內容"
           :perchasedList="orderInfoPurchasedList"
@@ -71,7 +67,6 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOrderInfoContentRow.vue'
 import SubscribeSuccessOrderInfoContentRowPurchasedList from '~/components/SubscribeSuccessOrderInfoContentRowPurchasedList.vue'
 
@@ -115,10 +110,6 @@ export default {
     },
   },
   computed: {
-    orderDate() {
-      const now = new Date()
-      return dayjs(now).format('YYYY-MM-DD')
-    },
     shouldShowCustomerInfo() {
       const isAnyValueInCustomInfoTruthy = Object.values(
         this.customerInfo
