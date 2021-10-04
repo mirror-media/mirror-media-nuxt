@@ -178,7 +178,7 @@
     >
       刪除會員
     </a>
-    <p v-if="inSubscriptionFunctionIsOn" class="cancel-membership-hint">
+    <p class="cancel-membership-hint">
       提醒您，若您有訂閱會員專區單篇文章，刪除帳號可能導致無法閱讀文章
     </p>
   </div>
@@ -190,12 +190,9 @@ import { required, requiredIf, between } from 'vuelidate/lib/validators'
 import countriesData from 'mirror-media-constants/lib/countries.json'
 import twDistrictsData from 'mirror-media-constants/lib/taiwan-districts.json'
 import dayjs from 'dayjs'
-import { ENV } from '../configs/config.js'
 import UiMembershipDropdownMenu from '~/components/UiMembershipDropdownMenu.vue'
 import userUpdate from '~/apollo/mutations/userUpdate.gql'
 import { fetchMemberProfile } from '~/apollo/queries/userQuery.gql'
-
-const IS_SUBSCRIPTION_FUNCTION_IS_ON = ENV !== 'prod'
 
 export default {
   apollo: {
@@ -347,7 +344,6 @@ export default {
       addressInput: '',
 
       isSubmitButtonClicked: false,
-      inSubscriptionFunctionIsOn: IS_SUBSCRIPTION_FUNCTION_IS_ON,
     }
   },
   computed: {
