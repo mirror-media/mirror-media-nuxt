@@ -4,9 +4,9 @@
       <h6 class="cancel-success__title">成功取消訂閱</h6>
       <div class="cancel-success__description">
         您已取消訂閱
-        <span class="cancel-success__description_blue">
-          鏡週刊 Premium 服務-年訂閱方案
-        </span>
+        <!--        <span class="cancel-success__description_blue">-->
+        <!--          鏡週刊 Premium 服務-年訂閱方案-->
+        <!--        </span>-->
         。將在本次收費週期結束時生效。
       </div>
       <UiMembershipButtonPrimary
