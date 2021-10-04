@@ -17,6 +17,7 @@ module.exports = function handleHeaders(req, res, next) {
     // membership api paths
     new RegExp(`/${API_PATH_FRONTEND}/membership`, 'gs').test(url) ||
     new RegExp(`/${API_PATH_FRONTEND}/saleor`, 'gs').test(url) ||
+    new RegExp(`/${API_PATH_FRONTEND}/member-subscription`, 'gs').test(url) ||
     // member subscribe page paths
     /(subscribe)/gs.test(url)
   ) {
