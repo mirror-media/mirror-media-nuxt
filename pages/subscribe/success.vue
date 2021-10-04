@@ -12,10 +12,6 @@
           :data="orderInfo.orderId"
         />
         <SubscribeSuccessOrderInfoContentRow
-          title="訂單日期"
-          :data="orderDate"
-        />
-        <SubscribeSuccessOrderInfoContentRow
           v-if="orderInfo.discountPrice"
           title="優惠折扣碼"
           :data="orderInfo.discountPrice"
@@ -55,7 +51,6 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOrderInfoContentRow.vue'
@@ -88,7 +83,6 @@ export default {
       orderInfo: {
         orderId: this.$route.query.orderNumber ?? '',
       },
-      orderDate: dayjs(new Date()).format('YYYY-MM-DD'),
 
       // TODO: remove due to not use anymore
       hasLink: false,
