@@ -31,6 +31,8 @@ export default {
   async asyncData(context) {
     const memberType = await context.$getMemberType()
 
+    console.log(memberType)
+
     const isPremiumOrVip =
       memberType === 'year' ||
       memberType === 'subscribe_yearly' ||
