@@ -78,15 +78,6 @@ export default {
       sendMembershipSubscribe: send,
     }
   },
-  created(context) {
-    // check if user's newest subscription is paid by mobile
-    // const isMemberPaidWithMobile = await this.$isMemberPaidSubscriptionWithMobile()
-    const isMemberPaidWithMobile = false
-
-    return {
-      isPayByApp: isMemberPaidWithMobile,
-    }
-  },
   data() {
     return {
       isLoading: false,
@@ -105,6 +96,14 @@ export default {
         ? `取消原因：${this.reason.join('、')}。`
         : '取消原因：未填寫。'
     },
+  },
+  async created() {
+    // check if user's newest subscription is paid by mobile
+    const isMemberPaidWithMobile = await this.$isMemberPaidSubscriptionWithMobile()
+
+    return {
+      isPayByApp: isMemberPaidWithMobile,
+    }
   },
   methods: {
     handleBack() {

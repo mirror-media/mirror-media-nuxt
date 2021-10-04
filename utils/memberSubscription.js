@@ -83,9 +83,7 @@ async function getMemberDetailData(context) {
 }
 
 async function cancelMemberSubscription(context, reason) {
-  console.log('cancelMemberSubscription')
   const firebaseId = await getUserFirebaseId(context)
-  console.log(firebaseId)
   if (!firebaseId) return null
 
   // get user's subscription state
@@ -100,7 +98,6 @@ async function cancelMemberSubscription(context, reason) {
     },
     context
   )
-  console.log(subscription)
   // change subscription.isCanceled to true (carry unsubscribe reason)
   await fireGqlRequest(
     unsubscribe,
@@ -114,7 +111,6 @@ async function cancelMemberSubscription(context, reason) {
 
 async function getMemberAllSubscriptions(firebaseId, context) {
   try {
-    console.log('getMemberAllSubscriptions')
     // get user's subscription state
     const result = await fireGqlRequest(
       fetchMemberSubscriptions,
@@ -123,7 +119,7 @@ async function getMemberAllSubscriptions(firebaseId, context) {
       },
       context
     )
-    console.log(context)
+
     // get member's all subscriptions
     const subscriptions = result?.data?.member?.subscription
 
@@ -293,12 +289,12 @@ function getFirebaseToken(context) {
 
 async function isMemberPaidSubscriptionWithMobile(context) {
   const firebaseId = await getUserFirebaseId(context)
-  console.log(firebaseId)
+
   if (!firebaseId) return null
   try {
     // get user's newest subscription
-    const subscriptions = await getMemberAllSubscriptions(firebaseId)
-    console.log(subscriptions)
+    const subscriptions = await getMemberAllSubscriptions(firebaseId, context)
+
     return isSubscriptionPayByMobileAppStore(subscriptions[0])
   } catch (error) {
     console.error(error)
