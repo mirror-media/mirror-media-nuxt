@@ -33,7 +33,9 @@ export default {
 
     const isPremiumOrVip =
       memberType === 'year' ||
+      memberType === 'subscribe_yearly' ||
       memberType === 'month' ||
+      memberType === 'subscribe_monthly' ||
       memberType === 'marketing'
     if (isPremiumOrVip) {
       return {
