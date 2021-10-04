@@ -153,6 +153,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.email = this.$store.state.membership.userEmail
+  },
   data() {
     return {
       isLoading: false,
