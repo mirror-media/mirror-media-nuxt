@@ -77,7 +77,7 @@ export const actions = {
     { dispatch, rootState },
     { authUser, mode = 'login', isNewUser = false }
   ) {
-    const isNotInLoginPage = this.app?.context?.route?.path !== '/login'
+    const isNotInLoginPage = this.app?.context?.route?.name !== 'login'
     if (isNotInLoginPage) return
 
     try {
