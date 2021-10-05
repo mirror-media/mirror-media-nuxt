@@ -132,7 +132,7 @@ export default {
     },
     successMessage() {
       if (this.isUpgradeFromMonthToYear) {
-        return '您已完成變更方案，以下為本次變更資訊，您的新方案將於下期開始進行。'
+        return '訂單處理中，請稍候在訂閱紀錄確認訂單狀況。'
       } else {
         return '您已完成付款，以下為本次訂購資訊，已同步寄送至您的信箱。'
       }
