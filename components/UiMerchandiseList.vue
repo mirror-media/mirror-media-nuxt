@@ -137,7 +137,9 @@ export default {
   .form-row {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
+    div + div {
+      margin-left: 12px;
+    }
 
     * {
       align-self: flex-start;

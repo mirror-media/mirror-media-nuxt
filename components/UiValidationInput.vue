@@ -96,7 +96,7 @@ export default {
           reg = /^[A-Z]{2}\d{14}$/
           result = reg.test(this.value)
           break
-        case 'Email 載具':
+        case '電子發票載具':
           result = this.$v.value.email
           break
         default:

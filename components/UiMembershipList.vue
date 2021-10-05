@@ -53,7 +53,9 @@ export default {
   .form-row {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
+    div + div {
+      margin-left: 12px;
+    }
 
     &__head_title {
       flex: 2;
@@ -75,7 +77,9 @@ export default {
         display: flex;
         justify-content: flex-start;
         flex-direction: row-reverse;
-        gap: 4px;
+        div + div {
+          margin-right: 4px;
+        }
       }
 
       span {

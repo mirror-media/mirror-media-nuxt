@@ -20,7 +20,7 @@
         class="pay-record__form_row load-more"
         @click="$emit('load-more-record')"
       >
-        展開更多
+        <span>展開更多</span>
         <img src="~/assets/arrow-down-default.svg" />
       </div>
     </div>
@@ -85,7 +85,9 @@ export default {
     }
     &_row {
       display: flex;
-      gap: 16px;
+      div + div {
+        margin-left: 16px;
+      }
       &:first-child {
         padding-bottom: 8px;
       }
@@ -108,9 +110,11 @@ export default {
       color: #054f77;
       justify-content: center;
       cursor: pointer;
-      gap: 2px;
       display: flex;
       width: auto;
+      img {
+        margin-left: 2px;
+      }
     }
   }
 }

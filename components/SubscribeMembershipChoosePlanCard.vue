@@ -130,7 +130,9 @@ export default {
       }
       li {
         display: flex;
-        gap: 5px;
+        img {
+          margin-right: 5px;
+        }
         & + li {
           padding-top: 12px;
           border-top: 1px solid rgba(0, 0, 0, 0.1);

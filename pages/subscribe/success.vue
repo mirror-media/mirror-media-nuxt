@@ -216,16 +216,16 @@ export default {
       }
     }
 
-    .during {
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 24px;
-      @include media-breakpoint-up(sm) {
-        flex-direction: row;
-        gap: 0px;
-        margin-top: 12px;
-      }
-    }
+    // .during {
+    //   flex-direction: column;
+    //   gap: 4px;
+    //   margin-top: 24px;
+    //   @include media-breakpoint-up(sm) {
+    //     flex-direction: row;
+    //     gap: 0px;
+    //     margin-top: 12px;
+    //   }
+    // }
 
     &_button {
       display: flex;
