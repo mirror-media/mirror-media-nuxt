@@ -179,7 +179,7 @@ function getMemberPayRecords(subscriptionList) {
         methodNote: `(${newebpayPayment.cardInfoLastFour || ''})`,
         price: newebpayPayment.amount,
         status: newebpayPayment.status,
-        createAt: newebpayPayment.createAt,
+        createAt: newebpayPayment.createdAt,
       }
       payRecords.push(payRecord)
     })
@@ -187,7 +187,7 @@ function getMemberPayRecords(subscriptionList) {
 
   // sort all records by date_dsc
   payRecords.sort((recordA, recordB) => {
-    return new Date(recordA.createAt) - new Date(recordB.createAt)
+    return new Date(recordA.createdAt) - new Date(recordB.createdAt)
   })
 
   return payRecords
