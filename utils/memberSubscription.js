@@ -358,6 +358,7 @@ async function getMemberSubscribePosts(subscriptionList) {
   const postIdList = subscriptionList.map((subscription) => {
     return subscription.postId
   })
+
   const whereObjForSearch = {
     where: {
       _id: {
@@ -373,10 +374,14 @@ async function getMemberSubscribePosts(subscriptionList) {
 
   // put post title/url into postList
   subscriptionList.forEach((subscription, index) => {
+    const correspondPost = _items.find((post) => {
+      return post._id === subscription.postId
+    })
+
     const post = {
       id: subscription.postId,
-      title: _items[index].title,
-      url: `/story/${_items[index].slug}`,
+      title: correspondPost.title,
+      url: `/story/${correspondPost.slug}`,
       deadline: getFormatDateWording(subscription.oneTimeEndDatetime),
     }
     postList.push(post)
