@@ -66,7 +66,7 @@ export default {
         {
           id: 2,
           step: 3,
-          name: '付款完成',
+          name: '訂單完成',
         },
       ],
       upgradeStepList: [
@@ -83,7 +83,7 @@ export default {
         {
           id: 2,
           step: 3,
-          name: '付款完成',
+          name: '訂單完成',
         },
       ],
     }
