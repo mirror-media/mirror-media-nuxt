@@ -37,7 +37,7 @@ steps:
     args:
       - --destination="gcr.io/${PROJECT_ID}/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}"
       - --cache=true
-      - --cache-ttl=1w
+      - --cache-ttl=336h
 timeout: 1800s
 images:
   - gcr.io/$PROJECT_ID/mirror-media-nuxt
