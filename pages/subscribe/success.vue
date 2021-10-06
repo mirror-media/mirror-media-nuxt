@@ -32,7 +32,7 @@
         </div>
         <div class="subscribe-success__info_button">
           <UiSubscribeButton
-            v-if="isNavigateFromPremiumPage"
+            v-if="!isNavigateFromPremiumPage"
             title="回購買文章頁"
             @click.native="sendMembershipSubscribe('回購買文章頁')"
           />
@@ -234,7 +234,7 @@ export default {
       @include media-breakpoint-up(sm) {
         flex-direction: row;
       }
-      a + a {
+      & > * + * {
         margin-top: 12px;
         @include media-breakpoint-up(sm) {
           margin-top: 0;
