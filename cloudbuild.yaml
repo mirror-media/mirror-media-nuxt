@@ -39,5 +39,3 @@ steps:
       - --cache=true
       - --cache-ttl=336h
 timeout: 1800s
-images:
-  - gcr.io/$PROJECT_ID/mirror-media-nuxt
