@@ -1,143 +1,156 @@
 <template>
-  <section class="page">
-    <h1 class="title">當期雜誌</h1>
-    <div
-      class="page__current-featured-magazine-wrapper current-featured-magazine-wrapper"
-    >
-      <UiMagazineFeatured
-        class="current-featured-magazine-wrapper__magazine"
-        :coverImgUrl="magazineFeatured[0].coverImgUrl"
-        :label="magazineFeatured[0].issue"
-        :title="magazineFeatured[0].title"
-        :downloadLink="magazineFeatured[0].pdfLink"
-        @downloadLinkClick="handleDownloadLinkClick"
-      />
-      <UiMagazineFeatured
-        class="current-featured-magazine-wrapper__magazine"
-        :coverImgUrl="magazineFeatured[1].coverImgUrl"
-        :label="magazineFeatured[1].issue"
-        :title="magazineFeatured[1].title"
-        :downloadLink="magazineFeatured[1].pdfLink"
-        @downloadLinkClick="handleDownloadLinkClick"
-      />
-    </div>
-    <section
-      class="page__magazine-showcase-list-wrapper magazine-showcase-list-wrapper"
-    >
-      <h1 class="title">近期雜誌</h1>
-      <ol
-        class="magazine-showcase-list-wrapper__magazine-showcase-list magazine-showcase-list"
-      >
-        <li
-          v-for="item in magazineCurrent"
-          :key="item.id"
-          class="magazine-showcase-list__list-item magazine-showcase-list-item"
+  <div class="page-wrapper">
+    <ClientOnly>
+      <div v-if="!isMagazinesVisible">
+        <h1 class="upgrade-title">電子雜誌</h1>
+        <UiMembershipUpgradeToPremium
+          :messageTitle="'加入Premium會員，免費閱覽最新電子版週刊'"
+          @upgrade="handleUpgrade"
+        />
+      </div>
+      <section v-else class="page">
+        <h1 class="title">當期雜誌</h1>
+        <div
+          class="page__current-featured-magazine-wrapper current-featured-magazine-wrapper"
         >
-          <UiMagazineShowcaseItem
-            :coverImgUrl="item.coverImgUrl"
-            :label="item.publishedDate"
-            :title="item.issue"
-            :downloadLink="item.pdfLink"
+          <UiMagazineFeatured
+            v-if="magazineFeatured[0]"
+            class="current-featured-magazine-wrapper__magazine"
+            :coverImgUrl="magazineFeatured[0].coverImgUrl"
+            :label="magazineFeatured[0].issue"
+            :title="magazineFeatured[0].title"
+            :downloadLink="magazineFeatured[0].pdfLink"
             @downloadLinkClick="handleDownloadLinkClick"
           />
-        </li>
-      </ol>
-    </section>
-    <section
-      class="page__magazine-showcase-list-wrapper magazine-showcase-list-wrapper magazine-showcase-list-wrapper--white"
-    >
-      <h1 class="title">購買線上雜誌</h1>
-      <div
-        class="magazine-showcase-list-wrapper__platform-links platform-links"
-      >
-        <div class="platform-links__row">
-          <a
-            class="logo-wrapper"
-            href="https://bookstore.emome.net/Searchs/finish/keyword:%E9%8F%A1%E9%80%B1%E5%88%8A"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            <SvgPlatformLogoHami />
-          </a>
-          <a
-            class="logo-wrapper"
-            href="https://mybook.taiwanmobile.com/search?publisher=%E9%8F%A1%E9%80%B1%E5%88%8A"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            <SvgPlatformLogoMybook />
-          </a>
-          <a
-            class="logo-wrapper"
-            href="https://www.pubu.com.tw/magazine-list/%E9%8F%A1%E9%80%B1%E5%88%8A-773"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            <SvgPlatformLogoPubu />
-          </a>
+          <UiMagazineFeatured
+            v-if="magazineFeatured[1]"
+            class="current-featured-magazine-wrapper__magazine"
+            :coverImgUrl="magazineFeatured[1].coverImgUrl"
+            :label="magazineFeatured[1].issue"
+            :title="magazineFeatured[1].title"
+            :downloadLink="magazineFeatured[1].pdfLink"
+            @downloadLinkClick="handleDownloadLinkClick"
+          />
         </div>
-        <div class="platform-links__row">
-          <a
-            class="logo-wrapper"
-            href="https://readmoo.com/mag/248?header_v2_subject_category"
-            target="_blank"
-            rel="noreferrer noopener"
+        <section
+          class="page__magazine-showcase-list-wrapper magazine-showcase-list-wrapper"
+        >
+          <h1 class="title">近期雜誌</h1>
+          <ol
+            class="magazine-showcase-list-wrapper__magazine-showcase-list magazine-showcase-list"
           >
-            <SvgPlatformLogoReadmoo />
-          </a>
-          <div class="logo-wrapper">
-            <SvgPlatformLogoKono />
-            <div class="kono-links-wrapper">
-              <p>
-                <a
-                  class="kono-link"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href="https://www.thekono.com/magazines/mirrormedia_a"
-                >
-                  <span>A本</span>
-                </a>
-                <span>|</span>
-                <a
-                  class="kono-link"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href="https://www.thekono.com/magazines/mirrormedia_b"
-                >
-                  <span>B本</span>
-                </a>
-              </p>
+            <li
+              v-for="item in magazineCurrent"
+              :key="item.id"
+              class="magazine-showcase-list__list-item magazine-showcase-list-item"
+            >
+              <UiMagazineShowcaseItem
+                :coverImgUrl="item.coverImgUrl"
+                :label="item.publishedDate"
+                :title="item.issue"
+                :downloadLink="item.pdfLink"
+                @downloadLinkClick="handleDownloadLinkClick"
+              />
+            </li>
+          </ol>
+        </section>
+        <section
+          class="page__magazine-showcase-list-wrapper magazine-showcase-list-wrapper magazine-showcase-list-wrapper--white"
+        >
+          <h1 class="title">購買線上雜誌</h1>
+          <div
+            class="magazine-showcase-list-wrapper__platform-links platform-links"
+          >
+            <div class="platform-links__row">
+              <a
+                class="logo-wrapper"
+                href="https://bookstore.emome.net/Searchs/finish/keyword:%E9%8F%A1%E9%80%B1%E5%88%8A"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <SvgPlatformLogoHami />
+              </a>
+              <a
+                class="logo-wrapper"
+                href="https://mybook.taiwanmobile.com/search?publisher=%E9%8F%A1%E9%80%B1%E5%88%8A"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <SvgPlatformLogoMybook />
+              </a>
+              <a
+                class="logo-wrapper"
+                href="https://www.pubu.com.tw/magazine-list/%E9%8F%A1%E9%80%B1%E5%88%8A-773"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <SvgPlatformLogoPubu />
+              </a>
+            </div>
+            <div class="platform-links__row">
+              <a
+                class="logo-wrapper"
+                href="https://readmoo.com/mag/248?header_v2_subject_category"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <SvgPlatformLogoReadmoo />
+              </a>
+              <div class="logo-wrapper">
+                <SvgPlatformLogoKono />
+                <div class="kono-links-wrapper">
+                  <p>
+                    <a
+                      class="kono-link"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      href="https://www.thekono.com/magazines/mirrormedia_a"
+                    >
+                      <span>A本</span>
+                    </a>
+                    <span>|</span>
+                    <a
+                      class="kono-link"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      href="https://www.thekono.com/magazines/mirrormedia_b"
+                    >
+                      <span>B本</span>
+                    </a>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-    <section
-      class="page__magazine-showcase-list-wrapper magazine-showcase-list-wrapper"
-    >
-      <h1 class="title">特刊</h1>
-      <ol
-        class="magazine-showcase-list-wrapper__magazine-showcase-list magazine-showcase-list"
-      >
-        <li
-          v-for="item in magazineSpecial"
-          :key="item.id"
-          class="magazine-showcase-list__list-item magazine-showcase-list-item"
+        </section>
+        <section
+          class="page__magazine-showcase-list-wrapper magazine-showcase-list-wrapper"
         >
-          <UiMagazineShowcaseItem
-            :coverImgUrl="item.coverImgUrl"
-            :label="item.publishedDate"
-            :title="item.issue"
-            :downloadLink="item.pdfLink"
-            @downloadLinkClick="handleDownloadLinkClick"
-          />
-        </li>
-      </ol>
-    </section>
-    <template v-if="shouldLoadmore">
-      <UiInfiniteLoading @infinite="infiniteHandler" />
-    </template>
-  </section>
+          <h1 class="title">特刊</h1>
+          <ol
+            class="magazine-showcase-list-wrapper__magazine-showcase-list magazine-showcase-list"
+          >
+            <li
+              v-for="item in magazineSpecial"
+              :key="item.id"
+              class="magazine-showcase-list__list-item magazine-showcase-list-item"
+            >
+              <UiMagazineShowcaseItem
+                :coverImgUrl="item.coverImgUrl"
+                :label="item.publishedDate"
+                :title="item.issue"
+                :downloadLink="item.pdfLink"
+                @downloadLinkClick="handleDownloadLinkClick"
+              />
+            </li>
+          </ol>
+        </section>
+        <template v-if="shouldLoadmore">
+          <UiInfiniteLoading @infinite="infiniteHandler" />
+        </template>
+      </section>
+    </ClientOnly>
+  </div>
 </template>
 
 <script>
@@ -152,9 +165,12 @@ import SvgPlatformLogoReadmoo from '~/assets/magazine-platform-logo-readmoo.svg?
 import SvgPlatformLogoKono from '~/assets/magazine-platform-logo-kono.svg?inline'
 
 import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore'
+import { shouldIdentifyMarketingByEmail } from '~/middleware/utils'
+import UiMembershipUpgradeToPremium from '~/components/UiMembershipUpgradeToPremium.vue'
 
 export default {
   components: {
+    UiMembershipUpgradeToPremium,
     UiMagazineFeatured,
     UiMagazineShowcaseItem,
     UiInfiniteLoading,
@@ -185,20 +201,6 @@ export default {
       },
     }),
   ],
-  async fetch() {
-    const [responseMagazineWeekly] = await Promise.allSettled([
-      this.$fetchMagazines({
-        maxResults: 8,
-        sort: '-publishedDate',
-        magazineType: 'weekly',
-      }),
-      this.initList(),
-    ])
-
-    if (responseMagazineWeekly.status === 'fulfilled') {
-      this.setListData(responseMagazineWeekly.value)
-    }
-  },
   data() {
     return {
       listData: [],
@@ -222,6 +224,35 @@ export default {
         this.magazineSpecialListItemsInLoadmorePage
       )
     },
+
+    isMagazinesVisible() {
+      const memberType =
+        this.$store.state['membership-subscribe'].basicInfo?.type ?? 'none'
+      return (
+        shouldIdentifyMarketingByEmail(this.$store) ||
+        memberType === 'marketing' ||
+        memberType === 'subscribe_monthly' ||
+        memberType === 'subscribe_yearly'
+      )
+    },
+  },
+
+  async beforeMount() {
+    if (!this.isMagazinesVisible) {
+      return
+    }
+    const [responseMagazineWeekly] = await Promise.allSettled([
+      this.$fetchMagazines({
+        maxResults: 8,
+        sort: '-publishedDate',
+        magazineType: 'weekly',
+      }),
+      this.initList(),
+    ])
+
+    if (responseMagazineWeekly.status === 'fulfilled') {
+      this.setListData(responseMagazineWeekly.value)
+    }
   },
   methods: {
     mapDataToComponentProps(item) {
@@ -247,20 +278,41 @@ export default {
         eventLabel: 'download magazine',
       })
     },
+
+    handleUpgrade() {
+      window.location.assign('/subscribe')
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.page {
-  padding: 48px 0 0 0;
+.page-wrapper {
+  padding: 48px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   @include media-breakpoint-up(xl) {
-    padding: 60px 0 0 0;
+    padding: 24px 0 48px 0;
   }
+}
 
+.upgrade-title {
+  font-size: 22px;
+  line-height: 30.8px;
+  color: rgba(0, 0, 0, 0.66);
+  margin-bottom: 12px;
+  @include media-breakpoint-up(sm) {
+    font-size: 24px;
+    line-height: 34px;
+  }
+}
+
+.page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   &__current-featured-magazine-wrapper {
     margin: 32px 0 0 0;
     @include media-breakpoint-up(xl) {
