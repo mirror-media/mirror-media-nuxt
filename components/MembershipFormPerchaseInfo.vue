@@ -59,7 +59,10 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-bottom: 12px;
-    gap: 24px;
+
+    span + span {
+      margin-left: 24px;
+    }
 
     * {
       min-width: 70px;

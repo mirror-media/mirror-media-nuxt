@@ -51,9 +51,9 @@
             :setReciptFormStatus="setReciptFormStatus"
             @handleChangeCarrierType="handleChangeCarrierType"
           />
-
           <UiValidationInput
             ref="carrierNumberDOM"
+            v-if="receiptData.carrierType && receiptData.carrierType < 2"
             v-model="receiptData.carrierNumber"
             :carrierType="receiptData.carrierType"
             :placeholder="carrierNumberPlaceHolder"
@@ -124,6 +124,10 @@ export default {
       type: Function,
       default: () => {},
     },
+    email: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -153,7 +157,7 @@ export default {
       let placeholder = ''
 
       switch (this.receiptData.carrierType) {
-        case '2': // 'Email 載具'
+        case '2': // '電子發票載具'
           placeholder = 'example@gmail.com'
           break
 
@@ -178,7 +182,7 @@ export default {
           value: '',
         },
         {
-          name: 'Email 載具',
+          name: '電子發票載具',
           value: '2',
         },
         {
@@ -227,6 +231,8 @@ export default {
         if (val.receiptPlan !== '二聯式發票（含載具）') {
           this.receiptData.carrierType = '請選擇'
           this.receiptData.carrierNumber = ''
+        } else if (this.receiptData.carrierType === '2') {
+          this.receiptData.carrierNumber = this.emailb
         }
         // reset validation status after chagned value
         this.receiptFormStatus = {
@@ -239,6 +245,11 @@ export default {
         }
       },
       deep: true,
+    },
+    email(newMail) {
+      if (this.receiptData.carrierType === '2') {
+        this.receiptData.carrierNumber = newMail
+      }
     },
   },
   methods: {
