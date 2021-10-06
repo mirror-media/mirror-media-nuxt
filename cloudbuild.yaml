@@ -40,3 +40,4 @@ steps:
       - --cache=true
       - --cache-ttl=672h
 timeout: 1800s
+serviceAccount: mirrormedia-1470651750304@cloudbuild.gserviceaccount.com
