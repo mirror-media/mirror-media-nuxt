@@ -41,3 +41,4 @@ steps:
       - --cache-ttl=672h
 timeout: 1800s
 serviceAccount: cloud-build@mirrormedia-1470651750304.iam.gserviceaccount.com
+logsBucket: "gs://mm-logs"
