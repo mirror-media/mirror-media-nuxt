@@ -35,6 +35,7 @@ steps:
       - ./configs.build
   - name: gcr.io/kaniko-project/executor:latest
     args:
+      - --context="dir:///workspace"
       - --destination="gcr.io/${PROJECT_ID}/mirror-media-nuxt:ci_perf_test_${SHORT_SHA}_${BUILD_ID}"
       - --cache=true
       - --cache-ttl=672h
