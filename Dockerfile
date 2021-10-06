@@ -2,8 +2,7 @@ FROM node:12.16.2-alpine AS build
 
 WORKDIR /app
 
-RUN apk update \
-    && apk upgrade \
+RUN apk upgrade --no-cache \
     && apk add --no-cache --virtual .build-deps python make g++
 
 COPY package.json .
