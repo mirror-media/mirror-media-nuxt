@@ -41,4 +41,4 @@ steps:
       - --cache-ttl=672h
 timeout: 1800s
 options:
-  logging: NONE
+  logging: CLOUD_LOGGING_ONLY
