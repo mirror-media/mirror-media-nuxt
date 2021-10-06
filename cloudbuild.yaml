@@ -35,9 +35,8 @@ steps:
       - ./configs.build
   - name: gcr.io/kaniko-project/executor:latest
     args:
-      - --destination="gcr.io/${PROJECT_ID}/mirror-media-nuxt:ci_perf_test_${SHORT_SHA}_${BUILD_ID}"
+      - --destination="gcr.io/${PROJECT_ID}/mirror-media-nuxt:ci"
       - --verbosity=trace
       - --cache=true
       - --cache-ttl=672h
 timeout: 1800s
-logsBucket: "gs://mm-logs"
