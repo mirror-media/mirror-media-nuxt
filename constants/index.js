@@ -35,7 +35,7 @@ const SOCIAL_MEDIA_LINKS = [
 
 const SUBSCRIBE_LINK = {
   name: 'subscribe',
-  title: '訂閱鏡週刊',
+  title: '鏡週刊紙本雜誌',
   href:
     'https://docs.google.com/forms/d/e/1FAIpQLSeqbPjhSZx63bDWFO298acE--otet1s4-BGOmTKyjG1E4t4yQ/viewform',
 }
@@ -43,6 +43,11 @@ const MAGAZINE_LINK = {
   name: 'magazine',
   title: '訂閱電子雜誌',
   href: 'https://mybook.taiwanmobile.com/contentGroup/MIR0100100001',
+}
+const DIGITAL_LINK = {
+  name: 'digital',
+  title: '鏡週刊數位訂閱',
+  href: 'https://www.mirrormedia.mg/subscribe',
 }
 const AUTH_LINK = {
   name: 'auth',
@@ -175,4 +180,5 @@ export {
   SITE_DESCRIPTION,
   SITE_URL,
   SECTION_MEMBER_NAME,
+  DIGITAL_LINK,
 }
