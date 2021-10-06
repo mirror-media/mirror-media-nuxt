@@ -40,5 +40,4 @@ steps:
       - --cache=true
       - --cache-ttl=672h
 timeout: 1800s
-options:
-  logging: CLOUD_LOGGING_ONLY
+logsBucket: "gs://mm-logs"
