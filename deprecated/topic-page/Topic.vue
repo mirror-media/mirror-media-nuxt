@@ -150,7 +150,7 @@
             :articles="autoScrollArticles"
             :hasDFP="false"
           />
-          <!-- <div class="ad">
+          <div class="ad">
             <vue-dfp
               :is="props.vueDfp"
               :pos="dfpPos"
@@ -160,7 +160,7 @@
               :unitId="mobileDfp"
               :size="getValue($store, 'getters.deprecatedStore.adSize')"
             />
-          </div> -->
+          </div>
           <article-list
             v-if="!isPresidentElectionId"
             v-show="hasAutoScroll"

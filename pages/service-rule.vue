@@ -17,7 +17,7 @@
       <UiMembershipButtonPrimary
         :disabled="!isChecked"
         @click.native="handleSubmit"
-        >繼續</UiMembershipButtonPrimary
+        >繼續登入</UiMembershipButtonPrimary
       >
     </div>
   </div>
