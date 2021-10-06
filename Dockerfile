@@ -4,12 +4,16 @@ WORKDIR /app
 
 RUN apk update \
     && apk upgrade \
-    && apk add python make g++
+    && apk add --no-cache --virtual .build-deps python make g++
+
+COPY package.json .
+COPY yarn.lock .
+RUN yarn install
 
 COPY . .
 
-RUN yarn install \
-    && yarn build
+RUN yarn build \
+    && apk del .build-deps
 
 FROM node:12.16.2-alpine
 
