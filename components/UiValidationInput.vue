@@ -88,16 +88,13 @@ export default {
       }
       let reg, result
       switch (this.carrierType) {
-        case '手機條碼':
+        case '0':
           reg = /^\/(\d|[A-Z]|\.|\+|[-]){7}$/
           result = reg.test(this.value)
           break
-        case '自然人憑證':
+        case '1':
           reg = /^[A-Z]{2}\d{14}$/
           result = reg.test(this.value)
-          break
-        case '電子發票載具':
-          result = this.$v.value.email
           break
         default:
           result = true
@@ -105,10 +102,21 @@ export default {
       return result
     },
     invalidMessage() {
+      let name
       if (this.validateField === 'carrierUbn') {
-        return '請輸入有效的統一編號（8 碼）'
+        name = '統一編號（8 碼)'
       }
-      return `請輸入有效的${this.carrierType}`
+      switch (this.carrierType) {
+        case '0':
+          name = '手機條碼'
+          break
+        case '1':
+          name = '自然人憑證'
+          break
+        default:
+          name = '內容'
+      }
+      return `請輸入有效的${name}`
     },
     disable() {
       return this.carrierType === '請選擇'
