@@ -1,4 +1,4 @@
-FROM node:12.16.2-alpine AS build
+FROM node:12.16.2-alpine
 
 WORKDIR /app
 
@@ -13,12 +13,6 @@ COPY . .
 
 RUN yarn build \
     && apk del .build-deps
-
-FROM node:12.16.2-alpine
-
-WORKDIR /app
-
-COPY --from=build /app .
 
 ENV NUXT_HOST 0.0.0.0
 ENV NUXT_PORT 3000
