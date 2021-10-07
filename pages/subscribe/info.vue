@@ -45,6 +45,7 @@
             :setReceiptData="setReceiptData"
             :validateOn="validateOn"
             :setFormStatus="setFormStatus"
+            :email="email"
           />
           <p
             v-if="!isUpgradeFromMonthToYear"
@@ -88,7 +89,7 @@ import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
-  middleware: ['handle-go-to-marketing', 'handle-forbid-direct-navigate'],
+  // middleware: ['handle-go-to-marketing', 'handle-forbid-direct-navigate'],
   components: {
     SubscribeStepProgress,
     MembershipFormPlanList,
@@ -355,6 +356,7 @@ export default {
           buyerUBN: this.validReceiptData.carrierUbn,
           category: getCategory.bind(this)(),
         }
+        console.log(gateWayPayload)
       } else {
         // one_time
         const subscribePostId = this.perchasedPlan?.[0]?.id
@@ -371,6 +373,7 @@ export default {
           buyerUBN: this.validReceiptData.carrierUbn,
           category: getCategory.bind(this)(),
         }
+        console.log(gateWayPayload)
       }
 
       return await this.$getPaymentDataOfSubscription(gateWayPayload)

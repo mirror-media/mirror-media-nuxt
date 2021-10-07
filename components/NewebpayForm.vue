@@ -1,12 +1,7 @@
 <template>
   <div class="newebpay-form">
     <h1>頁面即將導向藍新支付...</h1>
-    <form
-      id="data_set"
-      name="newebpay"
-      method="post"
-      action="https://core.newebpay.com/MPG/mpg_gateway"
-    >
+    <form id="data_set" name="newebpay" method="post" :action="newebpayApiUrl">
       <input type="hidden" name="MerchantID" :value="merchantId" />
       <input type="hidden" name="TradeInfo" :value="tradeInfo" />
       <input type="hidden" name="TradeSha" :value="tradeSha" />
@@ -18,6 +13,8 @@
 </template>
 
 <script>
+import { ENV } from '../configs/config'
+
 export default {
   props: {
     merchantId: {
@@ -40,6 +37,14 @@ export default {
       isRequired: true,
       default: 1.6,
     },
+  },
+  data() {
+    return {
+      newebpayApiUrl:
+        ENV === 'prod'
+          ? 'https://core.newebpay.com/MPG/mpg_gateway'
+          : 'https://ccore.newebpay.com/MPG/mpg_gateway',
+    }
   },
 }
 </script>

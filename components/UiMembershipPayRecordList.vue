@@ -56,7 +56,9 @@ export default {
 <style lang="scss" scoped>
 .pay-list {
   display: flex;
-  gap: 20px;
+  div + div {
+    margin-left: 20px;
+  }
   &__content {
     flex: 1;
     @include media-breakpoint-up(sm) {
@@ -69,12 +71,17 @@ export default {
     }
     &_number {
       flex: 2;
-      gap: 4px;
+      div + div {
+        margin-left: 4px;
+      }
       @include media-breakpoint-up(sm) {
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
         align-items: flex-start;
+        div + div {
+          margin-top: 4px;
+        }
       }
 
       &_type {

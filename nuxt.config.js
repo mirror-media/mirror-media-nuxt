@@ -553,6 +553,7 @@ module.exports = {
       routes.splice(originalLoginRouteIndex, 1)
       routes.push({
         path: '/login',
+        name: 'login',
         component: resolve(__dirname, 'pages/loginNew.vue'),
       })
 
