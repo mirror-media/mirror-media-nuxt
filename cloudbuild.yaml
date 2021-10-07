@@ -44,19 +44,15 @@ steps:
       - build
       - "-t"
       - "gcr.io/${PROJECT_ID}/mirror-media-nuxt"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/mirror-media-nuxt:ci_${SHORT_SHA}_${BUILD_ID}"
       - "--cache-from"
       # - "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}"
       - "gcr.io/$PROJECT_ID/mirror-media-nuxt:ci"
       - .
   - name: gcr.io/cloud-builders/docker
     args:
-      - tag
-      - gcr.io/$PROJECT_ID/mirror-media-nuxt:ci
-      - gcr.io/$PROJECT_ID/mirror-media-nuxt:ci_${SHORT_SHA}_${BUILD_ID}
-  - name: gcr.io/cloud-builders/docker
-    args:
       - push
-      - --all-tags
       - gcr.io/$PROJECT_ID/mirror-media-nuxt
 
 timeout: 1800s
