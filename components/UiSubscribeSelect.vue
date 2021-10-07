@@ -50,7 +50,7 @@ export default {
       default: () => {
         return [
           {
-            name: 'email載具',
+            name: '電子發票載具',
             value: 'mail',
           },
           {

@@ -133,7 +133,9 @@ export default {
     &.mobile {
       flex-direction: column;
       align-items: flex-start;
-      gap: 12px;
+      div + div {
+        margin-top: 12px;
+      }
     }
     &_status {
       font-weight: 600;
@@ -141,11 +143,15 @@ export default {
       line-height: 25px;
       color: rgba(0, 0, 0, 0.66);
       display: flex;
-      gap: 4px;
+      img {
+        margin-left: 4px;
+      }
     }
     &_button_group {
       display: flex;
-      gap: 4px;
+      .button + .button {
+        margin-left: 4px;
+      }
       .button {
         padding: 8px 16px;
         font-size: 16px;

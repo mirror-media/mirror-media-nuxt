@@ -69,7 +69,9 @@ export default {
     }
     &_row {
       display: flex;
-      gap: 16px;
+      div + div {
+        margin-left: 16px;
+      }
       div {
         flex: 1;
         &:first-child {
@@ -99,9 +101,11 @@ export default {
       color: #054f77;
       justify-content: center;
       cursor: pointer;
-      gap: 2px;
       display: flex;
       width: auto;
+      img {
+        margin-left: 2px;
+      }
     }
   }
 }
