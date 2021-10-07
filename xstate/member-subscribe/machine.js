@@ -40,7 +40,13 @@ export default function createMachine(router, route, store, apolloProvider) {
         createNavigation(router, route, '/service-rule')
       },
       navigateToPremiumPage(context) {
-        createNavigation(router, route, context.isFromPost)
+        if (
+          !context.isFromPost ||
+          shouldStopNavigation(route, context.isFromPost)
+        ) {
+          return
+        }
+        window.location.assign(context.isFromPost)
       },
       navigateToSubscribePlans() {
         createNavigation(router, route, '/subscribe')
@@ -108,17 +114,17 @@ function createNavigation(router, route, path) {
     return
   }
   router.replace(path)
+}
 
-  function shouldStopNavigation(route, path) {
-    return isCurrentRoutePathMatching()
+function shouldStopNavigation(route, path) {
+  return isCurrentRoutePathMatching()
 
-    function isCurrentRoutePathMatching() {
-      return route.value.fullPath.startsWith(path)
-    }
+  function isCurrentRoutePathMatching() {
+    return route.value.fullPath.startsWith(path)
   }
 }
 
-function getSubscription(memberType) {
+export function getSubscription(memberType) {
   const mapping = {
     subscribe_yearly: '年訂閱',
     subscribe_monthly: '月訂閱',
