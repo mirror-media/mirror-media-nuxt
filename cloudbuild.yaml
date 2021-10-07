@@ -38,7 +38,7 @@ steps:
     args:
       - "-c"
       # - "docker pull gcr.io/${PROJECT_ID}/mirror-media-nuxt:${BRANCH_NAME} || exit 0"
-      - "docker pull gcr.io/${PROJECT_ID}/mirror-media-nuxt:dev || exit 0"
+      - "docker pull gcr.io/${PROJECT_ID}/mirror-media-nuxt:latest || exit 0"
   - name: gcr.io/cloud-builders/docker
     args:
       - build
