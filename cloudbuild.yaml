@@ -48,8 +48,6 @@ steps:
       # - "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}"
       - "gcr.io/$PROJECT_ID/mirror-media-nuxt"
       - .
-      - .
-      - .
   - name: gcr.io/cloud-builders/docker
     args:
       - tag
