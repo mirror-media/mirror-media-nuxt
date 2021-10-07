@@ -1,4 +1,5 @@
 import { assign } from 'xstate'
+import { getSubscription } from '~/xstate/member-subscribe/machine'
 
 export default {
   guards: {
@@ -35,6 +36,10 @@ export default {
       },
       isTosAgreed: (context, event) => {
         return event?.userData?.israfel?.basicInfo?.tos ?? false
+      },
+      subscription: (context, event) => {
+        const type = event?.userData?.israfel?.basicInfo?.type ?? 'none'
+        return getSubscription(type)
       },
     }),
     verifyEmail: assign({

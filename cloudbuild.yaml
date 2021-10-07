@@ -26,7 +26,7 @@ steps:
     args:
       - cp
       - "-R"
-      - ./configs.build/mirror-media/mirror-media-nuxt/dev/config.js
+      - ./configs.build/mirror-media/mirror-media-nuxt/${BRANCH_NAME}/config.js
       - ./configs/config.js
   - name: bash
     args:
