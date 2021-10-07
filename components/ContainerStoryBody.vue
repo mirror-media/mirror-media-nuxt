@@ -76,6 +76,11 @@
         target="_blank"
         rel="noopener noreferrer"
         v-text="SUBSCRIBE_LINK.title"
+      />、<a
+        :href="DIGITAL_LINK.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        v-text="DIGITAL_LINK.title"
       />、<a :href="AUTH_LINK.href" target="_blank" rel="noopener noreferrer"
         >了解內容授權資訊</a
       >。
@@ -128,7 +133,12 @@ import UiStoryVideo from '~/components/UiStoryVideo.vue'
 import UiShareSidebox from '~/components/UiShareSidebox.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
-import { AUTH_LINK, SUBSCRIBE_LINK, SITE_OG_IMG } from '~/constants/index.js'
+import {
+  AUTH_LINK,
+  SUBSCRIBE_LINK,
+  SITE_OG_IMG,
+  DIGITAL_LINK,
+} from '~/constants/index.js'
 import { creditHtml } from '~/utils/article.js'
 
 const THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY = 6
@@ -166,6 +176,7 @@ export default {
     return {
       AUTH_LINK,
       SUBSCRIBE_LINK,
+      DIGITAL_LINK,
     }
   },
   computed: {
@@ -341,7 +352,7 @@ export default {
 
   methods: {
     enterMemberSectionPage() {
-      this.enterPageAfterLoggedIn('/section/member/')
+      this.enterPageAfterLoggedIn('/subscribe')
       this.$ga.event({
         eventCategory: 'article',
         eventAction: 'click',
