@@ -37,22 +37,16 @@ steps:
     entrypoint: "bash"
     args:
       - "-c"
-      # - "docker pull gcr.io/${PROJECT_ID}/mirror-media-nuxt:${BRANCH_NAME} || exit 0"
-      - "docker pull gcr.io/${PROJECT_ID}/mirror-media-nuxt:latest || exit 0"
+      - "docker pull gcr.io/${PROJECT_ID}/mirror-media-nuxt:${BRANCH_NAME} || exit 0"
   - name: gcr.io/cloud-builders/docker
     args:
       - build
       - "-t"
       - "gcr.io/${PROJECT_ID}/mirror-media-nuxt"
       - "--cache-from"
-      # - "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}"
-      - "gcr.io/$PROJECT_ID/mirror-media-nuxt:latest"
+      - "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}"
       - .
 timeout: 1800s
-tags:
-  # - "${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}"
-  # - "${BRANCH_NAME}"
-  - "dev_${SHORT_SHA}_${BUILD_ID}"
-  - "dev"
 images:
-  - gcr.io/$PROJECT_ID/mirror-media-nuxt
+  - gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}
+  - gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}
