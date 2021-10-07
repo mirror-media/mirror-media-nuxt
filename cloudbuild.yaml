@@ -46,7 +46,7 @@ steps:
       - "gcr.io/${PROJECT_ID}/mirror-media-nuxt"
       - "--cache-from"
       # - "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}"
-      - "gcr.io/$PROJECT_ID/mirror-media-nuxt:dev"
+      - "gcr.io/$PROJECT_ID/mirror-media-nuxt:latest"
       - .
 timeout: 1800s
 tags:
