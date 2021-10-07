@@ -9,13 +9,14 @@ COPY package.json .
 COPY yarn.lock .
 RUN yarn install
 
-COPY . .
-
-RUN yarn build \
-    && apk del .build-deps
-
 ENV NUXT_HOST 0.0.0.0
 ENV NUXT_PORT 3000
 
 EXPOSE $NUXT_PORT
 CMD [ "yarn", "start" ]
+
+COPY . .
+
+RUN yarn build \
+    && apk add --no-cache ca-certificates \
+    && apk del .build-deps
