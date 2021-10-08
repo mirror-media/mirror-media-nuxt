@@ -26,7 +26,7 @@ steps:
     args:
       - cp
       - "-R"
-      - ./configs.build/mirror-media/mirror-media-nuxt/dev/config.js
+      - ./configs.build/mirror-media/mirror-media-nuxt/${BRANCH_NAME}/config.js
       - ./configs/config.js
   - name: bash
     args:
@@ -39,10 +39,10 @@ steps:
       - "set"
       - "builds/use_kaniko"
       - "True"
-  - name: gcr.io/kaniko-project/executor:latest
+  - name: "gcr.io/kaniko-project/executor:latest"
     args:
-      - --destination=gcr.io/${PROJECT_ID}/mirror-media-nuxt:ci_${SHORT_SHA}_${BUILD_ID}
+      - --destination=gcr.io/${PROJECT_ID}/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}
       - --cache=true
-      - --cache-ttl=6h
+      - --cache-ttl=720h
 
 timeout: 1800s
