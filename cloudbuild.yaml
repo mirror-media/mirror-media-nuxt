@@ -35,7 +35,6 @@ steps:
       - ./configs.build
   - name: gcr.io/cloud-builders/gcloud
     args:
-      - "gcloud"
       - "config"
       - "set"
       - "builds/use_kaniko"
