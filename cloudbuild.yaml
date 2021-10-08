@@ -33,28 +33,16 @@ steps:
       - rm
       - "-R"
       - ./configs.build
-  - name: "gcr.io/cloud-builders/docker"
-    entrypoint: "bash"
+  - name: gcr.io/cloud-builders/gcloud
     args:
-      - "-c"
-      - "docker pull gcr.io/${PROJECT_ID}/mirror-media-nuxt:${BRANCH_NAME} || exit 0"
-  - name: gcr.io/cloud-builders/docker
+      - "config"
+      - "set"
+      - "builds/use_kaniko"
+      - "True"
+  - name: "gcr.io/kaniko-project/executor:latest"
     args:
-      - build
-      - "-t"
-      - "gcr.io/${PROJECT_ID}/mirror-media-nuxt:${BRANCH_NAME}"
-      - "-t"
-      - "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}"
-      - "--cache-from"
-      - "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}"
-      - .
-  - name: gcr.io/cloud-builders/docker
-    args:
-      - push
-      - gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}
-  - name: gcr.io/cloud-builders/docker
-    args:
-      - push
-      - gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}
+      - --destination=gcr.io/${PROJECT_ID}/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}
+      - --cache=true
+      - --cache-ttl=720h
 
 timeout: 1800s
