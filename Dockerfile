@@ -16,9 +16,9 @@ FROM node:12.16.2-alpine
 
 WORKDIR /app
 
-COPY --from=build /app .
-
 RUN apk add --no-cache ca-certificates
+
+COPY --from=build /app .
 
 ENV NUXT_HOST 0.0.0.0
 ENV NUXT_PORT 3000
