@@ -1,2 +1,10 @@
+# buildtime
 node_modules
 cloudbuild.yaml
+
+# git
+.git
+.github
+
+# style guide
+.prettierrc
