@@ -61,7 +61,7 @@ steps:
     entrypoint: sh
     args:
       - -c
-      - apk --no-cache add bash
+      - apk --no-cache add bash curl
       - "&&"
       - bash
       - -c
