@@ -64,6 +64,7 @@ steps:
       - "-X"
       - "POST"
       - "${_CD_WEBOOK_URL}?key=${_API_KEY}&secret=$$WEBHOOK_SECRET"
+    secretEnv: ["WEBHOOK_SECRET"]
 availableSecrets:
   secretManager:
     - versionName: ${_CD_WEBHOOK_SECRET_VERSION}
