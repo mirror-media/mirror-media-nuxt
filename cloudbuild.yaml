@@ -57,8 +57,8 @@ steps:
   #     - push
   #     - gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}
   - id: trigger_deployment
-    name: alpine
-    entrypoint: sh
+    name: bash
+    entrypoint: bash
     args:
       - -c
       - >
