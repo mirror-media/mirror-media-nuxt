@@ -37,7 +37,7 @@ steps:
     entrypoint: "bash"
     args:
       - "-c"
-      - "docker pull gcr.io/${PROJECT_ID}/mirror-media-nuxt:dev || exit 0"
+      - "docker pull gcr.io/${PROJECT_ID}/mirror-media-nuxt:${BRANCH_NAME} || exit 0"
   - name: gcr.io/cloud-builders/docker
     args:
       - build
@@ -46,7 +46,7 @@ steps:
       - "-t"
       - "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}"
       - "--cache-from"
-      - "gcr.io/$PROJECT_ID/mirror-media-nuxt:dev"
+      - "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}"
       - .
   - name: gcr.io/cloud-builders/docker
     args:
