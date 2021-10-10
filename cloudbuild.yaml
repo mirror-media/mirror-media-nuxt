@@ -57,7 +57,7 @@ steps:
       - push
       - gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}
   - id: trigger_deployment
-    name: curl
+    name: gcr.io/cloud-builders/curl
     args:
       - "-d"
       - '{ "branch": "${BRANCH_NAME}", "build": { "cluster": "${_KUBERNETES_CLUSTER}", "root": "${_KUSTOMIZATION_ROOTS//STAGE/${BRANCH_NAME}", "image": { "root": "${_KUSTOMIZATION_IMAGE_ROOT//STAGE/${BRANCH_NAME}", "name: "${_KUSTOMIZATION_IMAGE_NAME}", "newname": "$gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}" } } }'
