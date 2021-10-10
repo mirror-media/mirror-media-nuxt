@@ -62,7 +62,7 @@ steps:
     args:
       - "-c"
       - |
-        set -x && curl -v -H "Authorization: Bearer $(gcloud auth print-access-token)" -H "application/json" -d '{ "branch": "${BRANCH_NAME}", "build": { "cluster": "${_KUBERNETES_CLUSTER}", "root": "${_KUSTOMIZATION_ROOTS//STAGE/${BRANCH_NAME}", "image": { "root": "${_KUSTOMIZATION_IMAGE_ROOT//STAGE/${BRANCH_NAME}", "name: "${_KUSTOMIZATION_IMAGE_NAME}", "newname": "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}" } } }' -X POST ${_CD_WEBOOK_URL}?key=${_API_KEY}&secret=$$WEBHOOK_SECRET
+        apt update -y && apt install curl -y && curl -v --fail-with-body -H "Authorization: Bearer $(gcloud auth print-access-token)" -H "application/json" -d '{ "branch": "${BRANCH_NAME}", "build": { "cluster": "${_KUBERNETES_CLUSTER}", "root": "${_KUSTOMIZATION_ROOTS//STAGE/${BRANCH_NAME}", "image": { "root": "${_KUSTOMIZATION_IMAGE_ROOT//STAGE/${BRANCH_NAME}", "name: "${_KUSTOMIZATION_IMAGE_NAME}", "newname": "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}" } } }' -X POST ${_CD_WEBOOK_URL}?key=${_API_KEY}&secret=$$WEBHOOK_SECRET
     secretEnv: ["WEBHOOK_SECRET"]
 availableSecrets:
   secretManager:
