@@ -37,7 +37,7 @@ steps:
     entrypoint: "bash"
     args:
       - "-c"
-      - "docker pull gcr.io/${PROJECT_ID}/mirror-media-nuxt:$dev || exit 0"
+      - "docker pull gcr.io/${PROJECT_ID}/mirror-media-nuxt:dev || exit 0"
   - name: gcr.io/cloud-builders/docker
     args:
       - build
