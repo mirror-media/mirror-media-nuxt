@@ -57,7 +57,7 @@ steps:
       - push
       - gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}
   - id: trigger_deployment
-    name: gcr.io/cloud-builders/curl
+    name: curlimages/curl
     args:
       - "--fail-with-body"
       - "-d"
