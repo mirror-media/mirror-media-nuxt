@@ -60,7 +60,8 @@ steps:
     name: curlimages/curl
     args:
       - "--fail-with-body"
-      - "-v --http1.1"
+      - "-v"
+      - "--http1.1"
       - "-H"
       - '"Authorization: Bearer $(gcloud auth print-access-token)"'
       - "-H"
