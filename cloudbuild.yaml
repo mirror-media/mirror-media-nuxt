@@ -62,7 +62,7 @@ steps:
     args:
       - -c
       - apk --no-cache add bash
-      - &&
+      - "&&"
       - bash
       - -c
       - curl
