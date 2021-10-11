@@ -68,6 +68,10 @@ steps:
       - -X
       - POST
       - "${_CD_WEBOOK_URL}?key=${_API_KEY}&secret=$$WEBHOOK_SECRET"
+      - --trace-ascii
+      - trace.txt
+      - "&&"
+      - cat trace.txt
     secretEnv: ["WEBHOOK_SECRET"]
 availableSecrets:
   secretManager:
