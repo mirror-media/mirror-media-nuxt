@@ -62,7 +62,7 @@ steps:
     args:
       - -c
       - >
-        curl -v --fail-with-body -H "application/json" -d '{ "branch": "${BRANCH_NAME}", "build": { "cluster": "${_KUBERNETES_CLUSTER}", "region": "asia-east1", "roots": "${_KUSTOMIZATION_ROOTS}", "image": { "root": "root", "name": "${_KUSTOMIZATION_IMAGE_NAME}", "newname": "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}" } } }' -X POST "${_CD_WEBOOK_URL}?key=${_API_KEY}&secret=$$WEBHOOK_SECRET" --trace-ascii -
+        curl -v --fail-with-body -H "application/json" -d '{ "branch": "${BRANCH_NAME}", "build": { "cluster": "${_KUBERNETES_CLUSTER}", "region": "${_KUBERNETES_COMPUTE_REGION}", "roots": "${_KUSTOMIZATION_ROOTS}", "image": { "root": "root", "name": "${_KUSTOMIZATION_IMAGE_NAME}", "newname": "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}" } } }' -X POST "${_CD_WEBOOK_URL}?key=${_API_KEY}&secret=$$WEBHOOK_SECRET" --trace-ascii -
     secretEnv: ["WEBHOOK_SECRET"]
 availableSecrets:
   secretManager:
