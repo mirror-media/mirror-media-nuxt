@@ -1,9 +1,7 @@
 <template>
   <section class="page">
     <div class="page-wrapper">
-      <a href="/subscribe" class="page__banner">
-        <img class="page__banner_img" />
-      </a>
+      <a href="/subscribe" class="page__banner" />
       <div
         v-for="section in data"
         :key="section.id"
