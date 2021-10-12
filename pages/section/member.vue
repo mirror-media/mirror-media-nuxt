@@ -1,7 +1,9 @@
 <template>
   <section class="page">
     <div class="page-wrapper">
-      <a href="/subscribe" class="page__banner" />
+      <a href="/subscribe" class="page__banner">
+        <img class="page__banner_img" />
+      </a>
       <div
         v-for="section in data"
         :key="section.id"
@@ -137,21 +139,15 @@ export default {
 
   &__banner {
     background: url('../../assets/subscribe_banner_mobile.jpg');
-    width: 288px;
-    height: 60px;
+    width: calc(100% - 20px);
+    height: 0;
+    padding-bottom: calc((100% - 20px) * 0.21);
     display: block;
     background-size: contain;
-    margin: 0 auto;
     margin-bottom: 24px;
     @include media-breakpoint-up(md) {
       background: url('../../assets/subscribe_banner.jpg');
-      width: 672px;
-      height: 78.75px;
-      background-size: contain;
-    }
-    @include media-breakpoint-up(xl) {
-      width: 1024px;
-      height: 120px;
+      padding-bottom: 11.7%;
       background-size: contain;
     }
   }
