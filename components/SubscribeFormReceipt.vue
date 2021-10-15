@@ -232,7 +232,7 @@ export default {
           this.receiptData.carrierType = '請選擇'
           this.receiptData.carrierNumber = ''
         } else if (this.receiptData.carrierType === '2') {
-          this.receiptData.carrierNumber = this.emailb
+          this.receiptData.carrierNumber = this.email
         }
         // reset validation status after chagned value
         this.receiptFormStatus = {
@@ -271,7 +271,8 @@ export default {
           this.$refs.donateOrganizationDOM.check()
         } else if (this.receiptData.receiptPlan === '二聯式發票（含載具）') {
           this.$refs.carrierTypeDOM.check()
-          this.$refs.carrierNumberDOM.check()
+          if (this.receiptData.carrierType !== '2')
+            this.$refs.carrierNumberDOM.check()
         } else if (this.receiptData.receiptPlan === '三聯式發票') {
           this.$refs.carrierTitleDOM.check()
           this.$refs.carrierUbnDOM.check()
