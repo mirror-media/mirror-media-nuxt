@@ -31,17 +31,13 @@
           </div>
         </div>
         <div class="subscribe-success__info_button">
-          <UiSubscribeButton
-            v-if="!isNavigateFromPremiumPage"
-            title="回購買文章頁"
-            @click.native="sendMembershipSubscribe('回購買文章頁')"
-          />
-          <a v-else href="/section/member">
+          <a v-if="isNavigateFromPremiumPage" href="/section/member">
             <UiSubscribeButton title="瀏覽 Premium 會員文章" />
           </a>
           <a href="/profile/purchase">
             <UiMembershipButtonSecondary>
-              回訂閱紀錄
+              <p v-if="isNavigateFromPremiumPage">回訂閱紀錄</p>
+              <p v-else>回訂閱紀錄看購買文章</p>
             </UiMembershipButtonSecondary>
           </a>
         </div>
