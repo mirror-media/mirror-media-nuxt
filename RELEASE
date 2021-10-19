@@ -177,7 +177,6 @@
 2021/10/7
   - release version: master_v61265 1.4.1
   - features: resolve login error, receipt input and email and css gap remove, fix subscribe-success buttons gap, remove DFPads in topic article list when type is not timeline/group/portrait 
-
 2021/10/7
   - release version: master_kjwen310 1.4.2
   - features: resolve post content truncated problem and adjust ad in topic
