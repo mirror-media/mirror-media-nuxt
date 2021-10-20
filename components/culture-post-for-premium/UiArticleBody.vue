@@ -18,7 +18,7 @@
             </p>
           </div>
           <div class="magazine">
-            <div>下載鏡週刊電子雜誌</div>
+            <div>月費、年費會員免費下載電子雜誌</div>
             <button type="button" @click="enterMagazinePage">立即下載</button>
           </div>
         </template>
