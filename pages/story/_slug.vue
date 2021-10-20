@@ -240,7 +240,6 @@ const DEFAULT_SECTION_ID = 'other'
 export default {
   name: 'Story',
   layout: 'empty',
-  middleware: ['handle-story-premium-redirect-and-cache-control'],
   setup() {
     useViewport()
     useFbQuotePlugin()
@@ -315,15 +314,12 @@ export default {
 
     if (!isPreviewMode) {
       const [postResponse] = await Promise.allSettled([
-        this.$fetchPostsFromMembershipGateway(
-          {
-            slug: this.storySlug,
-            isAudioSiteOnly: false,
-            clean: 'content',
-            related: 'article',
-          },
-          this.$store.state.membership.userToken
-        ),
+        this.$fetchStoryFromMembershipGateway({
+          slug: this.storySlug,
+          isAudioSiteOnly: false,
+          clean: 'content',
+          related: 'article',
+        }),
         fetchPartnersAndTopicsData(),
       ])
       const canContinueProcessing = processPostResponse(postResponse)

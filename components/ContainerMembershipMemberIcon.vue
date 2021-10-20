@@ -22,13 +22,13 @@
         </button>
       </div>
     </div>
-    <nuxt-link
+    <a
       v-else
-      :to="`/login?destination=${$route.path}`"
+      :href="`/login?destination=${$route.path}`"
       class="not-logged-in-link"
     >
       登入
-    </nuxt-link>
+    </a>
   </div>
 </template>
 

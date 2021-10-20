@@ -171,4 +171,25 @@
 2021/09/27
   - release version: master_v61265_1960 1.3.35
   - features: adjust related article ad tabs
+2021/10/5
+  - release version: 1.4.0
+  - features: premium subscription function release
+2021/10/7
+  - release version: master_v61265 1.4.1
+  - features: resolve login error, receipt input and email and css gap remove, fix subscribe-success buttons gap, remove DFPads in topic article list when type is not timeline/group/portrait 
+2021/10/7
+  - release version: master_kjwen310 1.4.2
+  - features: resolve post content truncated problem and adjust ad in topic
+2021/10/12
+  - release version: master_v61265 1.4.4
+  - features: add section/member banner to subscribe
+2021/10/15 
+  - release version: master_v61265 1.4.5
+  - features: debug premium_subscription function
+2021/10/15 
+  - release version: master_v61265 1.4.6 
+  - features: change 'payment-success page' button
+
+  
+  
 
