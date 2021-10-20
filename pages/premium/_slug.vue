@@ -19,7 +19,6 @@ import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/composition
 
 export default {
   layout: 'empty',
-  middleware: ['handle-story-premium-redirect-and-cache-control'],
   components: {
     ContainerCulturePost,
   },
@@ -35,7 +34,7 @@ export default {
      * fetch post in server side for composing meta tag properties, not article content
      * article content is fetch in client side
      */
-    await this.fetchPost('dummy-token-for-truncate-purpose')
+    await this.fetchStory()
   },
   data() {
     return {
@@ -56,7 +55,9 @@ export default {
   },
   beforeMount() {
     this.setGaDimensionOfMembership()
-    this.fetchPost(this.$store.state.membership.userToken)
+    if (this.$store.getters['membership/isLoggedIn']) {
+      this.fetchPost(this.$store.state.membership.userToken)
+    }
   },
   methods: {
     setGaDimensionOfMembership() {
@@ -65,6 +66,27 @@ export default {
         : 'notMember'
 
       this.$ga.set('dimension1', dimensionMembership)
+    },
+    async fetchStory() {
+      const [postResponse] = await Promise.allSettled([
+        this.$fetchStoryFromMembershipGateway({
+          slug: this.storySlug,
+          isAudioSiteOnly: false,
+          clean: 'content',
+          related: 'article',
+        }),
+      ])
+
+      if (postResponse.status === 'fulfilled') {
+        this.story = postResponse.value.items?.[0] ?? {}
+      } else {
+        const { message, statusCode } = postResponse.reason
+
+        this.$nuxt.error({
+          message,
+          statusCode,
+        })
+      }
     },
     async fetchPost(token) {
       const [postResponse] = await Promise.allSettled([

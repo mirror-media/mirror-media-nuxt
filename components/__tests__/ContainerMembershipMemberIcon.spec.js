@@ -1,4 +1,4 @@
-import { createLocalVue, RouterLinkStub } from '@vue/test-utils'
+import { createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import createWrapperHelper from '@/test/helpers/createWrapperHelper'
 import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMemberIcon.vue'
@@ -15,9 +15,6 @@ const createWrapper = createWrapperHelper({
     $route: {
       path: '/',
     },
-  },
-  stubs: {
-    NuxtLink: RouterLinkStub,
   },
 })
 
@@ -148,7 +145,7 @@ describe('pass the current route path to the destination query in the login url'
         },
       },
     })
-    expect(wrapper.getComponent(RouterLinkStub).props().to).toBe(
+    expect(wrapper.get('.not-logged-in-link').attributes().href).toBe(
       `/login?destination=${mockPath}`
     )
   })
