@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
   props: {
     label: {
@@ -14,15 +13,11 @@ export default {
       default: '',
     },
   },
-  computed: {
-    ...mapGetters({
-      sections: 'sections/displayedSections',
-    }),
-  },
   methods: {
-    handleClick() {
+    async handleClick() {
+      const data = await this.$fetchMemberSectionsArticles()
       const sectionName =
-        this.sections.find((section) => section.title === this.label).name || ''
+        data.find((section) => section.title === this.label)?.name || ''
       location.assign(`/premiumsection/${sectionName}`)
     },
   },
