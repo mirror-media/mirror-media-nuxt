@@ -85,6 +85,16 @@ export default {
       } else {
         const { message, statusCode } = postResponse.reason
 
+        this.$sendMembershipErrorLog({
+          email: this.$store.state.membership.userEmail,
+          token: this.$store.state.membership.userToken,
+          firebaseId: this.$store.state.membership.userUid,
+          memberType: this.$store.state['membership-subscribe'].basicInfo.type,
+          xstate: this.stateMembershipSubscribe,
+          description: message,
+          eventType: 'premiumFetchPostError',
+        })
+
         this.$nuxt.error({
           message,
           statusCode,
