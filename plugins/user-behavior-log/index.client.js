@@ -81,11 +81,23 @@ export default (context, inject) => {
 
   inject(
     'sendMembershipErrorLog',
-    ({ email = '', description = '', eventType = '' } = {}) => {
+    ({
+      email = '',
+      token = '',
+      firebaseId = '',
+      memberType = '',
+      xstate = '',
+      description = '',
+      eventType = '',
+    } = {}) => {
       const now = dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss')
       createUserBehaviorLog({
         category: 'membershipErrorLog',
         email,
+        token,
+        firebaseId,
+        memberType,
+        xstate,
         description,
         eventType,
         time: now,
