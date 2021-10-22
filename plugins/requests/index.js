@@ -45,13 +45,14 @@ async function fetchApiData(url, fromMembershipGateway = false, token) {
   const urlFetched = fromMembershipGateway
     ? `${baseUrl}${API_PATH_FRONTEND}/membership/v0${url}`
     : `${baseUrl}${API_PATH_FRONTEND}${url}`
-  const requestConfig = fromMembershipGateway
-    ? {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    : null
+  const requestConfig =
+    fromMembershipGateway && token
+      ? {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      : null
 
   let res = {}
 
@@ -236,6 +237,9 @@ export default (context, inject) => {
   )
   inject('fetchPostsFromMembershipGateway', (params, token) =>
     fetchApiData(`/getposts${buildParams(params)}`, true, token)
+  )
+  inject('fetchStoryFromMembershipGateway', (params) =>
+    fetchApiData(`/story${buildParams(params)}`, true, null)
   )
   inject('fetchDrafts', (params) =>
     fetchApiData(`/drafts${buildParams(params)}`)
