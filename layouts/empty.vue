@@ -23,7 +23,7 @@ export default {
         token: this.$store.state.membership.userToken,
         firebaseId: this.$store.state.membership.userUid,
         memberType: this.$store.state['membership-subscribe'].basicInfo.type,
-        xstate: this.stateMembershipSubscribe,
+        xstate: vm.stateMembershipSubscribe,
         description: {
           errorMessage: error.message,
           errorTrace: error.stack,
