@@ -4,7 +4,7 @@ const qs = require('querystring')
 export default async function ({ res, route, app, redirect }) {
   const slug = route?.params?.slug
   try {
-    const result = await app.$fetchPostsFromMembershipGateway({
+    const result = await app.$fetchStoryFromMembershipGateway({
       slug,
       isAudioSiteOnly: false,
       clean: 'content',
