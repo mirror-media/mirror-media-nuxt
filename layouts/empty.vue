@@ -16,6 +16,23 @@ import { fireActivationEvent } from '~/utils/google-optimize.js'
 export default {
   name: 'Empty',
 
+  errorCaptured(error, vm, info) {
+    if (vm.$route.name === 'premium-slug') {
+      this.$sendMembershipErrorLog({
+        email: this.$store.state.membership.userEmail,
+        token: this.$store.state.membership.userToken,
+        firebaseId: this.$store.state.membership.userUid,
+        memberType: this.$store.state['membership-subscribe'].basicInfo.type,
+        xstate: this.stateMembershipSubscribe,
+        description: {
+          errorMessage: error.message,
+          errorTrace: error.stack,
+          info,
+        },
+        eventType: 'premiumVueError',
+      })
+    }
+  },
   components: {
     TheGdpr,
   },
