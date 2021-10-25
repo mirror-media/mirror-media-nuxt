@@ -241,6 +241,26 @@ export default (context, inject) => {
   inject('fetchStoryFromMembershipGateway', (params) =>
     fetchApiData(`/story${buildParams(params)}`, true, null)
   )
+
+  /*
+   * In order to reduce the duplicated requests below in story/premium page
+   * 1. fetchStoryFromMembershipGateway request in handle-story-premium-redirect-and-cache-control middleware
+   * 2. fetchStoryFromMembershipGateway request in fetch() hook in premium/_slug.vue and story/_slug.vue
+   * We use hashmap to store the story data
+   */
+  inject('fetchStoryFromMembershipGatewayMap', new Map())
+  inject('fetchStoryFromMembershipGateway', async (params) => {
+    const map = context.app.$fetchStoryFromMembershipGatewayMap
+    const paramsString = buildParams(params)
+    if (map.has(paramsString)) {
+      return map.get(paramsString)
+    } else {
+      const data = await fetchApiData(`/story${paramsString}`, true, null)
+      map.set(paramsString, data)
+      return data
+    }
+  })
+
   inject('fetchDrafts', (params) =>
     fetchApiData(`/drafts${buildParams(params)}`)
   )
