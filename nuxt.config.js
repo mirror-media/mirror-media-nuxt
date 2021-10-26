@@ -447,6 +447,7 @@ module.exports = {
     ],
     '@nuxtjs/apollo',
     'vue-scrollto/nuxt',
+    '@nuxtjs/gtm',
   ],
   axios: {
     proxy: true,
@@ -504,6 +505,25 @@ module.exports = {
       userClient: '~/apollo-config-user-client.js',
       memberSubscription: '~/apollo-config-member-subscription.js',
     },
+  },
+
+  gtm: {
+    id: (function getGTMId(ENV) {
+      switch (ENV) {
+        case 'prod': {
+          return 'GTM-NCH86SP'
+        }
+
+        case 'staging': {
+          return 'GTM-KVDZ27K'
+        }
+
+        case 'dev':
+        default: {
+          return 'GTM-PBNLSMX'
+        }
+      }
+    })(ENV),
   },
 
   /**
