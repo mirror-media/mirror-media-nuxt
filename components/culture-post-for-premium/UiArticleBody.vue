@@ -3,9 +3,17 @@
     <article class="article-body">
       <UiPremiumBrief :brief="brief" />
       <ContentHandler v-for="item in content" :key="item.id" :item="item" />
+      <template v-if="pageState === 'premiumPageIsLogin'">
+        <UiArticleSkeleton v-show="isLoading" />
+      </template>
 
       <ClientOnly>
         <template v-if="pageState === 'premiumPageIsLogin'">
+          <UiReloadArticle
+            v-show="isFail"
+            :failTimes="failTimes"
+            @reload="handleReload"
+          />
           <div class="copyright-warning">
             <p>
               本新聞文字、照片、影片專供鏡週刊會員閱覽，未經鏡週刊授權，任何媒體、社群網站、論壇等均不得引用、改寫、轉貼，以免訟累。
@@ -37,12 +45,13 @@
       <template v-else>
         <div
           v-if="
-            isArticleContentTruncatedByGateway ||
-            (stateMembershipSubscribe &&
-              [
-                '會員訂閱功能.會員文章頁.未登入',
-                '會員訂閱功能.會員文章頁.已登入.未訂閱',
-              ].some(stateMembershipSubscribe.matches))
+            !failTimes &&
+            (isArticleContentTruncatedByGateway ||
+              (stateMembershipSubscribe &&
+                [
+                  '會員訂閱功能.會員文章頁.未登入',
+                  '會員訂閱功能.會員文章頁.已登入.未訂閱',
+                ].some(stateMembershipSubscribe.matches)))
           "
           class="invite-to-login-wrapper"
         >
@@ -70,6 +79,8 @@
 import ContentHandler from './ContentHandler.vue'
 import UiPremiumBrief from './UiPremiumBrief.vue'
 import UiPremiumInviteToLogin from '~/components/UiPremiumInviteToLogin.vue'
+import UiArticleSkeleton from '~/components/culture-post-for-premium/UiArticleSkeleton.vue'
+import UiReloadArticle from '~/components/culture-post-for-premium/UiReloadArticle.vue'
 import UiPremiumInviteToSubscribe from '~/components/UiPremiumInviteToSubscribe.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
@@ -82,6 +93,8 @@ export default {
     UiPremiumInviteToLogin,
     UiPremiumInviteToSubscribe,
     UiPremiumBrief,
+    UiArticleSkeleton,
+    UiReloadArticle,
   },
 
   setup() {
@@ -123,10 +136,27 @@ export default {
       type: Boolean,
       default: true,
     },
+    isLoading: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    isFail: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    failTimes: {
+      type: Number,
+      default: 0,
+    },
   },
   methods: {
     enterMagazinePage() {
       window.location.href = '/magazine/'
+    },
+    handleReload() {
+      this.$emit('reload')
     },
   },
 }
