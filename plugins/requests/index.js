@@ -45,13 +45,14 @@ async function fetchApiData(url, fromMembershipGateway = false, token) {
   const urlFetched = fromMembershipGateway
     ? `${baseUrl}${API_PATH_FRONTEND}/membership/v0${url}`
     : `${baseUrl}${API_PATH_FRONTEND}${url}`
-  const requestConfig = fromMembershipGateway
-    ? {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    : null
+  const requestConfig =
+    fromMembershipGateway && token
+      ? {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      : null
 
   let res = {}
 
@@ -237,6 +238,29 @@ export default (context, inject) => {
   inject('fetchPostsFromMembershipGateway', (params, token) =>
     fetchApiData(`/getposts${buildParams(params)}`, true, token)
   )
+  inject('fetchStoryFromMembershipGateway', (params) =>
+    fetchApiData(`/story${buildParams(params)}`, true, null)
+  )
+
+  /*
+   * In order to reduce the duplicated requests below in story/premium page
+   * 1. fetchStoryFromMembershipGateway request in handle-story-premium-redirect-and-cache-control middleware
+   * 2. fetchStoryFromMembershipGateway request in fetch() hook in premium/_slug.vue and story/_slug.vue
+   * We use hashmap to store the story data
+   */
+  inject('fetchStoryFromMembershipGatewayMap', new Map())
+  inject('fetchStoryFromMembershipGateway', async (params) => {
+    const map = context.app.$fetchStoryFromMembershipGatewayMap
+    const paramsString = buildParams(params)
+    if (map.has(paramsString)) {
+      return map.get(paramsString)
+    } else {
+      const data = await fetchApiData(`/story${paramsString}`, true, null)
+      map.set(paramsString, data)
+      return data
+    }
+  })
+
   inject('fetchDrafts', (params) =>
     fetchApiData(`/drafts${buildParams(params)}`)
   )

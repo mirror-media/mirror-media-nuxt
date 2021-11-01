@@ -315,15 +315,12 @@ export default {
 
     if (!isPreviewMode) {
       const [postResponse] = await Promise.allSettled([
-        this.$fetchPostsFromMembershipGateway(
-          {
-            slug: this.storySlug,
-            isAudioSiteOnly: false,
-            clean: 'content',
-            related: 'article',
-          },
-          this.$store.state.membership.userToken
-        ),
+        this.$fetchStoryFromMembershipGateway({
+          slug: this.storySlug,
+          isAudioSiteOnly: false,
+          clean: 'content',
+          related: 'article',
+        }),
         fetchPartnersAndTopicsData(),
       ])
       const canContinueProcessing = processPostResponse(postResponse)
