@@ -1,6 +1,15 @@
 <template>
   <div class="story-slug">
-    <ContainerCulturePost :story="story" />
+    <label class="story-slug__sim">
+      <input v-model="mockFail" type="checkbox" /> mock error
+    </label>
+    <ContainerCulturePost
+      :story="story"
+      :isLoading="isLoading"
+      :isFail="isFail"
+      :failTimes="failTimes"
+      @reload="handleReload"
+    />
   </div>
 </template>
 
@@ -41,6 +50,10 @@ export default {
     return {
       story: {},
       membershipTokenState: undefined,
+      mockFail: false,
+      isLoading: true,
+      isFail: false,
+      failTimes: 0,
     }
   },
   computed: {
@@ -53,20 +66,32 @@ export default {
     shouldShowPremiumStory() {
       return this.doesCategoryHaveMemberOnly
     },
+    isTest() {
+      return this.$route.query.mf
+    },
   },
   beforeMount() {
     this.setGaDimensionOfMembership()
     if (this.$store.getters['membership/isLoggedIn']) {
+      if (this.isTest) this.mockFail = true
+      this.isLoading = true
       this.fetchPost(this.$store.state.membership.userToken)
     }
   },
   methods: {
+    mockFailRequest() {
+      return Promise.reject(new Error('mock error'))
+    },
     setGaDimensionOfMembership() {
       const dimensionMembership = this.$store.getters['membership/isLoggedIn']
         ? 'isMember'
         : 'notMember'
 
       this.$ga.set('dimension1', dimensionMembership)
+    },
+    handleReload() {
+      this.isFail = false
+      this.fetchPost(this.$store.state.membership.userToken)
     },
     async fetchStory() {
       const [postResponse] = await Promise.allSettled([
@@ -90,38 +115,49 @@ export default {
       }
     },
     async fetchPost(token) {
-      const [postResponse] = await Promise.allSettled([
-        this.$fetchPostsFromMembershipGateway(
-          {
-            slug: this.storySlug,
-            isAudioSiteOnly: false,
-            clean: 'content',
-            related: 'article',
-          },
-          token
-        ),
-      ])
+      if (this.isLoading && this.failTimes) return
+      this.isLoading = true
+      const [postResponse] = this.mockFail
+        ? await Promise.allSettled([this.mockFailRequest()])
+        : await Promise.allSettled([
+            this.$fetchPostsFromMembershipGateway(
+              {
+                slug: this.storySlug,
+                isAudioSiteOnly: false,
+                clean: 'content',
+                related: 'article',
+              },
+              token
+            ),
+          ])
 
       if (postResponse.status === 'fulfilled') {
+        this.isLoading = false
         this.story = postResponse.value.items?.[0] ?? {}
         this.membershipTokenState = postResponse.value.tokenState
       } else {
-        const { message, statusCode } = postResponse.reason
+        const time = this.isTest ? 3000 : 0
+        setTimeout(() => {
+          this.isLoading = false
+          this.isFail = true
+          this.failTimes++
+          const { message } = postResponse.reason
+          this.$sendMembershipErrorLog({
+            email: this.$store.state.membership.userEmail,
+            token: this.$store.state.membership.userToken,
+            firebaseId: this.$store.state.membership.userUid,
+            memberType: this.$store.state['membership-subscribe'].basicInfo
+              .type,
+            xstate: this.stateMembershipSubscribe,
+            description: message,
+            eventType: 'premiumFetchPostError',
+          })
+        }, time)
 
-        this.$sendMembershipErrorLog({
-          email: this.$store.state.membership.userEmail,
-          token: this.$store.state.membership.userToken,
-          firebaseId: this.$store.state.membership.userUid,
-          memberType: this.$store.state['membership-subscribe'].basicInfo.type,
-          xstate: this.stateMembershipSubscribe,
-          description: message,
-          eventType: 'premiumFetchPostError',
-        })
-
-        this.$nuxt.error({
-          message,
-          statusCode,
-        })
+        // this.$nuxt.error({
+        //   message,
+        //   statusCode,
+        // })
       }
     },
   },
@@ -386,4 +422,20 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.story-slug {
+  &__sim {
+    background: #000;
+    border: 1px solid #000;
+    color: #fff;
+    display: block;
+    position: fixed;
+    right: 0;
+    top: 200px;
+    opacity: 0.5;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 100;
+  }
+}
+</style>
