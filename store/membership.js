@@ -90,7 +90,7 @@ export const actions = {
         await createMemberDataInIsrafel.bind(this)()
       }
 
-      // step 3: fetch it data from israfel, them put it into Vuex
+      // step 3: fetch its data from israfel, them put it into Vuex
       const hasMemberAuthDataInVuex = rootState.membership.userUid
       if (hasMemberAuthDataInVuex) {
         // fetch member's basic info in Israfel
@@ -104,14 +104,25 @@ export const actions = {
       }
     } catch (error) {
       /*
-       * there are 2 error situation:
+       * there are 3 error situation:
        * 1: has firebase auth, but no member data in Israfel(login)
-       * 2: has created new firebase autn, but member email is duplicated (regiser)
-       * no metter what situation is,
-       * we still need to delete this member's firebase account
+       * 2: has created new firebase auth, but member email is duplicated (regiser)
+       * 3: some server error
+       * in situation 1 and 2:
+       * we need to delete this member's firebase account
+       * in situation3:
+       * do nothing with the firebase auth object
        */
-      const currentUser = this.$fire.auth.currentUser
-      currentUser?.delete()
+
+      if (
+        error.message ===
+          "GraphQL error: Can't find data in Israfel, please check if this member's data existed in Israfel" ||
+        error.message === "this member's email has been used in Israfel"
+      ) {
+        const currentUser = this.$fire.auth.currentUser
+
+        currentUser?.delete()
+      }
 
       // clear Vuex's authState
       await dispatch('SET_AUTH_STATE_TO_VUEX', { authUser: null })

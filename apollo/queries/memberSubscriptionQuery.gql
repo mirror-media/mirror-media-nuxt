@@ -26,7 +26,7 @@ query fetchMemberSubscriptions($firebaseId: String!) {
   }
 }
 query fetchMemberBasicInfo($firebaseId: String!) {
-  member(where: { firebaseId: $firebaseId }) {
+  allMembers(where: { firebaseId: $firebaseId }) {
     id
     firebaseId
     email
