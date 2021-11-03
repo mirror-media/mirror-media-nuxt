@@ -62,6 +62,10 @@
         :content="post.content"
         :isArticleContentTruncatedByGateway="post.isTruncated"
         :pageState="articleBodyPageState"
+        :isLoading="isLoading"
+        :isFail="isFail"
+        :failTimes="failTimes"
+        @reload="handleReload"
       />
 
       <LazyRenderer
@@ -120,6 +124,20 @@ export default {
       type: Object,
       default: () => ({}),
       required: true,
+    },
+    isLoading: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    isFail: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    failTimes: {
+      type: Number,
+      default: 0,
     },
   },
 
@@ -303,6 +321,10 @@ export default {
       const { items = [] } = await this.$fetchImages({ id: imgIds })
 
       this.relatedImgs = items
+    },
+
+    handleReload() {
+      this.$emit('reload')
     },
   },
 
