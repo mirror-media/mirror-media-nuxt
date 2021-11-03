@@ -148,6 +148,7 @@ import UiFooter from '~/components/UiFooter.vue'
 import { DOMAIN_NAME, ENV } from '~/configs/config'
 import { SITE_OG_IMG, SITE_TITLE } from '~/constants/index'
 import { DABLE_WIDGET_IDS } from '~/constants/ads.js'
+import { SECTION_IDS } from '~/constants/index.js'
 
 export default {
   name: 'External',
@@ -193,7 +194,7 @@ export default {
       latestStories: [],
       hasLoadedLatestStories: false,
 
-      sectionId: 'other',
+      sectionId: SECTION_IDS.news,
 
       popularStories: [],
       story: {},
