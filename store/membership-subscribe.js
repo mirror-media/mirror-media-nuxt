@@ -25,7 +25,7 @@ export const actions = {
 
     /*
      * we use "allMembers" query to fetch member in israfel
-     * if there's no result( which no error, allMembers.length = 0),
+     * if there's no result( which has no error, allMembers.length = 0),
      * then return custom error message "Can't find data in Israfel"
      */
     if (result?.data?.allMembers?.length) {
