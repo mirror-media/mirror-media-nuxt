@@ -80,12 +80,6 @@ async function fetchApiData(url, fromMembershipGateway = false, token) {
     return fromMembershipGateway
       ? { ...data, tokenState: res?.data?.tokenState }
       : data
-  } else {
-    throw new FetchError({
-      message: 'Not Found',
-      statusCode: 404,
-      url: urlFetched,
-    })
   }
 }
 

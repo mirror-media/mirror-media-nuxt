@@ -1,11 +1,6 @@
 <template>
   <div>
-    <error
-      v-if="$fetchState.error"
-      :error="{
-        message: $fetchState.error.message,
-      }"
-    />
+    <error v-if="$fetchState.error" :error="$fetchState.error" />
     <div v-else class="story-slug">
       <ContainerPhotoGallery v-if="isStylePhotography" :story="story" />
 
@@ -273,7 +268,7 @@ export default {
   async fetch() {
     const processPostResponse = (response) => {
       if (response.status === 'fulfilled') {
-        this.story = response.value.items?.[0] ?? {}
+        this.story = response.value?.items?.[0] ?? {}
         this.$store.commit(
           'setCanAdvertise',
           !this.story.hiddenAdvertised ?? true
@@ -285,7 +280,7 @@ export default {
           if (process.server) {
             this.$nuxt.context.res.statusCode = 404
           }
-          throw new Error('not found')
+          this.$nuxt.error({ statusCode: 404 })
         }
 
         return true
@@ -326,7 +321,7 @@ export default {
       const canContinueProcessing = processPostResponse(postResponse)
 
       if (canContinueProcessing) {
-        this.membershipTokenState = postResponse.value.tokenState
+        this.membershipTokenState = postResponse?.value?.tokenState
       }
     } else {
       const [postResponse] = await Promise.allSettled([
