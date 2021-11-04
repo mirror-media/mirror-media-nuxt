@@ -13,30 +13,28 @@ export const mutations = {
 
 export const actions = {
   async FETCH_BASIC_INFO({ rootState, commit }) {
-    try {
-      const {
-        data,
-      } = await this.app.apolloProvider.clients.memberSubscription.query({
+    const result = await this.app.apolloProvider.clients.memberSubscription.query(
+      {
         fetchPolicy: 'no-cache',
         query: fetchMemberBasicInfo,
         variables: {
           firebaseId: rootState.membership.userUid,
         },
-      })
-
-      commit('SET_BASIC_INFO', data.member)
-    } catch (e) {
-      let error
-
-      if (
-        e.message === 'GraphQL error: You do not have access to this resource'
-      ) {
-        // custom Error to notify what happended exactly
-        error = new Error(
-          "GraphQL error: Can't find data in Israfel, please check if this member's data existed in Israfel"
-        )
-        throw error || e
       }
+    )
+
+    /*
+     * we use "allMembers" query to fetch member in israfel
+     * if there's no result( which has no error, allMembers.length = 0),
+     * then return custom error message "Can't find data in Israfel"
+     */
+    if (result?.data?.allMembers?.length) {
+      const memberInfoData = result?.data?.allMembers?.[0]
+      commit('SET_BASIC_INFO', memberInfoData)
+    } else {
+      throw new Error(
+        "GraphQL error: Can't find data in Israfel, please check if this member's data existed in Israfel"
+      )
     }
   },
 }
