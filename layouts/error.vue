@@ -60,13 +60,13 @@ export default {
       return this.latestStories?.length > 0
     },
     errorState() {
-      switch (this.error.message) {
-        case 'not found':
+      switch (this.error.statusCode) {
+        case 404:
           return {
             statusCode: 404,
             message: '找不到這個網址',
           }
-        case 'error':
+        case 500:
         default:
           return {
             statusCode: 500,

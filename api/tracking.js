@@ -10,7 +10,8 @@ module.exports = function (req, res, next) {
   try {
     res.send({ msg: 'Received.' })
     const query = !isEmpty(req.body) ? req.body : req.query
-    const log = loggingClient.log(config.GCP_STACKDRIVER_LOG_NAME)
+    const logName = req.query.logName || config.GCP_STACKDRIVER_LOG_NAME
+    const log = loggingClient.log(logName)
     const metadata = { resource: { type: 'global' } }
     query.ip = req.clientIp
     const entry = log.entry(metadata, query)

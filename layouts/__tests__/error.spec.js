@@ -15,22 +15,22 @@ describe('page information with default empty error settings', () => {
     expect(wrapper.find('h1').text()).toBe('500')
     expect(wrapper.find('h2').text()).toEqual('抱歉！系統忙碌中')
   })
-  test('Should provide info of 500 if message of error settings is "error"', () => {
+  test('Should provide info of 500 if statusCode of error settings is 500', () => {
     const wrapper = createWrapper(Page, {
       propsData: {
         error: {
-          message: 'error',
+          statusCode: 500,
         },
       },
     })
     expect(wrapper.find('h1').text()).toBe('500')
     expect(wrapper.find('h2').text()).toEqual('抱歉！系統忙碌中')
   })
-  test('Should provide info of 404 if message of error settings is "not found"', () => {
+  test('Should provide info of 404 if statusCode of error settings is 404', () => {
     const wrapper = createWrapper(Page, {
       propsData: {
         error: {
-          message: 'not found',
+          statusCode: 404,
         },
       },
     })
