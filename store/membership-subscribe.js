@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import mapValues from 'lodash/mapValues'
 import { fetchMemberBasicInfo } from '~/apollo/queries/memberSubscriptionQuery.gql'
 
 export const state = () => ({
@@ -30,11 +31,23 @@ export const actions = {
      */
     if (result?.data?.allMembers?.length) {
       const memberInfoData = result?.data?.allMembers?.[0]
-      commit('SET_BASIC_INFO', memberInfoData)
+      commit(
+        'SET_BASIC_INFO',
+        mapMemberTypeOfSubscribeGroupToMarketing(memberInfoData)
+      )
     } else {
       throw new Error(
         "GraphQL error: Can't find data in Israfel, please check if this member's data existed in Israfel"
       )
     }
   },
+}
+
+export function mapMemberTypeOfSubscribeGroupToMarketing(object) {
+  return mapValues(object, function mapSubscribeGroupToMarketing(value, key) {
+    if (key === 'type' && value === 'subscribe_group') {
+      return 'marketing'
+    }
+    return value
+  })
 }
