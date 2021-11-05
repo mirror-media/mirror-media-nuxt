@@ -1,6 +1,6 @@
 <template>
   <div class="story-slug">
-    <label class="story-slug__sim">
+    <label v-if="isTest" class="story-slug__sim">
       <input v-model="mockFail" type="checkbox" /> mock error
     </label>
     <ContainerCulturePost
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { ENV } from '~/configs/config'
 import ContainerCulturePost from '~/components/culture-post-for-premium/ContainerCulturePost.vue'
 import {
   SITE_DESCRIPTION,
@@ -67,7 +68,7 @@ export default {
       return this.doesCategoryHaveMemberOnly
     },
     isTest() {
-      return this.$route.query.mf
+      return this.$route.query.mf && ENV !== 'prod'
     },
   },
   beforeMount() {
