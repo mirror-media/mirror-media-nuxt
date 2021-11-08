@@ -201,7 +201,12 @@
 2021/11/1
   - release version: master_kwhsiung 1.4.10
   - features: introduce fetchStoryFromMembershipGateway request plugin, replace some requests in premium story page with request of fetch story from apigateway, feat init @nuxtjs/gtm with id of environments
-
+2021/11/4
+  - release version: master_kwhsiung 1.4.11
+  - features: adjust error handling if statusCode is 404, feat(tracking-api): customizable logName
+2021/11/5
+  - release version: master_kwhsiung 1.4.12
+  - features: feat premium mock error sim condition 
  
   
 
