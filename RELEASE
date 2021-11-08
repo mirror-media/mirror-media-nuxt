@@ -189,7 +189,19 @@
 2021/10/15 
   - release version: master_v61265 1.4.6 
   - features: change 'payment-success page' button
+2021/10/20 
+  - release version: master_kwhsiung 1.4.7
+  - features: add missing status in payment query, change article box wording, replace some requests in premium page with request of fetch story from apigateway, remove handle-story-premium-redirect-and-cache-control middleware
+2021/10/21
+  - release version: master_kwhsiung 1.4.8
+  - features: expantion premium label and add link
+2021/10/25
+  - release version: master_kwhsiung 1.4.9
+  - features: fix premium label link, feat send error log of runtime error capture by nuxt in premium page
+2021/11/1
+  - release version: master_kwhsiung 1.4.10
+  - features: introduce fetchStoryFromMembershipGateway request plugin, replace some requests in premium story page with request of fetch story from apigateway, feat init @nuxtjs/gtm with id of environments
 
-  
+ 
   
 
