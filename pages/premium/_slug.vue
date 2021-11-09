@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { ENV } from '~/configs/config'
+import { ENV, DOMAIN_NAME } from '~/configs/config'
 import ContainerCulturePost from '~/components/culture-post-for-premium/ContainerCulturePost.vue'
 import {
   SITE_DESCRIPTION,
@@ -22,7 +22,7 @@ import {
   SITE_TITLE,
   SITE_URL,
 } from '~/constants'
-import { DOMAIN_NAME } from '~/configs/config'
+
 import { DABLE_WIDGET_IDS } from '~/constants/ads'
 import { checkCategoryHasMemberOnly } from '~/utils/article'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
@@ -71,12 +71,14 @@ export default {
       return this.$route.query.mf && ENV !== 'prod'
     },
   },
-  beforeMount() {
-    this.setGaDimensionOfMembership()
+  async beforeMount() {
     if (this.$store.getters['membership/isLoggedIn']) {
       if (this.isTest) this.mockFail = true
       this.isLoading = true
-      this.fetchPost(this.$store.state.membership.userToken)
+      await this.fetchPost(this.$store.state.membership.userToken)
+      this.setGaDimensionOfMembership()
+    } else {
+      this.isLoading = false
     }
   },
   methods: {
@@ -84,11 +86,13 @@ export default {
       return Promise.reject(new Error('mock error'))
     },
     setGaDimensionOfMembership() {
-      const dimensionMembership = this.$store.getters['membership/isLoggedIn']
-        ? 'isMember'
-        : 'notMember'
-
-      this.$ga.set('dimension1', dimensionMembership)
+      if (this.$store.getters['membership/isLoggedIn']) {
+        this.$ga.set('dimension1', 'isMember')
+        this.story.isTruncated !== undefined &&
+          this.$ga.set('dimension2', this.story.isTruncated?.toString())
+      } else {
+        this.$ga.set('dimension1', 'notMember')
+      }
     },
     handleReload() {
       this.isFail = false
@@ -155,10 +159,12 @@ export default {
           })
         }, time)
 
-        // this.$nuxt.error({
-        //   message,
-        //   statusCode,
-        // })
+        /*
+         * this.$nuxt.error({
+         *   message,
+         *   statusCode,
+         * })
+         */
       }
     },
   },
