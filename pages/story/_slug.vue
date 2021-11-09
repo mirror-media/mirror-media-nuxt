@@ -279,6 +279,10 @@ export default {
         if (!isTitleExist || !isContentExist) {
           if (process.server) {
             this.$nuxt.context.res.statusCode = 404
+            this.$nuxt.context.res.setHeader(
+              'Cache-Control',
+              'public, max-age=10'
+            )
           }
           this.$nuxt.error({ statusCode: 404 })
         }
@@ -289,6 +293,10 @@ export default {
 
         if (process.server) {
           this.$nuxt.context.res.statusCode = statusCode
+          this.$nuxt.context.res.setHeader(
+            'Cache-Control',
+            'public, max-age=10'
+          )
         }
         throw new Error(message)
       }
