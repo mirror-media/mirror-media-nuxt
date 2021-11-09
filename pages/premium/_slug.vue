@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { ENV } from '~/configs/config'
+import { ENV, DOMAIN_NAME } from '~/configs/config'
 import ContainerCulturePost from '~/components/culture-post-for-premium/ContainerCulturePost.vue'
 import {
   SITE_DESCRIPTION,
@@ -22,7 +22,7 @@ import {
   SITE_TITLE,
   SITE_URL,
 } from '~/constants'
-import { DOMAIN_NAME } from '~/configs/config'
+
 import { DABLE_WIDGET_IDS } from '~/constants/ads'
 import { checkCategoryHasMemberOnly } from '~/utils/article'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
@@ -77,6 +77,8 @@ export default {
       if (this.isTest) this.mockFail = true
       this.isLoading = true
       this.fetchPost(this.$store.state.membership.userToken)
+    } else {
+      this.isLoading = false
     }
   },
   methods: {
@@ -155,10 +157,12 @@ export default {
           })
         }, time)
 
-        // this.$nuxt.error({
-        //   message,
-        //   statusCode,
-        // })
+        /*
+         * this.$nuxt.error({
+         *   message,
+         *   statusCode,
+         * })
+         */
       }
     },
   },

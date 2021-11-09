@@ -3,9 +3,7 @@
     <article class="article-body">
       <UiPremiumBrief :brief="brief" />
       <ContentHandler v-for="item in content" :key="item.id" :item="item" />
-      <template v-if="pageState === 'premiumPageIsLogin'">
-        <UiArticleSkeleton v-show="isLoading" />
-      </template>
+      <UiArticleSkeleton v-show="isLoading" />
 
       <ClientOnly>
         <template v-if="pageState === 'premiumPageIsLogin'">
@@ -93,6 +91,7 @@ export default {
     UiPremiumInviteToLogin,
     UiPremiumInviteToSubscribe,
     UiPremiumBrief,
+    // eslint-disable-next-line vue/no-unused-components
     UiArticleSkeleton,
     UiReloadArticle,
   },
