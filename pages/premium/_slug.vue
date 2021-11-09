@@ -71,12 +71,12 @@ export default {
       return this.$route.query.mf && ENV !== 'prod'
     },
   },
-  beforeMount() {
-    this.setGaDimensionOfMembership()
+  async beforeMount() {
     if (this.$store.getters['membership/isLoggedIn']) {
       if (this.isTest) this.mockFail = true
       this.isLoading = true
-      this.fetchPost(this.$store.state.membership.userToken)
+      await this.fetchPost(this.$store.state.membership.userToken)
+      this.setGaDimensionOfMembership()
     } else {
       this.isLoading = false
     }
@@ -86,11 +86,13 @@ export default {
       return Promise.reject(new Error('mock error'))
     },
     setGaDimensionOfMembership() {
-      const dimensionMembership = this.$store.getters['membership/isLoggedIn']
-        ? 'isMember'
-        : 'notMember'
-
-      this.$ga.set('dimension1', dimensionMembership)
+      if (this.$store.getters['membership/isLoggedIn']) {
+        this.$ga.set('dimension1', 'isMember')
+        this.story.isTruncated !== undefined &&
+          this.$ga.set('dimension2', this.story.isTruncated?.toString())
+      } else {
+        this.$ga.set('dimension1', 'notMember')
+      }
     },
     handleReload() {
       this.isFail = false
