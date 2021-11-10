@@ -98,6 +98,7 @@ async function cancelMemberSubscription(context, reason) {
     },
     context
   )
+
   // change subscription.isCanceled to true (carry unsubscribe reason)
   await fireGqlRequest(
     unsubscribe,
@@ -279,7 +280,7 @@ async function getMemberIsrafelId(firebaseId, context) {
     },
     context
   )
-  const memberIsrafelId = result?.data?.member?.id
+  const memberIsrafelId = result?.data?.allMembers?.[0]?.id
   return memberIsrafelId
 }
 
