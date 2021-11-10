@@ -29,9 +29,12 @@ async function getMemberType(context) {
   if (!firebaseId) return 'not-member' // no user is logged in
 
   try {
-    const {
-      data: { member: memberBasicInfo },
-    } = await fireGqlRequest(fetchMemberBasicInfo, { firebaseId }, context)
+    const res = await fireGqlRequest(
+      fetchMemberBasicInfo,
+      { firebaseId },
+      context
+    )
+    const memberBasicInfo = res.data?.allMembers?.[0]
     return formatMemberType(memberBasicInfo.type)
   } catch (error) {
     console.error(error)
@@ -238,7 +241,7 @@ async function getMemberServiceRuleStatus(context) {
     )
 
     // check member's tos
-    const member = result?.data?.member
+    const member = result?.data?.allMembers?.[0]
     return !!member.tos
   } catch (error) {
     console.error(error)
