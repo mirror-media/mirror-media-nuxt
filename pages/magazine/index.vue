@@ -158,11 +158,11 @@ import dayjs from 'dayjs'
 import UiMagazineFeatured from '~/components/UiMagazineFeatured.vue'
 import UiMagazineShowcaseItem from '~/components/UiMagazineShowcaseItem.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
-import SvgPlatformLogoHami from '~/assets/magazine-platform-logo-hami.svg'
-import SvgPlatformLogoMybook from '~/assets/magazine-platform-logo-mybook.svg'
-import SvgPlatformLogoPubu from '~/assets/magazine-platform-logo-pubu.svg'
-import SvgPlatformLogoReadmoo from '~/assets/magazine-platform-logo-readmoo.svg'
-import SvgPlatformLogoKono from '~/assets/magazine-platform-logo-kono.svg'
+import SvgPlatformLogoHami from '~/assets/magazine-platform-logo-hami.svg?inline'
+import SvgPlatformLogoMybook from '~/assets/magazine-platform-logo-mybook.svg?inline'
+import SvgPlatformLogoPubu from '~/assets/magazine-platform-logo-pubu.svg?inline'
+import SvgPlatformLogoReadmoo from '~/assets/magazine-platform-logo-readmoo.svg?inline'
+import SvgPlatformLogoKono from '~/assets/magazine-platform-logo-kono.svg?inline'
 
 import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore'
 import { shouldIdentifyMarketingByEmail } from '~/middleware/utils'
@@ -263,7 +263,25 @@ export default {
         issue: item.issue,
         publishedDate: dayjs(item.publishedDate).format('YYYY/MM/DD'),
         coverImgUrl: item.coverPhoto?.image?.resizedTargets?.mobile?.url,
-        pdfLink: item?.magazine?.url,
+        pdfLink:
+          this.getMagazinePdfLinkByIssue(item.issue) ?? item?.magazine?.url,
+      }
+    },
+    getMagazinePdfLinkByIssue(issue) {
+      const issueTransformed = transformIssue(issue)
+      return issueTransformed ? `/magazine/${issueTransformed}` : null
+
+      function transformIssue(issue) {
+        const regexp = /《鏡週刊》(\d+)期-(\w+)本/
+        if (!regexp.test(issue)) {
+          return
+        }
+        const result = issue.match(regexp)
+        const isRegexpMatchFail = !result[2] || !result[1]
+        if (isRegexpMatchFail) {
+          return
+        }
+        return `${result[2]}${result[1]}_Publish`
       }
     },
     setListData(response = {}) {
