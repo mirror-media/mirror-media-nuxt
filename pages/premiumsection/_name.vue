@@ -55,6 +55,10 @@ export default {
     this.listDataCurrentPage += 1
   },
 
+  mounted() {
+    if (!this.sectionData.id) this.$router.push('/section/member')
+  },
+
   data() {
     return {
       listData_: [],
