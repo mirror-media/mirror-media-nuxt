@@ -53,10 +53,7 @@ export default {
     this.setListData(response)
     this.setListDataTotal(response)
     this.listDataCurrentPage += 1
-  },
-
-  mounted() {
-    if (!this.sectionData.id) this.$router.push('/section/member')
+    if (!this.sectionData.id) this.$nuxt.context.redirect('/section/member')
   },
 
   data() {
