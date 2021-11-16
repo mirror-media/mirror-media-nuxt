@@ -263,7 +263,25 @@ export default {
         issue: item.issue,
         publishedDate: dayjs(item.publishedDate).format('YYYY/MM/DD'),
         coverImgUrl: item.coverPhoto?.image?.resizedTargets?.mobile?.url,
-        pdfLink: item?.magazine?.url,
+        pdfLink:
+          this.getMagazinePdfLinkByIssue(item.issue) ?? item?.magazine?.url,
+      }
+    },
+    getMagazinePdfLinkByIssue(issue) {
+      const issueTransformed = transformIssue(issue)
+      return issueTransformed ? `/magazine/${issueTransformed}` : null
+
+      function transformIssue(issue) {
+        const regexp = /《鏡週刊》(\d+)期-(\w+)本/
+        if (!regexp.test(issue)) {
+          return
+        }
+        const result = issue.match(regexp)
+        const isRegexpMatchFail = !result[2] || !result[1]
+        if (isRegexpMatchFail) {
+          return
+        }
+        return `${result[2]}${result[1]}_Publish`
       }
     },
     setListData(response = {}) {

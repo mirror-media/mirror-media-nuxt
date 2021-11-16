@@ -744,59 +744,6 @@ export default {
       }
     },
   },
-
-  /*
-   * middleware({ store }) {
-   *   store.registerModule('deprecatedStore', createStore())
-   * },
-   */
-
-  metaInfo() {
-    if (!this.topic && process.env.VUE_ENV === 'server') {
-      return this.pageNotFoundHandler()
-    }
-    const {
-      heroImage = {},
-      ogDescription = '',
-      ogImage = {},
-      ogTitle = '',
-      name = '',
-    } = this.topic
-
-    const metaTitle = ogTitle || name
-    const metaDescription = ogDescription
-      ? getTruncatedVal(ogDescription, 50)
-      : SITE_DESCRIPTION
-    const metaImage = ogImage
-      ? _.get(ogImage, 'image.resizedTargets.desktop.url')
-      : _.get(heroImage, 'image.resizedTargets.desktop.url', SITE_OGIMAGE)
-    const ogUrl = `${SITE_URL}${this.$route.path}`
-    const relUrl = `${SITE_MOBILE_URL}${this.$route.path}`
-
-    return {
-      title: metaTitle,
-      meta: [
-        { name: 'robots', content: 'index' },
-        { vmid: 'description', name: 'description', content: metaDescription },
-        { vmid: 'og:title', property: 'og:title', content: metaTitle },
-        {
-          vmid: 'og:description',
-          property: 'og:description',
-          content: metaDescription,
-        },
-        { vmid: 'og:url', property: 'og:url', content: ogUrl },
-        { vmid: 'og:image', property: 'og:image', content: metaImage },
-        { vmid: 'twitter:title', name: 'twitter:title', content: metaTitle },
-        {
-          vmid: 'twitter:description',
-          name: 'twitter:description',
-          content: metaDescription,
-        },
-        { vmid: 'twitter:image', name: 'twitter:image', content: metaImage },
-      ],
-      link: [{ rel: 'alternate', href: relUrl }],
-    }
-  },
   created() {
     this.dfpPos = this.$ua.isFromPc() ? 'LPCFT' : 'LMBFT'
   },
@@ -1085,6 +1032,53 @@ export default {
         }
       }
     },
+  },
+
+  /*
+   * middleware({ store }) {
+   *   store.registerModule('deprecatedStore', createStore())
+   * },
+   */
+  head() {
+    const {
+      heroImage = {},
+      ogDescription = '',
+      ogImage = {},
+      ogTitle = '',
+      name = '',
+    } = this.topic
+    const metaTitle = ogTitle || name
+    const metaDescription = ogDescription
+      ? getTruncatedVal(ogDescription, 50)
+      : SITE_DESCRIPTION
+    const metaImage = ogImage
+      ? _.get(ogImage, 'image.resizedTargets.desktop.url')
+      : _.get(heroImage, 'image.resizedTargets.desktop.url', SITE_OGIMAGE)
+    const ogUrl = `${SITE_URL}${this.$route.path}`
+    const relUrl = `${SITE_MOBILE_URL}${this.$route.path}`
+    return {
+      title: metaTitle,
+      meta: [
+        { name: 'robots', content: 'index' },
+        { vmid: 'description', name: 'description', content: metaDescription },
+        { vmid: 'og:title', property: 'og:title', content: metaTitle },
+        {
+          vmid: 'og:description',
+          property: 'og:description',
+          content: metaDescription,
+        },
+        { vmid: 'og:url', property: 'og:url', content: ogUrl },
+        { vmid: 'og:image', property: 'og:image', content: metaImage },
+        { vmid: 'twitter:title', name: 'twitter:title', content: metaTitle },
+        {
+          vmid: 'twitter:description',
+          name: 'twitter:description',
+          content: metaDescription,
+        },
+        { vmid: 'twitter:image', name: 'twitter:image', content: metaImage },
+      ],
+      link: [{ rel: 'alternate', href: relUrl }],
+    }
   },
   beforeRouteLeave(to, from, next) {
     if (process.env.VUE_ENV === 'client') {

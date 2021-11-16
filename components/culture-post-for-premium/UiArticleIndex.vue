@@ -67,7 +67,7 @@
                   <a
                     :href="`${
                       section.customPath !== null
-                        ? '/' + (section.customPath || 'premiumsection')
+                        ? '/' + (section.customPath || 'section/member')
                         : ''
                     }/${section.name}`"
                     v-text="section.title"
