@@ -493,7 +493,10 @@ export default {
     async fetchRelatedImages() {
       const imageIds = this.relateds.map((item) => item.heroImage)
 
-      const { items = [] } = await this.$fetchImages({ id: imageIds })
+      const { items = [] } = await this.$fetchImages({
+        id: imageIds,
+        maxResults: this.relateds.length,
+      })
       this.relatedImages = items
     },
     async fetchLatestStories() {
