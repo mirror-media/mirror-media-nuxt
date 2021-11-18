@@ -6,7 +6,7 @@
 
 <style lang="scss" scoped>
 .magazine-link {
-  background: rgba(5, 79, 119, 1);
+  background: #1d9fb8;
   border-radius: 2px;
   color: white;
   font-size: 18px;
@@ -19,10 +19,10 @@
   &:active {
     background: linear-gradient(
         0deg,
-        rgba(29, 159, 184, 0.3),
-        rgba(29, 159, 184, 0.3)
+        rgba(5, 79, 119, 0.5),
+        rgba(5, 79, 119, 0.5)
       ),
-      #054f77;
+      #1d9fb8;
   }
 }
 </style>

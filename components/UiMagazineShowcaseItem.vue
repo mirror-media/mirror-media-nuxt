@@ -1,21 +1,51 @@
 <template>
-  <a
-    :href="downloadLink"
-    target="_blank"
-    class="magazine"
-    @click="$emit('downloadLinkClick')"
-  >
-    <UiMagazineShowcaseItemCoverImg :coverImgUrl="coverImgUrl" />
-    <p class="magazine__label label" v-text="label" />
-    <h1 class="magazine__title title" v-text="title" />
-  </a>
+  <div :class="{ mobile: isMobile }">
+    <a :href="onlineLink" target="_blank" class="magazine">
+      <UiMagazineShowcaseItemCoverImg
+        :coverImgUrl="coverImgUrl"
+        :onlineLink="onlineLink"
+        @click="$emit('downloadLinkClick')"
+      />
+      <p class="magazine__label label" v-text="label" />
+      <h1 class="magazine__title title" v-text="title" />
+    </a>
+    <div class="magazine__button-group">
+      <UiMagazineLinkSmall
+        class="magazine__button-group_online-link online-link"
+        :href="onlineLink"
+        :isPremium="true"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        <ReadOnlineSvg />線上閱讀
+      </UiMagazineLinkSmall>
+      <UiMagazineLinkSmall
+        class="magazine__button-group_downliad-link download-link"
+        :href="downloadLink"
+        :isPremium="false"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        <DownloadSvg />
+        <p v-if="isMobile">下載雜誌</p>
+      </UiMagazineLinkSmall>
+    </div>
+  </div>
 </template>
 
 <script>
 import UiMagazineShowcaseItemCoverImg from './UiMagazineShowcaseItemCoverImg.vue'
+import UiMagazineLinkSmall from './UiMagazineLinkSmall.vue'
+import ReadOnlineSvg from '~/assets/magazine-online.svg?inline'
+import DownloadSvg from '~/assets/magazine-download.svg?inline'
 
 export default {
-  components: { UiMagazineShowcaseItemCoverImg },
+  components: {
+    UiMagazineShowcaseItemCoverImg,
+    UiMagazineLinkSmall,
+    ReadOnlineSvg,
+    DownloadSvg,
+  },
   props: {
     coverImgUrl: {
       type: String,
@@ -33,6 +63,14 @@ export default {
       type: String,
       default: '',
     },
+    onlineLink: {
+      type: String,
+      default: '',
+    },
+    isMobile: {
+      type: Boolean,
+      default: false,
+    },
   },
 }
 </script>
@@ -48,6 +86,19 @@ export default {
   }
   &__title {
     margin: 2px 0 0 0;
+  }
+
+  &__button-group {
+    display: flex;
+    margin: 4px 0 0 0;
+    a + a {
+      margin: 0 0 0 4px;
+    }
+    svg {
+      path {
+        fill: #054f77;
+      }
+    }
   }
 }
 
@@ -75,5 +126,28 @@ export default {
   font-weight: 400;
   color: #4a4a4a;
   text-align: center;
+}
+
+.mobile {
+  .magazine__button-group {
+    flex-direction: column;
+    a + a {
+      margin: 8px 0 0 0;
+    }
+  }
+}
+
+.download-link {
+  p {
+    margin: 0 0 0 4px;
+  }
+  svg path {
+    fill: rgba(0, 0, 0, 0.66);
+    fill-opacity: 1;
+    &:hover,
+    &:active {
+      fill: rgba(0, 0, 0, 0.87);
+    }
+  }
 }
 </style>
