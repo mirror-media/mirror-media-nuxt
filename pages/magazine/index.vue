@@ -20,6 +20,7 @@
             :label="magazineFeatured[0].issue"
             :title="magazineFeatured[0].title"
             :downloadLink="magazineFeatured[0].pdfLink"
+            :onlineLink="magazineFeatured[0].onlineLink"
             @downloadLinkClick="handleDownloadLinkClick"
           />
           <UiMagazineFeatured
@@ -29,6 +30,7 @@
             :label="magazineFeatured[1].issue"
             :title="magazineFeatured[1].title"
             :downloadLink="magazineFeatured[1].pdfLink"
+            :onlineLink="magazineFeatured[1].onlineLink"
             @downloadLinkClick="handleDownloadLinkClick"
           />
         </div>
@@ -49,6 +51,8 @@
                 :label="item.publishedDate"
                 :title="item.issue"
                 :downloadLink="item.pdfLink"
+                :onlineLink="item.onlineLink"
+                :isMobile="!isViewportWidthUpSm"
                 @downloadLinkClick="handleDownloadLinkClick"
               />
             </li>
@@ -155,6 +159,7 @@
 
 <script>
 import dayjs from 'dayjs'
+import { mapGetters } from 'vuex'
 import UiMagazineFeatured from '~/components/UiMagazineFeatured.vue'
 import UiMagazineShowcaseItem from '~/components/UiMagazineShowcaseItem.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
@@ -207,6 +212,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      isViewportWidthUpSm: 'viewport/isViewportWidthUpSm',
+    }),
     magazineFeatured() {
       return this.listData.slice(0, 2)
     },
@@ -263,7 +271,8 @@ export default {
         issue: item.issue,
         publishedDate: dayjs(item.publishedDate).format('YYYY/MM/DD'),
         coverImgUrl: item.coverPhoto?.image?.resizedTargets?.mobile?.url,
-        pdfLink:
+        pdfLink: item?.magazine?.url,
+        onlineLink:
           this.getMagazinePdfLinkByIssue(item.issue) ?? item?.magazine?.url,
       }
     },
