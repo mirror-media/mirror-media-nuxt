@@ -76,23 +76,19 @@ export default {
       if (this.isTest) this.mockFail = true
       this.isLoading = true
       await this.fetchPost(this.$store.state.membership.userToken)
-      this.setGaDimensionOfMembership()
+      this.$ga.set('dimension1', 'isMember')
     } else {
+      this.$ga.set('dimension1', 'notMember')
       this.isLoading = false
+    }
+    if (this.story.isTruncated !== undefined) {
+      const msg = this.story.isTruncated?.toString()
+      this.$ga.set('dimension2', msg)
     }
   },
   methods: {
     mockFailRequest() {
       return Promise.reject(new Error('mock error'))
-    },
-    setGaDimensionOfMembership() {
-      if (this.$store.getters['membership/isLoggedIn']) {
-        this.$ga.set('dimension1', 'isMember')
-        this.story.isTruncated !== undefined &&
-          this.$ga.set('dimension2', this.story.isTruncated?.toString())
-      } else {
-        this.$ga.set('dimension1', 'notMember')
-      }
     },
     handleReload() {
       this.isFail = false
