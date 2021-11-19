@@ -1,6 +1,7 @@
 import styleVariables from '~/scss/_variables.scss'
 
 const {
+  'breakpoint-sm': breakpointSm,
   'breakpoint-md': breakpointMd,
   'breakpoint-xl': breakpointXl,
 } = styleVariables
@@ -11,6 +12,9 @@ const state = () => ({
 })
 
 const getters = {
+  isViewportWidthUpSm(state) {
+    return state.width >= parseInt(breakpointSm, 10)
+  },
   isViewportWidthUpMd(state) {
     return state.width >= parseInt(breakpointMd, 10)
   },

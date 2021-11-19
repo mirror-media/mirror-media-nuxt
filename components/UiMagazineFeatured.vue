@@ -10,24 +10,45 @@
         <p class="label" v-text="label" />
         <h1 class="title-description-wrapper__title title" v-text="title" />
       </div>
-      <UiMagazineLinkPrimary
-        class="info-wrapper__download-link download-link"
-        :href="downloadLink"
-        target="_blank"
-        rel="noreferrer noopener"
-        @click.native="$emit('downloadLinkClick')"
-      >
-        立即下載
-      </UiMagazineLinkPrimary>
+      <section>
+        <UiMagazineLinkPrimary
+          class="info-wrapper__online-link online-link"
+          :href="onlineLink"
+          target="_blank"
+          rel="noreferrer noopener"
+          @click.native="$emit('onlineLinkClick')"
+        >
+          <ReadOnlineSvg />
+          線上閱讀
+        </UiMagazineLinkPrimary>
+        <UiMagazineLinkSecondary
+          class="info-wrapper__download-link download-link"
+          :href="downloadLink"
+          target="_blank"
+          rel="noreferrer noopener"
+          @click.native="$emit('downloadLinkClick')"
+        >
+          <DownloadSvg />
+          下載雜誌
+        </UiMagazineLinkSecondary>
+      </section>
     </div>
   </div>
 </template>
 
 <script>
 import UiMagazineLinkPrimary from './UiMagazineLinkPrimary.vue'
+import UiMagazineLinkSecondary from './UiMagazineLinkSecondary.vue'
+import ReadOnlineSvg from '~/assets/magazine-online.svg?inline'
+import DownloadSvg from '~/assets/magazine-download.svg?inline'
 
 export default {
-  components: { UiMagazineLinkPrimary },
+  components: {
+    UiMagazineLinkPrimary,
+    UiMagazineLinkSecondary,
+    ReadOnlineSvg,
+    DownloadSvg,
+  },
   props: {
     coverImgUrl: {
       type: String,
@@ -42,6 +63,10 @@ export default {
       default: '',
     },
     downloadLink: {
+      type: String,
+      default: '',
+    },
+    onlineLink: {
       type: String,
       default: '',
     },
@@ -121,8 +146,24 @@ export default {
     height: 265px;
   }
 
-  &__download-link {
+  section {
+    width: 100%;
+    svg {
+      margin: 0 8px 0 0;
+
+      path {
+        fill: fff;
+        fill-opacity: 1;
+      }
+    }
+  }
+
+  &__download-link,
+  &__online-link {
     margin: 12px 0 0 0;
+  }
+
+  &__online-link {
     @include media-breakpoint-up(md) {
       margin: 0;
     }

@@ -9,8 +9,8 @@
         v-show="shouldShowDownloadHint"
         class="cover-img-wrapper__download-hint download-hint"
       >
-        <MagazineDownloadIcon class="download-icon" />
-        <p>立即下載</p>
+        <ReadOnlineSvg class="download-icon" />
+        <p>線上閱讀</p>
       </div>
     </transition>
     <img
@@ -22,11 +22,11 @@
 </template>
 
 <script>
-import MagazineDownloadIcon from '~/assets/magazine-download-icon.svg?inline'
+import ReadOnlineSvg from '~/assets/magazine-online.svg?inline'
 
 export default {
   components: {
-    MagazineDownloadIcon,
+    ReadOnlineSvg,
   },
   props: {
     coverImgUrl: {
@@ -92,12 +92,13 @@ export default {
     font-size: 15px;
     line-height: 21px;
     color: white;
-    margin: 8px 0 0 0;
+    margin: 16px 0 0 0;
   }
 }
 
-.download-icon {
-  height: 38px;
+svg {
+  height: 25px;
+  width: 28px;
 }
 
 .cover-img {
