@@ -99,6 +99,11 @@ export default {
         fill: #054f77;
       }
     }
+
+    @include media-breakpoint-up(xl) {
+      max-width: 144px;
+      margin: 0 auto;
+    }
   }
 }
 
