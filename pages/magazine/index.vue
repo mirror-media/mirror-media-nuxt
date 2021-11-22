@@ -139,7 +139,7 @@
               :key="item.id"
               class="magazine-showcase-list__list-item magazine-showcase-list-item"
             >
-              <UiMagazineShowcaseItem
+              <UiMagazineShowcaseItemSpecial
                 :coverImgUrl="item.coverImgUrl"
                 :label="item.publishedDate"
                 :title="item.issue"
@@ -162,6 +162,7 @@ import dayjs from 'dayjs'
 import { mapGetters } from 'vuex'
 import UiMagazineFeatured from '~/components/UiMagazineFeatured.vue'
 import UiMagazineShowcaseItem from '~/components/UiMagazineShowcaseItem.vue'
+import UiMagazineShowcaseItemSpecial from '~/components/UiMagazineShowcaseItemSpecial.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import SvgPlatformLogoHami from '~/assets/magazine-platform-logo-hami.svg?inline'
 import SvgPlatformLogoMybook from '~/assets/magazine-platform-logo-mybook.svg?inline'
@@ -178,6 +179,7 @@ export default {
     UiMembershipUpgradeToPremium,
     UiMagazineFeatured,
     UiMagazineShowcaseItem,
+    UiMagazineShowcaseItemSpecial,
     UiInfiniteLoading,
     SvgPlatformLogoHami,
     SvgPlatformLogoMybook,
