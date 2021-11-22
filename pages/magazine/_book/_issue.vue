@@ -15,7 +15,7 @@
       </div>
       <iframe
         v-else
-        :src="`https://storage.googleapis.com/statics.mirrormedia.mg/campaigns/${$route.params.issue}/index.html`"
+        :src="`https://storage.googleapis.com/mm-magazine/${$route.params.book}/${$route.params.issue}/index.html`"
       />
     </ClientOnly>
   </div>

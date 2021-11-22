@@ -290,7 +290,9 @@ export default {
         if (isRegexpMatchFail) {
           return
         }
-        return `${result[2]}${result[1]}_Publish`
+        const bookOrder = result[2]
+        const issueNumber = result[1]
+        return `Book_${bookOrder}/${bookOrder}${issueNumber}-Publish`
       }
     },
     setListData(response = {}) {
