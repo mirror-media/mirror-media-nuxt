@@ -9,7 +9,7 @@
         />
       </div>
       <section v-else class="page">
-        <h1 class="title">當期雜誌</h1>
+        <h1 class="title">當期<span class="blue">動態雜誌</span></h1>
         <div
           class="page__current-featured-magazine-wrapper current-featured-magazine-wrapper"
         >
@@ -37,7 +37,7 @@
         <section
           class="page__magazine-showcase-list-wrapper magazine-showcase-list-wrapper"
         >
-          <h1 class="title">近期雜誌</h1>
+          <h1 class="title">近期<span class="blue">動態雜誌</span></h1>
           <ol
             class="magazine-showcase-list-wrapper__magazine-showcase-list magazine-showcase-list"
           >
@@ -391,6 +391,10 @@ export default {
   @include media-breakpoint-up(xl) {
     font-size: 32px;
   }
+}
+
+.blue {
+  color: #054f77;
 }
 
 .magazine-showcase-list-wrapper {
