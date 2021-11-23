@@ -87,8 +87,8 @@
     </p>
 
     <div class="magazine">
-      <div>月費、年費會員免費下載電子雜誌</div>
-      <button type="button" @click="enterMagazinePage">立即下載</button>
+      <div>月費、年費會員免費線上閱讀動態雜誌</div>
+      <button type="button" @click="enterMagazinePage">線上閱讀</button>
     </div>
 
     <LazyRenderer v-if="doesHaveTags" class="story__tags">
