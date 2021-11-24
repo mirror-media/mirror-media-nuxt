@@ -52,7 +52,7 @@ export default {
           id: 'mirrormagazine',
           name: 'magazine',
           customPath: null,
-          title: '電子雜誌',
+          title: '動態雜誌',
           categories: [],
           shouldShowSeparator: true,
         },

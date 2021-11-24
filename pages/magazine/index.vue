@@ -9,7 +9,7 @@
         />
       </div>
       <section v-else class="page">
-        <h1 class="title">當期雜誌</h1>
+        <h1 class="title">當期<span class="blue">動態雜誌</span></h1>
         <div
           class="page__current-featured-magazine-wrapper current-featured-magazine-wrapper"
         >
@@ -20,6 +20,7 @@
             :label="magazineFeatured[0].issue"
             :title="magazineFeatured[0].title"
             :downloadLink="magazineFeatured[0].pdfLink"
+            :onlineLink="magazineFeatured[0].onlineLink"
             @downloadLinkClick="handleDownloadLinkClick"
           />
           <UiMagazineFeatured
@@ -29,13 +30,14 @@
             :label="magazineFeatured[1].issue"
             :title="magazineFeatured[1].title"
             :downloadLink="magazineFeatured[1].pdfLink"
+            :onlineLink="magazineFeatured[1].onlineLink"
             @downloadLinkClick="handleDownloadLinkClick"
           />
         </div>
         <section
           class="page__magazine-showcase-list-wrapper magazine-showcase-list-wrapper"
         >
-          <h1 class="title">近期雜誌</h1>
+          <h1 class="title">近期<span class="blue">動態雜誌</span></h1>
           <ol
             class="magazine-showcase-list-wrapper__magazine-showcase-list magazine-showcase-list"
           >
@@ -49,6 +51,8 @@
                 :label="item.publishedDate"
                 :title="item.issue"
                 :downloadLink="item.pdfLink"
+                :onlineLink="item.onlineLink"
+                :isMobile="!isViewportWidthUpSm"
                 @downloadLinkClick="handleDownloadLinkClick"
               />
             </li>
@@ -135,7 +139,7 @@
               :key="item.id"
               class="magazine-showcase-list__list-item magazine-showcase-list-item"
             >
-              <UiMagazineShowcaseItem
+              <UiMagazineShowcaseItemSpecial
                 :coverImgUrl="item.coverImgUrl"
                 :label="item.publishedDate"
                 :title="item.issue"
@@ -155,8 +159,10 @@
 
 <script>
 import dayjs from 'dayjs'
+import { mapGetters } from 'vuex'
 import UiMagazineFeatured from '~/components/UiMagazineFeatured.vue'
 import UiMagazineShowcaseItem from '~/components/UiMagazineShowcaseItem.vue'
+import UiMagazineShowcaseItemSpecial from '~/components/UiMagazineShowcaseItemSpecial.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import SvgPlatformLogoHami from '~/assets/magazine-platform-logo-hami.svg?inline'
 import SvgPlatformLogoMybook from '~/assets/magazine-platform-logo-mybook.svg?inline'
@@ -173,6 +179,7 @@ export default {
     UiMembershipUpgradeToPremium,
     UiMagazineFeatured,
     UiMagazineShowcaseItem,
+    UiMagazineShowcaseItemSpecial,
     UiInfiniteLoading,
     SvgPlatformLogoHami,
     SvgPlatformLogoMybook,
@@ -207,6 +214,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      isViewportWidthUpSm: 'viewport/isViewportWidthUpSm',
+    }),
     magazineFeatured() {
       return this.listData.slice(0, 2)
     },
@@ -264,6 +274,27 @@ export default {
         publishedDate: dayjs(item.publishedDate).format('YYYY/MM/DD'),
         coverImgUrl: item.coverPhoto?.image?.resizedTargets?.mobile?.url,
         pdfLink: item?.magazine?.url,
+        onlineLink:
+          this.getMagazinePdfLinkByIssue(item.issue) ?? item?.magazine?.url,
+      }
+    },
+    getMagazinePdfLinkByIssue(issue) {
+      const issueTransformed = transformIssue(issue)
+      return issueTransformed ? `/magazine/${issueTransformed}` : null
+
+      function transformIssue(issue) {
+        const regexp = /《鏡週刊》(\d+)期-(\w+)本/
+        if (!regexp.test(issue)) {
+          return
+        }
+        const result = issue.match(regexp)
+        const isRegexpMatchFail = !result[2] || !result[1]
+        if (isRegexpMatchFail) {
+          return
+        }
+        const bookOrder = result[2]
+        const issueNumber = result[1]
+        return `Book_${bookOrder}/${bookOrder}${issueNumber}-Publish`
       }
     },
     setListData(response = {}) {
@@ -360,6 +391,10 @@ export default {
   @include media-breakpoint-up(xl) {
     font-size: 32px;
   }
+}
+
+.blue {
+  color: #054f77;
 }
 
 .magazine-showcase-list-wrapper {

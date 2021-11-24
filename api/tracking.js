@@ -1,3 +1,4 @@
+// This api endpoint is shared with mirror-media iOS/Android app, modify it with breaking changes carefully.
 const { isEmpty } = require('lodash')
 const { Logging } = require('@google-cloud/logging')
 const config = require('../configs/config')

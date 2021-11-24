@@ -20,6 +20,6 @@ function isEmailDomainMirrorMedia(email) {
     'mirrormedia.mg',
     'mirrorfiction.com',
   ].some(function checkEmailDomain(domain) {
-    return email.endsWith(domain)
+    return email.endsWith(`@${domain}`)
   })
 }

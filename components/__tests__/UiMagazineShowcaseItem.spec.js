@@ -34,21 +34,21 @@ describe('props', function () {
     })
     expect(wrapper.get('.title').text()).toBe(titleMock)
   })
-  test('downloadLink', function () {
-    const downloadLinkMock = 'http://download'
-    const wrapper = shallowMount(UiMagazineShowcaseItem, {
-      propsData: {
-        downloadLink: downloadLinkMock,
-      },
-    })
-    expect(wrapper.attributes().href).toBe(downloadLinkMock)
-  })
+  // test('downloadLink', function () {
+  //   const downloadLinkMock = 'http://download'
+  //   const wrapper = shallowMount(UiMagazineShowcaseItem, {
+  //     propsData: {
+  //       downloadLink: downloadLinkMock,
+  //     },
+  //   })
+  //   expect(wrapper.attributes().href).toBe(downloadLinkMock)
+  // })
 })
 
-describe('events', function () {
-  test('downloadLinkClick', function () {
-    const wrapper = shallowMount(UiMagazineShowcaseItem)
-    wrapper.trigger('click')
-    expect(wrapper.emitted().downloadLinkClick).toBeTruthy()
-  })
-})
+// describe('events', function () {
+//   test('downloadLinkClick', function () {
+//     const wrapper = shallowMount(UiMagazineShowcaseItem)
+//     wrapper.trigger('click')
+//     expect(wrapper.emitted().downloadLinkClick).toBeTruthy()
+//   })
+// })

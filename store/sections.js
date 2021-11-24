@@ -52,7 +52,7 @@ export const mutations = {
           isMemberOnly: true,
           name: 'magazine',
           style: 'feature',
-          title: '電子雜誌',
+          title: '動態雜誌',
           css: '',
           javascript: '',
           ogDescription: '',
