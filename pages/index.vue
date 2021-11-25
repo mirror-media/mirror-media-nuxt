@@ -80,7 +80,13 @@
                 data-testid="article-gallery"
                 @load="loadLatestListInitial"
               >
+                <UiArticleGalleryB
+                  v-if="isTestB"
+                  :items="latestItems"
+                  @sendGa="sendGaForClick('latest')"
+                />
                 <UiArticleGallery
+                  v-else
                   :items="latestItems"
                   @sendGa="sendGaForClick('latest')"
                 />
@@ -135,6 +141,7 @@ import UiEditorChoices from '~/components/UiEditorChoices.vue'
 import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
+import UiArticleGalleryB from '~/components/UiArticleGalleryB.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
@@ -172,6 +179,7 @@ export default {
     UiInfiniteLoading,
     ContainerGptAd,
     ContainerFullScreenAds,
+    UiArticleGalleryB,
 
     SvgCloseIcon,
   },
@@ -238,6 +246,10 @@ export default {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
+
+    isTestB() {
+      return true
+    },
 
     editorChoicesArticles() {
       const { choices: articles = [] } = this.groupedArticles
