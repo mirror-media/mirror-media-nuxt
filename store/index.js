@@ -18,7 +18,7 @@ export const actions = {
         token,
       })
 
-      // await dispatch('membership-subscribe/FETCH_BASIC_INFO')
+      await dispatch('membership-subscribe/FETCH_BASIC_INFO')
     }
 
     const sectionsResponse = await dispatch('fetchGlobalData')
