@@ -1,12 +1,12 @@
 <template>
   <div class="marketing">
     <SubscribeWrapper>
-      <h6 class="marketing__title">此頁面為會員訂閱頁面</h6>
+      <h6 class="marketing__title">此頁面為個人會員訂閱頁面</h6>
       <div class="marketing__description">
         <p>
-          由於您為鏡週刊的 VIP，VIP
-          期間不須付款即享會員專區文章暢讀。若您有意願付費支持，請於 VIP
-          期間後再付款
+          由於您為鏡週刊的 VIP 或團體訂購，VIP
+          及團體訂購期間不須付款即享會員專區文章暢讀。
+          若您有意願付費支持，請於期間後再付款。
         </p>
       </div>
       <UiMembershipButtonPrimary
