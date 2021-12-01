@@ -77,13 +77,17 @@ export default {
       this.isLoading = true
       await this.fetchPost(this.$store.state.membership.userToken)
       this.$ga.set('dimension1', 'isMember')
-    } else {
-      this.$ga.set('dimension1', 'notMember')
-      this.isLoading = false
-    }
-    if (this.story.isTruncated !== undefined) {
+
+      // dimension about isTruncated of the story content
       const msg = this.story.isTruncated?.toString()
       this.$ga.set('dimension2', msg)
+    } else {
+      this.$ga.set('dimension1', 'notMember')
+
+      // dimension about isTruncated of the story content
+      this.$ga.set('dimension2', 'false')
+
+      this.isLoading = false
     }
   },
   methods: {
