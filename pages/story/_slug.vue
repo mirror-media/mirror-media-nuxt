@@ -133,7 +133,9 @@
                   >
                     <section v-if="doesHavePopularStories">
                       <UiArticleListAsideB
-                        v-if="isTestB"
+                        v-if="
+                          $GOExp['normal-post-popular-redesign'].variant === '1'
+                        "
                         heading="熱門文章"
                         :items="popularStories"
                         @sendGa="sendGaForClick('popular')"
@@ -470,9 +472,6 @@ export default {
         !this.doesClickCloseAdPcFloating
       )
     },
-    isTestB() {
-      return true
-    },
   },
 
   watch: {
@@ -489,6 +488,7 @@ export default {
     if (this.isStyleDefault) {
       this.observeScrollDepthForGa()
     }
+    console.log(this.$GOExp)
   },
 
   beforeDestroy() {
