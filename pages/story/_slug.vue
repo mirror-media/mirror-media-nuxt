@@ -131,12 +131,22 @@
                     class="story__popular-list"
                     @load="fetchPopularStories"
                   >
-                    <UiArticleListAside
-                      v-if="doesHavePopularStories"
-                      heading="熱門文章"
-                      :items="popularStories"
-                      @sendGa="sendGaForClick('popular')"
-                    />
+                    <section v-if="doesHavePopularStories">
+                      <UiArticleListAsideB
+                        v-if="
+                          $GOExp['normal-post-popular-redesign'].variant === '1'
+                        "
+                        heading="熱門文章"
+                        :items="popularStories"
+                        @sendGa="sendGaForClick('popular')"
+                      />
+                      <UiArticleListAside
+                        v-else
+                        heading="熱門文章"
+                        :items="popularStories"
+                        @sendGa="sendGaForClick('popular')"
+                      />
+                    </section>
                   </LazyRenderer>
 
                   <LazyRenderer v-if="isDesktopWidth" class="story__fb-page">
@@ -204,6 +214,7 @@ import UiStoryListRelated from '~/components/UiStoryListRelated.vue'
 import UiStoryListRelatedRedesignWrapper from '~/components/UiStoryListRelatedRedesignWrapper.vue'
 import FbPage from '~/components/FbPage.vue'
 import UiArticleListAside from '~/components/UiArticleListAside.vue'
+import UiArticleListAsideB from '~/components/UiArticleListAsideB.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
@@ -251,6 +262,7 @@ export default {
     UiStoryListRelatedRedesignWrapper,
     FbPage,
     UiArticleListAside,
+    UiArticleListAsideB,
 
     ContainerGptAd,
     UiStickyAd,
@@ -476,6 +488,7 @@ export default {
     if (this.isStyleDefault) {
       this.observeScrollDepthForGa()
     }
+    console.log(this.$GOExp)
   },
 
   beforeDestroy() {

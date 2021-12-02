@@ -4,5 +4,6 @@
  */
 
 import normalPostRelatedRedesign from './normal-post-related-redesign'
+import normalPostPapularRedesign from './normal-post-popular-redesign'
 
-export default [normalPostRelatedRedesign]
+export default [normalPostRelatedRedesign, normalPostPapularRedesign]
