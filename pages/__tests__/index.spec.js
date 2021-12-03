@@ -14,6 +14,7 @@ import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
+import UiArticleGalleryB from '~/components/UiArticleGalleryB.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
@@ -38,6 +39,12 @@ const createWrapper = createWrapperHelper({
     $fetchExternals: () => Promise.resolve({}),
     $fetchEvent: () => Promise.resolve({}),
     $ga: { event: () => {} },
+
+    $GOExp: {
+      'homepage-latest-redesign': {
+        variant: '2',
+      },
+    },
   },
   stubs: ['ClientOnly'],
 })
@@ -828,7 +835,7 @@ test('display ADs', function () {
 })
 
 test('send GA events', async function () {
-  expect.assertions(14)
+  expect.assertions(15)
 
   /* Arrange */
   const $ga = { event: jest.fn() }
@@ -952,6 +959,13 @@ test('send GA events', async function () {
   sut.get('[data-testid="article-gallery"]').vm.$emit('load')
 
   sut.getComponent(UiArticleGallery).vm.$emit('sendGa')
+  expect($ga.event).lastCalledWith({
+    eventCategory: 'home',
+    eventAction: 'click',
+    eventLabel: 'latest',
+  })
+
+  sut.getComponent(UiArticleGalleryB).vm.$emit('sendGa')
   expect($ga.event).lastCalledWith({
     eventCategory: 'home',
     eventAction: 'click',
