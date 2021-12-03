@@ -316,7 +316,13 @@ export default {
       ])
     }
 
-    if (!isPreviewMode) {
+    if (!this.storySlug) {
+      if (process.server) {
+        this.$nuxt.context.res.statusCode = 404
+        this.$nuxt.context.res.setHeader('Cache-Control', 'public, max-age=10')
+      }
+      this.$nuxt.error({ statusCode: 404 })
+    } else if (!isPreviewMode) {
       const [postResponse] = await Promise.allSettled([
         this.$fetchStoryFromMembershipGateway({
           slug: this.storySlug,
