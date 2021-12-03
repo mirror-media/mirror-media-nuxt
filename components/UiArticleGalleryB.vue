@@ -385,7 +385,7 @@ $padding-top--ad-img: 100%;
       width: auto !important;
       color: #fff;
       display: inline-block;
-      transform: translate(calc(-1 * (100vw - 48px) * 0.4653 + 4px), 0);
+      transform: translate(calc(-1 * (90vw) * 0.4653), 0);
       position: absolute;
       left: 0;
       top: 0;
