@@ -81,7 +81,7 @@
                 @load="loadLatestListInitial"
               >
                 <UiArticleGalleryB
-                  v-if="isTestB"
+                  v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
                   :items="latestItems"
                   @sendGa="sendGaForClick('latest')"
                 />
@@ -246,10 +246,6 @@ export default {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
-
-    isTestB() {
-      return true
-    },
 
     editorChoicesArticles() {
       const { choices: articles = [] } = this.groupedArticles
