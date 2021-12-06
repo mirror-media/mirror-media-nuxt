@@ -1,5 +1,5 @@
 <template>
-  <div class="subscribe-magazine-entrance">
+  <div class="subscribe-magazine-entrance" @click="handleClick">
     鏡週刊<br v-if="!isViewportWidthUpMd" />雜誌訂閱
   </div>
 </template>
@@ -11,6 +11,11 @@ export default {
     ...mapGetters({
       isViewportWidthUpMd: 'viewport/isViewportWidthUpMd',
     }),
+  },
+  methods: {
+    handleClick() {
+      this.$router.push('/papermag')
+    },
   },
 }
 </script>
@@ -25,6 +30,7 @@ export default {
   background: #054f77;
   margin: 0 5vw 0 0;
   text-align: center;
+  cursor: pointer;
   @include media-breakpoint-up(md) {
     margin: 0 48px 0 0;
   }
