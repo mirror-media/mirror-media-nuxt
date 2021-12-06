@@ -1,16 +1,25 @@
 <template>
   <div class="subscribe-magazine-entrance" @click="handleClick">
-    鏡週刊<br v-if="!isViewportWidthUpMd" />雜誌訂閱
+    鏡週刊<br v-if="!isViewportWidthUpMd && isMounted" />雜誌訂閱
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 export default {
+  data() {
+    return {
+      isMounted: false,
+    }
+  },
   computed: {
     ...mapGetters({
       isViewportWidthUpMd: 'viewport/isViewportWidthUpMd',
     }),
+  },
+  mounted() {
+    this.isMounted = true
+    console.log(this.isViewportWidthUpMd)
   },
   methods: {
     handleClick() {
