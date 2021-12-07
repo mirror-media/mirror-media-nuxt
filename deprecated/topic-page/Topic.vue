@@ -61,7 +61,7 @@
             :articles="articles"
             :initialMediaData="portraitWallListImages"
           />
-          <div v-if="hasDFP" class="ad">
+          <div v-if="hasDFP" class="ad" style="padding: 20px 0">
             <vue-dfp
               :is="props.vueDfp"
               :pos="dfpPos"
@@ -87,7 +87,7 @@
             />
           </div>
           <group-list :articles="articles" :tags="tags" :viewport="viewport" />
-          <div v-if="hasDFP" class="ad">
+          <div v-if="hasDFP" class="ad" style="padding: 20px 0">
             <vue-dfp
               :is="props.vueDfp"
               :pos="dfpPos"
