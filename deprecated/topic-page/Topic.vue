@@ -61,27 +61,15 @@
             :articles="articles"
             :initialMediaData="portraitWallListImages"
           />
-          <div>
+          <div v-if="hasDFP" class="ad">
             <vue-dfp
               :is="props.vueDfp"
-              v-if="hasDFP && viewport > 1000"
-              pos="LPCFT"
-              :dfpUnits="props.dfpUnits"
-              :section="props.section"
-              :dfpId="props.dfpId"
-              :unitId="dfp"
-            />
-          </div>
-          <div>
-            <vue-dfp
-              :is="props.vueDfp"
-              v-if="hasDFP && viewport < 900"
-              pos="LMBFT"
+              :pos="dfpPos"
               :dfpUnits="props.dfpUnits"
               :section="props.section"
               :dfpId="props.dfpId"
               :unitId="mobileDfp"
-              :size="getValue($store, 'getters.adSize')"
+              :size="getValue($store, 'getters.deprecatedStore.adSize')"
             />
           </div>
           <share :right="`20px`" :bottom="`20px`" />
@@ -99,27 +87,15 @@
             />
           </div>
           <group-list :articles="articles" :tags="tags" :viewport="viewport" />
-          <div>
+          <div v-if="hasDFP" class="ad">
             <vue-dfp
               :is="props.vueDfp"
-              v-if="hasDFP && viewport > 1000"
-              pos="LPCFT"
-              :dfpUnits="props.dfpUnits"
-              :section="props.section"
-              :dfpId="props.dfpId"
-              :unitId="dfp"
-            />
-          </div>
-          <div>
-            <vue-dfp
-              :is="props.vueDfp"
-              v-if="hasDFP && viewport < 900"
-              pos="LMBFT"
+              :pos="dfpPos"
               :dfpUnits="props.dfpUnits"
               :section="props.section"
               :dfpId="props.dfpId"
               :unitId="mobileDfp"
-              :size="getValue($store, 'getters.adSize')"
+              :size="getValue($store, 'getters.deprecatedStore.adSize')"
             />
           </div>
         </template>
