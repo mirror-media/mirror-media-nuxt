@@ -1,26 +1,11 @@
 <template>
   <div class="subscribe-magazine-entrance" @click="handleClick">
-    鏡週刊<br v-if="!isViewportWidthUpMd && isMounted" />雜誌訂閱
+    鏡週刊<br class="subscribe-magazine-entrance__br" />雜誌訂閱
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
-  data() {
-    return {
-      isMounted: false,
-    }
-  },
-  computed: {
-    ...mapGetters({
-      isViewportWidthUpMd: 'viewport/isViewportWidthUpMd',
-    }),
-  },
-  mounted() {
-    this.isMounted = true
-    console.log(this.isViewportWidthUpMd)
-  },
   methods: {
     handleClick() {
       this.$router.push('/papermag')
@@ -45,6 +30,12 @@ export default {
   }
   @include media-breakpoint-up(xl) {
     margin: 0 0 0 12px;
+  }
+  &__br {
+    display: inline;
+    @include media-breakpoint-up(md) {
+      display: none;
+    }
   }
 }
 </style>
