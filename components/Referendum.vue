@@ -19,10 +19,10 @@ export default {
 
 <style lang="scss" scoped>
 .referendum {
-  height: 466px;
+  height: 544px;
   width: 100%;
   @include media-breakpoint-up(md) {
-    height: 265px;
+    height: 305px;
   }
   &__wrapper {
     position: absolute;
@@ -30,10 +30,10 @@ export default {
     width: 100vw;
     padding: 10px;
     iframe {
-      height: 446px;
+      height: 524px;
       width: 100%;
       @include media-breakpoint-up(md) {
-        height: 245px;
+        height: 285px;
       }
     }
   }
