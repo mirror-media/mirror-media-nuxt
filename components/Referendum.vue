@@ -1,7 +1,7 @@
 <template>
   <div v-if="isDev" class="referendum">
     <div class="referendum__wrapper">
-      <iframe src="https://dev.readr.tw/referendum" />
+      <iframe src="/referendum" />
     </div>
   </div>
 </template>
