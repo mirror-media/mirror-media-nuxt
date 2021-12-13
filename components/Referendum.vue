@@ -28,7 +28,11 @@ export default {
     position: absolute;
     left: 0;
     width: 100vw;
-    padding: 10px;
+    padding: 0 10px;
+    transform: translate(0, 10px);
+    @include media-breakpoint-up(md) {
+      padding: 0;
+    }
     iframe {
       height: 524px;
       width: 100%;
