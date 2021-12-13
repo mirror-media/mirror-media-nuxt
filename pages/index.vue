@@ -419,7 +419,7 @@ export default {
   methods: {
     async fetchFlashNews() {
       const { items: articles = [] } =
-        (await this.$fetchPosts({
+        (await this.$fetchPostsFromMembershipGateway({
           categories: [
             CATEGORY_ID_POLITICAL,
             CATEGORY_ID_CITY_NEWS,
