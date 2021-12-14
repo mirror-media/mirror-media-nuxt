@@ -11,7 +11,7 @@ import { ENV } from '~/configs/config'
 export default {
   computed: {
     isDev() {
-      return ENV === 'local' || ENV === 'dev'
+      return ENV !== 'prod'
     },
   },
 }
