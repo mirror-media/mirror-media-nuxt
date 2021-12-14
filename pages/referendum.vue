@@ -87,8 +87,10 @@ export default {
         const { data = [] } = await axios.get(
           'https://storage.googleapis.com/statics.mirrormedia.mg/elections/2021referendum/result.json'
         )
-        this.data = data
-        this.updateTime = new Date()
+        if (data.ST && data.F1 && data.F2 && data.F3 && data.F4) {
+          this.data = data
+          this.updateTime = new Date()
+        }
       } catch (e) {
         console.error(e)
       }
