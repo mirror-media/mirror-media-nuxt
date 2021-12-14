@@ -1,5 +1,5 @@
 <template>
-  <div class="referendum" v-if="data.ST">
+  <div class="referendum">
     <div class="referendum__title">
       <div class="referendum__title_main">
         <div class="referendum__title_main_title">公投開票進度</div>
@@ -14,24 +14,28 @@
     </div>
     <div class="referendum__info">
       <ReferendumItem
+        v-if="data.F1"
         number="17"
         name="重啟核四"
         :data="data.F1"
         :threhold="threhold"
       />
       <ReferendumItem
+        v-if="data.F2"
         number="18"
         name="反萊豬進口"
         :data="data.F2"
         :threhold="threhold"
       />
       <ReferendumItem
+        v-if="data.F3"
         number="19"
         name="公投綁大選"
         :data="data.F3"
         :threhold="threhold"
       />
       <ReferendumItem
+        v-if="data.F4"
         number="20"
         name="珍愛藻礁"
         :data="data.F4"
@@ -87,12 +91,39 @@ export default {
         const { data = [] } = await axios.get(
           'https://storage.googleapis.com/statics.mirrormedia.mg/elections/2021referendum/result.json'
         )
-        if (data.ST && data.F1 && data.F2 && data.F3 && data.F4) {
-          this.data = data
-          this.updateTime = new Date()
-        }
+        this.updateTime = new Date()
+        this.data.ST = data.ST
+        this.updateData(data.F1, 'F1')
+        this.updateData(data.F2, 'F2')
+        this.updateData(data.F3, 'F3')
+        this.updateData(data.F4, 'F4')
       } catch (e) {
         console.error(e)
+      }
+    },
+    updateData(data, key) {
+      const agreeTks = data.agreeTks || this.data.agreeTks
+      const agreeRate = data.agreeRate || this.data.agreeRate
+      const disagreeTks = data.disagreeTks || this.data.disagreeTks
+      const disagreeRate = data.disagreeRate || this.data.disagreeRate
+      const adptVictor = data.adptVictor || this.data.adptVictor
+      const prgRate = data.prgRate || this.data.prgRate
+      if (
+        !agreeTks ||
+        !agreeRate ||
+        !disagreeTks ||
+        !disagreeRate ||
+        !adptVictor ||
+        !prgRate
+      )
+        return {}
+      this.data[`${key}`] = {
+        agreeTks,
+        agreeRate,
+        disagreeTks,
+        disagreeRate,
+        adptVictor,
+        prgRate,
       }
     },
   },
