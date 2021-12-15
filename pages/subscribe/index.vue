@@ -1,48 +1,70 @@
 <template>
   <div class="subscribe-choose">
-    <SubscribeStepProgress :currentStep="1" />
-    <ClientOnly>
-      <template v-if="memberStatus !== 'year'">
-        <div class="subscribe-choose__wrapper">
-          <h2
-            v-if="memberStatus !== 'month'"
-            class="subscribe-choose__wrapper_title"
-            :class="{ basic: memberStatus === 'basic' }"
-          >
-            方案選擇
-          </h2>
-          <div class="subscribe-choose__wrapper_plans">
-            <SubscribeMembershipChoosePlanCard
-              v-for="plan in planShowed"
-              :key="plan.title"
-              :title="plan.title"
-              :details="plan.details"
-              :buttons="plan.buttons"
-              :hintUnderButton="hintUnderButton"
-              @subscribePlan="handleSubscribePlan"
-              @login="sendMembershipSubscribe('點擊免費加入會員')"
-            />
+    <div v-show="doesHaveIsPayByAppValue">
+      <SubscribeStepProgress :currentStep="1" />
+      <ClientOnly>
+        <template v-if="isPayByApp">
+          <div class="subscribe-choose__textcard">
+            <SubscribeWrapper>
+              <h6 class="subscribe-choose__textcard_title">想要變更方案嗎？</h6>
+              <div class="subscribe-choose__textcard_description">
+                由於您先前於 APP 購買，如要變更方案，請至 App Store (iOS 系統)
+                或 Google Play (Android 系統) 操作。
+              </div>
+              <UiMembershipButtonPrimary
+                class="subscribe-choose__textcard_back"
+                @click.native="handleSet"
+                >回會員專區</UiMembershipButtonPrimary
+              >
+            </SubscribeWrapper>
           </div>
-        </div>
-        <UiSubscribeInfo type="membership" :infoList="infoList" />
-      </template>
-      <template v-else>
-        <div class="subscribe-choose__year">
-          <SubscribeWrapper>
-            <h6 class="subscribe-choose__year_title">取想要變更方案嗎？</h6>
-            <div class="subscribe-choose__year_description">
-              您目前訂閱的方案為<span>鏡週刊 Premium 服務-年訂閱方案</span
-              >。如需變更，請先取消目前的方案，再重新訂閱新的方案。
+        </template>
+        <template v-else>
+          <template v-if="memberStatus !== 'year'">
+            <div class="subscribe-choose__wrapper">
+              <h2
+                v-if="memberStatus !== 'month'"
+                class="subscribe-choose__wrapper_title"
+                :class="{ basic: memberStatus === 'basic' }"
+              >
+                方案選擇
+              </h2>
+              <div class="subscribe-choose__wrapper_plans">
+                <SubscribeMembershipChoosePlanCard
+                  v-for="plan in planShowed"
+                  :key="plan.title"
+                  :title="plan.title"
+                  :details="plan.details"
+                  :buttons="plan.buttons"
+                  :hintUnderButton="hintUnderButton"
+                  @subscribePlan="handleSubscribePlan"
+                  @login="sendMembershipSubscribe('點擊免費加入會員')"
+                />
+              </div>
             </div>
-            <UiMembershipButtonPrimary
-              class="subscribe-choose__year_back"
-              @click.native="handleSet"
-              >前往付款設定</UiMembershipButtonPrimary
-            >
-          </SubscribeWrapper>
-        </div>
-      </template>
-    </ClientOnly>
+            <UiSubscribeInfo type="membership" :infoList="infoList" />
+          </template>
+          <template v-else>
+            <div class="subscribe-choose__textcard">
+              <SubscribeWrapper>
+                <h6 class="subscribe-choose__textcard_title">
+                  想要變更方案嗎？
+                </h6>
+                <div class="subscribe-choose__textcard_description">
+                  您目前訂閱的方案為<span>鏡週刊 Premium 服務-年訂閱方案</span
+                  >。如需變更，請先取消目前的方案，再重新訂閱新的方案。
+                </div>
+                <UiMembershipButtonPrimary
+                  class="subscribe-choose__textcard_back"
+                  @click.native="handleSet"
+                  >前往付款設定</UiMembershipButtonPrimary
+                >
+              </SubscribeWrapper>
+            </div>
+          </template>
+        </template>
+      </ClientOnly>
+    </div>
   </div>
 </template>
 
@@ -107,6 +129,11 @@ export default {
         }
       }
     }
+  },
+  async fetch() {
+    // check if user's subscription is paid by mobile
+    const isMemberPaidWithMobile = await this.$isMemberPaidSubscriptionWithMobile()
+    this.isPayByApp = isMemberPaidWithMobile
   },
   data() {
     return {
@@ -182,6 +209,7 @@ export default {
             '本抽獎活動為機會中獎活動，依中華民國稅法規定，中獎金額超過 NT$1,000元，中獎人須併入個人年度綜合所得稅申報；若中獎金額超過 NT$20,010元，中獎人須自行負擔10%之機會中獎所得稅（非中華民國境內居住之個人為20%）並配合本公司辦理代扣繳相關事宜(得獎者應先繳納中獎所得稅後，本公司方將中獎獎項提供予得獎人)。</br>中獎人須提供姓名、身分證字號、戶籍地址及身分證正、反面影本，以供本公司依法向稅捐機關進行年度申報作業。',
         },
       ],
+      isPayByApp: undefined,
     }
   },
   computed: {
@@ -301,12 +329,19 @@ export default {
           return null
       }
     },
+    doesHaveIsPayByAppValue() {
+      return this.isPayByApp !== undefined
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .subscribe-choose {
+  min-height: calc(100vh - 150px);
+  @include media-breakpoint-up(sm) {
+    min-height: calc(100vw - 850px);
+  }
   &__wrapper {
     margin: 0 auto;
     padding: 60px 20px 0 20px;
@@ -351,8 +386,7 @@ export default {
     }
   }
 
-  &__year {
-    min-height: calc(100vw - 150px);
+  &__textcard {
     padding: 40px 20px 0 20px;
     @include media-breakpoint-up(sm) {
       min-height: calc(100vw - 850px);
