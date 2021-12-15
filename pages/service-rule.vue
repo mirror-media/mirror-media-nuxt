@@ -45,7 +45,7 @@ export default {
     }
 
     const [postResponse] = await Promise.allSettled([
-      this.$fetchPosts({
+      this.$fetchPostsFromMembershipGateway({
         slug: 'service-rule',
         isAudioSiteOnly: false,
         clean: 'content',

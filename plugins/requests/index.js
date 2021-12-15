@@ -226,9 +226,9 @@ export default (context, inject) => {
     fetchApiData(`/partners${buildParams(params)}`)
   )
 
-  inject('fetchPosts', (params) =>
-    fetchApiData(`/getposts${buildParams(params)}`)
-  )
+  // inject('fetchPosts', (params) =>
+  //   fetchApiData(`/getposts${buildParams(params)}`)
+  // )
   inject('fetchPostsFromMembershipGateway', (params, token) =>
     fetchApiData(`/getposts${buildParams(params)}`, true, token)
   )
