@@ -42,12 +42,14 @@
       </div>
 
       <div class="header-search">
-        <UiSearchBarWrapper
-          class="header__search-bar-wrapper"
-          :options="options"
-          @sendGa="handleSendGa"
-        />
-
+        <div class="header-search__and-magazine">
+          <UiSearchBarWrapper
+            class="header__search-bar-wrapper"
+            :options="options"
+            @sendGa="handleSendGa"
+          />
+          <UiSubscribeMagazineEntrance v-if="showSubscribeMag" />
+        </div>
         <ClientOnly>
           <ContainerMembershipMemberIcon class="member-icon-desktop" />
         </ClientOnly>
@@ -113,7 +115,9 @@ import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMemberIcon.vue'
+import UiSubscribeMagazineEntrance from '~/components/UiSubscribeMagazineEntrance.vue'
 
+import { ENV } from '~/configs/config'
 import {
   SUB_BRAND_LINKS,
   SOCIAL_MEDIA_LINKS,
@@ -136,6 +140,7 @@ export default {
     UiShareLine,
     ContainerGptAd,
     ContainerMembershipMemberIcon,
+    UiSubscribeMagazineEntrance,
   },
 
   props: {
@@ -232,6 +237,10 @@ export default {
         (section) => section.name !== 'videohub'
       )
       return [this.defaultOption, ...sections]
+    },
+
+    showSubscribeMag() {
+      return ENV === 'local' || ENV === 'dev'
     },
   },
   watch: {
@@ -461,6 +470,14 @@ header {
   flex-shrink: 0;
   align-items: center;
   z-index: 529;
+  &__and-magazine {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    @include media-breakpoint-up(xl) {
+      flex-direction: row;
+    }
+  }
 }
 
 .share-wrapper {
