@@ -48,7 +48,7 @@
             :options="options"
             @sendGa="handleSendGa"
           />
-          <UiSubscribeMagazineEntrance />
+          <UiSubscribeMagazineEntrance v-if="showSubscribeMag" />
         </div>
         <ClientOnly>
           <ContainerMembershipMemberIcon class="member-icon-desktop" />
@@ -117,6 +117,7 @@ import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMemberIcon.vue'
 import UiSubscribeMagazineEntrance from '~/components/UiSubscribeMagazineEntrance.vue'
 
+import { ENV } from '~/configs/config'
 import {
   SUB_BRAND_LINKS,
   SOCIAL_MEDIA_LINKS,
@@ -236,6 +237,10 @@ export default {
         (section) => section.name !== 'videohub'
       )
       return [this.defaultOption, ...sections]
+    },
+
+    showSubscribeMag() {
+      return ENV === 'local' || ENV === 'dev'
     },
   },
   watch: {
