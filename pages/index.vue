@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <main>
+      <Referendum />
       <UiFlashNews
         class="home__flash-news"
         :articles="flashNews"
@@ -135,6 +136,7 @@ import { mapGetters } from 'vuex'
 import _ from 'lodash'
 import localforage from 'localforage'
 
+import Referendum from '~/components/Referendum.vue'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiColumnHeader from '~/components/UiColumnHeader.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
@@ -180,6 +182,7 @@ export default {
     ContainerGptAd,
     ContainerFullScreenAds,
     UiArticleGalleryB,
+    Referendum,
 
     SvgCloseIcon,
   },
@@ -416,7 +419,7 @@ export default {
   methods: {
     async fetchFlashNews() {
       const { items: articles = [] } =
-        (await this.$fetchPosts({
+        (await this.$fetchPostsFromMembershipGateway({
           categories: [
             CATEGORY_ID_POLITICAL,
             CATEGORY_ID_CITY_NEWS,
