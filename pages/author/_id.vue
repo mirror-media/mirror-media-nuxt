@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     async fetchList(page) {
-      return await this.$fetchPosts({
+      return await this.$fetchPostsFromMembershipGateway({
         maxResults: 9,
         sort: '-publishedDate',
         $or: [

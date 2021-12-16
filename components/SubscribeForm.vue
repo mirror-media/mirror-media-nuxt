@@ -529,4 +529,8 @@ export default {
     }
   }
 }
+
+.subcribe-button span {
+  color: #fff !important;
+}
 </style>
