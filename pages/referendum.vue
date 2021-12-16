@@ -12,33 +12,34 @@
         <div>最後更新時間：{{ formateDate(updateTime) }}</div>
       </div>
     </div>
-    <div class="referendum__info">
+    <div v-if="!data.F1 && !data.F2 && !data.F3 && !data.F4" class="loading">
+      <div class="oading__icon">
+        <img :src="require('~/assets/loading.gif')" alt="" />
+      </div>
+    </div>
+    <div v-else class="referendum__info">
       <ReferendumItem
-        v-if="data.F1"
         number="17"
         name="重啟核四"
-        :data="data.F1"
+        :data="data.F1 || {}"
         :threhold="threhold"
       />
       <ReferendumItem
-        v-if="data.F2"
         number="18"
         name="反萊豬進口"
-        :data="data.F2"
+        :data="data.F2 || {}"
         :threhold="threhold"
       />
       <ReferendumItem
-        v-if="data.F3"
         number="19"
         name="公投綁大選"
-        :data="data.F3"
+        :data="data.F3 || {}"
         :threhold="threhold"
       />
       <ReferendumItem
-        v-if="data.F4"
         number="20"
         name="珍愛藻礁"
-        :data="data.F4"
+        :data="data.F4 || {}"
         :threhold="threhold"
       />
     </div>
@@ -88,35 +89,37 @@ export default {
     },
     async updateJson() {
       try {
-        const { data = [] } = await axios.get(
+        const { data = {} } = await axios.get(
           'https://storage.googleapis.com/statics.mirrormedia.mg/elections/2021referendum/result.json'
         )
-        this.updateTime = new Date()
         this.data.ST = data.ST
         this.updateData(data.F1, 'F1')
         this.updateData(data.F2, 'F2')
         this.updateData(data.F3, 'F3')
         this.updateData(data.F4, 'F4')
+        this.updateTime = new Date()
       } catch (e) {
         console.error(e)
       }
     },
     updateData(data, key) {
-      const agreeTks = data.agreeTks || this.data.agreeTks
-      const agreeRate = data.agreeRate || this.data.agreeRate
-      const disagreeTks = data.disagreeTks || this.data.disagreeTks
-      const disagreeRate = data.disagreeRate || this.data.disagreeRate
-      const adptVictor = data.adptVictor || this.data.adptVictor
-      const prgRate = data.prgRate || this.data.prgRate
+      const oldData = this.data[`${key}`] || {}
       if (
-        !agreeTks ||
-        !agreeRate ||
-        !disagreeTks ||
-        !disagreeRate ||
-        !adptVictor ||
-        !prgRate
+        !data.agreeTks &&
+        !data.agreeRate &&
+        !data.disagreeTks &&
+        !data.disagreeRate &&
+        !data.adptVictor &&
+        !data.prgRate
       )
-        return {}
+        return
+      const newData = data || {}
+      const agreeTks = newData.agreeTks || oldData.agreeTks
+      const agreeRate = newData.agreeRate || oldData.agreeRate
+      const disagreeTks = newData.disagreeTks || oldData.disagreeTks
+      const disagreeRate = newData.disagreeRate || oldData.disagreeRate
+      const adptVictor = newData.adptVictor || oldData.adptVictor
+      const prgRate = newData.prgRate || oldData.prgRate
       this.data[`${key}`] = {
         agreeTks,
         agreeRate,
@@ -133,6 +136,11 @@ export default {
 <style lang="scss" scoped>
 $agree-color: #009045;
 $disagree-color: #e51731;
+
+.loading {
+  display: flex;
+  justify-content: center;
+}
 
 .referendum {
   padding: 16px 24px;
