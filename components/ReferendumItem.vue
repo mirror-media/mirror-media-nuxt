@@ -59,12 +59,13 @@ export default {
   },
   computed: {
     status() {
+      if (!this.data) return 'cat'
       switch (this.data.adptVictor) {
         case 'Y': {
           return 'pass'
         }
         case 'N': {
-          if (this.data.disagreeTks > this.data.agreeTks) return 'notPass'
+          if (this.data?.disagreeTks > this.data?.agreeTks) return 'notPass'
           return 'becauseThrehold'
         }
         default: {
@@ -75,6 +76,7 @@ export default {
   },
   methods: {
     numberWithCommas(x) {
+      if (!x) return ''
       return x.toString().replace(/\B(?<!\.\d*)(?=(\d{4})+(?!\d))/g, ' 萬 ')
     },
   },
