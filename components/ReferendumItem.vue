@@ -77,7 +77,12 @@ export default {
   methods: {
     numberWithCommas(x) {
       if (!x) return ''
-      return x.toString().replace(/\B(?<!\.\d*)(?=(\d{4})+(?!\d))/g, ' 萬 ')
+      const string = x.toString()
+      return (
+        string.slice(0, string.length - 4) +
+        ' 萬 ' +
+        string.slice(string.length - 4)
+      )
     },
   },
 }
