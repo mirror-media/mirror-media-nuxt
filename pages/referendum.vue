@@ -89,8 +89,9 @@ export default {
     },
     async updateJson() {
       try {
+        const timestamp = new Date()
         const { data = {} } = await axios.get(
-          'https://storage.googleapis.com/statics.mirrormedia.mg/elections/2021referendum/result.json'
+          `https://storage.googleapis.com/statics.mirrormedia.mg/elections/2021referendum/result.json?${timestamp}`
         )
         this.data.ST = data.ST
         this.updateData(data.F1, 'F1')
