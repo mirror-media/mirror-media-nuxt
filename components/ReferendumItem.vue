@@ -5,13 +5,9 @@
       <div>{{ name }}</div>
     </div>
     <div class="referendum-item__bar">
+      <Bar :tickets="data.agreeTks" :rate="data.agreeRate" :isAgree="true" />
       <Bar
-        :tickets="numberWithCommas(data.agreeTks)"
-        :rate="data.agreeRate"
-        :isAgree="true"
-      />
-      <Bar
-        :tickets="numberWithCommas(data.disagreeTks)"
+        :tickets="data.disagreeTks"
         :rate="data.disagreeRate"
         :isAgree="false"
       />
