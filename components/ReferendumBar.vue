@@ -1,6 +1,6 @@
 <template>
   <div class="bar" :class="{ agree: isAgree }" :style="cssProps">
-    <div class="bar__tickets">{{ tickets }} 票</div>
+    <div class="bar__tickets">{{ ticketString }} 票</div>
     <div class="bar__rate">{{ rate }}%</div>
   </div>
 </template>
@@ -9,8 +9,8 @@
 export default {
   props: {
     tickets: {
-      type: String,
-      default: '',
+      type: Number,
+      default: 0,
     },
     rate: {
       type: Number,
@@ -26,6 +26,9 @@ export default {
       return {
         '--rate': `${this.rate}%`,
       }
+    },
+    ticketString() {
+      return this.tickets ? `${this.tickets}` : ''
     },
   },
 }
