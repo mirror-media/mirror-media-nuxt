@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isDev" class="referendum">
+  <div class="referendum">
     <div class="referendum__wrapper">
       <iframe src="/referendum" />
     </div>
@@ -7,14 +7,7 @@
 </template>
 
 <script>
-import { ENV } from '~/configs/config'
-export default {
-  computed: {
-    isDev() {
-      return ENV !== 'prod'
-    },
-  },
-}
+export default {}
 </script>
 
 <style lang="scss" scoped>
