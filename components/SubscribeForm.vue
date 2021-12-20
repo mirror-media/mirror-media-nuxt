@@ -279,41 +279,42 @@ export default {
       return {
         // 商品相關
         // items: this.perchasedItems,
-        merchant_id: 'MS315799494',
-        item_desc: itemDest,
+        merchantId: 'MS323443601',
+        ItemDesc: itemDest,
         amount: parseInt(amount),
-        price,
-        discount_code: this.discount.code,
+        Amt: price,
+        discountCode: this.discount.code,
         discount: this.discountPrice,
 
         // 購買者相關
-        pur_name: this.ordererData.name,
-        pur_cell: this.ordererData.cellphone,
-        pur_phone: `${this.ordererData.phone} ${this.ordererData.phoneExt}`,
-        pur_addr: this.ordererData.address,
-        pur_mail: this.ordererData.email,
+        purName: this.ordererData.name,
+        purCell: this.ordererData.cellphone,
+        purPhone: `${this.ordererData.phone} ${this.ordererData.phoneExt}`,
+        purAddr: this.ordererData.address,
+        purMail: this.ordererData.email,
+        Email: this.ordererData.email,
 
         // 收貨相關
-        rec_name: this.receiverData.name,
-        rec_cell: this.receiverData.cellphone,
-        rec_phone: `${this.receiverData.phone} ${this.receiverData.phoneExt}`,
-        rec_addr: this.receiverData.address,
-        rec_remark: '', // TODO
+        recName: this.receiverData.name,
+        recCell: this.receiverData.cellphone,
+        recPhone: `${this.receiverData.phone} ${this.receiverData.phoneExt}`,
+        recAddr: this.receiverData.address,
+        recRemark: '', // TODO
         delivery: this.shipPlan.name,
         deliveryCost: this.shipping,
 
         // 付款相關
-        prime_token: '',
-        price_total: this.total,
+        primeToken: '',
+        priceTotal: this.total,
 
         // 發票相關
-        carrier_type: this.generateCarrierInt(this.receiptData.carrierType),
-        carrier_number: this.receiptData.carrierNumber,
-        carrier_title: this.receiptData.carrierTitle,
-        carrier_ubn: this.receiptData.carrierUbn,
+        carrierType: this.generateCarrierInt(this.receiptData.carrierType),
+        carrierNumber: this.receiptData.carrierNumber,
+        carrierTitle: this.receiptData.carrierTitle,
+        carrierUbn: this.receiptData.carrierUbn,
 
         // 捐贈發票
-        love_code: this.receiptData.donateOrganization,
+        loveCode: this.receiptData.donateOrganization,
       }
     },
     validationPass() {

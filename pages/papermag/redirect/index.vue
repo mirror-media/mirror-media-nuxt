@@ -3,7 +3,7 @@
     <NewebpayForm
       :merchantId="paymentPayload.MerchantID"
       :tradeInfo="paymentPayload.TradeInfo"
-      :tradeSHA="paymentPayload.TradeSHA"
+      :tradeSha="paymentPayload.TradeSha"
       :version="paymentPayload.Version"
     />
   </div>
@@ -16,36 +16,18 @@ export default {
     NewebpayForm,
   },
   layout: 'empty',
-  middleware({ store, redirect }) {
-    // block access direct from url
-    const isReadyToPay = store.getters['subscribe/isReadyToPay']
-    if (!isReadyToPay) {
-      redirect('/papermag')
-    }
-  },
   computed: {
     paymentPayload() {
-      return this.$store.getters['subscribe/getPaymentPayload']
+      const queryString = this.$route.query
+      return {
+        MerchantID: queryString.MerchantID,
+        TradeInfo: queryString.TradeInfo,
+        TradeSha: queryString.TradeSha,
+        Version: parseFloat(queryString.Version),
+      }
     },
   },
   mounted() {
-    // save orderInfo into sessionStorage
-    const orderInfo = this.$store.getters['subscribe/getOrderInfo']
-    this.storeToSessionStorage('orderInfo', JSON.stringify(orderInfo))
-
-    /*
-     * get orderNo and token for this payment
-     * save them into sessionStorage
-     */
-    const { JwtToken, MerchantOrderNo } = this.$store.getters[
-      'subscribe/getInfoPayload'
-    ]
-    this.storeToSessionStorage('JwtToken', JwtToken)
-    this.storeToSessionStorage('MerchantOrderNo', MerchantOrderNo)
-
-    // turn off access of this redirect page
-    this.$store.dispatch('subscribe/updateReadyToPay', false)
-
     // submit newebpay form-post to redirect to newebpay page
     const formDOM = document.forms.newebpay
     formDOM.submit()

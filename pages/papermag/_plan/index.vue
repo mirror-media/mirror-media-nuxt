@@ -3,17 +3,13 @@
     <SubscribeStepProgress :currentStep="2" />
 
     <SubscribeForm
-      v-if="orderStatus === 'normal' || orderStatus === 'loading'"
       :currentChoosedPlanId="currentChoosedPlanId"
       :proceedOrderPayment="proceedOrderPayment"
       :validateOn="validateOn"
     />
 
     <!-- loading mask -->
-    <div
-      v-if="orderStatus === 'loading'"
-      class="subscribe-magazine-page__loading"
-    >
+    <div v-if="isLoading" class="subscribe-magazine-page__loading">
       <div class="subscribe-magazine-page__loading_icon">
         <img :src="require('~/assets/loading.gif')" alt="" />
       </div>
@@ -22,6 +18,7 @@
 </template>
 
 <script>
+import qs from 'qs'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeForm from '~/components/SubscribeForm.vue'
 
@@ -41,7 +38,7 @@ export default {
   },
   data() {
     return {
-      orderStatus: 'normal', // normal, loading
+      isLoading: false,
       validateOn: true,
     }
   },
@@ -53,31 +50,22 @@ export default {
   },
   methods: {
     async proceedOrderPayment(orderPayload) {
+      if (this.isLoading) return
       // save orderInfo for successPage
-      this.$store.dispatch('subscribe/updateOrderInfo', orderPayload)
-      this.orderStatus = 'loading'
-
+      // this.$store.dispatch('subscribe/updateOrderInfo', orderPayload)
       try {
-        const paymentPayload = await this.$axios.$post(
-          `/api/v2/subscribe-magazine/payload`,
-          orderPayload
+        this.isLoading = true
+        let tradeInfo = orderPayload
+        tradeInfo.MerchantID = tradeInfo.merchantId
+        tradeInfo = qs.parse(tradeInfo)
+        const encryptPaymentPayload = await this.$axios.$post(
+          `${window.location.origin}/api/v2/newebpay-papermag/v1`,
+          tradeInfo
         )
-
-        const infoPayload = {
-          JwtToken: paymentPayload.JwtToken,
-          MerchantOrderNo: paymentPayload.MerchantOrderNo,
-        }
-
-        this.$store.dispatch('subscribe/updatePaymentPayload', paymentPayload)
-        this.$store.dispatch('subscribe/updateInfoPayload', infoPayload)
-
-        /*
-         * save paymentPayload to store
-         * then jump to redirect page
-         */
-        this.$store.dispatch('subscribe/updateReadyToPay', true)
-
-        this.$router.push(`/papermag/redirect`)
+        // carry encrypted paymentPayload to redirect page
+        const queryString = qs.stringify(encryptPaymentPayload)
+        this.$router.push(`/papermag/redirect?${queryString}`)
+        this.isLoading = false
       } catch (err) {
         console.error(err)
 
@@ -107,6 +95,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 200;
     &_icon {
       width: 100px;
       height: 100px;
