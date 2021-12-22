@@ -298,7 +298,6 @@ async function isMemberPaidSubscriptionWithMobile(context) {
   try {
     // get user's newest subscription
     const subscriptions = await getMemberAllSubscriptions(firebaseId, context)
-    console.log('test', subscriptions)
     return isSubscriptionPayByMobileAppStore(subscriptions)
   } catch (error) {
     console.error(error)
@@ -307,7 +306,6 @@ async function isMemberPaidSubscriptionWithMobile(context) {
 }
 
 function isSubscriptionPayByMobileAppStore(subscriptions = []) {
-  console.log('sub', subscriptions)
   if (!subscriptions.length) return false
   const appSubscribeRecord = subscriptions.find(
     (subscription) =>
@@ -315,8 +313,6 @@ function isSubscriptionPayByMobileAppStore(subscriptions = []) {
       (subscription.paymentMethod === 'app_store' ||
         subscription.paymentMethod === 'google_play')
   )
-
-  console.log('record', !!appSubscribeRecord)
 
   return !!appSubscribeRecord
 }
@@ -467,18 +463,20 @@ async function getMemberShipStatus(context, memberShipStatusName) {
   }
 
   function generatePayMethodText(paymentMethod = '', cardInfoLastFour = '') {
-    let paymentText = paymentMethod
-    let shouldShowCardInfoLastFour = true
-    if (paymentMethod === 'app_store') {
-      paymentText = 'Apple Pay'
-      shouldShowCardInfoLastFour = false
-    } else if (paymentMethod === 'google_play') {
-      paymentText = 'Google Store'
-      shouldShowCardInfoLastFour = false
+    const paymentMethodText =
+      paymentMethod && cardInfoLastFour
+        ? `${paymentMethod}(${cardInfoLastFour})`
+        : ''
+    switch (paymentMethod) {
+      case 'app_store':
+        return 'Apple Pay'
+      case 'google_play':
+        return 'Google Store'
+      case 'newebpay':
+        return paymentMethodText
+      default:
+        return paymentMethodText
     }
-    return shouldShowCardInfoLastFour
-      ? `${paymentText}(${cardInfoLastFour})`
-      : paymentText
   }
 
   function generateMemberShipStatusName() {
