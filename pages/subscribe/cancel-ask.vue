@@ -50,9 +50,9 @@
           >
         </div>
       </SubscribeWrapper>
-
-      <UiLoadingCover v-if="isLoading" />
     </template>
+    <!-- if fetch is not complete, or form is not submitted, show loading-->
+    <UiLoadingCover v-if="$fetchState.pending || isLoading" />
   </div>
 </template>
 

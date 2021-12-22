@@ -1,6 +1,6 @@
 <template>
   <div class="subscribe-choose">
-    <div v-show="doesHaveIsPayByAppValue">
+    <template v-if="doesHaveIsPayByAppValue">
       <SubscribeStepProgress :currentStep="1" />
       <ClientOnly>
         <template v-if="isPayByApp">
@@ -64,7 +64,9 @@
           </template>
         </template>
       </ClientOnly>
-    </div>
+    </template>
+    <!-- if fetch is not complete, show loading-->
+    <UiLoadingCover v-if="$fetchState.pending" />
   </div>
 </template>
 
@@ -75,6 +77,7 @@ import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipC
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
+import UiLoadingCover from '~/components/UiLoadingCover.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
   middleware: ['handle-go-to-marketing'],
@@ -84,6 +87,7 @@ export default {
     SubscribeMembershipChoosePlanCard,
     SubscribeWrapper,
     UiMembershipButtonPrimary,
+    UiLoadingCover,
   },
   setup() {
     const { state, send } = useMemberSubscribeMachine()
