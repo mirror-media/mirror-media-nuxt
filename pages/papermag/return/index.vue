@@ -6,6 +6,7 @@
 export default {
   layout: 'empty',
   middleware({ req, store, redirect }) {
+    console.log(req)
     let referer = ''
     if (process.server) {
       referer = req.headers.referer
@@ -62,7 +63,7 @@ export default {
     } catch (e) {
       this.$store.dispatch('subscribe/updateResultStatus', 'payment-fail')
     }
-    this.$router.push('/subscribe/result')
+    // this.$router.push('/subscribe/result')
   },
   methods: {
     getDataFromSessionStorage(name) {

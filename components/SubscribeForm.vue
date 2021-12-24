@@ -274,48 +274,69 @@ export default {
       }
     },
     getOrderPayload() {
-      const { itemDest, amount, price } = this.generateItemData()
+      const { itemDest, amount } = this.generateItemData()
 
       return {
-        // 商品相關
-        // items: this.perchasedItems,
-        merchantId: 'MS323443601',
-        ItemDesc: itemDest,
-        amount: parseInt(amount),
-        Amt: price,
-        discountCode: this.discount.code,
-        discount: this.discountPrice,
-
-        // 購買者相關
-        purName: this.ordererData.name,
-        purCell: this.ordererData.cellphone,
-        purPhone: `${this.ordererData.phone} ${this.ordererData.phoneExt}`,
-        purAddr: this.ordererData.address,
-        purMail: this.ordererData.email,
-        Email: this.ordererData.email,
-
-        // 收貨相關
-        recName: this.receiverData.name,
-        recCell: this.receiverData.cellphone,
-        recPhone: `${this.receiverData.phone} ${this.receiverData.phoneExt}`,
-        recAddr: this.receiverData.address,
-        recRemark: '', // TODO
-        delivery: this.shipPlan.name,
-        deliveryCost: this.shipping,
-
-        // 付款相關
-        primeToken: '',
-        priceTotal: this.total,
-
-        // 發票相關
-        carrierType: this.generateCarrierInt(this.receiptData.carrierType),
-        carrierNumber: this.receiptData.carrierNumber,
-        carrierTitle: this.receiptData.carrierTitle,
-        carrierUbn: this.receiptData.carrierUbn,
-
-        // 捐贈發票
-        loveCode: this.receiptData.donateOrganization,
+        data: {
+          desc: itemDest,
+          comment: 'mock_comment',
+          merchandise: {
+            connect: {
+              code: 'mg_yearly',
+            },
+          },
+          itemCount: amount,
+          purchaseDatetime: new Date(),
+          purchaseName: this.ordererData.name,
+          purchaseAddress: this.ordererData.address,
+          purchaseEmail: this.ordererData.email,
+          receiveName: this.receiverData.name,
+          receiveAddress: this.receiverData.address,
+          category: 'B2C',
+          purchaseMobile: 'mock_purchase_mobile',
+          receiveMobile: 'mock_receive_mobile',
+          loveCode: parseInt(this.receiptData.donateOrganization),
+          carrierType: '',
+        },
       }
+
+      // return {
+      //   // 商品相關
+      //   // items: this.perchasedItems,
+
+      //   discountCode: this.discount.code,
+      //   discount: this.discountPrice,
+
+      //   // 購買者相關
+      //   purName: this.ordererData.name,
+      //   purCell: this.ordererData.cellphone,
+      //   purPhone: `${this.ordererData.phone} ${this.ordererData.phoneExt}`,
+      //   purAddr: this.ordererData.address,
+      //   purMail: this.ordererData.email,
+      //   Email: this.ordererData.email,
+
+      //   // 收貨相關
+      //   recName: this.receiverData.name,
+      //   recCell: this.receiverData.cellphone,
+      //   recPhone: `${this.receiverData.phone} ${this.receiverData.phoneExt}`,
+      //   recAddr: this.receiverData.address,
+      //   recRemark: '', // TODO
+      //   delivery: this.shipPlan.name,
+      //   deliveryCost: this.shipping,
+
+      //   // 付款相關
+      //   primeToken: '',
+      //   priceTotal: this.total,
+
+      //   // 發票相關
+      //   carrierType: this.generateCarrierInt(this.receiptData.carrierType),
+      //   carrierNumber: this.receiptData.carrierNumber,
+      //   carrierTitle: this.receiptData.carrierTitle,
+      //   carrierUbn: this.receiptData.carrierUbn,
+
+      //   // 捐贈發票
+      //   loveCode: this.receiptData.donateOrganization,
+      // }
     },
     validationPass() {
       const validateArray = Object.values(this.formStatus)
@@ -344,8 +365,8 @@ export default {
 
       if (this.validationPass() && this.acceptPermission) {
         const payload = this.getOrderPayload()
-        const str = JSON.stringify(payload)
-        console.log(str)
+        // const str = JSON.stringify(payload)
+        // console.log(str)
         this.proceedOrderPayment(payload)
       }
     },
