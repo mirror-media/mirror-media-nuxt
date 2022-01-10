@@ -1,6 +1,58 @@
 <template>
   <div class="cancel-ask">
-    <template v-if="doesHaveIsPayByAppValue">
+    <template v-if="!canShowFeat && doesHaveIsPayByAppValue">
+      <SubscribeWrapper v-if="isPayByApp">
+        <h6 class="cancel-ask__title">取消訂閱提示</h6>
+        <p class="cancel-ask__description">
+          由於您先前於 APP 購買，如要取消訂閱，請至 App Store (iOS 系統) 或
+          Google Play (Android 系統) 操作
+        </p>
+        <UiMembershipButtonPrimary
+          class="subscribe-cancel__back"
+          @click.native="handleBack"
+          >回訂閱紀錄</UiMembershipButtonPrimary
+        >
+      </SubscribeWrapper>
+      <SubscribeWrapper v-else @back="handleBack" @submit="handleSubmit">
+        <h6 class="cancel-ask__title">取消訂閱</h6>
+        <p class="cancel-ask__description">
+          請問您為何想取消訂閱鏡週刊 Premium 服務？
+        </p>
+        <UiMembershipCheckoutLabel
+          content="文章無法滿足需求"
+          @change="handleChange"
+        />
+        <UiMembershipCheckoutLabel
+          content="已訂閱其他媒體"
+          @change="handleChange"
+        />
+        <UiMembershipCheckoutLabel
+          content="使用體驗不佳"
+          @change="handleChange"
+        />
+        <UiMembershipCheckoutLabel
+          content="想改用單篇付費方式繼續閱讀"
+          @change="handleChange"
+        />
+        <UiMembershipCheckoutLabel content="其他" @change="handleChange" />
+        <textarea
+          v-if="shouldShowTextarea"
+          v-model="otherDetail"
+          placeholder="請輸入您的回饋..."
+          rows="3"
+        />
+        <div class="cancel-ask__button_group">
+          <UiMembershipButtonSecondary @click.native="handleBack"
+            >返回
+          </UiMembershipButtonSecondary>
+          <UiMembershipButtonPrimary @click.native="handleSubmit"
+            >確認取消訂閱</UiMembershipButtonPrimary
+          >
+        </div>
+      </SubscribeWrapper>
+    </template>
+
+    <template v-if="canShowFeat && doesHaveIsPayByAppValue">
       <SubscribeWrapper v-if="isPayByApp">
         <h6 class="cancel-ask__title">取消訂閱提示</h6>
         <p class="cancel-ask__description">
@@ -51,8 +103,11 @@
         </div>
       </SubscribeWrapper>
     </template>
+
+    <UiLoadingCover v-if="!canShowFeat && isLoading" />
+
     <!-- if fetch is not complete, or form is not submitted, show loading-->
-    <UiLoadingCover v-if="$fetchState.pending || isLoading" />
+    <UiLoadingCover v-if="canShowFeat && ($fetchState.pending || isLoading)" />
   </div>
 </template>
 
@@ -105,6 +160,9 @@ export default {
     },
     doesHaveIsPayByAppValue() {
       return this.isPayByApp !== undefined
+    },
+    canShowFeat() {
+      return this.$route.query?.toggle === 'show-toggle-feature'
     },
   },
   methods: {
