@@ -298,19 +298,23 @@ async function isMemberPaidSubscriptionWithMobile(context) {
   try {
     // get user's newest subscription
     const subscriptions = await getMemberAllSubscriptions(firebaseId, context)
-
-    return isSubscriptionPayByMobileAppStore(subscriptions[0])
+    return isSubscriptionPayByMobileAppStore(subscriptions)
   } catch (error) {
     console.error(error)
     return false
   }
 }
 
-function isSubscriptionPayByMobileAppStore(subscription) {
-  const { frequency, paymentMethod } = subscription
-  if (frequency === 'one_time') return false
+function isSubscriptionPayByMobileAppStore(subscriptions = []) {
+  if (!subscriptions.length) return false
+  const appSubscribeRecord = subscriptions.find(
+    (subscription) =>
+      subscription.isActive &&
+      (subscription.paymentMethod === 'app_store' ||
+        subscription.paymentMethod === 'google_play')
+  )
 
-  return paymentMethod === 'applepay' || paymentMethod === 'applepay'
+  return !!appSubscribeRecord
 }
 
 async function getPaymentDataOfSubscription(context, gateWayPayload) {
@@ -427,11 +431,13 @@ async function getMemberShipStatus(context, memberShipStatusName) {
     periodNextPayDatetime,
     newebpayPayment,
     isCanceled,
+    paymentMethod,
   } = subscription[0]
-  const { paymentMethod, cardInfoLastFour } = newebpayPayment?.[0] || {
-    paymentMethod: null,
+  const { cardInfoLastFour } = newebpayPayment?.[0] || {
     cardInfoLastFour: null,
   }
+
+  const payMethodText = generatePayMethodText(paymentMethod, cardInfoLastFour)
 
   if (isCanceled && frequency === 'yearly') {
     return {
@@ -452,7 +458,24 @@ async function getMemberShipStatus(context, memberShipStatusName) {
       name: generateMemberShipStatusName(),
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: getFormatDateWording(periodNextPayDatetime),
-      payMethod: `${paymentMethod}(${cardInfoLastFour})`,
+      payMethod: payMethodText,
+    }
+  }
+
+  function generatePayMethodText(paymentMethod = '', cardInfoLastFour = '') {
+    const paymentMethodText =
+      paymentMethod && cardInfoLastFour
+        ? `${paymentMethod}(${cardInfoLastFour})`
+        : ''
+    switch (paymentMethod) {
+      case 'app_store':
+        return 'Apple Pay'
+      case 'google_play':
+        return 'Google Store'
+      case 'newebpay':
+        return paymentMethodText
+      default:
+        return paymentMethodText
     }
   }
 
