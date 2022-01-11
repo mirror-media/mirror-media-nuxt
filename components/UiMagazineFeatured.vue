@@ -21,7 +21,7 @@
           <ReadOnlineSvg />
           線上閱讀
         </UiMagazineLinkPrimary>
-        <UiMagazineLinkSecondary
+        <!-- <UiMagazineLinkSecondary
           class="info-wrapper__download-link download-link"
           :href="downloadLink"
           target="_blank"
@@ -30,7 +30,7 @@
         >
           <DownloadSvg />
           下載雜誌
-        </UiMagazineLinkSecondary>
+        </UiMagazineLinkSecondary> -->
       </section>
     </div>
   </div>
@@ -38,16 +38,16 @@
 
 <script>
 import UiMagazineLinkPrimary from './UiMagazineLinkPrimary.vue'
-import UiMagazineLinkSecondary from './UiMagazineLinkSecondary.vue'
+// import UiMagazineLinkSecondary from './UiMagazineLinkSecondary.vue'
 import ReadOnlineSvg from '~/assets/magazine-online.svg?inline'
-import DownloadSvg from '~/assets/magazine-download.svg?inline'
+// import DownloadSvg from '~/assets/magazine-download.svg?inline'
 
 export default {
   components: {
     UiMagazineLinkPrimary,
-    UiMagazineLinkSecondary,
+    // UiMagazineLinkSecondary,
     ReadOnlineSvg,
-    DownloadSvg,
+    // DownloadSvg,
   },
   props: {
     coverImgUrl: {
