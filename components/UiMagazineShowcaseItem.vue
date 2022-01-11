@@ -19,7 +19,7 @@
       >
         <ReadOnlineSvg />線上閱讀
       </UiMagazineLinkSmall>
-      <UiMagazineLinkSmall
+      <!-- <UiMagazineLinkSmall
         class="magazine__button-group_downliad-link download-link"
         :href="downloadLink"
         :isPremium="false"
@@ -28,7 +28,7 @@
       >
         <DownloadSvg />
         <p v-if="isMobile">下載雜誌</p>
-      </UiMagazineLinkSmall>
+      </UiMagazineLinkSmall> -->
     </div>
   </div>
 </template>
@@ -37,14 +37,14 @@
 import UiMagazineShowcaseItemCoverImg from './UiMagazineShowcaseItemCoverImg.vue'
 import UiMagazineLinkSmall from './UiMagazineLinkSmall.vue'
 import ReadOnlineSvg from '~/assets/magazine-online.svg?inline'
-import DownloadSvg from '~/assets/magazine-download.svg?inline'
+// import DownloadSvg from '~/assets/magazine-download.svg?inline'
 
 export default {
   components: {
     UiMagazineShowcaseItemCoverImg,
     UiMagazineLinkSmall,
     ReadOnlineSvg,
-    DownloadSvg,
+    // DownloadSvg,
   },
   props: {
     coverImgUrl: {
