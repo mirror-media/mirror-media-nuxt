@@ -56,7 +56,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 999;
+    z-index: 1200;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -73,7 +73,7 @@ export default {
     position: fixed;
     right: 0;
     bottom: 0;
-    z-index: 999;
+    z-index: 1200;
   }
 
   &__btn {
@@ -83,7 +83,9 @@ export default {
     width: 32px;
     height: 32px;
     padding: 5px;
-    border: 2px solid rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 2px 2px 5px #d3d3d3;
+    background-color: #d3d3d3;
   }
 }
 </style>
