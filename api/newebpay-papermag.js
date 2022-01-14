@@ -8,7 +8,7 @@ const {
 module.exports = async function (req, res) {
   const tradeInfo = req.body
   try {
-    const { data } = await getPaymentDataOfPapermagSubscription(tradeInfo)
+    const data = await getPaymentDataOfPapermagSubscription(tradeInfo)
     const infoForNewebpay = data.createNewebpayTradeInfoForMagazineOrder
 
     const newebpay = new NewebPay(NEWEBPAY_PAPERMAG_KEY, NEWEBPAY_PAPERMAG_IV)

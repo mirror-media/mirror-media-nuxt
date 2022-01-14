@@ -282,7 +282,10 @@ export default {
           comment: 'mock_comment',
           merchandise: {
             connect: {
-              code: 'mg_yearly',
+              code:
+                this.currentChoosedPlanId === 0
+                  ? 'magazine_one_year'
+                  : 'magazine_two_year',
             },
           },
           itemCount: amount,

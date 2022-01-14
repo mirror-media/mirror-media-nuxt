@@ -30,7 +30,7 @@ async function fireGqlRequest(query, variables) {
     }
     return result
   } catch (error) {
-    console.log(error)
+    console.log(error.message)
     throw new Error(error.message)
   }
 }
@@ -55,7 +55,13 @@ async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
     }
   }
   `
-  const data = await fireGqlRequest(fetchPaymentDataOfPapermag, gateWayPayload)
+  const { data } = await fireGqlRequest(
+    fetchPaymentDataOfPapermag,
+    gateWayPayload
+  )
+  console.log({ data })
+  data.createNewebpayTradeInfoForMagazineOrder.ReturnURL =
+    'http://localhost:3000/papermag/return'
   return data
 }
 

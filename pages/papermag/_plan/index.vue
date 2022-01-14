@@ -62,10 +62,9 @@ export default {
           `${window.location.origin}/api/v2/newebpay-papermag/v1`,
           tradeInfo
         )
-        console.log(encryptPaymentPayload)
         // carry encrypted paymentPayload to redirect page
-        // const queryString = qs.stringify(encryptPaymentPayload)
-        // this.$router.push(`/papermag/redirect?${queryString}`)
+        const queryString = qs.stringify(encryptPaymentPayload)
+        this.$router.push(`/papermag/redirect?${queryString}`)
         this.isLoading = false
       } catch (err) {
         console.error(err)
