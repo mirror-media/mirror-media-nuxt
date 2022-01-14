@@ -53,8 +53,7 @@ export default {
       if (this.isLoading) return
       try {
         this.isLoading = true
-        let tradeInfo = orderPayload
-        tradeInfo = qs.parse(tradeInfo)
+        const tradeInfo = orderPayload
         const encryptPaymentPayload = await this.$axios.$post(
           `${window.location.origin}/api/v2/newebpay-papermag/v1`,
           tradeInfo
