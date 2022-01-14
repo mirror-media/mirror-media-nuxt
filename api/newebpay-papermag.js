@@ -7,9 +7,7 @@ const {
   API_PATH_FRONTEND,
 } = require('../configs/config')
 
-const baseUrl = process.browser
-  ? `${location.origin}/`
-  : 'http://localhost:3000/'
+const baseUrl = location.origin
 const apiUrl = `${baseUrl}${API_PATH_FRONTEND}`
 
 async function fireGqlRequest(query, variables) {
