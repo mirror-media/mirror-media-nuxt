@@ -51,17 +51,15 @@ export default {
   methods: {
     async proceedOrderPayment(orderPayload) {
       if (this.isLoading) return
-      // save orderInfo for successPage
-      // this.$store.dispatch('subscribe/updateOrderInfo', orderPayload)
       try {
         this.isLoading = true
         let tradeInfo = orderPayload
-        tradeInfo.MerchantID = tradeInfo.merchantId
         tradeInfo = qs.parse(tradeInfo)
         const encryptPaymentPayload = await this.$axios.$post(
           `${window.location.origin}/api/v2/newebpay-papermag/v1`,
           tradeInfo
         )
+
         // carry encrypted paymentPayload to redirect page
         const queryString = qs.stringify(encryptPaymentPayload)
         this.$router.push(`/papermag/redirect?${queryString}`)

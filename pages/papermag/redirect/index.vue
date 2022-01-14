@@ -23,7 +23,7 @@ export default {
         MerchantID: queryString.MerchantID,
         TradeInfo: queryString.TradeInfo,
         TradeSha: queryString.TradeSha,
-        Version: parseFloat(queryString.Version),
+        Version: queryString.Version,
       }
     },
   },

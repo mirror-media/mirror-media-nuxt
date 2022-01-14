@@ -1,20 +1,16 @@
 import axios from 'axios'
-// import { print } from 'graphql/language/printer'
-// import { fetchPaymentDataOfPapermag } from '../apollo/mutations/papermagSubscriptionMutation.gql'
 
-// import { API_PATH_FRONTEND } from '~/configs/config.js'
+import { API_PATH_FRONTEND } from '../configs/config.js'
 
-// const baseUrl = 'http://localhost:4000/'
-
-// const baseUrl = process.browser
-//   ? `${location.origin}/`
-//   : 'http://localhost:3000/'
-// const apiUrl = `${baseUrl}${API_PATH_FRONTEND}`
+const baseUrl = process.browser
+  ? `${location.origin}/`
+  : 'http://localhost:3000/'
+const apiUrl = `${baseUrl}${API_PATH_FRONTEND}`
 
 async function fireGqlRequest(query, variables) {
   try {
     const { data: result } = await axios({
-      url: 'https://dev-israfel-gql.mirrormedia.mg/api/graphql',
+      url: apiUrl,
       method: 'post',
       data: {
         query,
@@ -22,7 +18,7 @@ async function fireGqlRequest(query, variables) {
       },
       headers: {
         'content-type': 'application/json',
-        'Cache-Control': 'no-store',
+        'Cache-Control': 'no-cache',
       },
     })
     if (result.errors) {
@@ -51,7 +47,6 @@ async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
       Email
       TradeLimit
       NotifyURL
-      ReturnURL
     }
   }
   `
@@ -60,8 +55,7 @@ async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
     gateWayPayload
   )
   console.log({ data })
-  data.createNewebpayTradeInfoForMagazineOrder.ReturnURL =
-    'http://localhost:3000/papermag/return'
+  data.createNewebpayTradeInfoForMagazineOrder.ReturnURL = `${baseUrl}/papermag/return`
   return data
 }
 

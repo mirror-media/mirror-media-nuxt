@@ -33,9 +33,9 @@ export default {
       default: '',
     },
     version: {
-      type: Number,
+      type: String,
       isRequired: true,
-      default: 1.6,
+      default: '1.6',
     },
   },
   data() {
