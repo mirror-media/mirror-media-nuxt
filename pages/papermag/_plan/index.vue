@@ -8,6 +8,13 @@
       :validateOn="validateOn"
     />
 
+    <NewebpayForm
+      :merchantId="paymentPayload.MerchantID"
+      :tradeInfo="paymentPayload.TradeInfo"
+      :tradeSha="paymentPayload.TradeSha"
+      :version="paymentPayload.Version"
+    />
+
     <!-- loading mask -->
     <div v-if="isLoading" class="subscribe-magazine-page__loading">
       <div class="subscribe-magazine-page__loading_icon">
@@ -18,14 +25,16 @@
 </template>
 
 <script>
-import qs from 'qs'
+// import qs from 'qs'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeForm from '~/components/SubscribeForm.vue'
+import NewebpayForm from '~/components/NewebpayForm.vue'
 
 export default {
   components: {
     SubscribeStepProgress,
     SubscribeForm,
+    NewebpayForm,
   },
   middleware({ route, redirect }) {
     if (
@@ -40,6 +49,7 @@ export default {
     return {
       isLoading: false,
       validateOn: true,
+      paymentPayload: {},
     }
   },
   computed: {
@@ -54,14 +64,19 @@ export default {
       try {
         this.isLoading = true
         const tradeInfo = orderPayload
-        const encryptPaymentPayload = await this.$axios.$post(
+
+        // carry encrypted paymentPayload and submit to newebpay
+        const data = await this.$axios.$post(
           `${window.location.origin}/api/v2/newebpay-papermag/v1`,
           tradeInfo
         )
 
-        // carry encrypted paymentPayload to redirect page
-        const queryString = qs.stringify(encryptPaymentPayload)
-        this.$router.push(`/papermag/redirect?${queryString}`)
+        this.paymentPayload = data
+        console.log(this.paymentPayload, data, document.forms.newebpay)
+        this.$nextTick(() => {
+          const formDOM = document.forms.newebpay
+          formDOM.submit()
+        })
         this.isLoading = false
       } catch (err) {
         console.error(err)

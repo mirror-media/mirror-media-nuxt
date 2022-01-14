@@ -7,13 +7,16 @@ const {
   API_PATH_FRONTEND,
 } = require('../configs/config')
 
-const baseUrl = location.origin
+const baseUrl = process.browser
+  ? `${location.origin}/`
+  : 'http://localhost:3000/'
 const apiUrl = `${baseUrl}${API_PATH_FRONTEND}`
 
 async function fireGqlRequest(query, variables) {
   try {
     const { data: result } = await axios({
       url: apiUrl,
+      // url: 'https://dev-israfel-gql.mirrormedia.mg/api/graphql',
       method: 'post',
       data: {
         query,
@@ -29,7 +32,6 @@ async function fireGqlRequest(query, variables) {
     }
     return result
   } catch (error) {
-    console.log(error.message)
     throw new Error(error.message)
   }
 }
@@ -60,8 +62,6 @@ async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
   data.createNewebpayTradeInfoForMagazineOrder.ReturnURL = `${baseUrl}/papermag/return`
   return data
 }
-
-export { getPaymentDataOfPapermagSubscription, fireGqlRequest }
 
 module.exports = async function (req, res) {
   const tradeInfo = req.body
