@@ -59,7 +59,7 @@
               </div>
               <UiMembershipButtonPrimary
                 class="subscribe-choose__textcard_back"
-                @click.native="handleSet"
+                @click.native="handleGoToSectionMember"
                 >回會員專區</UiMembershipButtonPrimary
               >
             </SubscribeWrapper>
@@ -198,10 +198,13 @@ export default {
             { text: '免費閱讀數位版動態雜誌' },
             { text: '月方案定價 $99 元，限時優惠 $49 元' },
             { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
-            // {
-            //   text: '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
-            //   isHightlight: true,
-            // },
+
+            /*
+             * {
+             *   text: '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
+             *   isHightlight: true,
+             * },
+             */
           ],
           buttons: [
             {
@@ -278,11 +281,14 @@ export default {
                 { text: '免費閱讀數位版動態雜誌' },
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
-                // {
-                //   text:
-                //     '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
-                //   isHightlight: true,
-                // },
+
+                /*
+                 * {
+                 *   text:
+                 *     '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
+                 *   isHightlight: true,
+                 * },
+                 */
               ],
               buttons: [
                 {
@@ -305,11 +311,14 @@ export default {
                 { text: '免費閱讀數位版動態雜誌' },
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
-                // {
-                //   text:
-                //     '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
-                //   isHightlight: true,
-                // },
+
+                /*
+                 * {
+                 *   text:
+                 *     '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
+                 *   isHightlight: true,
+                 * },
+                 */
               ],
               buttons: [
                 {
@@ -336,11 +345,14 @@ export default {
                 { text: '免費閱讀數位版動態雜誌' },
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
-                // {
-                //   text:
-                //     '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
-                //   isHightlight: true,
-                // },
+
+                /*
+                 * {
+                 *   text:
+                 *     '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
+                 *   isHightlight: true,
+                 * },
+                 */
               ],
               buttons: [
                 {
@@ -384,6 +396,11 @@ export default {
     },
     canShowFeat() {
       return this.$route.query?.toggle === 'show-toggle-feature'
+    },
+  },
+  methods: {
+    handleGoToSectionMember() {
+      window.location.assign('/section/member')
     },
   },
 }
