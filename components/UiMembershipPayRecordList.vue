@@ -5,10 +5,15 @@
       <div class="pay-list__content_number">
         <div class="pay-list__content_number_number">{{ pay.number }}</div>
         <div v-if="!isTitleRow" class="pay-list__content_number_type">
-          {{ pay.type }}・<span
+          <span>
+            {{ pay.type }}
+          </span>
+          <span v-if="pay.type !== '' && paymentStatus.text !== ''">・</span>
+          <span
             :class="{ 'warning-highlight': paymentStatus.warningHightlight }"
-            >{{ paymentStatus.text }}</span
           >
+            {{ paymentStatus.text }}
+          </span>
         </div>
       </div>
       <div class="pay-list__content_method">

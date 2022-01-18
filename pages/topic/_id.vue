@@ -26,6 +26,7 @@ const TOPIC_IDS_WINE = [
   '5d22bb9fe311f3925c49396c',
   '5a4d8e60160ac91000294611',
   '5ff7d152127ff40f00d7125c',
+  '61d6ade96fef6b0f00f8407e',
 ]
 
 export default {
