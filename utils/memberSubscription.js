@@ -187,6 +187,19 @@ function getMemberPayRecords(subscriptionList) {
       }
       payRecords.push(payRecord)
     })
+    subscription.googlePlayPayment?.forEach((payment) => {
+      const payRecord = {
+        number: subscription.orderNumber,
+        date: getFormatDateWording(payment.transactionDatetime),
+        type: '',
+        method: 'Google Play 續扣',
+        methodNote: '',
+        price: payment.amount,
+        status: '',
+        createAt: payment.createdAt ?? payment.transactionDatetime,
+      }
+      payRecords.push(payRecord)
+    })
   })
 
   // sort all records by date_dsc

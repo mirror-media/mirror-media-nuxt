@@ -17,6 +17,20 @@
           :showMorePostButton="showMorePostButton"
           @load-more-post="handleMorePost"
         />
+        <div class="pay-record__title">
+          <div class="pay-record__title_status">付款紀錄</div>
+          <p class="pay-record__text">
+            如想了解您在 Apple Store 購買的訂單資訊，請至
+            <a
+              href="https://www.apple.com/tw/app-store/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Apple Store
+            </a>
+            查看。
+          </p>
+        </div>
         <MembershipPayRecord
           v-if="payRecords.length"
           :payRecords="showedPayRecords"
@@ -202,6 +216,27 @@ export default {
       &:not(:last-child) {
         margin-bottom: 48px;
       }
+    }
+  }
+}
+
+.pay-record {
+  &__title {
+    &_status {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 25px;
+      color: rgba(0, 0, 0, 0.66);
+      margin: 0 !important;
+    }
+  }
+  &__text {
+    font-size: 13px;
+    line-height: 18px;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 8px 0 0 0;
+    a {
+      color: #054f77;
     }
   }
 }

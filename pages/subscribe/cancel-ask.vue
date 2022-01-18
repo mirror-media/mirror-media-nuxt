@@ -9,7 +9,7 @@
         </p>
         <UiMembershipButtonPrimary
           class="subscribe-cancel__back"
-          @click.native="handleBack"
+          @click.native="handleGoToProfilePurchase"
           >回訂閱紀錄</UiMembershipButtonPrimary
         >
       </SubscribeWrapper>
@@ -169,9 +169,14 @@ export default {
     handleBack() {
       window.location.assign('/subscribe/set')
     },
+    handleGoToProfilePurchase() {
+      window.location.assign('/profile/purchase')
+    },
     async handleSubmit() {
-      // ======To Kevin Start=======
-      // ======To Kevin End=======
+      /*
+       * ======To Kevin Start=======
+       * ======To Kevin End=======
+       */
       try {
         this.isLoading = true
         await this.$cancelMemberSubscription(this.reasonString)

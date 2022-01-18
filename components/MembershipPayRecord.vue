@@ -1,8 +1,5 @@
 <template>
   <div class="pay-record">
-    <div class="pay-record__title">
-      <div class="pay-record__title_status">付款紀錄</div>
-    </div>
     <div class="pay-record__form">
       <UiMembershipPayRecordList
         v-show="!isMobile"
