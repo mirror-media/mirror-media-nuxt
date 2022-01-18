@@ -5,7 +5,7 @@ const {
   NEWEBPAY_PAPERMAG_KEY,
   NEWEBPAY_PAPERMAG_IV,
   API_PATH_FRONTEND,
-} = require('../configs/config')
+} = require('../../configs/config')
 
 const baseUrl = process.browser
   ? `${location.origin}/`
@@ -20,7 +20,7 @@ async function fireGqlRequest(query, variables) {
       method: 'post',
       data: {
         query,
-        variables,
+        variables: { orderNumber: variables },
       },
       headers: {
         'content-type': 'application/json',
@@ -32,50 +32,58 @@ async function fireGqlRequest(query, variables) {
     }
     return result
   } catch (error) {
-    throw new Error(error.message)
+    throw new Error(error)
   }
 }
 
 async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
-  const fetchPaymentDataOfPapermag = `mutation fetchPaymentDataOfPapermag(
-    $data: createNewebpayTradeInfoForMagazineOrderInput!
-  ) {
-    createNewebpayTradeInfoForMagazineOrder(data: $data) {
-      MerchantID
-      RespondType
-      TimeStamp
-      Version
-      MerchantOrderNo
-      Amt
-      ItemDesc
-      LoginType
-      Email
-      TradeLimit
-      NotifyURL
+  const fetchPaymentDataOfPapermag = `
+  query($orderNumber: String!) {
+    magazineOrder(where: {orderNumber: $orderNumber}){
+      id
+      orderNumber
+      purchaseDatetime
+      merchandise {
+        name
+        price
+      }
+      itemCount
+      totalAmount
+      purchaseName
+      purchaseEmail
+      purchaseMobile
+      receiveName
+      receiveMobile
+      receiveAddress
+      createdAt
+      totalAmount
     }
-  }
+  }  
   `
   const { data } = await fireGqlRequest(
     fetchPaymentDataOfPapermag,
     gateWayPayload
   )
-  data.createNewebpayTradeInfoForMagazineOrder.ReturnURL = `${baseUrl}/papermag/return`
   return data
 }
 
 module.exports = async function (req, res) {
   const tradeInfo = req.body
   try {
-    const data = await getPaymentDataOfPapermagSubscription(tradeInfo)
-    const infoForNewebpay = data.createNewebpayTradeInfoForMagazineOrder
-
     const newebpay = new NewebPay(NEWEBPAY_PAPERMAG_KEY, NEWEBPAY_PAPERMAG_IV)
-    const encryptPostData = await newebpay.getEncryptedFormPostData(
-      infoForNewebpay
+    const decryptedTradeInfo = await newebpay.getDecryptedTradeInfo(
+      tradeInfo.TradeInfo
     )
+    const MerchantOrderNo = JSON.parse(Object.keys(decryptedTradeInfo)[0])
+      .Result.MerchantOrderNo
+    const data = await getPaymentDataOfPapermagSubscription(
+      MerchantOrderNo + ''
+    )
+    const infoForNewebpay = data.magazineOrder
 
-    res.send(encryptPostData)
+    res.send(infoForNewebpay)
   } catch (e) {
+    console.log(e)
     res.send(e)
   }
 }
