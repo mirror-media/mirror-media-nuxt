@@ -192,7 +192,7 @@ function getMemberPayRecords(subscriptionList) {
         number: subscription.orderNumber,
         date: getFormatDateWording(payment.transactionDatetime),
         type: '',
-        method: 'method',
+        method: 'Google Play 續扣',
         methodNote: '',
         price: payment.amount,
         status: '',
