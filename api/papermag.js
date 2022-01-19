@@ -68,10 +68,13 @@ module.exports = async function (req, res) {
       infoForNewebpay
     )
 
-    res.send(encryptPostData)
+    res.send({
+      status: 'success',
+      data: encryptPostData,
+    })
   } catch (e) {
     console.log(e)
-    res.status(400).send({
+    res.status(500).send({
       status: 'error',
       message: e.message,
     })

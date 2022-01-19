@@ -71,8 +71,12 @@ export default {
           tradeInfo
         )
 
-        this.paymentPayload = data
-        console.log(this.paymentPayload, data, document.forms.newebpay)
+        if (data.status !== 'success') {
+          console.error(data.message)
+          this.$router.push(`/papermag`)
+        }
+
+        this.paymentPayload = data.data
         this.$nextTick(() => {
           const formDOM = document.forms.newebpay
           formDOM.submit()
@@ -80,10 +84,8 @@ export default {
         this.isLoading = false
       } catch (err) {
         console.error(err)
-
         // payment fail
-        this.$store.dispatch('subscribe/updateResultStatus', 'order-fail')
-        this.$router.push(`/papermag/result`)
+        this.$router.push(`/papermag`)
       }
     },
 
