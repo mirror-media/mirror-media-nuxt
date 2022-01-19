@@ -4,34 +4,30 @@ const NewebPay = require('@mirrormedia/newebpay-node')
 const {
   NEWEBPAY_PAPERMAG_KEY,
   NEWEBPAY_PAPERMAG_IV,
-  ISRAFEL_PATH,
+  ISRAFEL_ORIGIN,
   DOMAIN_NAME,
   API_PROTOCOL,
 } = require('../configs/config')
 
-const apiUrl = `${ISRAFEL_PATH}/api/graphql`
+const apiUrl = `${ISRAFEL_ORIGIN}/api/graphql`
 
 async function fireGqlRequest(query, variables) {
-  try {
-    const { data: result } = await axios({
-      url: apiUrl,
-      method: 'post',
-      data: {
-        query,
-        variables,
-      },
-      headers: {
-        'content-type': 'application/json',
-        'Cache-Control': 'no-cache',
-      },
-    })
-    if (result.errors) {
-      throw new Error(result.errors[0].message)
-    }
-    return result
-  } catch (error) {
-    throw new Error(error.message)
+  const { data: result } = await axios({
+    url: apiUrl,
+    method: 'post',
+    data: {
+      query,
+      variables,
+    },
+    headers: {
+      'content-type': 'application/json',
+      'Cache-Control': 'no-cache',
+    },
+  })
+  if (result.errors) {
+    throw new Error(result.errors[0].message)
   }
+  return result
 }
 
 async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
@@ -62,7 +58,6 @@ async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
 }
 
 module.exports = async function (req, res) {
-  console.log('enter server')
   const tradeInfo = req.body
   try {
     const data = await getPaymentDataOfPapermagSubscription(tradeInfo)
@@ -76,6 +71,9 @@ module.exports = async function (req, res) {
     res.send(encryptPostData)
   } catch (e) {
     console.log(e)
-    res.send(e)
+    res.status(400).send({
+      status: 'error',
+      message: e.message,
+    })
   }
 }

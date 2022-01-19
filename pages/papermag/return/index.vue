@@ -27,7 +27,7 @@ import { magazineOrder } from '~/apollo/queries/papermagQuery.gql'
 import {
   NEWEBPAY_PAPERMAG_KEY,
   NEWEBPAY_PAPERMAG_IV,
-  ISRAFEL_PATH,
+  ISRAFEL_ORIGIN,
 } from '~/configs/config'
 const NewebPay = require('@mirrormedia/newebpay-node')
 
@@ -58,7 +58,7 @@ export default {
         .Result.MerchantOrderNo
 
       const { data: result } = await axios({
-        url: `${ISRAFEL_PATH}/api/graphql`,
+        url: `${ISRAFEL_ORIGIN}/api/graphql`,
         method: 'post',
         data: {
           query: print(magazineOrder),
