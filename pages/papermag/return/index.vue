@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import qs from 'qs'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import { print } from 'graphql/language/printer'
@@ -35,12 +34,7 @@ export default {
   layout: 'empty',
   async asyncData({ req, redirect }) {
     if (req.method !== 'POST') redirect('/papermag')
-    let body = ''
-    let temp = ''
-    while ((temp = req.read())) {
-      body += temp
-    }
-    const infoData = qs.parse(body)
+    const infoData = req.body
     if (infoData.Status !== 'SUCCESS') {
       return {
         req: infoData,
