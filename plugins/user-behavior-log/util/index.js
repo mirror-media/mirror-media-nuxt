@@ -1,4 +1,3 @@
-import Bowser from 'bowser'
 import dayjs from 'dayjs'
 import getBrowserInfo from './browser'
 import getClientOsInfo from './client-os'
@@ -18,20 +17,14 @@ export function createUserBehaviorLog({
   ...rest
 }) {
   return new Promise((resolve) => {
-    const browser = Bowser.parse(window.navigator.userAgent)
-
     const log = {
       // keep nested and flatten properties for migration
       browser: getBrowserInfo(),
-      'browser-name': browser.browser.name,
-      'browser-version': browser.browser.version,
 
       category,
 
       // keep nested and flatten properties for migration
       'client-os': getClientOsInfo(),
-      'client-os-name': browser.os.name,
-      'client-os-version': browser.os.version,
 
       'curr-url': window.location.href,
       datetime: dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
@@ -49,10 +42,6 @@ export function createUserBehaviorLog({
 
       // keep nested and flatten properties for migration
       'target-window-size': getWindowSizeInfo(),
-      'target-window-size-width':
-        document.documentElement.clientWidth || document.body.clientWidth,
-      'target-window-size-height':
-        document.documentElement.clientHeight || document.body.clientHeight,
 
       'client-id': getClientId(),
       'current-runtime-id': getClientId(),

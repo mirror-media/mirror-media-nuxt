@@ -194,8 +194,6 @@ describe('properties of log', function () {
         name: mockBrowser,
         version: mockBrowserVersion,
       },
-      'browser-name': mockBrowser,
-      'browser-version': mockBrowserVersion,
     })
   })
 
@@ -206,8 +204,6 @@ describe('properties of log', function () {
         name: 'macOS',
         version: '10.15.5',
       },
-      'client-os-name': 'macOS',
-      'client-os-version': '10.15.5',
     })
   })
 
@@ -252,8 +248,6 @@ describe('properties of log', function () {
         width: mockWidth,
         height: mockHeight,
       },
-      'target-window-size-width': mockWidth,
-      'target-window-size-height': mockHeight,
     })
 
     jest
@@ -276,8 +270,6 @@ describe('properties of log', function () {
         width: mockWidthInBody,
         height: mockHeightInBody,
       },
-      'target-window-size-width': mockWidthInBody,
-      'target-window-size-height': mockHeightInBody,
     })
   })
 
