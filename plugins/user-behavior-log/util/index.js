@@ -18,18 +18,12 @@ export function createUserBehaviorLog({
 }) {
   return new Promise((resolve) => {
     resolve({
-      // keep nested and flatten properties for migration
       browser: getBrowserInfo(),
 
-      category,
-
-      // keep nested and flatten properties for migration
       'client-os': getClientOsInfo(),
 
       'curr-url': window.location.href,
       datetime: dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
-      description,
-      'event-type': eventType,
 
       'redirect-to': getAlinkHref(target),
       referrer:
@@ -40,13 +34,16 @@ export function createUserBehaviorLog({
       'target-tag-id': target.id,
       'target-text': truncate(getElementInnerText(target), 100),
 
-      // keep nested and flatten properties for migration
       'target-window-size': getWindowSizeInfo(),
 
       'client-id': getClientId(),
       'current-runtime-id': getClientId(),
       'current-runtime-start': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
       'session-id': getSessionId(),
+
+      category,
+      description,
+      'event-type': eventType,
 
       ...rest,
     })
