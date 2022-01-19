@@ -297,6 +297,7 @@ export default {
           itemCount: amount,
           purchaseDatetime: new Date(),
           category: 'B2C',
+          promoteCode: this.discount.code,
           // 購買和收穫相關
           purchaseName: this.ordererData.name,
           purchaseAddress: this.ordererData.address,
@@ -316,11 +317,6 @@ export default {
             this.receiptData.carrierUbn,
         },
       }
-      // TODO
-      //   discountCode: this.discount.code,
-      //   discount: this.discountPrice,
-      //   delivery: this.shipPlan.name,
-      //   deliveryCost: this.shipping,
     },
     validationPass() {
       const validateArray = Object.values(this.formStatus)

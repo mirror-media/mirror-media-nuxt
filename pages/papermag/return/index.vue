@@ -31,7 +31,6 @@ import {
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
-  layout: 'empty',
   async asyncData({ req, redirect }) {
     if (req.method !== 'POST') redirect('/papermag')
     const infoData = req.body
@@ -65,6 +64,7 @@ export default {
       })
       if (result.errors) console.log(result.errors[0].message)
       const decryptInfoData = result.data.magazineOrder
+      console.log({ decryptInfoData })
       const date = dayjs(new Date(decryptInfoData.createdAt)).format(
         'YYYY-MM-DD'
       )
@@ -91,8 +91,17 @@ export default {
             shippingCost,
         },
         { text: '運費', price: shippingCost },
-        { text: '付款金額', price: decryptInfoData.totalAmount },
       ]
+      if (decryptInfoData.promoteCode) {
+        orderInfoPurchasedList.push({
+          text: '折扣碼',
+          price: 80 * decryptInfoData.itemCount,
+        })
+      }
+      orderInfoPurchasedList.push({
+        text: '付款金額',
+        price: decryptInfoData.totalAmount,
+      })
 
       return {
         req: infoData,
@@ -101,8 +110,8 @@ export default {
         orderInfo: {
           orderId: decryptInfoData.orderNumber,
           date,
-          discountPrice: true,
-          discount_code: '123333',
+          discountPrice: decryptInfoData.promoteCode !== '',
+          discount_code: decryptInfoData.promoteCode,
         },
         orderInfoPurchasedList,
         customerInfo: {

@@ -18,5 +18,6 @@ query magazineOrder($orderNumber: String!) {
     receiveAddress
     createdAt
     totalAmount
+    promoteCode
   }
 }
