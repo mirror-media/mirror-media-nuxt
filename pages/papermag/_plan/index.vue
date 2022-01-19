@@ -85,7 +85,7 @@ export default {
       } catch (err) {
         console.error(err)
         // payment fail
-        this.$router.push(`/papermag`)
+        this.$router.push(`/papermag/return?order-fail=true`)
       }
     },
 

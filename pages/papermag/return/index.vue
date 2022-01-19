@@ -1,6 +1,6 @@
 <template>
   <div class="subscribe-magazine-page">
-    <template v-if="isSuccess">
+    <template v-if="status === 'SUCCESS'">
       <SubscribeStepProgress :currentStep="3" />
       <SubscribeSuccess
         :orderInfo="orderInfo"
@@ -10,7 +10,11 @@
     </template>
     <template v-else>
       <SubscribeStepProgress :currentStep="2" />
-      <SubscribeFail :resultStatus="resultStatus" :orderId="orderId" />
+      <SubscribeFail
+        :resultStatus="status"
+        :orderId="orderId"
+        :errorData="errorData"
+      />
     </template>
   </div>
 </template>
@@ -31,14 +35,22 @@ import {
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
-  async asyncData({ req, redirect }) {
+  async asyncData({ req, redirect, route }) {
+    if (route.query['order-fail'])
+      return {
+        status: 'order-fail',
+      }
     if (req.method !== 'POST') redirect('/papermag')
     const infoData = req.body
     if (infoData.Status !== 'SUCCESS') {
       return {
         req: infoData,
-        isSuccess: infoData.Status,
-        orderId: infoData.orderNumber,
+        status: infoData.Status,
+        orderId: infoData.MerchantID,
+        errorData: {
+          orderId: infoData.MerchantID,
+          message: infoData.Status,
+        },
       }
     }
 
@@ -105,7 +117,7 @@ export default {
 
       return {
         req: infoData,
-        isSuccess: infoData.Status === 'SUCCESS',
+        status: infoData.Status,
         orderId: infoData.orderNumber,
         orderInfo: {
           orderId: decryptInfoData.orderNumber,
@@ -138,7 +150,7 @@ export default {
   data() {
     return {
       req: {},
-      isSuccess: false,
+      status: false,
       orderId: '',
       orderInfo: {},
       orderInfoPurchasedList: [],
