@@ -17,7 +17,7 @@ export function createUserBehaviorLog({
   ...rest
 }) {
   return new Promise((resolve) => {
-    const log = {
+    resolve({
       // keep nested and flatten properties for migration
       browser: getBrowserInfo(),
 
@@ -49,9 +49,7 @@ export function createUserBehaviorLog({
       'session-id': getSessionId(),
 
       ...rest,
-    }
-
-    resolve(log)
+    })
   })
 }
 
