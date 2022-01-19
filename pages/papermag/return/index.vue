@@ -17,24 +17,94 @@
 
 <script>
 import qs from 'qs'
+import axios from 'axios'
+import dayjs from 'dayjs'
+import { print } from 'graphql/language/printer'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeSuccess from '~/components/SubscribeSuccess.vue'
+import { magazineOrder } from '~/apollo/queries/papermagQuery.gql'
+import {
+  NEWEBPAY_PAPERMAG_KEY,
+  NEWEBPAY_PAPERMAG_IV,
+  ISRAFEL_PATH,
+} from '~/configs/config'
+const NewebPay = require('@mirrormedia/newebpay-node')
+
 export default {
   layout: 'empty',
-  asyncData({ req }) {
-    if (req.method === 'POST') {
-      let body = ''
-      let temp = ''
-      while ((temp = req.read())) {
-        body += temp
+  async asyncData({ req, redirect }) {
+    if (req.method !== 'POST') redirect('/papermag')
+    let body = ''
+    let temp = ''
+    while ((temp = req.read())) {
+      body += temp
+    }
+    const infoData = qs.parse(body)
+    if (infoData.Status !== 'SUCCESS') {
+      return {
+        req: infoData,
+        isSuccess: infoData.Status,
+        orderId: infoData.orderNumber,
       }
-      const infoData = qs.parse(body)
+    }
+
+    try {
+      const newebpay = new NewebPay(NEWEBPAY_PAPERMAG_KEY, NEWEBPAY_PAPERMAG_IV)
+      const decryptedTradeInfo = await newebpay.getDecryptedTradeInfo(
+        infoData.TradeInfo
+      )
+      const MerchantOrderNo = JSON.parse(Object.keys(decryptedTradeInfo)[0])
+        .Result.MerchantOrderNo
+
+      const { data: result } = await axios({
+        url: `${ISRAFEL_PATH}/api/graphql`,
+        method: 'post',
+        data: {
+          query: print(magazineOrder),
+          variables: { orderNumber: MerchantOrderNo + '' },
+        },
+        headers: {
+          'content-type': 'application/json',
+          'Cache-Control': 'no-cache',
+        },
+      })
+      if (result.errors) console.log(result.errors[0].message)
+      const decryptInfoData = result.data.magazineOrder
+      const date = dayjs(new Date(decryptInfoData.createdAt)).format(
+        'YYYY-MM-DD'
+      )
+
       return {
         req: infoData,
         isSuccess: infoData.Status === 'SUCCESS',
         orderId: infoData.orderNumber,
+        orderInfo: {
+          orderId: decryptInfoData.orderNumber,
+          date,
+          discountPrice: true,
+          discount_code: '123333',
+        },
+        orderInfoPurchasedList: [
+          {
+            text: decryptInfoData.merchandise.name,
+            price:
+              decryptInfoData.itemCount * decryptInfoData.merchandise.price,
+          },
+          { text: '運費', price: 0 },
+          { text: '付款金額', price: decryptInfoData.totalAmount },
+        ],
+        customerInfo: {
+          pur_name: decryptInfoData.purchaseName,
+          pur_mail: decryptInfoData.purchaseEmail,
+          pur_cell: decryptInfoData.purchaseMobile,
+          rec_name: decryptInfoData.receiveName,
+          rec_cell: decryptInfoData.receiveMobile,
+          rec_addr: decryptInfoData.receiveAddress,
+        },
       }
+    } catch (e) {
+      console.log(e)
     }
   },
   components: {
@@ -53,38 +123,6 @@ export default {
       orderInfo: {},
       orderInfoPurchasedList: [],
       customerInfo: {},
-    }
-  },
-  computed: {},
-  async mounted() {
-    if (this.isSuccess) {
-      const decryptInfoData = await this.$axios.$post(
-        `${window.location.origin}/api/v2/papermag/decrypt/v1`,
-        this.req
-      )
-      console.log(decryptInfoData)
-      this.orderInfo = {
-        orderId: decryptInfoData.orderNumber,
-        date: new Date(decryptInfoData.createdAt).format('yyyy-MM-dd'),
-        discountPrice: true,
-        discount_code: '123333',
-      }
-      this.orderInfoPurchasedList = [
-        {
-          text: decryptInfoData.merchandise.name,
-          price: decryptInfoData.itemCount * decryptInfoData.merchandise.price,
-        },
-        { text: '運費', price: 0 },
-        { text: '付款金額', price: decryptInfoData.totalAmount },
-      ]
-      this.customerInfo = {
-        pur_name: decryptInfoData.purchaseName,
-        pur_mail: decryptInfoData.purchaseEmail,
-        pur_cell: decryptInfoData.purchaseMobile,
-        rec_name: decryptInfoData.receiveName,
-        rec_cell: decryptInfoData.receiveMobile,
-        rec_addr: decryptInfoData.receiveAddress,
-      }
     }
   },
 }
