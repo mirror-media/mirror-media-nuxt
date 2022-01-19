@@ -5,6 +5,7 @@ query magazineOrder($orderNumber: String!) {
     purchaseDatetime
     merchandise {
       name
+      code
       price
     }
     itemCount

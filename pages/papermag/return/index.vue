@@ -75,6 +75,31 @@ export default {
         'YYYY-MM-DD'
       )
 
+      const shippingCostPerYear = 1040
+      let shippingCost = 0
+      if (
+        decryptInfoData.merchandise.code ===
+        'magazine_one_year_with_shipping_fee'
+      ) {
+        shippingCost = shippingCostPerYear * decryptInfoData.itemCount
+      } else if (
+        decryptInfoData.merchandise.code ===
+        'magazine_two_year_with_shipping_fee'
+      ) {
+        shippingCost = shippingCostPerYear * decryptInfoData.itemCount * 2
+      }
+
+      const orderInfoPurchasedList = [
+        {
+          text: decryptInfoData.merchandise.name,
+          price:
+            decryptInfoData.itemCount * decryptInfoData.merchandise.price -
+            shippingCost,
+        },
+        { text: '運費', price: shippingCost },
+        { text: '付款金額', price: decryptInfoData.totalAmount },
+      ]
+
       return {
         req: infoData,
         isSuccess: infoData.Status === 'SUCCESS',
@@ -85,15 +110,7 @@ export default {
           discountPrice: true,
           discount_code: '123333',
         },
-        orderInfoPurchasedList: [
-          {
-            text: decryptInfoData.merchandise.name,
-            price:
-              decryptInfoData.itemCount * decryptInfoData.merchandise.price,
-          },
-          { text: '運費', price: 0 },
-          { text: '付款金額', price: decryptInfoData.totalAmount },
-        ],
+        orderInfoPurchasedList,
         customerInfo: {
           pur_name: decryptInfoData.purchaseName,
           pur_mail: decryptInfoData.purchaseEmail,

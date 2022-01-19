@@ -278,16 +278,20 @@ export default {
       const carrierType = this.receiptData.donateOrganization
         ? ''
         : this.receiptData.carrierType + ''
+      const isWithShippingFee = this.shipPlan.name === '限時掛號'
+      let code =
+        this.currentChoosedPlanId === 0
+          ? 'magazine_one_year'
+          : 'magazine_two_year'
+
+      if (isWithShippingFee) code += '_with_shipping_fee'
       return {
         data: {
-          desc: itemDest,
-          comment: 'mock_comment',
+          desc: isWithShippingFee ? itemDest + '加掛號運費' : itemDest,
+          comment: '',
           merchandise: {
             connect: {
-              code:
-                this.currentChoosedPlanId === 0
-                  ? 'magazine_one_year'
-                  : 'magazine_two_year',
+              code,
             },
           },
           itemCount: amount,
