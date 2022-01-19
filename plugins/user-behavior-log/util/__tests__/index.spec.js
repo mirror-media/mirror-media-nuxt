@@ -348,16 +348,4 @@ describe('properties of log', function () {
       'current-runtime-start': `2019.04.07 ${10 + 8}:20:30`,
     })
   })
-
-  test('current-runtime-id and current-runtime-start in a messy env(there is a setting store in window represent current runtime)', async function () {
-    const mockRuntimeClientId = 'id'
-    const mockRuntimeDatetimeStart = '2019.04.07 10:20:30'
-    window.mmThisRuntimeClientId = mockRuntimeClientId
-    window.mmThisRuntimeDatetimeStart = mockRuntimeDatetimeStart
-    const log = await createUserBehaviorLog({})
-    expect(log).toMatchObject({
-      'current-runtime-id': mockRuntimeClientId,
-      'current-runtime-start': mockRuntimeDatetimeStart,
-    })
-  })
 })
