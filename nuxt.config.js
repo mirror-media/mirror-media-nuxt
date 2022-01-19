@@ -296,12 +296,8 @@ module.exports = {
       handler: '~/api/newebpay.js',
     },
     {
-      path: `/${API_PATH_FRONTEND}/papermag/encrypt/v1`,
-      handler: '~/api/papermag/encrypt.js',
-    },
-    {
-      path: `/${API_PATH_FRONTEND}/papermag/decrypt/v1`,
-      handler: '~/api/papermag/decrypt.js',
+      path: `/${API_PATH_FRONTEND}/papermag/v1`,
+      handler: '~/api/papermag.js',
     },
     { path: `/${API_PATH_FRONTEND}`, handler: '~/api/index.js' }, // this proxy MUST be in the last of serverMiddleware
   ],

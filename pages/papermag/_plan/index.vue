@@ -67,7 +67,7 @@ export default {
 
         // carry encrypted paymentPayload and submit to newebpay
         const data = await this.$axios.$post(
-          `${window.location.origin}/api/v2/papermag/encrypt/v1`,
+          `${window.location.origin}/api/v2/papermag/v1`,
           tradeInfo
         )
 
