@@ -16,38 +16,35 @@ export function createUserBehaviorLog({
   referrer,
   ...rest
 }) {
-  return new Promise((resolve) => {
-    resolve({
-      browser: getBrowserInfo(),
+  return {
+    browser: getBrowserInfo(),
 
-      'client-os': getClientOsInfo(),
+    'client-os': getClientOsInfo(),
 
-      'curr-url': window.location.href,
-      datetime: dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
+    'curr-url': window.location.href,
+    datetime: dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
 
-      'redirect-to': getAlinkHref(target),
-      referrer:
-        referrer || (isElementAlink(target) ? location.href : undefined),
-      rref: getRref(target),
-      'target-tag-name': target.tagName,
-      'target-tag-class': target.className,
-      'target-tag-id': target.id,
-      'target-text': truncate(getElementInnerText(target), 100),
+    'redirect-to': getAlinkHref(target),
+    referrer: referrer || (isElementAlink(target) ? location.href : undefined),
+    rref: getRref(target),
+    'target-tag-name': target.tagName,
+    'target-tag-class': target.className,
+    'target-tag-id': target.id,
+    'target-text': truncate(getElementInnerText(target), 100),
 
-      'target-window-size': getWindowSizeInfo(),
+    'target-window-size': getWindowSizeInfo(),
 
-      'client-id': getClientId(),
-      'current-runtime-id': getClientId(),
-      'current-runtime-start': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
-      'session-id': getSessionId(),
+    'client-id': getClientId(),
+    'current-runtime-id': getClientId(),
+    'current-runtime-start': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
+    'session-id': getSessionId(),
 
-      category,
-      description,
-      'event-type': eventType,
+    category,
+    description,
+    'event-type': eventType,
 
-      ...rest,
-    })
-  })
+    ...rest,
+  }
 }
 
 function truncate(text, limit = Infinity) {

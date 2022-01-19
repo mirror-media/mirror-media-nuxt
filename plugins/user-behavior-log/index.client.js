@@ -15,18 +15,16 @@ export default (context, inject) => {
     if (to.name === 'search') {
       payload.keyword = createSearchKeywordValue()
     }
-    createUserBehaviorLog(payload)
-      .then((log) => {
-        debug(
-          'Prepare to send pageview event user behavior log to server: ',
-          log
-        )
-        sendLog(log)
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err)
-      })
+
+    try {
+      const log = createUserBehaviorLog(payload)
+      debug('Prepare to send pageview event user behavior log to server: ', log)
+      sendLog(log)
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err)
+    }
+
     next()
 
     function createSearchKeywordValue() {
@@ -37,46 +35,43 @@ export default (context, inject) => {
 
   // click event
   window.addEventListener('click', (event) => {
-    createUserBehaviorLog({
-      category: 'whole-site',
-      description: '',
-      eventType: 'click',
-      target: event.target,
-    })
-      .then((log) => {
-        debug(
-          'Prepare to send click event user behavior log to server, data: ',
-          log
-        )
-        sendLog(log)
+    try {
+      const log = createUserBehaviorLog({
+        category: 'whole-site',
+        description: '',
+        eventType: 'click',
+        target: event.target,
       })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err)
-      })
+      debug(
+        'Prepare to send click event user behavior log to server, data: ',
+        log
+      )
+      sendLog(log)
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err)
+    }
   })
 
   // exit event
   window.addEventListener('beforeunload', (event) => {
-    const now = dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss')
-    createUserBehaviorLog({
-      category: 'whole-site',
-      description: '',
-      eventType: 'exit',
-      target: event.target,
-      'exit-time': now,
-    })
-      .then((log) => {
-        debug(
-          'Prepare to send exit event user behavior log to server, data: ',
-          JSON.stringify(log)
-        )
-        sendLog(log)
+    try {
+      const log = createUserBehaviorLog({
+        category: 'whole-site',
+        description: '',
+        eventType: 'exit',
+        target: event.target,
+        'exit-time': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
       })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err)
-      })
+      debug(
+        'Prepare to send exit event user behavior log to server, data: ',
+        JSON.stringify(log)
+      )
+      sendLog(log)
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err)
+    }
   })
 
   inject(
@@ -90,29 +85,27 @@ export default (context, inject) => {
       description = '',
       eventType = '',
     } = {}) => {
-      const now = dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss')
-      createUserBehaviorLog({
-        category: 'membershipErrorLog',
-        email,
-        token,
-        firebaseId,
-        memberType,
-        xstate,
-        description,
-        eventType,
-        time: now,
-      })
-        .then((log) => {
-          debug(
-            'Prepare to send exit event user behavior log to server, data: ',
-            JSON.stringify(log)
-          )
-          sendLog(log)
+      try {
+        const log = createUserBehaviorLog({
+          category: 'membershipErrorLog',
+          email,
+          token,
+          firebaseId,
+          memberType,
+          xstate,
+          description,
+          eventType,
+          time: dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
         })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err)
-        })
+        debug(
+          'Prepare to send exit event user behavior log to server, data: ',
+          JSON.stringify(log)
+        )
+        sendLog(log)
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log(err)
+      }
     }
   )
 }
