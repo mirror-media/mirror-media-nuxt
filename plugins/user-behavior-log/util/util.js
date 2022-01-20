@@ -18,3 +18,10 @@ export function isElementAlink(eventTarget) {
   }
   return isElementAlink(eventTarget.parentNode)
 }
+
+export function truncate(text, limit = Infinity) {
+  if (text.length <= limit) {
+    return text
+  }
+  return text.substring(0, limit).concat('…')
+}

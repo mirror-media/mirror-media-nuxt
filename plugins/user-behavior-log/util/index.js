@@ -1,12 +1,13 @@
 import dayjs from 'dayjs'
 import getBrowserInfo from './browser'
 import getClientOsInfo from './client-os'
-import { getAlinkHref, isElementAlink } from './util'
+import { getAlinkHref, isElementAlink, truncate } from './util'
 import getWindowSizeInfo from './window-size'
 import getElementInnerText from './inner-text'
 import getClientId from './client-id'
 import getSessionId from './session-id'
 import getRref from './rref'
+import { API_PATH_FRONTEND } from '~/configs/config'
 
 export function createUserBehaviorLog({
   eventType = 'click',
@@ -47,9 +48,9 @@ export function createUserBehaviorLog({
   }
 }
 
-function truncate(text, limit = Infinity) {
-  if (text.length <= limit) {
-    return text
-  }
-  return text.substring(0, limit).concat('…')
+export function sendLog(log) {
+  const blob = new Blob([JSON.stringify({ clientInfo: log })], {
+    type: 'application/json; charset=UTF-8',
+  })
+  navigator.sendBeacon(`/${API_PATH_FRONTEND}/tracking`, blob)
 }

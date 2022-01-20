@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
-import { createUserBehaviorLog } from './util'
-import { API_PATH_FRONTEND } from '~/configs/config'
+import { createUserBehaviorLog, sendLog } from './util'
 
 const debug = require('debug')('user-behavior-log')
 
@@ -108,11 +107,4 @@ export default (context, inject) => {
       }
     }
   )
-}
-
-function sendLog(log) {
-  const blob = new Blob([JSON.stringify({ clientInfo: log })], {
-    type: 'application/json; charset=UTF-8',
-  })
-  navigator.sendBeacon(`/${API_PATH_FRONTEND}/tracking`, blob)
 }
