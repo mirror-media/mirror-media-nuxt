@@ -75,7 +75,7 @@ export default {
         },
       })
       if (result.errors) console.log(result.errors[0].message)
-      const decryptInfoData = result.data.allMagazineOrders[0]
+      const decryptInfoData = result?.data?.allMagazineOrders[0]
       if (!decryptInfoData) {
         return {
           req: infoData,
