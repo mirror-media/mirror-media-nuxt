@@ -86,9 +86,28 @@ export default (context, inject) => {
   // scroll event
   window.addEventListener(
     'scroll',
-    debounce(function () {
+    debounce(function (event) {
       if (isScrollToBottom()) {
-        console.log('bottom')
+        try {
+          const log = {
+            ...createUserBehaviorLog({ target: event.target }),
+            category: 'whole-site',
+            description: '',
+            'event-type': 'scroll-to-bottom',
+
+            'member-info-firebase': context?.store?.state?.membership,
+            'member-info-israfel':
+              context?.store?.state?.['membership-subscribe'],
+          }
+          debug(
+            'Prepare to send exit event user behavior log to server, data: ',
+            JSON.stringify(log)
+          )
+          sendLog(log)
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log(err)
+        }
       }
     }, 500)
   )
