@@ -16,6 +16,9 @@ export default (context, inject) => {
         ...(to.name === 'search'
           ? { keyword: createSearchKeywordValue() }
           : {}),
+
+        'member-info-firebase': context?.store?.state?.membership,
+        'member-info-israfel': context?.store?.state?.['membership-subscribe'],
       }
 
       debug('Prepare to send pageview event user behavior log to server: ', log)
@@ -41,6 +44,9 @@ export default (context, inject) => {
         category: 'whole-site',
         description: '',
         'event-type': 'click',
+
+        'member-info-firebase': context?.store?.state?.membership,
+        'member-info-israfel': context?.store?.state?.['membership-subscribe'],
       }
       debug(
         'Prepare to send click event user behavior log to server, data: ',
@@ -62,6 +68,9 @@ export default (context, inject) => {
         description: '',
         'event-type': 'exit',
         'exit-time': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
+
+        'member-info-firebase': context?.store?.state?.membership,
+        'member-info-israfel': context?.store?.state?.['membership-subscribe'],
       }
       debug(
         'Prepare to send exit event user behavior log to server, data: ',
