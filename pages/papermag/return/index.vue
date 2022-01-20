@@ -75,8 +75,17 @@ export default {
         },
       })
       if (result.errors) console.log(result.errors[0].message)
-      const decryptInfoData = result.data.magazineOrder
-      console.log({ decryptInfoData })
+      const decryptInfoData = result.data.allMagazineOrders[0]
+      if (!decryptInfoData) {
+        return {
+          req: infoData,
+          orderId: infoData.MerchantID,
+          errorData: {
+            orderId: infoData.MerchantID,
+            message: 'MerchantID 不存在',
+          },
+        }
+      }
       const date = dayjs(new Date(decryptInfoData.createdAt)).format(
         'YYYY-MM-DD'
       )
