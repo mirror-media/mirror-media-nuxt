@@ -73,7 +73,7 @@ export default {
 
         if (data.status !== 'success') {
           console.error(data.message)
-          this.$router.push(`/papermag`)
+          this.$router.push(`/papermag/return?order-fail=true`)
         }
 
         this.paymentPayload = data.data

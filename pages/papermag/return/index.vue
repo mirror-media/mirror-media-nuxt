@@ -150,7 +150,7 @@ export default {
   data() {
     return {
       req: {},
-      status: false,
+      status: 'order-fail',
       orderId: '',
       orderInfo: {},
       orderInfoPurchasedList: [],
