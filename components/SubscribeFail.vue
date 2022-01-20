@@ -27,11 +27,6 @@ export default {
       isRequired: true,
       default: 'order-fail',
     },
-    orderId: {
-      type: String,
-      isRequired: true,
-      default: 'orderId',
-    },
     message: {
       type: String,
       require: false,

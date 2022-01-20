@@ -10,11 +10,7 @@
     </template>
     <template v-else>
       <SubscribeStepProgress :currentStep="2" />
-      <SubscribeFail
-        :resultStatus="status"
-        :orderId="orderId"
-        :errorData="errorData"
-      />
+      <SubscribeFail :resultStatus="status" :errorData="errorData" />
     </template>
   </div>
 </template>
@@ -46,7 +42,6 @@ export default {
       return {
         req: infoData,
         status: infoData.Status,
-        orderId: infoData.MerchantID,
         errorData: {
           orderId: infoData.MerchantID,
           message: infoData.Status,
@@ -79,7 +74,6 @@ export default {
       if (!decryptInfoData) {
         return {
           req: infoData,
-          orderId: infoData.MerchantID,
           errorData: {
             orderId: infoData.MerchantID,
             message: 'MerchantID 不存在',
@@ -127,7 +121,6 @@ export default {
       return {
         req: infoData,
         status: infoData.Status,
-        orderId: infoData.orderNumber,
         orderInfo: {
           orderId: decryptInfoData.orderNumber,
           date,
@@ -160,7 +153,6 @@ export default {
     return {
       req: {},
       status: 'order-fail',
-      orderId: '',
       orderInfo: {},
       orderInfoPurchasedList: [],
       customerInfo: {},
