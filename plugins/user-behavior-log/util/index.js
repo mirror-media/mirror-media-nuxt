@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import getBrowserInfo from './browser'
 import getClientOsInfo from './client-os'
-import { getAlinkHref, isElementAlink, truncate } from './util'
+import { getAlinkHref, truncate } from './util'
 import getWindowSizeInfo from './window-size'
 import getElementInnerText from './inner-text'
 import getClientId from './client-id'
@@ -9,14 +9,7 @@ import getSessionId from './session-id'
 import getRref from './rref'
 import { API_PATH_FRONTEND } from '~/configs/config'
 
-export function createUserBehaviorLog({
-  eventType = 'click',
-  category = '',
-  target = {},
-  description = '',
-  referrer,
-  ...rest
-}) {
+export function createUserBehaviorLog({ target = {} } = {}) {
   return {
     browser: getBrowserInfo(),
 
@@ -26,7 +19,7 @@ export function createUserBehaviorLog({
     datetime: dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
 
     'redirect-to': getAlinkHref(target),
-    referrer: referrer || (isElementAlink(target) ? location.href : undefined),
+    referrer: document.referrer,
     rref: getRref(target),
     'target-tag-name': target.tagName,
     'target-tag-class': target.className,
@@ -39,12 +32,6 @@ export function createUserBehaviorLog({
     'current-runtime-id': getClientId(),
     'current-runtime-start': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
     'session-id': getSessionId(),
-
-    category,
-    description,
-    'event-type': eventType,
-
-    ...rest,
   }
 }
 
@@ -53,4 +40,10 @@ export function sendLog(log) {
     type: 'application/json; charset=UTF-8',
   })
   navigator.sendBeacon(`/${API_PATH_FRONTEND}/tracking`, blob)
+}
+
+export function isScrollToBottom() {
+  const totalPageHeight = document.body.scrollHeight
+  const scrollPoint = window.scrollY + window.innerHeight
+  return scrollPoint >= totalPageHeight
 }

@@ -1,22 +1,23 @@
 import dayjs from 'dayjs'
-import { createUserBehaviorLog, sendLog } from './util'
+import debounce from 'lodash/debounce'
+import { createUserBehaviorLog, isScrollToBottom, sendLog } from './util'
 
 const debug = require('debug')('user-behavior-log')
 
 export default (context, inject) => {
   // pageview event
   context.app.router.beforeEach((to, from, next) => {
-    const payload = {
-      category: 'whole-site',
-      description: '',
-      eventType: 'pageview',
-    }
-    if (to.name === 'search') {
-      payload.keyword = createSearchKeywordValue()
-    }
-
     try {
-      const log = createUserBehaviorLog(payload)
+      const log = {
+        ...createUserBehaviorLog(),
+        category: 'whole-site',
+        description: '',
+        'event-type': 'pageview',
+        ...(to.name === 'search'
+          ? { keyword: createSearchKeywordValue() }
+          : {}),
+      }
+
       debug('Prepare to send pageview event user behavior log to server: ', log)
       sendLog(log)
     } catch (err) {
@@ -35,12 +36,12 @@ export default (context, inject) => {
   // click event
   window.addEventListener('click', (event) => {
     try {
-      const log = createUserBehaviorLog({
+      const log = {
+        ...createUserBehaviorLog({ target: event.target }),
         category: 'whole-site',
         description: '',
-        eventType: 'click',
-        target: event.target,
-      })
+        'event-type': 'click',
+      }
       debug(
         'Prepare to send click event user behavior log to server, data: ',
         log
@@ -55,13 +56,13 @@ export default (context, inject) => {
   // exit event
   window.addEventListener('beforeunload', (event) => {
     try {
-      const log = createUserBehaviorLog({
+      const log = {
+        ...createUserBehaviorLog({ target: event.target }),
         category: 'whole-site',
         description: '',
-        eventType: 'exit',
-        target: event.target,
+        'event-type': 'exit',
         'exit-time': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
-      })
+      }
       debug(
         'Prepare to send exit event user behavior log to server, data: ',
         JSON.stringify(log)
@@ -72,6 +73,16 @@ export default (context, inject) => {
       console.log(err)
     }
   })
+
+  // scroll event
+  window.addEventListener(
+    'scroll',
+    debounce(function () {
+      if (isScrollToBottom()) {
+        console.log('bottom')
+      }
+    }, 500)
+  )
 
   inject(
     'sendMembershipErrorLog',
