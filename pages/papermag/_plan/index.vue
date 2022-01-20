@@ -3,17 +3,20 @@
     <SubscribeStepProgress :currentStep="2" />
 
     <SubscribeForm
-      v-if="orderStatus === 'normal' || orderStatus === 'loading'"
       :currentChoosedPlanId="currentChoosedPlanId"
       :proceedOrderPayment="proceedOrderPayment"
       :validateOn="validateOn"
     />
 
+    <NewebpayForm
+      :merchantId="paymentPayload.MerchantID"
+      :tradeInfo="paymentPayload.TradeInfo"
+      :tradeSha="paymentPayload.TradeSha"
+      :version="paymentPayload.Version"
+    />
+
     <!-- loading mask -->
-    <div
-      v-if="orderStatus === 'loading'"
-      class="subscribe-magazine-page__loading"
-    >
+    <div v-if="isLoading" class="subscribe-magazine-page__loading">
       <div class="subscribe-magazine-page__loading_icon">
         <img :src="require('~/assets/loading.gif')" alt="" />
       </div>
@@ -22,13 +25,16 @@
 </template>
 
 <script>
+// import qs from 'qs'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeForm from '~/components/SubscribeForm.vue'
+import NewebpayForm from '~/components/NewebpayForm.vue'
 
 export default {
   components: {
     SubscribeStepProgress,
     SubscribeForm,
+    NewebpayForm,
   },
   middleware({ route, redirect }) {
     if (
@@ -41,8 +47,9 @@ export default {
   },
   data() {
     return {
-      orderStatus: 'normal', // normal, loading
+      isLoading: false,
       validateOn: true,
+      paymentPayload: {},
     }
   },
   computed: {
@@ -53,37 +60,32 @@ export default {
   },
   methods: {
     async proceedOrderPayment(orderPayload) {
-      // save orderInfo for successPage
-      this.$store.dispatch('subscribe/updateOrderInfo', orderPayload)
-      this.orderStatus = 'loading'
-
+      if (this.isLoading) return
       try {
-        const paymentPayload = await this.$axios.$post(
-          `/api/v2/subscribe-magazine/payload`,
-          orderPayload
+        this.isLoading = true
+        const tradeInfo = orderPayload
+
+        // carry encrypted paymentPayload and submit to newebpay
+        const data = await this.$axios.$post(
+          `${window.location.origin}/api/v2/papermag/v1`,
+          tradeInfo
         )
 
-        const infoPayload = {
-          JwtToken: paymentPayload.JwtToken,
-          MerchantOrderNo: paymentPayload.MerchantOrderNo,
+        if (data.status !== 'success') {
+          console.error(data.message)
+          this.$router.push(`/papermag/return?order-fail=true`)
         }
 
-        this.$store.dispatch('subscribe/updatePaymentPayload', paymentPayload)
-        this.$store.dispatch('subscribe/updateInfoPayload', infoPayload)
-
-        /*
-         * save paymentPayload to store
-         * then jump to redirect page
-         */
-        this.$store.dispatch('subscribe/updateReadyToPay', true)
-
-        this.$router.push(`/papermag/redirect`)
+        this.paymentPayload = data.data
+        this.$nextTick(() => {
+          const formDOM = document.forms.newebpay
+          formDOM.submit()
+        })
+        this.isLoading = false
       } catch (err) {
         console.error(err)
-
         // payment fail
-        this.$store.dispatch('subscribe/updateResultStatus', 'order-fail')
-        this.$router.push(`/papermag/result`)
+        this.$router.push(`/papermag/return?order-fail=true`)
       }
     },
 
@@ -107,6 +109,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 200;
     &_icon {
       width: 100px;
       height: 100px;

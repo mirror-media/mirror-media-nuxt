@@ -274,46 +274,48 @@ export default {
       }
     },
     getOrderPayload() {
-      const { itemDest, amount, price } = this.generateItemData()
+      const { itemDest, amount } = this.generateItemData()
+      const carrierType = this.receiptData.donateOrganization
+        ? ''
+        : this.receiptData.carrierType + ''
+      const isWithShippingFee = this.shipPlan.name === '限時掛號'
+      let code =
+        this.currentChoosedPlanId === 0
+          ? 'magazine_one_year'
+          : 'magazine_two_year'
 
+      if (isWithShippingFee) code += '_with_shipping_fee'
       return {
-        // 商品相關
-        // items: this.perchasedItems,
-        merchant_id: 'MS315799494',
-        item_desc: itemDest,
-        amount: parseInt(amount),
-        price,
-        discount_code: this.discount.code,
-        discount: this.discountPrice,
-
-        // 購買者相關
-        pur_name: this.ordererData.name,
-        pur_cell: this.ordererData.cellphone,
-        pur_phone: `${this.ordererData.phone} ${this.ordererData.phoneExt}`,
-        pur_addr: this.ordererData.address,
-        pur_mail: this.ordererData.email,
-
-        // 收貨相關
-        rec_name: this.receiverData.name,
-        rec_cell: this.receiverData.cellphone,
-        rec_phone: `${this.receiverData.phone} ${this.receiverData.phoneExt}`,
-        rec_addr: this.receiverData.address,
-        rec_remark: '', // TODO
-        delivery: this.shipPlan.name,
-        deliveryCost: this.shipping,
-
-        // 付款相關
-        prime_token: '',
-        price_total: this.total,
-
-        // 發票相關
-        carrier_type: this.generateCarrierInt(this.receiptData.carrierType),
-        carrier_number: this.receiptData.carrierNumber,
-        carrier_title: this.receiptData.carrierTitle,
-        carrier_ubn: this.receiptData.carrierUbn,
-
-        // 捐贈發票
-        love_code: this.receiptData.donateOrganization,
+        data: {
+          desc: isWithShippingFee ? itemDest + '加掛號運費' : itemDest,
+          comment: '',
+          merchandise: {
+            connect: {
+              code,
+            },
+          },
+          itemCount: amount,
+          purchaseDatetime: new Date(),
+          category: 'B2C',
+          promoteCode: this.discount.code,
+          // 購買和收穫相關
+          purchaseName: this.ordererData.name,
+          purchaseAddress: this.ordererData.address,
+          purchaseEmail: this.ordererData.email,
+          purchaseMobile: this.ordererData.cellphone,
+          purchasePhone: `${this.ordererData.phone} ${this.ordererData.phoneExt}`,
+          receiveName: this.receiverData.name,
+          receiveAddress: this.receiverData.address,
+          receiveMobile: this.receiverData.cellphone,
+          receivePhone: `${this.receiverData.phone} ${this.receiverData.phoneExt}`,
+          // 捐贈發票
+          loveCode: parseInt(this.receiptData.donateOrganization),
+          carrierType,
+          carrierNum:
+            this.receiptData.carrierNumber ||
+            this.receiptData.carrierTitle ||
+            this.receiptData.carrierUbn,
+        },
       }
     },
     validationPass() {
@@ -343,8 +345,6 @@ export default {
 
       if (this.validationPass() && this.acceptPermission) {
         const payload = this.getOrderPayload()
-        const str = JSON.stringify(payload)
-        console.log(str)
         this.proceedOrderPayment(payload)
       }
     },
