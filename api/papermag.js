@@ -6,7 +6,6 @@ const {
   NEWEBPAY_PAPERMAG_IV,
   ISRAFEL_ORIGIN,
   DOMAIN_NAME,
-  API_PROTOCOL,
 } = require('../configs/config')
 
 const apiUrl = `${ISRAFEL_ORIGIN}/api/graphql`
@@ -53,7 +52,7 @@ async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
     fetchPaymentDataOfPapermag,
     gateWayPayload
   )
-  data.createNewebpayTradeInfoForMagazineOrder.ReturnURL = `${API_PROTOCOL}://${DOMAIN_NAME}/papermag/return`
+  data.createNewebpayTradeInfoForMagazineOrder.ReturnURL = `https://${DOMAIN_NAME}/papermag/return`
   return data
 }
 
