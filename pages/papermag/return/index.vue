@@ -98,9 +98,14 @@ export default {
         shippingCost = shippingCostPerYear * decryptInfoData.itemCount * 2
       }
 
+      const merchandiseName = decryptInfoData.merchandise.name?.replace(
+        '加掛號運費',
+        ''
+      )
+
       const orderInfoPurchasedList = [
         {
-          text: decryptInfoData.merchandise.name,
+          text: merchandiseName,
           price:
             decryptInfoData.itemCount * decryptInfoData.merchandise.price -
             shippingCost,
