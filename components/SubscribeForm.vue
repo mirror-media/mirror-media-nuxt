@@ -285,6 +285,11 @@ export default {
           : 'magazine_two_year'
 
       if (isWithShippingFee) code += '_with_shipping_fee'
+      let carrierNum =
+        this.receiptData.carrierNumber ||
+        this.receiptData.carrierTitle ||
+        this.receiptData.carrierUbn
+      if (carrierType === '2') carrierNum = this.ordererData.email
       return {
         data: {
           desc: isWithShippingFee ? itemDest + '加掛號運費' : itemDest,
@@ -311,10 +316,7 @@ export default {
           // 捐贈發票
           loveCode: parseInt(this.receiptData.donateOrganization),
           carrierType,
-          carrierNum:
-            this.receiptData.carrierNumber ||
-            this.receiptData.carrierTitle ||
-            this.receiptData.carrierUbn,
+          carrierNum,
         },
       }
     },
