@@ -89,6 +89,18 @@ export default {
 
       this.isLoading = false
     }
+
+    this.$store.commit('premium-story/SET_STORY', this.story)
+    this.$sendUserBehaviorLog({
+      category: 'whole-site',
+      description: '',
+      'event-type': 'pageview',
+
+      'member-info-firebase': this?.$store?.state?.membership,
+      'member-info-israfel': this?.$store?.state?.['membership-subscribe'],
+
+      'premium-story-info': this?.$store?.state?.['premium-story'],
+    })
   },
   methods: {
     mockFailRequest() {
