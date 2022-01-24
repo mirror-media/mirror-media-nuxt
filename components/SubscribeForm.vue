@@ -274,8 +274,9 @@ export default {
       }
     },
     getOrderPayload() {
+      console.log('data', this.receiptData)
       const { itemDest, amount } = this.generateItemData()
-      const carrierType = this.receiptData.donateOrganization
+      let carrierType = this.receiptData.donateOrganization
         ? ''
         : this.receiptData.carrierType + ''
       const isWithShippingFee = this.shipPlan.name === '限時掛號'
@@ -290,6 +291,10 @@ export default {
         this.receiptData.carrierTitle ||
         this.receiptData.carrierUbn
       if (carrierType === '2') carrierNum = this.ordererData.email
+      if (this.receiptData.carrierUbn) {
+        carrierType = ''
+        carrierNum = ''
+      }
       return {
         data: {
           desc: isWithShippingFee ? itemDest + '加掛號運費' : itemDest,
@@ -301,7 +306,7 @@ export default {
           },
           itemCount: amount,
           purchaseDatetime: new Date(),
-          category: 'B2C',
+          category: this.receiptData.carrierUbn ? 'B2B' : 'B2C',
           promoteCode: this.discount.code,
           // 購買和收穫相關
           purchaseName: this.ordererData.name,
@@ -317,6 +322,8 @@ export default {
           loveCode: parseInt(this.receiptData.donateOrganization),
           carrierType,
           carrierNum,
+          buyerName: this.receiptData.carrierTitle,
+          buyerUBN: this.receiptData.carrierUbn,
         },
       }
     },
