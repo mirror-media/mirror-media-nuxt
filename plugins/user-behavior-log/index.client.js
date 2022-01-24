@@ -78,10 +78,9 @@ export default (context, inject) => {
   })
 
   // exit event
-  window.addEventListener('load', () => {
-    TimeMe.initialize({
-      idleTimeoutInSeconds: 30,
-    })
+  TimeMe.initialize({
+    currentPageName: window.location.href,
+    idleTimeoutInSeconds: 30,
   })
   window.addEventListener('beforeunload', (event) => {
     try {
