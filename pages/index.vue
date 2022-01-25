@@ -168,9 +168,8 @@ const GA_UTM_EDITOR_CHOICES = 'utm_source=mmweb&utm_medium=editorchoice'
 
 // 東森新聞
 const PARTNER_ID_EBC = '5ea7fd55a66f9e0f00a04e9a'
-
+const MICRO_AD_IDXES_INSERTED = [2, 5, 8]
 const LATEST_ARTICLES_MIN_NUM = 6
-const MICRO_AD_IDXES_INSERTED = [2, 4, 8]
 const EXTERNALS_IDX_START_INSERTED = 12
 const EXTERNALS_MAX_RESULTS = 6
 
