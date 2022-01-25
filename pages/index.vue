@@ -29,7 +29,7 @@
       />
 
       <div class="column-container">
-        <aside>
+        <aside v-if="shouldShowFocus">
           <LazyRenderer data-testid="mirror-tv" @load="loadEventMod">
             <section v-if="isValidEventModItem" class="container">
               <UiColumnHeader title="鏡電視" class="home__column-header" />
@@ -86,6 +86,11 @@
                   @sendGa="sendGaForClick('latest')"
                 />
                 <UiArticleGallery
+                  v-else-if="shouldShowFocus"
+                  :items="latestItems"
+                  @sendGa="sendGaForClick('latest')"
+                />
+                <UiArticleGalleryWithoutFocus
                   v-else
                   :items="latestItems"
                   @sendGa="sendGaForClick('latest')"
@@ -142,6 +147,7 @@ import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
 import UiArticleGalleryB from '~/components/UiArticleGalleryB.vue'
+import UiArticleGalleryWithoutFocus from '~/components/UiArticleGalleryWithoutFocus.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
@@ -151,6 +157,7 @@ import SvgCloseIcon from '~/assets/close-black.svg?inline'
 import { isTruthy } from '~/utils/index.js'
 import { stripHtmlTags } from '~/utils/article.js'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
+import { ENV } from '~/configs/config'
 
 const CATEGORY_ID_POLITICAL = '5979ac0de531830d00e330a7' // 政治
 const CATEGORY_ID_CITY_NEWS = '5979ac33e531830d00e330a9' // 社會
@@ -180,7 +187,7 @@ export default {
     ContainerGptAd,
     ContainerFullScreenAds,
     UiArticleGalleryB,
-
+    UiArticleGalleryWithoutFocus,
     SvgCloseIcon,
   },
 
@@ -246,6 +253,10 @@ export default {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
+
+    shouldShowFocus() {
+      return !(ENV === 'local' || ENV === 'dev')
+    },
 
     editorChoicesArticles() {
       const { choices: articles = [] } = this.groupedArticles
