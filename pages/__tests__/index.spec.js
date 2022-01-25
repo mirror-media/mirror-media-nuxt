@@ -479,24 +479,24 @@ describe('編輯精選', () => {
 // })
 
 describe('最新文章', () => {
-  test('最新文章不出現與編輯精選、焦點新聞相同的文章', async () => {
-    const duplicateNum = 3
+  // test('最新文章不出現與編輯精選、焦點新聞相同的文章', async () => {
+  //   const duplicateNum = 3
 
-    await testDuplicate(LATEST_ARTICLES_MIN_NUM + duplicateNum, function assert(
-      spyMethod
-    ) {
-      expect(spyMethod.mock.calls[0][0]).toHaveLength(LATEST_ARTICLES_MIN_NUM)
-    })
-  })
+  //   await testDuplicate(LATEST_ARTICLES_MIN_NUM + duplicateNum, function assert(
+  //     spyMethod
+  //   ) {
+  //     expect(spyMethod.mock.calls[0][0]).toHaveLength(LATEST_ARTICLES_MIN_NUM)
+  //   })
+  // })
 
-  test(`若篩選掉與編輯精選、焦點新聞相同的文章後，最新文章小於 ${LATEST_ARTICLES_MIN_NUM} 篇，則不篩選文章`, async () => {
-    const duplicateNum = 3
-    const originalNum = LATEST_ARTICLES_MIN_NUM - 1 + duplicateNum
+  // test(`若篩選掉與編輯精選、焦點新聞相同的文章後，最新文章小於 ${LATEST_ARTICLES_MIN_NUM} 篇，則不篩選文章`, async () => {
+  //   const duplicateNum = 3
+  //   const originalNum = LATEST_ARTICLES_MIN_NUM - 1 + duplicateNum
 
-    await testDuplicate(originalNum, function assert(spyMethod) {
-      expect(spyMethod.mock.calls[0][0]).toHaveLength(originalNum)
-    })
-  })
+  //   await testDuplicate(originalNum, function assert(spyMethod) {
+  //     expect(spyMethod.mock.calls[0][0]).toHaveLength(originalNum)
+  //   })
+  // })
 
   test(`廣告出現在第 ${MICRO_AD_IDXES_INSERTED.join('、')} 篇`, async () => {
     expect.assertions(MICRO_AD_IDXES_INSERTED.length)
@@ -563,44 +563,43 @@ describe('最新文章', () => {
     ])
   })
 
-  async function testDuplicate(latestItemsNum, assert) {
-    expect.assertions(1)
+  // async function testDuplicate(latestItemsNum, assert) {
+  //   expect.assertions(1)
 
-    /* Arrange */
-    jest.spyOn(Home.methods, 'pushLatestItems')
+  //   /* Arrange */
+  //   jest.spyOn(Home.methods, 'pushLatestItems')
 
-    const sut = createWrapper(Home, {
-      data() {
-        return {
-          ...dataRequiredMock,
-          groupedArticles: {
-            choices: [{ slug: '1' }],
-            grouped: [{ slug: '2', relateds: [{ slug: '3' }] }],
-          },
-        }
-      },
-      mocks: {
-        $fetchList: () =>
-          Promise.resolve({
-            items: Array(latestItemsNum)
-              .fill({})
-              .map((_, idx) => ({
-                slug: `${idx + 1}`,
-              })),
-          }),
-      },
-    })
+  //   const sut = createWrapper(Home, {
+  //     data() {
+  //       return {
+  //         ...dataRequiredMock,
+  //         groupedArticles: {
+  //           choices: [{ slug: '1' }],
+  //         },
+  //       }
+  //     },
+  //     mocks: {
+  //       $fetchList: () =>
+  //         Promise.resolve({
+  //           items: Array(latestItemsNum)
+  //             .fill({})
+  //             .map((_, idx) => ({
+  //               slug: `${idx + 1}`,
+  //             })),
+  //         }),
+  //     },
+  //   })
 
-    /* Act */
-    sut.get('[data-testid="article-gallery"]').vm.$emit('load')
+  //   /* Act */
+  //   sut.get('[data-testid="article-gallery"]').vm.$emit('load')
 
-    await flushPromises()
+  //   await flushPromises()
 
-    /* Assert */
-    assert(Home.methods.pushLatestItems)
+  //   /* Assert */
+  //   assert(Home.methods.pushLatestItems)
 
-    jest.restoreAllMocks()
-  }
+  //   jest.restoreAllMocks()
+  // }
 
   async function testMicroAds(latestItemsNum, assert) {
     /* Arrange */

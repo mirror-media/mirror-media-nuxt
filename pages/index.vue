@@ -338,6 +338,7 @@ export default {
 
     focusArticles() {
       const { grouped: articles = [] } = this.groupedArticles
+      console.log(articles.map(transformContentOfFocus))
 
       return articles.map(transformContentOfFocus)
 
@@ -448,23 +449,19 @@ export default {
         meta = { total: 0 },
       } = await this.fetchLatestList()
 
-      const slugsOfChoicesAndFocus = [
-        ...this.editorChoicesArticles,
-        ...this.focusArticles,
-        ...this.focusArticles.flatMap((article) => article.relateds),
-      ]
+      const slugsOfChoices = [...this.editorChoicesArticles]
         .filter(isTruthy)
         .map((article) => article.slug)
 
-      const articlesWithoutChoicesAndFocus = articles.filter(
-        (article) => !slugsOfChoicesAndFocus.includes(article.slug)
+      const articlesWithoutChoices = articles.filter(
+        (article) => !slugsOfChoices.includes(article.slug)
       )
 
       // 為了避免廣告（MicroAd）連續出現，當篩選後的最新文章小於 LATEST_ARTICLES_MIN_NUM 篇，便採用未篩選前的文章
       this.pushLatestItems(
-        articlesWithoutChoicesAndFocus.length < LATEST_ARTICLES_MIN_NUM
+        articlesWithoutChoices.length < LATEST_ARTICLES_MIN_NUM
           ? articles
-          : articlesWithoutChoicesAndFocus
+          : articlesWithoutChoices
       )
       this.setLatestTotal(meta.total)
     },
