@@ -37,19 +37,9 @@ export default {
         status: 'order-fail',
       }
     if (req.method !== 'POST') redirect('/papermag')
-    const infoData = req.body
-    if (infoData.Status !== 'SUCCESS') {
-      return {
-        req: infoData,
-        status: infoData.Status,
-        errorData: {
-          orderId: infoData.MerchantID,
-          message: infoData.Status,
-        },
-      }
-    }
 
     try {
+      const infoData = req.body
       const newebpay = new NewebPay(NEWEBPAY_PAPERMAG_KEY, NEWEBPAY_PAPERMAG_IV)
       const decryptedTradeInfo = await newebpay.getDecryptedTradeInfo(
         infoData.TradeInfo
@@ -75,11 +65,22 @@ export default {
         return {
           req: infoData,
           errorData: {
-            orderId: infoData.MerchantID,
-            message: 'MerchantID 不存在',
+            orderId: '',
+            message: '訂單編號不存在',
           },
         }
       }
+      if (infoData.Status !== 'SUCCESS') {
+        return {
+          req: infoData,
+          status: infoData.Status,
+          errorData: {
+            orderId: decryptInfoData.orderNumber,
+            message: infoData.Status,
+          },
+        }
+      }
+
       const date = dayjs(new Date(decryptInfoData.createdAt)).format(
         'YYYY-MM-DD'
       )

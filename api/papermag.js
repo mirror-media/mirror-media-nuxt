@@ -52,7 +52,7 @@ async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
     fetchPaymentDataOfPapermag,
     gateWayPayload
   )
-  data.createNewebpayTradeInfoForMagazineOrder.ReturnURL = `https://${DOMAIN_NAME}/papermag/return`
+  data.createNewebpayTradeInfoForMagazineOrder.ReturnURL = `http://${DOMAIN_NAME}/papermag/return`
   return data
 }
 
