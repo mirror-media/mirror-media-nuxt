@@ -36,7 +36,10 @@ export default {
       return {
         status: 'order-fail',
       }
-    if (req.method !== 'POST') redirect('/papermag')
+    if (req.method !== 'POST') {
+      console.log('papermag is retun GET', req)
+      redirect('/papermag')
+    }
 
     try {
       const infoData = req.body
