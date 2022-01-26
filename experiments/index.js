@@ -5,10 +5,5 @@
 
 import normalPostRelatedRedesign from './normal-post-related-redesign'
 import homepageLatestRedesign from './homepage-latest-redesign'
-import normalPostPapularRedesign from './normal-post-popular-redesign'
 
-export default [
-  normalPostRelatedRedesign,
-  normalPostPapularRedesign,
-  homepageLatestRedesign,
-]
+export default [normalPostRelatedRedesign, homepageLatestRedesign]
