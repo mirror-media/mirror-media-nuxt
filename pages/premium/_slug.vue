@@ -82,10 +82,10 @@ export default {
       const msg = this.story.isTruncated?.toString()
       this.$ga.set('dimension2', msg)
 
-      // dimension about member type
+      // dimension of member type
       this.$ga.set(
         'dimension3',
-        this.$store.state['membership-subscribe/basicInfo'].type
+        this.$store.state['membership-subscribe'].basicInfo.type
       )
     } else {
       this.$ga.set('dimension1', 'notMember')
