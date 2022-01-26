@@ -104,6 +104,12 @@ export default {
 
           break
 
+        case 'apple.com':
+          this.$emit('setPrevAuthMethod', 'Apple')
+          this.$emit('setShowHint', true)
+          this.email = '' // clear email input field (TODO)
+
+          break
         default:
           this.state = 'initial'
           break
