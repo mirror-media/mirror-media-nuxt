@@ -3,6 +3,9 @@
     <FbPage
       :settings="{
         'data-tabs': 'events',
+        'data-small-header': true,
+        'data-width': 180,
+        'data-height': 75,
       }"
       style="text-align: left"
     />
@@ -74,6 +77,7 @@ export default {
 <style lang="scss" scoped>
 .sns-wrapper {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
 }
 
@@ -82,7 +86,7 @@ export default {
   flex-wrap: wrap;
   margin: 0 0 0 -16px;
   @include media-breakpoint-up(xl) {
-    margin: 0;
+    margin: -16px 0 0 0;
   }
   &__link {
     margin: 16px 0 0 16px;
