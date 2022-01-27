@@ -14,6 +14,7 @@
       :href="sharedLineUrl"
       target="_blank"
       rel="noopener noreferrer"
+      class="line-link"
       @click="emitGa('line')"
     >
       <SvgLineIcon class="line-icon" />
@@ -22,6 +23,7 @@
       :href="sharedFbUrl"
       target="_blank"
       rel="noopener noreferrer"
+      class="fb-link"
       @click="emitGa('facebook')"
     >
       <SvgFbIcon class="fb-icon" />
@@ -186,10 +188,16 @@ svg {
   height: auto;
 }
 
+.line-link {
+  background-color: #06c765;
+}
 .line-icon {
   width: 24px;
 }
 
+.fb-link {
+  background-color: #1877f2;
+}
 .fb-icon {
   width: 8px;
 }
