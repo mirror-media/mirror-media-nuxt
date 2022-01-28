@@ -9,6 +9,22 @@ export function getAlinkHref(eventTarget) {
   return getAlinkHref(eventTarget.parentNode)
 }
 
+export function getElementDataUserBehaviorDescription(eventTarget) {
+  if (!eventTarget) {
+    return undefined
+  }
+
+  if (
+    Object.prototype.hasOwnProperty.call(
+      eventTarget?.dataset ?? {},
+      'userBehaviorDescription'
+    )
+  ) {
+    return eventTarget.dataset.userBehaviorDescription
+  }
+  return getElementDataUserBehaviorDescription(eventTarget.parentNode)
+}
+
 export function isElementAlink(eventTarget) {
   if (!eventTarget) {
     return false

@@ -3,7 +3,12 @@
     <UiH4>延伸閱讀</UiH4>
 
     <div class="list-related__list list">
-      <div v-for="item in items" :key="item.slug" class="list__item item">
+      <div
+        v-for="item in items"
+        :key="item.slug"
+        class="list__item item"
+        data-user-behavior-description="read-around"
+      >
         <a
           :href="`/story/${item.slug}`"
           class="item__img"

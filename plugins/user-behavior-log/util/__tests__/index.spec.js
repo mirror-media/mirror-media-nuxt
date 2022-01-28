@@ -26,6 +26,9 @@ describe('properties of log', function () {
         tagName: 'DIV',
         className: 'mock-class-name',
         id: 'mock-id',
+        dataset: {
+          userBehaviorDescription: 'mock-user-behavior-description',
+        },
       },
     }
 
@@ -35,6 +38,7 @@ describe('properties of log', function () {
       'target-tag-class': mockParameter.target.className,
       'target-tag-id': mockParameter.target.id,
       'target-text': 'mock text content',
+      'target-data-user-behavior-description': 'mock-user-behavior-description',
     })
   })
 
@@ -131,6 +135,9 @@ describe('properties of log', function () {
           parentNode: {
             tagName: 'A',
             href: mockHref,
+            dataset: {
+              userBehaviorDescription: 'mock-user-behavior-description',
+            },
           },
         },
       },
@@ -138,6 +145,7 @@ describe('properties of log', function () {
     const log = createUserBehaviorLog(mockParameter)
     expect(log).toMatchObject({
       'redirect-to': mockHref,
+      'target-data-user-behavior-description': 'mock-user-behavior-description',
     })
   })
 

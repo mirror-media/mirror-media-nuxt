@@ -53,8 +53,14 @@
       </div>
     </div>
     <div class="article-info__share-links-wrapper share-links-wrapper">
-      <UiShareFb class="share-link" />
-      <UiShareLine class="share-link" />
+      <UiShareFb
+        class="share-link"
+        data-user-behavior-description="share-facebook"
+      />
+      <UiShareLine
+        class="share-link"
+        data-user-behavior-description="share-line"
+      />
     </div>
   </div>
 </template>

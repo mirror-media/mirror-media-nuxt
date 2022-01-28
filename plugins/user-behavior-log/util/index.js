@@ -1,7 +1,11 @@
 import dayjs from 'dayjs'
 import getBrowserInfo from './browser'
 import getClientOsInfo from './client-os'
-import { getAlinkHref, truncate } from './util'
+import {
+  getElementDataUserBehaviorDescription,
+  getAlinkHref,
+  truncate,
+} from './util'
 import getWindowSizeInfo from './window-size'
 import getElementInnerText from './inner-text'
 import getClientId from './client-id'
@@ -10,6 +14,7 @@ import getRref from './rref'
 import { API_PATH_FRONTEND } from '~/configs/config'
 
 export function createUserBehaviorLog({ target = {} } = {}) {
+  console.log(getElementDataUserBehaviorDescription(target))
   return {
     browser: getBrowserInfo(),
 
@@ -24,6 +29,9 @@ export function createUserBehaviorLog({ target = {} } = {}) {
     'target-tag-name': target.tagName,
     'target-tag-class': target.className,
     'target-tag-id': target.id,
+    'target-data-user-behavior-description': getElementDataUserBehaviorDescription(
+      target
+    ),
     'target-text': truncate(getElementInnerText(target), 100),
 
     'target-window-size': getWindowSizeInfo(),
