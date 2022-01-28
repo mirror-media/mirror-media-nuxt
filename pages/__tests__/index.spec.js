@@ -6,17 +6,16 @@ import Home, {
   LATEST_ARTICLES_MIN_NUM,
   MICRO_AD_IDXES_INSERTED,
   EXTERNALS_IDX_START_INSERTED,
-  EXTERNALS_MAX_RESULTS,
   transformContentOfFlashNews,
   getLabel,
 } from '../index.vue'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
 // import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
-import UiArticleGallery from '~/components/UiArticleGallery.vue'
-import UiArticleGalleryB from '~/components/UiArticleGalleryB.vue'
+// import UiArticleGallery from '~/components/UiArticleGallery.vue'
+// import UiArticleGalleryB from '~/components/UiArticleGalleryB.vue'
 import UiArticleGalleryWithoutFocus from '~/components/UiArticleGalleryWithoutFocus.vue'
-import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
+// import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
@@ -519,15 +518,15 @@ describe('最新文章', () => {
     })
   })
 
-  test(`合作媒體文章出現在第 ${EXTERNALS_IDX_START_INSERTED} 篇到第 ${
-    EXTERNALS_IDX_START_INSERTED + EXTERNALS_MAX_RESULTS - 1
-  } 篇`, async () => {
-    await testExternals(EXTERNALS_IDX_START_INSERTED, function assert(
-      spyMethod
-    ) {
-      expect(spyMethod).lastCalledWith(EXTERNALS_IDX_START_INSERTED)
-    })
-  })
+  // test(`合作媒體文章出現在第 ${EXTERNALS_IDX_START_INSERTED} 篇到第 ${
+  //   EXTERNALS_IDX_START_INSERTED + EXTERNALS_MAX_RESULTS - 1
+  // } 篇`, async () => {
+  //   await testExternals(EXTERNALS_IDX_START_INSERTED, function assert(
+  //     spyMethod
+  //   ) {
+  //     expect(spyMethod).lastCalledWith(EXTERNALS_IDX_START_INSERTED)
+  //   })
+  // })
 
   test(`若最新文章（包含廣告）小於 ${EXTERNALS_IDX_START_INSERTED} 篇，則不插入合作媒體文章`, async () => {
     await testExternals(
@@ -835,7 +834,7 @@ test('display ADs', function () {
 })
 
 test('send GA events', async function () {
-  expect.assertions(9)
+  expect.assertions(5)
 
   /* Arrange */
   const $ga = { event: jest.fn() }
@@ -958,19 +957,19 @@ test('send GA events', async function () {
   /* 最新文章 */
   sut.get('[data-testid="article-gallery"]').vm.$emit('load')
 
-  sut.getComponent(UiArticleGallery).vm.$emit('sendGa')
-  expect($ga.event).lastCalledWith({
-    eventCategory: 'home',
-    eventAction: 'click',
-    eventLabel: 'latest',
-  })
+  // sut.getComponent(UiArticleGallery).vm.$emit('sendGa')
+  // expect($ga.event).lastCalledWith({
+  //   eventCategory: 'home',
+  //   eventAction: 'click',
+  //   eventLabel: 'latest',
+  // })
 
-  sut.getComponent(UiArticleGalleryB).vm.$emit('sendGa')
-  expect($ga.event).lastCalledWith({
-    eventCategory: 'home',
-    eventAction: 'click',
-    eventLabel: 'latest',
-  })
+  // sut.getComponent(UiArticleGalleryB).vm.$emit('sendGa')
+  // expect($ga.event).lastCalledWith({
+  //   eventCategory: 'home',
+  //   eventAction: 'click',
+  //   eventLabel: 'latest',
+  // })
 
   sut.getComponent(UiArticleGalleryWithoutFocus).vm.$emit('sendGa')
   expect($ga.event).lastCalledWith({
@@ -979,33 +978,33 @@ test('send GA events', async function () {
     eventLabel: 'latest',
   })
 
-  const infiniteLoading = sut.getComponent(UiInfiniteLoading)
+  // const infiniteLoading = sut.getComponent(UiInfiniteLoading)
 
-  infiniteLoading.vm.$emit('infinite', {
-    loaded: () => {},
-    complete: () => {},
-    error: () => {},
-  })
-  await flushPromises()
-  expect($ga.event).lastCalledWith({
-    eventCategory: 'home',
-    eventAction: 'scroll',
-    eventLabel: 'loadmore',
-    eventValue: 1,
-  })
+  // infiniteLoading.vm.$emit('infinite', {
+  //   loaded: () => {},
+  //   complete: () => {},
+  //   error: () => {},
+  // })
+  // await flushPromises()
+  // expect($ga.event).lastCalledWith({
+  //   eventCategory: 'home',
+  //   eventAction: 'scroll',
+  //   eventLabel: 'loadmore',
+  //   eventValue: 1,
+  // })
 
-  infiniteLoading.vm.$emit('infinite', {
-    loaded: () => {},
-    complete: () => {},
-    error: () => {},
-  })
-  await flushPromises()
-  expect($ga.event).lastCalledWith({
-    eventCategory: 'home',
-    eventAction: 'scroll',
-    eventLabel: 'loadmore',
-    eventValue: 2,
-  })
+  // infiniteLoading.vm.$emit('infinite', {
+  //   loaded: () => {},
+  //   complete: () => {},
+  //   error: () => {},
+  // })
+  // await flushPromises()
+  // expect($ga.event).lastCalledWith({
+  //   eventCategory: 'home',
+  //   eventAction: 'scroll',
+  //   eventLabel: 'loadmore',
+  //   eventValue: 2,
+  // })
 })
 
 describe('getLabel method', () => {

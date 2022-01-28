@@ -265,6 +265,10 @@ module.exports = {
       handler: '~/api/gcs.js',
     },
     {
+      path: `/${API_PATH_FRONTEND}/grouped-gcs`,
+      handler: '~/api/grouped-gcs.js',
+    },
+    {
       path: `/${API_PATH_FRONTEND}/subscribe-magazine/payload`,
       handler: '~/api/subscribe-magazine/payload.js',
     },

@@ -183,6 +183,37 @@ async function fetchGcsData(filename) {
   }
 }
 
+async function fetchGcsGroupData(filename) {
+  let apiUrl
+
+  try {
+    let data
+
+    const isStagingOrProd = ENV === 'prod' || ENV === 'staging'
+    const path = isStagingOrProd ? 'json' : 'dev'
+
+    if (ENV === 'prod' || !process.browser) {
+      apiUrl = `https://storage.googleapis.com/statics.mirrormedia.mg/${path}/${filename}.json`
+      ;({ data = {} } = await axios.get(apiUrl, { timeout: API_TIMEOUT }))
+    } else {
+      // 由於 CORS 的問題，不能直接在 browser 端打 api（除了生產環境），而是必須透過前端 server 去打
+      apiUrl = `${baseUrl}${API_PATH_FRONTEND}/grouped-gcs/${filename}`
+      ;({ data = {} } = await axios.get(apiUrl))
+    }
+
+    return camelizeKeys(data)
+  } catch (err) {
+    const { statusText = 'Internal Server Error', status = 500 } =
+      err.response || {}
+
+    throw new FetchError({
+      message: statusText,
+      statusCode: status,
+      url: apiUrl,
+    })
+  }
+}
+
 class FetchError extends Error {
   constructor({ message = 'Not Found', statusCode = 404, url }) {
     super(`${message}; statusCode=${statusCode}, url=${url}`)
@@ -296,6 +327,8 @@ export default (context, inject) => {
   )
 
   inject('fetchGrouped', () => fetchGcsData('grouped'))
+
+  inject('fetchGroupedWithExternal', (filename) => fetchGcsGroupData(filename))
 
   inject('fetchPopular', () => fetchGcsData('popularlist'))
 
