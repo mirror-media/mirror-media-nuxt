@@ -11,10 +11,14 @@ import Home, {
 } from '../index.vue'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
-// import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
-// import UiArticleGallery from '~/components/UiArticleGallery.vue'
-// import UiArticleGalleryB from '~/components/UiArticleGalleryB.vue'
+
+/*
+ * import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
+ * import UiArticleGallery from '~/components/UiArticleGallery.vue'
+ * import UiArticleGalleryB from '~/components/UiArticleGalleryB.vue'
+ */
 import UiArticleGalleryWithoutFocus from '~/components/UiArticleGalleryWithoutFocus.vue'
+
 // import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
@@ -42,6 +46,9 @@ const createWrapper = createWrapperHelper({
 
     $GOExp: {
       'homepage-latest-redesign': {
+        variant: '2',
+      },
+      'homepage-editor-choice-mobile-redesign': {
         variant: '2',
       },
     },
@@ -125,9 +132,11 @@ describe('編輯精選', () => {
   })
 })
 
-// describe('鏡電視', function () {
-//   test('fetch and show it', async function () {
-//     expect.assertions(6)
+/*
+ * describe('鏡電視', function () {
+ *   test('fetch and show it', async function () {
+ *     expect.assertions(6)
+ */
 
 //     /* Arrange */
 //     const { sut, eventItemMock, fetchEventMock, cleanup } = setupEvent()
@@ -154,11 +163,15 @@ describe('編輯精選', () => {
 //     expect(sut.get('[data-testid="mirror-tv"]').html()).toContain('鏡電視')
 //     expect(sut.get('.mirror-tv').props().embeddedHtml).toBe(eventItemMock.embed)
 
-//     cleanup()
-//   })
+/*
+ *     cleanup()
+ *   })
+ */
 
-//   test('do not fetch it again if it has had content', async function () {
-//     expect.assertions(1)
+/*
+ *   test('do not fetch it again if it has had content', async function () {
+ *     expect.assertions(1)
+ */
 
 //     /* Arrange */
 //     const { sut, cleanup } = setupEvent()
@@ -169,8 +182,10 @@ describe('編輯精選', () => {
 
 //     sut.vm.$fetchEvent = jest.fn()
 
-//     sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
-//     await flushPromises()
+/*
+ *     sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+ *     await flushPromises()
+ */
 
 //     /* Assert */
 //     expect(sut.vm.$fetchEvent).not.toBeCalledWith({
@@ -179,17 +194,23 @@ describe('編輯精選', () => {
 //       maxResults: 1,
 //     })
 
-//     cleanup()
-//   })
+/*
+ *     cleanup()
+ *   })
+ */
 
 //   // test('do not show it if users have not scolled to its proximity')
 
-//   // test('do not fetch it again if a browser is loading it')
-// })
+/*
+ *   // test('do not fetch it again if a browser is loading it')
+ * })
+ */
 
-// describe('mod event', function () {
-//   test('fetch and show it when users begin to scroll down', async function () {
-//     expect.assertions(4)
+/*
+ * describe('mod event', function () {
+ *   test('fetch and show it when users begin to scroll down', async function () {
+ *     expect.assertions(4)
+ */
 
 //     /* Arrange */
 //     const { sut, eventItemMock, fetchEventMock, cleanup } = setupEvent()
@@ -216,11 +237,15 @@ describe('編輯精選', () => {
 //       eventItemMock.embed
 //     )
 
-//     cleanup()
-//   })
+/*
+ *     cleanup()
+ *   })
+ */
 
-//   test('do not fetch and show it if users have closed it', async function () {
-//     expect.assertions(2)
+/*
+ *   test('do not fetch and show it if users have closed it', async function () {
+ *     expect.assertions(2)
+ */
 
 //     /* Arrange */
 //     jest
@@ -243,11 +268,15 @@ describe('編輯精選', () => {
 //     })
 //     expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
 
-//     cleanup()
-//   })
+/*
+ *     cleanup()
+ *   })
+ */
 
-//   test('do not fetch it again if it has had content', async function () {
-//     expect.assertions(1)
+/*
+ *   test('do not fetch it again if it has had content', async function () {
+ *     expect.assertions(1)
+ */
 
 //     /* Arrange */
 //     const { sut, cleanup } = setupEvent()
@@ -258,8 +287,10 @@ describe('編輯精選', () => {
 
 //     sut.vm.$fetchEvent = jest.fn()
 
-//     window.dispatchEvent(new Event('scroll'))
-//     await flushPromises()
+/*
+ *     window.dispatchEvent(new Event('scroll'))
+ *     await flushPromises()
+ */
 
 //     /* Assert */
 //     expect(sut.vm.$fetchEvent).not.toBeCalledWith({
@@ -268,11 +299,15 @@ describe('編輯精選', () => {
 //       maxResults: 1,
 //     })
 
-//     cleanup()
-//   })
+/*
+ *     cleanup()
+ *   })
+ */
 
-//   test('close it and prevent users from seeing it in the future when they click the close icon', async function () {
-//     expect.assertions(3)
+/*
+ *   test('close it and prevent users from seeing it in the future when they click the close icon', async function () {
+ *     expect.assertions(3)
+ */
 
 //     /* Arrange */
 //     jest.spyOn(localforage, 'setItem')
@@ -299,16 +334,22 @@ describe('編輯精選', () => {
 //       JSON.stringify(true)
 //     )
 
-//     cleanup()
-//     await localforage.removeItem('mmHasClosedEventMod')
-//   })
+/*
+ *     cleanup()
+ *     await localforage.removeItem('mmHasClosedEventMod')
+ *   })
+ */
 
-//   // test('do not fetch it again if a browser is loading it')
-// })
+/*
+ *   // test('do not fetch it again if a browser is loading it')
+ * })
+ */
 
-// describe('鏡電視 & mod event', function () {
-//   test('show them if the current date is between their start date and end date', async function () {
-//     expect.assertions(3)
+/*
+ * describe('鏡電視 & mod event', function () {
+ *   test('show them if the current date is between their start date and end date', async function () {
+ *     expect.assertions(3)
+ */
 
 //     /* Arrange */
 //     const { sut, eventItemMock, cleanup } = setupEventByDate(
@@ -329,11 +370,15 @@ describe('編輯精選', () => {
 //       eventItemMock.embed
 //     )
 
-//     cleanup()
-//   })
+/*
+ *     cleanup()
+ *   })
+ */
 
-//   test('do not show them if the current date is less then their start date', async function () {
-//     expect.assertions(3)
+/*
+ *   test('do not show them if the current date is less then their start date', async function () {
+ *     expect.assertions(3)
+ */
 
 //     /* Arrange */
 //     const { sut, cleanup } = setupEventByDate(
@@ -352,11 +397,15 @@ describe('編輯精選', () => {
 //     expect(sut.find('.mirror-tv').exists()).toBe(false)
 //     expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
 
-//     cleanup()
-//   })
+/*
+ *     cleanup()
+ *   })
+ */
 
-//   test('do not show them if the current date is greater than or equal to their end date', async function () {
-//     expect.assertions(3)
+/*
+ *   test('do not show them if the current date is greater than or equal to their end date', async function () {
+ *     expect.assertions(3)
+ */
 
 //     /* Arrange */
 //     const { sut, cleanup } = setupEventByDate(
@@ -375,8 +424,10 @@ describe('編輯精選', () => {
 //     expect(sut.find('.mirror-tv').exists()).toBe(false)
 //     expect(sut.find('[data-testid="event-mod"]').exists()).toBe(false)
 
-//     cleanup()
-//   })
+/*
+ *     cleanup()
+ *   })
+ */
 
 //   test('do not show them if they have no content', async function () {
 //     /* Arrange */
@@ -417,11 +468,13 @@ describe('編輯精選', () => {
 //     /* Assert */
 //     const articleListsFocus = sut.findAllComponents(UiArticleListFocus)
 
-//     expect(articleListsFocus).toHaveLength(focusArticlesMock.length)
-//     expect(articleListsFocus.at(0).props().articlesRelated).toHaveLength(
-//       focusArticlesMock[0].relateds.length - 1
-//     )
-//   })
+/*
+ *     expect(articleListsFocus).toHaveLength(focusArticlesMock.length)
+ *     expect(articleListsFocus.at(0).props().articlesRelated).toHaveLength(
+ *       focusArticlesMock[0].relateds.length - 1
+ *     )
+ *   })
+ */
 
 //   test('pass the data to the component', function () {
 //     /* Arrange */
@@ -460,42 +513,56 @@ describe('編輯精選', () => {
 //       .getComponent(UiArticleListFocus)
 //       .props()
 
-//     expect(articleMain.slug).toBe(focusArticleMock.slug)
-//     expect(articleMain.title).toBe(focusArticleMock.title)
-//     expect(articleMain.href).toBe(`/story/${focusArticleMock.slug}/`)
-//     expect(articleMain.imgSrc).toBe(
-//       focusArticleMock.heroImage.image.resizedTargets.mobile.url
-//     )
+/*
+ *     expect(articleMain.slug).toBe(focusArticleMock.slug)
+ *     expect(articleMain.title).toBe(focusArticleMock.title)
+ *     expect(articleMain.href).toBe(`/story/${focusArticleMock.slug}/`)
+ *     expect(articleMain.imgSrc).toBe(
+ *       focusArticleMock.heroImage.image.resizedTargets.mobile.url
+ *     )
+ */
 
-//     const {
-//       relateds: [related],
-//     } = focusArticleMock
+/*
+ *     const {
+ *       relateds: [related],
+ *     } = focusArticleMock
+ */
 
-//     expect(articlesRelated[0].slug).toBe(related.slug)
-//     expect(articlesRelated[0].title).toBe(related.title)
-//     expect(articlesRelated[0].href).toBe(`/story/${related.slug}/`)
-//   })
-// })
+/*
+ *     expect(articlesRelated[0].slug).toBe(related.slug)
+ *     expect(articlesRelated[0].title).toBe(related.title)
+ *     expect(articlesRelated[0].href).toBe(`/story/${related.slug}/`)
+ *   })
+ * })
+ */
 
 describe('最新文章', () => {
-  // test('最新文章不出現與編輯精選、焦點新聞相同的文章', async () => {
-  //   const duplicateNum = 3
+  /*
+   * test('最新文章不出現與編輯精選、焦點新聞相同的文章', async () => {
+   *   const duplicateNum = 3
+   */
 
-  //   await testDuplicate(LATEST_ARTICLES_MIN_NUM + duplicateNum, function assert(
-  //     spyMethod
-  //   ) {
-  //     expect(spyMethod.mock.calls[0][0]).toHaveLength(LATEST_ARTICLES_MIN_NUM)
-  //   })
-  // })
+  /*
+   *   await testDuplicate(LATEST_ARTICLES_MIN_NUM + duplicateNum, function assert(
+   *     spyMethod
+   *   ) {
+   *     expect(spyMethod.mock.calls[0][0]).toHaveLength(LATEST_ARTICLES_MIN_NUM)
+   *   })
+   * })
+   */
 
-  // test(`若篩選掉與編輯精選、焦點新聞相同的文章後，最新文章小於 ${LATEST_ARTICLES_MIN_NUM} 篇，則不篩選文章`, async () => {
-  //   const duplicateNum = 3
-  //   const originalNum = LATEST_ARTICLES_MIN_NUM - 1 + duplicateNum
+  /*
+   * test(`若篩選掉與編輯精選、焦點新聞相同的文章後，最新文章小於 ${LATEST_ARTICLES_MIN_NUM} 篇，則不篩選文章`, async () => {
+   *   const duplicateNum = 3
+   *   const originalNum = LATEST_ARTICLES_MIN_NUM - 1 + duplicateNum
+   */
 
-  //   await testDuplicate(originalNum, function assert(spyMethod) {
-  //     expect(spyMethod.mock.calls[0][0]).toHaveLength(originalNum)
-  //   })
-  // })
+  /*
+   *   await testDuplicate(originalNum, function assert(spyMethod) {
+   *     expect(spyMethod.mock.calls[0][0]).toHaveLength(originalNum)
+   *   })
+   * })
+   */
 
   test(`廣告出現在第 ${MICRO_AD_IDXES_INSERTED.join('、')} 篇`, async () => {
     expect.assertions(MICRO_AD_IDXES_INSERTED.length)
@@ -518,15 +585,17 @@ describe('最新文章', () => {
     })
   })
 
-  // test(`合作媒體文章出現在第 ${EXTERNALS_IDX_START_INSERTED} 篇到第 ${
-  //   EXTERNALS_IDX_START_INSERTED + EXTERNALS_MAX_RESULTS - 1
-  // } 篇`, async () => {
-  //   await testExternals(EXTERNALS_IDX_START_INSERTED, function assert(
-  //     spyMethod
-  //   ) {
-  //     expect(spyMethod).lastCalledWith(EXTERNALS_IDX_START_INSERTED)
-  //   })
-  // })
+  /*
+   * test(`合作媒體文章出現在第 ${EXTERNALS_IDX_START_INSERTED} 篇到第 ${
+   *   EXTERNALS_IDX_START_INSERTED + EXTERNALS_MAX_RESULTS - 1
+   * } 篇`, async () => {
+   *   await testExternals(EXTERNALS_IDX_START_INSERTED, function assert(
+   *     spyMethod
+   *   ) {
+   *     expect(spyMethod).lastCalledWith(EXTERNALS_IDX_START_INSERTED)
+   *   })
+   * })
+   */
 
   test(`若最新文章（包含廣告）小於 ${EXTERNALS_IDX_START_INSERTED} 篇，則不插入合作媒體文章`, async () => {
     await testExternals(
@@ -562,32 +631,36 @@ describe('最新文章', () => {
     ])
   })
 
-  // async function testDuplicate(latestItemsNum, assert) {
-  //   expect.assertions(1)
+  /*
+   * async function testDuplicate(latestItemsNum, assert) {
+   *   expect.assertions(1)
+   */
 
   //   /* Arrange */
   //   jest.spyOn(Home.methods, 'pushLatestItems')
 
-  //   const sut = createWrapper(Home, {
-  //     data() {
-  //       return {
-  //         ...dataRequiredMock,
-  //         groupedArticles: {
-  //           choices: [{ slug: '1' }],
-  //         },
-  //       }
-  //     },
-  //     mocks: {
-  //       $fetchList: () =>
-  //         Promise.resolve({
-  //           items: Array(latestItemsNum)
-  //             .fill({})
-  //             .map((_, idx) => ({
-  //               slug: `${idx + 1}`,
-  //             })),
-  //         }),
-  //     },
-  //   })
+  /*
+   *   const sut = createWrapper(Home, {
+   *     data() {
+   *       return {
+   *         ...dataRequiredMock,
+   *         groupedArticles: {
+   *           choices: [{ slug: '1' }],
+   *         },
+   *       }
+   *     },
+   *     mocks: {
+   *       $fetchList: () =>
+   *         Promise.resolve({
+   *           items: Array(latestItemsNum)
+   *             .fill({})
+   *             .map((_, idx) => ({
+   *               slug: `${idx + 1}`,
+   *             })),
+   *         }),
+   *     },
+   *   })
+   */
 
   //   /* Act */
   //   sut.get('[data-testid="article-gallery"]').vm.$emit('load')
@@ -597,8 +670,10 @@ describe('最新文章', () => {
   //   /* Assert */
   //   assert(Home.methods.pushLatestItems)
 
-  //   jest.restoreAllMocks()
-  // }
+  /*
+   *   jest.restoreAllMocks()
+   * }
+   */
 
   async function testMicroAds(latestItemsNum, assert) {
     /* Arrange */
@@ -861,9 +936,11 @@ test('send GA events', async function () {
   })
   await flushPromises()
 
-  // window.dispatchEvent(new Event('scroll'))
-  // sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
-  // await flushPromises()
+  /*
+   * window.dispatchEvent(new Event('scroll'))
+   * sut.get('[data-testid="mirror-tv"]').vm.$emit('load')
+   * await flushPromises()
+   */
 
   /* 快訊 */
   const flashNews = sut.getComponent(UiFlashNews)
@@ -900,76 +977,94 @@ test('send GA events', async function () {
   /* 鏡電視 */
   // const mirrorTv = sut.get('.mirror-tv')
 
-  // mirrorTv.vm.$emit('sendGa:open')
-  // expect($ga.event).lastCalledWith({
-  //   eventCategory: 'home',
-  //   eventAction: 'click',
-  //   eventLabel: 'mod open',
-  // })
+  /*
+   * mirrorTv.vm.$emit('sendGa:open')
+   * expect($ga.event).lastCalledWith({
+   *   eventCategory: 'home',
+   *   eventAction: 'click',
+   *   eventLabel: 'mod open',
+   * })
+   */
 
-  // mirrorTv.vm.$emit('sendGa:close')
-  // expect($ga.event).lastCalledWith({
-  //   eventCategory: 'home',
-  //   eventAction: 'click',
-  //   eventLabel: 'mod close',
-  // })
+  /*
+   * mirrorTv.vm.$emit('sendGa:close')
+   * expect($ga.event).lastCalledWith({
+   *   eventCategory: 'home',
+   *   eventAction: 'click',
+   *   eventLabel: 'mod close',
+   * })
+   */
 
   /* mod event */
   // const modEvent = sut.get('[data-testid="event-mod"]')
 
-  // modEvent.vm.$emit('sendGa:open')
-  // expect($ga.event).lastCalledWith({
-  //   eventCategory: 'home',
-  //   eventAction: 'click',
-  //   eventLabel: 'mod open',
-  // })
+  /*
+   * modEvent.vm.$emit('sendGa:open')
+   * expect($ga.event).lastCalledWith({
+   *   eventCategory: 'home',
+   *   eventAction: 'click',
+   *   eventLabel: 'mod open',
+   * })
+   */
 
-  // modEvent.vm.$emit('sendGa:close')
-  // expect($ga.event).lastCalledWith({
-  //   eventCategory: 'home',
-  //   eventAction: 'click',
-  //   eventLabel: 'mod close',
-  // })
+  /*
+   * modEvent.vm.$emit('sendGa:close')
+   * expect($ga.event).lastCalledWith({
+   *   eventCategory: 'home',
+   *   eventAction: 'click',
+   *   eventLabel: 'mod close',
+   * })
+   */
 
-  // sut.get('[data-testid="close-icon-mod"]').vm.$emit('click')
-  // expect($ga.event).lastCalledWith({
-  //   eventCategory: 'home',
-  //   eventAction: 'click',
-  //   eventLabel: 'mod close',
-  // })
+  /*
+   * sut.get('[data-testid="close-icon-mod"]').vm.$emit('click')
+   * expect($ga.event).lastCalledWith({
+   *   eventCategory: 'home',
+   *   eventAction: 'click',
+   *   eventLabel: 'mod close',
+   * })
+   */
 
   /* embedded event */
-  // sut.get('[data-testid="close-icon-embedded"]').vm.$emit('click')
-  // expect($ga.event).lastCalledWith({
-  //   eventCategory: 'home',
-  //   eventAction: 'click',
-  //   eventLabel: 'embedded close',
-  // })
+  /*
+   * sut.get('[data-testid="close-icon-embedded"]').vm.$emit('click')
+   * expect($ga.event).lastCalledWith({
+   *   eventCategory: 'home',
+   *   eventAction: 'click',
+   *   eventLabel: 'embedded close',
+   * })
+   */
 
   /* 焦點新聞 */
-  // sut.getComponent(UiArticleListFocus).vm.$emit('sendGa')
-  // expect($ga.event).lastCalledWith({
-  //   eventCategory: 'home',
-  //   eventAction: 'click',
-  //   eventLabel: 'group',
-  // })
+  /*
+   * sut.getComponent(UiArticleListFocus).vm.$emit('sendGa')
+   * expect($ga.event).lastCalledWith({
+   *   eventCategory: 'home',
+   *   eventAction: 'click',
+   *   eventLabel: 'group',
+   * })
+   */
 
   /* 最新文章 */
   sut.get('[data-testid="article-gallery"]').vm.$emit('load')
 
-  // sut.getComponent(UiArticleGallery).vm.$emit('sendGa')
-  // expect($ga.event).lastCalledWith({
-  //   eventCategory: 'home',
-  //   eventAction: 'click',
-  //   eventLabel: 'latest',
-  // })
+  /*
+   * sut.getComponent(UiArticleGallery).vm.$emit('sendGa')
+   * expect($ga.event).lastCalledWith({
+   *   eventCategory: 'home',
+   *   eventAction: 'click',
+   *   eventLabel: 'latest',
+   * })
+   */
 
-  // sut.getComponent(UiArticleGalleryB).vm.$emit('sendGa')
-  // expect($ga.event).lastCalledWith({
-  //   eventCategory: 'home',
-  //   eventAction: 'click',
-  //   eventLabel: 'latest',
-  // })
+  /*
+   * sut.getComponent(UiArticleGalleryB).vm.$emit('sendGa')
+   * expect($ga.event).lastCalledWith({
+   *   eventCategory: 'home',
+   *   eventAction: 'click',
+   *   eventLabel: 'latest',
+   * })
+   */
 
   sut.getComponent(UiArticleGalleryWithoutFocus).vm.$emit('sendGa')
   expect($ga.event).lastCalledWith({
@@ -980,31 +1075,35 @@ test('send GA events', async function () {
 
   // const infiniteLoading = sut.getComponent(UiInfiniteLoading)
 
-  // infiniteLoading.vm.$emit('infinite', {
-  //   loaded: () => {},
-  //   complete: () => {},
-  //   error: () => {},
-  // })
-  // await flushPromises()
-  // expect($ga.event).lastCalledWith({
-  //   eventCategory: 'home',
-  //   eventAction: 'scroll',
-  //   eventLabel: 'loadmore',
-  //   eventValue: 1,
-  // })
+  /*
+   * infiniteLoading.vm.$emit('infinite', {
+   *   loaded: () => {},
+   *   complete: () => {},
+   *   error: () => {},
+   * })
+   * await flushPromises()
+   * expect($ga.event).lastCalledWith({
+   *   eventCategory: 'home',
+   *   eventAction: 'scroll',
+   *   eventLabel: 'loadmore',
+   *   eventValue: 1,
+   * })
+   */
 
-  // infiniteLoading.vm.$emit('infinite', {
-  //   loaded: () => {},
-  //   complete: () => {},
-  //   error: () => {},
-  // })
-  // await flushPromises()
-  // expect($ga.event).lastCalledWith({
-  //   eventCategory: 'home',
-  //   eventAction: 'scroll',
-  //   eventLabel: 'loadmore',
-  //   eventValue: 2,
-  // })
+  /*
+   * infiniteLoading.vm.$emit('infinite', {
+   *   loaded: () => {},
+   *   complete: () => {},
+   *   error: () => {},
+   * })
+   * await flushPromises()
+   * expect($ga.event).lastCalledWith({
+   *   eventCategory: 'home',
+   *   eventAction: 'scroll',
+   *   eventLabel: 'loadmore',
+   *   eventValue: 2,
+   * })
+   */
 })
 
 describe('getLabel method', () => {

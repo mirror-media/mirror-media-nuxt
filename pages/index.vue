@@ -12,14 +12,25 @@
       <ContainerGptAd class="home__ad home__ad--hd" pageKey="home" adKey="HD" />
 
       <section class="editor-choices-container">
-        <UiColumnHeader
-          title="編輯精選"
-          class="home__column-header home__column-header--editor-choices"
-        />
-        <UiEditorChoices
-          :articles="editorChoicesArticles"
-          @sendGa="sendGaForClick('choice')"
-        />
+        <ClientOnly>
+          <UiEditorChoicesExperimentVariant
+            v-if="
+              $GOExp['homepage-editor-choice-mobile-redesign'].variant === '1'
+            "
+            :articles="editorChoicesArticles"
+            @sendGa="sendGaForClick('choice')"
+          />
+          <template v-else>
+            <UiColumnHeader
+              title="編輯精選"
+              class="home__column-header home__column-header--editor-choices"
+            />
+            <UiEditorChoices
+              :articles="editorChoicesArticles"
+              @sendGa="sendGaForClick('choice')"
+            />
+          </template>
+        </ClientOnly>
       </section>
 
       <ContainerGptAd
@@ -143,6 +154,7 @@ import localforage from 'localforage'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiColumnHeader from '~/components/UiColumnHeader.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
+import UiEditorChoicesExperimentVariant from '~/components/UiEditorChoicesExperimentVariant.vue'
 import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
@@ -165,8 +177,10 @@ const CATEGORY_ID_LATESTNEWS = '57e1e200ee85930e00cad4f3' // 娛樂頭條
 
 const GA_UTM_EDITOR_CHOICES = 'utm_source=mmweb&utm_medium=editorchoice'
 
-// 東森新聞
-// const PARTNER_ID_EBC = '5ea7fd55a66f9e0f00a04e9a'
+/*
+ * 東森新聞
+ * const PARTNER_ID_EBC = '5ea7fd55a66f9e0f00a04e9a'
+ */
 const MICRO_AD_IDXES_INSERTED = [2, 5, 8]
 const LATEST_ARTICLES_MIN_NUM = 6
 const EXTERNALS_IDX_START_INSERTED = 12
@@ -178,6 +192,7 @@ export default {
     UiFlashNews,
     UiColumnHeader,
     UiEditorChoices,
+    UiEditorChoicesExperimentVariant,
     UiVideoModal,
     UiArticleListFocus,
     UiArticleGallery,
@@ -391,29 +406,38 @@ export default {
 
         this.areMicroAdsInserted = true
       },
-      // async function insertExternals() {
-      //   if (
-      //     this.latestItems.length < EXTERNALS_IDX_START_INSERTED ||
-      //     this.areExternalsInserted
-      //   ) {
-      //     return
-      //   }
 
-      //   const { items = [] } =
-      //     (await this.$fetchExternals({
-      //       maxResults: EXTERNALS_MAX_RESULTS,
-      //       page: 1,
-      //       sort: '-publishedDate',
-      //       partner: PARTNER_ID_EBC,
-      //     })) || {}
+      /*
+       * async function insertExternals() {
+       *   if (
+       *     this.latestItems.length < EXTERNALS_IDX_START_INSERTED ||
+       *     this.areExternalsInserted
+       *   ) {
+       *     return
+       *   }
+       */
 
-      //   this.insertLatestItems(
-      //     EXTERNALS_IDX_START_INSERTED,
-      //     ...items.map(this.transformContentOfLatestItem)
-      //   )
+      /*
+       *   const { items = [] } =
+       *     (await this.$fetchExternals({
+       *       maxResults: EXTERNALS_MAX_RESULTS,
+       *       page: 1,
+       *       sort: '-publishedDate',
+       *       partner: PARTNER_ID_EBC,
+       *     })) || {}
+       */
 
-      //   this.areExternalsInserted = true
-      // },
+      /*
+       *   this.insertLatestItems(
+       *     EXTERNALS_IDX_START_INSERTED,
+       *     ...items.map(this.transformContentOfLatestItem)
+       *   )
+       */
+
+      /*
+       *   this.areExternalsInserted = true
+       * },
+       */
     ],
 
     isDesktopWidth: ['handleFixLastFocusList'],
