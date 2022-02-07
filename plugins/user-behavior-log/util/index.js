@@ -18,6 +18,7 @@ export function createUserBehaviorLog({ target = {} } = {}) {
   return {
     browser: getBrowserInfo(),
     'is-in-app-browser': isInApp(window.navigator.userAgent),
+    'user-agent': window.navigator.userAgent,
 
     'client-os': getClientOsInfo(),
 
