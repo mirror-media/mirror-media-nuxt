@@ -60,6 +60,7 @@
 
 <script>
 import { ENV } from '~/configs/config'
+import { merchandiseWithShippingFee } from '~/utils/papermag-merchandise.js'
 import SubscribeDiscount from '~/components/SubscribeDiscount.vue'
 import SubscribeFormPlanList from '~/components/SubscribeFormPlanList.vue'
 import SubscribeFormPerchaseInfo from '~/components/SubscribeFormPerchaseInfo.vue'
@@ -280,13 +281,11 @@ export default {
       let carrierType = this.receiptData.donateOrganization
         ? ''
         : this.receiptData.carrierType + ''
-      const isWithShippingFee = this.shipPlan.name === '限時掛號'
+
       let code =
         this.currentChoosedPlanId === 0
           ? 'magazine_one_year'
           : 'magazine_two_year'
-
-      if (isWithShippingFee) code += '_with_shipping_fee'
       let carrierNum =
         this.receiptData.carrierNumber ||
         this.receiptData.carrierTitle ||
@@ -296,9 +295,17 @@ export default {
         carrierType = ''
         carrierNum = ''
       }
+      let name
+      if (this.shipPlan.name === '限時掛號') {
+        ;({ code, name } = merchandiseWithShippingFee({
+          code,
+          name: itemDest,
+        }))
+      }
+      console.log(code, name)
       return {
         data: {
-          desc: isWithShippingFee ? itemDest + '加掛號運費' : itemDest,
+          desc: name || itemDest,
           comment: '',
           merchandise: {
             connect: {
