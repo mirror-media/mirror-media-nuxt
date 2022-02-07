@@ -391,5 +391,33 @@ $quote-color: #4a90e2;
   .code {
     line-height: 2em;
   }
+
+  ol {
+    list-style-type: decimal;
+    list-style-position: inside;
+    line-height: 2;
+    li {
+      margin: 0;
+      &::before {
+        content: '';
+        display: inline-block;
+        margin: 0 0 0 12px;
+      }
+      &::marker {
+        color: #054f77;
+      }
+    }
+  }
+  ul {
+    list-style-type: disc;
+    list-style-position: inside;
+    line-height: 2;
+    li {
+      margin: 0;
+      &::marker {
+        color: #054f77;
+      }
+    }
+  }
 }
 </style>

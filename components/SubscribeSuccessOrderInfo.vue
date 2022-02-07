@@ -9,6 +9,10 @@
           :data="orderInfo.orderId"
         />
         <SubscribeSuccessOrderInfoContentRow
+          title="訂單日期"
+          :data="orderInfo.date"
+        />
+        <SubscribeSuccessOrderInfoContentRow
           v-if="orderInfo.discountPrice"
           title="續訂戶代碼"
           :data="`MR ${orderInfo.discount_code}`"

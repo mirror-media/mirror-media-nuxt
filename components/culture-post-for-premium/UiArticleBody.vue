@@ -25,7 +25,13 @@
           </div>
           <div class="magazine">
             <div>月費、年費會員免費線上閱讀動態雜誌</div>
-            <button type="button" @click="enterMagazinePage">線上閱讀</button>
+            <button
+              type="button"
+              data-user-behavior-description="read-magazine"
+              @click="enterMagazinePage"
+            >
+              線上閱讀
+            </button>
           </div>
         </template>
       </ClientOnly>

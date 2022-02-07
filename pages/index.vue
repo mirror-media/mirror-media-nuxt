@@ -12,14 +12,25 @@
       <ContainerGptAd class="home__ad home__ad--hd" pageKey="home" adKey="HD" />
 
       <section class="editor-choices-container">
-        <UiColumnHeader
-          title="編輯精選"
-          class="home__column-header home__column-header--editor-choices"
-        />
-        <UiEditorChoices
-          :articles="editorChoicesArticles"
-          @sendGa="sendGaForClick('choice')"
-        />
+        <ClientOnly>
+          <UiEditorChoicesExperimentVariant
+            v-if="
+              $GOExp['homepage-editor-choice-mobile-redesign'].variant === '1'
+            "
+            :articles="editorChoicesArticles"
+            @sendGa="sendGaForClick('choice')"
+          />
+          <template v-else>
+            <UiColumnHeader
+              title="編輯精選"
+              class="home__column-header home__column-header--editor-choices"
+            />
+            <UiEditorChoices
+              :articles="editorChoicesArticles"
+              @sendGa="sendGaForClick('choice')"
+            />
+          </template>
+        </ClientOnly>
       </section>
 
       <ContainerGptAd
@@ -29,7 +40,7 @@
       />
 
       <div class="column-container">
-        <aside>
+        <aside v-if="shouldShowFocus">
           <LazyRenderer data-testid="mirror-tv" @load="loadEventMod">
             <section v-if="isValidEventModItem" class="container">
               <UiColumnHeader title="鏡電視" class="home__column-header" />
@@ -86,6 +97,11 @@
                   @sendGa="sendGaForClick('latest')"
                 />
                 <UiArticleGallery
+                  v-else-if="shouldShowFocus"
+                  :items="latestItems"
+                  @sendGa="sendGaForClick('latest')"
+                />
+                <UiArticleGalleryWithoutFocus
                   v-else
                   :items="latestItems"
                   @sendGa="sendGaForClick('latest')"
@@ -138,17 +154,19 @@ import localforage from 'localforage'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiColumnHeader from '~/components/UiColumnHeader.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
+import UiEditorChoicesExperimentVariant from '~/components/UiEditorChoicesExperimentVariant.vue'
 import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
 import UiArticleGalleryB from '~/components/UiArticleGalleryB.vue'
+import UiArticleGalleryWithoutFocus from '~/components/UiArticleGalleryWithoutFocus.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
-import { isTruthy } from '~/utils/index.js'
+// import { isTruthy } from '~/utils/index.js'
 import { stripHtmlTags } from '~/utils/article.js'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
 
@@ -159,11 +177,12 @@ const CATEGORY_ID_LATESTNEWS = '57e1e200ee85930e00cad4f3' // 娛樂頭條
 
 const GA_UTM_EDITOR_CHOICES = 'utm_source=mmweb&utm_medium=editorchoice'
 
-// 東森新聞
-const PARTNER_ID_EBC = '5ea7fd55a66f9e0f00a04e9a'
-
+/*
+ * 東森新聞
+ * const PARTNER_ID_EBC = '5ea7fd55a66f9e0f00a04e9a'
+ */
+const MICRO_AD_IDXES_INSERTED = [2, 5, 8]
 const LATEST_ARTICLES_MIN_NUM = 6
-const MICRO_AD_IDXES_INSERTED = [2, 4, 8]
 const EXTERNALS_IDX_START_INSERTED = 12
 const EXTERNALS_MAX_RESULTS = 6
 
@@ -173,6 +192,7 @@ export default {
     UiFlashNews,
     UiColumnHeader,
     UiEditorChoices,
+    UiEditorChoicesExperimentVariant,
     UiVideoModal,
     UiArticleListFocus,
     UiArticleGallery,
@@ -180,13 +200,13 @@ export default {
     ContainerGptAd,
     ContainerFullScreenAds,
     UiArticleGalleryB,
-
+    UiArticleGalleryWithoutFocus,
     SvgCloseIcon,
   },
 
   async fetch() {
     const [groupedResponse, flashNewsResponse] = await Promise.allSettled([
-      this.$fetchGrouped(),
+      this.$fetchGroupedWithExternal('post_external01'),
       this.fetchFlashNews(),
     ])
 
@@ -219,8 +239,15 @@ export default {
         maxResults: 20,
         page: 0,
       },
+      latestWithExternal: {
+        items: [],
+        total: 0,
+        maxResults: 20,
+        page: 0,
+      },
       areMicroAdsInserted: false,
       areExternalsInserted: false,
+      fileId: 1,
 
       eventMod: {
         item: {},
@@ -246,6 +273,10 @@ export default {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
+
+    shouldShowFocus() {
+      return false
+    },
 
     editorChoicesArticles() {
       const { choices: articles = [] } = this.groupedArticles
@@ -328,6 +359,7 @@ export default {
 
     focusArticles() {
       const { grouped: articles = [] } = this.groupedArticles
+      console.log(articles.map(transformContentOfFocus))
 
       return articles.map(transformContentOfFocus)
 
@@ -374,29 +406,38 @@ export default {
 
         this.areMicroAdsInserted = true
       },
-      async function insertExternals() {
-        if (
-          this.latestItems.length < EXTERNALS_IDX_START_INSERTED ||
-          this.areExternalsInserted
-        ) {
-          return
-        }
 
-        const { items = [] } =
-          (await this.$fetchExternals({
-            maxResults: EXTERNALS_MAX_RESULTS,
-            page: 1,
-            sort: '-publishedDate',
-            partner: PARTNER_ID_EBC,
-          })) || {}
+      /*
+       * async function insertExternals() {
+       *   if (
+       *     this.latestItems.length < EXTERNALS_IDX_START_INSERTED ||
+       *     this.areExternalsInserted
+       *   ) {
+       *     return
+       *   }
+       */
 
-        this.insertLatestItems(
-          EXTERNALS_IDX_START_INSERTED,
-          ...items.map(this.transformContentOfLatestItem)
-        )
+      /*
+       *   const { items = [] } =
+       *     (await this.$fetchExternals({
+       *       maxResults: EXTERNALS_MAX_RESULTS,
+       *       page: 1,
+       *       sort: '-publishedDate',
+       *       partner: PARTNER_ID_EBC,
+       *     })) || {}
+       */
 
-        this.areExternalsInserted = true
-      },
+      /*
+       *   this.insertLatestItems(
+       *     EXTERNALS_IDX_START_INSERTED,
+       *     ...items.map(this.transformContentOfLatestItem)
+       *   )
+       */
+
+      /*
+       *   this.areExternalsInserted = true
+       * },
+       */
     ],
 
     isDesktopWidth: ['handleFixLastFocusList'],
@@ -432,45 +473,23 @@ export default {
 
       return articles.map(transformContentOfFlashNews)
     },
-    async loadLatestListInitial() {
-      const {
-        items: articles = [],
-        meta = { total: 0 },
-      } = await this.fetchLatestList()
-
-      const slugsOfChoicesAndFocus = [
-        ...this.editorChoicesArticles,
-        ...this.focusArticles,
-        ...this.focusArticles.flatMap((article) => article.relateds),
-      ]
-        .filter(isTruthy)
-        .map((article) => article.slug)
-
-      const articlesWithoutChoicesAndFocus = articles.filter(
-        (article) => !slugsOfChoicesAndFocus.includes(article.slug)
-      )
-
-      // 為了避免廣告（MicroAd）連續出現，當篩選後的最新文章小於 LATEST_ARTICLES_MIN_NUM 篇，便採用未篩選前的文章
-      this.pushLatestItems(
-        articlesWithoutChoicesAndFocus.length < LATEST_ARTICLES_MIN_NUM
-          ? articles
-          : articlesWithoutChoicesAndFocus
-      )
-      this.setLatestTotal(meta.total)
+    loadLatestListInitial() {
+      const list = []
+      this.groupedArticles.latest.map((item) => {
+        item.id = item.slug
+        list.push(item)
+      })
+      this.pushLatestItems(list.splice(0, 20))
+      this.setLatestTotal(20)
+      this.fileId++
     },
     async fetchLatestList() {
-      this.latestList.page += 1
-
-      const { page, maxResults } = this.latestList
-
-      return (
-        (await this.$fetchList({
-          maxResults,
-          page,
-          sort: '-publishedDate',
-          isAudioSiteOnly: false,
-        })) || {}
+      if (this.fileId === 5) return []
+      const { latest = [] } = await this.$fetchGroupedWithExternal(
+        `post_external0${this.fileId}`
       )
+      this.fileId++
+      return latest
     },
     pushLatestItems(items = []) {
       this.latestList.items.push(
@@ -500,17 +519,38 @@ export default {
     },
     async loadMoreLatestItems(state) {
       try {
-        const { items = [] } = await this.fetchLatestList()
-
-        this.pushLatestItems(items)
-
-        if (this.doesHaveAnyLatestItemsLeftToLoad) {
-          state.loaded()
-        } else {
-          state.complete()
+        const groupArticleLength = this.groupedArticles.latest?.length
+        const latestLength = this.latestList?.items?.length
+        const reserveCount = groupArticleLength - latestLength
+        if (reserveCount < 20) {
+          const newLatest = await this.fetchLatestList()
+          if (!newLatest[0]) return state.complete()
+          this.groupedArticles.latest?.push(
+            ...newLatest.map((item) => {
+              return {
+                id: item.slug,
+                ...item,
+              }
+            })
+          )
         }
 
-        this.sendGa('scroll', 'loadmore', this.latestList.page - 1)
+        const oldestId = this.latestList?.items[latestLength - 1].id
+        let indexOfOlndex
+        this.groupedArticles.latest?.map((item, i) => {
+          if (item.id === oldestId) {
+            indexOfOlndex = i + 1
+          }
+        })
+        this.pushLatestItems(
+          this.groupedArticles.latest.slice(indexOfOlndex, indexOfOlndex + 20)
+        )
+
+        this.latestList.page++
+
+        state.loaded()
+
+        this.sendGa('scroll', 'loadmore', this.latestList.page)
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error(err)

@@ -1,77 +1,171 @@
 <template>
-  <div class="return">即將回到鏡週刊</div>
+  <div class="subscribe-magazine-page">
+    <template v-if="status === 'SUCCESS'">
+      <SubscribeStepProgress :currentStep="3" />
+      <SubscribeSuccess
+        :orderInfo="orderInfo"
+        :orderInfoPurchasedList="orderInfoPurchasedList"
+        :customerInfo="customerInfo"
+      />
+    </template>
+    <template v-else>
+      <SubscribeStepProgress :currentStep="2" />
+      <SubscribeFail :resultStatus="status" :errorData="errorData" />
+    </template>
+  </div>
 </template>
 
 <script>
+import axios from 'axios'
+import dayjs from 'dayjs'
+import { print } from 'graphql/language/printer'
+import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
+import SubscribeFail from '~/components/SubscribeFail.vue'
+import SubscribeSuccess from '~/components/SubscribeSuccess.vue'
+import { magazineOrder } from '~/apollo/queries/papermagQuery.gql'
+import {
+  NEWEBPAY_PAPERMAG_KEY,
+  NEWEBPAY_PAPERMAG_IV,
+  ISRAFEL_ORIGIN,
+} from '~/configs/config'
+const NewebPay = require('@mirrormedia/newebpay-node')
+
 export default {
-  layout: 'empty',
-  middleware({ req, store, redirect }) {
-    let referer = ''
-    if (process.server) {
-      referer = req.headers.referer
-    }
-
-    if (referer !== 'https://core.newebpay.com/') {
-      redirect('/subscribe')
-    }
-  },
-  async mounted() {
-    /*
-     * get order info from sessionStoaage
-     * use them to display order info in success page
-     */
-
-    const orderInfo = this.getDataFromSessionStorage('orderInfo')
-    this.$store.dispatch('subscribe/updateOrderInfo', JSON.parse(orderInfo))
-
-    /*
-     * get infoPayload from sessionStorage
-     * use them to get payment info from backend
-     */
-
-    const JwtToken = this.getDataFromSessionStorage('JwtToken')
-    const MerchantOrderNo = this.getDataFromSessionStorage('MerchantOrderNo')
-    this.$store.dispatch('subscribe/updateInfoPayload', {
-      JwtToken,
-      MerchantOrderNo,
-    })
-
-    const infoPayload = {
-      merchant_order_no: MerchantOrderNo,
-      jwt: JwtToken,
+  async asyncData({ req, redirect, route }) {
+    if (route.query['order-fail'])
+      return {
+        status: 'order-fail',
+      }
+    if (req.method !== 'POST') {
+      console.log('papermag is retun GET', req)
+      redirect('/papermag')
     }
 
     try {
-      const info = await this.$axios.$post(
-        `/api/v2/subscribe-magazine/info`,
-        infoPayload
+      const infoData = req.body
+      const newebpay = new NewebPay(NEWEBPAY_PAPERMAG_KEY, NEWEBPAY_PAPERMAG_IV)
+      const decryptedTradeInfo = await newebpay.getDecryptedTradeInfo(
+        infoData.TradeInfo
+      )
+      const MerchantOrderNo = JSON.parse(Object.keys(decryptedTradeInfo)[0])
+        .Result.MerchantOrderNo
+
+      const { data: result } = await axios({
+        url: `${ISRAFEL_ORIGIN}/api/graphql`,
+        method: 'post',
+        data: {
+          query: print(magazineOrder),
+          variables: { orderNumber: MerchantOrderNo + '' },
+        },
+        headers: {
+          'content-type': 'application/json',
+          'Cache-Control': 'no-cache',
+        },
+      })
+      if (result.errors) console.log(result.errors[0].message)
+      const decryptInfoData = result?.data?.allMagazineOrders[0]
+      if (!decryptInfoData) {
+        return {
+          req: infoData,
+          errorData: {
+            orderId: '',
+            message: '訂單編號不存在',
+          },
+        }
+      }
+      if (infoData.Status !== 'SUCCESS') {
+        return {
+          req: infoData,
+          status: infoData.Status,
+          errorData: {
+            orderId: decryptInfoData.orderNumber,
+            message: infoData.Status,
+          },
+        }
+      }
+
+      const date = dayjs(new Date(decryptInfoData.createdAt)).format(
+        'YYYY-MM-DD'
       )
 
-      const { paymentStatus } = info.payment_status
+      const shippingCostPerYear = 1040
+      let shippingCost = 0
+      if (
+        decryptInfoData.merchandise.code ===
+        'magazine_one_year_with_shipping_fee'
+      ) {
+        shippingCost = shippingCostPerYear * decryptInfoData.itemCount
+      } else if (
+        decryptInfoData.merchandise.code ===
+        'magazine_two_year_with_shipping_fee'
+      ) {
+        shippingCost = shippingCostPerYear * decryptInfoData.itemCount * 2
+      }
 
-      switch (paymentStatus) {
-        case 'SUCCESS':
-          this.$store.dispatch('subscribe/updateResultStatus', 'success')
+      const merchandiseName = decryptInfoData.merchandise.name?.replace(
+        '加掛號運費',
+        ''
+      )
 
-          break
+      const orderInfoPurchasedList = [
+        {
+          text: merchandiseName,
+          price:
+            decryptInfoData.itemCount * decryptInfoData.merchandise.price -
+            shippingCost,
+        },
+        { text: '運費', price: shippingCost },
+      ]
+      if (decryptInfoData.promoteCode) {
+        orderInfoPurchasedList.push({
+          text: '折扣碼',
+          price: 80 * decryptInfoData.itemCount,
+        })
+      }
+      orderInfoPurchasedList.push({
+        text: '付款金額',
+        price: decryptInfoData.totalAmount,
+      })
 
-        default:
-          this.$store.dispatch('subscribe/updateResultStatus', 'payment-fail')
-          break
+      return {
+        req: infoData,
+        status: infoData.Status,
+        orderInfo: {
+          orderId: decryptInfoData.orderNumber,
+          date,
+          discountPrice: decryptInfoData.promoteCode !== '',
+          discount_code: decryptInfoData.promoteCode,
+        },
+        orderInfoPurchasedList,
+        customerInfo: {
+          pur_name: decryptInfoData.purchaseName,
+          pur_mail: decryptInfoData.purchaseEmail,
+          pur_cell: decryptInfoData.purchaseMobile,
+          rec_name: decryptInfoData.receiveName,
+          rec_cell: decryptInfoData.receiveMobile,
+          rec_addr: decryptInfoData.receiveAddress,
+        },
       }
     } catch (e) {
-      this.$store.dispatch('subscribe/updateResultStatus', 'payment-fail')
+      console.log(e)
     }
-    this.$router.push('/subscribe/result')
   },
-  methods: {
-    getDataFromSessionStorage(name) {
-      if (process.browser) {
-        return sessionStorage.getItem(name)
-      } else {
-        return ''
-      }
-    },
+  components: {
+    SubscribeStepProgress,
+    SubscribeFail,
+    SubscribeSuccess,
+  },
+  provide: {
+    subscribeFailButtonLink: '/papermag',
+  },
+  data() {
+    return {
+      req: {},
+      status: 'order-fail',
+      orderInfo: {},
+      orderInfoPurchasedList: [],
+      customerInfo: {},
+    }
   },
 }
 </script>

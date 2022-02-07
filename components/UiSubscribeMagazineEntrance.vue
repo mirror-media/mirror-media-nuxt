@@ -1,6 +1,6 @@
 <template>
   <div class="subscribe-magazine-entrance" @click="handleClick">
-    鏡週刊<br class="subscribe-magazine-entrance__br" />雜誌訂閱
+    訂閱<br class="subscribe-magazine-entrance__br" />紙本雜誌
   </div>
 </template>
 

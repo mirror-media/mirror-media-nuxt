@@ -24,6 +24,9 @@ describe('pageview event', function () {
           },
         },
       },
+      store: {
+        registerModule: () => {},
+      },
     }
     plugin(mockContext, () => {})
 
@@ -65,6 +68,9 @@ describe('pageview event', function () {
           },
         },
       },
+      store: {
+        registerModule: () => {},
+      },
     }
     plugin(mockContext, () => {})
 
@@ -94,6 +100,9 @@ describe('click event', function () {
         router: {
           beforeEach: () => {},
         },
+      },
+      store: {
+        registerModule: () => {},
       },
     }
     plugin(mockContext, () => {})
@@ -129,6 +138,9 @@ describe('exit event', function () {
         router: {
           beforeEach: () => {},
         },
+      },
+      store: {
+        registerModule: () => {},
       },
     }
     plugin(mockContext, () => {})

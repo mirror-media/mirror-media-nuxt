@@ -299,10 +299,12 @@ export default {
         background: #e3e3e3;
         color: rgba(0, 0, 0, 0.2);
       }
-      &.remove {
+      &.remove::v-deep {
         background: #ffffff;
         border: 1px solid #054f77;
-        color: #054f77;
+        span {
+          color: #054f77 !important;
+        }
         &:hover {
           background: linear-gradient(
               0deg,

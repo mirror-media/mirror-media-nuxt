@@ -81,6 +81,12 @@ export default {
       // dimension about isTruncated of the story content
       const msg = this.story.isTruncated?.toString()
       this.$ga.set('dimension2', msg)
+
+      // dimension of member type
+      this.$ga.set(
+        'dimension3',
+        this.$store.state['membership-subscribe'].basicInfo.type
+      )
     } else {
       this.$ga.set('dimension1', 'notMember')
 
@@ -89,6 +95,18 @@ export default {
 
       this.isLoading = false
     }
+
+    this.$store.commit('premium-story/SET_STORY', this.story)
+    this.$sendUserBehaviorLog({
+      category: 'whole-site',
+      description: '',
+      'event-type': 'pageview',
+
+      'member-info-firebase': this?.$store?.state?.membership,
+      'member-info-israfel': this?.$store?.state?.['membership-subscribe'],
+
+      'premium-story-info': this?.$store?.state?.['premium-story'],
+    })
   },
   methods: {
     mockFailRequest() {

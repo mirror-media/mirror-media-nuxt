@@ -133,15 +133,6 @@
                   >
                     <section v-if="doesHavePopularStories">
                       <UiArticleListAsideB
-                        v-if="
-                          $GOExp['normal-post-popular-redesign'].variant === '1'
-                        "
-                        heading="熱門文章"
-                        :items="popularStories"
-                        @sendGa="sendGaForClick('popular')"
-                      />
-                      <UiArticleListAside
-                        v-else
                         heading="熱門文章"
                         :items="popularStories"
                         @sendGa="sendGaForClick('popular')"

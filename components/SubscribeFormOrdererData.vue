@@ -240,6 +240,9 @@ export default {
     check() {
       if (this.isNeedToCheck) {
         this.$v.$touch()
+        if (!this.isOrderer) {
+          this.email = this.ordererData.email
+        }
         if (this.$v.$invalid || !this.isValidPhone) {
           this.submitStatus = 'ERROR'
         } else {
