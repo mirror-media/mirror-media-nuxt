@@ -11,12 +11,13 @@ import getElementInnerText from './inner-text'
 import getClientId from './client-id'
 import getSessionId from './session-id'
 import getRref from './rref'
+import isInApp from './is-in-app-browser'
 import { API_PATH_FRONTEND } from '~/configs/config'
 
 export function createUserBehaviorLog({ target = {} } = {}) {
-  console.log(getElementDataUserBehaviorDescription(target))
   return {
     browser: getBrowserInfo(),
+    'is-in-app-browser': isInApp(window.navigator.userAgent),
 
     'client-os': getClientOsInfo(),
 
