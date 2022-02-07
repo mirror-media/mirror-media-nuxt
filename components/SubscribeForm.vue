@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { ENV } from '~/configs/config'
 import SubscribeDiscount from '~/components/SubscribeDiscount.vue'
 import SubscribeFormPlanList from '~/components/SubscribeFormPlanList.vue'
 import SubscribeFormPerchaseInfo from '~/components/SubscribeFormPerchaseInfo.vue'
@@ -351,6 +352,8 @@ export default {
       if (this.receiverDataIsSameAsOrderer) {
         this.receiverData = this.ordererData
       }
+
+      if (ENV === 'prod' || ENV === 'staging') return
 
       if (this.validationPass() && this.acceptPermission) {
         const payload = this.getOrderPayload()
