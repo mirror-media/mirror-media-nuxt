@@ -19,6 +19,7 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
 import { print } from 'graphql/language/printer'
+import { merchandiseWithoutShippingFee } from '~/utils/papermag-merchandise.js'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeSuccess from '~/components/SubscribeSuccess.vue'
@@ -88,28 +89,14 @@ export default {
         'YYYY-MM-DD'
       )
 
-      const shippingCostPerYear = 1040
-      let shippingCost = 0
-      if (
-        decryptInfoData.merchandise.code ===
-        'magazine_one_year_with_shipping_fee'
-      ) {
-        shippingCost = shippingCostPerYear * decryptInfoData.itemCount
-      } else if (
-        decryptInfoData.merchandise.code ===
-        'magazine_two_year_with_shipping_fee'
-      ) {
-        shippingCost = shippingCostPerYear * decryptInfoData.itemCount * 2
-      }
-
-      const merchandiseName = decryptInfoData.merchandise.name?.replace(
-        '加掛號運費',
-        ''
-      )
+      const { name, shippingFeePerCount } = merchandiseWithoutShippingFee({
+        code: decryptInfoData.merchandise.code,
+      })
+      const shippingCost = shippingFeePerCount * decryptInfoData.itemCount
 
       const orderInfoPurchasedList = [
         {
-          text: merchandiseName,
+          text: name,
           price:
             decryptInfoData.itemCount * decryptInfoData.merchandise.price -
             shippingCost,

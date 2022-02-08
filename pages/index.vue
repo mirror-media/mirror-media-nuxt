@@ -359,7 +359,6 @@ export default {
 
     focusArticles() {
       const { grouped: articles = [] } = this.groupedArticles
-      console.log(articles.map(transformContentOfFocus))
 
       return articles.map(transformContentOfFocus)
 
@@ -717,7 +716,7 @@ function transformContentOfFlashNews(article = {}) {
 
 function getHref({ style = '', slug = '', partner, name = '' } = {}) {
   if (partner) {
-    return `/external/${name}/`
+    return `/external/${slug}/`
   }
 
   switch (style) {
@@ -730,9 +729,9 @@ function getHref({ style = '', slug = '', partner, name = '' } = {}) {
   }
 }
 
-function getImg({ heroImage, ogImage, heroVideo, partner, thumb } = {}) {
+function getImg({ heroImage, ogImage, heroVideo, partner } = {}) {
   if (partner) {
-    return thumb
+    return heroImage
   }
 
   let img = {}
