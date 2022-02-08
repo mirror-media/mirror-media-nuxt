@@ -3,7 +3,7 @@
     <ContainerList
       :fetchList="fetchList"
       :listTitle="authorName"
-      listTitleColor="#bcbcbc"
+      listTitleColor="#000000de"
     />
 
     <UiStickyAd pageKey="other" />
