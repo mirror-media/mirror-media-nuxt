@@ -1,6 +1,6 @@
 <template>
   <section class="search">
-    <h1 class="search__title" v-text="keyword" />
+    <h1 class="search__title" v-text="`“${keyword}”`" />
 
     <UiArticleList class="search__list" :listItems="listItems" />
     <UiInfiniteLoading v-if="shouldLoadmore" @infinite="infiniteHandler" />
@@ -66,7 +66,7 @@ export default {
 
   computed: {
     keyword() {
-      return this.$route.params.keyword
+      return `${this.$route.params.keyword}`
     },
     ...mapState({
       sections: (state) => state.sections.data.items ?? [],
@@ -99,24 +99,23 @@ export default {
     margin: 0 auto;
   }
   &__title {
-    font-size: 48px;
-    color: #344951;
+    font-size: 20.8px;
+    color: #000000de;
     display: flex;
     align-items: center;
     padding: 0 32px;
     @include media-breakpoint-up(md) {
-      padding: 0 10px;
+      padding: 0;
     }
     &::after {
       content: '';
-      margin: 0 0 0 10px;
+      margin: 0 0 0 24px;
       display: inline-block;
       flex: 1 1 auto;
-      height: 10px;
+      height: 2px;
       background: linear-gradient(
         to right,
-        #bcbcbc 0%,
-        rgba(242, 242, 242, 1) 70%,
+        #000000 0%,
         rgba(242, 242, 242, 1) 100%
       );
     }
