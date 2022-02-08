@@ -1,6 +1,6 @@
 <template>
   <section class="video-subscriptions" :class="{ isPremium: isPremium }">
-    <div v-if="isPremium || true" class="scroll-container">
+    <div v-if="isPremium" class="scroll-container">
       <UiYoutubeSubscribeForPremium
         v-for="channel in CHANNELS_FOR_PREMIUM"
         :key="`channel-${channel.id}`"
@@ -50,11 +50,11 @@ const CHANNELS_FOR_PREMIUM = [
     id: 'UCSGNZVECzarsXTxPsNS9Zow',
     name: 'fun',
   },
-  {
-    title: '鏡發財',
-    id: 'UCYkldEK001GxR884OZMFnRw',
-    name: 'money',
-  },
+  // {
+  //   title: '鏡發財',
+  //   id: 'UCYkldEK001GxR884OZMFnRw',
+  //   name: 'money',
+  // },
   {
     title: '鏡食旅',
     id: 'UCglE1_DI0TDSY70WfeoPSOQ',
