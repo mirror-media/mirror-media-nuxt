@@ -4,13 +4,21 @@ import Vuelidate from 'vuelidate'
 import GptAd from './gpt-ad'
 
 import { GPT_MODE, IS_AD_DISABLE } from '~/configs/config'
+import { shouldFeatureToggleOnlyOnDev } from '~/utils/feature-toggle'
 
-Vue.use(VueAwesomeSwiper)
+export default function ({ store }) {
+  Vue.use(VueAwesomeSwiper)
 
-Vue.use(GptAd, {
-  adNetwork: '40175602',
-  mode: GPT_MODE,
-  isAdDisable: IS_AD_DISABLE,
-})
+  const isPremiumMember =
+    store.state['membership-subscribe'].basicInfo.type ===
+      'subscribe_monthly' ||
+    store.state['membership-subscribe'].basicInfo.type === 'subscribe_yearly'
+  Vue.use(GptAd, {
+    adNetwork: '40175602',
+    mode: GPT_MODE,
+    isAdDisable:
+      IS_AD_DISABLE || (shouldFeatureToggleOnlyOnDev() && isPremiumMember),
+  })
 
-Vue.use(Vuelidate)
+  Vue.use(Vuelidate)
+}
