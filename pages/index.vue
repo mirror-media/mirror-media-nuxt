@@ -502,7 +502,6 @@ export default {
       this.latestList.total = total
     },
     transformContentOfLatestItem(item = {}) {
-      // console.log({ item })
       const { id = '', title = '', brief, sections = [] } = item
 
       return {
@@ -717,7 +716,7 @@ function transformContentOfFlashNews(article = {}) {
 
 function getHref({ style = '', slug = '', partner, name = '' } = {}) {
   if (partner) {
-    return `/external/${name}/`
+    return `/external/${slug}/`
   }
 
   switch (style) {
