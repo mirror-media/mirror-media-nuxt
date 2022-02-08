@@ -1,32 +1,49 @@
 import dayjs from 'dayjs'
-import { createUserBehaviorLog } from './util'
-import { API_PATH_FRONTEND } from '~/configs/config'
+import debounce from 'lodash/debounce'
+import TimeMe from 'timeme.js'
+import { createUserBehaviorLog, isScrollToBottom, sendLog } from './util'
 
 const debug = require('debug')('user-behavior-log')
 
 export default (context, inject) => {
+  inject('sendUserBehaviorLog', function createLogger(log) {
+    sendLog({
+      ...createUserBehaviorLog(),
+      ...log,
+    })
+  })
+
   // pageview event
   context.app.router.beforeEach((to, from, next) => {
-    const payload = {
-      category: 'whole-site',
-      description: '',
-      eventType: 'pageview',
+    /*
+     * skip pageview event sent by the plugin if the page is premium-story
+     * we send pageview event manually in beforeMount hook in page component
+     */
+    if (to.name === 'premium-slug') {
+      return next()
     }
-    if (to.name === 'search') {
-      payload.keyword = createSearchKeywordValue()
+
+    try {
+      const log = {
+        ...createUserBehaviorLog(),
+        category: 'whole-site',
+        description: '',
+        'event-type': 'pageview',
+        ...(to.name === 'search'
+          ? { keyword: createSearchKeywordValue() }
+          : {}),
+
+        'member-info-firebase': context?.store?.state?.membership,
+        'member-info-israfel': context?.store?.state?.['membership-subscribe'],
+      }
+
+      debug('Prepare to send pageview event user behavior log to server: ', log)
+      sendLog(log)
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err)
     }
-    createUserBehaviorLog(payload)
-      .then((log) => {
-        debug(
-          'Prepare to send pageview event user behavior log to server: ',
-          log
-        )
-        sendLog(log)
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err)
-      })
+
     next()
 
     function createSearchKeywordValue() {
@@ -37,47 +54,91 @@ export default (context, inject) => {
 
   // click event
   window.addEventListener('click', (event) => {
-    createUserBehaviorLog({
-      category: 'whole-site',
-      description: '',
-      eventType: 'click',
-      target: event.target,
-    })
-      .then((log) => {
-        debug(
-          'Prepare to send click event user behavior log to server, data: ',
-          log
-        )
-        sendLog(log)
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err)
-      })
+    try {
+      const log = {
+        ...createUserBehaviorLog({ target: event.target }),
+        category: 'whole-site',
+        description: '',
+        'event-type': 'click',
+
+        'member-info-firebase': context?.store?.state?.membership,
+        'member-info-israfel': context?.store?.state?.['membership-subscribe'],
+
+        'premium-story-info': context?.store?.state?.['premium-story'],
+      }
+      debug(
+        'Prepare to send click event user behavior log to server, data: ',
+        log
+      )
+      sendLog(log)
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err)
+    }
   })
 
   // exit event
-  window.addEventListener('beforeunload', (event) => {
-    const now = dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss')
-    createUserBehaviorLog({
-      category: 'whole-site',
-      description: '',
-      eventType: 'exit',
-      target: event.target,
-      'exit-time': now,
-    })
-      .then((log) => {
-        debug(
-          'Prepare to send exit event user behavior log to server, data: ',
-          JSON.stringify(log)
-        )
-        sendLog(log)
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err)
-      })
+  TimeMe.initialize({
+    currentPageName: window.location.href,
+    idleTimeoutInSeconds: 30,
   })
+  window.addEventListener('beforeunload', (event) => {
+    try {
+      const log = {
+        ...createUserBehaviorLog({ target: event.target }),
+        category: 'whole-site',
+        description: '',
+        'event-type': 'exit',
+        'exit-time': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
+
+        'member-info-firebase': context?.store?.state?.membership,
+        'member-info-israfel': context?.store?.state?.['membership-subscribe'],
+
+        'premium-story-info': context?.store?.state?.['premium-story'],
+
+        'stay-time-in-seconds': TimeMe.getTimeOnCurrentPageInSeconds(),
+      }
+      debug(
+        'Prepare to send exit event user behavior log to server, data: ',
+        JSON.stringify(log)
+      )
+      sendLog(log)
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err)
+    }
+  })
+
+  // scroll event
+  window.addEventListener(
+    'scroll',
+    debounce(function (event) {
+      if (isScrollToBottom()) {
+        try {
+          const log = {
+            ...createUserBehaviorLog({ target: event.target }),
+            category: 'whole-site',
+            description: '',
+            'event-type': 'scroll-to-bottom',
+
+            'member-info-firebase': context?.store?.state?.membership,
+            'member-info-israfel':
+              context?.store?.state?.['membership-subscribe'],
+
+            'premium-story-info': context?.store?.state?.['premium-story'],
+          }
+          debug(
+            'Prepare to send exit event user behavior log to server, data: ',
+            JSON.stringify(log)
+          )
+          sendLog(log)
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log(err)
+        }
+      }
+    }, 500)
+  )
 
   inject(
     'sendMembershipErrorLog',
@@ -90,36 +151,27 @@ export default (context, inject) => {
       description = '',
       eventType = '',
     } = {}) => {
-      const now = dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss')
-      createUserBehaviorLog({
-        category: 'membershipErrorLog',
-        email,
-        token,
-        firebaseId,
-        memberType,
-        xstate,
-        description,
-        eventType,
-        time: now,
-      })
-        .then((log) => {
-          debug(
-            'Prepare to send exit event user behavior log to server, data: ',
-            JSON.stringify(log)
-          )
-          sendLog(log)
+      try {
+        const log = createUserBehaviorLog({
+          category: 'membershipErrorLog',
+          email,
+          token,
+          firebaseId,
+          memberType,
+          xstate,
+          description,
+          eventType,
+          time: dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
         })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err)
-        })
+        debug(
+          'Prepare to send exit event user behavior log to server, data: ',
+          JSON.stringify(log)
+        )
+        sendLog(log)
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log(err)
+      }
     }
   )
-}
-
-function sendLog(log) {
-  const blob = new Blob([JSON.stringify({ clientInfo: log })], {
-    type: 'application/json; charset=UTF-8',
-  })
-  navigator.sendBeacon(`/${API_PATH_FRONTEND}/tracking`, blob)
 }

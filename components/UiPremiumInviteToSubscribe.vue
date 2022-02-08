@@ -10,6 +10,7 @@
             </div>
             <UiMembershipButtonPrimary
               class="plan__button"
+              data-user-behavior-description="premium-subscribe"
               @click.native="$emit('subscribePremium')"
             >
               加入Premium會員
@@ -24,6 +25,7 @@
           </div>
           <UiMembershipButtonLight
             class="plan__button"
+            data-user-behavior-description="onetime-subscribe"
             @click.native="$emit('subscribePost')"
           >
             解鎖單篇報導

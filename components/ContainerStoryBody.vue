@@ -57,6 +57,8 @@
       更新時間｜<span v-text="updatedAt" />
     </p>
 
+    <UiSocialNetworkServices style="margin: 30px auto 0 auto" />
+
     <div class="story__member-info">
       鏡週刊五歲了！我們正式宣告新的轉變，鏡週刊訂閱制10/5正式上線，讓有價的閱聽成就更多優質文章，並獻上無廣告的閱讀環境，讓您盡情享受15類會員專屬內容，誠摯邀請您<strong
         @click="enterMemberSectionPage"
@@ -131,6 +133,7 @@ import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
 import UiStoryVideo from '~/components/UiStoryVideo.vue'
 import UiShareSidebox from '~/components/UiShareSidebox.vue'
+import UiSocialNetworkServices from '~/components/UiSocialNetworkServices.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import {
@@ -158,6 +161,7 @@ export default {
     }
   },
   components: {
+    UiSocialNetworkServices,
     UiStoryContentHandler,
     UiShareFb,
     UiShareLine,

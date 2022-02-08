@@ -1,0 +1,23 @@
+query magazineOrder($orderNumber: String!) {
+  allMagazineOrders(where: { orderNumber: $orderNumber }) {
+    id
+    orderNumber
+    purchaseDatetime
+    merchandise {
+      name
+      code
+      price
+    }
+    itemCount
+    totalAmount
+    purchaseName
+    purchaseEmail
+    purchaseMobile
+    receiveName
+    receiveMobile
+    receiveAddress
+    createdAt
+    totalAmount
+    promoteCode
+  }
+}

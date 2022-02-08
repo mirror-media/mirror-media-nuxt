@@ -19,69 +19,56 @@ describe('properties of log', function () {
     jest.clearAllMocks()
   })
 
-  test('parameters assign to output directly', async function () {
-    const mockParameter = {
-      eventType: 'click',
-      category: '',
-      description: '',
-    }
-
-    const log = await createUserBehaviorLog(mockParameter)
-    expect(log).toMatchObject({
-      'event-type': mockParameter.eventType,
-      category: mockParameter.category,
-      description: mockParameter.description,
-    })
-  })
-
-  test('target parameter, use for assign to output directly', async function () {
+  test('target parameter, use for assign to output directly', function () {
     const mockParameter = {
       target: {
         textContent: '<div>mock text content</div>',
         tagName: 'DIV',
         className: 'mock-class-name',
         id: 'mock-id',
+        dataset: {
+          userBehaviorDescription: 'mock-user-behavior-description',
+        },
       },
     }
 
-    const log = await createUserBehaviorLog(mockParameter)
+    const log = createUserBehaviorLog(mockParameter)
     expect(log).toMatchObject({
       'target-tag-name': mockParameter.target.tagName,
       'target-tag-class': mockParameter.target.className,
       'target-tag-id': mockParameter.target.id,
       'target-text': 'mock text content',
+      'target-data-user-behavior-description': 'mock-user-behavior-description',
     })
   })
 
-  test('target parameter, textContent output', async function () {
+  test('target parameter, textContent output', function () {
     const mockParameter = {
       target: {
         textContent: '<div>mock text content</div>',
       },
     }
-    const log = await createUserBehaviorLog(mockParameter)
+    const log = createUserBehaviorLog(mockParameter)
     expect(log).toMatchObject({
       'target-text': 'mock text content',
     })
 
     mockParameter.target.textContent =
       '<div>01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</div>'
-    const logWithTruncatedTextContent = await createUserBehaviorLog(
-      mockParameter
-    )
+    const logWithTruncatedTextContent = createUserBehaviorLog(mockParameter)
     expect(logWithTruncatedTextContent).toMatchObject({
       'target-text':
         '0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789…',
     })
   })
 
-  test('target parameter, which affect redirect-to output', async function () {
+  test('target parameter, which affect redirect-to output', function () {
     const mockParameter = {
       target: {
         tagName: 'DIV',
       },
     }
-    const log = await createUserBehaviorLog(mockParameter)
+    const log = createUserBehaviorLog(mockParameter)
     expect(log).toMatchObject({
       'redirect-to': undefined,
     })
@@ -89,57 +76,28 @@ describe('properties of log', function () {
     mockParameter.target.tagName = 'A'
     const mockHref = 'https://www.google.com'
     mockParameter.target.href = mockHref
-    const logWithMockHref = await createUserBehaviorLog(mockParameter)
+    const logWithMockHref = createUserBehaviorLog(mockParameter)
     expect(logWithMockHref).toMatchObject({
       'redirect-to': mockHref,
     })
   })
 
-  test('target parameter, which affect referrer output', async function () {
+  test('target parameter, which affect referrer output', function () {
     const mockHref = 'https://www.google.com'
-    const mockParameter = {
-      referrer: mockHref,
-    }
-    const log = await createUserBehaviorLog(mockParameter)
+    jest.spyOn(document, 'referrer', 'get').mockImplementation(() => mockHref)
+    const log = createUserBehaviorLog()
     expect(log).toMatchObject({
       referrer: mockHref,
     })
-
-    const mockParameterTargetDiv = {
-      target: {
-        tagName: 'DIV',
-      },
-    }
-    const logWithTargetDiv = await createUserBehaviorLog(mockParameterTargetDiv)
-    expect(logWithTargetDiv).toMatchObject({
-      referrer: undefined,
-    })
-
-    global.window = Object.create(window)
-    const mockLocationHref = 'http://dummy.com'
-    Object.defineProperty(window, 'location', {
-      value: {
-        href: mockLocationHref,
-      },
-    })
-    const mockParameterTarget = {
-      target: {
-        tagName: 'A',
-      },
-    }
-    const logWithTargetALink = await createUserBehaviorLog(mockParameterTarget)
-    expect(logWithTargetALink).toMatchObject({
-      referrer: mockLocationHref,
-    })
   })
 
-  test('target parameter, which affect rref output', async function () {
+  test('target parameter, which affect rref output', function () {
     const mockParameter = {
       target: {
         tagName: 'DIV',
       },
     }
-    const log = await createUserBehaviorLog(mockParameter)
+    const log = createUserBehaviorLog(mockParameter)
     expect(log).toMatchObject({
       rref: undefined,
     })
@@ -150,7 +108,7 @@ describe('properties of log', function () {
         id: 'related',
       },
     }
-    const logWithRelated = await createUserBehaviorLog(mockParameterRelated)
+    const logWithRelated = createUserBehaviorLog(mockParameterRelated)
     expect(logWithRelated).toMatchObject({
       rref: 'related',
     })
@@ -161,13 +119,13 @@ describe('properties of log', function () {
         id: 'recommend',
       },
     }
-    const logWithRecommend = await createUserBehaviorLog(mockParameterRecommend)
+    const logWithRecommend = createUserBehaviorLog(mockParameterRecommend)
     expect(logWithRecommend).toMatchObject({
       rref: 'recommend',
     })
   })
 
-  test('target parameter, which is nested DOM node', async function () {
+  test('target parameter, which is nested DOM node', function () {
     const mockHref = 'https://www.google.com'
     const mockParameter = {
       target: {
@@ -177,41 +135,41 @@ describe('properties of log', function () {
           parentNode: {
             tagName: 'A',
             href: mockHref,
+            dataset: {
+              userBehaviorDescription: 'mock-user-behavior-description',
+            },
           },
         },
       },
     }
-    const log = await createUserBehaviorLog(mockParameter)
+    const log = createUserBehaviorLog(mockParameter)
     expect(log).toMatchObject({
       'redirect-to': mockHref,
+      'target-data-user-behavior-description': 'mock-user-behavior-description',
     })
   })
 
-  test('browser name and browser version', async function () {
-    const log = await createUserBehaviorLog({})
+  test('browser name and browser version', function () {
+    const log = createUserBehaviorLog({})
     expect(log).toMatchObject({
       browser: {
         name: mockBrowser,
         version: mockBrowserVersion,
       },
-      'browser-name': mockBrowser,
-      'browser-version': mockBrowserVersion,
     })
   })
 
-  test('client-os name and client-os version', async function () {
-    const log = await createUserBehaviorLog({})
+  test('client-os name and client-os version', function () {
+    const log = createUserBehaviorLog({})
     expect(log).toMatchObject({
       'client-os': {
         name: 'macOS',
         version: '10.15.5',
       },
-      'client-os-name': 'macOS',
-      'client-os-version': '10.15.5',
     })
   })
 
-  test('curr-url', async function () {
+  test('curr-url', function () {
     global.window = Object.create(window)
     const mockLocationHref = 'http://dummy.com'
     Object.defineProperty(window, 'location', {
@@ -219,25 +177,25 @@ describe('properties of log', function () {
         href: mockLocationHref,
       },
     })
-    const log = await createUserBehaviorLog({})
+    const log = createUserBehaviorLog({})
     expect(log).toMatchObject({
       'curr-url': mockLocationHref,
     })
   })
 
-  test('datetime', async function () {
+  test('datetime', function () {
     const dateNow = jest.spyOn(Date, 'now')
     const dateNowTime = new Date('2019-04-07T10:20:30Z')
 
     dateNow.mockImplementation(() => dateNowTime)
 
-    const log = await createUserBehaviorLog({})
+    const log = createUserBehaviorLog({})
     expect(log).toMatchObject({
       datetime: `2019.04.07 ${10 + 8}:20:30`,
     })
   })
 
-  test('target-window-size-width and target-window-size-height', async function () {
+  test('target-window-size-width and target-window-size-height', function () {
     const mockWidth = 123
     jest
       .spyOn(document.documentElement, 'clientWidth', 'get')
@@ -246,14 +204,12 @@ describe('properties of log', function () {
     jest
       .spyOn(document.documentElement, 'clientHeight', 'get')
       .mockImplementation(() => mockHeight)
-    const log = await createUserBehaviorLog({})
+    const log = createUserBehaviorLog({})
     expect(log).toMatchObject({
       'target-window-size': {
         width: mockWidth,
         height: mockHeight,
       },
-      'target-window-size-width': mockWidth,
-      'target-window-size-height': mockHeight,
     })
 
     jest
@@ -270,34 +226,21 @@ describe('properties of log', function () {
     jest
       .spyOn(document.body, 'clientHeight', 'get')
       .mockImplementation(() => mockHeightInBody)
-    const logWithBodyDimension = await createUserBehaviorLog({})
+    const logWithBodyDimension = createUserBehaviorLog({})
     expect(logWithBodyDimension).toMatchObject({
       'target-window-size': {
         width: mockWidthInBody,
         height: mockHeightInBody,
       },
-      'target-window-size-width': mockWidthInBody,
-      'target-window-size-height': mockHeightInBody,
     })
   })
 
-  test('rest the additional parameters', async function () {
-    const mockParameter = {
-      additional: 'additional',
-      keys: 'keys',
-      not: 'not',
-      destructed: 'destructed',
-    }
-    const log = await createUserBehaviorLog(mockParameter)
-    expect(log).toMatchObject(mockParameter)
-  })
-
-  test('client-id, session-id and current-runtime-id in a fresh env(no cookies)', async function () {
+  test('client-id, session-id and current-runtime-id in a fresh env(no cookies)', function () {
     const mockuuid = 'uuid'
     uuid.mockReturnValue(mockuuid)
     getCookie.mockReturnValue(undefined) // like we will never get the cookie we want
     setCookie.mockReturnValue(true)
-    const log = await createUserBehaviorLog({})
+    const log = createUserBehaviorLog({})
     expect(log).toMatchObject({
       'client-id': mockuuid,
       'session-id': mockuuid,
@@ -315,12 +258,12 @@ describe('properties of log', function () {
     })
   })
 
-  test('client-id, session-id and current-runtime-id in a messy env(some of the cookies exist)', async function () {
+  test('client-id, session-id and current-runtime-id in a messy env(some of the cookies exist)', function () {
     const mockuuid = 'uuid'
     uuid.mockReturnValue(mockuuid)
     getCookie.mockReturnValue(mockuuid) // like we always can get the cookie we want
     setCookie.mockReturnValue(true)
-    const log = await createUserBehaviorLog({})
+    const log = createUserBehaviorLog({})
     expect(log).toMatchObject({
       'client-id': mockuuid,
       'session-id': mockuuid,
@@ -337,27 +280,15 @@ describe('properties of log', function () {
     })
   })
 
-  test('current-runtime-start in a fresh env(no any runtime setting in window)', async function () {
+  test('current-runtime-start in a fresh env(no any runtime setting in window)', function () {
     const dateNow = jest.spyOn(Date, 'now')
     const dateNowTime = new Date('2019-04-07T10:20:30Z')
 
     dateNow.mockImplementation(() => dateNowTime)
 
-    const log = await createUserBehaviorLog({})
+    const log = createUserBehaviorLog({})
     expect(log).toMatchObject({
       'current-runtime-start': `2019.04.07 ${10 + 8}:20:30`,
-    })
-  })
-
-  test('current-runtime-id and current-runtime-start in a messy env(there is a setting store in window represent current runtime)', async function () {
-    const mockRuntimeClientId = 'id'
-    const mockRuntimeDatetimeStart = '2019.04.07 10:20:30'
-    window.mmThisRuntimeClientId = mockRuntimeClientId
-    window.mmThisRuntimeDatetimeStart = mockRuntimeDatetimeStart
-    const log = await createUserBehaviorLog({})
-    expect(log).toMatchObject({
-      'current-runtime-id': mockRuntimeClientId,
-      'current-runtime-start': mockRuntimeDatetimeStart,
     })
   })
 })

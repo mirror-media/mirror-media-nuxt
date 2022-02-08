@@ -9,6 +9,10 @@
         :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
         class="federated-login__google"
       />
+      <ContainerMembershipLoginWithAppleNew
+        :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
+        class="federated-login__apple"
+      />
     </div>
     <div v-if="showHint" class="login-form__hint">
       {{ hint }}
@@ -40,6 +44,7 @@
 <script>
 import ContainerMembershipLoginWithFacebookNew from './ContainerMembershipLoginWithFacebookNew.vue'
 import ContainerMembershipLoginWithGoogleNew from './ContainerMembershipLoginWithGoogleNew.vue'
+import ContainerMembershipLoginWithAppleNew from './ContainerMembershipLoginWithAppleNew.vue'
 import UiMembershipLoadingIcon from './UiMembershipLoadingIcon.vue'
 import UiMembershipInputEmailInvalidation from './UiMembershipInputEmailInvalidation.vue'
 import UiMembershipButtonPrimary from './UiMembershipButtonPrimary.vue'
@@ -49,6 +54,7 @@ export default {
   components: {
     ContainerMembershipLoginWithFacebookNew,
     ContainerMembershipLoginWithGoogleNew,
+    ContainerMembershipLoginWithAppleNew,
     UiMembershipLoadingIcon,
     UiMembershipInputEmailInvalidation,
     UiMembershipButtonPrimary,
@@ -85,6 +91,7 @@ export default {
       switch (this.prevAuthMethod) {
         case 'Google':
         case 'Facebook':
+        case 'Apple':
           hint = `由於您曾以 ${this.prevAuthMethod} 帳號登入，請點擊上方「使用${this.prevAuthMethod}帳號繼續」重試。`
           break
 
@@ -131,6 +138,10 @@ export default {
           responseArray &&
           responseArray.find((signInMethod) => signInMethod === 'facebook.com')
 
+        const isEmailHasBeenUsedByAppleAuth =
+          responseArray &&
+          responseArray.find((signInMethod) => signInMethod === 'apple.com')
+
         if (isEmailExistWithEmailLinkSignInMethod) {
           this.$emit('verifyEmailSignInMethod', 'emailLink')
         } else if (isEmailExistWithEmailPasswordSignInMethod) {
@@ -139,6 +150,8 @@ export default {
           this.$emit('verifyEmailSignInMethod', 'google.com')
         } else if (isEmailHasBeenUsedByFacebookAuth) {
           this.$emit('verifyEmailSignInMethod', 'facebook.com')
+        } else if (isEmailHasBeenUsedByAppleAuth) {
+          this.$emit('verifyEmailSignInMethod', 'apple.com')
         } else {
           this.$emit('goToRegister')
         }
@@ -188,7 +201,8 @@ export default {
 }
 
 .federated-login {
-  &__google {
+  &__google,
+  &__apple {
     margin: 12px 0 0 0;
   }
 }

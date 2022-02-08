@@ -5,10 +5,10 @@
 
 import normalPostRelatedRedesign from './normal-post-related-redesign'
 import homepageLatestRedesign from './homepage-latest-redesign'
-import normalPostPapularRedesign from './normal-post-popular-redesign'
+import homepageEditorChoiceMobileRedesign from './homepage-editor-choice-mobile-redesign'
 
 export default [
   normalPostRelatedRedesign,
-  normalPostPapularRedesign,
   homepageLatestRedesign,
+  homepageEditorChoiceMobileRedesign,
 ]

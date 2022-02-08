@@ -1,25 +1,25 @@
 export default {
-  name: 'normal-post-popular-redesign',
+  name: 'homepage-editor-choice-mobile-redesign',
 
   experimentIds: [
     // Google Optimize Container OPT-NHZNB2Z
     {
       ENV: 'local',
-      id: 'XcYLS9eIS3uUk35UvIK1lA',
+      id: '-W40ojB_RFC82KNFp4lzUA',
     },
     {
       ENV: 'dev',
-      id: '6p2Sz7YuSO-xu1Yg7AwUhw',
+      id: 'VVZCooEhRBirAGXTNVRkog',
     },
 
     // Google Optimize Container OPT-N9L3WX3
     {
       ENV: 'staging',
-      id: 'G65uUSpwR-6TVYg8yWXIqQ',
+      id: 'fill-this-id-if-ready-to-release',
     },
     {
       ENV: 'prod',
-      id: 'anAIfpWHQW-ShVXWWjfTwg',
+      id: 'fill-this-id-if-ready-to-release',
     },
   ],
 }

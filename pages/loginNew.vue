@@ -244,6 +244,9 @@ export default {
             case 'facebook.com':
               this.prevAuthMethod = 'Facebook'
               break
+            case 'apple.com':
+              this.prevAuthMethod = 'Apple'
+              break
             case 'password':
               this.prevAuthMethod = 'email'
               break
