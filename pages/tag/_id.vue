@@ -3,7 +3,8 @@
     <ContainerList
       :fetchList="fetchList"
       :listTitle="tagName"
-      listTitleColor="#bcbcbc"
+      listTitleColor="#FFFFFF"
+      :isTagPage="isTagPage"
     />
 
     <UiStickyAd pageKey="other" />
@@ -38,6 +39,9 @@ export default {
   computed: {
     tagId() {
       return this.$route.params.id
+    },
+    isTagPage() {
+      return this.$route.name === 'tag-id'
     },
   },
   methods: {

@@ -3,6 +3,7 @@
     <h1
       v-if="showTitle"
       class="title"
+      :class="{ 'tag-title': isTagPage }"
       :style="{
         color: listTitleColor,
       }"
@@ -59,6 +60,10 @@ export default {
       default: () => [],
       required: true,
     },
+    isTagPage: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -93,17 +98,22 @@ export default {
 
 <style lang="scss" scoped>
 .title {
-  padding: 0 32px;
-  font-size: 24px;
-  font-weight: 400;
+  margin: 0 32px;
+  font-size: 20.8px;
+  line-height: 115%;
+  font-weight: 600;
   @include media-breakpoint-up(md) {
-    padding: 0 16px;
+    margin: 0 16px;
   }
   @include media-breakpoint-up(xl) {
-    padding: 0;
+    margin: 0;
   }
 }
-
+.tag-title {
+  background: #c4c4c4;
+  width: fit-content;
+  padding: 4px 16px;
+}
 .list-wrapper {
   &__list {
     margin: 20px 0 0 0;

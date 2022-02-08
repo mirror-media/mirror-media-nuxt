@@ -7,6 +7,7 @@
       :listTitle="listTitle"
       :listTitleColor="listTitleColor"
       :listItems="listItemsInFirstPage"
+      :isTagPage="isTagPage"
     >
       <template v-for="unit in microAdUnits" v-slot:[unit.name]>
         <MicroAd :key="unit.name" :unitId="unit.id" />
@@ -91,6 +92,10 @@ export default {
     shouldMountMicroAds: {
       type: Boolean,
       default: true,
+    },
+    isTagPage: {
+      type: Boolean,
+      default: false,
     },
   },
 
