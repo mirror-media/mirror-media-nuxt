@@ -33,7 +33,7 @@ describe('page title', () => {
       },
     })
     const title = wrapper.get('h1')
-    expect(title.text()).toBe(`“${keywordMock}”`)
+    expect(title.text()).toBe(keywordMock)
   })
 })
 

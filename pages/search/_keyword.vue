@@ -1,7 +1,9 @@
 <template>
   <section class="search">
-    <h1 class="search__title" v-text="`“${keyword}”`" />
-
+    <h1 class="search__title">
+      <UpperQuotationSvg class="search__icon" />{{ keyword }}
+      <LowerQuotationSvg class="search__icon" />
+    </h1>
     <UiArticleList class="search__list" :listItems="listItems" />
     <UiInfiniteLoading v-if="shouldLoadmore" @infinite="infiniteHandler" />
   </section>
@@ -10,6 +12,8 @@
 <script>
 import { mapState } from 'vuex'
 
+import UpperQuotationSvg from '~/assets/quotation-mark-upper.svg?inline'
+import LowerQuotationSvg from '~/assets/quotation-mark-lower.svg?inline'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 
@@ -22,6 +26,8 @@ export default {
   components: {
     UiArticleList,
     UiInfiniteLoading,
+    UpperQuotationSvg,
+    LowerQuotationSvg,
   },
 
   mixins: [
@@ -99,10 +105,13 @@ export default {
     margin: 0 auto;
   }
   &__title {
+    width: 100%;
     font-size: 20.8px;
+    line-height: 115%;
     color: #000000de;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0 32px;
     @include media-breakpoint-up(md) {
       padding: 0;
@@ -118,6 +127,16 @@ export default {
         #000000 0%,
         rgba(242, 242, 242, 1) 100%
       );
+    }
+  }
+  &__icon {
+    align-self: flex-start;
+    margin-top: 3.2px;
+    &:first-child {
+      margin-right: 7.54px;
+    }
+    &:last-child {
+      margin-left: 9px;
     }
   }
   &__list {
