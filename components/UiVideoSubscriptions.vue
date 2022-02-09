@@ -1,6 +1,6 @@
 <template>
   <section class="video-subscriptions" :class="{ isPremium: isPremium }">
-    <div v-if="isPremium" class="scroll-container">
+    <div v-if="isPremium" class="scroll-container premium">
       <UiYoutubeSubscribeForPremium
         v-for="channel in CHANNELS_FOR_PREMIUM"
         :key="`channel-${channel.id}`"
@@ -106,6 +106,11 @@ export default {
     padding: 0 0 20px;
     flex-wrap: nowrap;
     overflow-x: auto;
+    &.premium {
+      justify-content: space-between;
+      max-width: 1024px;
+      margin: 0 auto;
+    }
     @include media-breakpoint-up(xl) {
       justify-content: center;
       overflow: hidden;
