@@ -25,7 +25,7 @@
         target="_blank"
         rel="noreferrer noopener"
       >
-        <SvgSnsRoundedIg class="icon" />
+        <img src="~/assets/sns-rounded-ig.png" alt="ig-icon" class="icon" />
         <span>追蹤</span>
       </a>
       <a
@@ -34,7 +34,7 @@
         target="_blank"
         rel="noreferrer noopener"
       >
-        <SvgSnsRoundedYt class="icon" />
+        <img src="~/assets/sns-rounded-yt.png" alt="yt-icon" class="icon" />
         <span>訂閱</span>
       </a>
       <div class="mm-wrapper nav__link">
@@ -62,14 +62,10 @@
 
 <script>
 import FbPage from './FbPage.vue'
-import SvgSnsRoundedIg from '~/assets/sns-rounded-ig.svg?inline'
-import SvgSnsRoundedYt from '~/assets/sns-rounded-yt.svg?inline'
 
 export default {
   components: {
     FbPage,
-    SvgSnsRoundedIg,
-    SvgSnsRoundedYt,
   },
 }
 </script>
