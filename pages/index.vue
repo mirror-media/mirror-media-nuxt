@@ -74,12 +74,6 @@
         <div class="gallery-container">
           <ClientOnly>
             <ContainerGptAd
-              class="home__ad home__ad--mb-l2"
-              pageKey="home"
-              adKey="MB_L2"
-            />
-
-            <ContainerGptAd
               class="home__ad home__ad--pc-b1"
               pageKey="home"
               adKey="PC_B1"
