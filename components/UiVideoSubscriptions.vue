@@ -2,7 +2,7 @@
   <section class="video-subscriptions" :class="{ isPremium: isPremium }">
     <div v-if="isPremium" class="scroll-container premium">
       <UiYoutubeSubscribeForPremium
-        v-for="channel in CHANNELS_FOR_PREMIUM"
+        v-for="channel in CHANNELS"
         :key="`channel-${channel.id}`"
         :channelId="channel.id"
         :channelName="channel.name"
@@ -14,7 +14,9 @@
       <UiYoutubeSubscribe
         v-for="channel in CHANNELS"
         :key="`channel-${channel}`"
-        :channelId="channel"
+        :channelId="channel.id"
+        :channelName="channel.name"
+        :channelTitle="channel.title"
         class="video-subscriptions__channel"
       />
     </div>
@@ -25,16 +27,8 @@
 import UiYoutubeSubscribe from './UiYoutubeSubscribe.vue'
 import UiYoutubeSubscribeForPremium from './UiYoutubeSubscribeForPremium.vue'
 import { ENV } from '~/configs/config'
-const CHANNELS = [
-  'UCYkldEK001GxR884OZMFnRw', // 鏡週刊
-  'UCccoVnb8YmHzArr7yrX7bTA', // 鏡人物
-  'UCSGNZVECzarsXTxPsNS9Zow', // 鏡娛樂
-  'UC4LjkybVKXCDlneVXlKAbmw', // 鏡電視
-  'UCglE1_DI0TDSY70WfeoPSOQ', // 美食旅遊
-  'UCbeskkrp36Virbj6lcxWxJA', // Mirror Watch TV鏡錶誌
-]
 
-const CHANNELS_FOR_PREMIUM = [
+const CHANNELS = [
   {
     title: '鏡週刊',
     id: 'UCYkldEK001GxR884OZMFnRw',
@@ -76,7 +70,6 @@ export default {
   data() {
     return {
       CHANNELS,
-      CHANNELS_FOR_PREMIUM,
     }
   },
   computed: {

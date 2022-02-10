@@ -1,15 +1,19 @@
-<!--
-  Document: https://developers.google.com/youtube/youtube_subscribe_button
--->
 <template>
   <LazyRenderer @load="init">
-    <!-- "g-ytsubscribe" is a required class setting by youtube, do not remove. -->
-    <div
-      :data-channelid="channelId"
-      class="g-ytsubscribe"
-      data-layout="full"
-      data-count="hidden"
-    />
+    <div class="youtube-subscribe">
+      <img :src="imgSrc" @click="openChannel" />
+      <section>
+        <div class="youtube-subscribe__name" @click="openChannel">
+          {{ channelTitle }}
+        </div>
+        <div
+          :data-channelid="channelId"
+          class="g-ytsubscribe"
+          data-layout="default"
+          data-count="hidden"
+        />
+      </section>
+    </div>
   </LazyRenderer>
 </template>
 
@@ -17,9 +21,23 @@
 export default {
   name: 'UiYoutubeSubscribe',
   props: {
+    channelName: {
+      type: String,
+      required: true,
+    },
     channelId: {
       type: String,
       required: true,
+    },
+    channelTitle: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    imgSrc() {
+      const img = require(`~/assets/youtube-icon/${this.channelName}.png`)
+      return img
     },
   },
   methods: {
@@ -37,6 +55,59 @@ export default {
         document.head.appendChild(youtubePlatformScript)
       }
     },
+    handleClickBtn() {
+      window.open(
+        `https://www.youtube.com/channel/${this.channelId}?sub_confirmation=1`,
+        '_blank'
+      )
+    },
+    openChannel() {
+      window.open(`https://www.youtube.com/channel/${this.channelId}`, '_blank')
+    },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.youtube-subscribe {
+  display: flex;
+  width: 105px;
+
+  *:hover {
+    cursor: pointer;
+  }
+
+  img {
+    width: 49px;
+    height: 49px;
+    margin-right: 8px;
+  }
+
+  &__name {
+    font-size: 13px;
+    line-height: 18px;
+    color: rgba(0, 0, 0, 0.87);
+    margin-bottom: 4px;
+    &:hover {
+      text-decoration: underline;
+      color: rgba(46, 44, 44, 0.87);
+    }
+  }
+  &__btn {
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 14px;
+    color: #fff;
+    background: #af1f07;
+    padding: 5px 12px;
+    border-radius: 2px;
+    &:hover {
+      background: #e83213;
+    }
+  }
+}
+</style>
+
+<!--
+  Document: https://developers.google.com/youtube/youtube_subscribe_button
+-->
