@@ -20,7 +20,7 @@
             :articles="editorChoicesArticles"
             @sendGa="sendGaForClick('choice')"
           />
-          <template v-else>
+          <div v-else>
             <UiColumnHeader
               title="編輯精選"
               class="home__column-header home__column-header--editor-choices"
@@ -29,7 +29,7 @@
               :articles="editorChoicesArticles"
               @sendGa="sendGaForClick('choice')"
             />
-          </template>
+          </div>
         </ClientOnly>
       </section>
 
