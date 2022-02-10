@@ -467,11 +467,7 @@ export default {
       return articles.map(transformContentOfFlashNews)
     },
     loadLatestListInitial() {
-      const list = []
-      this.groupedArticles.latest.map((item) => {
-        item.id = item.slug
-        list.push(item)
-      })
+      const list = [...this.groupedArticles.latest]
       this.pushLatestItems(list.splice(0, 20))
       this.setLatestTotal(20)
       this.fileId++
