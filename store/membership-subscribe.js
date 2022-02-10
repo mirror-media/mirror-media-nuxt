@@ -51,3 +51,12 @@ export function mapMemberTypeOfSubscribeGroupToMarketing(object) {
     return value
   })
 }
+
+export const getters = {
+  isPremiumMember(state) {
+    return (
+      state.basicInfo.type === 'subscribe_yearly' ||
+      state.basicInfo.type === 'subscribe_monthly'
+    )
+  },
+}

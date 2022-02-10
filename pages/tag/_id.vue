@@ -3,10 +3,9 @@
     <ContainerList
       :fetchList="fetchList"
       :listTitle="tagName"
-      listTitleColor="#FFFFFF"
+      :listTitleColor="isPremiumMember ? '#FFFFFF' : '#bcbcbc'"
       :isTagPage="isTagPage"
     />
-
     <UiStickyAd pageKey="other" />
     <ContainerFullScreenAds />
   </section>
@@ -37,6 +36,9 @@ export default {
     }
   },
   computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
     tagId() {
       return this.$route.params.id
     },

@@ -3,12 +3,14 @@
     <h1
       v-if="showTitle"
       class="title"
-      :class="{ 'tag-title': isTagPage }"
-      :style="{
-        color: listTitleColor,
+      :class="{
+        title__premium: isPremiumMember,
+        title__premium__tag: isPremiumMember && isTagPage,
       }"
-      v-text="listTitle"
-    />
+      :style="{ color: listTitleColor }"
+    >
+      {{ listTitle }}
+    </h1>
     <ol v-if="showList" class="list-wrapper__list list">
       <template v-for="(item, index) in listItems">
         <li :key="item.id" class="list__list-item">
@@ -75,6 +77,9 @@ export default {
     }
   },
   computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
     showTitle() {
       return this.listTitle !== ''
     },
@@ -99,20 +104,24 @@ export default {
 <style lang="scss" scoped>
 .title {
   margin: 0 32px;
-  font-size: 20.8px;
-  line-height: 115%;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 400;
+  &__premium {
+    font-size: 20.8px;
+    line-height: 115%;
+    font-weight: 600;
+    &__tag {
+      background: #c4c4c4;
+      width: fit-content;
+      padding: 4px 16px;
+    }
+  }
   @include media-breakpoint-up(md) {
     margin: 0 16px;
   }
   @include media-breakpoint-up(xl) {
     margin: 0;
   }
-}
-.tag-title {
-  background: #c4c4c4;
-  width: fit-content;
-  padding: 4px 16px;
 }
 .list-wrapper {
   &__list {
