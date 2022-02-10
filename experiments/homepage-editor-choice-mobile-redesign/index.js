@@ -15,11 +15,11 @@ export default {
     // Google Optimize Container OPT-N9L3WX3
     {
       ENV: 'staging',
-      id: 'fill-this-id-if-ready-to-release',
+      id: 'MlZTFSocSX6kEFdhjqsohg',
     },
     {
       ENV: 'prod',
-      id: 'fill-this-id-if-ready-to-release',
+      id: 'rKXZo7dVScqtvCCpu9km9Q',
     },
   ],
 }

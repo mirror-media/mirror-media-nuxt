@@ -20,7 +20,7 @@
             :articles="editorChoicesArticles"
             @sendGa="sendGaForClick('choice')"
           />
-          <template v-else>
+          <div v-else>
             <UiColumnHeader
               title="編輯精選"
               class="home__column-header home__column-header--editor-choices"
@@ -29,7 +29,7 @@
               :articles="editorChoicesArticles"
               @sendGa="sendGaForClick('choice')"
             />
-          </template>
+          </div>
         </ClientOnly>
       </section>
 
@@ -73,12 +73,6 @@
 
         <div class="gallery-container">
           <ClientOnly>
-            <ContainerGptAd
-              class="home__ad home__ad--mb-l2"
-              pageKey="home"
-              adKey="MB_L2"
-            />
-
             <ContainerGptAd
               class="home__ad home__ad--pc-b1"
               pageKey="home"
@@ -473,11 +467,7 @@ export default {
       return articles.map(transformContentOfFlashNews)
     },
     loadLatestListInitial() {
-      const list = []
-      this.groupedArticles.latest.map((item) => {
-        item.id = item.slug
-        list.push(item)
-      })
+      const list = [...this.groupedArticles.latest]
       this.pushLatestItems(list.splice(0, 20))
       this.setLatestTotal(20)
       this.fileId++

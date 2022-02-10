@@ -1,10 +1,22 @@
 <template>
-  <section class="video-subscriptions">
-    <div class="scroll-container">
+  <section class="video-subscriptions" :class="{ isPremium: isPremium }">
+    <div v-if="isPremium" class="scroll-container premium">
+      <UiYoutubeSubscribeForPremium
+        v-for="channel in CHANNELS"
+        :key="`channel-${channel.id}`"
+        :channelId="channel.id"
+        :channelName="channel.name"
+        :channelTitle="channel.title"
+        class="video-subscriptions__channel"
+      />
+    </div>
+    <div v-else class="scroll-container">
       <UiYoutubeSubscribe
         v-for="channel in CHANNELS"
         :key="`channel-${channel}`"
-        :channelId="channel"
+        :channelId="channel.id"
+        :channelName="channel.name"
+        :channelTitle="channel.title"
         class="video-subscriptions__channel"
       />
     </div>
@@ -13,25 +25,62 @@
 
 <script>
 import UiYoutubeSubscribe from './UiYoutubeSubscribe.vue'
+import UiYoutubeSubscribeForPremium from './UiYoutubeSubscribeForPremium.vue'
+import { ENV } from '~/configs/config'
 
 const CHANNELS = [
-  'UCYkldEK001GxR884OZMFnRw', // 鏡週刊
-  'UCccoVnb8YmHzArr7yrX7bTA', // 鏡人物
-  'UCSGNZVECzarsXTxPsNS9Zow', // 鏡娛樂
-  'UC4LjkybVKXCDlneVXlKAbmw', // 鏡電視
-  'UCglE1_DI0TDSY70WfeoPSOQ', // 美食旅遊
-  'UCbeskkrp36Virbj6lcxWxJA', // Mirror Watch TV鏡錶誌
+  {
+    title: '鏡週刊',
+    id: 'UCYkldEK001GxR884OZMFnRw',
+    name: 'media',
+  },
+  {
+    title: '鏡人物',
+    id: 'UCccoVnb8YmHzArr7yrX7bTA',
+    name: 'people',
+  },
+  {
+    title: '鏡娛樂',
+    id: 'UCSGNZVECzarsXTxPsNS9Zow',
+    name: 'fun',
+  },
+  // {
+  //   title: '鏡發財',
+  //   id: 'UCYkldEK001GxR884OZMFnRw',
+  //   name: 'money',
+  // },
+  {
+    title: '鏡食旅',
+    id: 'UCglE1_DI0TDSY70WfeoPSOQ',
+    name: 'food',
+  },
+  {
+    title: '鏡錶誌',
+    id: 'UCbeskkrp36Virbj6lcxWxJA',
+    name: 'watch',
+  },
 ]
 
 export default {
-  name: 'UiVideoSubscriptions',
+  title: 'UiVideoSubscriptions',
   components: {
     UiYoutubeSubscribe,
+    UiYoutubeSubscribeForPremium,
   },
   data() {
     return {
       CHANNELS,
     }
+  },
+  computed: {
+    isPremium() {
+      if (ENV === 'staging' || ENV === 'prod') return false
+      const memberType = this.$store?.state['membership-subscribe']?.basicInfo
+        .type
+      return (
+        memberType === 'subscribe_monthly' || memberType === 'subscribe_yearly'
+      )
+    },
   },
 }
 </script>
@@ -50,6 +99,11 @@ export default {
     padding: 0 0 20px;
     flex-wrap: nowrap;
     overflow-x: auto;
+    &.premium {
+      justify-content: space-between;
+      max-width: 1024px;
+      margin: 0 auto;
+    }
     @include media-breakpoint-up(xl) {
       justify-content: center;
       overflow: hidden;
@@ -75,5 +129,9 @@ export default {
       }
     }
   }
+}
+
+.isPremium {
+  background: #f5f5f5;
 }
 </style>

@@ -10,7 +10,7 @@
         <h1>最新影片</h1>
       </template>
     </UiVideoIframeWithItems>
-    <div class="section__bottom-wrapper">
+    <div class="section__bottom-wrapper" :class="{ grey: isPremium }">
       <UiVideoPopular
         :items="popularData"
         class="section__popular"
@@ -55,6 +55,7 @@ import UiVideoIframeWithItems from '~/components/UiVideoIframeWithItems.vue'
 import UiVideoPopular from '~/components/UiVideoPopular.vue'
 import UiVideoSubscriptions from '~/components/UiVideoSubscriptions.vue'
 import UiYoutubePolicies from '~/components/UiYoutubePolicies.vue'
+import { ENV } from '~/configs/config'
 
 const INVERTED_PLAYLIST_MAPPING = _.invert(PLAYLIST_MAPPING)
 
@@ -94,6 +95,14 @@ export default {
       return this.categories
         .map(this.mapCategoryToPlatlistId)
         .filter((playlist) => playlist)
+    },
+    isPremium() {
+      if (ENV === 'staging' || ENV === 'prod') return false
+      const memberType = this.$store?.state['membership-subscribe']?.basicInfo
+        .type
+      return (
+        memberType === 'subscribe_monthly' || memberType === 'subscribe_yearly'
+      )
     },
   },
   beforeMount() {
@@ -267,5 +276,9 @@ export default {
       margin-bottom: 20px;
     }
   }
+}
+
+.grey {
+  background: #f5f5f5;
 }
 </style>

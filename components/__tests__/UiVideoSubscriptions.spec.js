@@ -9,6 +9,6 @@ describe('channels', () => {
   test('should render proper number of UiYoutubeSubscribe', () => {
     const wrapper = createWrapper(UiVideoSubscriptions)
     const channels = wrapper.findAllComponents(UiYoutubeSubscribe)
-    expect(channels).toHaveLength(6)
+    expect(channels).toHaveLength(5)
   })
 })

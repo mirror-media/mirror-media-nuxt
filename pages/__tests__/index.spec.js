@@ -897,10 +897,6 @@ test('display ADs', function () {
     pageKey: 'home',
     adKey: 'MB_L1',
   })
-  expect(sut.get('.home__ad--mb-l2').props()).toMatchObject({
-    pageKey: 'home',
-    adKey: 'MB_L2',
-  })
   expect(sut.get('.home__ad--pc-b1').props()).toMatchObject({
     pageKey: 'home',
     adKey: 'PC_B1',
