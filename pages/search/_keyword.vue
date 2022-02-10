@@ -1,7 +1,15 @@
 <template>
   <section class="search">
-    <h1 class="search__title" v-text="keyword" />
-
+    <h1
+      class="search__title"
+      :class="{
+        search__title__premium: isPremiumMember,
+      }"
+    >
+      <UpperQuotationSvg v-if="isPremiumMember" class="search__icon" />
+      {{ keyword }}
+      <LowerQuotationSvg v-if="isPremiumMember" class="search__icon" />
+    </h1>
     <UiArticleList class="search__list" :listItems="listItems" />
     <UiInfiniteLoading v-if="shouldLoadmore" @infinite="infiniteHandler" />
   </section>
@@ -9,7 +17,8 @@
 
 <script>
 import { mapState } from 'vuex'
-
+import UpperQuotationSvg from '~/assets/quotation-mark-upper.svg?inline'
+import LowerQuotationSvg from '~/assets/quotation-mark-lower.svg?inline'
 import UiArticleList from '~/components/UiArticleList.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 
@@ -22,6 +31,8 @@ export default {
   components: {
     UiArticleList,
     UiInfiniteLoading,
+    UpperQuotationSvg,
+    LowerQuotationSvg,
   },
 
   mixins: [
@@ -63,10 +74,12 @@ export default {
   async fetch() {
     await this.initList()
   },
-
   computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
     keyword() {
-      return this.$route.params.keyword
+      return `${this.$route.params.keyword}`
     },
     ...mapState({
       sections: (state) => state.sections.data.items ?? [],
@@ -119,6 +132,33 @@ export default {
         rgba(242, 242, 242, 1) 70%,
         rgba(242, 242, 242, 1) 100%
       );
+    }
+    &__premium {
+      font-size: 20.8px;
+      line-height: 115%;
+      color: #000000de;
+      @include media-breakpoint-up(md) {
+        padding: 0;
+      }
+      &::after {
+        margin: 0 0 0 24px;
+        height: 2px;
+        background: linear-gradient(
+          to right,
+          #000000 0%,
+          rgba(242, 242, 242, 1) 100%
+        );
+      }
+    }
+  }
+  &__icon {
+    align-self: flex-start;
+    margin-top: 3.2px;
+    &:first-child {
+      margin-right: 7.54px;
+    }
+    &:last-child {
+      margin-left: 9px;
     }
   }
   &__list {
