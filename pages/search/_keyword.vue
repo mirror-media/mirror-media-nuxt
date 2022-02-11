@@ -138,6 +138,7 @@ export default {
       line-height: 115%;
       color: #000000de;
       @include media-breakpoint-up(md) {
+        margin: 4px 0 0 0;
         padding: 0;
       }
       &::after {

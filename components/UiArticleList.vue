@@ -121,6 +121,12 @@ export default {
   }
   @include media-breakpoint-up(xl) {
     margin: 0;
+    &__premium {
+      margin-top: 40px;
+      &__tag {
+        margin-top: 28px;
+      }
+    }
   }
 }
 .list-wrapper {
