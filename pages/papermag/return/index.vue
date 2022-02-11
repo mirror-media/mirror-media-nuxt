@@ -38,8 +38,8 @@ export default {
         status: 'order-fail',
       }
     if (req.method !== 'POST') {
-      console.log('papermag is retun GET', req)
-      $sendUserBehaviorLog({ req, description: 'papermag return GET' })
+      console.log('papermag is retun GET', { req })
+      // $sendUserBehaviorLog({ req, description: 'papermag return GET' })
       redirect('/papermag')
     }
 
