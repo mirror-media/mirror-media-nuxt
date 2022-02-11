@@ -14,7 +14,7 @@
 
       <div class="logo-wrapper">
         <a href="/" class="logo logo--site" @click="sendHeaderGa('logo')">
-          <img :src="require(`~/assets/premium-logo.png`)" :alt="SITE_TITLE" />
+          <img :src="require(`~/assets/premium-logo.svg`)" :alt="SITE_TITLE" />
         </a>
 
         <ClientOnly>
