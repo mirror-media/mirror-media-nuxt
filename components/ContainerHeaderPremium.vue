@@ -516,28 +516,28 @@ header {
 .header-nav::v-deep {
   .section {
     @include media-breakpoint-up(xl) {
-      border-top-color: #000;
+      border-top-color: #000 !important;
       @each $name, $color in $sections-color {
         &--#{$name} {
           &:hover {
-            background: inherit;
+            background: inherit !important;
             h2 {
               color: $color !important;
             }
           }
           & .section__dropdown a:hover {
-            background-color: $color;
+            background-color: $color !important;
           }
         }
       }
     }
     &--member {
-      background: inherit;
+      background: inherit !important;
     }
   }
 
   .topic-item {
-    border-bottom: 3px solid #000;
+    border-bottom: 3px solid #000 !important;
     position: relative;
     &::before {
       content: '';
@@ -552,10 +552,10 @@ header {
     }
     &--normal {
       &::before {
-        display: none;
+        display: none !important;
       }
       &:hover {
-        background-color: #004dbc;
+        background-color: #004dbc !important;
       }
     }
   }
