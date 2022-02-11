@@ -534,6 +534,9 @@ header {
     &--member {
       background: inherit !important;
     }
+    &__dropdown {
+      z-index: 20;
+    }
   }
 
   .topic-item {
