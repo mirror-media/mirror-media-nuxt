@@ -32,13 +32,14 @@ import {
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
-  async asyncData({ req, redirect, route }) {
+  async asyncData({ req, redirect, route, app }) {
     if (route.query['order-fail'])
       return {
         status: 'order-fail',
       }
     if (req.method !== 'POST') {
       console.log('papermag is retun GET', req)
+      app.$sendUserBehaviorLog({ req, description: 'papermag return GET' })
       redirect('/papermag')
     }
 
