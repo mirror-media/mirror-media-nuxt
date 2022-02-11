@@ -103,7 +103,6 @@ export default {
     max-width: 1024px;
     margin: 0 auto;
     @include media-breakpoint-up(xl) {
-      justify-content: center;
       overflow: hidden;
     }
   }
