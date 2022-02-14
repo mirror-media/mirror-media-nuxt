@@ -5,7 +5,7 @@
       class="title"
       :class="{
         'title--premium': isPremiumMember,
-        'title--premium--tag': isPremiumMember && isTagPage,
+        'tag--premium': isPremiumMember && isTagPage,
       }"
       :style="{ color: listTitleColor }"
     >
@@ -110,11 +110,11 @@ export default {
     font-size: 20.8px;
     line-height: 115%;
     font-weight: 600;
-    &--tag {
-      background: #c4c4c4;
-      width: fit-content;
-      padding: 4px 16px;
-    }
+  }
+  &.tag--premium {
+    background: #c4c4c4;
+    width: fit-content;
+    padding: 4px 16px;
   }
   @include media-breakpoint-up(md) {
     margin: 0 16px;
@@ -123,9 +123,9 @@ export default {
     margin: 0;
     &--premium {
       margin-top: 40px;
-      &--tag {
-        margin-top: 28px;
-      }
+    }
+    &.tag--premium {
+      margin-top: 28px;
     }
   }
 }
