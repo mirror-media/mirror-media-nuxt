@@ -98,6 +98,7 @@ export default {
       const orderInfoPurchasedList = [
         {
           text: name,
+          count: decryptInfoData.itemCount,
           price:
             decryptInfoData.itemCount * decryptInfoData.merchandise.price -
             shippingCost,

@@ -1,6 +1,8 @@
 <template>
   <div class="content_row">
-    <div class="content_row__title">{{ title }}</div>
+    <div class="content_row__title">
+      {{ title }}
+    </div>
     <div class="content_row__data">
       <PurchasedList :data="perchasedList" />
     </div>
