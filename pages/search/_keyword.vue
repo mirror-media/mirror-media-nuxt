@@ -3,7 +3,7 @@
     <h1
       class="search__title"
       :class="{
-        search__title__premium: isPremiumMember,
+        'search__title--premium': isPremiumMember,
       }"
     >
       <UpperQuotationSvg v-if="isPremiumMember" class="search__icon" />
@@ -133,7 +133,7 @@ export default {
         rgba(242, 242, 242, 1) 100%
       );
     }
-    &__premium {
+    &--premium {
       font-size: 20.8px;
       line-height: 115%;
       color: #000000de;
