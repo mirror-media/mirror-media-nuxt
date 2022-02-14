@@ -81,6 +81,7 @@
     <div class="footer-wrapper">
       <UiFooter />
     </div>
+    <UiShareLinksToggled class="share-toggled" />
   </section>
 </template>
 
@@ -98,6 +99,7 @@ import UiArticleInfo from './UiArticleInfo.vue'
 import ContainerHeaderSectionMember from '~/components/ContainerHeaderSectionMember.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import UiFooter from '~/components/UiFooter.vue'
+import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
@@ -117,6 +119,7 @@ export default {
     UiListRelated,
     UiWineWarning,
     UiFooter,
+    UiShareLinksToggled,
   },
 
   props: {
@@ -517,6 +520,16 @@ export default {
     background-color: white;
     position: relative;
     z-index: 511;
+  }
+}
+
+.share-toggled {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99999;
+  @include media-breakpoint-up(xl) {
+    display: none;
   }
 }
 </style>
