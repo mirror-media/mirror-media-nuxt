@@ -52,7 +52,10 @@
         </UiTag>
       </div>
     </div>
-    <UiShareLinks class="article-info__share-links-wrapper" />
+    <ClientOnly>
+      <UiShareLinksHasCopyLink class="article-info__share-links-wrapper" />
+      <!--      <UiShareLinks v-else class="article-info__share-links-wrapper" />-->
+    </ClientOnly>
   </div>
 </template>
 
@@ -60,10 +63,17 @@
 import dayjs from 'dayjs'
 import UiLink from '~/components/culture-post-for-premium/UiLink.vue'
 import UiTag from '~/components/culture-post-for-premium/UiTag.vue'
-import UiShareLinks from '~/components/UiShareLinks.vue'
+
+// import UiShareLinks from '~/components/UiShareLinks.vue'
+import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
 
 export default {
-  components: { UiShareLinks, UiTag, UiLink },
+  components: {
+    // UiShareLinks,
+    UiShareLinksHasCopyLink,
+    UiTag,
+    UiLink,
+  },
   props: {
     publishTime: {
       type: Date,
