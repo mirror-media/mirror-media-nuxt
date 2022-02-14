@@ -4,8 +4,8 @@
       v-if="showTitle"
       class="title"
       :class="{
-        title__premium: isPremiumMember,
-        title__premium__tag: isPremiumMember && isTagPage,
+        'title--premium': isPremiumMember,
+        'tag--premium': isPremiumMember && isTagPage,
       }"
       :style="{ color: listTitleColor }"
     >
@@ -106,21 +106,27 @@ export default {
   margin: 0 32px;
   font-size: 24px;
   font-weight: 400;
-  &__premium {
+  &--premium {
     font-size: 20.8px;
     line-height: 115%;
     font-weight: 600;
-    &__tag {
-      background: #c4c4c4;
-      width: fit-content;
-      padding: 4px 16px;
-    }
+  }
+  &.tag--premium {
+    background: #c4c4c4;
+    width: fit-content;
+    padding: 4px 16px;
   }
   @include media-breakpoint-up(md) {
     margin: 0 16px;
   }
   @include media-breakpoint-up(xl) {
     margin: 0;
+    &--premium {
+      margin-top: 40px;
+    }
+    &.tag--premium {
+      margin-top: 28px;
+    }
   }
 }
 .list-wrapper {
