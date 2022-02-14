@@ -83,7 +83,7 @@ export default {
         }
       }
       .count {
-        margin-left: 24px;
+        margin-left: 72px;
         &__number {
           color: #054f77;
         }

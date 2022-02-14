@@ -28,7 +28,7 @@ function merchandiseWithShippingFee(merchandise) {
   const plan = PLAN_LIST.filter((item) => {
     return item.origin.code === merchandise.code
   })
-  return plan.withShippingFee || merchandise
+  return plan[0]?.withShippingFee || merchandise
 }
 
 function merchandiseWithoutShippingFee(merchandise) {
@@ -40,8 +40,9 @@ function merchandiseWithoutShippingFee(merchandise) {
         shippingFeePerCount: 0,
       }
     } else if (item.withShippingFee.code === merchandise.code) {
+      console.log('fee', item.shippingFeePerCount)
       plan = {
-        ...item.withShippingFee,
+        ...item.origin,
         shippingFeePerCount: item.shippingFeePerCount,
       }
     }
