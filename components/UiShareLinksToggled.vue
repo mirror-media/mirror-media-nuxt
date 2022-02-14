@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-click-outside="handleClickOutside">
     <transition name="fade">
       <UiShareLinksHasCopyLink
         v-show="shouldShowShareLinks"
@@ -30,6 +30,9 @@ export default {
   methods: {
     handleClickShareToggleIcon() {
       this.shouldShowShareLinks = !this.shouldShowShareLinks
+    },
+    handleClickOutside() {
+      this.shouldShowShareLinks = false
     },
   },
 }
