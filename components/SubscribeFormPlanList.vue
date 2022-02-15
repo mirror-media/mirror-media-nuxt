@@ -8,12 +8,9 @@
 
     <div class="merchandise-list__discount_code">
       <div class="merchandise-list__discount_code_row">
-        <div class="merchandise-list__discount_code_check">
-          <input v-model="shouldShowDiscountCode" type="checkbox" />
-          <span>我有續訂折扣碼</span>
-        </div>
+        <span>我是續訂戶請輸入訂戶代號</span>
       </div>
-      <template v-if="shouldShowDiscountCode">
+      <template>
         <div class="merchandise-list__discount_code_row input">
           <div
             class="merchandise-list__discount_code_input"
@@ -131,7 +128,7 @@ export default {
       return this.discount.code.length !== 8
     },
     buttonTitle() {
-      return this.discount.hasCode ? '移除' : '使用'
+      return this.discount.hasCode ? '移除' : '確認'
     },
     choosenPlanYear() {
       let year = 1
@@ -220,12 +217,6 @@ export default {
       }
     }
 
-    &_check {
-      margin-right: 48px;
-      display: flex;
-      align-items: center;
-    }
-
     &_prompt {
       font-size: 16px;
       font-weight: normal;
@@ -282,7 +273,6 @@ export default {
     align-self: flex-start;
     display: flex;
     height: 48px;
-    padding: 12px;
     border-radius: 2px;
     align-items: center;
 

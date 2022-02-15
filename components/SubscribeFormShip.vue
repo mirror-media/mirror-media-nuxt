@@ -3,7 +3,7 @@
     <h2 class="subscribe-form__title">寄送方式</h2>
 
     <p class="ship__detail">
-      因週刊派送屬一般投遞投遞非簽收件，如需簽收建議選擇以掛號寄送。
+      因週刊派送屬一般投遞非簽收件，如需簽收請選擇以掛號寄送。
     </p>
 
     <div class="ship__choose">
@@ -45,11 +45,6 @@ export default {
       registeredCost: 20,
     }
   },
-  methods: {
-    numberWithComma(number) {
-      return number.toLocaleString()
-    },
-  },
   watch: {
     shipPlanName(val) {
       switch (val) {
@@ -74,6 +69,11 @@ export default {
           })
           break
       }
+    },
+  },
+  methods: {
+    numberWithComma(number) {
+      return number.toLocaleString()
     },
   },
 }
