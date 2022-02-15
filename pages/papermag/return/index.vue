@@ -43,11 +43,20 @@ export default {
         status: 'order-fail',
       }
     if (req.method !== 'POST') {
-      console.log('papermag is not retun POST', req.headers, req.method)
       redirect('/papermag')
-    } else {
-      throw new Error('test')
     }
+
+    const trace = req.header('X-Cloud-Trace-Context')?.split('/')
+    console.log(
+      JSON.stringify({
+        message: `Request: ${req.method} ${req.originalUrl}`,
+        debugPayload: {
+          'req.headers': req.headers,
+          'req.body': req.body,
+        },
+        'logging.googleapis.com/trace': `projects/mirrormedia-1470651750304/traces/${trace}`,
+      })
+    )
 
     try {
       const infoData = req.body
