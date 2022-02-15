@@ -43,10 +43,8 @@ export default {
         status: 'order-fail',
       }
     if (req.method !== 'POST') {
-      console.log('papermag is retun GET', { req })
+      console.log('papermag is not retun POST', req.headers, req.method)
       redirect('/papermag')
-    } else {
-      throw new Error('test')
     }
 
     try {
