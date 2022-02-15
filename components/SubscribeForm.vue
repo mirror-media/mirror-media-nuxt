@@ -6,6 +6,7 @@
           :perchasedPlan="perchasedPlan"
           :discount="discount"
           :setHasCode="setHasCode"
+          @setCount="setCount"
         />
         <SubscribeFormOrdererData
           ref="ordererDOM"
@@ -316,6 +317,7 @@ export default {
           promoteCode: this.discount.code
             ? 'MR' + this.discount.code
             : this.discount.code,
+
           // 購買和收穫相關
           purchaseName: this.ordererData.name,
           purchaseAddress: this.ordererData.address,
@@ -326,6 +328,7 @@ export default {
           receiveAddress: this.receiverData.address,
           receiveMobile: this.receiverData.cellphone,
           receivePhone: `${this.receiverData.phone} ${this.receiverData.phoneExt}`,
+
           // 捐贈發票
           loveCode: parseInt(this.receiptData.donateOrganization),
           carrierType,
@@ -366,6 +369,15 @@ export default {
         const payload = this.getOrderPayload()
         this.proceedOrderPayment(payload)
       }
+    },
+    setCount(value) {
+      this.perchasedPlan = this.perchasedPlan.map((plan) => {
+        if (plan.id === this.currentChoosedPlanId) {
+          return { ...plan, count: plan.count + value }
+        } else {
+          return plan
+        }
+      })
     },
   },
 }

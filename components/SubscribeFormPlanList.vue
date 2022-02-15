@@ -2,15 +2,14 @@
   <div class="merchandise-list">
     <div class="merchandise-list__title">
       <h2 class="subscribe-form__title">訂購項目</h2>
-      <SubscribeFormEditPerchase :perchasedPlan="perchasedPlan" />
     </div>
 
-    <UiMerchandiseList :perchasedPlan="perchasedPlan" :isPopUp="false" />
+    <UiMerchandiseList :perchasedPlan="perchasedPlan" @setCount="setCount" />
 
     <div class="merchandise-list__discount_code">
       <div class="merchandise-list__discount_code_row">
         <div class="merchandise-list__discount_code_check">
-          <input type="checkbox" v-model="shouldShowDiscountCode" />
+          <input v-model="shouldShowDiscountCode" type="checkbox" />
           <span>我有續訂折扣碼</span>
         </div>
       </div>
@@ -22,21 +21,21 @@
           >
             <label for="discount-code">MR</label>
             <input
+              id="discount-code"
               v-model="discount.code"
               type="text"
               placeholder="12345678"
+              maxlength="8"
+              :disabled="discount.hasCode"
               @focus="toggleIsInputFocused"
               @input="handleInput"
               @blur="toggleIsInputFocused"
-              id="discount-code"
-              maxlength="8"
-              :disabled="discount.hasCode"
             />
           </div>
           <UiSubscribeButton
-            @click.native="submitDiscountCode"
             :title="buttonTitle"
             :class="{ disabled: isDisabled, remove: discount.hasCode }"
+            @click.native="submitDiscountCode"
           />
         </div>
 
@@ -69,12 +68,10 @@
 <script>
 import UiMerchandiseList from '~/components/UiMerchandiseList.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
-import SubscribeFormEditPerchase from '~/components/SubscribeFormEditPerchase.vue'
 
 export default {
   components: {
     UiMerchandiseList,
-    SubscribeFormEditPerchase,
     UiSubscribeButton,
   },
   props: {
@@ -146,6 +143,11 @@ export default {
       return year
     },
   },
+  watch: {
+    shouldShowDiscountCode(val) {
+      if (!val) this.setHasCode(false)
+    },
+  },
   methods: {
     toggleIsInputFocused() {
       this.isInputFocused = !this.isInputFocused
@@ -157,10 +159,8 @@ export default {
     handleInput(e) {
       this.discount.code = e.target.value.replace(/[^\d]/g, '')
     },
-  },
-  watch: {
-    shouldShowDiscountCode(val) {
-      if (!val) this.setHasCode(false)
+    setCount(value) {
+      this.$emit('setCount', value)
     },
   },
 }
