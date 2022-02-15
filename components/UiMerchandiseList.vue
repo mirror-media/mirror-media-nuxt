@@ -122,9 +122,6 @@ export default {
   .form-row {
     display: flex;
     justify-content: space-between;
-    div + div {
-      margin-left: 12px;
-    }
 
     * {
       align-self: flex-start;
