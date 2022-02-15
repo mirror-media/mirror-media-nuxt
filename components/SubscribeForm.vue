@@ -371,6 +371,11 @@ export default {
       }
     },
     setCount(value) {
+      if (
+        value < 0 &&
+        this.perchasedPlan[this.currentChoosedPlanId].count === 1
+      )
+        return
       this.perchasedPlan = this.perchasedPlan.map((plan) => {
         if (plan.id === this.currentChoosedPlanId) {
           return { ...plan, count: plan.count + value }
