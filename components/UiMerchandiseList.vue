@@ -122,6 +122,7 @@ export default {
   .form-row {
     display: flex;
     justify-content: space-between;
+    line-height: 32px;
 
     * {
       align-self: flex-start;
