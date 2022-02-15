@@ -12,6 +12,11 @@
         /><span>同訂購人資訊</span>
       </div>
     </template>
+    <div v-else>
+      <p class="orderer-data__detail">
+        目前無提供國外海外地區的紙本雜誌訂閱及寄送服務。
+      </p>
+    </div>
     <div
       class="orderer-data__input_wrapper half"
       :class="{ error: $v.name.$error && isNeedToCheck }"
@@ -86,17 +91,22 @@
       class="orderer-data__input_wrapper"
       :class="{ error: $v.address.$error && isNeedToCheck }"
     >
-      <span>通訊地址</span>
+      <span>{{ addressInputTitle }}</span>
+      <div>
+        <p class="orderer-data__detail orderer-data__detail--margin-less">
+          請填完整郵遞區號和地址，如：114066台北市內湖區堤頂大道一段365號1樓。
+        </p>
+      </div>
       <input
         v-model.trim="$v.address.$model"
         :disabled="disable"
         type="text"
-        :placeholder="`${type}請填入郵遞區號和完整地址，範例：114066台北市內湖區堤頂大道一段365號1樓`"
+        :placeholder="`${addressInputPlaceholder}`"
       />
       <span
         v-show="!$v.address.required && $v.address.$error && isNeedToCheck"
         class="error__message"
-        >{{ type }}通訊地址不可空白</span
+        >{{ addressInputTitle }}不可空白</span
       >
     </div>
 
@@ -193,6 +203,12 @@ export default {
   },
 
   computed: {
+    addressInputTitle() {
+      return this.type === '訂購人' ? '地址' : '收件地址'
+    },
+    addressInputPlaceholder() {
+      return this.type === '訂購人' ? '訂購人地址' : '收件人收件地址'
+    },
     disable() {
       return this.receiverDataIsSameAsOrderer
     },
@@ -338,6 +354,9 @@ export default {
     font-size: 16px;
     line-height: 150%;
     color: rgba(0, 0, 0, 0.66);
+    &--margin-less {
+      margin-bottom: 6px;
+    }
   }
 
   &__check {
