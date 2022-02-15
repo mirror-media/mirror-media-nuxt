@@ -4,7 +4,7 @@
       v-if="resultStatus === 'order-fail' || resultStatus === 'payment-fail'"
     >
       <SubscribeStepProgress :currentStep="2" />
-      <SubscribeFail :resultStatus="resultStatus" :orderId="orderId" />
+      <SubscribeFail :resultStatus="resultStatus" />
     </template>
 
     <template v-if="resultStatus === 'success'">
@@ -102,12 +102,6 @@ export default {
         rec_cell,
         rec_addr,
       }
-    },
-    orderId() {
-      const { MerchantOrderNo } = this.$store.getters[
-        'subscribe/getInfoPayload'
-      ]
-      return MerchantOrderNo
     },
   },
   destroyed() {

@@ -1,30 +1,15 @@
 <template>
   <div class="fail-wrapper">
-    <div v-if="message" class="fail-wrapper__message">
-      {{ message }}
+    <h1 class="fail-wrapper__title">逾時未完成結帳，付款失敗，請重新操作。</h1>
+    <div class="fail-wrapper__content">
+      <p class="fail-wrapper__message">
+        {{ failMessage }}
+      </p>
+
+      <a :href="subscribeFailButtonLink" class="fail-wrapper__button">
+        <UiMembershipButtonPrimary>回前頁</UiMembershipButtonPrimary>
+      </a>
     </div>
-    <div v-else class="fail-wrapper__info">
-      <div class="fail-wrapper__info_row">
-        <div class="fail-wrapper__info_row_title">訂單編號</div>
-        <div class="fail-wrapper__info_row_content">
-          {{ data.orderId }}
-        </div>
-      </div>
-      <div class="fail-wrapper__info_row">
-        <div class="fail-wrapper__info_row_title">付款錯誤訊息</div>
-        <div class="fail-wrapper__info_row_content">
-          {{ data.message }}
-        </div>
-      </div>
-    </div>
-    <a
-      :href="subscribeFailButtonLink"
-      class="fail-wrapper__button_wrapper button-wrapper"
-    >
-      <UiMembershipButtonPrimary class="order-fail_button">
-        回前頁
-      </UiMembershipButtonPrimary>
-    </a>
   </div>
 </template>
 
@@ -36,19 +21,17 @@ export default {
     UiMembershipButtonPrimary,
   },
   props: {
-    message: {
-      type: String,
-      isRequired: false,
-      default: '',
-    },
-    status: {
+    resultStatus: {
       type: String,
       isRequired: true,
       default: 'order-fail',
     },
-    data: {
-      type: Object,
-      isRequired: false,
+  },
+  computed: {
+    failMessage() {
+      return this.resultStatus === 'order-fail'
+        ? '訂單建立失敗，請再次下訂單，或來電客服專線 02-6633-3882 協助。'
+        : '信用卡付款失敗，請再次確認信用卡資訊，或更換信用卡完成訂購手續，謝謝！'
     },
   },
   inject: {
@@ -61,56 +44,43 @@ export default {
 
 <style lang="scss" scoped>
 .fail-wrapper {
-  border-radius: 4px;
-  background-color: #f5f5f5;
-  color: #4a4a4a;
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  margin: 0 8px;
-  @include media-breakpoint-up(xl) {
-    padding: 24px;
-  }
-}
-
-.subcribe-button {
-  margin: 0 auto;
-  width: 240px;
-}
-
-.fail-wrapper__message {
-  margin-bottom: 27px;
-
+  margin: 20px 0 0 0;
   @include media-breakpoint-up(sm) {
-    margin-bottom: 17px;
+    margin: 47px;
   }
-}
-
-.fail-wrapper__info {
-  margin-bottom: 24px;
-  @include media-breakpoint-up(xl) {
-    margin-bottom: 48px;
-  }
-
-  &_row {
-    display: flex;
-
-    & + & {
-      margin-top: 12px;
+  &__title {
+    color: #000000de;
+    margin: 0 auto 20px;
+    @include media-breakpoint-up(sm) {
+      margin: 0 auto 32px;
     }
   }
-}
-
-.fail-wrapper__info_row_title {
-  width: 120px;
-  @include media-breakpoint-up(sm) {
-    width: 180px;
+  &__content {
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    padding: 27px 24px 24px 25px;
+    @include media-breakpoint-up(sm) {
+      padding: 17px 25px 30px 25px;
+    }
+    @include media-breakpoint-up(xl) {
+      padding: 24px;
+    }
   }
-}
-
-.button-wrapper {
-  width: 240px;
-  display: block;
-  margin: 0 auto;
+  &__message {
+    color: #054f77;
+    margin: 0 auto 27px;
+    @include media-breakpoint-up(sm) {
+      margin: 0 auto 17px;
+    }
+  }
+  &__button {
+    width: 240px;
+    display: block;
+    margin: 0 auto;
+  }
 }
 </style>
