@@ -32,15 +32,31 @@ import {
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
+  components: {
+    SubscribeStepProgress,
+    SubscribeFail,
+    SubscribeSuccess,
+  },
   async asyncData({ req, redirect, route }) {
     if (route.query['order-fail'])
       return {
         status: 'order-fail',
       }
     if (req.method !== 'POST') {
-      console.log('papermag is retun GET', { req })
       redirect('/papermag')
     }
+
+    const trace = req.header('X-Cloud-Trace-Context')?.split('/')
+    console.log(
+      JSON.stringify({
+        message: `Request: ${req.method} ${req.originalUrl}`,
+        debugPayload: {
+          'req.headers': req.headers,
+          'req.body': req.body,
+        },
+        'logging.googleapis.com/trace': `projects/mirrormedia-1470651750304/traces/${trace}`,
+      })
+    )
 
     try {
       const infoData = req.body
@@ -137,11 +153,6 @@ export default {
     } catch (e) {
       console.log(e)
     }
-  },
-  components: {
-    SubscribeStepProgress,
-    SubscribeFail,
-    SubscribeSuccess,
   },
   provide: {
     subscribeFailButtonLink: '/papermag',

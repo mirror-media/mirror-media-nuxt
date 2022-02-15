@@ -2,10 +2,9 @@
   <div class="merchandise-list">
     <div class="merchandise-list__title">
       <h2 class="subscribe-form__title">訂購項目</h2>
-      <SubscribeFormEditPerchase :perchasedPlan="perchasedPlan" />
     </div>
 
-    <UiMerchandiseList :perchasedPlan="perchasedPlan" :isPopUp="false" />
+    <UiMerchandiseList :perchasedPlan="perchasedPlan" @setCount="setCount" />
 
     <div class="merchandise-list__discount_code">
       <div class="merchandise-list__discount_code_row">
@@ -66,12 +65,10 @@
 <script>
 import UiMerchandiseList from '~/components/UiMerchandiseList.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
-import SubscribeFormEditPerchase from '~/components/SubscribeFormEditPerchase.vue'
 
 export default {
   components: {
     UiMerchandiseList,
-    SubscribeFormEditPerchase,
     UiSubscribeButton,
   },
   props: {
@@ -158,6 +155,9 @@ export default {
     },
     handleInput(e) {
       this.discount.code = e.target.value.replace(/[^\d]/g, '')
+    },
+    setCount(value) {
+      this.$emit('setCount', value)
     },
   },
 }

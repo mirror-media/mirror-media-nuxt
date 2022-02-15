@@ -6,6 +6,7 @@ const {
   NEWEBPAY_PAPERMAG_IV,
   ISRAFEL_ORIGIN,
   DOMAIN_NAME,
+  ENV,
 } = require('../configs/config')
 
 const apiUrl = `${ISRAFEL_ORIGIN}/api/graphql`
@@ -52,7 +53,10 @@ async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
     fetchPaymentDataOfPapermag,
     gateWayPayload
   )
-  data.createNewebpayTradeInfoForMagazineOrder.ReturnURL = `https://${DOMAIN_NAME}/papermag/return`
+  data.createNewebpayTradeInfoForMagazineOrder.ReturnURL =
+    ENV === 'local'
+      ? `http://localhost:3000/papermag/return`
+      : `https://${DOMAIN_NAME}/papermag/return`
   return data
 }
 
@@ -65,6 +69,17 @@ module.exports = async function (req, res) {
     const newebpay = new NewebPay(NEWEBPAY_PAPERMAG_KEY, NEWEBPAY_PAPERMAG_IV)
     const encryptPostData = await newebpay.getEncryptedFormPostData(
       infoForNewebpay
+    )
+
+    const trace = req.header('X-Cloud-Trace-Context')?.split('/')
+    console.log(
+      JSON.stringify({
+        message: `papermag payload:`,
+        debugPayload: {
+          'req.body': req.body,
+        },
+        'logging.googleapis.com/trace': `projects/mirrormedia-1470651750304/traces/${trace}`,
+      })
     )
 
     res.send({

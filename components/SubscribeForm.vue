@@ -6,6 +6,7 @@
           :perchasedPlan="perchasedPlan"
           :discount="discount"
           :setHasCode="setHasCode"
+          @setCount="setCount"
         />
         <SubscribeFormOrdererData
           ref="ordererDOM"
@@ -368,6 +369,15 @@ export default {
         const payload = this.getOrderPayload()
         this.proceedOrderPayment(payload)
       }
+    },
+    setCount(value) {
+      this.perchasedPlan = this.perchasedPlan.map((plan) => {
+        if (plan.id === this.currentChoosedPlanId) {
+          return { ...plan, count: plan.count + value }
+        } else {
+          return plan
+        }
+      })
     },
   },
 }
