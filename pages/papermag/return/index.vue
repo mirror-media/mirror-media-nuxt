@@ -32,6 +32,11 @@ import {
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
+  components: {
+    SubscribeStepProgress,
+    SubscribeFail,
+    SubscribeSuccess,
+  },
   async asyncData({ req, redirect, route }) {
     if (route.query['order-fail'])
       return {
@@ -40,6 +45,8 @@ export default {
     if (req.method !== 'POST') {
       console.log('papermag is retun GET', { req })
       redirect('/papermag')
+    } else {
+      throw new Error('test')
     }
 
     try {
@@ -137,11 +144,6 @@ export default {
     } catch (e) {
       console.log(e)
     }
-  },
-  components: {
-    SubscribeStepProgress,
-    SubscribeFail,
-    SubscribeSuccess,
   },
   provide: {
     subscribeFailButtonLink: '/papermag',
