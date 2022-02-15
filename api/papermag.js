@@ -71,6 +71,17 @@ module.exports = async function (req, res) {
       infoForNewebpay
     )
 
+    const trace = req.header('X-Cloud-Trace-Context')?.split('/')
+    console.log(
+      JSON.stringify({
+        message: `papermag payload:`,
+        debugPayload: {
+          'req.body': req.body,
+        },
+        'logging.googleapis.com/trace': `projects/mirrormedia-1470651750304/traces/${trace}`,
+      })
+    )
+
     res.send({
       status: 'success',
       data: encryptPostData,
