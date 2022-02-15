@@ -7,8 +7,8 @@
         <input
           type="checkbox"
           :value="disable"
-          @change="setDisable"
           placeholder="我是範例"
+          @change="setDisable"
         /><span>同訂購人資訊</span>
       </div>
     </template>
@@ -91,7 +91,7 @@
         v-model.trim="$v.address.$model"
         :disabled="disable"
         type="text"
-        :placeholder="`${type}通訊地址`"
+        :placeholder="`${type}請填入郵遞區號和完整地址，範例：114066台北市內湖區堤頂大道一段365號1樓`"
       />
       <span
         v-show="!$v.address.required && $v.address.$error && isNeedToCheck"
@@ -216,58 +216,6 @@ export default {
       return isValidPhoneNumber(this.cellphone, 'TW')
     },
   },
-
-  methods: {
-    setDisable(e) {
-      e.preventDefault()
-      this.setReceiverDataIsSameAsOrderer(!this.receiverDataIsSameAsOrderer)
-      if (this.receiverDataIsSameAsOrderer) return
-      const {
-        name,
-        cellphone,
-        phone,
-        phoneExt,
-        address,
-        email,
-      } = this.ordererData
-      this.name = name
-      this.cellphone = cellphone
-      this.phone = phone
-      this.phoneExt = phoneExt
-      this.address = address
-      this.email = email
-    },
-    check() {
-      if (this.isNeedToCheck) {
-        this.$v.$touch()
-        if (!this.isOrderer) {
-          this.email = this.ordererData.email
-        }
-        if (this.$v.$invalid || !this.isValidPhone) {
-          this.submitStatus = 'ERROR'
-        } else {
-          this.submitStatus = 'OK'
-        }
-      } else {
-        this.submitStatus = 'OK'
-      }
-
-      this.setFormStatus(this.getFormType, this.submitStatus)
-
-      // after check, feed formData to parent
-      return {
-        name: this.name,
-        cellphone: this.cellphone,
-        phone: this.phone,
-        phoneExt: this.phoneExt,
-        address: this.address,
-        email: this.email,
-      }
-    },
-    handleInputCellphone() {
-      this.shouldShowPhoneError = true
-    },
-  },
   watch: {
     ordererData: {
       deep: true,
@@ -319,6 +267,58 @@ export default {
       if (this.getFormType === 'orderer') {
         this.setOrdererData({ ...this.ordererData, email: val })
       }
+    },
+  },
+
+  methods: {
+    setDisable(e) {
+      e.preventDefault()
+      this.setReceiverDataIsSameAsOrderer(!this.receiverDataIsSameAsOrderer)
+      if (this.receiverDataIsSameAsOrderer) return
+      const {
+        name,
+        cellphone,
+        phone,
+        phoneExt,
+        address,
+        email,
+      } = this.ordererData
+      this.name = name
+      this.cellphone = cellphone
+      this.phone = phone
+      this.phoneExt = phoneExt
+      this.address = address
+      this.email = email
+    },
+    check() {
+      if (this.isNeedToCheck) {
+        this.$v.$touch()
+        if (!this.isOrderer) {
+          this.email = this.ordererData.email
+        }
+        if (this.$v.$invalid || !this.isValidPhone) {
+          this.submitStatus = 'ERROR'
+        } else {
+          this.submitStatus = 'OK'
+        }
+      } else {
+        this.submitStatus = 'OK'
+      }
+
+      this.setFormStatus(this.getFormType, this.submitStatus)
+
+      // after check, feed formData to parent
+      return {
+        name: this.name,
+        cellphone: this.cellphone,
+        phone: this.phone,
+        phoneExt: this.phoneExt,
+        address: this.address,
+        email: this.email,
+      }
+    },
+    handleInputCellphone() {
+      this.shouldShowPhoneError = true
     },
   },
 }

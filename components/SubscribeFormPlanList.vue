@@ -9,12 +9,9 @@
 
     <div class="merchandise-list__discount_code">
       <div class="merchandise-list__discount_code_row">
-        <div class="merchandise-list__discount_code_check">
-          <input type="checkbox" v-model="shouldShowDiscountCode" />
-          <span>我有續訂折扣碼</span>
-        </div>
+        <span>我是續訂戶請輸入訂戶代號</span>
       </div>
-      <template v-if="shouldShowDiscountCode">
+      <template>
         <div class="merchandise-list__discount_code_row input">
           <div
             class="merchandise-list__discount_code_input"
@@ -22,21 +19,21 @@
           >
             <label for="discount-code">MR</label>
             <input
+              id="discount-code"
               v-model="discount.code"
               type="text"
               placeholder="12345678"
+              maxlength="8"
+              :disabled="discount.hasCode"
               @focus="toggleIsInputFocused"
               @input="handleInput"
               @blur="toggleIsInputFocused"
-              id="discount-code"
-              maxlength="8"
-              :disabled="discount.hasCode"
             />
           </div>
           <UiSubscribeButton
-            @click.native="submitDiscountCode"
             :title="buttonTitle"
             :class="{ disabled: isDisabled, remove: discount.hasCode }"
+            @click.native="submitDiscountCode"
           />
         </div>
 
@@ -134,7 +131,7 @@ export default {
       return this.discount.code.length !== 8
     },
     buttonTitle() {
-      return this.discount.hasCode ? '移除' : '使用'
+      return this.discount.hasCode ? '移除' : '確認'
     },
     choosenPlanYear() {
       let year = 1
@@ -144,6 +141,11 @@ export default {
         }
       })
       return year
+    },
+  },
+  watch: {
+    shouldShowDiscountCode(val) {
+      if (!val) this.setHasCode(false)
     },
   },
   methods: {
@@ -156,11 +158,6 @@ export default {
     },
     handleInput(e) {
       this.discount.code = e.target.value.replace(/[^\d]/g, '')
-    },
-  },
-  watch: {
-    shouldShowDiscountCode(val) {
-      if (!val) this.setHasCode(false)
     },
   },
 }
@@ -220,12 +217,6 @@ export default {
       }
     }
 
-    &_check {
-      margin-right: 48px;
-      display: flex;
-      align-items: center;
-    }
-
     &_prompt {
       font-size: 16px;
       font-weight: normal;
@@ -282,7 +273,6 @@ export default {
     align-self: flex-start;
     display: flex;
     height: 48px;
-    padding: 12px;
     border-radius: 2px;
     align-items: center;
 
