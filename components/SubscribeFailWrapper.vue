@@ -30,7 +30,7 @@ export default {
   computed: {
     failMessage() {
       return this.resultStatus === 'order-fail'
-        ? '訂單建立失敗，請再次下訂單，或來電客服專線 02-6633-3882 協助。'
+        ? '訂單建立失敗，請再次下訂單。'
         : '信用卡付款失敗，請再次確認信用卡資訊，或更換信用卡完成訂購手續，謝謝！'
     },
   },
