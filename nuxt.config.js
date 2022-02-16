@@ -400,6 +400,7 @@ module.exports = {
           auth: {
             ssr: {
               ignorePaths: [
+                '/papermag/return',
                 '/campaigns',
                 '/projects',
                 '/dist',
