@@ -79,7 +79,8 @@
         class="list-related-container"
         @load="fetchRelatedImgs"
       >
-        <UiListRelated :items="relateds" :imgs="relatedImgs" />
+        <UiListRelatedRedesign :items="relateds" :imgs="relatedImgs" />
+        <!-- <UiListRelated :items="relateds" :imgs="relatedImgs" /> -->
       </LazyRenderer>
 
       <UiWineWarning v-if="doesHaveWineCategory" />
@@ -97,7 +98,9 @@ import { mapGetters } from 'vuex'
 import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
 import UiArticleIndex from './UiArticleIndex.vue'
-import UiListRelated from './UiListRelated.vue'
+import UiListRelatedRedesign from './UiListRelatedRedesign.vue'
+
+// import UiListRelated from './UiListRelated.vue'
 import UiH1 from './UiH1.vue'
 import UiSectionLabel from './UiSectionLabel.vue'
 import UiCaption from './UiCaption.vue'
@@ -123,7 +126,9 @@ export default {
     UiTheCover,
     UiArticleBody,
     UiArticleIndex,
-    UiListRelated,
+    UiListRelatedRedesign,
+
+    // UiListRelated,
     UiWineWarning,
     UiFooter,
     UiShareLinksToggled,
@@ -506,18 +511,17 @@ export default {
 }
 
 .list-related-container {
-  margin: 48px 20px 48px 20px;
+  padding-top: 48px;
+  background-color: #f3f5f6;
+  padding-bottom: 48px;
   @include media-breakpoint-up(md) {
-    margin: 0;
-    padding-top: 48px;
     padding-left: calc((100vw - 608px) / 2);
     padding-right: calc((100vw - 608px) / 2);
-    padding-bottom: 48px;
   }
   @include media-breakpoint-up(xl) {
-    padding-left: calc((100vw - 640px) / 2);
-    padding-right: calc((100vw - 640px) / 2);
-    background-color: white;
+    padding-top: 60px;
+    padding-left: 12px;
+    padding-right: 12px;
     position: relative;
     z-index: 511;
   }
