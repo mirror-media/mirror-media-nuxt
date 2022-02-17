@@ -549,7 +549,7 @@ export default {
   &__share-links {
     display: none !important;
     @include media-breakpoint-up(xl) {
-      display: flex;
+      display: flex !important;
       position: fixed;
       top: calc((100vh - 140px) / 2);
       right: calc((100vw - 634px) / 4);
