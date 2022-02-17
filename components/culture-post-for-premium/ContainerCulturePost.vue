@@ -555,6 +555,7 @@ export default {
     padding-left: 12px;
     padding-right: 12px;
     padding-bottom: 16px;
+    margin-bottom: 60px;
     position: relative;
     z-index: 511;
   }
