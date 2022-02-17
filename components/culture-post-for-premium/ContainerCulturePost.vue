@@ -545,7 +545,7 @@ export default {
 .list-related-container--redesign {
   padding-top: 48px;
   background-color: #f3f5f6;
-  padding-bottom: 48px;
+  padding-bottom: 4px;
   @include media-breakpoint-up(md) {
     padding-left: calc((100% - 608px) / 2);
     padding-right: calc((100% - 608px) / 2);
@@ -554,6 +554,7 @@ export default {
     padding-top: 60px;
     padding-left: 12px;
     padding-right: 12px;
+    padding-bottom: 16px;
     position: relative;
     z-index: 511;
   }
