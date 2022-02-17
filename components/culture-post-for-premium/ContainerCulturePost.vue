@@ -547,7 +547,7 @@ export default {
 
 .article-body-wrapper {
   &__share-links {
-    display: none;
+    display: none !important;
     @include media-breakpoint-up(xl) {
       display: flex;
       position: fixed;
