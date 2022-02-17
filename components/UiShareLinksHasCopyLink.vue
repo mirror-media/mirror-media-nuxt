@@ -34,7 +34,7 @@ export default {
       type: String,
       default: 'horizontal',
       validator(value) {
-        return ['horizontal', 'vertical'].includes(value)
+        return ['horizontal', 'vertical', 'vertical-reverse'].includes(value)
       },
     },
   },
@@ -52,6 +52,9 @@ export default {
   &--vertical {
     flex-direction: column-reverse;
   }
+  &--vertical-reverse {
+    flex-direction: column;
+  }
 
   &__share-link {
     &.horizontal {
@@ -64,6 +67,11 @@ export default {
         margin: 0;
       }
       &:not(:last-child) {
+        margin: 16px 0 0 0 !important;
+      }
+    }
+    &.vertical-reverse {
+      & + & {
         margin: 16px 0 0 0 !important;
       }
     }

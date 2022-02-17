@@ -54,19 +54,25 @@
         :tags="post.tags"
       />
 
-      <UiArticleBody
-        ref="articleBody"
-        class="culture-post__article-body"
-        :postId="post.id"
-        :brief="post.brief"
-        :content="post.content"
-        :isArticleContentTruncatedByGateway="post.isTruncated"
-        :pageState="articleBodyPageState"
-        :isLoading="isLoading"
-        :isFail="isFail"
-        :failTimes="failTimes"
-        @reload="handleReload"
-      />
+      <div class="article-body-wrapper">
+        <UiArticleBody
+          ref="articleBody"
+          class="culture-post__article-body"
+          :postId="post.id"
+          :brief="post.brief"
+          :content="post.content"
+          :isArticleContentTruncatedByGateway="post.isTruncated"
+          :pageState="articleBodyPageState"
+          :isLoading="isLoading"
+          :isFail="isFail"
+          :failTimes="failTimes"
+          @reload="handleReload"
+        />
+        <UiShareLinksHasCopyLink
+          class="article-body-wrapper__share-links"
+          :direction="'vertical-reverse'"
+        />
+      </div>
 
       <LazyRenderer
         v-if="doesHaveAnyRelateds"
@@ -100,6 +106,7 @@ import ContainerHeaderSectionMember from '~/components/ContainerHeaderSectionMem
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import UiFooter from '~/components/UiFooter.vue'
 import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
+import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
@@ -120,6 +127,7 @@ export default {
     UiWineWarning,
     UiFooter,
     UiShareLinksToggled,
+    UiShareLinksHasCopyLink,
   },
 
   props: {
@@ -530,6 +538,20 @@ export default {
   z-index: 99999;
   @include media-breakpoint-up(xl) {
     display: none;
+  }
+}
+
+.article-body-wrapper {
+  &__share-links {
+    display: none;
+    @include media-breakpoint-up(xl) {
+      display: flex;
+      position: fixed;
+      top: calc((100vh - 140px) / 2);
+      right: calc((100vw - 634px) / 4);
+      bottom: 0;
+      margin: 0 auto;
+    }
   }
 }
 </style>
