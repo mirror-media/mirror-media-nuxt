@@ -53,8 +53,10 @@
       </div>
     </div>
     <ClientOnly>
-      <UiShareLinksHasCopyLink class="article-info__share-links-wrapper" />
-      <!--      <UiShareLinks v-else class="article-info__share-links-wrapper" />-->
+      <UiShareLinksHasCopyLink
+        v-observe-visibility="handleShareLinksVisibilityChanged"
+        class="article-info__share-links-wrapper"
+      />
     </ClientOnly>
   </div>
 </template>
@@ -64,12 +66,10 @@ import dayjs from 'dayjs'
 import UiLink from '~/components/culture-post-for-premium/UiLink.vue'
 import UiTag from '~/components/culture-post-for-premium/UiTag.vue'
 
-// import UiShareLinks from '~/components/UiShareLinks.vue'
 import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
 
 export default {
   components: {
-    // UiShareLinks,
     UiShareLinksHasCopyLink,
     UiTag,
     UiLink,
@@ -111,6 +111,9 @@ export default {
   methods: {
     formatTime(time = new Date()) {
       return dayjs(time).format('YYYY.MM.DD HH:mm')
+    },
+    handleShareLinksVisibilityChanged(isVisible) {
+      this.$emit('shareLinksVisibilityChanged', isVisible)
     },
   },
 }

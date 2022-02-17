@@ -52,6 +52,7 @@
         :extendByline="post.extendByline"
         :photographers="post.photographers"
         :tags="post.tags"
+        @shareLinksVisibilityChanged="handleShareLinksVisibilityChanged"
       />
 
       <div class="article-body-wrapper">
@@ -68,10 +69,13 @@
           :failTimes="failTimes"
           @reload="handleReload"
         />
-        <UiShareLinksHasCopyLink
-          class="article-body-wrapper__share-links"
-          :direction="'vertical-reverse'"
-        />
+        <transition name="fade">
+          <UiShareLinksHasCopyLink
+            v-show="!isShareLinksInArticleInfoVisible"
+            class="article-body-wrapper__share-links"
+            :direction="'vertical-reverse'"
+          />
+        </transition>
       </div>
 
       <LazyRenderer
@@ -166,6 +170,7 @@ export default {
       isIndexActive: false,
 
       relatedImgs: [],
+      isShareLinksInArticleInfoVisible: false,
     }
   },
 
@@ -341,6 +346,10 @@ export default {
 
     handleReload() {
       this.$emit('reload')
+    },
+
+    handleShareLinksVisibilityChanged(isVisible) {
+      this.isShareLinksInArticleInfoVisible = isVisible
     },
   },
 
@@ -547,9 +556,12 @@ export default {
 
 .article-body-wrapper {
   &__share-links {
-    display: none !important;
+    visibility: hidden;
+    pointer-events: none;
     @include media-breakpoint-up(xl) {
-      display: flex !important;
+      display: flex;
+      visibility: initial;
+      pointer-events: initial;
       position: fixed;
       top: calc((100vh - 140px) / 2);
       right: calc((100vw - 634px) / 4);
@@ -557,5 +569,12 @@ export default {
       margin: 0 auto;
     }
   }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
