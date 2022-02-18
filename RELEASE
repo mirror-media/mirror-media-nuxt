@@ -207,6 +207,23 @@
 2021/11/5
   - release version: master_kwhsiung 1.4.12
   - features: feat premium mock error sim condition 
- 
-  
+2021/11/24
+  - release version: master_v61265 9ba170cf-1ab8-4358-9b4b-b0e9b15cec3b
+  - features: magazine-page determine pdfLink of magazine to magazine-issue page first, redirect /premiumsection/ to /section/member, fix topic-page: replace metaInfo option to head to fix the meta tags, fix related-list-in-story-page-resolve missing image by extend maxResults when fetching image of related list, fix: premium navbar link
+2021/12/1
+  - release version: master_v61265 63d78083-43d7-4b59-ade0-4d757c59fba1
+  - features: change /subscribe wording for december sale 
+2021/12/3
+  - release version: master_v61265 30722177-26ca-40c0-a307-f0bf29091679
+  - feat: ab-test of popular post & lastest post, redirect to 404 when no slug on story page
+2021/12/7
+  - release version: master_kwhsiung 3ce021f1-f0d1-4c1f-b42b-cf0b5edb76a1
+  - features: fix(topci-page): dfp ad not shown when type is group or portrait list
+2022/1/10
+  - release version: master_v61265 ffbc2237-92a4-4c40-b23f-7dd98c82b64d
+  - features:feat: adjust the identify-methods of app-subscriber and apply to subscribe/cancel-ask pages
+2022/1/14
+  - release version: master_kjwen310 3dd2b85e-6e9a-4300-b290-435d0e119469
+  - features:adjust style of close button and change z-index from 999 to 1200
+
 
