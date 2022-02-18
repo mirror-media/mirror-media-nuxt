@@ -99,7 +99,6 @@ export default {
 
 <style lang="scss" scoped>
 .article {
-  box-shadow: 5px 5px 5px #bcbcbc;
   cursor: pointer;
   height: 100%;
   display: flex;
@@ -111,7 +110,6 @@ export default {
     transition: all 0.3s ease-in-out;
     &:hover {
       transform: translateY(-20px);
-      box-shadow: 5px 15px 5px #bcbcbc;
     }
   }
 }
