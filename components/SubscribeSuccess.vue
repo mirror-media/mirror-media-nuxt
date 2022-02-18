@@ -1,8 +1,11 @@
 <template>
   <div class="order-success">
     <div class="order-success__wrapper">
-      <p>您已完成付款，以下為本次訂購資訊，已同步寄送至您的信箱。</p>
-
+      <p>
+        您已完成付款，以下為本次訂購資訊：
+        <br />
+        您將收到完成訂閱通知信、付款完成通知信、電子發票開立通知信。若無收到請檢查該郵件是否被過濾成垃圾郵件。
+      </p>
       <SubscribeSuccessOrderInfo
         :orderInfo="orderInfo"
         :orderInfoPurchasedList="orderInfoPurchasedList"
@@ -68,31 +71,12 @@ export default {
         {
           id: 3,
           text:
-            ' 訂單成立後，會收到我們email給您的確認信。手機號碼及電子信箱請務必正確填寫。',
+            '訂單成立後，會收到我們email給您的確認信。手機號碼及電子信箱請務必正確填寫，若無收到信請檢查該郵件是否被過濾成垃圾郵件。',
         },
         {
           id: 4,
-          text: '雜誌的取消/退訂注意事項',
-          child: [
-            {
-              id: 0,
-              text:
-                '雜誌未配送前可全額退款。雜誌如已開始配送，退費金額=原訂金額-(零售價$75x訂閱已配送期數)-原訂金額之5%手續費。',
-            },
-            {
-              id: 1,
-              text: '註1：訂閱已配送期數包含已進入配送作業流程的期數。',
-            },
-            {
-              id: 2,
-              text: '如有疑問請來電詢問。',
-            },
-            {
-              id: 3,
-              text:
-                '紙本訂戶專線：(02) 6633-3882，電子信箱： service@mirrormedia.mg',
-            },
-          ],
+          text:
+            '紙本訂戶專線：(02) 6633-3882，電子信箱： service@mirrormedia.mg',
         },
       ],
     }

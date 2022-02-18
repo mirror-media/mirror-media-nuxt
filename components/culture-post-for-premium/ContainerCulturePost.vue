@@ -52,28 +52,54 @@
         :extendByline="post.extendByline"
         :photographers="post.photographers"
         :tags="post.tags"
+        @shareLinksVisibilityChanged="handleShareLinksVisibilityChanged"
       />
 
-      <UiArticleBody
-        ref="articleBody"
-        class="culture-post__article-body"
-        :postId="post.id"
-        :brief="post.brief"
-        :content="post.content"
-        :isArticleContentTruncatedByGateway="post.isTruncated"
-        :pageState="articleBodyPageState"
-        :isLoading="isLoading"
-        :isFail="isFail"
-        :failTimes="failTimes"
-        @reload="handleReload"
-      />
+      <div class="article-body-wrapper">
+        <UiArticleBody
+          ref="articleBody"
+          class="culture-post__article-body"
+          :postId="post.id"
+          :brief="post.brief"
+          :content="post.content"
+          :isArticleContentTruncatedByGateway="post.isTruncated"
+          :pageState="articleBodyPageState"
+          :isLoading="isLoading"
+          :isFail="isFail"
+          :failTimes="failTimes"
+          @reload="handleReload"
+        />
+        <transition name="fade">
+          <UiShareLinksHasCopyLink
+            v-show="!isShareLinksInArticleInfoVisible"
+            class="article-body-wrapper__share-links"
+            :direction="'vertical-reverse'"
+          />
+        </transition>
+      </div>
 
       <LazyRenderer
         v-if="doesHaveAnyRelateds"
-        class="list-related-container"
+        :class="{
+          'list-related-container--redesign':
+            $GOExp['premium-list-related-redesign'].variant === '1',
+          'list-related-container':
+            $GOExp['premium-list-related-redesign'].variant !== '1',
+        }"
         @load="fetchRelatedImgs"
       >
-        <UiListRelated :items="relateds" :imgs="relatedImgs" />
+        <UiListRelatedRedesign
+          v-if="$GOExp['premium-list-related-redesign'].variant === '1'"
+          :items="relateds"
+          :imgs="relatedImgs"
+          @sendGa="sendGaForClick('related')"
+        />
+        <UiListRelated
+          v-else
+          :items="relateds"
+          :imgs="relatedImgs"
+          @sendGa="sendGaForClick('related')"
+        />
       </LazyRenderer>
 
       <UiWineWarning v-if="doesHaveWineCategory" />
@@ -81,6 +107,7 @@
     <div class="footer-wrapper">
       <UiFooter />
     </div>
+    <UiShareLinksToggled class="share-toggled" />
   </section>
 </template>
 
@@ -90,6 +117,7 @@ import { mapGetters } from 'vuex'
 import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
 import UiArticleIndex from './UiArticleIndex.vue'
+import UiListRelatedRedesign from './UiListRelatedRedesign.vue'
 import UiListRelated from './UiListRelated.vue'
 import UiH1 from './UiH1.vue'
 import UiSectionLabel from './UiSectionLabel.vue'
@@ -98,6 +126,8 @@ import UiArticleInfo from './UiArticleInfo.vue'
 import ContainerHeaderSectionMember from '~/components/ContainerHeaderSectionMember.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import UiFooter from '~/components/UiFooter.vue'
+import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
+import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
@@ -114,9 +144,12 @@ export default {
     UiTheCover,
     UiArticleBody,
     UiArticleIndex,
+    UiListRelatedRedesign,
     UiListRelated,
     UiWineWarning,
     UiFooter,
+    UiShareLinksToggled,
+    UiShareLinksHasCopyLink,
   },
 
   props: {
@@ -150,6 +183,7 @@ export default {
       isIndexActive: false,
 
       relatedImgs: [],
+      isShareLinksInArticleInfoVisible: false,
     }
   },
 
@@ -326,6 +360,20 @@ export default {
     handleReload() {
       this.$emit('reload')
     },
+
+    handleShareLinksVisibilityChanged(isVisible) {
+      this.isShareLinksInArticleInfoVisible = isVisible
+    },
+    sendGa(eventAction, eventLabel, eventCategory = 'premium') {
+      this.$ga.event({
+        eventAction,
+        eventLabel,
+        eventCategory,
+      })
+    },
+    sendGaForClick(eventLabel) {
+      this.sendGa('click', eventLabel)
+    },
   },
 
   head() {
@@ -494,6 +542,25 @@ export default {
   }
 }
 
+.list-related-container--redesign {
+  padding-top: 48px;
+  background-color: #f3f5f6;
+  padding-bottom: 4px;
+  @include media-breakpoint-up(md) {
+    padding-left: calc((100% - 608px) / 2);
+    padding-right: calc((100% - 608px) / 2);
+  }
+  @include media-breakpoint-up(xl) {
+    padding-top: 60px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 16px;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 511;
+  }
+}
+
 .list-related-container {
   margin: 48px 20px 48px 20px;
   @include media-breakpoint-up(md) {
@@ -518,5 +585,39 @@ export default {
     position: relative;
     z-index: 511;
   }
+}
+
+.share-toggled {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99999;
+  @include media-breakpoint-up(xl) {
+    display: none;
+  }
+}
+
+.article-body-wrapper {
+  &__share-links {
+    visibility: hidden;
+    pointer-events: none;
+    @include media-breakpoint-up(xl) {
+      display: flex;
+      visibility: initial;
+      pointer-events: initial;
+      position: fixed;
+      top: calc((100vh - 140px) / 2);
+      right: calc((100vw - 634px) / 4);
+      bottom: 0;
+      margin: 0 auto;
+    }
+  }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

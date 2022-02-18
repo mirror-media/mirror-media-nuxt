@@ -4,13 +4,15 @@
     <ul>
       <li v-for="info in infoList" :key="info.id">
         <p v-html="info.text" />
-        <p
-          v-for="infoChild in infoSubList(info)"
-          :key="infoChild.id"
-          class="subscribe-info__sub"
-        >
-          {{ infoChild.text }}
-        </p>
+        <ul>
+          <li
+            v-for="infoChild in infoSubList(info)"
+            :key="infoChild.id"
+            class="subscribe-info__sub"
+          >
+            <p>{{ infoChild.text }}</p>
+          </li>
+        </ul>
       </li>
     </ul>
   </div>
@@ -76,6 +78,7 @@ export default {
       letter-spacing: normal;
       color: #000000de;
       .subscribe-info__sub {
+        list-style: circle;
         margin-left: 8px;
       }
     }

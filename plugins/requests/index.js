@@ -257,9 +257,11 @@ export default (context, inject) => {
     fetchApiData(`/partners${buildParams(params)}`)
   )
 
-  // inject('fetchPosts', (params) =>
-  //   fetchApiData(`/getposts${buildParams(params)}`)
-  // )
+  /*
+   * inject('fetchPosts', (params) =>
+   *   fetchApiData(`/getposts${buildParams(params)}`)
+   * )
+   */
   inject('fetchPostsFromMembershipGateway', (params, token) =>
     fetchApiData(`/getposts${buildParams(params)}`, true, token)
   )
@@ -269,7 +271,7 @@ export default (context, inject) => {
 
   /*
    * In order to reduce the duplicated requests below in story/premium page
-   * 1. fetchStoryFromMembershipGateway request in handle-story-premium-redirect-and-cache-control middleware
+   * 1. fetchStoryFromMembershipGateway request in handle-story-premium-redirect middleware
    * 2. fetchStoryFromMembershipGateway request in fetch() hook in premium/_slug.vue and story/_slug.vue
    * We use hashmap to store the story data
    */

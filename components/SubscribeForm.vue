@@ -6,6 +6,7 @@
           :perchasedPlan="perchasedPlan"
           :discount="discount"
           :setHasCode="setHasCode"
+          @setCount="setCount"
         />
         <SubscribeFormOrdererData
           ref="ordererDOM"
@@ -276,7 +277,6 @@ export default {
       }
     },
     getOrderPayload() {
-      console.log('data', this.receiptData)
       const { itemDest, amount } = this.generateItemData()
       let carrierType = this.receiptData.donateOrganization
         ? ''
@@ -302,7 +302,6 @@ export default {
           name: itemDest,
         }))
       }
-      console.log(code, name)
       return {
         data: {
           desc: name || itemDest,
@@ -315,7 +314,10 @@ export default {
           itemCount: amount,
           purchaseDatetime: new Date(),
           category: this.receiptData.carrierUbn ? 'B2B' : 'B2C',
-          promoteCode: this.discount.code,
+          promoteCode: this.discount.code
+            ? 'MR' + this.discount.code
+            : this.discount.code,
+
           // 購買和收穫相關
           purchaseName: this.ordererData.name,
           purchaseAddress: this.ordererData.address,
@@ -326,6 +328,7 @@ export default {
           receiveAddress: this.receiverData.address,
           receiveMobile: this.receiverData.cellphone,
           receivePhone: `${this.receiverData.phone} ${this.receiverData.phoneExt}`,
+
           // 捐贈發票
           loveCode: parseInt(this.receiptData.donateOrganization),
           carrierType,
@@ -366,6 +369,20 @@ export default {
         const payload = this.getOrderPayload()
         this.proceedOrderPayment(payload)
       }
+    },
+    setCount(value) {
+      if (
+        value < 0 &&
+        this.perchasedPlan[this.currentChoosedPlanId].count === 1
+      )
+        return
+      this.perchasedPlan = this.perchasedPlan.map((plan) => {
+        if (plan.id === this.currentChoosedPlanId) {
+          return { ...plan, count: plan.count + value }
+        } else {
+          return plan
+        }
+      })
     },
   },
 }

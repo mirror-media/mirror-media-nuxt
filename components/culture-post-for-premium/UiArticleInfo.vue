@@ -52,16 +52,12 @@
         </UiTag>
       </div>
     </div>
-    <div class="article-info__share-links-wrapper share-links-wrapper">
-      <UiShareFb
-        class="share-link"
-        data-user-behavior-description="share-facebook"
+    <ClientOnly>
+      <UiShareLinksHasCopyLink
+        v-observe-visibility="handleShareLinksVisibilityChanged"
+        class="article-info__share-links-wrapper"
       />
-      <UiShareLine
-        class="share-link"
-        data-user-behavior-description="share-line"
-      />
-    </div>
+    </ClientOnly>
   </div>
 </template>
 
@@ -69,11 +65,15 @@
 import dayjs from 'dayjs'
 import UiLink from '~/components/culture-post-for-premium/UiLink.vue'
 import UiTag from '~/components/culture-post-for-premium/UiTag.vue'
-import UiShareFb from '~/components/UiShareFb.vue'
-import UiShareLine from '~/components/UiShareLine.vue'
+
+import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
 
 export default {
-  components: { UiShareLine, UiShareFb, UiTag, UiLink },
+  components: {
+    UiShareLinksHasCopyLink,
+    UiTag,
+    UiLink,
+  },
   props: {
     publishTime: {
       type: Date,
@@ -111,6 +111,9 @@ export default {
   methods: {
     formatTime(time = new Date()) {
       return dayjs(time).format('YYYY.MM.DD HH:mm')
+    },
+    handleShareLinksVisibilityChanged(isVisible) {
+      this.$emit('shareLinksVisibilityChanged', isVisible)
     },
   },
 }
@@ -163,21 +166,6 @@ export default {
   &__tag {
     margin: 8px 0 0 8px;
   }
-}
-
-.share-links-wrapper {
-  min-width: 84px;
-  width: 84px;
-  height: 36px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.share-link {
-  display: inline-block;
-  width: 36px;
-  height: 36px;
 }
 
 .link {
