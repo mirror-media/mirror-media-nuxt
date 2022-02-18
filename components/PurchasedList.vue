@@ -4,7 +4,7 @@
       v-for="rowItem in data"
       :key="rowItem.text"
       class="content_row__data_wrapper_row"
-      :class="{ discount: rowItem.text === '折扣碼' }"
+      :class="{ discount: rowItem.text === '折扣' }"
     >
       <div>
         <p>
@@ -20,7 +20,7 @@
         </template>
       </div>
       <div class="price">
-        <span v-if="rowItem.text === '折扣碼'">-</span>NT$
+        <span v-if="rowItem.text === '折扣'">-</span>NT$
         {{ rowItem.price }}
       </div>
     </div>

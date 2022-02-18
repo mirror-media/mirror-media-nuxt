@@ -1,7 +1,7 @@
 <template>
   <div class="order-success">
     <div class="order-success__wrapper">
-      <p>
+      <p class="order-success__wrapper--red-font">
         您已完成付款，以下為本次訂購資訊：
         <br />
         您將收到完成訂閱通知信、付款完成通知信、電子發票開立通知信。若無收到請檢查該郵件是否被過濾成垃圾郵件。
@@ -44,6 +44,7 @@ export default {
           pur_name: '',
           pur_mail: '',
           pur_cell: '',
+          pur_addr: '',
           rec_name: '',
           rec_cell: '',
           rec_addr: '',
@@ -94,13 +95,13 @@ export default {
   &__wrapper {
     max-width: 990px;
     margin: auto;
-    p {
+    &--red-font {
       padding: 0 17px;
       margin-bottom: 13px;
       font-size: 18px;
       line-height: 1.87;
       text-align: justify;
-      color: #4a4a4a;
+      color: red;
       @include media-breakpoint-up(sm) {
         padding: 0 25px;
         margin-bottom: 18px;

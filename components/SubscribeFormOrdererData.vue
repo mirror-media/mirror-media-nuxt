@@ -94,7 +94,7 @@
       <span>{{ addressInputTitle }}</span>
       <div>
         <p class="orderer-data__detail orderer-data__detail--margin-less">
-          請填完整郵遞區號和地址，如：114066台北市內湖區堤頂大道一段365號1樓。
+          請填完整郵遞區號和地址，如:114066台北市內湖區堤頂大道一段365號1樓
         </p>
       </div>
       <input
