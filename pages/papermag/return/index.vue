@@ -122,7 +122,7 @@ export default {
       ]
       if (decryptInfoData.promoteCode) {
         orderInfoPurchasedList.push({
-          text: '折扣碼',
+          text: '折扣',
           price: 80 * decryptInfoData.itemCount,
         })
       }
@@ -145,6 +145,7 @@ export default {
           pur_name: decryptInfoData.purchaseName,
           pur_mail: decryptInfoData.purchaseEmail,
           pur_cell: decryptInfoData.purchaseMobile,
+          pur_addr: decryptInfoData.purchaseAddress,
           rec_name: decryptInfoData.receiveName,
           rec_cell: decryptInfoData.receiveMobile,
           rec_addr: decryptInfoData.receiveAddress,

@@ -82,16 +82,12 @@ export default {
               id: 1,
               text: '註1：訂閱已配送期數包含已進入配送作業流程的期數。',
             },
-            {
-              id: 2,
-              text: '如有疑問請來電詢問。',
-            },
-            {
-              id: 3,
-              text:
-                '紙本訂戶專線：(02) 6633-3882，電子信箱： service@mirrormedia.mg',
-            },
           ],
+        },
+        {
+          id: 6,
+          text:
+            '紙本訂戶專線：(02) 6633-3882，電子信箱： service@mirrormedia.mg',
         },
       ],
     }
