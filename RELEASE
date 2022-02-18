@@ -225,5 +225,9 @@
 2022/1/14
   - release version: master_kjwen310 3dd2b85e-6e9a-4300-b290-435d0e119469
   - features:adjust style of close button and change z-index from 999 to 1200
-
-
+2022/1/18
+  - release version: master_kwhsiung 6149e817-c47c-4227-9223-82fb07c162cd
+  - features:add id of 2022 wine topic to the list of rendering wine warning
+2022/2/10
+  - release version: master_kwhsiung c093a269-ab01-4bc4-8aad-ecb81176078b
+  - features: remove ad MB_L2 of index, replace ig and yt svg with png, change youtube icon, let lastest item loadLastestListInitial not be slug
