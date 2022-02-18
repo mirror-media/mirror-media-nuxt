@@ -28,23 +28,26 @@ function merchandiseWithShippingFee(merchandise) {
   const plan = PLAN_LIST.filter((item) => {
     return item.origin.code === merchandise.code
   })
-  return plan.withShippingFee || merchandise
+  return plan[0]?.withShippingFee || merchandise
 }
 
 function merchandiseWithoutShippingFee(merchandise) {
-  const plan = PLAN_LIST.filter((item) => {
-    return item.withShippingFee.code === merchandise.code
-  })
-  if (plan.withShippingFee) {
-    return {
-      ...plan.withShippingFee,
-      shippingFeePerCount: plan.shippingFeePerCount,
+  let plan
+  PLAN_LIST.forEach((item) => {
+    if (item.origin.code === merchandise.code) {
+      plan = {
+        ...item.origin,
+        shippingFeePerCount: 0,
+      }
+    } else if (item.withShippingFee.code === merchandise.code) {
+      console.log('fee', item.shippingFeePerCount)
+      plan = {
+        ...item.origin,
+        shippingFeePerCount: item.shippingFeePerCount,
+      }
     }
-  }
-  return {
-    ...merchandise,
-    shippingFeePerCount: 0,
-  }
+  })
+  return plan
 }
 
 export { merchandiseWithShippingFee, merchandiseWithoutShippingFee }

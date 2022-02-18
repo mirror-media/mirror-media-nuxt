@@ -7,7 +7,12 @@
       :class="{ discount: rowItem.text === '折扣碼' }"
     >
       <div>
-        <p>{{ rowItem.text }}</p>
+        <p>
+          {{ rowItem.text }}
+          <span v-if="rowItem.count" claa="count"
+            >共 <span class="count__number">{{ rowItem.count }}</span> 份</span
+          >
+        </p>
         <template v-if="rowItem.hints">
           <p v-for="hint in rowItem.hints" :key="hint" class="hint">
             {{ hint }}
@@ -75,6 +80,12 @@ export default {
         @include media-breakpoint-up(sm) {
           margin: 16px 0 0 0;
           padding-top: 16px;
+        }
+      }
+      .count {
+        margin-left: 72px;
+        &__number {
+          color: #054f77;
         }
       }
     }

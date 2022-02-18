@@ -3,7 +3,7 @@
     <ContainerList
       :fetchList="fetchList"
       :listTitle="authorName"
-      listTitleColor="#bcbcbc"
+      :listTitleColor="isPremiumMember ? '#000000de' : '#bcbcbc'"
     />
 
     <UiStickyAd pageKey="other" />
@@ -37,6 +37,9 @@ export default {
     }
   },
   computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
     authorId() {
       return this.$route.params.id
     },

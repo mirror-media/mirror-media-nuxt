@@ -71,7 +71,7 @@ export default {
 <style lang="scss" scoped>
 .youtube-subscribe {
   display: flex;
-  width: 105px;
+  width: 150px;
 
   *:hover {
     cursor: pointer;

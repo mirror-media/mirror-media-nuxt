@@ -1,5 +1,8 @@
 <template>
-  <div class="discount-wrapper">
+  <div
+    class="discount-wrapper"
+    :class="{ 'discount-wrapper--red-font': discount.title === '符合續訂優惠' }"
+  >
     <div>{{ discount.title }}</div>
     <div>{{ discount.content }}</div>
   </div>
@@ -31,5 +34,8 @@ export default {
   color: #054f77;
   display: flex;
   justify-content: space-between;
+  &--red-font {
+    color: red;
+  }
 }
 </style>

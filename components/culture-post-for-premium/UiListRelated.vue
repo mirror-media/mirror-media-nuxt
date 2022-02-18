@@ -14,6 +14,7 @@
           class="item__img"
           target="_blank"
           rel="noopener noreferrer"
+          @click="$emit('sendGa')"
         >
           <img :src="getImgById(imgs, item.heroImage)" alt="" />
         </a>
@@ -23,6 +24,7 @@
           class="item__title"
           target="_blank"
           rel="noopener noreferrer"
+          @click="$emit('sendGa')"
           >{{ item.title }}</a
         >
       </div>
