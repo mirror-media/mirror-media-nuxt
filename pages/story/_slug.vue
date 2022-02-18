@@ -237,7 +237,7 @@ const DEFAULT_SECTION_ID = 'other'
 export default {
   name: 'Story',
   layout: 'empty',
-  middleware: ['handle-story-premium-redirect-and-cache-control'],
+  middleware: ['handle-story-premium-redirect'],
   setup() {
     useViewport()
     useFbQuotePlugin()

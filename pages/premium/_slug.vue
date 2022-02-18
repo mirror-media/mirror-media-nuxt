@@ -29,7 +29,7 @@ import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/composition
 
 export default {
   layout: 'empty',
-  middleware: ['handle-story-premium-redirect-and-cache-control'],
+  middleware: ['handle-story-premium-redirect'],
   components: {
     ContainerCulturePost,
   },
