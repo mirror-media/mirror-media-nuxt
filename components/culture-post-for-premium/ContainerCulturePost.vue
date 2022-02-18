@@ -557,7 +557,7 @@ export default {
     padding-bottom: 16px;
     margin-bottom: 60px;
     position: relative;
-    z-index: 511;
+    z-index: 498;
   }
 }
 
