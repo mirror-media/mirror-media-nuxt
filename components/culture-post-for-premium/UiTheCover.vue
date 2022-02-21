@@ -68,10 +68,10 @@ export default {
       return this.video.poster
     },
     imgSrcLandscape() {
-      return this.picture.heroImage.desktop?.url
+      return this.picture?.heroImage?.desktop?.url
     },
     imgSrcPortrait() {
-      return this.picture.mobileImage.desktop?.url
+      return this.picture?.mobileImage?.desktop?.url
     },
     imgSrc() {
       return this.imgSrcPortrait || this.imgSrcLandscape
