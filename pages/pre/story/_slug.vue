@@ -12,11 +12,45 @@
       :coverPicture="post.coverPicture"
       :heroCaption="post.heroCaption"
     />
+    <UiArticleInfo
+      class="article-info"
+      :publishTime="post.publishedDate"
+      :updateTime="post.updatedAt"
+      :writers="post.writers"
+      :extendByline="post.extendByline"
+      :photographers="post.photographers"
+      :tags="post.tags"
+      @shareLinksVisibilityChanged="handleShareLinksVisibilityChanged"
+    />
+    <div class="article-body-wrapper">
+      <UiArticleBody
+        ref="articleBody"
+        class="culture-post__article-body"
+        :postId="post.id"
+        :brief="post.brief"
+        :content="post.content"
+        :isArticleContentTruncatedByGateway="post.isTruncated"
+        :pageState="articleBodyPageState"
+        :isLoading="isLoading"
+        :isFail="isFail"
+        :failTimes="failTimes"
+        @reload="handleReload"
+      />
+      <!--      <transition name="fade">-->
+      <!--        <UiShareLinksHasCopyLink-->
+      <!--          v-show="!isShareLinksInArticleInfoVisible"-->
+      <!--          class="article-body-wrapper__share-links"-->
+      <!--          :direction="'vertical-reverse'"-->
+      <!--        />-->
+      <!--      </transition>-->
+    </div>
   </section>
 </template>
 
 <script>
 import UiLanding from '~/components/UiLanding.vue'
+import UiArticleInfo from '~/components/culture-post-for-premium/UiArticleInfo.vue'
+import UiArticleBody from '~/components/culture-post-for-premium/UiArticleBody.vue'
 import { PREVIEW_QUERY } from '~/configs/config'
 import { getSectionColor } from '~/utils/index.js'
 
@@ -24,6 +58,8 @@ export default {
   // middleware: ['handle-story-premium-redirect'],
   components: {
     UiLanding,
+    UiArticleInfo,
+    UiArticleBody,
   },
   async fetch() {
     const processPostResponse = (response) => {
@@ -191,3 +227,35 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.article-info {
+  margin: 36px 20px 0 20px;
+  @include media-breakpoint-up(md) {
+    max-width: 608px;
+    margin: 52px auto 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: 960px;
+    margin: 64px auto 0 auto;
+  }
+}
+
+.culture-post {
+  color: rgba(#000, 0.87);
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  &__article-body {
+    padding: 0 20px;
+    @include media-breakpoint-up(md) {
+      padding: 0;
+      margin: 0 auto;
+      max-width: 608px;
+    }
+    @include media-breakpoint-up(xl) {
+      max-width: 960px;
+    }
+  }
+}
+</style>
