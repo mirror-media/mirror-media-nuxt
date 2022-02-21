@@ -3,6 +3,7 @@
     :href="href"
     :target="target"
     class="article"
+    :class="{ 'article--premium': isPremiumMember }"
     rel="noopener noreferrer"
     @click="handleClick"
   >
@@ -21,12 +22,21 @@
     </div>
     <div
       class="article__bottom-wrapper bottom-wrapper"
+      :class="{ 'bottom-wrapper--premium': isPremiumMember }"
       :style="{
         backgroundColor: infoBackgroundColor,
       }"
     >
-      <h1 v-text="infoTitle" />
-      <p v-text="infoDescription" />
+      <h1
+        class="bottom-wrapper__title"
+        :class="{ 'bottom-wrapper__title--premium': isPremiumMember }"
+        v-text="infoTitle"
+      />
+      <p
+        class="bottom-wrapper__text"
+        :class="{ 'bottom-wrapper__text--premium': isPremiumMember }"
+        v-text="infoDescription"
+      />
     </div>
   </a>
 </template>
@@ -85,6 +95,9 @@ export default {
     }
   },
   computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
     showImgText() {
       return this.imgText && this.imgText !== ''
     },
@@ -99,10 +112,14 @@ export default {
 
 <style lang="scss" scoped>
 .article {
+  box-shadow: 5px 5px 5px #bcbcbc;
   cursor: pointer;
   height: 100%;
   display: flex;
   flex-direction: column;
+  &--premium {
+    box-shadow: none;
+  }
   &__bottom-wrapper {
     flex: 1 1 auto;
   }
@@ -110,6 +127,10 @@ export default {
     transition: all 0.3s ease-in-out;
     &:hover {
       transform: translateY(-20px);
+      box-shadow: 5px 5px 5px #bcbcbc;
+    }
+    &--premium:hover {
+      box-shadow: none;
     }
   }
 }
@@ -158,13 +179,25 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  h1 {
+  &--premium {
+    padding: 20px 20px 36px;
+    @include media-breakpoint-up(md) {
+      padding: 20px;
+    }
+  }
+  &__title {
     font-size: 20.8px;
     font-weight: 300;
     color: #34495e;
     line-height: 1.3;
+    &--premium {
+      color: #054f77;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 25px;
+    }
   }
-  p {
+  &__text {
     font-size: 16px;
     font-weight: 300;
     color: #999;
@@ -175,6 +208,13 @@ export default {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    &--premium {
+      color: #979797;
+      margin: 20px 0 0 0;
+      @include media-breakpoint-up(md) {
+        margin: 36px 0 0 0;
+      }
+    }
   }
 }
 </style>
