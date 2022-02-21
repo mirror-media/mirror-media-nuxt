@@ -1,5 +1,10 @@
 <template>
-  <div v-if="!IS_AD_DISABLE" :id="`compass-fit-${unitId}`" class="micro-ad" />
+  <div
+    v-if="!IS_AD_DISABLE"
+    :id="`compass-fit-${unitId}`"
+    class="micro-ad"
+    :class="{ 'micro-ad--premium': isPremiumMember }"
+  ></div>
 </template>
 
 <script>
@@ -19,7 +24,11 @@ export default {
       IS_AD_DISABLE,
     }
   },
-
+  computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
+  },
   mounted() {
     this.insertScript()
   },
