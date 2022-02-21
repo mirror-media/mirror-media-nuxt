@@ -17,7 +17,7 @@ import { PREVIEW_QUERY } from '~/configs/config'
 import { getSectionColor } from '~/utils/index.js'
 
 export default {
-  middleware: ['handle-story-premium-redirect'],
+  // middleware: ['handle-story-premium-redirect'],
   components: {
     UiLanding,
   },
