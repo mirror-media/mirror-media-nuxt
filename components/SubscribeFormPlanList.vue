@@ -8,7 +8,7 @@
 
     <div class="merchandise-list__discount_code">
       <div class="merchandise-list__discount_code_row">
-        <span>我是續訂戶請輸入訂戶代號</span>
+        <span>續訂戶(請輸入訂戶代號)輸入後請點選“確認”以完成續訂計算</span>
       </div>
       <template>
         <div class="merchandise-list__discount_code_row input">
@@ -176,7 +176,7 @@ export default {
     margin-bottom: 0;
     font-size: 18px;
     line-height: 25px;
-    color: rgba(0, 0, 0, 0.87);
+    color: red;
   }
 
   &__title {
