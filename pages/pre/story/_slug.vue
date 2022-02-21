@@ -4,6 +4,10 @@
       :sectionLabel="post.sectionLabelFirst"
       :sectionLabelColor="post.sectionLabelFirstColor"
       :title="post.title"
+      :titleStyle="{
+        fontFamily: 'sans-serif',
+        fontWeight: 'normal',
+      }"
       :coverVideo="post.coverVideo"
       :coverPicture="post.coverPicture"
       :heroCaption="post.heroCaption"

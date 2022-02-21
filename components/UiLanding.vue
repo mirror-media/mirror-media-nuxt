@@ -10,7 +10,7 @@
           :style="{ color: sectionLabelColor }"
         />
       </div>
-      <UiH1 class="landing-info__title">{{ title }}</UiH1>
+      <UiH1 class="landing-info__title" :style="titleStyle">{{ title }}</UiH1>
     </div>
 
     <div class="cover">
@@ -51,6 +51,10 @@ export default {
     title: {
       type: String,
       default: '',
+    },
+    titleStyle: {
+      type: Object,
+      default: () => ({}),
     },
     coverVideo: {
       type: String,
