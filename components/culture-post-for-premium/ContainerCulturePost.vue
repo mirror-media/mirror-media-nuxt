@@ -28,10 +28,8 @@
       <div class="landing">
         <div class="landing-info">
           <div class="landing-info__label">
-            <UiSectionLabel label="會員專區">會員專區</UiSectionLabel>｜
-            <UiSectionLabel :label="post.sectionLabelFirst">{{
-              post.sectionLabelFirst
-            }}</UiSectionLabel>
+            <UiSectionLabel label="會員專區" />｜
+            <UiSectionLabel :label="post.sectionLabelFirst" />
           </div>
           <UiH1 class="landing-info__title">{{ post.title }}</UiH1>
         </div>
