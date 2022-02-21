@@ -5,7 +5,10 @@
         <span v-if="shouldShowMemberLabel">
           <UiSectionLabel label="會員專區" />｜
         </span>
-        <UiSectionLabel :label="sectionLabel" />
+        <UiSectionLabel
+          :label="sectionLabel"
+          :style="{ color: sectionLabelColor }"
+        />
       </div>
       <UiH1 class="landing-info__title">{{ title }}</UiH1>
     </div>
@@ -40,6 +43,10 @@ export default {
     sectionLabel: {
       type: String,
       default: '',
+    },
+    sectionLabelColor: {
+      type: String,
+      default: null,
     },
     title: {
       type: String,
