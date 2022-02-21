@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <article class="article-body">
-      <UiPremiumBrief :brief="brief" />
+      <UiPremiumBrief :brief="brief" :briefColor="briefColor" />
       <ContentHandler v-for="item in content" :key="item.id" :item="item" />
       <UiArticleSkeleton v-show="isLoading" />
 
@@ -120,6 +120,10 @@ export default {
       type: Array,
       default: () => [],
       required: true,
+    },
+    briefColor: {
+      type: String,
+      default: null,
     },
     content: {
       type: Array,

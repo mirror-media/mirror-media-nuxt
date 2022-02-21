@@ -1,5 +1,5 @@
 <template>
-  <div v-if="brief[0]" class="brief">
+  <div v-if="brief[0]" class="brief" :style="{ backgroundColor: briefColor }">
     <div v-for="paragraph in brief" :key="paragraph.id">
       <template v-if="isString(paragraph.content)">
         <!-- eslint-disable-next-line vue/no-v-html -->
@@ -23,6 +23,10 @@ export default {
       type: Array,
       default: () => [],
       require: true,
+    },
+    briefColor: {
+      type: String,
+      default: null,
     },
   },
   methods: {

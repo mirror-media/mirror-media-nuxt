@@ -28,6 +28,7 @@
         class="culture-post__article-body"
         :postId="post.id"
         :brief="post.brief"
+        :briefColor="post.sectionLabelFirstColor"
         :content="post.content"
         :isArticleContentTruncatedByGateway="post.isTruncated"
         :pageState="articleBodyPageState"
