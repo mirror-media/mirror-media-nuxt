@@ -1,5 +1,5 @@
 <template>
-  <div class="the-cover" :style="{ height: coverHeight }">
+  <div class="the-cover">
     <ClientOnly v-if="videoSrc">
       <UiStoryVideo
         :src="videoSrc"
@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import UiStoryVideo from '~/components/UiStoryVideo.vue'
 
 export default {
@@ -50,17 +49,6 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      viewportHeight: (state) => state.viewport.height,
-    }),
-    coverHeight() {
-      if (this.viewportHeight === 0) {
-        return false
-      }
-
-      return `${this.viewportHeight}px`
-    },
-
     videoSrc() {
       return this.video.src
     },
