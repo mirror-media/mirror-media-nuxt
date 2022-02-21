@@ -2,7 +2,9 @@
   <div class="landing">
     <div class="landing-info">
       <div class="landing-info__label">
-        <UiSectionLabel label="會員專區" />｜
+        <span v-if="shouldShowMemberLabel">
+          <UiSectionLabel label="會員專區" />｜
+        </span>
         <UiSectionLabel :label="sectionLabel" />
       </div>
       <UiH1 class="landing-info__title">{{ title }}</UiH1>
@@ -31,6 +33,10 @@ export default {
     UiCaption,
   },
   props: {
+    shouldShowMemberLabel: {
+      type: Boolean,
+      default: false,
+    },
     sectionLabel: {
       type: String,
       default: '',

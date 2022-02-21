@@ -26,6 +26,7 @@
       />
 
       <UiLanding
+        :shouldShowMemberLabel="true"
         :sectionLabel="post.sectionLabelFirst"
         :title="post.title"
         :coverVideo="post.coverVideo"
