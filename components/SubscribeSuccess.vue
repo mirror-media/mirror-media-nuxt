@@ -1,10 +1,12 @@
 <template>
   <div class="order-success">
     <div class="order-success__wrapper">
-      <p class="order-success__wrapper--red-font">
-        您已完成付款，以下為本次訂購資訊：
+      <p>
+        <span>您已完成付款，以下為本次訂購資訊：</span>
         <br />
-        您將收到完成訂閱通知信、付款完成通知信、電子發票開立通知信。若無收到請檢查該郵件是否被過濾成垃圾郵件。
+        <span class="order-success__wrapper--red-font"
+          >您將收到完成訂閱通知信、付款完成通知信、電子發票開立通知信。若無收到請檢查該郵件是否被過濾成垃圾郵件。</span
+        >
       </p>
       <SubscribeSuccessOrderInfo
         :orderInfo="orderInfo"
@@ -95,18 +97,22 @@ export default {
   &__wrapper {
     max-width: 990px;
     margin: auto;
-    &--red-font {
+    p {
       padding: 0 17px;
       margin-bottom: 13px;
       font-size: 18px;
       line-height: 1.87;
       text-align: justify;
-      color: red;
+      color: #4a4a4a;
       @include media-breakpoint-up(sm) {
         padding: 0 25px;
         margin-bottom: 18px;
       }
     }
+    &--red-font {
+      color: red;
+    }
+
     .order-info {
       margin-bottom: 18px;
       @include media-breakpoint-up(sm) {
