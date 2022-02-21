@@ -25,22 +25,13 @@
         @openIndex="handleIndexActive(true)"
       />
 
-      <div class="landing">
-        <div class="landing-info">
-          <div class="landing-info__label">
-            <UiSectionLabel label="會員專區" />｜
-            <UiSectionLabel :label="post.sectionLabelFirst" />
-          </div>
-          <UiH1 class="landing-info__title">{{ post.title }}</UiH1>
-        </div>
-
-        <div class="cover">
-          <UiTheCover :video="post.coverVideo" :picture="post.coverPicture" />
-          <UiCaption class="cover__hero-caption">
-            {{ post.heroCaption }}
-          </UiCaption>
-        </div>
-      </div>
+      <UiLanding
+        :sectionLabel="post.sectionLabelFirst"
+        :title="post.title"
+        :coverVideo="post.coverVideo"
+        :coverPicture="post.coverPicture"
+        :heroCaption="post.heroCaption"
+      />
 
       <UiArticleInfo
         class="article-info"
@@ -111,16 +102,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
-import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
 import UiArticleIndex from './UiArticleIndex.vue'
 import UiListRelatedRedesign from './UiListRelatedRedesign.vue'
 import UiListRelated from './UiListRelated.vue'
-import UiH1 from './UiH1.vue'
-import UiSectionLabel from './UiSectionLabel.vue'
-import UiCaption from './UiCaption.vue'
 import UiArticleInfo from './UiArticleInfo.vue'
+import UiLanding from '~/components/UiLanding.vue'
 import ContainerHeaderSectionMember from '~/components/ContainerHeaderSectionMember.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import UiFooter from '~/components/UiFooter.vue'
@@ -134,12 +121,9 @@ export default {
   name: 'ContainerCulturePost',
 
   components: {
+    UiLanding,
     UiArticleInfo,
-    UiCaption,
-    UiSectionLabel,
-    UiH1,
     ContainerHeaderSectionMember,
-    UiTheCover,
     UiArticleBody,
     UiArticleIndex,
     UiListRelatedRedesign,
@@ -452,51 +436,6 @@ export default {
 
 .article-index {
   z-index: 1;
-}
-
-.landing {
-  position: relative;
-  z-index: 2;
-  background-color: white;
-}
-
-.landing-info {
-  padding: 88px 20px 0 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  @include media-breakpoint-up(md) {
-    padding: 112px 0 0 0;
-    max-width: 608px;
-    margin: 0 auto;
-  }
-  @include media-breakpoint-up(xl) {
-    max-width: 800px;
-  }
-  &__title {
-    margin: 8px 0 0 0;
-  }
-}
-
-.cover {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 32px 0 0 0;
-  @include media-breakpoint-up(xl) {
-    margin: 48px 0 0 0;
-  }
-
-  &__hero-caption {
-    margin: 16px 20px 0 20px;
-    @include media-breakpoint-up(md) {
-      max-width: 608px;
-      margin: 16px auto 0 auto;
-    }
-    @include media-breakpoint-up(xl) {
-      max-width: 640px;
-    }
-  }
 }
 
 .article-info {

@@ -1,0 +1,103 @@
+<template>
+  <div class="landing">
+    <div class="landing-info">
+      <div class="landing-info__label">
+        <UiSectionLabel label="會員專區" />｜
+        <UiSectionLabel :label="sectionLabel" />
+      </div>
+      <UiH1 class="landing-info__title">{{ title }}</UiH1>
+    </div>
+
+    <div class="cover">
+      <UiTheCover :video="coverVideo" :picture="coverPicture" />
+      <UiCaption class="cover__hero-caption">
+        {{ heroCaption }}
+      </UiCaption>
+    </div>
+  </div>
+</template>
+
+<script>
+import UiTheCover from './culture-post-for-premium/UiTheCover.vue'
+import UiH1 from './culture-post-for-premium/UiH1.vue'
+import UiSectionLabel from './culture-post-for-premium/UiSectionLabel.vue'
+import UiCaption from './culture-post-for-premium/UiCaption.vue'
+
+export default {
+  components: {
+    UiTheCover,
+    UiH1,
+    UiSectionLabel,
+    UiCaption,
+  },
+  props: {
+    sectionLabel: {
+      type: String,
+      default: '',
+    },
+    title: {
+      type: String,
+      default: '',
+    },
+    coverVideo: {
+      type: String,
+      default: '',
+    },
+    coverPicture: {
+      type: String,
+      default: '',
+    },
+    heroCaption: {
+      type: String,
+      default: '',
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.landing {
+  position: relative;
+  z-index: 2;
+  background-color: white;
+}
+
+.landing-info {
+  padding: 88px 20px 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include media-breakpoint-up(md) {
+    padding: 112px 0 0 0;
+    max-width: 608px;
+    margin: 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: 800px;
+  }
+  &__title {
+    margin: 8px 0 0 0;
+  }
+}
+
+.cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 32px 0 0 0;
+  @include media-breakpoint-up(xl) {
+    margin: 48px 0 0 0;
+  }
+
+  &__hero-caption {
+    margin: 16px 20px 0 20px;
+    @include media-breakpoint-up(md) {
+      max-width: 608px;
+      margin: 16px auto 0 auto;
+    }
+    @include media-breakpoint-up(xl) {
+      max-width: 640px;
+    }
+  }
+}
+</style>
