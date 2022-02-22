@@ -45,6 +45,7 @@
       <!--        />-->
       <!--      </transition>-->
     </div>
+    <UiAnniversary />
   </section>
 </template>
 
@@ -52,6 +53,7 @@
 import UiLanding from '~/components/UiLanding.vue'
 import UiArticleInfo from '~/components/culture-post-for-premium/UiArticleInfo.vue'
 import UiArticleBody from '~/components/culture-post-for-premium/UiArticleBody.vue'
+import UiAnniversary from '~/components/UiAnniversary.vue'
 import { PREVIEW_QUERY } from '~/configs/config'
 import { getSectionColor } from '~/utils/index.js'
 
@@ -61,6 +63,7 @@ export default {
     UiLanding,
     UiArticleInfo,
     UiArticleBody,
+    UiAnniversary,
   },
   async fetch() {
     const processPostResponse = (response) => {
