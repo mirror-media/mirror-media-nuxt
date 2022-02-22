@@ -415,6 +415,9 @@ export default {
     @include media-breakpoint-up(xl) {
       max-width: 640px;
     }
+    @include media-breakpoint-up(xxl) {
+      max-width: 1080px;
+    }
   }
 }
 
