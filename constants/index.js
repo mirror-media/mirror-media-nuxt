@@ -36,8 +36,7 @@ const SOCIAL_MEDIA_LINKS = [
 const SUBSCRIBE_LINK = {
   name: 'subscribe',
   title: '鏡週刊紙本雜誌',
-  href:
-    'https://docs.google.com/forms/d/e/1FAIpQLSeqbPjhSZx63bDWFO298acE--otet1s4-BGOmTKyjG1E4t4yQ/viewform',
+  href: 'https://www.mirrormedia.mg/papermag',
 }
 const MAGAZINE_LINK = {
   name: 'magazine',
@@ -80,7 +79,6 @@ const MEDIA_DISCIPLINE_LINK = {
   href: 'https://www.mirrormedia.mg/story/20200710edi030/',
 }
 const PROMOTION_LINKS = [
-  SUBSCRIBE_LINK,
   MAGAZINE_LINK,
   AUTH_LINK,
   AD_LINK,
