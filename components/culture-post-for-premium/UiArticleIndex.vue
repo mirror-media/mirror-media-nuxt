@@ -303,6 +303,7 @@ export default {
       list-style-position: inside;
     }
     li {
+      color: #404040de;
       display: inline;
       font-family: source-han-serif-tc, 'Songti TC', serif;
       font-size: 18px;
@@ -318,7 +319,7 @@ export default {
           margin: 0 0 0 -8px;
         }
         &::marker {
-          color: #054f77;
+          color: #404040de;
         }
       }
 
