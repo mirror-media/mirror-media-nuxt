@@ -227,6 +227,13 @@ $quote-color: #4a90e2;
     @include media-breakpoint-up(md) {
       margin: 48px 0 20px 0;
     }
+    @include media-breakpoint-up(xl) {
+      font-family: inherit;
+    }
+    @include media-breakpoint-up(xxl) {
+      margin: 48px 0 48px 0;
+      text-align: center;
+    }
   }
 
   .quote {
@@ -351,6 +358,11 @@ $quote-color: #4a90e2;
       position: relative;
       left: calc((720px - 640px) / 2 * -1);
     }
+    @include media-breakpoint-up(xxl) {
+      left: 0;
+      margin-right: auto;
+      margin-left: auto;
+    }
   }
 
   .quote-by {
@@ -396,6 +408,11 @@ $quote-color: #4a90e2;
     list-style-type: decimal;
     list-style-position: inside;
     line-height: 2;
+    @include media-breakpoint-up(xxl) {
+      margin-right: auto;
+      margin-left: auto;
+      max-width: 640px;
+    }
     li {
       margin: 0;
       &::before {
@@ -412,6 +429,11 @@ $quote-color: #4a90e2;
     list-style-type: disc;
     list-style-position: inside;
     line-height: 2;
+    @include media-breakpoint-up(xxl) {
+      margin-right: auto;
+      margin-left: auto;
+      max-width: 640px;
+    }
     li {
       margin: 0;
       &::marker {

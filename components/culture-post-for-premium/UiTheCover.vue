@@ -80,6 +80,9 @@ export default {
   @include media-breakpoint-up(xl) {
     height: 800px;
   }
+  @include media-breakpoint-up(xxl) {
+    width: 1200px;
+  }
 }
 
 .video {

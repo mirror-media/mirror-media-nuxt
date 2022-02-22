@@ -10,7 +10,11 @@
           :style="{ color: sectionLabelColor }"
         />
       </div>
-      <UiH1 class="landing-info__title" :style="titleStyle">{{ title }}</UiH1>
+      <UiH1
+        class="landing-info__title landing-info__title--default-font"
+        :style="titleStyle"
+        >{{ title }}</UiH1
+      >
     </div>
 
     <div class="cover">
@@ -94,6 +98,12 @@ export default {
   }
   &__title {
     margin: 8px 0 0 0;
+
+    &--default-font {
+      @include media-breakpoint-up(xl) {
+        font-family: inherit;
+      }
+    }
   }
 }
 
