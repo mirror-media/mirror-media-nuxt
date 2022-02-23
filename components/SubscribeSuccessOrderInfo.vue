@@ -15,7 +15,7 @@
         <SubscribeSuccessOrderInfoContentRow
           v-if="orderInfo.discountPrice"
           title="續訂戶代碼"
-          :data="`MR ${orderInfo.discount_code}`"
+          :data="orderInfo.discount_code"
         />
         <SubscribeSuccessOrderInfoContentRowPurchasedList
           title="訂單內容"
@@ -43,6 +43,11 @@
           title="聯絡電話"
           :data="customerInfo.pur_cell"
         />
+        <SubscribeSuccessOrderInfoContentRow
+          class="pur_addr"
+          title="訂購人地址"
+          :data="customerInfo.pur_addr"
+        />
       </div>
       <div class="order-info__user_content">
         <div class="order-info__user_content_title">收件人</div>
@@ -58,7 +63,7 @@
         />
         <SubscribeSuccessOrderInfoContentRow
           class="rec_addr"
-          title="通訊地址"
+          title="收件人地址"
           :data="customerInfo.rec_addr"
         />
         <!-- <SubscribeSuccessOrderInfoContentRow
@@ -98,6 +103,7 @@ export default {
           pur_name: '',
           pur_mail: '',
           pur_cell: '',
+          pur_addr: '',
           rec_name: '',
           rec_cell: '',
           rec_addr: '',

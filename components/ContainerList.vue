@@ -1,6 +1,11 @@
 <template>
-  <div class="list">
-    <ContainerGptAd class="ad" :pageKey="gptAdPageKey" adKey="HD" />
+  <div class="list" :class="{ 'list--premium': isPremiumMember }">
+    <ContainerGptAd
+      class="ad"
+      :class="{ 'ad--premium': isPremiumMember }"
+      :pageKey="gptAdPageKey"
+      adKey="HD"
+    />
 
     <UiArticleList
       class="article-list"
@@ -104,6 +109,9 @@ export default {
   },
 
   computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
     listItemsInFirstPage() {
       return this.listItems.slice(0, this.maxResults)
     },
@@ -125,6 +133,9 @@ export default {
   background-color: #f2f2f2;
   padding: 36px 0;
   overflow: hidden;
+  &--premium {
+    padding: 16px 0;
+  }
   @include media-breakpoint-up(md) {
     padding: 36px 25px 72px 25px;
   }
@@ -137,6 +148,9 @@ export default {
 
 .ad {
   margin: 20px auto;
+  &--premium {
+    margin: 0;
+  }
 }
 
 .article-list {

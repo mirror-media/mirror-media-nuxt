@@ -1,10 +1,9 @@
 .micro-ad {
   height: 100%;
-  background-color: #f4f1e9;
+  background-color: #f4f1e9;  
   box-shadow: 5px 5px 5px #bcbcbc;
   @include media-breakpoint-up(xl) {
     transition: all 0.3s ease-in-out;
-
     &:hover {
       transform: translateY(-20px);
       box-shadow: 5px 15px 5px #bcbcbc;
@@ -80,6 +79,41 @@
           word-wrap: break-word;
           -webkit-line-clamp: 3;
           overflow: hidden;
+        }
+      }
+    }
+  }
+}
+
+.micro-ad--premium {
+  background-color: #F3F1E9;
+  box-shadow: none;
+    &:hover {
+      box-shadow: none;
+  }
+
+  &::v-deep {
+   
+    #compass-fit-widget-content {
+
+      .listArticleBlock__content {
+        padding: 20px 20px 36px;
+        @include media-breakpoint-up(md) {
+          padding: 20px;
+        }
+        h2 {
+          color: #054f77;
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 25px;
+        }
+
+        p {
+          color: #979797;
+          margin: 20px 0 0 0;
+          @include media-breakpoint-up(md) {
+            margin: 36px 0 0 0;
+          }
         }
       }
     }

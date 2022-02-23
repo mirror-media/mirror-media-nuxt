@@ -11,7 +11,14 @@
     >
       {{ listTitle }}
     </h1>
-    <ol v-if="showList" class="list-wrapper__list list">
+    <ol
+      v-if="showList"
+      class="list-wrapper__list list"
+      :class="{
+        'list-wrapper__list--premium': isPremiumMember,
+        'list--premium': isPremiumMember,
+      }"
+    >
       <template v-for="(item, index) in listItems">
         <li :key="item.id" class="list__list-item">
           <UiArticleCard
@@ -107,9 +114,10 @@ export default {
   font-size: 24px;
   font-weight: 400;
   &--premium {
-    font-size: 20.8px;
+    margin: 0 16px 16px 16px;
+    font-size: 16px;
     line-height: 115%;
-    font-weight: 600;
+    font-weight: 500;
   }
   &.tag--premium {
     background: #c4c4c4;
@@ -118,11 +126,16 @@ export default {
   }
   @include media-breakpoint-up(md) {
     margin: 0 16px;
+    &--premium {
+      margin: 0 0 16px 0;
+      font-size: 20.8px;
+      font-weight: 600;
+    }
   }
   @include media-breakpoint-up(xl) {
     margin: 0;
     &--premium {
-      margin-top: 40px;
+      margin: 40px 0 16px;
     }
     &.tag--premium {
       margin-top: 28px;
@@ -132,6 +145,9 @@ export default {
 .list-wrapper {
   &__list {
     margin: 20px 0 0 0;
+    &--premium {
+      margin: 16px 0 0 0;
+    }
   }
 }
 
@@ -146,6 +162,9 @@ export default {
   }
   @include media-breakpoint-up(md) {
     margin: -20px 0 0 -20px;
+    &--premium {
+      margin: -36px 0 0 -20px;
+    }
     &__list-item {
       width: calc(50% - 20px);
       margin: 40px 0 0 20px;

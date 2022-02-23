@@ -2,9 +2,11 @@
   <div class="order-success">
     <div class="order-success__wrapper">
       <p>
-        您已完成付款，以下為本次訂購資訊：
+        <span>您已完成付款，以下為本次訂購資訊：</span>
         <br />
-        您將收到完成訂閱通知信、付款完成通知信、電子發票開立通知信。若無收到請檢查該郵件是否被過濾成垃圾郵件。
+        <span class="order-success__wrapper--red-font"
+          >您將收到完成訂閱通知信、付款完成通知信、電子發票開立通知信。若無收到請檢查該郵件是否被過濾成垃圾郵件。</span
+        >
       </p>
       <SubscribeSuccessOrderInfo
         :orderInfo="orderInfo"
@@ -44,6 +46,7 @@ export default {
           pur_name: '',
           pur_mail: '',
           pur_cell: '',
+          pur_addr: '',
           rec_name: '',
           rec_cell: '',
           rec_addr: '',
@@ -106,6 +109,10 @@ export default {
         margin-bottom: 18px;
       }
     }
+    &--red-font {
+      color: red;
+    }
+
     .order-info {
       margin-bottom: 18px;
       @include media-breakpoint-up(sm) {
