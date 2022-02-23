@@ -552,6 +552,9 @@ export default {
       bottom: 0;
       margin: 0 auto;
     }
+    @include media-breakpoint-up(xxl) {
+      right: calc((100vw - 1080px) / 4 - 18px);
+    }
   }
 }
 .fade-enter-active,

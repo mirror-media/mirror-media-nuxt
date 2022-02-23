@@ -63,7 +63,7 @@
         />
         <SubscribeSuccessOrderInfoContentRow
           class="rec_addr"
-          title="通訊地址"
+          title="收件人地址"
           :data="customerInfo.rec_addr"
         />
         <!-- <SubscribeSuccessOrderInfoContentRow
