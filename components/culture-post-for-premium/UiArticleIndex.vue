@@ -265,7 +265,9 @@ export default {
       }
     }
     @include media-breakpoint-up(xxl) {
-      width: 139px;
+      width: calc((100vw - 1080px) / 2 - 42px);
+      min-width: 139px;
+      max-width: 300px;
       background: #f3f5f7;
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
       padding: 15px 24px 16px;
