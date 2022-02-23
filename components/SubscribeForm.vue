@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { ENV } from '~/configs/config'
+// import { ENV } from '~/configs/config'
 import { merchandiseWithShippingFee } from '~/utils/papermag-merchandise.js'
 import SubscribeDiscount from '~/components/SubscribeDiscount.vue'
 import SubscribeFormPlanList from '~/components/SubscribeFormPlanList.vue'
@@ -363,7 +363,7 @@ export default {
         this.receiverData = this.ordererData
       }
 
-      if (ENV === 'prod' || ENV === 'staging') return
+      // if (ENV === 'prod' || ENV === 'staging') return
 
       if (this.validationPass() && this.acceptPermission) {
         const payload = this.getOrderPayload()
