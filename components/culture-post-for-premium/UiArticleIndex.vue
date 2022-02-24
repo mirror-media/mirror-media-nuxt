@@ -147,18 +147,6 @@ export default {
         : enableBodyScroll(this.$refs.indexContainer)
     },
   },
-
-  methods: {
-    /*
-     * handleIndexClick(id) {
-     *   this.$emit('closeIndex')
-     *   this.$scrollTo(`#header-${id}`, 500, {
-     *     lazy: false,
-     *     offset: -64,
-     *   })
-     * },
-     */
-  },
 }
 </script>
 
