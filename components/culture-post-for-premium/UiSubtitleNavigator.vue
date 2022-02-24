@@ -26,7 +26,18 @@ export default {
       type: Array,
       required: true,
     },
+    currentIndex: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+    detectCurrentIndex: {
+      type: Function,
+      required: true,
+      default: () => {},
+    },
   },
+
   methods: {
     handleIndexClick(id) {
       this.$emit('closeIndex')
@@ -34,6 +45,7 @@ export default {
         lazy: false,
         offset: -64,
       })
+      this.detectCurrentIndex()
     },
   },
 }

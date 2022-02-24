@@ -21,10 +21,16 @@
         :items="indexes"
         :currentIndex="currentIndex"
         :isIndexActive="isIndexActive"
+        :detectCurrentIndex="detectCurrentIndex"
         @closeIndex="handleIndexActive(false)"
         @openIndex="handleIndexActive(true)"
       />
-      <UiSubTitleNavigator class="subtitle-navigator" :items="indexes" />
+      <UiSubTitleNavigator
+        class="subtitle-navigator"
+        :items="indexes"
+        :currentIndex="currentIndex"
+        :detectCurrentIndex="detectCurrentIndex"
+      />
       <UiLanding
         :shouldShowMemberLabel="true"
         :sectionLabel="post.sectionLabelFirst"
@@ -298,13 +304,6 @@ export default {
   },
 
   methods: {
-    handleIndexClick(id) {
-      // this.$emit('closeIndex')
-      this.$scrollTo(`#header-${id}`, 500, {
-        lazy: false,
-        offset: -64,
-      })
-    },
     detectCurrentIndex() {
       import('intersection-observer').then(() => {
         const selectorIdBeginWithHeader = '[id^=header]'
@@ -331,7 +330,6 @@ export default {
             }
           )
         }
-
         targets.forEach((element) => {
           observer.observe(element)
         })

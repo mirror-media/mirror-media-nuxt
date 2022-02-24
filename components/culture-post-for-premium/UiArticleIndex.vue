@@ -20,6 +20,8 @@
           <UiSubtitleNavigator
             class="subtitle-navigator"
             :items="items"
+            :currentIndex="currentIndex"
+            :detectCurrentIndex="detectCurrentIndex"
             @closeIndex="$emit('closeIndex')"
           />
         </div>
@@ -95,6 +97,11 @@ export default {
   },
 
   props: {
+    detectCurrentIndex: {
+      type: Function,
+      required: true,
+      default: () => {},
+    },
     items: {
       type: Array,
       required: true,
@@ -212,15 +219,6 @@ export default {
     @include media-breakpoint-up(md) {
       width: 78.125%;
     }
-    @include media-breakpoint-up(xl) {
-      overflow-y: hidden;
-      width: 244px;
-      position: static;
-      padding: 0;
-      background-color: transparent;
-    }
-    @include media-breakpoint-up(xxl) {
-    }
   }
 }
 
@@ -230,63 +228,6 @@ export default {
     padding: 0;
   }
 }
-
-// .index-list {
-//   display: inline-block;
-
-//   + * {
-//     margin-top: 48px;
-//   }
-
-//   ul {
-//     display: inline-flex;
-//     flex-direction: column;
-//     align-items: flex-start;
-//     width: 100%;
-//     margin: 0;
-//     padding: 0;
-//     @include media-breakpoint-up(xl) {
-//       width: 240px;
-//     }
-//     @include media-breakpoint-up(xxl) {
-//       width: auto;
-//       list-style-type: disc;
-//       list-style-position: inside;
-//     }
-//     li {
-//       color: #404040de;
-//       display: inline;
-//       font-family: source-han-serif-tc, 'Songti TC', serif;
-//       font-size: 18px;
-//       line-height: 1.5;
-//       font-weight: 700;
-//       cursor: pointer;
-//       @include media-breakpoint-up(xxl) {
-//         display: list-item;
-//         font-size: 16px;
-//         &::before {
-//           content: '';
-//           display: inline-block;
-//           margin: 0 0 0 -8px;
-//         }
-//         &::marker {
-//           color: #404040de;
-//         }
-//       }
-
-//       &.active a {
-//         border-bottom: solid 2px #dec5a2;
-//         @include media-breakpoint-up(xxl) {
-//           border-bottom: 2px solid #1d9fb8;
-//         }
-//       }
-
-//       + li {
-//         margin-top: 19px;
-//       }
-//     }
-//   }
-// }
 
 .top {
   margin: auto 0;
