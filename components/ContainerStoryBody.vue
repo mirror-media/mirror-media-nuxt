@@ -59,12 +59,7 @@
 
     <UiSocialNetworkServices style="margin: 30px auto 0 auto" />
 
-    <div class="story__member-info">
-      鏡週刊五歲了！我們正式宣告新的轉變，鏡週刊訂閱制10/5正式上線，讓有價的閱聽成就更多優質文章，並獻上無廣告的閱讀環境，讓您盡情享受15類會員專屬內容，誠摯邀請您<strong
-        @click="enterMemberSectionPage"
-        >立即加入</strong
-      >。
-    </div>
+    <UiAnniversary class="story__member-info" />
 
     <slot name="fixedTriggerEnd"></slot>
 
@@ -135,6 +130,7 @@ import UiStoryVideo from '~/components/UiStoryVideo.vue'
 import UiShareSidebox from '~/components/UiShareSidebox.vue'
 import UiSocialNetworkServices from '~/components/UiSocialNetworkServices.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
+import UiAnniversary from '~/components/UiAnniversary.vue'
 
 import {
   AUTH_LINK,
@@ -168,6 +164,7 @@ export default {
     UiStoryVideo,
     UiShareSidebox,
     ContainerGptAd,
+    UiAnniversary,
   },
   props: {
     story: {
@@ -355,14 +352,6 @@ export default {
   },
 
   methods: {
-    enterMemberSectionPage() {
-      this.enterPageAfterLoggedIn('/subscribe')
-      this.$ga.event({
-        eventCategory: 'article',
-        eventAction: 'click',
-        eventLabel: 'member section',
-      })
-    },
     enterMagazinePage() {
       this.enterPageAfterLoggedIn('/magazine/')
     },
@@ -594,19 +583,6 @@ export {
 
   &__member-info {
     margin: 30px auto 0;
-    padding: 32px;
-    color: #fff;
-    font-size: 19.2px;
-    line-height: 36px;
-    text-align: justify;
-    background-color: #054f77;
-
-    strong {
-      cursor: pointer;
-      color: #eac151;
-      font-weight: 600;
-      border-bottom: 1px solid #eac151;
-    }
   }
 
   &__tags {

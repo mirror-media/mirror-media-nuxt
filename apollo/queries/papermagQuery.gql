@@ -13,6 +13,7 @@ query magazineOrder($orderNumber: String!) {
     purchaseName
     purchaseEmail
     purchaseMobile
+    purchaseAddress
     receiveName
     receiveMobile
     receiveAddress

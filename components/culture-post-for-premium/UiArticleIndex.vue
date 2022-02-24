@@ -11,7 +11,13 @@
     </button>
 
     <div class="index__curtain" @click.self="$emit('closeIndex')">
-      <div ref="indexContainer" class="index-container">
+      <div
+        ref="indexContainer"
+        :class="[
+          'index-container',
+          { 'index-container--hidden-in-xl-viewport': items.length === 0 },
+        ]"
+      >
         <button class="index__btn close" @click="$emit('closeIndex')">
           <SvgClose />
         </button>
@@ -218,6 +224,7 @@ export default {
     width: 100%;
     height: 100%;
     background-color: rgba(#000, 0.8);
+
     @include media-breakpoint-up(xl) {
       display: inline-block;
       top: 50%;
@@ -228,6 +235,9 @@ export default {
       background-color: transparent;
       width: auto;
       height: auto;
+    }
+    @include media-breakpoint-up(xxl) {
+      left: calc((100% - 1080px) / 4);
     }
   }
 
@@ -250,6 +260,17 @@ export default {
       position: static;
       padding: 0;
       background-color: transparent;
+      &--hidden-in-xl-viewport {
+        display: none;
+      }
+    }
+    @include media-breakpoint-up(xxl) {
+      width: calc((100vw - 1080px) / 2 - 42px);
+      min-width: 139px;
+      max-width: 300px;
+      background: #f3f5f7;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      padding: 15px 24px 16px;
     }
   }
 }
@@ -278,17 +299,37 @@ export default {
     @include media-breakpoint-up(xl) {
       width: 240px;
     }
-
+    @include media-breakpoint-up(xxl) {
+      width: auto;
+      list-style-type: disc;
+      list-style-position: inside;
+    }
     li {
+      color: #404040de;
       display: inline;
       font-family: source-han-serif-tc, 'Songti TC', serif;
       font-size: 18px;
-      line-height: 27px;
+      line-height: 1.5;
       font-weight: 700;
       cursor: pointer;
+      @include media-breakpoint-up(xxl) {
+        display: list-item;
+        font-size: 16px;
+        &::before {
+          content: '';
+          display: inline-block;
+          margin: 0 0 0 -8px;
+        }
+        &::marker {
+          color: #404040de;
+        }
+      }
 
       &.active a {
         border-bottom: solid 2px #dec5a2;
+        @include media-breakpoint-up(xxl) {
+          border-bottom: 2px solid #1d9fb8;
+        }
       }
 
       + li {

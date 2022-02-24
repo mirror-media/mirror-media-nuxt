@@ -40,10 +40,20 @@ export default {
       width: 720px;
       left: calc(((720px - 640px) / 2) * -1);
     }
+    @include media-breakpoint-up(xxl) {
+      width: 852px;
+
+      left: 0;
+      margin: 0 auto;
+    }
   }
 
   &__caption {
     margin: 16px 0 0 0;
+    @include media-breakpoint-up(xxl) {
+      width: 852px;
+      margin: 16px auto 0 auto;
+    }
   }
 }
 </style>

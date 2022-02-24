@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <article class="article-body">
-      <UiPremiumBrief :brief="brief" />
+      <UiPremiumBrief :brief="brief" :briefColor="briefColor" />
       <ContentHandler v-for="item in content" :key="item.id" :item="item" />
       <UiArticleSkeleton v-show="isLoading" />
 
@@ -121,6 +121,10 @@ export default {
       default: () => [],
       required: true,
     },
+    briefColor: {
+      type: String,
+      default: null,
+    },
     content: {
       type: Array,
       default: () => [],
@@ -199,6 +203,11 @@ export default {
     color: #054f77;
     text-decoration: none;
   }
+  @include media-breakpoint-up(xxl) {
+    width: 640px;
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
 
 .magazine {
@@ -218,6 +227,11 @@ export default {
     justify-content: space-between;
     padding: 24px 32px;
     font-size: 20px;
+  }
+  @include media-breakpoint-up(xxl) {
+    width: 640px;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   button {
@@ -253,6 +267,10 @@ export default {
     @include media-breakpoint-up(xl) {
       width: 720px;
       left: calc(((720px - 640px) / 2) * -1);
+    }
+    @include media-breakpoint-up(xxl) {
+      width: 1080px;
+      left: 0;
     }
   }
 }
