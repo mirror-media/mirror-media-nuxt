@@ -31,10 +31,9 @@
         :briefColor="post.sectionLabelFirstColor"
         :content="post.content"
         :isArticleContentTruncatedByGateway="post.isTruncated"
-        :pageState="articleBodyPageState"
-        :isLoading="isLoading"
-        :isFail="isFail"
-        :failTimes="failTimes"
+        :isLoading="false"
+        :isFail="false"
+        :failTimes="0"
         @reload="handleReload"
       />
       <!--      <transition name="fade">-->
@@ -65,6 +64,23 @@
         <!--        </template>-->
       </UiStoryListRelatedMobileLayoutColumn>
     </LazyRenderer>
+    <section class="popular-list-wrapper">
+      <h1 class="popular-list-wrapper__title">熱門文章</h1>
+      <LazyRenderer
+        ref="popularList"
+        class="popular-list-wrapper__popular-list"
+        @load="fetchPopularStories"
+      >
+        <section v-if="doesHavePopularStories">
+          <UiArticleListCompact
+            heading="熱門文章"
+            :items="popularStories"
+            :titleColor="'#054f77'"
+            @sendGa="sendGaForClick('popular')"
+          />
+        </section>
+      </LazyRenderer>
+    </section>
   </section>
 </template>
 
@@ -77,10 +93,11 @@ import UiArticleBody from '~/components/culture-post-for-premium/UiArticleBody.v
 import UiAnniversary from '~/components/UiAnniversary.vue'
 import UiSocialNetworkServices from '~/components/UiSocialNetworkServices.vue'
 import UiStoryListRelatedMobileLayoutColumn from '~/components/UiStoryListRelatedMobileLayoutColumn.vue'
+import UiArticleListCompact from '~/components/UiArticleListCompact.vue'
 
 // import MicroAdWithLabel from '~/components/MicroAdWithLabel.vue'
 
-import { DOMAIN_NAME, PREVIEW_QUERY } from '~/configs/config'
+import { DOMAIN_NAME, ENV, PREVIEW_QUERY } from '~/configs/config'
 import { getSectionColor } from '~/utils/index.js'
 
 // import { DABLE_WIDGET_IDS, MICRO_AD_UNITS } from '~/constants/ads'
@@ -100,6 +117,7 @@ export default {
     UiAnniversary,
     UiSocialNetworkServices,
     UiStoryListRelatedMobileLayoutColumn,
+    UiArticleListCompact,
 
     // MicroAdWithLabel,
   },
@@ -199,6 +217,8 @@ export default {
       // microAdUnits: MICRO_AD_UNITS.STORY,
 
       relatedImages: [],
+
+      popularStories: [],
     }
   },
   computed: {
@@ -286,6 +306,10 @@ export default {
     relateds() {
       return (this.story.relateds ?? []).filter((item) => item.slug)
     },
+
+    doesHavePopularStories() {
+      return this.popularStories.length > 0
+    },
   },
   methods: {
     handleLoadStoryListRelated() {
@@ -302,6 +326,32 @@ export default {
       })
       this.relatedImages = items
     },
+    async fetchPopularStories() {
+      if (ENV === 'lighthouse') {
+        return
+      }
+
+      const { report: items = [] } = await this.$fetchPopular()
+      this.popularStories = items
+        .slice(0, 9)
+        .map(function transformContent({
+          slug = '',
+          title = '',
+          heroImage = {},
+          sections = [],
+        }) {
+          return {
+            slug,
+            title,
+            href: slug,
+            imgSrc: getImgSrc(heroImage),
+            label: getLabel(sections),
+            sectionName: sections[0]?.name,
+          }
+        })
+    },
+    handleShareLinksVisibilityChanged() {},
+    handleReload() {},
   },
   head() {
     const {
@@ -566,6 +616,14 @@ export default {
     }
   },
 }
+
+function getImgSrc({ image = {} } = {}) {
+  return image.resizedTargets?.mobile?.url || SITE_OG_IMG
+}
+
+function getLabel([item = {}] = []) {
+  return item.title || '新聞'
+}
 </script>
 
 <style lang="scss" scoped>
@@ -595,6 +653,31 @@ export default {
     }
     @include media-breakpoint-up(xl) {
       max-width: 960px;
+    }
+  }
+}
+
+.popular-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include media-breakpoint-up(xl) {
+    align-items: center;
+  }
+
+  &__title {
+    color: #054f77;
+    font-size: 21px;
+    line-height: 1.5;
+  }
+  &__popular-list {
+    margin: 20px 0 0 0;
+    @include media-breakpoint-up(md) {
+      margin: 16px 0 0 0;
+    }
+    @include media-breakpoint-up(xl) {
+      max-width: 1176px;
+      margin: 16px auto 0 auto;
     }
   }
 }
