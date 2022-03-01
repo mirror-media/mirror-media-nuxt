@@ -35,7 +35,7 @@
 import { getImgById } from '~/utils/img.js'
 
 export default {
-  name: 'UiStoryListRelated',
+  name: 'UiStoryListRelatedMobileLayoutColumn',
   props: {
     images: {
       type: Array,
