@@ -60,6 +60,7 @@ export default {
   @include media-breakpoint-up(xl) {
     padding: 0;
     display: flex;
+    align-items: flex-start;
     flex-wrap: wrap;
     margin: -24px 0 0 -24px;
   }
