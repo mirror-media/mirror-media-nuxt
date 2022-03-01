@@ -61,12 +61,12 @@ export default {
       default: () => ({}),
     },
     coverVideo: {
-      type: String,
-      default: '',
+      type: Object,
+      default: () => ({}),
     },
     coverPicture: {
-      type: String,
-      default: '',
+      type: Object,
+      default: () => ({}),
     },
     heroCaption: {
       type: String,

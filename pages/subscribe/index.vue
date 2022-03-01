@@ -150,12 +150,10 @@ export default {
             { text: '月方案定價 $99 元，限時優惠 $49 元' },
             { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
 
-            /*
-             * {
-             *   text: '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
-             *   isHightlight: true,
-             * },
-             */
+            {
+              text: '加入年方案訂閱，就有機會獲得Sony旗艦手機',
+              isHightlight: true,
+            },
           ],
           buttons: [
             {
@@ -233,13 +231,10 @@ export default {
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
 
-                /*
-                 * {
-                 *   text:
-                 *     '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
-                 *   isHightlight: true,
-                 * },
-                 */
+                {
+                  text: '加入年方案訂閱，就有機會獲得Sony旗艦手機',
+                  isHightlight: true,
+                },
               ],
               buttons: [
                 {
@@ -263,13 +258,10 @@ export default {
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
 
-                /*
-                 * {
-                 *   text:
-                 *     '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
-                 *   isHightlight: true,
-                 * },
-                 */
+                {
+                  text: '加入年方案訂閱，就有機會獲得Sony旗艦手機',
+                  isHightlight: true,
+                },
               ],
               buttons: [
                 {
@@ -297,13 +289,10 @@ export default {
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
 
-                /*
-                 * {
-                 *   text:
-                 *     '12 月訂閱者（單篇 / 月訂 / 年訂)，有機會獲得7-11禮券200元',
-                 *   isHightlight: true,
-                 * },
-                 */
+                {
+                  text: '加入年方案訂閱，就有機會獲得Sony旗艦手機',
+                  isHightlight: true,
+                },
               ],
               buttons: [
                 {

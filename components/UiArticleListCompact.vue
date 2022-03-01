@@ -11,6 +11,9 @@
             :href="`/story/${item.slug}`"
             target="_blank"
             rel="noopener noreferrer"
+            :style="{
+              color: titleColor,
+            }"
             @click="$emit('sendGa')"
             v-text="item.title"
           />
@@ -22,28 +25,24 @@
           rel="noopener noreferrer"
           @click="$emit('sendGa')"
         >
-          <img :src="getImgById(images, item.heroImage)" alt="" />
+          <img :src="item.imgSrc" alt="" />
         </a>
       </div>
     </template>
-
-    <slot name="ads"></slot>
   </div>
 </template>
 
 <script>
-import { getImgById } from '~/utils/img.js'
-
 export default {
-  name: 'UiStoryListRelatedMobileLayoutColumn',
+  name: 'UiArticleListCompact',
   props: {
-    images: {
-      type: Array,
-      default: () => [],
-    },
     items: {
       type: Array,
       default: () => [],
+    },
+    titleColor: {
+      type: String,
+      default: '#888888',
     },
   },
 
@@ -52,24 +51,33 @@ export default {
       return this.items.length > 0
     },
   },
-
-  methods: {
-    getImgById,
-  },
 }
 </script>
 
 <style lang="scss" scoped>
 .story-list-related {
-  padding: 48px 20px;
-  background-color: #eeeeee;
-  @include media-breakpoint-up(md) {
-    background-color: transparent;
+  padding: 0 20px;
+  @include media-breakpoint-up(xl) {
+    padding: 0;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: -24px 0 0 -24px;
   }
 
   &__item {
+    @include media-breakpoint-up(xl) {
+      margin: 24px 0 0 24px;
+    }
+
     & + & {
       margin: 24px 0 0 0;
+      @include media-breakpoint-up(md) {
+        margin: 36px 0 0 0;
+      }
+      @include media-breakpoint-up(xl) {
+        margin: 24px 0 0 24px;
+      }
     }
   }
 }
@@ -78,23 +86,26 @@ export default {
   display: flex;
   flex-direction: column-reverse;
   @include media-breakpoint-up(md) {
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: #eeeeee;
-    border-left: 7.72px solid #808080;
+    flex-direction: row-reverse;
+    width: 100%;
+  }
+  @include media-breakpoint-up(xl) {
+    flex-direction: column-reverse;
+    width: 276px;
   }
 
   &__title {
     margin: 12px 0 0 0;
     font-size: 18px;
     line-height: 1.5;
-    color: rgba(0, 0, 0, 0.87);
+    color: #888888;
     @include media-breakpoint-up(md) {
-      margin: 0 0 0 18px;
+      margin: 0 0 0 28px;
       display: flex;
-      align-items: center;
-      line-height: 1.3;
+      font-size: 20px;
+      line-height: 32px;
       color: #808080;
+      width: 100%;
       a {
         word-wrap: break-word;
         -webkit-line-clamp: 2;
@@ -102,6 +113,11 @@ export default {
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
+    }
+    @include media-breakpoint-up(xl) {
+      margin: 16px 0 0 0;
+      font-size: 18px;
+      line-height: 1.5;
     }
   }
 
@@ -120,20 +136,21 @@ export default {
 
     @include media-breakpoint-up(md) {
       padding-top: 0;
-      min-width: 86.91px;
-      width: 86.91px;
-      min-height: 90px;
-      height: 90px;
+      min-width: 266px;
+      width: 266px;
+      min-height: 177px;
+      height: 177px;
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
     }
-
     @include media-breakpoint-up(xl) {
-      min-width: 135px;
-      width: 135px;
+      min-width: 276px;
+      width: 276px;
+      min-height: 184px;
+      height: 184px;
     }
   }
 }
