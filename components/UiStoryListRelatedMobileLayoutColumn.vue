@@ -106,7 +106,20 @@ export default {
   }
 
   &__image {
+    height: 0;
+    padding-top: 66.66%;
+    position: relative;
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     @include media-breakpoint-up(md) {
+      padding-top: 0;
       min-width: 86.91px;
       width: 86.91px;
       min-height: 90px;
@@ -117,6 +130,7 @@ export default {
         object-fit: cover;
       }
     }
+
     @include media-breakpoint-up(xl) {
       min-width: 135px;
       width: 135px;
