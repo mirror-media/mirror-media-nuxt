@@ -56,8 +56,9 @@ export default {
 
 <style lang="scss" scoped>
 .story-list-related {
-  padding: 48px 20px;
+  padding: 0 20px;
   @include media-breakpoint-up(xl) {
+    padding: 0;
     display: flex;
     flex-wrap: wrap;
     margin: -24px 0 0 -24px;
