@@ -64,16 +64,29 @@
         <!--        </template>-->
       </UiStoryListRelatedMobileLayoutColumn>
     </LazyRenderer>
+    <section class="latest-list-wrapper">
+      <h1 class="latest-list-wrapper__title">最新文章</h1>
+      <LazyRenderer
+        class="latest-list-wrapper__latest-list"
+        @load="fetchLatestStories"
+      >
+        <section v-if="doesHaveLatestStories">
+          <UiArticleListCompact
+            :items="latestStories"
+            @sendGa="sendGaForClick('popular')"
+          />
+        </section>
+      </LazyRenderer>
+    </section>
+    <div class="separator" />
     <section class="popular-list-wrapper">
       <h1 class="popular-list-wrapper__title">熱門文章</h1>
       <LazyRenderer
-        ref="popularList"
         class="popular-list-wrapper__popular-list"
         @load="fetchPopularStories"
       >
         <section v-if="doesHavePopularStories">
           <UiArticleListCompact
-            heading="熱門文章"
             :items="popularStories"
             :titleColor="'#054f77'"
             @sendGa="sendGaForClick('popular')"
@@ -218,6 +231,9 @@ export default {
 
       relatedImages: [],
 
+      latestStories: [],
+      hasLoadedLatestStories: false,
+
       popularStories: [],
     }
   },
@@ -307,6 +323,16 @@ export default {
       return (this.story.relateds ?? []).filter((item) => item.slug)
     },
 
+    section() {
+      return this.story.sections?.[0] || {}
+    },
+    sectionId() {
+      return this.section.id
+    },
+    doesHaveLatestStories() {
+      return this.latestStories.length > 0
+    },
+
     doesHavePopularStories() {
       return this.popularStories.length > 0
     },
@@ -325,6 +351,37 @@ export default {
         maxResults: this.relateds.length,
       })
       this.relatedImages = items
+    },
+    doesNotHaveCurrentStorySlug(item) {
+      return item.slug !== this.storySlug
+    },
+    async fetchLatestStories() {
+      const { items = [] } = await this.$fetchList({
+        sort: '-publishedDate',
+        sections: this.sectionId,
+      })
+
+      this.latestStories = items
+        .filter(this.doesNotHaveCurrentStorySlug)
+        .slice(0, 6)
+        .map(function transformContent({
+          slug = '',
+          title = '',
+          heroImage = {},
+          categories = [],
+          sections = [],
+        }) {
+          return {
+            slug,
+            title,
+            href: `/story/${slug}/`,
+            imgSrc: getImgSrc(heroImage),
+            label: getLabel(categories),
+            sectionName: sections[0]?.name,
+          }
+        })
+
+      this.hasLoadedLatestStories = true
     },
     async fetchPopularStories() {
       if (ENV === 'lighthouse') {
@@ -657,10 +714,60 @@ function getLabel([item = {}] = []) {
   }
 }
 
+.latest-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 0;
+  @include media-breakpoint-up(md) {
+    align-items: flex-start;
+  }
+  @include media-breakpoint-up(xl) {
+    align-items: center;
+  }
+
+  &__title {
+    color: #888888;
+    font-size: 21px;
+    line-height: 1.5;
+    @include media-breakpoint-up(md) {
+      margin: 0 0 0 20px;
+    }
+  }
+  &__latest-list {
+    margin: 20px 0 0 0;
+    width: 100%;
+    @include media-breakpoint-up(md) {
+      margin: 16px 0 0 0;
+    }
+    @include media-breakpoint-up(xl) {
+      max-width: 1176px;
+      margin: 16px auto 0 auto;
+    }
+  }
+}
+
+.separator {
+  width: 70%;
+  height: 2px;
+  background-color: #000000;
+  margin: 0 auto;
+  @include media-breakpoint-up(md) {
+    width: calc(100% - 40px);
+  }
+  @include media-breakpoint-up(xl) {
+    width: 208px;
+  }
+}
+
 .popular-list-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 36px 0;
+  @include media-breakpoint-up(md) {
+    align-items: flex-start;
+  }
   @include media-breakpoint-up(xl) {
     align-items: center;
   }
@@ -669,8 +776,12 @@ function getLabel([item = {}] = []) {
     color: #054f77;
     font-size: 21px;
     line-height: 1.5;
+    @include media-breakpoint-up(md) {
+      margin: 0 0 0 20px;
+    }
   }
   &__popular-list {
+    width: 100%;
     margin: 20px 0 0 0;
     @include media-breakpoint-up(md) {
       margin: 16px 0 0 0;
