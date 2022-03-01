@@ -40,12 +40,10 @@ export default {
     images: {
       type: Array,
       default: () => [],
-      required: true,
     },
     items: {
       type: Array,
       default: () => [],
-      required: true,
     },
   },
 
