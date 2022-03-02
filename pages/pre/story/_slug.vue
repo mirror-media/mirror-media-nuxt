@@ -46,8 +46,10 @@
       <!--        />-->
       <!--      </transition>-->
     </div>
-    <UiAnniversary class="anniversary" />
-    <UiSocialNetworkServices class="sns" />
+    <div class="additional-info-wrapper">
+      <UiAnniversary class="anniversary" />
+      <UiSocialNetworkServices class="sns" />
+    </div>
     <LazyRenderer
       class="story__list related-list"
       @load="handleLoadStoryListRelated"
@@ -703,6 +705,9 @@ function getLabel([item = {}] = []) {
   &::v-deep {
     .landing-info {
       padding: 24px 20px 0 20px;
+      @include media-breakpoint-up(xl) {
+        padding: 48px 0 0 0;
+      }
     }
 
     .landing-info__title {
@@ -711,6 +716,14 @@ function getLabel([item = {}] = []) {
       @include media-breakpoint-up(md) {
         max-width: 280px;
       }
+      @include media-breakpoint-up(xl) {
+        font-size: 32px;
+        max-width: initial;
+      }
+    }
+
+    .the-cover {
+      max-width: 1200px;
     }
   }
 }
@@ -745,11 +758,25 @@ function getLabel([item = {}] = []) {
   }
 }
 
+.additional-info-wrapper {
+  @include media-breakpoint-up(xl) {
+    display: flex;
+    justify-content: space-between;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+}
+
 .anniversary {
   margin: 0 20px;
   @include media-breakpoint-up(md) {
     max-width: 618px;
     margin: 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: initial;
+    flex: 1 1 auto;
+    margin: 0 20px 0 0;
   }
 }
 
@@ -759,12 +786,19 @@ function getLabel([item = {}] = []) {
     max-width: 618px;
     margin: 12.5px auto 0 auto;
   }
+  @include media-breakpoint-up(xl) {
+    margin: 0;
+    min-width: 265px;
+  }
 }
 
 .related-list {
   @include media-breakpoint-up(md) {
     max-width: 658px;
     margin: 12.5px auto 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: 1000px;
   }
 }
 
@@ -781,6 +815,7 @@ function getLabel([item = {}] = []) {
   }
   @include media-breakpoint-up(xl) {
     align-items: center;
+    max-width: initial;
   }
 
   &__title {
@@ -815,6 +850,7 @@ function getLabel([item = {}] = []) {
   }
   @include media-breakpoint-up(xl) {
     width: 208px;
+    max-width: initial;
   }
 }
 
@@ -830,6 +866,7 @@ function getLabel([item = {}] = []) {
   }
   @include media-breakpoint-up(xl) {
     align-items: center;
+    max-width: initial;
   }
 
   &__title {
