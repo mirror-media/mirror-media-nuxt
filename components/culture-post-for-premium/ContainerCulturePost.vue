@@ -21,10 +21,16 @@
         :items="indexes"
         :currentIndex="currentIndex"
         :isIndexActive="isIndexActive"
+        :detectCurrentIndex="detectCurrentIndex"
         @closeIndex="handleIndexActive(false)"
         @openIndex="handleIndexActive(true)"
       />
-
+      <UiSubTitleNavigator
+        class="subtitle-navigator"
+        :items="indexes"
+        :currentIndex="currentIndex"
+        :detectCurrentIndex="detectCurrentIndex"
+      />
       <UiLanding
         :shouldShowMemberLabel="true"
         :sectionLabel="post.sectionLabelFirst"
@@ -108,13 +114,13 @@ import UiArticleIndex from './UiArticleIndex.vue'
 import UiListRelatedRedesign from './UiListRelatedRedesign.vue'
 import UiListRelated from './UiListRelated.vue'
 import UiArticleInfo from './UiArticleInfo.vue'
+import UiSubTitleNavigator from './UiSubtitleNavigator.vue'
 import UiLanding from '~/components/UiLanding.vue'
 import ContainerHeaderSectionMember from '~/components/ContainerHeaderSectionMember.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import UiFooter from '~/components/UiFooter.vue'
 import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
 import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
-
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
 
@@ -127,6 +133,7 @@ export default {
     ContainerHeaderSectionMember,
     UiArticleBody,
     UiArticleIndex,
+    UiSubTitleNavigator,
     UiListRelatedRedesign,
     UiListRelated,
     UiWineWarning,
@@ -323,7 +330,6 @@ export default {
             }
           )
         }
-
         targets.forEach((element) => {
           observer.observe(element)
         })
@@ -332,7 +338,6 @@ export default {
     handleIndexActive(isActive) {
       this.isIndexActive = isActive
     },
-
     async fetchRelatedImgs() {
       const imgIds = this.relateds.map((item) => item.heroImage)
       const { items = [] } = await this.$fetchImages({ id: imgIds })
@@ -440,6 +445,28 @@ export default {
 
 .article-index {
   z-index: 1;
+}
+.subtitle-navigator {
+  display: none;
+  @include media-breakpoint-up(xl) {
+    display: inline-block;
+    position: fixed;
+    top: 50%;
+    left: calc((100% - 634px) / 4);
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: auto;
+  }
+  @include media-breakpoint-up(xxl) {
+    left: calc((100% - 1080px) / 4);
+    width: calc((100vw - 1080px) / 2 - 42px);
+    min-width: 139px;
+    max-width: 300px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 15px 24px 16px;
+  }
 }
 
 .article-info {
