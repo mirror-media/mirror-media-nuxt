@@ -48,7 +48,10 @@
     </div>
     <UiAnniversary class="anniversary" />
     <UiSocialNetworkServices class="sns" />
-    <LazyRenderer class="story__list" @load="handleLoadStoryListRelated">
+    <LazyRenderer
+      class="story__list related-list"
+      @load="handleLoadStoryListRelated"
+    >
       <UiStoryListRelatedMobileLayoutColumn
         :items="relateds"
         :images="relatedImages"
@@ -701,6 +704,14 @@ function getLabel([item = {}] = []) {
     .landing-info {
       padding: 24px 20px 0 20px;
     }
+
+    .landing-info__title {
+      font-weight: normal;
+      font-size: 24px;
+      @include media-breakpoint-up(md) {
+        max-width: 280px;
+      }
+    }
   }
 }
 
@@ -736,10 +747,25 @@ function getLabel([item = {}] = []) {
 
 .anniversary {
   margin: 0 20px;
+  @include media-breakpoint-up(md) {
+    max-width: 618px;
+    margin: 0 auto;
+  }
 }
 
 .sns {
   margin: 12.5px 20px 0 20px;
+  @include media-breakpoint-up(md) {
+    max-width: 618px;
+    margin: 12.5px auto 0 auto;
+  }
+}
+
+.related-list {
+  @include media-breakpoint-up(md) {
+    max-width: 658px;
+    margin: 12.5px auto 0 auto;
+  }
 }
 
 .latest-list-wrapper {
@@ -749,6 +775,9 @@ function getLabel([item = {}] = []) {
   padding: 36px 0;
   @include media-breakpoint-up(md) {
     align-items: flex-start;
+    max-width: 658px;
+    margin: 0 auto;
+    padding: 0 0 36px 0;
   }
   @include media-breakpoint-up(xl) {
     align-items: center;
@@ -782,6 +811,7 @@ function getLabel([item = {}] = []) {
   margin: 0 auto;
   @include media-breakpoint-up(md) {
     width: calc(100% - 40px);
+    max-width: 618px;
   }
   @include media-breakpoint-up(xl) {
     width: 208px;
@@ -795,6 +825,8 @@ function getLabel([item = {}] = []) {
   padding: 36px 0;
   @include media-breakpoint-up(md) {
     align-items: flex-start;
+    max-width: 658px;
+    margin: 0 auto;
   }
   @include media-breakpoint-up(xl) {
     align-items: center;
