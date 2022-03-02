@@ -96,6 +96,7 @@
         </section>
       </LazyRenderer>
     </section>
+    <UiShareLinksToggled class="share-toggled" />
   </section>
 </template>
 
@@ -109,6 +110,7 @@ import UiAnniversary from '~/components/UiAnniversary.vue'
 import UiSocialNetworkServices from '~/components/UiSocialNetworkServices.vue'
 import UiStoryListRelatedMobileLayoutColumn from '~/components/UiStoryListRelatedMobileLayoutColumn.vue'
 import UiArticleListCompact from '~/components/UiArticleListCompact.vue'
+import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
 
 // import MicroAdWithLabel from '~/components/MicroAdWithLabel.vue'
 
@@ -133,6 +135,7 @@ export default {
     UiSocialNetworkServices,
     UiStoryListRelatedMobileLayoutColumn,
     UiArticleListCompact,
+    UiShareLinksToggled,
 
     // MicroAdWithLabel,
   },
@@ -815,6 +818,16 @@ function getLabel([item = {}] = []) {
       max-width: 1176px;
       margin: 16px auto 0 auto;
     }
+  }
+}
+
+.share-toggled {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99999;
+  @include media-breakpoint-up(xl) {
+    display: none;
   }
 }
 
