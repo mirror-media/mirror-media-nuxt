@@ -7,6 +7,7 @@
         </span>
         <UiSectionLabel
           :label="sectionLabel"
+          :href="sectionLabelHref"
           :style="{ color: sectionLabelColor }"
         />
       </div>
@@ -47,6 +48,10 @@ export default {
     sectionLabel: {
       type: String,
       default: '',
+    },
+    sectionLabelHref: {
+      type: String,
+      default: null,
     },
     sectionLabelColor: {
       type: String,

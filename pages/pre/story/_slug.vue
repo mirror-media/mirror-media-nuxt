@@ -1,8 +1,10 @@
 <template>
   <section>
     <UiLanding
+      class="landing"
       :sectionLabel="post.sectionLabelFirst"
       :sectionLabelColor="post.sectionLabelFirstColor"
+      :sectionLabelHref="`/section/${post.sectionFirstName}`"
       :title="post.title"
       :titleStyle="{
         fontFamily: 'sans-serif',
@@ -44,9 +46,14 @@
       <!--        />-->
       <!--      </transition>-->
     </div>
-    <UiAnniversary />
-    <UiSocialNetworkServices />
-    <LazyRenderer class="story__list" @load="handleLoadStoryListRelated">
+    <div class="additional-info-wrapper">
+      <UiAnniversary class="anniversary" />
+      <UiSocialNetworkServices class="sns" />
+    </div>
+    <LazyRenderer
+      class="story__list related-list"
+      @load="handleLoadStoryListRelated"
+    >
       <UiStoryListRelatedMobileLayoutColumn
         :items="relateds"
         :images="relatedImages"
@@ -94,6 +101,7 @@
         </section>
       </LazyRenderer>
     </section>
+    <UiShareLinksToggled class="share-toggled" />
   </section>
 </template>
 
@@ -107,6 +115,7 @@ import UiAnniversary from '~/components/UiAnniversary.vue'
 import UiSocialNetworkServices from '~/components/UiSocialNetworkServices.vue'
 import UiStoryListRelatedMobileLayoutColumn from '~/components/UiStoryListRelatedMobileLayoutColumn.vue'
 import UiArticleListCompact from '~/components/UiArticleListCompact.vue'
+import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
 
 // import MicroAdWithLabel from '~/components/MicroAdWithLabel.vue'
 
@@ -131,6 +140,7 @@ export default {
     UiSocialNetworkServices,
     UiStoryListRelatedMobileLayoutColumn,
     UiArticleListCompact,
+    UiShareLinksToggled,
 
     // MicroAdWithLabel,
   },
@@ -289,6 +299,7 @@ export default {
         updatedAt: new Date(updatedAt),
         relateds,
         sectionLabelFirst: sections?.[0]?.title,
+        sectionFirstName: sections?.[0]?.name,
         sectionLabelFirstColor: getSectionColor(sections?.[0]?.name),
         tags,
         isTruncated,
@@ -684,6 +695,39 @@ function getLabel([item = {}] = []) {
 </script>
 
 <style lang="scss" scoped>
+.story {
+  &__list {
+    margin: 45px 0 0 0;
+  }
+}
+
+.landing {
+  &::v-deep {
+    .landing-info {
+      padding: 24px 20px 0 20px;
+      @include media-breakpoint-up(xl) {
+        padding: 48px 0 0 0;
+      }
+    }
+
+    .landing-info__title {
+      font-weight: normal;
+      font-size: 24px;
+      @include media-breakpoint-up(md) {
+        max-width: 280px;
+      }
+      @include media-breakpoint-up(xl) {
+        font-size: 32px;
+        max-width: initial;
+      }
+    }
+
+    .the-cover {
+      max-width: 1200px;
+    }
+  }
+}
+
 .article-info {
   margin: 36px 20px 0 20px;
   @include media-breakpoint-up(md) {
@@ -714,6 +758,50 @@ function getLabel([item = {}] = []) {
   }
 }
 
+.additional-info-wrapper {
+  @include media-breakpoint-up(xl) {
+    display: flex;
+    justify-content: space-between;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+}
+
+.anniversary {
+  margin: 0 20px;
+  @include media-breakpoint-up(md) {
+    max-width: 618px;
+    margin: 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: initial;
+    flex: 1 1 auto;
+    margin: 0 20px 0 0;
+  }
+}
+
+.sns {
+  margin: 12.5px 20px 0 20px;
+  @include media-breakpoint-up(md) {
+    max-width: 618px;
+    margin: 12.5px auto 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    margin: 0;
+    min-width: 265px;
+  }
+}
+
+.related-list {
+  @include media-breakpoint-up(md) {
+    max-width: 658px;
+    margin: 12.5px auto 0 auto;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: 1000px;
+  }
+}
+
 .latest-list-wrapper {
   display: flex;
   flex-direction: column;
@@ -721,9 +809,13 @@ function getLabel([item = {}] = []) {
   padding: 36px 0;
   @include media-breakpoint-up(md) {
     align-items: flex-start;
+    max-width: 658px;
+    margin: 0 auto;
+    padding: 0 0 36px 0;
   }
   @include media-breakpoint-up(xl) {
     align-items: center;
+    max-width: initial;
   }
 
   &__title {
@@ -754,9 +846,11 @@ function getLabel([item = {}] = []) {
   margin: 0 auto;
   @include media-breakpoint-up(md) {
     width: calc(100% - 40px);
+    max-width: 618px;
   }
   @include media-breakpoint-up(xl) {
     width: 208px;
+    max-width: initial;
   }
 }
 
@@ -767,9 +861,12 @@ function getLabel([item = {}] = []) {
   padding: 36px 0;
   @include media-breakpoint-up(md) {
     align-items: flex-start;
+    max-width: 658px;
+    margin: 0 auto;
   }
   @include media-breakpoint-up(xl) {
     align-items: center;
+    max-width: initial;
   }
 
   &__title {
@@ -790,6 +887,16 @@ function getLabel([item = {}] = []) {
       max-width: 1176px;
       margin: 16px auto 0 auto;
     }
+  }
+}
+
+.share-toggled {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99999;
+  @include media-breakpoint-up(xl) {
+    display: none;
   }
 }
 
