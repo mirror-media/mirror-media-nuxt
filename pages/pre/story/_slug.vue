@@ -3,6 +3,7 @@
     <UiLanding
       :sectionLabel="post.sectionLabelFirst"
       :sectionLabelColor="post.sectionLabelFirstColor"
+      :sectionLabelHref="`/section/${post.sectionFirstName}`"
       :title="post.title"
       :titleStyle="{
         fontFamily: 'sans-serif',
@@ -289,6 +290,7 @@ export default {
         updatedAt: new Date(updatedAt),
         relateds,
         sectionLabelFirst: sections?.[0]?.title,
+        sectionFirstName: sections?.[0]?.name,
         sectionLabelFirstColor: getSectionColor(sections?.[0]?.name),
         tags,
         isTruncated,
