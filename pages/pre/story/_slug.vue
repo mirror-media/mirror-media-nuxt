@@ -1,6 +1,7 @@
 <template>
   <section>
     <UiLanding
+      class="landing"
       :sectionLabel="post.sectionLabelFirst"
       :sectionLabelColor="post.sectionLabelFirstColor"
       :sectionLabelHref="`/section/${post.sectionFirstName}`"
@@ -45,8 +46,8 @@
       <!--        />-->
       <!--      </transition>-->
     </div>
-    <UiAnniversary />
-    <UiSocialNetworkServices />
+    <UiAnniversary class="anniversary" />
+    <UiSocialNetworkServices class="sns" />
     <LazyRenderer class="story__list" @load="handleLoadStoryListRelated">
       <UiStoryListRelatedMobileLayoutColumn
         :items="relateds"
@@ -686,6 +687,20 @@ function getLabel([item = {}] = []) {
 </script>
 
 <style lang="scss" scoped>
+.story {
+  &__list {
+    margin: 45px 0 0 0;
+  }
+}
+
+.landing {
+  &::v-deep {
+    .landing-info {
+      padding: 24px 20px 0 20px;
+    }
+  }
+}
+
 .article-info {
   margin: 36px 20px 0 20px;
   @include media-breakpoint-up(md) {
@@ -714,6 +729,14 @@ function getLabel([item = {}] = []) {
       max-width: 960px;
     }
   }
+}
+
+.anniversary {
+  margin: 0 20px;
+}
+
+.sns {
+  margin: 12.5px 20px 0 20px;
 }
 
 .latest-list-wrapper {
