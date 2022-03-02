@@ -595,4 +595,18 @@ module.exports = {
       })
     },
   },
+
+  /*
+   *  runtime config for feature toggle
+   *    if you decide to add certain environment variable when developing on local,
+   *    please add command to assign environment variable key and value,
+   *    which will temporarily add environment variable(or change value of existing environment variable)
+   *    until you break the program in execution.
+   *    for example:
+   *    $ CERTAIN_FEATURE_TOGGLE=on yarn dev
+   */
+
+  publicRuntimeConfig: {
+    noAdFeatureToggle: process.env.NO_AD_FEATURE_TOGGLE || 'off',
+  },
 }
