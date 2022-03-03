@@ -737,6 +737,12 @@ function getLabel([item = {}] = []) {
     .the-cover {
       max-width: 1200px;
     }
+
+    .cover__hero-caption {
+      @include media-breakpoint-up(xl) {
+        width: 960px;
+      }
+    }
   }
 }
 
