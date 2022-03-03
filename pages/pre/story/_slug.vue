@@ -38,13 +38,13 @@
         :failTimes="0"
         @reload="handleReload"
       />
-      <!--      <transition name="fade">-->
-      <!--        <UiShareLinksHasCopyLink-->
-      <!--          v-show="!isShareLinksInArticleInfoVisible"-->
-      <!--          class="article-body-wrapper__share-links"-->
-      <!--          :direction="'vertical-reverse'"-->
-      <!--        />-->
-      <!--      </transition>-->
+      <transition name="fade">
+        <UiShareLinksHasCopyLink
+          v-show="showShareLinksAside"
+          class="article-body-wrapper__share-links"
+          :direction="'vertical-reverse'"
+        />
+      </transition>
     </div>
     <div class="additional-info-wrapper">
       <UiAnniversary class="anniversary" />
@@ -71,7 +71,10 @@
         <!--        </template>-->
       </UiStoryListRelatedMobileLayoutColumn>
     </LazyRenderer>
-    <section class="latest-list-wrapper">
+    <section
+      v-observe-visibility="handleLatestListVisibilityChanged"
+      class="latest-list-wrapper"
+    >
       <h1 class="latest-list-wrapper__title">最新文章</h1>
       <LazyRenderer
         class="latest-list-wrapper__latest-list"
@@ -116,6 +119,7 @@ import UiSocialNetworkServices from '~/components/UiSocialNetworkServices.vue'
 import UiStoryListRelatedMobileLayoutColumn from '~/components/UiStoryListRelatedMobileLayoutColumn.vue'
 import UiArticleListCompact from '~/components/UiArticleListCompact.vue'
 import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
+import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
 
 // import MicroAdWithLabel from '~/components/MicroAdWithLabel.vue'
 
@@ -141,6 +145,7 @@ export default {
     UiStoryListRelatedMobileLayoutColumn,
     UiArticleListCompact,
     UiShareLinksToggled,
+    UiShareLinksHasCopyLink,
 
     // MicroAdWithLabel,
   },
@@ -245,6 +250,8 @@ export default {
       hasLoadedLatestStories: false,
 
       popularStories: [],
+
+      showShareLinksAside: false,
     }
   },
   computed: {
@@ -418,7 +425,12 @@ export default {
           }
         })
     },
-    handleShareLinksVisibilityChanged() {},
+    handleShareLinksVisibilityChanged(isVisible) {
+      this.showShareLinksAside = !isVisible
+    },
+    handleLatestListVisibilityChanged(isVisible) {
+      this.showShareLinksAside = !isVisible
+    },
     handleReload() {},
   },
   head() {
@@ -738,6 +750,41 @@ function getLabel([item = {}] = []) {
     max-width: 960px;
     margin: 64px auto 0 auto;
   }
+}
+
+.article-body-wrapper {
+  &__share-links {
+    visibility: hidden;
+    pointer-events: none;
+    @include media-breakpoint-up(xl) {
+      display: flex;
+      visibility: initial;
+      pointer-events: initial;
+      position: fixed;
+      top: calc((100vh - 140px) / 2);
+      right: calc((100vw - 960px) / 4);
+      bottom: 0;
+      margin: 0 auto;
+    }
+  }
+
+  &::v-deep {
+    .figure {
+      &__img {
+        @include media-breakpoint-up(xl) {
+          left: 0;
+          margin: 0 auto;
+        }
+      }
+    }
+  }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 
 .culture-post {
