@@ -782,6 +782,19 @@ function getLabel([item = {}] = []) {
           margin: 0 auto;
         }
       }
+      &__caption {
+        @include media-breakpoint-up(xl) {
+          width: 720px;
+          margin: 16px auto 0 auto;
+        }
+      }
+    }
+
+    .infobox {
+      @include media-breakpoint-up(xl) {
+        left: 0;
+        margin: 0 auto;
+      }
     }
   }
 }
