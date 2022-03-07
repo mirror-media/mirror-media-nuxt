@@ -390,7 +390,9 @@ export default {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
-
+    isAdvertised() {
+      return this.story.isAdvertised || false
+    },
     isStyleDefault() {
       return !this.isStylePhotography && !this.isStyleWide
     },
@@ -775,7 +777,12 @@ export default {
       ],
       link: [
         { rel: 'canonical', href: pageUrl },
-        { rel: 'amphtml', href: `${SITE_URL}/story/amp/${this.storySlug}/` },
+        this.isAdvertised
+          ? {}
+          : {
+              rel: 'amphtml',
+              href: `${SITE_URL}/story/amp/${this.storySlug}/`,
+            },
         {
           hid: 'gptLink',
           skip: !this.canAdvertise,
