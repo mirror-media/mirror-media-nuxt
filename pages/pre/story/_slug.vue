@@ -336,7 +336,9 @@ export default {
     ...mapState({
       canAdvertise: (state) => state.canAdvertise,
     }),
-
+    isAdvertised() {
+      return this.story.isAdvertised || false
+    },
     relateds() {
       return (this.story.relateds ?? []).filter((item) => item.slug)
     },
@@ -524,7 +526,12 @@ export default {
       ],
       link: [
         { rel: 'canonical', href: pageUrl },
-        { rel: 'amphtml', href: `${SITE_URL}/story/amp/${this.storySlug}/` },
+        this.isAdvertised
+          ? {}
+          : {
+              rel: 'amphtml',
+              href: `${SITE_URL}/story/amp/${this.storySlug}/`,
+            },
         {
           hid: 'gptLink',
           skip: !this.canAdvertise,
