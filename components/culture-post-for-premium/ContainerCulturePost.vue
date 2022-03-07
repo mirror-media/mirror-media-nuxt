@@ -1,10 +1,6 @@
 <template>
   <section>
-    <section
-      class="culture-post"
-      @wheel="wheelListener($event)"
-      @animationend="end($event)"
-    >
+    <section class="culture-post" @wheel="wheelListener($event)">
       <ContainerHeaderSectionMember
         v-if="isCurrentPagePremium"
         class="header"
@@ -322,10 +318,7 @@ export default {
     start() {
       console.log('start')
     },
-    end(event) {
-      console.log(event)
-      this.isWheel = false
-    },
+
     wheelListener(event) {
       this.isWheel = true
       if (event.deltaY >= 20) {
