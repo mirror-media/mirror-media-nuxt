@@ -1,6 +1,6 @@
 <template>
   <section>
-    <section class="culture-post">
+    <section class="culture-post" @wheel="wheelListener($event)">
       <ContainerHeaderSectionMember
         v-if="isCurrentPagePremium"
         class="header"
@@ -25,12 +25,18 @@
         @closeIndex="handleIndexActive(false)"
         @openIndex="handleIndexActive(true)"
       />
+
       <UiSubTitleNavigator
         class="subtitle-navigator"
+        :class="{
+          'subtitle-navigator-moving-down': isWheel && isWheelingDown,
+          'subtitle-navigator-moving-up': isWheel && !isWheelingDown,
+        }"
         :items="indexes"
         :currentIndex="currentIndex"
         :detectCurrentIndex="detectCurrentIndex"
       />
+
       <UiLanding
         :shouldShowMemberLabel="true"
         :sectionLabel="post.sectionLabelFirst"
@@ -174,6 +180,8 @@ export default {
 
       relatedImgs: [],
       isShareLinksInArticleInfoVisible: false,
+      isWheel: false,
+      isWheelingDown: false,
     }
   },
 
@@ -181,6 +189,9 @@ export default {
     ...mapGetters({
       isViewportWidthUpXl: 'viewport/isViewportWidthUpXl',
     }),
+    movingPixel() {
+      return `${this.movingDirection}px`
+    },
     post() {
       const {
         id = '',
@@ -304,6 +315,14 @@ export default {
   },
 
   methods: {
+    wheelListener(event) {
+      this.isWheel = true
+      if (event.deltaY >= 20) {
+        this.isWheelingDown = true
+      } else if (event.deltaY <= 20) {
+        this.isWheelingDown = false
+      }
+    },
     detectCurrentIndex() {
       import('intersection-observer').then(() => {
         const selectorIdBeginWithHeader = '[id^=header]'
@@ -448,6 +467,7 @@ export default {
 }
 .subtitle-navigator {
   display: none;
+
   @include media-breakpoint-up(xl) {
     display: inline-block;
     position: fixed;
@@ -466,6 +486,38 @@ export default {
     max-width: 300px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     padding: 15px 24px 16px;
+  }
+}
+.subtitle-navigator-moving-down {
+  animation-name: subtitle-navigator-moving-down;
+
+  animation-duration: 2s;
+}
+@keyframes subtitle-navigator-moving-down {
+  0% {
+    top: calc(50%);
+  }
+  50% {
+    top: calc(55%);
+  }
+  100% {
+    top: calc(50%);
+  }
+}
+.subtitle-navigator-moving-up {
+  animation-name: subtitle-navigator-moving-up;
+
+  animation-duration: 2s;
+}
+@keyframes subtitle-navigator-moving-up {
+  0% {
+    top: calc(50%);
+  }
+  50% {
+    top: calc(45%);
+  }
+  100% {
+    top: calc(50%);
   }
 }
 
