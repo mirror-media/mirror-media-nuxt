@@ -315,10 +315,6 @@ export default {
   },
 
   methods: {
-    start() {
-      console.log('start')
-    },
-
     wheelListener(event) {
       this.isWheel = true
       if (event.deltaY >= 20) {
@@ -326,9 +322,6 @@ export default {
       } else if (event.deltaY <= 20) {
         this.isWheelingDown = false
       }
-      console.log('deltaY', event.deltaY) // 觸發事件後，滾輪移動的距離
-      console.log('timestamp', event.timeStamp)
-      setTimeout(() => {})
     },
     detectCurrentIndex() {
       import('intersection-observer').then(() => {
