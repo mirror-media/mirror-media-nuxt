@@ -8,6 +8,7 @@
         'data-height': 75,
       }"
       style="text-align: left"
+      class="sns-wrapper__fb-page"
     />
     <nav class="sns-wrapper__nav nav">
       <a
@@ -73,8 +74,18 @@ export default {
 <style lang="scss" scoped>
 .sns-wrapper {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   flex-wrap: wrap;
+  @include media-breakpoint-up(xl) {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__fb-page {
+    @include media-breakpoint-up(xl) {
+      margin: 0 16px 0 0;
+    }
+  }
 }
 
 .nav {
@@ -82,7 +93,7 @@ export default {
   flex-wrap: wrap;
   margin: 0 0 0 -16px;
   @include media-breakpoint-up(xl) {
-    margin: -16px 0 0 0;
+    margin: -16px 0 0 -16px;
   }
   &__link {
     margin: 16px 0 0 16px;
