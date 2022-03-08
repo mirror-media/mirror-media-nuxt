@@ -88,15 +88,18 @@
                 <UiArticleGalleryB
                   v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
                   :items="latestItems"
+                  :isPremiumMember="isPremiumMember"
                   @sendGa="sendGaForClick('latest')"
                 />
                 <UiArticleGallery
                   v-else-if="shouldShowFocus"
+                  :isPremiumMember="isPremiumMember"
                   :items="latestItems"
                   @sendGa="sendGaForClick('latest')"
                 />
                 <UiArticleGalleryWithoutFocus
                   v-else
+                  :isPremiumMember="isPremiumMember"
                   :items="latestItems"
                   @sendGa="sendGaForClick('latest')"
                 />
@@ -264,6 +267,9 @@ export default {
   },
 
   computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),

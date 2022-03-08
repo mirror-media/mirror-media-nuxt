@@ -8,7 +8,7 @@
       >
         <div class="item__title">
           <a
-            :href="`/story/${item.slug}`"
+            :href="item.href"
             target="_blank"
             rel="noopener noreferrer"
             :style="{
@@ -19,7 +19,7 @@
           />
         </div>
         <a
-          :href="`/story/${item.slug}`"
+          :href="item.href"
           class="item__image"
           target="_blank"
           rel="noopener noreferrer"

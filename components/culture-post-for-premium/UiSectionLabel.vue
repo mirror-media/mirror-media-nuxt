@@ -12,9 +12,18 @@ export default {
       require: true,
       default: '',
     },
+    href: {
+      type: String,
+      default: null,
+    },
   },
   methods: {
     async handleClick() {
+      if (this.href) {
+        location.assign(this.href)
+        return
+      }
+
       const data = await this.$fetchMemberSectionsArticles()
       const sectionName =
         data.find((section) => section.title === this.label)?.name || ''

@@ -120,7 +120,9 @@ export default {
     },
 
     microAdUnits() {
-      return this.shouldMountMicroAds ? MICRO_AD_UNITS.LISTING.RWD : []
+      return this.shouldMountMicroAds && !this.isPremiumMember
+        ? MICRO_AD_UNITS.LISTING.RWD
+        : []
     },
   },
 }

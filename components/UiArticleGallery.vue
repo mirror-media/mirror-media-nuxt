@@ -40,7 +40,7 @@
         </li>
 
         <MicroAd
-          v-else
+          v-else-if="item.isMicroAd && !isPremiumMember"
           :key="microAdUnits[item.idx].name"
           :unitId="microAdUnits[item.idx].id"
         />
@@ -67,6 +67,11 @@ export default {
     items: {
       type: Array,
       default: () => [],
+      required: true,
+    },
+    isPremiumMember: {
+      type: Boolean,
+      default: false,
       required: true,
     },
   },

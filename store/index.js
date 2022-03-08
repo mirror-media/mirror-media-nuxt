@@ -20,9 +20,12 @@ export const actions = {
 
       await dispatch('membership-subscribe/FETCH_BASIC_INFO')
     }
-
     const sectionsResponse = await dispatch('fetchGlobalData')
     commitSectionsData(commit, sectionsResponse)
+    commit(
+      'membership-subscribe/getFeatureToggleStatus',
+      app.$config.noAdFeatureToggle
+    )
   },
 
   async fetchGlobalData({ dispatch }) {
