@@ -319,7 +319,7 @@ export default {
       this.isWheel = true
       if (event.deltaY >= 20) {
         this.isWheelingDown = true
-      } else if (event.deltaY <= 20) {
+      } else if (event.deltaY <= -20) {
         this.isWheelingDown = false
       }
     },
