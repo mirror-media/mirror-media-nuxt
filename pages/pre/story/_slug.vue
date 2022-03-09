@@ -339,6 +339,9 @@ export default {
     isAdvertised() {
       return this.story.isAdvertised || false
     },
+    isInvisible() {
+      return this.story.state === 'invisible'
+    },
     relateds() {
       return (this.story.relateds ?? []).filter((item) => item.slug)
     },
@@ -526,7 +529,7 @@ export default {
       ],
       link: [
         { rel: 'canonical', href: pageUrl },
-        this.isAdvertised
+        this.isInvisible || this.isAdvertised
           ? {}
           : {
               rel: 'amphtml',
