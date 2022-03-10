@@ -53,7 +53,11 @@ export default {
       isIndexActive: false,
     }
   },
-
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters['membership/isLoggedIn']
+    },
+  },
   mounted() {
     fireActivationEvent.bind(this)()
   },
@@ -62,6 +66,21 @@ export default {
     handleIndexActive(isActive) {
       this.isIndexActive = isActive
     },
+  },
+  head() {
+    return {
+      script: [
+        this.isLoggedIn
+          ? {
+              hid: 'facebookPixelMemberPageView',
+              innerHTML: `fbq('trackCustom', 'memberPageView');`,
+            }
+          : {},
+      ],
+      __dangerouslyDisableSanitizersByTagID: {
+        facebookPixelMemberPageView: ['innerHTML'],
+      },
+    }
   },
 }
 </script>

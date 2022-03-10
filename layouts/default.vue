@@ -45,8 +45,10 @@ export default {
       this.$store.dispatch('topics/fetchTopicsData'),
     ])
   },
-
   computed: {
+    isLoggedIn() {
+      return this.$store.getters['membership/isLoggedIn']
+    },
     isListing() {
       const listingRouteNames = [
         'section-name',
@@ -76,6 +78,22 @@ export default {
 
   mounted() {
     fireActivationEvent.bind(this)()
+  },
+
+  head() {
+    return {
+      script: [
+        this.isLoggedIn
+          ? {
+              hid: 'facebookPixelMemberPageView',
+              innerHTML: `fbq('trackCustom', 'memberPageView');`,
+            }
+          : {},
+      ],
+      __dangerouslyDisableSanitizersByTagID: {
+        facebookPixelMemberPageView: ['innerHTML'],
+      },
+    }
   },
 }
 </script>

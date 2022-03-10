@@ -11,7 +11,7 @@
             <UiMembershipButtonPrimary
               class="plan__button"
               data-user-behavior-description="premium-subscribe"
-              @click.native="$emit('subscribePremium')"
+              @click.native="subscribePremium"
             >
               加入Premium會員
             </UiMembershipButtonPrimary>
@@ -26,7 +26,7 @@
           <UiMembershipButtonLight
             class="plan__button"
             data-user-behavior-description="onetime-subscribe"
-            @click.native="$emit('subscribePost')"
+            @click.native="subscribePost"
           >
             解鎖單篇報導
           </UiMembershipButtonLight>
@@ -56,6 +56,16 @@ export default {
     shouldShowLoginNow: {
       type: Boolean,
       default: true,
+    },
+  },
+  methods: {
+    subscribePost() {
+      window.fbq('trackCustom', 'Premium-subscribe-one-time-truncated')
+      this.$emit('subscribePost')
+    },
+    subscribePremium() {
+      window.fbq('trackCustom', 'Premium-subscribe-truncated')
+      this.$emit('subscribePremium')
     },
   },
 }

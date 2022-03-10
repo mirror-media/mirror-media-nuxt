@@ -36,9 +36,28 @@ export default {
   components: {
     TheGdpr,
   },
-
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters['membership/isLoggedIn']
+    },
+  },
   mounted() {
     fireActivationEvent.bind(this)()
+  },
+  head() {
+    return {
+      script: [
+        this.isLoggedIn
+          ? {
+              hid: 'facebookPixelMemberPageView',
+              innerHTML: `fbq('trackCustom', 'memberPageView');`,
+            }
+          : {},
+      ],
+      __dangerouslyDisableSanitizersByTagID: {
+        facebookPixelMemberPageView: ['innerHTML'],
+      },
+    }
   },
 }
 </script>

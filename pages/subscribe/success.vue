@@ -31,10 +31,17 @@
           </div>
         </div>
         <div class="subscribe-success__info_button">
-          <a v-if="isNavigateFromPremiumPage" href="/section/member">
+          <a
+            v-if="isNavigateFromPremiumPage"
+            href="/section/member"
+            @click="sendFbPixelEvent('back-to-Premium-page')"
+          >
             <UiSubscribeButton title="瀏覽 Premium 會員文章" />
           </a>
-          <a href="/profile/purchase">
+          <a
+            href="/profile/purchase"
+            @click="sendFbPixelEvent('back-to-profile-purchase-page')"
+          >
             <UiMembershipButtonSecondary>
               <p v-if="isNavigateFromPremiumPage">回訂閱紀錄</p>
               <p v-else>回訂閱紀錄看購買文章</p>
@@ -135,6 +142,10 @@ export default {
     },
   },
   methods: {
+    sendFbPixelEvent(customEventName) {
+      window.fbq('trackCustom', customEventName)
+    },
+
     // TODO: remove due to not use anymore
     toggleHasLink() {
       this.hasLink = !this.hasLink
