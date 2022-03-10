@@ -31,11 +31,6 @@ export default {
       default: 0,
       required: true,
     },
-    detectCurrentIndex: {
-      type: Function,
-      required: true,
-      default: () => {},
-    },
   },
 
   methods: {
@@ -45,7 +40,6 @@ export default {
         lazy: false,
         offset: -64,
       })
-      this.detectCurrentIndex()
     },
   },
 }
