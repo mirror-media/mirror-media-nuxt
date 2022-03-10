@@ -14,7 +14,7 @@ import getRref from './rref'
 import isInApp from './is-in-app-browser'
 import { API_PATH_FRONTEND } from '~/configs/config'
 
-export function createUserBehaviorLog({ target = {} } = {}) {
+export function createUserBehaviorLog({ target = {}, ...props } = {}) {
   return {
     browser: getBrowserInfo(),
     'is-in-app-browser': isInApp(window.navigator.userAgent),
@@ -42,6 +42,8 @@ export function createUserBehaviorLog({ target = {} } = {}) {
     'current-runtime-id': getClientId(),
     'current-runtime-start': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
     'session-id': getSessionId(),
+
+    ...props,
   }
 }
 
