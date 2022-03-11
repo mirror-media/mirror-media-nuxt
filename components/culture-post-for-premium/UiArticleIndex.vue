@@ -21,7 +21,6 @@
             class="subtitle-navigator"
             :items="items"
             :currentIndex="currentIndex"
-            :detectCurrentIndex="detectCurrentIndex"
             @closeIndex="$emit('closeIndex')"
           />
         </div>
@@ -97,11 +96,6 @@ export default {
   },
 
   props: {
-    detectCurrentIndex: {
-      type: Function,
-      required: true,
-      default: () => {},
-    },
     items: {
       type: Array,
       required: true,

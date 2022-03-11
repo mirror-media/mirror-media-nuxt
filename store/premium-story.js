@@ -5,6 +5,10 @@ export const state = () => ({
 
 export const mutations = {
   SET_STORY(state, story) {
-    state.story = story
+    state.story = simplifyStoryData(story)
   },
+}
+
+function simplifyStoryData(story) {
+  return { ...story, content: {}, brief: {} }
 }
