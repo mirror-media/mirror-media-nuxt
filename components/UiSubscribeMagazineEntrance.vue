@@ -18,14 +18,17 @@ export default {
 .subscribe-magazine-entrance {
   padding: 4px 9px;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 23px;
+  font-size: 12px;
+  line-height: 17px;
   color: #fbbc05;
   background: #054f77;
   margin: 0 5vw 0 0;
   text-align: center;
   cursor: pointer;
+  margin-left: 20px;
   @include media-breakpoint-up(md) {
+    font-size: 16px;
+    line-height: 23px;
     margin: 0 48px 0 0;
   }
   @include media-breakpoint-up(xl) {

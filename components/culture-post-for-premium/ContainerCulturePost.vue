@@ -21,7 +21,6 @@
         :items="indexes"
         :currentIndex="currentIndex"
         :isIndexActive="isIndexActive"
-        :detectCurrentIndex="detectCurrentIndex"
         @closeIndex="handleIndexActive(false)"
         @openIndex="handleIndexActive(true)"
       />
@@ -34,7 +33,6 @@
         }"
         :items="indexes"
         :currentIndex="currentIndex"
-        :detectCurrentIndex="detectCurrentIndex"
       />
 
       <UiLanding
@@ -308,10 +306,11 @@ export default {
         this.isIndexActive = false
       }
     },
-  },
-
-  mounted() {
-    this.detectCurrentIndex()
+    indexes() {
+      if (this.indexes.length !== 0) {
+        this.detectCurrentIndex()
+      }
+    },
   },
 
   methods: {
