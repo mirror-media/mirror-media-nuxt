@@ -145,13 +145,6 @@ export default {
     },
   },
   methods: {
-    test() {
-      console.log('trigger')
-    },
-    sendFbPixelEvent(customEventName) {
-      window.fbq('trackCustom', customEventName)
-    },
-
     // TODO: remove due to not use anymore
     toggleHasLink() {
       this.hasLink = !this.hasLink
