@@ -101,7 +101,7 @@ export default {
 .header-nav-section {
   font-size: 14px;
   // to hide scrollbar
-  height: 28px;
+  height: 36px;
   overflow: hidden;
 
   display: flex;
@@ -118,7 +118,6 @@ export default {
   .container {
     // to hide scrollbar
     height: 48px;
-
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
