@@ -25,6 +25,7 @@ import ContainerHeader from '~/components/ContainerHeader.vue'
 import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
 
+import { sendMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
 import { useViewport } from '~/composition/viewport.js'
 import { fireActivationEvent } from '~/utils/google-optimize.js'
 
@@ -37,6 +38,7 @@ export default {
   },
   setup() {
     useViewport()
+    sendMemberPageViewToFbPixel()
   },
 
   async fetch() {
@@ -78,22 +80,6 @@ export default {
 
   mounted() {
     fireActivationEvent.bind(this)()
-  },
-
-  head() {
-    return {
-      script: [
-        this.isLoggedIn
-          ? {
-              hid: 'facebookPixelMemberPageView',
-              innerHTML: `fbq('trackCustom', 'memberPageView');`,
-            }
-          : {},
-      ],
-      __dangerouslyDisableSanitizersByTagID: {
-        facebookPixelMemberPageView: ['innerHTML'],
-      },
-    }
   },
 }
 </script>

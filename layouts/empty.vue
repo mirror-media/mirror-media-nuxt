@@ -13,9 +13,12 @@ import TheGdpr from '~/components/TheGdpr.vue'
 
 import { fireActivationEvent } from '~/utils/google-optimize.js'
 
+import { sendMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
 export default {
   name: 'Empty',
-
+  setup() {
+    sendMemberPageViewToFbPixel()
+  },
   errorCaptured(error, vm, info) {
     if (vm.$route.name === 'premium-slug') {
       this.$sendMembershipErrorLog({
@@ -43,21 +46,6 @@ export default {
   },
   mounted() {
     fireActivationEvent.bind(this)()
-  },
-  head() {
-    return {
-      script: [
-        this.isLoggedIn
-          ? {
-              hid: 'facebookPixelMemberPageView',
-              innerHTML: `fbq('trackCustom', 'memberPageView');`,
-            }
-          : {},
-      ],
-      __dangerouslyDisableSanitizersByTagID: {
-        facebookPixelMemberPageView: ['innerHTML'],
-      },
-    }
   },
 }
 </script>

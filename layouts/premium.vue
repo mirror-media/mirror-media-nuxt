@@ -37,10 +37,13 @@ import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
 
 import { fireActivationEvent } from '~/utils/google-optimize.js'
+import { sendMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
 
 export default {
   name: 'Premium',
-
+  setup() {
+    sendMemberPageViewToFbPixel()
+  },
   components: {
     ContainerHeaderSectionMember,
     UiArticleIndex,
@@ -66,21 +69,6 @@ export default {
     handleIndexActive(isActive) {
       this.isIndexActive = isActive
     },
-  },
-  head() {
-    return {
-      script: [
-        this.isLoggedIn
-          ? {
-              hid: 'facebookPixelMemberPageView',
-              innerHTML: `fbq('trackCustom', 'memberPageView');`,
-            }
-          : {},
-      ],
-      __dangerouslyDisableSanitizersByTagID: {
-        facebookPixelMemberPageView: ['innerHTML'],
-      },
-    }
   },
 }
 </script>
