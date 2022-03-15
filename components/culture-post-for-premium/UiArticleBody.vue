@@ -45,12 +45,7 @@
         <UiPremiumInviteToSubscribe
           :shouldShowLoginNow="!$store.getters['membership/isLoggedIn']"
           @subscribePremium="$router.replace('/subscribe')"
-          @subscribePost="
-            sendMembershipSubscribe({
-              type: '解鎖這篇報導',
-              postId,
-            })
-          "
+          @subscribePost="handleSubscribePost"
           @login="handleLogin"
         />
       </div>
@@ -64,7 +59,6 @@ import UiPremiumBrief from './UiPremiumBrief.vue'
 import UiArticleSkeleton from '~/components/culture-post-for-premium/UiArticleSkeleton.vue'
 import UiReloadArticle from '~/components/culture-post-for-premium/UiReloadArticle.vue'
 import UiPremiumInviteToSubscribe from '~/components/UiPremiumInviteToSubscribe.vue'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   name: 'UiArticleBody',
@@ -75,13 +69,6 @@ export default {
     UiPremiumBrief,
     UiArticleSkeleton,
     UiReloadArticle,
-  },
-
-  setup() {
-    const { send } = useMemberSubscribeMachine()
-    return {
-      sendMembershipSubscribe: send,
-    }
   },
 
   props: {
@@ -142,6 +129,11 @@ export default {
     },
     handleLogin() {
       window.location.assign(`/login?destination=${this.$route.fullPath}`)
+    },
+    handleSubscribePost() {
+      window.location.assign(
+        `/subscribe/info?plan=one-time&one-time-post-id=${this.postId}`
+      )
     },
   },
 }
