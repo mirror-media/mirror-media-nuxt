@@ -37,44 +37,33 @@
       </ClientOnly>
     </article>
     <ClientOnly>
-      <template v-if="!isMemberSubscribeFeatureToggled($route)">
-        <div
-          v-if="pageState === 'premiumPageNotLogin'"
-          class="invite-to-login-wrapper"
-        >
-          <div class="invite-to-login-wrapper__fade-out-effect" />
-          <UiPremiumInviteToLogin />
-        </div>
-      </template>
-      <template v-else>
-        <div
-          v-if="
-            !failTimes &&
-            (isArticleContentTruncatedByGateway ||
-              (stateMembershipSubscribe &&
-                [
-                  '會員訂閱功能.會員文章頁.未登入',
-                  '會員訂閱功能.會員文章頁.已登入.未訂閱',
-                ].some(stateMembershipSubscribe.matches)))
+      <div
+        v-if="
+          !failTimes &&
+          (isArticleContentTruncatedByGateway ||
+            (stateMembershipSubscribe &&
+              [
+                '會員訂閱功能.會員文章頁.未登入',
+                '會員訂閱功能.會員文章頁.已登入.未訂閱',
+              ].some(stateMembershipSubscribe.matches)))
+        "
+        class="invite-to-login-wrapper"
+      >
+        <div class="invite-to-login-wrapper__fade-out-effect" />
+        <UiPremiumInviteToSubscribe
+          :shouldShowLoginNow="
+            stateMembershipSubscribe.matches('會員訂閱功能.會員文章頁.未登入')
           "
-          class="invite-to-login-wrapper"
-        >
-          <div class="invite-to-login-wrapper__fade-out-effect" />
-          <UiPremiumInviteToSubscribe
-            :shouldShowLoginNow="
-              stateMembershipSubscribe.matches('會員訂閱功能.會員文章頁.未登入')
-            "
-            @subscribePremium="sendMembershipSubscribe('加入Premium會員')"
-            @subscribePost="
-              sendMembershipSubscribe({
-                type: '解鎖這篇報導',
-                postId,
-              })
-            "
-            @login="sendMembershipSubscribe('立即登入')"
-          />
-        </div>
-      </template>
+          @subscribePremium="sendMembershipSubscribe('加入Premium會員')"
+          @subscribePost="
+            sendMembershipSubscribe({
+              type: '解鎖這篇報導',
+              postId,
+            })
+          "
+          @login="sendMembershipSubscribe('立即登入')"
+        />
+      </div>
     </ClientOnly>
   </div>
 </template>
@@ -82,7 +71,6 @@
 <script>
 import ContentHandler from './ContentHandler.vue'
 import UiPremiumBrief from './UiPremiumBrief.vue'
-import UiPremiumInviteToLogin from '~/components/UiPremiumInviteToLogin.vue'
 import UiArticleSkeleton from '~/components/culture-post-for-premium/UiArticleSkeleton.vue'
 import UiReloadArticle from '~/components/culture-post-for-premium/UiReloadArticle.vue'
 import UiPremiumInviteToSubscribe from '~/components/UiPremiumInviteToSubscribe.vue'
@@ -94,7 +82,6 @@ export default {
 
   components: {
     ContentHandler,
-    UiPremiumInviteToLogin,
     UiPremiumInviteToSubscribe,
     UiPremiumBrief,
     // eslint-disable-next-line vue/no-unused-components
