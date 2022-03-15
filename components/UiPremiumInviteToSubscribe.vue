@@ -70,7 +70,7 @@ export default {
     },
     subscribePremium() {
       this.useCustomEventToFbPixel('Premium-subscribe-truncated')
-      window.fbq('trackCustom', 'Premium-subscribe-truncated')
+      this.$emit('subscribePremium')
     },
   },
 }
