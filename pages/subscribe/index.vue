@@ -1,6 +1,6 @@
 <template>
   <div class="subscribe-choose">
-    <template v-if="!canShowFeat && doesHaveIsPayByAppValue">
+    <template v-if="doesHaveIsPayByAppValue">
       <SubscribeStepProgress :currentStep="1" />
       <ClientOnly>
         <template v-if="isPayByApp">
@@ -333,9 +333,6 @@ export default {
     },
     doesHaveIsPayByAppValue() {
       return this.isPayByApp !== undefined
-    },
-    canShowFeat() {
-      return this.$route.query?.toggle === 'show-toggle-feature'
     },
   },
   methods: {
