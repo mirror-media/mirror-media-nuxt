@@ -38,30 +38,20 @@
     </article>
     <ClientOnly>
       <div
-        v-if="
-          !failTimes &&
-          (isArticleContentTruncatedByGateway ||
-            (stateMembershipSubscribe &&
-              [
-                '會員訂閱功能.會員文章頁.未登入',
-                '會員訂閱功能.會員文章頁.已登入.未訂閱',
-              ].some(stateMembershipSubscribe.matches)))
-        "
+        v-if="!failTimes && isArticleContentTruncatedByGateway"
         class="invite-to-login-wrapper"
       >
         <div class="invite-to-login-wrapper__fade-out-effect" />
         <UiPremiumInviteToSubscribe
-          :shouldShowLoginNow="
-            stateMembershipSubscribe.matches('會員訂閱功能.會員文章頁.未登入')
-          "
-          @subscribePremium="sendMembershipSubscribe('加入Premium會員')"
+          :shouldShowLoginNow="!$store.getters['membership/isLoggedIn']"
+          @subscribePremium="$router.replace('/subscribe')"
           @subscribePost="
             sendMembershipSubscribe({
               type: '解鎖這篇報導',
               postId,
             })
           "
-          @login="sendMembershipSubscribe('立即登入')"
+          @login="handleLogin"
         />
       </div>
     </ClientOnly>
@@ -75,7 +65,6 @@ import UiArticleSkeleton from '~/components/culture-post-for-premium/UiArticleSk
 import UiReloadArticle from '~/components/culture-post-for-premium/UiReloadArticle.vue'
 import UiPremiumInviteToSubscribe from '~/components/UiPremiumInviteToSubscribe.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
-import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
 
 export default {
   name: 'UiArticleBody',
@@ -90,11 +79,9 @@ export default {
   },
 
   setup() {
-    const { state, send } = useMemberSubscribeMachine()
+    const { send } = useMemberSubscribeMachine()
     return {
-      stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
-      isMemberSubscribeFeatureToggled,
     }
   },
 
@@ -153,6 +140,9 @@ export default {
     },
     handleReload() {
       this.$emit('reload')
+    },
+    handleLogin() {
+      window.location.assign(`/login?destination=${this.$route.fullPath}`)
     },
   },
 }
