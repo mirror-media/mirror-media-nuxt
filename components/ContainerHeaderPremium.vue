@@ -329,7 +329,7 @@ $search-field-arrow-width: 11px;
 header {
   background: #204f74;
   z-index: 519;
-
+  padding-bottom: 5px;
   position: relative;
 
   &.fixed {
@@ -346,7 +346,7 @@ header {
     }
 
     .header__search-bar-wrapper::v-deep .search-bar .field {
-      top: 90px;
+      top: 76px;
 
       &::before {
         right: calc(
@@ -364,12 +364,14 @@ header {
   justify-content: space-between;
   width: $header-top-layer-width;
   max-width: 1024px;
-  height: 90px;
+  height: 71px;
   margin-left: auto;
   margin-right: auto;
   padding-top: 33px;
+  padding-bottom: 13px;
   @include media-breakpoint-up(md) {
     padding-top: 0px;
+    padding-bottom: 0;
   }
   @include media-breakpoint-up(xl) {
     height: 70px;
@@ -462,6 +464,8 @@ header {
 
     .field {
       background-color: #d8d8d8;
+      top: 76px;
+      padding: 16px 24px;
       &::after {
         content: '';
         display: block;
@@ -478,8 +482,16 @@ header {
         }
       }
 
-      .search-bar-input input {
-        border-radius: 8px;
+      .search-bar-select {
+        height: 32px;
+      }
+
+      .search-bar-input {
+        height: 32px;
+        margin-top: 16px;
+        input {
+          border-radius: 8px;
+        }
       }
     }
   }
@@ -519,8 +531,10 @@ header {
   }
 }
 .header-nav::v-deep {
+  height: 24px;
   .section {
     color: #fff !important;
+    padding-top: 0;
     &::after {
       content: none !important;
     }
