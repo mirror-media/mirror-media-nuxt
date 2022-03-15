@@ -37,7 +37,7 @@
                 :buttons="plan.buttons"
                 :hintUnderButton="hintUnderButton"
                 @subscribePlan="handleSubscribePlan"
-                @login="sendMembershipSubscribe('點擊免費加入會員')"
+                @login="handleLogin"
               />
             </div>
           </div>
@@ -63,7 +63,7 @@
     </template>
 
     <!-- if fetch is not complete, show loading-->
-    <UiLoadingCover v-if="canShowFeat && $fetchState.pending" />
+    <UiLoadingCover v-if="$fetchState.pending" />
   </div>
 </template>
 
@@ -75,7 +75,6 @@ import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
   middleware: ['handle-go-to-marketing'],
   components: {
@@ -87,26 +86,9 @@ export default {
     UiLoadingCover,
   },
   setup() {
-    const { state, send } = useMemberSubscribeMachine()
     const memberStatus = useMemberStatus()
     return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
       memberStatus,
-      handleSubscribePlan(plan) {
-        send(getEventType(plan.title))
-
-        function getEventType(planTitle) {
-          const eventMap = {
-            訂閱年方案: '年訂閱',
-            訂閱月方案: '月訂閱',
-          }
-          return eventMap[planTitle]
-        }
-      },
-      handleSet() {
-        send('點擊前往付款設定頁')
-      },
     }
 
     function useMemberStatus() {
@@ -340,6 +322,23 @@ export default {
   methods: {
     handleGoToSectionMember() {
       window.location.assign('/section/member')
+    },
+    handleLogin() {
+      window.location.assign(`/login?destination=${this.$route.fullPath}`)
+    },
+    handleSet() {
+      window.location.assign(`/subscribe/set`)
+    },
+    handleSubscribePlan(plan) {
+      window.location.assign(`/subscribe/info?plan=${getEventType(plan.title)}`)
+
+      function getEventType(planTitle) {
+        const eventMap = {
+          訂閱年方案: 'yearly',
+          訂閱月方案: 'monthly',
+        }
+        return eventMap[planTitle]
+      }
     },
   },
 }
