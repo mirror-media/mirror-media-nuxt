@@ -14,8 +14,9 @@
               <UiMembershipButtonPrimary
                 class="subscribe-choose__textcard_back"
                 @click.native="handleGoToSectionMember"
-                >回會員專區</UiMembershipButtonPrimary
               >
+                回會員專區
+              </UiMembershipButtonPrimary>
             </SubscribeWrapper>
           </div>
         </template>
@@ -54,8 +55,9 @@
               <UiMembershipButtonPrimary
                 class="subscribe-choose__year_back"
                 @click.native="handleSet"
-                >前往付款設定</UiMembershipButtonPrimary
               >
+                前往付款設定
+              </UiMembershipButtonPrimary>
             </SubscribeWrapper>
           </div>
         </template>
