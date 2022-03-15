@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { computed } from '@nuxtjs/composition-api'
+import { computed, useStore } from '@nuxtjs/composition-api'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
@@ -110,23 +110,25 @@ export default {
     }
 
     function useMemberStatus() {
-      const { state } = useMemberSubscribeMachine()
-      const memberStatus = computed(() => computeMemberStatus(state?.value))
+      const { state, getters } = useStore()
+      const memberStatus = computed(() => computeMemberStatus(state, getters))
       return memberStatus
 
-      function computeMemberStatus(state) {
-        const parentState = '會員訂閱功能.方案購買流程.方案購買頁'
-        if (state?.matches(`${parentState}.未登入`)) {
+      function computeMemberStatus(state, getters) {
+        if (!getters?.['membership/isLoggedIn']) {
           return 'not-member'
-        } else if (state?.matches(`${parentState}.已登入`)) {
-          const parentState = '會員訂閱功能.方案購買流程.方案購買頁.已登入'
-          if (state?.matches(`${parentState}.月或年方案選擇`)) {
-            return 'basic'
-          } else if (state?.matches(`${parentState}.年方案選擇`)) {
-            return 'month'
-          } else {
-            return 'year'
-          }
+        } else if (
+          state?.['membership-subscribe']?.basicInfo?.type ===
+          'subscribe_yearly'
+        ) {
+          return 'year'
+        } else if (
+          state?.['membership-subscribe']?.basicInfo?.type ===
+          'subscribe_monthly'
+        ) {
+          return 'month'
+        } else {
+          return 'basic'
         }
       }
     }
