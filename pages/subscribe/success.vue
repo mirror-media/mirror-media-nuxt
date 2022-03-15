@@ -34,14 +34,14 @@
           <a
             v-if="isNavigateFromPremiumPage"
             href="/section/member"
-            @click.once="sendCustomEventToFbPixel('back-to-Premium-page')"
+            @click.once="useCustomEventToFbPixel('back-to-Premium-page')"
           >
             <UiSubscribeButton title="瀏覽 Premium 會員文章" />
           </a>
           <a
             href="/profile/purchase"
             @click.once="
-              sendCustomEventToFbPixel('back-to-profile-purchase-page')
+              useCustomEventToFbPixel('back-to-profile-purchase-page')
             "
           >
             <UiMembershipButtonSecondary>
@@ -62,7 +62,7 @@ import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOr
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
-import { sendCustomEventToFbPixel } from '~/composition/fb-pixel.js'
+import { useCustomEventToFbPixel } from '~/composition/fb-pixel.js'
 export default {
   middleware: ['handle-go-to-marketing'],
   setup() {
@@ -74,7 +74,7 @@ export default {
       isNavigateFromPremiumPage: !!state?.value?.matches(
         '會員訂閱功能.方案購買流程.付款成功頁.是從會員文章頁來的'
       ),
-      sendCustomEventToFbPixel,
+      useCustomEventToFbPixel,
     }
   },
   components: {

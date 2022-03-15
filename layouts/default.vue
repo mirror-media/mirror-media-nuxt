@@ -25,7 +25,7 @@ import ContainerHeader from '~/components/ContainerHeader.vue'
 import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
 
-import { sendMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
+import { useMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
 import { useViewport } from '~/composition/viewport.js'
 import { fireActivationEvent } from '~/utils/google-optimize.js'
 
@@ -38,7 +38,7 @@ export default {
   },
   setup() {
     useViewport()
-    sendMemberPageViewToFbPixel()
+    useMemberPageViewToFbPixel()
   },
 
   async fetch() {

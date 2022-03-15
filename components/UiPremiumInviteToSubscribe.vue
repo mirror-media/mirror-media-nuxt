@@ -45,11 +45,11 @@
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiMembershipButtonLight from '~/components/UiMembershipButtonLight.vue'
 import UiPremiumLoginNow from '~/components/UiPremiumLoginNow.vue'
-import { sendCustomEventToFbPixel } from '~/composition/fb-pixel.js'
+import { useCustomEventToFbPixel } from '~/composition/fb-pixel.js'
 
 export default {
   setup() {
-    return { sendCustomEventToFbPixel }
+    return { useCustomEventToFbPixel }
   },
   components: {
     UiMembershipButtonPrimary,
@@ -64,12 +64,12 @@ export default {
   },
   methods: {
     subscribePost() {
-      this.sendCustomEventToFbPixel('Premium-subscribe-one-time-truncated')
+      this.useCustomEventToFbPixel('Premium-subscribe-one-time-truncated')
 
       this.$emit('subscribePost')
     },
     subscribePremium() {
-      this.sendCustomEventToFbPixel('Premium-subscribe-truncated')
+      this.useCustomEventToFbPixel('Premium-subscribe-truncated')
       window.fbq('trackCustom', 'Premium-subscribe-truncated')
     },
   },

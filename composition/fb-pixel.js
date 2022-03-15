@@ -1,9 +1,9 @@
 import { onMounted, useStore } from '@nuxtjs/composition-api'
-function sendCustomEventToFbPixel(customEvent) {
+function useCustomEventToFbPixel(customEvent) {
   window.fbq('trackCustom', customEvent)
 }
 
-function sendMemberPageViewToFbPixel() {
+function useMemberPageViewToFbPixel() {
   const { getters } = useStore()
   const isLoggedIn = getters['membership/isLoggedIn']
   onMounted(() => {
@@ -12,4 +12,4 @@ function sendMemberPageViewToFbPixel() {
     }
   })
 }
-export { sendCustomEventToFbPixel, sendMemberPageViewToFbPixel }
+export { useCustomEventToFbPixel, useMemberPageViewToFbPixel }

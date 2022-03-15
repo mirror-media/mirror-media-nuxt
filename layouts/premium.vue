@@ -37,12 +37,12 @@ import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
 
 import { fireActivationEvent } from '~/utils/google-optimize.js'
-import { sendMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
+import { useMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
 
 export default {
   name: 'Premium',
   setup() {
-    sendMemberPageViewToFbPixel()
+    useMemberPageViewToFbPixel()
   },
   components: {
     ContainerHeaderSectionMember,
