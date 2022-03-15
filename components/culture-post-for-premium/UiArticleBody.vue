@@ -73,7 +73,6 @@ export default {
     ContentHandler,
     UiPremiumInviteToSubscribe,
     UiPremiumBrief,
-    // eslint-disable-next-line vue/no-unused-components
     UiArticleSkeleton,
     UiReloadArticle,
   },
