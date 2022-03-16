@@ -37,10 +37,13 @@ import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
 
 import { fireActivationEvent } from '~/utils/google-optimize.js'
+import { useMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
 
 export default {
   name: 'Premium',
-
+  setup() {
+    useMemberPageViewToFbPixel()
+  },
   components: {
     ContainerHeaderSectionMember,
     UiArticleIndex,
@@ -53,7 +56,11 @@ export default {
       isIndexActive: false,
     }
   },
-
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters['membership/isLoggedIn']
+    },
+  },
   mounted() {
     fireActivationEvent.bind(this)()
   },

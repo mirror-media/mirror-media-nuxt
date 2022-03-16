@@ -1,6 +1,9 @@
 <template>
-  <section class="video-subscriptions" :class="{ isPremium: isPremium }">
-    <div v-if="isPremium" class="scroll-container premium">
+  <section
+    class="video-subscriptions"
+    :class="{ isPremiumMember: isPremiumMember }"
+  >
+    <div v-if="isPremiumMember" class="scroll-container premium">
       <UiYoutubeSubscribeForPremium
         v-for="channel in CHANNELS"
         :key="`channel-${channel.id}`"
@@ -26,7 +29,6 @@
 <script>
 import UiYoutubeSubscribe from './UiYoutubeSubscribe.vue'
 import UiYoutubeSubscribeForPremium from './UiYoutubeSubscribeForPremium.vue'
-import { ENV } from '~/configs/config'
 
 const CHANNELS = [
   {
@@ -44,11 +46,14 @@ const CHANNELS = [
     id: 'UCSGNZVECzarsXTxPsNS9Zow',
     name: 'fun',
   },
-  // {
-  //   title: '鏡發財',
-  //   id: 'UCYkldEK001GxR884OZMFnRw',
-  //   name: 'money',
-  // },
+
+  /*
+   * {
+   *   title: '鏡發財',
+   *   id: 'UCYkldEK001GxR884OZMFnRw',
+   *   name: 'money',
+   * },
+   */
   {
     title: '鏡食旅',
     id: 'UCglE1_DI0TDSY70WfeoPSOQ',
@@ -73,13 +78,8 @@ export default {
     }
   },
   computed: {
-    isPremium() {
-      if (ENV === 'staging' || ENV === 'prod') return false
-      const memberType = this.$store?.state['membership-subscribe']?.basicInfo
-        .type
-      return (
-        memberType === 'subscribe_monthly' || memberType === 'subscribe_yearly'
-      )
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
     },
   },
 }
@@ -128,7 +128,7 @@ export default {
   }
 }
 
-.isPremium {
+.isPremiumMember {
   background: #f5f5f5;
 }
 </style>
