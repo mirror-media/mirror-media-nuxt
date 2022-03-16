@@ -117,7 +117,6 @@ import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vu
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import UiMembershipCheckoutLabel from '~/components/UiMembershipCheckoutLabel.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   middleware: ['handle-go-to-marketing'],
@@ -127,13 +126,6 @@ export default {
     UiMembershipButtonSecondary,
     UiMembershipCheckoutLabel,
     UiLoadingCover,
-  },
-  setup() {
-    const { state, send } = useMemberSubscribeMachine()
-    return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
-    }
   },
   async fetch() {
     // check if user's subscription is paid by mobile
@@ -183,11 +175,11 @@ export default {
 
         this.isLoading = false
         this.cancelStatus = 'success'
-        this.sendMembershipSubscribe('確認取消訂閱成功')
+        this.$router.push('/subscribe/cancel-success')
       } catch (error) {
         console.error(error)
         this.isLoading = false
-        this.sendMembershipSubscribe('確認取消訂閱失敗')
+        this.$router.push('/subscribe/cancel-fail')
       }
     },
     setCancelStatus(val) {
