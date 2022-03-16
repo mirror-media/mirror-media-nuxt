@@ -12,7 +12,7 @@
 import UiMembershipButtonSecondary from './UiMembershipButtonSecondary.vue'
 import UiMembershipLoadingIcon from './UiMembershipLoadingIcon.vue'
 import SvgAppleIcon from '~/assets/membership-apple-icon.svg?inline'
-import loginDestination from '~/utils/login-destination'
+import redirectDestination from '~/utils/redirect-destination'
 import {
   isMemberSubscribeFeatureToggled,
   persistStorageState,
@@ -61,7 +61,7 @@ export default {
         this.sendMembershipSubscribe('送出')
         persistStorageState(this.stateMembershipSubscribe)
       } else {
-        await loginDestination.set(this.$route)
+        await redirectDestination.set(this.$route)
       }
       const provider = new this.$fireModule.auth.OAuthProvider('apple.com')
       this.$fire.auth.signInWithRedirect(provider)

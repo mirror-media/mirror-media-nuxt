@@ -63,7 +63,7 @@ import UiLoginIntro from '~/components/UiLoginIntro.vue'
 import ContainerLoginForm from '~/components/ContainerLoginForm.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import UiMembershipLink from '~/components/UiMembershipLink.vue'
-import loginDestination from '~/utils/login-destination'
+import redirectDestination from '~/utils/redirect-destination'
 
 export default {
   apollo: {
@@ -91,7 +91,7 @@ export default {
     }
   },
   async beforeMount() {
-    await loginDestination.set(this.$route)
+    await redirectDestination.set(this.$route)
     await this.handleFederatedRedirectResult()
   },
 
@@ -168,7 +168,7 @@ export default {
         return
       }
 
-      await loginDestination.redirect()
+      await redirectDestination.redirect()
       await Promise.resolve()
     },
     async handleLoginFail(error) {

@@ -26,7 +26,7 @@
 <script>
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiStoryContentHandler from '~/components/UiStoryContentHandler.vue'
-import loginDestination from '~/utils/login-destination'
+import redirectDestination from '~/utils/redirect-destination'
 
 export default {
   components: {
@@ -80,7 +80,7 @@ export default {
     },
   },
   async beforeMount() {
-    await loginDestination.set(this.$route, 'mm-service-rule-destination')
+    await redirectDestination.set(this.$route, 'mm-service-rule-destination')
   },
   methods: {
     filterHTML(paragraph) {
@@ -100,7 +100,7 @@ export default {
       try {
         await this.$setMemberServiceRuleStatusToTrue()
         localStorage.setItem('read-service-rule', 'true')
-        loginDestination.redirect('mm-service-rule-destination')
+        redirectDestination.redirect('mm-service-rule-destination')
       } catch (error) {
         console.error(error)
       }
