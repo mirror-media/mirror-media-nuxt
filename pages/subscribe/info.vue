@@ -82,7 +82,7 @@
 <script>
 import qs from 'qs'
 import { required, email } from 'vuelidate/lib/validators'
-import { useRoute } from '@nuxtjs/composition-api'
+import { useRoute, useStore } from '@nuxtjs/composition-api'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
@@ -99,15 +99,16 @@ export default {
     UiSubscribeButton,
   },
   setup() {
-    const { state, send } = useMemberSubscribeMachine()
+    const { send } = useMemberSubscribeMachine()
+    const route = useRoute()
+    const { state } = useStore()
     const perchasedPlan = usePerchasedPlan()
     return {
-      stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
       perchasedPlan,
-      isUpgradeFromMonthToYear: !!state?.value?.matches(
-        '會員訂閱功能.方案購買流程.確認訂購頁.確認訂購表單頁.準備將月訂閱升級年訂閱'
-      ),
+      isUpgradeFromMonthToYear:
+        route.value.query.plan === 'yearly' &&
+        state['membership-subscribe'].basicInfo.type === 'subscribe_monthly',
     }
 
     function usePerchasedPlan() {
