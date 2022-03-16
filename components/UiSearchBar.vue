@@ -5,7 +5,10 @@
       class="search-icon"
       aria-label="search-icon"
       @click="toggleField"
-    />
+    >
+      <SvgSearchIcon />
+    </button>
+
     <div v-show="shouldShowField" class="field">
       <UiSearchBarSelect
         :options="options"
@@ -23,12 +26,14 @@
 <script>
 import UiSearchBarSelect from './UiSearchBarSelect.vue'
 import UiSearchBarInput from './UiSearchBarInput.vue'
+import SvgSearchIcon from '~/assets/icon_search_mobile.svg?inline'
 
 export default {
   name: 'UiSearchBar',
   components: {
     UiSearchBarSelect,
     UiSearchBarInput,
+    SvgSearchIcon,
   },
   props: {
     options: {
@@ -72,10 +77,6 @@ $search-field-arrow-width-half: $search-field-arrow-width / 2;
   display: block;
   width: $search-icon-width;
   height: 18px;
-  background-image: url(~assets/icon_search_mobile.png);
-  background-size: 18px;
-  background-position: center;
-  background-repeat: no-repeat;
   cursor: pointer;
   user-select: none;
 }

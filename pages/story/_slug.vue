@@ -10,7 +10,11 @@
         <ContainerHeader :currentSectionName="sectionName" />
 
         <div class="story-container">
-          <ContainerGptAd class="story__ad" :pageKey="sectionId" adKey="HD" />
+          <ContainerGptAd
+            class="story__ad story__ad--fixed-height"
+            :pageKey="sectionId"
+            adKey="HD"
+          />
 
           <div class="story-wrapper">
             <ContainerStoryBody :story="story" class="story-slug__story-body">
@@ -1037,6 +1041,18 @@ $aside-width: 300px;
 
     &--ft {
       margin-bottom: 0;
+    }
+    //When page is initialized, the ad is unmounted and the container of which is empty,
+    //However, when the ad is mounted, the container's height is resize to ad height (normally is 250px),
+    //which cause serious CLS problem.
+    //The current solution is set the height of container by CSS, make it unable resized by ad.
+    //But if user is using ad blocking plugins of browser, the container will show as a huge empty div on page,
+    //which influence user experience.
+    //We decide to adopt current solution to solve CLS problem, despite it is not perfect.
+    //The perfect solution need more survey and discussion, we will start to dig in ASAP.
+
+    &--fixed-height {
+      height: 250px;
     }
   }
 }

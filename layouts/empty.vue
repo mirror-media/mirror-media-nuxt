@@ -13,9 +13,12 @@ import TheGdpr from '~/components/TheGdpr.vue'
 
 import { fireActivationEvent } from '~/utils/google-optimize.js'
 
+import { useMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
 export default {
   name: 'Empty',
-
+  setup() {
+    useMemberPageViewToFbPixel()
+  },
   errorCaptured(error, vm, info) {
     if (vm.$route.name === 'premium-slug') {
       this.$sendMembershipErrorLog({
@@ -36,7 +39,11 @@ export default {
   components: {
     TheGdpr,
   },
-
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters['membership/isLoggedIn']
+    },
+  },
   mounted() {
     fireActivationEvent.bind(this)()
   },
