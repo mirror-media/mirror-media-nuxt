@@ -88,7 +88,6 @@ import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
   middleware: ['authenticate', 'handle-go-to-marketing'],
   components: {
@@ -99,12 +98,10 @@ export default {
     UiSubscribeButton,
   },
   setup() {
-    const { send } = useMemberSubscribeMachine()
     const route = useRoute()
     const { state } = useStore()
     const perchasedPlan = usePerchasedPlan()
     return {
-      sendMembershipSubscribe: send,
       perchasedPlan,
       isUpgradeFromMonthToYear:
         route.value.query.plan === 'yearly' &&
@@ -289,12 +286,6 @@ export default {
         // carry encrypted paymentPayload to redirect page
         const queryString = qs.stringify(encryptPaymentPayload)
         this.$router.push(`/subscribe/redirect?${queryString}`)
-
-        /*
-         * if (this.orderStatus === 'success')
-         *   return this.sendMembershipSubscribe('付款成功')
-         * this.sendMembershipSubscribe('付款失敗')
-         */
       } catch (error) {
         console.error(error.message)
         window.alert('您的訂閱流程發生了錯誤，請稍後再試')
@@ -332,12 +323,6 @@ export default {
         console.error(error)
         this.isLoading = false
       }
-
-      /*
-       * if (this.orderStatus === 'success')
-       *   return this.sendMembershipSubscribe('付款成功')
-       * this.sendMembershipSubscribe('付款失敗')
-       */
     },
 
     async getPaymentDataFromApiGateWay() {
