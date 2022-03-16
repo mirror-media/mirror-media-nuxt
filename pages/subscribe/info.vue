@@ -82,6 +82,7 @@
 <script>
 import qs from 'qs'
 import { required, email } from 'vuelidate/lib/validators'
+import { useRoute } from '@nuxtjs/composition-api'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
@@ -89,7 +90,7 @@ import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
-  // middleware: ['handle-go-to-marketing', 'handle-forbid-direct-navigate'],
+  middleware: ['authenticate', 'handle-go-to-marketing'],
   components: {
     SubscribeStepProgress,
     MembershipFormPlanList,
@@ -110,13 +111,11 @@ export default {
     }
 
     function usePerchasedPlan() {
-      const { state } = useMemberSubscribeMachine()
-      const prefix = '會員訂閱功能.方案購買流程.確認訂購頁.確認訂購表單頁'
-
-      if (state?.value?.matches(`${prefix}.準備單篇訂閱`)) {
+      const route = useRoute()
+      if (route.value.query.plan === 'one-time') {
         return [
           {
-            id: state.value.context.subscriptionOrderOneTimePostId,
+            id: route.value.query['one-time-post-id'],
             detail: '鏡週刊Basic會員（單篇）',
             hint: '單篇 $1 元，享 14 天內無限次觀看',
             price: '原價 NT$1',
@@ -124,7 +123,7 @@ export default {
             key: 'basic',
           },
         ]
-      } else if (state?.value?.matches(`${prefix}.準備月訂閱`)) {
+      } else if (route.value.query.plan === 'monthly') {
         return [
           {
             id: 1,
@@ -135,10 +134,7 @@ export default {
             key: 'monthly',
           },
         ]
-      } else if (
-        state?.value?.matches(`${prefix}.準備年訂閱`) ||
-        state?.value?.matches(`${prefix}.準備將月訂閱升級年訂閱`)
-      ) {
+      } else if (route.value.query.plan === 'yearly') {
         return [
           {
             id: 1,
@@ -153,9 +149,6 @@ export default {
         return [{}]
       }
     }
-  },
-  mounted() {
-    this.email = this.$store.state.membership.userEmail
   },
   data() {
     return {
@@ -177,12 +170,6 @@ export default {
         receipt: 'OK',
       },
     }
-  },
-  validations: {
-    email: {
-      email,
-      required,
-    },
   },
   computed: {
     frequency() {
@@ -229,6 +216,21 @@ export default {
       }
 
       return validReceiptData
+    },
+  },
+  watch: {
+    'receiptData.carrierType'() {
+      if (this.receiptData.carrierType === '2')
+        this.receiptData.carrierNumber = this.$store.state.membership.userEmail
+    },
+  },
+  mounted() {
+    this.email = this.$store.state.membership.userEmail
+  },
+  validations: {
+    email: {
+      email,
+      required,
     },
   },
   async created() {
@@ -389,12 +391,6 @@ export default {
             return 'B2C'
         }
       }
-    },
-  },
-  watch: {
-    'receiptData.carrierType'() {
-      if (this.receiptData.carrierType === '2')
-        this.receiptData.carrierNumber = this.$store.state.membership.userEmail
     },
   },
 }
