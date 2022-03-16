@@ -26,18 +26,12 @@
 <script>
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiStoryContentHandler from '~/components/UiStoryContentHandler.vue'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
+import loginDestination from '~/utils/login-destination'
+
 export default {
   components: {
     UiMembershipButtonPrimary,
     UiStoryContentHandler,
-  },
-  setup() {
-    const { state, send } = useMemberSubscribeMachine()
-    return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
-    }
   },
   async fetch() {
     const fetchPartnersAndTopicsData = async () => {
@@ -85,6 +79,9 @@ export default {
       return this.story.content?.apiData
     },
   },
+  async beforeMount() {
+    await loginDestination.set(this.$route, 'mm-service-rule-destination')
+  },
   methods: {
     filterHTML(paragraph) {
       const content = paragraph.content[0]
@@ -101,13 +98,9 @@ export default {
     async handleSubmit(e) {
       e.preventDefault()
       try {
-        // ======To Kevin Start=======
-        const updatedTos = await this.$setMemberServiceRuleStatusToTrue()
-        console.log(updatedTos)
-        // ======To Kevin End=======
-
+        await this.$setMemberServiceRuleStatusToTrue()
         localStorage.setItem('read-service-rule', 'true')
-        this.sendMembershipSubscribe('同意服務條款並繼續')
+        loginDestination.redirect('mm-service-rule-destination')
       } catch (error) {
         console.error(error)
       }
