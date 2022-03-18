@@ -7,7 +7,7 @@
       },
     ]"
   >
-    <ContainerHeaderPremium v-if="isPremium" />
+    <ContainerHeaderPremium v-if="isPremiumMember" />
     <ContainerHeader v-else />
     <nuxt />
     <UiFooter :class="[{ 'footer--listing': isListing }]" />
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { ENV } from '~/configs/config.js'
 import ContainerHeaderPremium from '~/components/ContainerHeaderPremium.vue'
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import UiFooter from '~/components/UiFooter.vue'
@@ -68,13 +67,8 @@ export default {
     isSearchPage() {
       return this.$route.name === 'search-keyword'
     },
-    isPremium() {
-      if (ENV === 'staging' || ENV === 'prod') return false
-      const memberType = this.$store?.state['membership-subscribe']?.basicInfo
-        .type
-      return (
-        memberType === 'subscribe_monthly' || memberType === 'subscribe_yearly'
-      )
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
     },
   },
 
