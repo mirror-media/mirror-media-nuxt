@@ -135,7 +135,7 @@ import {
 } from '~/constants'
 
 export default {
-  // middleware: ['handle-story-premium-redirect'],
+  middleware: ['handle-story-premium-redirect'],
   components: {
     UiLanding,
     UiArticleInfo,

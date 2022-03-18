@@ -331,12 +331,16 @@ header {
   z-index: 519;
   padding-bottom: 5px;
   position: relative;
+  @include media-breakpoint-up(xl) {
+    height: 160px;
+  }
 
   &.fixed {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+
     .header-nav {
       display: none;
     }
