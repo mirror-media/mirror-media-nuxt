@@ -10,20 +10,11 @@
 </template>
 
 <script>
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 
 export default {
   middleware: ['handle-go-to-marketing'],
-  setup() {
-    const { state, send } = useMemberSubscribeMachine()
-    send('付款失敗')
-    return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
-    }
-  },
   components: {
     SubscribeFail,
     SubscribeStepProgress,
