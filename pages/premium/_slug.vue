@@ -25,20 +25,12 @@ import {
 
 import { DABLE_WIDGET_IDS } from '~/constants/ads'
 import { checkCategoryHasMemberOnly } from '~/utils/article'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   layout: 'empty',
   middleware: ['handle-story-premium-redirect'],
   components: {
     ContainerCulturePost,
-  },
-  setup() {
-    const { state, send } = useMemberSubscribeMachine()
-    return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
-    }
   },
   async fetch() {
     /*
@@ -171,7 +163,6 @@ export default {
             firebaseId: this.$store.state.membership.userUid,
             memberType: this.$store.state['membership-subscribe'].basicInfo
               .type,
-            xstate: this.stateMembershipSubscribe,
             description: message,
             eventType: 'premiumFetchPostError',
           })
