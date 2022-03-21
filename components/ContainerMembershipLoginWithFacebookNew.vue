@@ -13,11 +13,6 @@ import UiMembershipButtonSecondary from './UiMembershipButtonSecondary.vue'
 import UiMembershipLoadingIcon from './UiMembershipLoadingIcon.vue'
 import SvgFacebookIcon from '~/assets/membership-facebook-icon.svg?inline'
 import redirectDestination from '~/utils/redirect-destination'
-import {
-  isMemberSubscribeFeatureToggled,
-  persistStorageState,
-} from '~/xstate/member-subscribe/util'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
@@ -30,13 +25,6 @@ export default {
       type: Boolean,
       default: true,
     },
-  },
-  setup() {
-    const { state, send } = useMemberSubscribeMachine()
-    return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
-    }
   },
   data() {
     return {
@@ -51,18 +39,7 @@ export default {
   methods: {
     async handleClick() {
       this.isLoading = true
-      const isNavigatingMemberSubscribeFlow = this.stateMembershipSubscribe?.matches(
-        '登入功能（獨立頁或 lightbox）'
-      )
-      if (
-        isMemberSubscribeFeatureToggled(this.$route) &&
-        isNavigatingMemberSubscribeFlow
-      ) {
-        this.sendMembershipSubscribe('送出')
-        persistStorageState(this.stateMembershipSubscribe)
-      } else {
-        await redirectDestination.set(this.$route)
-      }
+      await redirectDestination.set(this.$route)
       const provider = new this.$fireModule.auth.FacebookAuthProvider()
       this.$fire.auth.signInWithRedirect(provider)
     },
