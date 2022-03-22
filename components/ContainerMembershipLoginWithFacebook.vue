@@ -7,7 +7,7 @@
 
 <script>
 import SvgFacebookIcon from '~/assets/membership-facebook-icon.svg?inline'
-import loginDestination from '~/utils/login-destination'
+import redirectDestination from '~/utils/redirect-destination'
 
 export default {
   components: {
@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     async handleClick() {
-      await loginDestination.set(this.$route)
+      await redirectDestination.set(this.$route)
       const provider = new this.$fireModule.auth.FacebookAuthProvider()
       this.$fire.auth.signInWithRedirect(provider)
     },

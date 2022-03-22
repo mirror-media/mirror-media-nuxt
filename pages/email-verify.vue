@@ -74,7 +74,6 @@ import { required, email } from 'vuelidate/lib/validators'
 import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settings-app-config'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
@@ -84,13 +83,6 @@ export default {
   middleware({ store, redirect }) {
     if (store.state.membership.userEmailVerified) {
       redirect('/subscribe')
-    }
-  },
-  setup() {
-    const { state, send } = useMemberSubscribeMachine()
-    return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
     }
   },
   data() {
@@ -198,7 +190,6 @@ export default {
         this.status = 'success'
         this.countDown()
         window.alert('驗證信已發送到您的信箱，請查收。')
-        this.sendMembershipSubscribe('假裝驗證信箱並繼續流程')
       } catch (error) {
         // 驗證信發送失敗
         this.hasSend = true
