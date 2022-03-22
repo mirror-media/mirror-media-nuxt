@@ -444,54 +444,12 @@ header {
   flex-shrink: 0;
   align-items: center;
   z-index: 529;
-  &__and-magazine::v-deep {
+  &__and-magazine {
     display: flex;
     align-items: center;
     flex-direction: row-reverse;
     @include media-breakpoint-up(xl) {
       flex-direction: row;
-    }
-
-    .subscribe-magazine-entrance {
-      background: #000000;
-      color: #fff;
-
-      @include media-breakpoint-up(xl) {
-        display: block;
-      }
-    }
-
-    .field {
-      background-color: #d8d8d8;
-      top: 76px;
-      padding: 16px 24px;
-      &::after {
-        content: '';
-        display: block;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 8px 16px 8px;
-        border-color: transparent transparent #d8d8d8 transparent;
-        position: absolute;
-        top: -16px;
-        right: calc(5vw);
-        @include media-breakpoint-up(md) {
-          right: calc(5vw + 20px);
-        }
-      }
-
-      .search-bar-select {
-        height: 32px;
-      }
-
-      .search-bar-input {
-        height: 32px;
-        margin-top: 16px;
-        input {
-          border-radius: 8px;
-        }
-      }
     }
   }
 }

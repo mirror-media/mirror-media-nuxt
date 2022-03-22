@@ -1,11 +1,22 @@
 <template>
-  <div class="subscribe-magazine-entrance" @click="handleClick">
+  <div
+    :class="[
+      'subscribe-magazine-entrance',
+      { 'subscribe-magazine-entrance--black-background': isPremiumMember },
+    ]"
+    @click="handleClick"
+  >
     訂閱<br class="subscribe-magazine-entrance__br" />紙本雜誌
   </div>
 </template>
 
 <script>
 export default {
+  computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
+  },
   methods: {
     handleClick() {
       this.$router.push('/papermag')
@@ -40,5 +51,9 @@ export default {
       display: none;
     }
   }
+}
+.subscribe-magazine-entrance--black-background {
+  background: #000000;
+  color: #fff;
 }
 </style>
