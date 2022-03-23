@@ -15,7 +15,7 @@ export default async function ({ req, store, app, redirect }) {
       console.log(
         `[authenticate] ${from} with token: ${token}, email: ${email} is not OK, redirect to login page`
       )
-      const query = from ? `?destination=${encodeURIComponent(from)}` : ''
+      const query = from ? `?destination=${from}` : ''
       redirect(`/login${query}`)
     }
   } catch (e) {

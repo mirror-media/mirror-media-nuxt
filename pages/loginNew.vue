@@ -63,7 +63,8 @@ import UiLoginIntro from '~/components/UiLoginIntro.vue'
 import ContainerLoginForm from '~/components/ContainerLoginForm.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import UiMembershipLink from '~/components/UiMembershipLink.vue'
-import redirectDestination from '~/utils/redirect-destination'
+import loginDestination from '~/utils/login-destination'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   apollo: {
@@ -81,6 +82,16 @@ export default {
       redirect('/section/member')
     }
   },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+      isMemberSubscribeFeatureToggled() {
+        return state.value.matches('登入功能（獨立頁或 lightbox）')
+      },
+    }
+  },
   data() {
     return {
       state: 'form',
@@ -91,7 +102,7 @@ export default {
     }
   },
   async beforeMount() {
-    await redirectDestination.set(this.$route)
+    await loginDestination.set(this.$route)
     await this.handleFederatedRedirectResult()
   },
 
@@ -129,6 +140,7 @@ export default {
           }
         )
 
+        // If error happend when comunicated with Israfel
         if (result.error) {
           await this.handleError({
             type: 'gatewayFailUserCreate',
@@ -139,7 +151,18 @@ export default {
           return
         }
 
-        this.showRegisterSuccessAndRedirectToSectionMember()
+        if (this.isMemberSubscribeFeatureToggled(this.$route)) {
+          this.sendMembershipSubscribe({
+            type: '登入成功',
+            userData: {
+              firebase: this.$store.state.membership,
+              israfel: this.$store.state['membership-subscribe'],
+            },
+          })
+          this.sendMembershipSubscribe('自動跳轉')
+        } else {
+          this.showRegisterSuccessAndRedirectToSectionMember()
+        }
       } catch {
         this.state = 'registerError'
       }
@@ -158,6 +181,7 @@ export default {
         }
       )
 
+      // If error happend when comunicated with Israfel
       if (result.error) {
         await this.handleError({
           type: 'gatewayFailUserCreate',
@@ -168,10 +192,23 @@ export default {
         return
       }
 
-      await redirectDestination.redirect()
-      await Promise.resolve()
+      if (this.isMemberSubscribeFeatureToggled(this.$route)) {
+        // fetch member's basic info from Israfel
+        this.sendMembershipSubscribe({
+          type: '登入成功',
+          userData: {
+            firebase: this.$store.state.membership,
+            israfel: this.$store.state['membership-subscribe'],
+          },
+        })
+        this.sendMembershipSubscribe('自動跳轉')
+      } else {
+        await loginDestination.redirect()
+        await Promise.resolve()
+      }
     },
     async handleLoginFail(error) {
+      this.sendMembershipSubscribe('登入失敗')
       this.state = 'loginError'
       await this.handleError(error)
     },
