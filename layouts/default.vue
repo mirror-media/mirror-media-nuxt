@@ -7,8 +7,10 @@
       },
     ]"
   >
-    <ContainerHeaderPremium v-if="isPremiumMember" />
-    <ContainerHeader v-else />
+    <ClientOnly>
+      <ContainerHeaderPremium v-if="isPremiumMember" />
+      <ContainerHeader v-else />
+    </ClientOnly>
     <nuxt />
     <UiFooter :class="[{ 'footer--listing': isListing }]" />
 
