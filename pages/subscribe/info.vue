@@ -82,19 +82,14 @@
 <script>
 import qs from 'qs'
 import { required, email } from 'vuelidate/lib/validators'
-import { useRoute, useStore } from '@nuxtjs/composition-api'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
-  middleware: [
-    'authenticate',
-    'handle-go-to-marketing',
-    'handle-go-to-email-verify',
-    'handle-go-to-service-rule',
-  ],
+  // middleware: ['handle-go-to-marketing', 'handle-forbid-direct-navigate'],
   components: {
     SubscribeStepProgress,
     MembershipFormPlanList,
@@ -103,22 +98,25 @@ export default {
     UiSubscribeButton,
   },
   setup() {
-    const route = useRoute()
-    const { state } = useStore()
+    const { state, send } = useMemberSubscribeMachine()
     const perchasedPlan = usePerchasedPlan()
     return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
       perchasedPlan,
-      isUpgradeFromMonthToYear:
-        route.value.query.plan === 'yearly' &&
-        state['membership-subscribe'].basicInfo.type === 'subscribe_monthly',
+      isUpgradeFromMonthToYear: !!state?.value?.matches(
+        '會員訂閱功能.方案購買流程.確認訂購頁.確認訂購表單頁.準備將月訂閱升級年訂閱'
+      ),
     }
 
     function usePerchasedPlan() {
-      const route = useRoute()
-      if (route.value.query.plan === 'one-time') {
+      const { state } = useMemberSubscribeMachine()
+      const prefix = '會員訂閱功能.方案購買流程.確認訂購頁.確認訂購表單頁'
+
+      if (state?.value?.matches(`${prefix}.準備單篇訂閱`)) {
         return [
           {
-            id: route.value.query['one-time-post-id'],
+            id: state.value.context.subscriptionOrderOneTimePostId,
             detail: '鏡週刊Basic會員（單篇）',
             hint: '單篇 $1 元，享 14 天內無限次觀看',
             price: '原價 NT$1',
@@ -126,7 +124,7 @@ export default {
             key: 'basic',
           },
         ]
-      } else if (route.value.query.plan === 'monthly') {
+      } else if (state?.value?.matches(`${prefix}.準備月訂閱`)) {
         return [
           {
             id: 1,
@@ -137,7 +135,10 @@ export default {
             key: 'monthly',
           },
         ]
-      } else if (route.value.query.plan === 'yearly') {
+      } else if (
+        state?.value?.matches(`${prefix}.準備年訂閱`) ||
+        state?.value?.matches(`${prefix}.準備將月訂閱升級年訂閱`)
+      ) {
         return [
           {
             id: 1,
@@ -152,6 +153,9 @@ export default {
         return [{}]
       }
     }
+  },
+  mounted() {
+    this.email = this.$store.state.membership.userEmail
   },
   data() {
     return {
@@ -173,6 +177,12 @@ export default {
         receipt: 'OK',
       },
     }
+  },
+  validations: {
+    email: {
+      email,
+      required,
+    },
   },
   computed: {
     frequency() {
@@ -219,21 +229,6 @@ export default {
       }
 
       return validReceiptData
-    },
-  },
-  watch: {
-    'receiptData.carrierType'() {
-      if (this.receiptData.carrierType === '2')
-        this.receiptData.carrierNumber = this.$store.state.membership.userEmail
-    },
-  },
-  mounted() {
-    this.email = this.$store.state.membership.userEmail
-  },
-  validations: {
-    email: {
-      email,
-      required,
     },
   },
   async created() {
@@ -291,6 +286,12 @@ export default {
         // carry encrypted paymentPayload to redirect page
         const queryString = qs.stringify(encryptPaymentPayload)
         this.$router.push(`/subscribe/redirect?${queryString}`)
+
+        /*
+         * if (this.orderStatus === 'success')
+         *   return this.sendMembershipSubscribe('付款成功')
+         * this.sendMembershipSubscribe('付款失敗')
+         */
       } catch (error) {
         console.error(error.message)
         window.alert('您的訂閱流程發生了錯誤，請稍後再試')
@@ -328,6 +329,12 @@ export default {
         console.error(error)
         this.isLoading = false
       }
+
+      /*
+       * if (this.orderStatus === 'success')
+       *   return this.sendMembershipSubscribe('付款成功')
+       * this.sendMembershipSubscribe('付款失敗')
+       */
     },
 
     async getPaymentDataFromApiGateWay() {
@@ -382,6 +389,12 @@ export default {
             return 'B2C'
         }
       }
+    },
+  },
+  watch: {
+    'receiptData.carrierType'() {
+      if (this.receiptData.carrierType === '2')
+        this.receiptData.carrierNumber = this.$store.state.membership.userEmail
     },
   },
 }

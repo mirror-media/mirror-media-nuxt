@@ -6,7 +6,11 @@
         <div class="subscribe-set__detail_row">
           <div>取消訂閱</div>
           <div>
-            <a href="/subscribe/cancel-ask">
+            <a
+              @click.prevent="
+                sendMembershipSubscribe('取消訂閱鏡週刊 Premium 服務')
+              "
+            >
               取消訂閱鏡週刊 Premium 服務
               <img src="~/assets/arrow-next-default.svg" />
             </a>
@@ -23,9 +27,17 @@
 
 <script>
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   middleware: ['handle-go-to-marketing'],
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+    }
+  },
   components: { SubscribeWrapper },
   methods: {
     handleBack() {
