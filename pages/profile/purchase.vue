@@ -114,6 +114,9 @@ export default {
   async created() {
     try {
       if (this.isPremium || this.isBasic) {
+        this.memberShipStatus = await this.$getMemberShipStatus(
+          this.memberShipStatusName
+        )
         if (this.isBasic) {
           // fetch onetime subscription list
           this.postList = await this.$getMemberOneTimeSubscriptions({})
