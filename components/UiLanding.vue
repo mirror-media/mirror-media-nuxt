@@ -18,7 +18,7 @@
       >
     </div>
 
-    <div class="cover">
+    <div v-if="coverVideo.src || coverPicture.heroImage.desktop" class="cover">
       <UiTheCover :video="coverVideo" :picture="coverPicture" />
       <UiCaption class="cover__hero-caption">
         {{ heroCaption }}

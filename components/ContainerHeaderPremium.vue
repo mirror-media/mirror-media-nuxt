@@ -35,7 +35,7 @@
             :options="options"
             @sendGa="handleSendGa"
           />
-          <UiSubscribeMagazineEntrance v-if="showSubscribeMag" />
+          <UiSubscribeMagazineEntrance />
         </div>
         <ClientOnly>
           <ContainerMembershipMemberIcon class="member-icon-desktop" />
@@ -94,7 +94,6 @@ import UiSidebar from './UiSidebar.vue'
 import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMemberIcon.vue'
 import UiSubscribeMagazineEntrance from '~/components/UiSubscribeMagazineEntrance.vue'
 
-import { ENV } from '~/configs/config'
 import {
   SUB_BRAND_LINKS,
   SOCIAL_MEDIA_LINKS,
@@ -212,10 +211,6 @@ export default {
       )
       return [this.defaultOption, ...sections]
     },
-
-    showSubscribeMag() {
-      return ENV === 'local' || ENV === 'dev'
-    },
   },
   watch: {
     isDesktopWidth() {
@@ -331,12 +326,16 @@ header {
   z-index: 519;
   padding-bottom: 5px;
   position: relative;
+  @include media-breakpoint-up(xl) {
+    height: 160px;
+  }
 
   &.fixed {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+
     .header-nav {
       display: none;
     }
@@ -456,7 +455,7 @@ header {
     .subscribe-magazine-entrance {
       background: #000000;
       color: #fff;
-      display: none;
+
       @include media-breakpoint-up(xl) {
         display: block;
       }

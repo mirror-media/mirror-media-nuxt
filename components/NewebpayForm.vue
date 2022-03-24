@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       newebpayApiUrl:
-        ENV === 'prod' || ENV === 'staging'
+        ENV === 'prod'
           ? 'https://core.newebpay.com/MPG/mpg_gateway'
           : 'https://ccore.newebpay.com/MPG/mpg_gateway',
     }
