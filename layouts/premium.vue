@@ -1,22 +1,20 @@
 <template>
   <div>
-    <ClientOnly>
-      <ContainerHeaderSectionMember
-        class="header"
-        @sidebarToggle="handleIndexActive(!isIndexActive)"
-      />
+    <ContainerHeaderSectionMember
+      class="header"
+      @sidebarToggle="handleIndexActive(!isIndexActive)"
+    />
 
-      <UiArticleIndex
-        class="article-index"
-        :isPremium="true"
-        :items="[]"
-        :currentIndex="0"
-        :isIndexActive="isIndexActive"
-        :bottomStyle="'white'"
-        @closeIndex="handleIndexActive(false)"
-        @openIndex="handleIndexActive(true)"
-      />
-    </ClientOnly>
+    <UiArticleIndex
+      class="article-index"
+      :isPremium="true"
+      :items="[]"
+      :currentIndex="0"
+      :isIndexActive="isIndexActive"
+      :bottomStyle="'white'"
+      @closeIndex="handleIndexActive(false)"
+      @openIndex="handleIndexActive(true)"
+    />
     <div class="router-view-wrapper">
       <nuxt />
     </div>
