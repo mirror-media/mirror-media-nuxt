@@ -32,7 +32,7 @@
 
 <script>
 import localforage from 'localforage'
-import loginDestination from '~/utils/login-destination'
+import redirectDestination from '~/utils/redirect-destination'
 import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
 import { userCreate } from '~/apollo/mutations/userCreate.gql'
@@ -102,10 +102,12 @@ export default {
            * to ensure that user info is store in vuex
            * maybe this is a info: https://stackoverflow.com/questions/54591187/onauthstatechanged-doesnt-get-called-when-email-is-verified-in-flutter
            */
-          // await this.$store.dispatch(
-          //   'membership/ON_AUTH_STATE_CHANGED_ACTION',
-          //   { authUser: result.user }
-          // )
+          /*
+           * await this.$store.dispatch(
+           *   'membership/ON_AUTH_STATE_CHANGED_ACTION',
+           *   { authUser: result.user }
+           * )
+           */
 
           await this.$apollo.mutate({
             mutation: userCreate,
@@ -117,7 +119,7 @@ export default {
         }
 
         // redirect to page where user try to login
-        await loginDestination.redirect()
+        await redirectDestination.redirect()
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e)

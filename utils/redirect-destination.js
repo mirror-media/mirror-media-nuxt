@@ -14,14 +14,14 @@ const defaultDestination = '/section/member'
  * 6. login 頁負責登入成功後，檢查 localStorage 有無先前之 destination 資訊，若有則 redirect
  */
 export default {
-  async set(route) {
+  async set(route, key = localStorageKey) {
     const destination = route?.query?.destination ?? defaultDestination
-    await localforage.setItem(localStorageKey, destination)
+    await localforage.setItem(key, destination)
   },
-  async redirect() {
+  async redirect(urlKey = localStorageKey) {
     const destination =
-      (await localforage.getItem(localStorageKey)) ?? defaultDestination
-    await localforage.removeItem(localStorageKey)
+      (await localforage.getItem(urlKey)) ?? defaultDestination
+    await localforage.removeItem(urlKey)
     window.location.replace(destination)
   },
 }
