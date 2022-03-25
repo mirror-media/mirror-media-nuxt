@@ -245,6 +245,7 @@ module.exports = {
     '~/plugins/user-behavior-log/index.client.js',
     { src: '~/plugins/vuelidate', ssr: true },
     '~/plugins/google-optimize-experiments/index.js',
+    '~/plugins/xstate-inspector.client.js',
     '~/plugins/ad/index.client.js',
   ],
 

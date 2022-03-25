@@ -112,7 +112,7 @@ import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
 import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipSpinner from '~/components/UiMembershipSpinner.vue'
 import { userCreate } from '~/apollo/mutations/userCreate.gql'
-import redirectDestination from '~/utils/redirect-destination'
+import loginDestination from '~/utils/login-destination'
 
 export default {
   apollo: {
@@ -159,7 +159,7 @@ export default {
         })
 
         // redirect to page where user try to login
-        await redirectDestination.redirect()
+        await loginDestination.redirect()
       }
     } catch (e) {
       // eslint-disable-next-line no-console

@@ -47,6 +47,7 @@ import UiMembershipButtonPrimary from './UiMembershipButtonPrimary.vue'
 import UiMembershipButtonSecondary from './UiMembershipButtonSecondary.vue'
 import UiMembershipLoadingIcon from './UiMembershipLoadingIcon.vue'
 import UiMembershipRightsCaveat from './UiMembershipRightsCaveat.vue'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   components: {
@@ -62,6 +63,13 @@ export default {
       type: String,
       default: '',
     },
+  },
+  setup() {
+    const { state, send } = useMemberSubscribeMachine()
+    return {
+      stateMembershipSubscribe: state,
+      sendMembershipSubscribe: send,
+    }
   },
   data() {
     return {
@@ -107,6 +115,7 @@ export default {
 
     async handleSubmit() {
       this.isLoading = true
+      this.sendMembershipSubscribe('送出')
       try {
         const { user } = await this.$fire.auth.createUserWithEmailAndPassword(
           this.email,

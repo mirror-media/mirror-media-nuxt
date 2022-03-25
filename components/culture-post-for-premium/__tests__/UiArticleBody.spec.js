@@ -12,11 +12,6 @@ const createWrapper = createWrapperHelper({
       name: '',
       query: {},
     },
-    $store: {
-      getters: {
-        'membership/isLoggedIn': false,
-      },
-    },
   },
 })
 
