@@ -236,6 +236,8 @@ import {
   doesContainWineName,
 } from '~/utils/article'
 
+import handleStoryPremiumRedirect from '~/middleware/handle-story-premium-redirect'
+
 const DEFAULT_SECTION_ID = 'other'
 
 export default {
@@ -488,6 +490,10 @@ export default {
           : this.cleanFixedAside()
       }
     },
+  },
+
+  async beforeMount() {
+    await handleStoryPremiumRedirect(this.$nuxt.context)
   },
 
   mounted() {
