@@ -1,7 +1,7 @@
 <template>
   <div>
     <error v-if="$fetchState.error" :error="$fetchState.error" />
-    <div v-else class="story-slug">
+    <div v-show="!isLoading" v-else class="story-slug">
       <ContainerPhotoGallery v-if="isStylePhotography" :story="story" />
 
       <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
@@ -385,6 +385,8 @@ export default {
       shouldFixAside: false,
 
       scrollDepthObserver: undefined,
+
+      isLoading: true,
     }
   },
 
@@ -493,7 +495,12 @@ export default {
   },
 
   async beforeMount() {
-    await handleStoryPremiumRedirect(this.$nuxt.context)
+    const redirect = await handleStoryPremiumRedirect(this.$nuxt.context, false)
+    if (redirect) {
+      redirect()
+    } else {
+      this.isLoading = false
+    }
   },
 
   mounted() {
