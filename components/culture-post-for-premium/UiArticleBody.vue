@@ -36,7 +36,7 @@
         </template>
       </ClientOnly>
     </article>
-    <ClientOnly>
+    <ClientOnly v-if="!hideInvite">
       <template v-if="!isMemberSubscribeFeatureToggled($route)">
         <div
           v-if="pageState === 'premiumPageNotLogin'"
@@ -158,6 +158,10 @@ export default {
     failTimes: {
       type: Number,
       default: 0,
+    },
+    hideInvite: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
