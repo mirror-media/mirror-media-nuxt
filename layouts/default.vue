@@ -1,5 +1,6 @@
 <template>
   <div
+    class="container"
     :class="[
       {
         listing: isListing,
@@ -11,7 +12,9 @@
       <ContainerHeaderPremium v-if="isPremiumMember" />
       <ContainerHeader v-else />
     </ClientOnly>
-    <nuxt />
+    <div class="content">
+      <nuxt />
+    </div>
     <UiFooter :class="[{ 'footer--listing': isListing }]" />
 
     <ClientOnly>
@@ -81,6 +84,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  .content {
+    flex: 1;
+  }
+}
+
 .listing {
   background-color: #f2f2f2;
   padding: 0 0 60px 0;
