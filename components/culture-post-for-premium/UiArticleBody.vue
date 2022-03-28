@@ -20,7 +20,9 @@
               更多內容，歡迎<a
                 href="https://docs.google.com/forms/d/e/1FAIpQLSeqbPjhSZx63bDWFO298acE--otet1s4-BGOmTKyjG1E4t4yQ/viewform"
                 >訂閱鏡週刊</a
-              >、<a href="/story/webauthorize/">了解內容授權資訊</a>。
+              >、<a :href="`${storyPageBaseUrl}/webauthorize/`"
+                >了解內容授權資訊</a
+              >。
             </p>
           </div>
           <div class="magazine">
@@ -80,6 +82,7 @@
 </template>
 
 <script>
+import { computed, useStore } from '@nuxtjs/composition-api'
 import ContentHandler from './ContentHandler.vue'
 import UiPremiumBrief from './UiPremiumBrief.vue'
 import UiPremiumInviteToLogin from '~/components/UiPremiumInviteToLogin.vue'
@@ -104,7 +107,12 @@ export default {
 
   setup() {
     const { state, send } = useMemberSubscribeMachine()
+    const store = useStore()
+    const storyPageBaseUrl = computed(
+      () => store?.getters?.['membership-subscribe/storyPageBaseUrl']
+    )
     return {
+      storyPageBaseUrl,
       stateMembershipSubscribe: state,
       sendMembershipSubscribe: send,
       isMemberSubscribeFeatureToggled,

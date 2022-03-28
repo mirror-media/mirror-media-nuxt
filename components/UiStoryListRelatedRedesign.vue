@@ -8,7 +8,7 @@
       >
         <a
           class="item-wrapper__item item"
-          :href="`/story/${item.slug}`"
+          :href="`${storyPageBaseUrl}/${item.slug}`"
           target="_blank"
           rel="noopener noreferrer"
           @click="$emit('sendGa')"
@@ -48,6 +48,9 @@ export default {
   computed: {
     doesHaveAnyItems() {
       return this.items.length > 0
+    },
+    storyPageBaseUrl() {
+      return this.$store?.getters?.['membership-subscribe/storyPageBaseUrl']
     },
   },
 
