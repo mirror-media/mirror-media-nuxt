@@ -7,8 +7,8 @@
           :isMobile="isMobile"
           :memberShipStatus="memberShipStatus"
           :isPremium="isPremium"
-          @upgradeInSinglePost="sendMembershipSubscribe('升級Premium會員')"
-          @upgradeToSubscribeYearly="sendMembershipSubscribe('升級年訂閱')"
+          @upgradeInSinglePost="handleGoToSubscribe"
+          @upgradeToSubscribeYearly="handleGoToSubscribe"
           @navigateToSubscribeSet="handleNavigateToSubscribeSet"
         />
         <MembershipPosts
@@ -42,21 +42,18 @@
       <UiMembershipUpgradeToPremium
         v-else
         :messageTitle="'找不到相關紀錄'"
-        @upgrade="sendMembershipSubscribe('升級Premium會員')"
+        @upgrade="handleGoToSubscribe"
       />
     </ClientOnly>
   </div>
 </template>
 
 <script>
-import { computed } from '@nuxtjs/composition-api'
-
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import MemberShipStatus from '~/components/MemberShipStatus.vue'
 import MembershipPosts from '~/components/MembershipPosts.vue'
 import MembershipPayRecord from '~/components/MembershipPayRecord.vue'
 import UiMembershipUpgradeToPremium from '~/components/UiMembershipUpgradeToPremium.vue'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 
 export default {
   middleware: ['authenticate', 'handle-go-to-marketing'],
@@ -67,45 +64,6 @@ export default {
     MembershipPayRecord,
     UiMembershipUpgradeToPremium,
   },
-  setup() {
-    const { state, send } = useMemberSubscribeMachine()
-    const memberShipStatusName = useMemberShipStatusName()
-    return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
-      memberShipStatusName,
-      handleNavigateToSubscribeSet() {
-        window.location.assign('/subscribe/set')
-      },
-    }
-    function useMemberShipStatusName() {
-      const { state } = useMemberSubscribeMachine()
-      const memberShipStatusName = computed(() =>
-        computeMemberShipStatusName(state?.value)
-      )
-      return memberShipStatusName
-
-      function computeMemberShipStatusName(state) {
-        const parentState = '會員訂閱功能.付款紀錄頁.已登入'
-        if (state?.matches(`${parentState}.已登入（無購買紀錄）`)) {
-          return 'none'
-        } else if (state?.matches(`${parentState}.已登入（只有單篇購買過）`)) {
-          return 'subscribe_one_time'
-        } else if (state?.matches(`${parentState}.已登入（已訂閱月方案）`)) {
-          return 'subscribe_monthly'
-        } else if (state?.matches(`${parentState}.已登入（已訂閱年方案）`)) {
-          return 'subscribe_yearly'
-        } else if (
-          state?.matches(`${parentState}.已登入（已訂閱但取消下期）`)
-        ) {
-          return 'disturb'
-        } else {
-          return 'none'
-        }
-      }
-    }
-  },
-
   data() {
     return {
       postList: [],
@@ -146,14 +104,16 @@ export default {
     showedPayRecords() {
       return this.payRecords.slice(0, this.payRecordMetaCount)
     },
+    memberShipStatusName() {
+      return (
+        this.$store.state?.['membership-subscribe']?.basicInfo?.type ?? 'none'
+      )
+    },
   },
 
   async created() {
     try {
       if (this.isPremium || this.isBasic) {
-        this.memberShipStatus = await this.$getMemberShipStatus(
-          this.memberShipStatusName
-        )
         if (this.isBasic) {
           // fetch onetime subscription list
           this.postList = await this.$getMemberOneTimeSubscriptions({})
@@ -176,6 +136,12 @@ export default {
     },
     handleMoreRecord() {
       this.payRecordMetaCount += 5
+    },
+    handleNavigateToSubscribeSet() {
+      window.location.assign('/subscribe/set')
+    },
+    handleGoToSubscribe() {
+      window.location.assign('/subscribe')
     },
   },
 }

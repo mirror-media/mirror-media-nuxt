@@ -32,21 +32,13 @@
         </div>
         <div class="subscribe-success__info_button">
           <a
-            v-if="isNavigateFromPremiumPage"
-            href="/section/member"
-            @click.once="useCustomEventToFbPixel('back-to-Premium-page')"
-          >
-            <UiSubscribeButton title="瀏覽 Premium 會員文章" />
-          </a>
-          <a
             href="/profile/purchase"
             @click.once="
               useCustomEventToFbPixel('back-to-profile-purchase-page')
             "
           >
             <UiMembershipButtonSecondary>
-              <p v-if="isNavigateFromPremiumPage">回訂閱紀錄</p>
-              <p v-else>回訂閱紀錄看購買文章</p>
+              <p>回訂閱紀錄看購買文章</p>
             </UiMembershipButtonSecondary>
           </a>
         </div>
@@ -56,24 +48,15 @@
 </template>
 
 <script>
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOrderInfoContentRow.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
-import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import { useCustomEventToFbPixel } from '~/composition/fb-pixel.js'
 export default {
   middleware: ['handle-go-to-marketing'],
   setup() {
-    const { state, send } = useMemberSubscribeMachine()
-    send('付款成功')
     return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
-      isNavigateFromPremiumPage: !!state?.value?.matches(
-        '會員訂閱功能.方案購買流程.付款成功頁.是從會員文章頁來的'
-      ),
       useCustomEventToFbPixel,
     }
   },
@@ -81,7 +64,6 @@ export default {
     SubscribeStepProgress,
     SubscribeSuccessOrderInfoContentRow,
     MembershipFormPerchaseInfo,
-    UiSubscribeButton,
     UiMembershipButtonSecondary,
   },
   data() {
