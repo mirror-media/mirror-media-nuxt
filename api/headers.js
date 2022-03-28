@@ -22,7 +22,11 @@ module.exports = function handleHeaders(req, res, next) {
     /(subscribe)/gs.test(url)
   ) {
     res.setHeader('Cache-Control', 'no-store')
+    return next()
+  }
 
+  if (url === '/section/videohub') {
+    res.setHeader('Cache-Control', `public, max-age=${60 * 10}`)
     return next()
   }
 
@@ -31,7 +35,6 @@ module.exports = function handleHeaders(req, res, next) {
   )
   if (isDefaultListingPages) {
     res.setHeader('Cache-Control', `public, max-age=${60 * 5}`)
-
     return next()
   }
 

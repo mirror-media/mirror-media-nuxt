@@ -1,7 +1,7 @@
 <template>
   <div>
     <error v-if="$fetchState.error" :error="$fetchState.error" />
-    <div v-else class="story-slug">
+    <div v-show="!isLoading" v-else class="story-slug">
       <ContainerPhotoGallery v-if="isStylePhotography" :story="story" />
 
       <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
@@ -236,6 +236,8 @@ import {
   doesContainWineName,
 } from '~/utils/article'
 
+import handleStoryPremiumRedirect from '~/middleware/handle-story-premium-redirect'
+
 const DEFAULT_SECTION_ID = 'other'
 
 export default {
@@ -383,6 +385,8 @@ export default {
       shouldFixAside: false,
 
       scrollDepthObserver: undefined,
+
+      isLoading: true,
     }
   },
 
@@ -488,6 +492,15 @@ export default {
           : this.cleanFixedAside()
       }
     },
+  },
+
+  async beforeMount() {
+    const redirect = await handleStoryPremiumRedirect(this.$nuxt.context, false)
+    if (redirect) {
+      redirect()
+    } else {
+      this.isLoading = false
+    }
   },
 
   mounted() {

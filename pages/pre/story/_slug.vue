@@ -36,6 +36,7 @@
         :isLoading="false"
         :isFail="false"
         :failTimes="0"
+        :hideInvite="true"
         @reload="handleReload"
       />
       <transition name="fade">
