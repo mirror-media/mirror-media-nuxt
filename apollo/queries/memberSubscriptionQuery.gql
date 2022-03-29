@@ -99,3 +99,19 @@ query fetchSubscriptionPayments($firebaseId: String!) {
     }
   }
 }
+
+query fetchSubscriprionByOrderNumber($orderNumber: String) {
+  allSubscriptions(
+    where: {
+    orderNumber: $orderNumber
+  }
+  ) {
+    id
+    orderNumber
+    frequency
+    periodCreateDatetime
+    periodFirstDatetime
+    periodEndDatetime
+    promoteId
+  }
+}

@@ -286,8 +286,8 @@ export default {
 
         tradeInfo.ReturnURL =
           ENV === 'local'
-            ? `http://localhost:3000/papermag/return`
-            : `https://${DOMAIN_NAME}/papermag/return`
+            ? `http://localhost:3000/subscribe/return`
+            : `https://${DOMAIN_NAME}/subscribe/return`
 
         delete tradeInfo.ClientBackURL
 

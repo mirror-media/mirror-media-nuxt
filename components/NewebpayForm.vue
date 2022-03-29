@@ -32,9 +32,9 @@ export default {
       default: '',
     },
     version: {
-      type: String,
+      type: Number,
       isRequired: true,
-      default: '1.6',
+      default: 1.6,
     },
   },
   data() {
