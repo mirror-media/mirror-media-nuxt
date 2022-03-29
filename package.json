@@ -35,7 +35,6 @@
     "@nuxtjs/firebase": "^7.1.0",
     "@nuxtjs/gtm": "^2.4.0",
     "@nuxtjs/pwa": "^3.0.2",
-    "@xstate/inspect": "^0.4.1",
     "axios": "^0.21.0",
     "big-integer": "^1.6.48",
     "body-parser": "^1.19.0",
@@ -80,9 +79,7 @@
     "vue-observe-visibility": "^1.0.0",
     "vue-scrollto": "^2.20.0",
     "vue-slider-component": "^3.2.5",
-    "vuelidate": "^0.7.6",
-    "xstate": "^4.23.1",
-    "xstate-vue2": "^0.2.1"
+    "vuelidate": "^0.7.6"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",

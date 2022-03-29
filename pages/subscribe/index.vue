@@ -1,6 +1,6 @@
 <template>
   <div class="subscribe-choose">
-    <template v-if="!canShowFeat && doesHaveIsPayByAppValue">
+    <template v-if="doesHaveIsPayByAppValue">
       <SubscribeStepProgress :currentStep="1" />
       <ClientOnly>
         <template v-if="isPayByApp">
@@ -14,8 +14,9 @@
               <UiMembershipButtonPrimary
                 class="subscribe-choose__textcard_back"
                 @click.native="handleGoToSectionMember"
-                >回會員專區</UiMembershipButtonPrimary
               >
+                回會員專區
+              </UiMembershipButtonPrimary>
             </SubscribeWrapper>
           </div>
         </template>
@@ -37,7 +38,7 @@
                 :buttons="plan.buttons"
                 :hintUnderButton="hintUnderButton"
                 @subscribePlan="handleSubscribePlan"
-                @login="sendMembershipSubscribe('點擊免費加入會員')"
+                @login="handleLogin"
               />
             </div>
           </div>
@@ -54,8 +55,9 @@
               <UiMembershipButtonPrimary
                 class="subscribe-choose__year_back"
                 @click.native="handleSet"
-                >前往付款設定</UiMembershipButtonPrimary
               >
+                前往付款設定
+              </UiMembershipButtonPrimary>
             </SubscribeWrapper>
           </div>
         </template>
@@ -63,19 +65,18 @@
     </template>
 
     <!-- if fetch is not complete, show loading-->
-    <UiLoadingCover v-if="canShowFeat && $fetchState.pending" />
+    <UiLoadingCover v-if="$fetchState.pending" />
   </div>
 </template>
 
 <script>
-import { computed } from '@nuxtjs/composition-api'
+import { computed, useStore } from '@nuxtjs/composition-api'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
   middleware: ['handle-go-to-marketing'],
   components: {
@@ -87,46 +88,31 @@ export default {
     UiLoadingCover,
   },
   setup() {
-    const { state, send } = useMemberSubscribeMachine()
     const memberStatus = useMemberStatus()
     return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
       memberStatus,
-      handleSubscribePlan(plan) {
-        send(getEventType(plan.title))
-
-        function getEventType(planTitle) {
-          const eventMap = {
-            訂閱年方案: '年訂閱',
-            訂閱月方案: '月訂閱',
-          }
-          return eventMap[planTitle]
-        }
-      },
-      handleSet() {
-        send('點擊前往付款設定頁')
-      },
     }
 
     function useMemberStatus() {
-      const { state } = useMemberSubscribeMachine()
-      const memberStatus = computed(() => computeMemberStatus(state?.value))
+      const { state, getters } = useStore()
+      const memberStatus = computed(() => computeMemberStatus(state, getters))
       return memberStatus
 
-      function computeMemberStatus(state) {
-        const parentState = '會員訂閱功能.方案購買流程.方案購買頁'
-        if (state?.matches(`${parentState}.未登入`)) {
+      function computeMemberStatus(state, getters) {
+        if (!getters?.['membership/isLoggedIn']) {
           return 'not-member'
-        } else if (state?.matches(`${parentState}.已登入`)) {
-          const parentState = '會員訂閱功能.方案購買流程.方案購買頁.已登入'
-          if (state?.matches(`${parentState}.月或年方案選擇`)) {
-            return 'basic'
-          } else if (state?.matches(`${parentState}.年方案選擇`)) {
-            return 'month'
-          } else {
-            return 'year'
-          }
+        } else if (
+          state?.['membership-subscribe']?.basicInfo?.type ===
+          'subscribe_yearly'
+        ) {
+          return 'year'
+        } else if (
+          state?.['membership-subscribe']?.basicInfo?.type ===
+          'subscribe_monthly'
+        ) {
+          return 'month'
+        } else {
+          return 'basic'
         }
       }
     }
@@ -334,13 +320,27 @@ export default {
     doesHaveIsPayByAppValue() {
       return this.isPayByApp !== undefined
     },
-    canShowFeat() {
-      return this.$route.query?.toggle === 'show-toggle-feature'
-    },
   },
   methods: {
     handleGoToSectionMember() {
       window.location.assign('/section/member')
+    },
+    handleLogin() {
+      window.location.assign(`/login?destination=${this.$route.fullPath}`)
+    },
+    handleSet() {
+      window.location.assign(`/subscribe/set`)
+    },
+    handleSubscribePlan(plan) {
+      window.location.assign(`/subscribe/info?plan=${getEventType(plan.title)}`)
+
+      function getEventType(planTitle) {
+        const eventMap = {
+          訂閱年方案: 'yearly',
+          訂閱月方案: 'monthly',
+        }
+        return eventMap[planTitle]
+      }
     },
   },
 }
