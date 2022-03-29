@@ -82,6 +82,7 @@
 <script>
 import qs from 'qs'
 import { required, email } from 'vuelidate/lib/validators'
+import { ENV, DOMAIN_NAME } from '~/configs/config.js'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
@@ -154,9 +155,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.email = this.$store.state.membership.userEmail
-  },
   data() {
     return {
       isLoading: false,
@@ -177,12 +175,6 @@ export default {
         receipt: 'OK',
       },
     }
-  },
-  validations: {
-    email: {
-      email,
-      required,
-    },
   },
   computed: {
     frequency() {
@@ -231,6 +223,21 @@ export default {
       return validReceiptData
     },
   },
+  watch: {
+    'receiptData.carrierType'() {
+      if (this.receiptData.carrierType === '2')
+        this.receiptData.carrierNumber = this.$store.state.membership.userEmail
+    },
+  },
+  mounted() {
+    this.email = this.$store.state.membership.userEmail
+  },
+  validations: {
+    email: {
+      email,
+      required,
+    },
+  },
   async created() {
     // ======To Kevin Start=======
     const isMemberCheckedServiceRule = await this.$getMemberServiceRuleStatus(
@@ -276,6 +283,13 @@ export default {
         // emit apiGateWay
         const result = await this.getPaymentDataFromApiGateWay()
         const tradeInfo = qs.parse(result)
+
+        tradeInfo.ReturnURL =
+          ENV === 'local'
+            ? `http://localhost:3000/papermag/return`
+            : `https://${DOMAIN_NAME}/papermag/return`
+
+        delete tradeInfo.ClientBackURL
 
         // // encrypt tradeInfo
         const encryptPaymentPayload = await this.$axios.$post(
@@ -389,12 +403,6 @@ export default {
             return 'B2C'
         }
       }
-    },
-  },
-  watch: {
-    'receiptData.carrierType'() {
-      if (this.receiptData.carrierType === '2')
-        this.receiptData.carrierNumber = this.$store.state.membership.userEmail
     },
   },
 }
