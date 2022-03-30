@@ -1,130 +1,80 @@
 <template>
   <section class="login">
-    <picture class="banner">
-      <source
-        media="(min-width: 1200px)"
-        type="image/webp"
-        srcset="~/assets/membership-banner-login-xl.webp"
-      />
-      <source
-        media="(min-width: 1200px)"
-        type="image/jpeg"
-        srcset="~/assets/membership-banner-login-xl.jpg"
-      />
-
-      <source
-        media="(min-width: 768px)"
-        type="image/webp"
-        srcset="~/assets/membership-banner-login-md.webp"
-      />
-      <source
-        media="(min-width: 768px)"
-        type="image/jpeg"
-        srcset="~/assets/membership-banner-login-md.jpg"
-      />
-
-      <source
-        type="image/webp"
-        srcset="~/assets/membership-banner-login.webp"
-      />
-      <img src="~/assets/membership-banner-login.jpg" alt="" />
-    </picture>
-
-    <div class="container">
-      <div class="intro">
-        <h1>歡迎加入鏡週刊會員訂閱服務</h1>
-        <p>
-          在資訊爆炸與碎片的年代，新聞更需回歸純粹，讓閱讀更清澈、真實與深度。因此我們秉持明鏡之心，充份反映事實，反映時代與反映人性，持續挖掘有料內容，以一手原創題材、深度調查報導為宗旨，讓閱聽大眾獲取最完整的資訊。
-        </p>
-        <p>
-          <strong>
-            10/5鏡週刊訂閱制正式上線，誠摯邀請您的加入，一起邁向新的新聞里程碑。
-          </strong>
-        </p>
+    <template v-if="state === 'form'">
+      <UiLoginBanner />
+      <div class="container">
+        <UiLoginIntro />
       </div>
-
-      <div v-if="pageState === 'form'" class="form-wrapper">
-        <h2 class="form-wrapper__title title">登入</h2>
-        <div class="form-wrapper__federated-login federated-login">
-          <div class="facebook-login-wrapper">
-            <div
-              v-show="isFederatedRedirectResultLoading"
-              class="federated-login-loading-wrapper"
-            >
-              <UiMembershipSpinner />
-            </div>
-            <ContainerMembershipLoginWithFacebook
-              v-show="!isFederatedRedirectResultLoading"
-            />
-          </div>
-          <div class="federated-login__login-wrapper google-login-wrapper">
-            <div
-              v-show="isFederatedRedirectResultLoading"
-              class="federated-login-loading-wrapper"
-            >
-              <UiMembershipSpinner />
-            </div>
-            <ContainerMembershipLoginWithGoogle
-              v-show="!isFederatedRedirectResultLoading"
-            />
-          </div>
-        </div>
-        <div class="form-wrapper__separator separator">
-          <p>或</p>
-        </div>
-        <ContainerMembershipLoginWithEmail
-          @success="handleEmailLoginSuccess"
-          @error="handleLoginError"
+      <div class="container container--form">
+        <ContainerLoginForm
+          :isFederatedRedirectResultLoading="isFederatedRedirectResultLoading"
+          :showHint="showHint"
+          :prevAuthMethod="prevAuthMethod"
+          @setShowHint="setShowHint"
+          @setPrevAuthMethod="setPrevAuthMethod"
+          @registerSuccess="handleRegisterSuccess"
+          @registerFail="handleRegisterFail"
+          @loginSuccess="handleLoginSuccess"
+          @loginFail="handleLoginFail"
         />
-        <p class="form-wrapper__rights rights">
-          <span>繼續使用代表您同意與接受</span>
-          <span>
-            鏡傳媒的
-            <a href="https://www.mirrormedia.mg/story/service-rule">
-              《服務條款》
-            </a>
-            以及
-            <a href="https://www.mirrormedia.mg/story/privacy/">
-              《隱私政策》
-            </a>
-          </span>
+      </div>
+    </template>
+    <template v-else-if="state === 'registerSuccess'">
+      <div class="result-wrapper">
+        <h1 class="result-wrapper__title">註冊成功！</h1>
+        <h2 class="result-wrapper__subtitle">歡迎加入鏡週刊</h2>
+        <p
+          class="result-wrapper__description result-wrapper__description--identical-margin"
+        >
+          將於 {{ registerSuccessTimerCount }} 秒後自動跳轉至會員專區...
         </p>
       </div>
-      <UiMembershipEmailSuccess
-        v-else-if="pageState === 'success'"
-        class="success-wrapper"
-        :emailInput="emailShowInSuccess"
-      />
-      <UiMembershipError
-        v-else-if="pageState === 'error'"
-        class="error-wrapper"
-        @backToForm="handleBackToForm"
-      />
-    </div>
+    </template>
+    <template v-else-if="state === 'registerError' || 'loginError'">
+      <div class="result-wrapper">
+        <h1 class="result-wrapper__title">抱歉，出了點狀況...</h1>
+        <h2 class="result-wrapper__subtitle">
+          請回上一頁{{ state === 'registerError' ? '重試' : '重新登入' }}
+        </h2>
+        <p class="result-wrapper__description">
+          <span> 或是聯繫客服信箱 </span>
+          <span>
+            <UiMembershipLink href="mailto:mm-onlineservice@mirrormedia.mg">
+              mm-onlineservice@mirrormedia.mg
+            </UiMembershipLink>
+            / 致電
+          </span>
+          <span> (02)6633-3966 由專人為您服務。 </span>
+        </p>
+        <UiMembershipButtonSecondary
+          class="result-wrapper__button"
+          @click.native="state = 'form'"
+        >
+          <p>回上一頁</p>
+        </UiMembershipButtonSecondary>
+      </div>
+    </template>
   </section>
 </template>
 
 <script>
-import ContainerMembershipLoginWithGoogle from '~/components/ContainerMembershipLoginWithGoogle.vue'
-import ContainerMembershipLoginWithFacebook from '~/components/ContainerMembershipLoginWithFacebook.vue'
-import ContainerMembershipLoginWithEmail from '~/components/ContainerMembershipLoginWithEmail.vue'
-import UiMembershipEmailSuccess from '~/components/UiMembershipEmailSuccess.vue'
-import UiMembershipError from '~/components/UiMembershipError.vue'
-import UiMembershipSpinner from '~/components/UiMembershipSpinner.vue'
-import { userCreate } from '~/apollo/mutations/userCreate.gql'
-import loginDestination from '~/utils/login-destination'
+import UiLoginBanner from '~/components/UiLoginBanner.vue'
+import UiLoginIntro from '~/components/UiLoginIntro.vue'
+import ContainerLoginForm from '~/components/ContainerLoginForm.vue'
+import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
+import UiMembershipLink from '~/components/UiMembershipLink.vue'
+import redirectDestination from '~/utils/redirect-destination'
 
 export default {
   apollo: {
-    $client: 'userClient',
+    $client: 'memberSubscription',
   },
   components: {
-    ContainerMembershipLoginWithGoogle,
-    ContainerMembershipLoginWithFacebook,
-    ContainerMembershipLoginWithEmail,
-    UiMembershipEmailSuccess,
-    UiMembershipError,
-    UiMembershipSpinner,
+    UiMembershipLink,
+    UiMembershipButtonSecondary,
+    UiLoginBanner,
+    UiLoginIntro,
+    ContainerLoginForm,
   },
   middleware({ store, redirect }) {
     if (store.getters['membership/isLoggedIn']) {
@@ -133,206 +83,233 @@ export default {
   },
   data() {
     return {
-      pageState: 'form',
-      emailShowInSuccess: '',
+      state: 'form',
+      registerSuccessTimerCount: 3,
       isFederatedRedirectResultLoading: true,
+      prevAuthMethod: '',
+      showHint: false,
     }
   },
   async beforeMount() {
-    /*
-     * When we use firebase.auth().signInWithRedirect(provider)
-     * firebase always redirect to the page where federated login at, which is login page
-     * so we must get redirect result in the login page too
-     * for more info: https://firebase.google.com/docs/auth/web/google-signin
-     */
-    // TODO: try to move the logics below to the server side to reduce loading time on client side
-    try {
-      const result = await this.$fire.auth.getRedirectResult()
-      this.isFederatedRedirectResultLoading = false
-      if (result.user !== null) {
-        await this.$apollo.mutate({
-          mutation: userCreate,
-          variables: {
-            email: this.$store.state.membership.userEmail,
-            firebaseId: this.$store.state.membership.userUid,
-          },
-        })
-
-        // redirect to page where user try to login
-        await loginDestination.redirect()
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e)
-      this.isFederatedRedirectResultLoading = false
-      this.handleLoginError({
-        email: e.email,
-        error: e,
-        type: 'federatedLogin',
-      })
-    }
+    await redirectDestination.set(this.$route)
+    await this.handleFederatedRedirectResult()
   },
+
   methods: {
-    handleEmailLoginSuccess(email) {
-      this.pageState = 'success'
-      this.emailShowInSuccess = email
-    },
-    handleLoginError({ email, error, type } = {}) {
-      this.pageState = 'error'
+    async handleError({ type, email, error }) {
+      // eslint-disable-next-line no-console
+      console.error(error)
       this.$sendMembershipErrorLog({
         email,
         description: error,
         eventType: type,
       })
+
+      await this.$fire.auth.signOut()
     },
-    handleBackToForm() {
-      this.pageState = 'form'
+    showRegisterSuccessAndRedirectToSectionMember() {
+      this.state = 'registerSuccess'
+      const timer = setInterval(() => {
+        this.registerSuccessTimerCount -= 1
+        if (this.registerSuccessTimerCount <= 0) {
+          clearInterval(timer)
+          window.location.assign('/section/member')
+        }
+      }, 1000)
+    },
+
+    async handleRegisterSuccess(authUser) {
+      try {
+        const result = await this.$store.dispatch(
+          'membership/LOGIN_PAGE_ON_AUTH_STATE_CHANGED_ACTION',
+          {
+            authUser,
+            mode: 'register',
+            isNewUser: true,
+          }
+        )
+
+        if (result.error) {
+          await this.handleError({
+            type: 'gatewayFailUserCreate',
+            email: authUser.email,
+            error: result.error,
+          })
+          this.state = 'registerError'
+          return
+        }
+
+        this.showRegisterSuccessAndRedirectToSectionMember()
+      } catch {
+        this.state = 'registerError'
+      }
+    },
+    async handleRegisterFail(error) {
+      this.state = 'registerError'
+      await this.handleError(error)
+    },
+    async handleLoginSuccess(authUser, isNewUser) {
+      const result = await this.$store.dispatch(
+        'membership/LOGIN_PAGE_ON_AUTH_STATE_CHANGED_ACTION',
+        {
+          authUser,
+          mode: 'login',
+          isNewUser,
+        }
+      )
+
+      if (result.error) {
+        await this.handleError({
+          type: 'gatewayFailUserCreate',
+          email: authUser.email,
+          error: result.error,
+        })
+        this.state = 'loginError'
+        return
+      }
+
+      await redirectDestination.redirect()
+      await Promise.resolve()
+    },
+    async handleLoginFail(error) {
+      this.state = 'loginError'
+      await this.handleError(error)
+    },
+    async handleFederatedRedirectResult() {
+      try {
+        const result = await this.$fire.auth.getRedirectResult()
+        this.isFederatedRedirectResultLoading = false
+
+        if (result.user !== null) {
+          const isNewUser = !!result?.additionalUserInfo?.isNewUser
+          await this.handleLoginSuccess(result.user, isNewUser)
+        }
+      } catch (e) {
+        this.isFederatedRedirectResultLoading = false
+        console.log(e)
+
+        /*
+         * (3rd party auth error happends here)
+         * if login with Google or email/password before,
+         * and next time login with Facebook(same email as above)
+         * it'll cause error, e.code = auth/account-exists-with-different-credential
+         */
+        if (e.code === 'auth/account-exists-with-different-credential') {
+          const responseArray = await this.$fire.auth.fetchSignInMethodsForEmail(
+            e.email
+          )
+          const prevAuthMethod = responseArray?.[0]
+
+          switch (prevAuthMethod) {
+            case 'google.com':
+              this.prevAuthMethod = 'Google'
+              break
+            case 'facebook.com':
+              this.prevAuthMethod = 'Facebook'
+              break
+            case 'apple.com':
+              this.prevAuthMethod = 'Apple'
+              break
+            case 'password':
+              this.prevAuthMethod = 'email'
+              break
+
+            default:
+              this.prevAuthMethod = prevAuthMethod
+              break
+          }
+          this.showHint = true
+        } else {
+          // handle other 3rd party auth error
+          await this.handleLoginFail({
+            type: 'signInFailFederated',
+            email: e.email,
+            error: e,
+          })
+        }
+      }
+    },
+    setShowHint(boolean) {
+      this.showHint = boolean
+    },
+    setPrevAuthMethod(method) {
+      this.prevAuthMethod = method
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.login {
-  padding-bottom: 24px;
-  @include media-breakpoint-up(md) {
-    padding-bottom: 48px;
-    background-color: #f2f2f2;
-  }
-  @include media-breakpoint-up(xl) {
-    padding-bottom: 60px;
-  }
-}
-
-.banner {
-  display: block;
-  margin-bottom: 48px;
-  @include media-breakpoint-up(xl) {
-    margin-bottom: 60px;
-  }
-
-  img {
-    width: 100%;
-    height: auto;
-  }
-}
-
 .container {
   padding: 0 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-$font-size--intro: 18px;
-$font-size--intro--xl: 20px;
-$line-height--intro: 1.6;
-
-.intro {
-  color: #4a4a4a;
-  font-size: $font-size--intro;
-  line-height: $line-height--intro;
-  margin-bottom: 24px;
-  max-width: 608px;
-  @include media-breakpoint-up(md) {
-    margin-bottom: 48px;
-  }
-  @include media-breakpoint-up(xl) {
-    font-size: $font-size--intro--xl;
-    margin-bottom: 60px;
-    max-width: 875px;
-  }
-
-  p + p {
-    margin-top: $font-size--intro * $line-height--intro;
+  &--form {
+    padding: 24px 8px 48px;
+    @include media-breakpoint-up(md) {
+      padding: 0 0 48px 0;
+    }
     @include media-breakpoint-up(xl) {
-      margin-top: $font-size--intro--xl * $line-height--intro;
+      padding: 0 0 60px 0;
     }
   }
 }
 
-h1 {
-  font-size: 28px;
-  line-height: 1.46;
-  letter-spacing: 1px;
-  text-align: center;
-  margin-bottom: 16px;
-  @include media-breakpoint-up(md) {
-    margin-bottom: 20px;
-  }
-  @include media-breakpoint-up(xl) {
-    font-size: 32px;
-    letter-spacing: 1.2px;
-    margin-bottom: 32px;
-  }
-}
-
-.form-wrapper {
+.result-wrapper {
   width: 100%;
-  max-width: 424px;
-
-  &__federated-login {
-    margin: 20px 0 0 0;
-  }
-  &__separator {
-    margin: 20px 0;
-  }
-  &__rights {
-    margin: 20px 0 0 0;
-  }
-  @include media-breakpoint-up(xl) {
-    width: 300px;
-  }
-}
-
-.title {
-  text-align: center;
-  font-weight: 900;
-  font-size: 18px;
-  color: #054f77;
-}
-
-.federated-login {
-  &__login-wrapper {
-    margin: 10px 0 0 0;
-  }
-}
-.federated-login-loading-wrapper {
-  border: 2px solid #4a4a4a;
-  width: 100%;
-  height: 38px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.separator {
-  font-size: 16px;
-  color: #4a4a4a;
-  display: flex;
-  align-items: center;
-  p {
-    margin: 0 22px;
-  }
-  &:before,
-  &:after {
-    content: '';
-    flex: 1 1 auto;
-    height: 1px;
-    background-color: #4a4a4a;
-  }
-}
-
-.rights {
+  background-color: white;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  font-size: 13px;
-  color: rgba(0, 0, 0, 0.66);
-  line-height: 18px;
-  a {
-    color: skyblue;
+  padding: 48px 20px 96px;
+  @include media-breakpoint-up(md) {
+    max-width: 423px;
+    margin: 48px auto 96px auto;
+    padding: 32px 48px 24px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08),
+      0px 4px 28px rgba(0, 0, 0, 0.06);
+  }
+  @include media-breakpoint-up(xl) {
+    margin: 60px auto 120px auto;
+  }
+
+  &__title,
+  &__subtitle {
+    font-size: 20px;
+    line-height: 32px;
+    text-align: center;
+    color: #4a4a4a;
+  }
+  &__description {
+    font-size: 15px;
+    line-height: 21px;
+    color: #9b9b9b;
+    margin: 32px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    @include media-breakpoint-up(md) {
+      margin: 16px 0 0 0;
+    }
+
+    span {
+      display: inline-block;
+      width: 100%;
+    }
+
+    &--identical-margin {
+      margin: 32px 0 0 0;
+    }
+  }
+  &__button {
+    margin: 32px 0 0 0;
+    max-width: 280px;
+    @include media-breakpoint-up(md) {
+      max-width: 327px;
+    }
   }
 }
 </style>

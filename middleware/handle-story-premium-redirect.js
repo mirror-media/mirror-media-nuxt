@@ -45,26 +45,33 @@ export default async function (
   }
 }
 
+function noop() {}
 function redirectToPremiumPage({ redirect, route }) {
-  if (route.name === 'story-slug' || route.name === 'pre-story-slug') {
-    return () => {
+  return () => {
+    if (route.name === 'story-slug' || route.name === 'pre-story-slug') {
       redirect(`/premium/${route?.params?.slug}?${qs.stringify(route.query)}`)
+    } else {
+      noop()
     }
   }
 }
 
 function redirectToPreStoryPage({ redirect, route }) {
-  if (route.name === 'premium-slug' || route.name === 'story-slug') {
-    return () => {
+  return () => {
+    if (route.name === 'premium-slug' || route.name === 'story-slug') {
       redirect(`/pre/story/${route?.params?.slug}?${qs.stringify(route.query)}`)
+    } else {
+      noop()
     }
   }
 }
 
 function redirectToStoryPage({ redirect, route }) {
-  if (route.name === 'premium-slug' || route.name === 'pre-story-slug') {
-    return () => {
+  return () => {
+    if (route.name === 'premium-slug' || route.name === 'pre-story-slug') {
       redirect(`/story/${route?.params?.slug}?${qs.stringify(route.query)}`)
+    } else {
+      noop()
     }
   }
 }
