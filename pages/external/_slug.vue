@@ -66,7 +66,7 @@
                   :style="{
                     height: doesHaveLatestStories ? undefined : '100vh',
                   }"
-                  @load="fetchLatestStories"
+                  @load="fetchLatestStories(storyPageBaseUrl)"
                 >
                   <UiArticleListAside
                     class="latest-list"
@@ -214,6 +214,7 @@ export default {
     ...mapGetters({
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
       displayedPartners: 'partners/displayedPartners',
+      storyPageBaseUrl: 'membership-subscribe/storyPageBaseUrl',
     }),
     storySlug() {
       return this.$route.params.slug
@@ -253,9 +254,8 @@ export default {
 
     this.scrollDepthObserver.disconnect()
   },
-
   methods: {
-    async fetchLatestStories() {
+    async fetchLatestStories(baseUrl) {
       const { items = [] } = await this.$fetchList({
         sort: '-publishedDate',
       })
@@ -272,7 +272,7 @@ export default {
           return {
             slug,
             title,
-            href: `/story/${slug}/`,
+            href: `${baseUrl}/${slug}/`,
             imgSrc: getImgSrc(heroImage),
             label: getLabel(categories),
             sectionName: sections[0]?.name,

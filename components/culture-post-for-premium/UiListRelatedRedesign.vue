@@ -10,7 +10,7 @@
         data-user-behavior-description="read-around"
       >
         <a
-          :href="`/story/${item.slug}`"
+          :href="`${storyPageBaseUrl}/${item.slug}`"
           class="item__img"
           target="_blank"
           rel="noopener noreferrer"
@@ -20,7 +20,7 @@
         </a>
 
         <a
-          :href="`/story/${item.slug}`"
+          :href="`${storyPageBaseUrl}/${item.slug}`"
           class="item__title"
           target="_blank"
           rel="noopener noreferrer"
@@ -37,12 +37,11 @@ import UiH3 from './UiH3.vue'
 import { getImgById } from '~/utils/img.js'
 
 export default {
-  name: 'UiListRelatedRedsign',
+  name: 'UiListRelatedRedesign',
 
   components: {
     UiH3,
   },
-
   props: {
     items: {
       type: Array,
@@ -53,6 +52,11 @@ export default {
       type: Array,
       default: () => [],
       required: true,
+    },
+  },
+  computed: {
+    storyPageBaseUrl() {
+      return this.$store?.getters?.['membership-subscribe/storyPageBaseUrl']
     },
   },
 

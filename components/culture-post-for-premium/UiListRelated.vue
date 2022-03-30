@@ -10,7 +10,7 @@
         data-user-behavior-description="read-around"
       >
         <a
-          :href="`/story/${item.slug}`"
+          :href="`${storyPageBaseUrl}/${item.slug}`"
           class="item__img"
           target="_blank"
           rel="noopener noreferrer"
@@ -20,7 +20,7 @@
         </a>
 
         <a
-          :href="`/story/${item.slug}`"
+          :href="`${storyPageBaseUrl}/${item.slug}`"
           class="item__title"
           target="_blank"
           rel="noopener noreferrer"
@@ -42,7 +42,6 @@ export default {
   components: {
     UiH4,
   },
-
   props: {
     items: {
       type: Array,
@@ -53,6 +52,11 @@ export default {
       type: Array,
       default: () => [],
       required: true,
+    },
+  },
+  computed: {
+    storyPageBaseUrl() {
+      return this.$store?.getters?.['membership-subscribe/storyPageBaseUrl']
     },
   },
 

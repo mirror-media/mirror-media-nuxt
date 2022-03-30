@@ -5,7 +5,7 @@
     <div class="list">
       <div v-for="item in items" :key="item.slug" class="item">
         <a
-          :href="`/story/${item.slug}`"
+          :href="`${storyPageBaseUrl}/${item.slug}`"
           class="item__img"
           target="_blank"
           rel="noopener noreferrer"
@@ -14,7 +14,7 @@
         </a>
 
         <a
-          :href="`/story/${item.slug}`"
+          :href="`${storyPageBaseUrl}/${item.slug}`"
           class="item__title"
           target="_blank"
           rel="noopener noreferrer"
@@ -43,7 +43,11 @@ export default {
       required: true,
     },
   },
-
+  computed: {
+    storyPageBaseUrl() {
+      return this.$store?.getters?.['membership-subscribe/storyPageBaseUrl']
+    },
+  },
   methods: {
     getImgById,
   },
