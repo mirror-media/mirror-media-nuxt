@@ -45,33 +45,32 @@ export default async function (
   }
 }
 
-function noop() {}
 function redirectToPremiumPage({ redirect, route }) {
-  return () => {
+  return (cb = () => {}) => {
     if (route.name === 'story-slug' || route.name === 'pre-story-slug') {
       redirect(`/premium/${route?.params?.slug}?${qs.stringify(route.query)}`)
     } else {
-      noop()
+      cb()
     }
   }
 }
 
 function redirectToPreStoryPage({ redirect, route }) {
-  return () => {
+  return (cb = () => {}) => {
     if (route.name === 'premium-slug' || route.name === 'story-slug') {
       redirect(`/pre/story/${route?.params?.slug}?${qs.stringify(route.query)}`)
     } else {
-      noop()
+      cb()
     }
   }
 }
 
 function redirectToStoryPage({ redirect, route }) {
-  return () => {
+  return (cb = () => {}) => {
     if (route.name === 'premium-slug' || route.name === 'pre-story-slug') {
       redirect(`/story/${route?.params?.slug}?${qs.stringify(route.query)}`)
     } else {
-      noop()
+      cb()
     }
   }
 }

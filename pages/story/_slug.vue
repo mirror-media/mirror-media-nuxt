@@ -496,11 +496,9 @@ export default {
 
   async beforeMount() {
     const redirect = await handleStoryPremiumRedirect(this.$nuxt.context, false)
-    if (redirect) {
-      redirect()
-    } else {
+    redirect(() => {
       this.isLoading = false
-    }
+    })
   },
 
   mounted() {
