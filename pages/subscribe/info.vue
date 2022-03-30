@@ -76,6 +76,12 @@
         </div>
       </div>
     </div>
+    <NewebpayForm
+      :merchantId="paymentPayload.MerchantID"
+      :tradeInfo="paymentPayload.TradeInfo"
+      :tradeSha="paymentPayload.TradeSha"
+      :version="paymentPayload.Version"
+    />
   </div>
 </template>
 
@@ -88,6 +94,7 @@ import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
+import NewebpayForm from '~/components/NewebpayForm.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
   // middleware: ['handle-go-to-marketing', 'handle-forbid-direct-navigate'],
@@ -97,6 +104,7 @@ export default {
     MembershipFormPerchaseInfo,
     SubscribeFormReceipt,
     UiSubscribeButton,
+    NewebpayForm,
   },
   setup() {
     const { state, send } = useMemberSubscribeMachine()
@@ -174,6 +182,7 @@ export default {
       formStatus: {
         receipt: 'OK',
       },
+      paymentPayload: {},
     }
   },
   computed: {
@@ -296,16 +305,14 @@ export default {
           `${window.location.origin}/api/v2/newebpay/v1`,
           tradeInfo
         )
-
-        // carry encrypted paymentPayload to redirect page
-        const queryString = qs.stringify(encryptPaymentPayload)
-        this.$router.push(`/subscribe/redirect?${queryString}`)
-
-        /*
-         * if (this.orderStatus === 'success')
-         *   return this.sendMembershipSubscribe('付款成功')
-         * this.sendMembershipSubscribe('付款失敗')
-         */
+        this.paymentPayload = {
+          ...encryptPaymentPayload,
+          Version: parseFloat(encryptPaymentPayload.Version),
+        }
+        this.$nextTick(() => {
+          const formDOM = document.forms.newebpay
+          formDOM.submit()
+        })
       } catch (error) {
         console.error(error.message)
         window.alert('您的訂閱流程發生了錯誤，請稍後再試')
@@ -370,7 +377,6 @@ export default {
           buyerUBN: this.validReceiptData.carrierUbn,
           category: getCategory.bind(this)(),
         }
-        console.log(gateWayPayload)
       } else {
         // one_time
         const subscribePostId = this.perchasedPlan?.[0]?.id
@@ -387,7 +393,6 @@ export default {
           buyerUBN: this.validReceiptData.carrierUbn,
           category: getCategory.bind(this)(),
         }
-        console.log(gateWayPayload)
       }
 
       return await this.$getPaymentDataOfSubscription(gateWayPayload)
