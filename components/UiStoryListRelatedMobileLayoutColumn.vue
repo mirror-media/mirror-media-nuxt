@@ -8,7 +8,7 @@
       >
         <div class="item__title">
           <a
-            :href="`/story/${item.slug}`"
+            :href="`${storyPageBaseUrl}/${item.slug}`"
             target="_blank"
             rel="noopener noreferrer"
             @click="$emit('sendGa')"
@@ -16,7 +16,7 @@
           />
         </div>
         <a
-          :href="`/story/${item.slug}`"
+          :href="`${storyPageBaseUrl}/${item.slug}`"
           class="item__image"
           target="_blank"
           rel="noopener noreferrer"
@@ -50,6 +50,9 @@ export default {
   computed: {
     doesHaveAnyItems() {
       return this.items.length > 0
+    },
+    storyPageBaseUrl() {
+      return this.$store?.getters?.['membership-subscribe/storyPageBaseUrl']
     },
   },
 

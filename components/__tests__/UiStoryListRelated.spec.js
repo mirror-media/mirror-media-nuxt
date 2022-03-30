@@ -1,7 +1,15 @@
 import UiStoryListRelated from '../UiStoryListRelated.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
-const createWrapper = createWrapperHelper()
+const createWrapper = createWrapperHelper({
+  mocks: {
+    $store: {
+      getters: {
+        'membership-subscribe/storyPageBaseUrl': '/story',
+      },
+    },
+  },
+})
 
 describe('props', () => {
   test('should has proper item title and href', () => {

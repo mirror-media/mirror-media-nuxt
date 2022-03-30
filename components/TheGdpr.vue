@@ -5,7 +5,7 @@
         <p>
           本網站使用相關技術提供更好的閱讀體驗，同時尊重使用者隱私，若您瀏覽此網站，即代表您同意我們使用第三方
           Cookie。若欲了解更多相關資訊，點這裡瞭解<a
-            href="/story/privacy/"
+            :href="`${storyPageBaseUrl}/privacy/`"
             target="_blank"
             rel="noopener noreferrer"
             >隱私權聲明</a
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { ref } from '@nuxtjs/composition-api'
+import { computed, ref, useStore } from '@nuxtjs/composition-api'
 import localforage from 'localforage'
 
 export default {
@@ -27,7 +27,7 @@ export default {
 
   setup() {
     const shouldOpenGdpr = ref(false)
-
+    const store = useStore()
     localforage
       .getItem('mmShouldOpenGdpr')
       .then(function fulfilled(value) {
@@ -37,7 +37,9 @@ export default {
         // eslint-disable-next-line no-console
         console.error(err)
       })
-
+    const storyPageBaseUrl = computed(
+      () => store?.getters?.['membership-subscribe/storyPageBaseUrl']
+    )
     function closeGdpr() {
       shouldOpenGdpr.value = false
 
@@ -52,7 +54,11 @@ export default {
     return {
       shouldOpenGdpr,
       closeGdpr,
+      storyPageBaseUrl,
     }
+  },
+  mounted() {
+    console.log(this.storyPageBaseUrl)
   },
 }
 </script>
