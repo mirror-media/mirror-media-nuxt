@@ -1,10 +1,7 @@
 import { checkCategoryHasMemberOnly } from '~/utils/article'
 const qs = require('querystring')
 
-export default async function (
-  { res, route, app, redirect, store },
-  shouldPerformRedirect = true
-) {
+export default async function ({ res, route, app, redirect, store }) {
   const slug = route?.params?.slug
   try {
     const result = await app.$fetchStoryFromMembershipGateway({
@@ -18,26 +15,11 @@ export default async function (
     const doesCategoryHaveMemberOnly = checkCategoryHasMemberOnly(post)
 
     if (doesCategoryHaveMemberOnly) {
-      const _redirect = redirectToPremiumPage({ redirect, route })
-      if (shouldPerformRedirect) {
-        _redirect()
-      } else {
-        return _redirect
-      }
+      redirectToPremiumPage({ redirect, route })
     } else if (store.getters['membership-subscribe/isPremiumMember']) {
-      const _redirect = redirectToPreStoryPage({ redirect, route })
-      if (shouldPerformRedirect) {
-        _redirect()
-      } else {
-        return _redirect
-      }
+      redirectToPreStoryPage({ redirect, route })
     } else {
-      const _redirect = redirectToStoryPage({ redirect, route })
-      if (shouldPerformRedirect) {
-        _redirect()
-      } else {
-        return _redirect
-      }
+      redirectToStoryPage({ redirect, route })
     }
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -46,31 +28,19 @@ export default async function (
 }
 
 function redirectToPremiumPage({ redirect, route }) {
-  return (cb = () => {}) => {
-    if (route.name === 'story-slug' || route.name === 'pre-story-slug') {
-      redirect(`/premium/${route?.params?.slug}?${qs.stringify(route.query)}`)
-    } else {
-      cb()
-    }
+  if (route.name === 'story-slug' || route.name === 'pre-story-slug') {
+    redirect(`/premium/${route?.params?.slug}?${qs.stringify(route.query)}`)
   }
 }
 
 function redirectToPreStoryPage({ redirect, route }) {
-  return (cb = () => {}) => {
-    if (route.name === 'premium-slug' || route.name === 'story-slug') {
-      redirect(`/pre/story/${route?.params?.slug}?${qs.stringify(route.query)}`)
-    } else {
-      cb()
-    }
+  if (route.name === 'premium-slug' || route.name === 'story-slug') {
+    redirect(`/pre/story/${route?.params?.slug}?${qs.stringify(route.query)}`)
   }
 }
 
 function redirectToStoryPage({ redirect, route }) {
-  return (cb = () => {}) => {
-    if (route.name === 'premium-slug' || route.name === 'pre-story-slug') {
-      redirect(`/story/${route?.params?.slug}?${qs.stringify(route.query)}`)
-    } else {
-      cb()
-    }
+  if (route.name === 'premium-slug' || route.name === 'pre-story-slug') {
+    redirect(`/story/${route?.params?.slug}?${qs.stringify(route.query)}`)
   }
 }
