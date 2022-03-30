@@ -29,7 +29,7 @@ export default {
     SubscribeFail,
   },
   async asyncData({ req, redirect }) {
-    if (req.method !== 'POST') redirect('/papermag')
+    if (req.method !== 'POST') redirect('/subscribe')
 
     try {
       const infoData = req.body
