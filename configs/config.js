@@ -1,5 +1,5 @@
 export const API_PROTOCOL = process.env.API_PROTOCOL || 'http'
-export const API_HOST = process.env.API_HOST || '104.199.190.189'
+export const API_HOST = process.env.API_HOST || 'localhost'
 export const API_PORT = process.env.API_PORT || '8080'
 export const API_HOST_MEMBERSHIP_GATEWAY =
   process.env.API_HOST_MEMBERSHIP_GATEWAY || 'app-dev.mirrormedia.mg'
