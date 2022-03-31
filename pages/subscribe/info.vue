@@ -298,17 +298,11 @@ export default {
             ? `http://localhost:3000/subscribe/return`
             : `https://${DOMAIN_NAME}/subscribe/return`
 
-        delete tradeInfo.ClientBackURL
-
         // // encrypt tradeInfo
-        const encryptPaymentPayload = await this.$axios.$post(
+        this.paymentPayload = await this.$axios.$post(
           `${window.location.origin}/api/v2/newebpay/v1`,
           tradeInfo
         )
-        this.paymentPayload = {
-          ...encryptPaymentPayload,
-          Version: parseFloat(encryptPaymentPayload.Version),
-        }
         this.$nextTick(() => {
           const formDOM = document.forms.newebpay
           formDOM.submit()

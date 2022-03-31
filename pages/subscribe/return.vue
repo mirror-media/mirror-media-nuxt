@@ -13,6 +13,7 @@
 
 <script>
 import axios from 'axios'
+import errors from '@twreporter/errors'
 import { print } from 'graphql/language/printer'
 import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
@@ -33,6 +34,15 @@ export default {
 
     try {
       const infoData = req.body
+      if (infoData.Status !== 'SUCCESS') {
+        return {
+          status: infoData.Status,
+          errorData: {
+            message: infoData.Status,
+          },
+        }
+      }
+
       const newebpay = new NewebPay(NEWEBPAY_KEY, NEWEBPAY_IV)
       const decryptedTradeInfo = await newebpay.getDecryptedTradeInfo(
         infoData.TradeInfo
@@ -63,15 +73,7 @@ export default {
           },
         }
       }
-      if (infoData.Status !== 'SUCCESS') {
-        return {
-          status: infoData.Status,
-          errorData: {
-            orderId: decryptInfoData.orderNumber,
-            message: infoData.Status,
-          },
-        }
-      }
+
       return {
         status: 'success',
         orderInfo: {
@@ -81,7 +83,24 @@ export default {
         },
       }
     } catch (e) {
-      console.log(e)
+      if (e.stack) {
+        console.log(
+          JSON.stringify({
+            severity: 'ERROR',
+          })
+        )
+      } else {
+        const annotatingError = errors.helpers.annotateAxiosError(e)
+        console.log(
+          JSON.stringify({
+            severity: 'ERROR',
+            message: errors.helpers.printAll(annotatingError, {
+              withStack: true,
+              withPayload: true,
+            }),
+          })
+        )
+      }
     }
   },
   data() {
