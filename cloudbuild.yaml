@@ -24,12 +24,6 @@ steps:
       - ./gcskeyfile.json
   - name: bash
     args:
-      - cp
-      - "-R"
-      - ./configs.build/mirror-media/mirror-media-nuxt/${BRANCH_NAME}/config.js
-      - ./configs/config.js
-  - name: bash
-    args:
       - rm
       - "-R"
       - ./configs.build
