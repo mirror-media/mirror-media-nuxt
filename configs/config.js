@@ -42,3 +42,5 @@ export const NEWEBPAY_PAPERMAG_KEY =
 export const NEWEBPAY_PAPERMAG_IV =
   process.env.NEWEBPAY_PAPERMAG_IV || 'newebpay-papermag-iv'
 export const ISRAFEL_ORIGIN = process.env.ISRAFEL_ORIGIN || 'israfel-origin'
+export const NEWEBPAY_API_URL =
+  process.env.NEWEBPAY_API_URL || 'https://ccore.newebpay.com/MPG/mpg_gateway'

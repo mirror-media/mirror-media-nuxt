@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { ENV } from '../configs/config'
+import { NEWEBPAY_API_URL } from '../configs/config'
 
 export default {
   props: {
@@ -39,10 +39,7 @@ export default {
   },
   data() {
     return {
-      newebpayApiUrl:
-        ENV === 'prod'
-          ? 'https://core.newebpay.com/MPG/mpg_gateway'
-          : 'https://ccore.newebpay.com/MPG/mpg_gateway',
+      newebpayApiUrl: NEWEBPAY_API_URL,
     }
   },
 }
