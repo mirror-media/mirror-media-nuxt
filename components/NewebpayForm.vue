@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import { NEWEBPAY_API_URL } from '../configs/config'
-
 export default {
   props: {
     merchantId: {
@@ -36,11 +34,11 @@ export default {
       isRequired: true,
       default: '1.6',
     },
-  },
-  data() {
-    return {
-      newebpayApiUrl: NEWEBPAY_API_URL,
-    }
+    newebpayApiUrl: {
+      type: String,
+      isRequired: true,
+      default: 'https://ccore.newebpay.com/MPG/mpg_gateway',
+    },
   },
 }
 </script>
