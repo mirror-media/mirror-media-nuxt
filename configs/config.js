@@ -1,3 +1,18 @@
+const ENV = process.env.ENV || 'local'
+
+let GOOGLE_OPT_CONTAINER_ID = '' // eslint-disable-line
+switch (ENV) {
+  case 'prod':
+  case 'staging':
+    GOOGLE_OPT_CONTAINER_ID = 'OPT-N9L3WX3'
+    break
+  case 'dev':
+  default:
+    GOOGLE_OPT_CONTAINER_ID = 'OPT-NHZNB2Z'
+}
+
+export { ENV, GOOGLE_OPT_CONTAINER_ID }
+
 export const API_PROTOCOL = process.env.API_PROTOCOL || 'http'
 export const API_HOST = process.env.API_HOST || 'localhost'
 export const API_PORT = process.env.API_PORT || '8080'
@@ -9,9 +24,8 @@ export const API_PORT_MEMBERSHIP_GATEWAY =
   process.env.API_PORT_MEMBERSHIP_GATEWAY || '80'
 export const API_TIMEOUT = process.env.API_TIMEOUT || 5000
 export const SALEOR_HOST = process.env.SALEOR_HOST || '104.155.209.114'
-export const API_PATH_FRONTEND = process.env.API_PATH_FRONTEND || 'api/v2'
+export const API_PATH_FRONTEND = 'api/v2'
 export const DOMAIN_NAME = process.env.DOMAIN_NAME || 'www.mirrormedia.mg'
-export const ENV = process.env.ENV || 'local'
 export const IS_AD_DISABLE = process.env.IS_AD_DISABLE === 'true' || false
 export const GPT_MODE = process.env.GPT_MODE || 'dev'
 export const PREVIEW_QUERY = process.env.PREVIEW_QUERY || 'preview=true'
@@ -28,8 +42,6 @@ export const GCP_PROJECT_ID =
 export const GCP_STACKDRIVER_LOG_NAME =
   process.env.GCP_STACKDRIVER_LOG_NAME || 'mirror-media-nuxt-user-behavior'
 export const GCP_KEYFILE = process.env.GCP_KEYFILE || './gcskeyfile.json'
-export const GOOGLE_OPT_CONTAINER_ID =
-  process.env.GOOGLE_OPT_CONTAINER_ID || 'OPT-NHZNB2Z'
 export const API_MEMBER_SUBSCRIPTION_GATEWAY =
   process.env.API_MEMBER_SUBSCRIPTION_GATEWAY ||
   'app-dev.mirrormedia.mg/api/v2/graphql/member'
