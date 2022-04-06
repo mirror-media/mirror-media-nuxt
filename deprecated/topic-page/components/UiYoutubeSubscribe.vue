@@ -6,7 +6,12 @@
         <div class="youtube-subscribe__name" @click="openChannel">
           {{ channelTitle }}
         </div>
-        <div class="youtube-subscribe__btn" @click="handleClickBtn">訂閱</div>
+        <div
+          :data-channelid="channelId"
+          class="g-ytsubscribe"
+          data-layout="default"
+          data-count="hidden"
+        />
       </section>
     </div>
   </LazyRenderer>
@@ -14,7 +19,7 @@
 
 <script>
 export default {
-  name: 'UiYoutubeSubscribeForPremium',
+  name: 'UiYoutubeSubscribe',
   props: {
     channelName: {
       type: String,
@@ -36,6 +41,20 @@ export default {
     },
   },
   methods: {
+    init() {
+      const hasInjectedSDK =
+        window.gapi || document.querySelector('#js-yt-platform')
+      if (!hasInjectedSDK) {
+        const youtubePlatformScript = document.createElement('script')
+        youtubePlatformScript.setAttribute('id', 'js-yt-platform')
+        youtubePlatformScript.setAttribute('defer', 'true')
+        youtubePlatformScript.setAttribute(
+          'src',
+          'https://apis.google.com/js/platform.js'
+        )
+        document.head.appendChild(youtubePlatformScript)
+      }
+    },
     handleClickBtn() {
       window.open(
         `https://www.youtube.com/channel/${this.channelId}?sub_confirmation=1`,
@@ -52,7 +71,7 @@ export default {
 <style lang="scss" scoped>
 .youtube-subscribe {
   display: flex;
-  width: 105px;
+  width: 150px;
 
   *:hover {
     cursor: pointer;
@@ -88,3 +107,7 @@ export default {
   }
 }
 </style>
+
+<!--
+  Document: https://developers.google.com/youtube/youtube_subscribe_button
+-->
