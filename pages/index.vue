@@ -405,38 +405,6 @@ export default {
 
         this.areMicroAdsInserted = true
       },
-
-      /*
-       * async function insertExternals() {
-       *   if (
-       *     this.latestItems.length < EXTERNALS_IDX_START_INSERTED ||
-       *     this.areExternalsInserted
-       *   ) {
-       *     return
-       *   }
-       */
-
-      /*
-       *   const { items = [] } =
-       *     (await this.$fetchExternals({
-       *       maxResults: EXTERNALS_MAX_RESULTS,
-       *       page: 1,
-       *       sort: '-publishedDate',
-       *       partner: PARTNER_ID_EBC,
-       *     })) || {}
-       */
-
-      /*
-       *   this.insertLatestItems(
-       *     EXTERNALS_IDX_START_INSERTED,
-       *     ...items.map(this.transformContentOfLatestItem)
-       *   )
-       */
-
-      /*
-       *   this.areExternalsInserted = true
-       * },
-       */
     ],
 
     isDesktopWidth: ['handleFixLastFocusList'],
@@ -519,7 +487,7 @@ export default {
         const reserveCount = groupArticleLength - latestLength
         if (reserveCount < 20) {
           const newLatest = await this.fetchLatestList()
-          if (!newLatest[0]) return state.complete()
+          if (!newLatest[0] && !reserveCount) return state.complete()
           this.groupedArticles.latest?.push(
             ...newLatest.map((item) => {
               return {
