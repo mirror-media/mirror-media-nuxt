@@ -12,7 +12,7 @@ export const SALEOR_HOST = process.env.SALEOR_HOST || '104.155.209.114'
 export const API_PATH_FRONTEND = process.env.API_PATH_FRONTEND || 'api/v2'
 export const DOMAIN_NAME = process.env.DOMAIN_NAME || 'www.mirrormedia.mg'
 export const ENV = process.env.ENV || 'local'
-export const IS_AD_DISABLE = process.env.IS_AD_DISABLE || false
+export const IS_AD_DISABLE = process.env.IS_AD_DISABLE === 'true' || false
 export const GPT_MODE = process.env.GPT_MODE || 'dev'
 export const PREVIEW_QUERY = process.env.PREVIEW_QUERY || 'preview=true'
 export const REDIS_READ_HOST = process.env.REDIS_READ_HOST || 'redis-read-host'
