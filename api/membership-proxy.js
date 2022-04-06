@@ -5,8 +5,6 @@ const {
 } = require('../configs/config')
 const { createProxy } = require('./helpers')
 
-console.log('API_HOST_MEMBERSHIP_GATEWAY: ', API_HOST_MEMBERSHIP_GATEWAY)
-
 module.exports = createProxy(
   `${API_PROTOCOL}://${API_HOST_MEMBERSHIP_GATEWAY}:${API_PORT_MEMBERSHIP_GATEWAY}/api/v0`,
   3000
