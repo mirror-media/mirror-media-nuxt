@@ -6,8 +6,12 @@ import VueObserveVisibility from 'vue-observe-visibility'
 import GptAd from './gpt-ad'
 import { GPT_MODE, IS_AD_DISABLE } from '~/configs/config'
 
+console.log('GPT_MODE:', GPT_MODE)
+
 export default function ({ store }) {
   Vue.use(VueAwesomeSwiper)
+
+  console.log('GPT_MODE:', GPT_MODE)
 
   Vue.use(GptAd, {
     adNetwork: '40175602',
