@@ -55,6 +55,10 @@ export default {
     margin-top: 32px;
   }
 
+  .g-story-paragraph {
+    color: #fff;
+  }
+
   *:not(:first-child) {
     margin-top: 32px;
   }
