@@ -12,10 +12,5 @@ figcaption {
   line-height: 180%;
   text-align: justify;
   color: rgba(0, 0, 0, 0.5);
-  word-wrap: break-word;
-  -webkit-line-clamp: 2;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 </style>
