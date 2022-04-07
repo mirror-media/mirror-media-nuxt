@@ -30,6 +30,18 @@ async function start() {
   app.use(bodyParser.json())
   app.use(requestIp.mw())
 
+  app.get('/robots.txt', (req, res, next) => {
+    if (process.env.RELEASE_TARGET === 'prod') {
+      res.type('text/plain').send('User-agent: * \n' + 'Allow: /')
+      return
+    }
+    if (process.env.RELEASE_TARGET !== 'prod') {
+      res.type('text/plain').send('User-agent: * \n' + 'Disallow: /')
+      return
+    }
+    next()
+  })
+
   // Give nuxt middleware to express
   app.use(nuxt.render)
 
