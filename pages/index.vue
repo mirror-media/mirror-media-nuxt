@@ -485,7 +485,7 @@ export default {
         const groupArticleLength = this.groupedArticles.latest?.length
         const latestLength = this.latestList?.items?.length
         const reserveCount = groupArticleLength - latestLength
-        if (reserveCount < 20) {
+        if (reserveCount < 20 || (reserveCount === 20 && this.fileId === 5)) {
           const newLatest = await this.fetchLatestList()
           if (!newLatest[0] && !reserveCount) return state.complete()
           this.groupedArticles.latest?.push(
