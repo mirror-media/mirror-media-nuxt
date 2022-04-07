@@ -1,56 +1,107 @@
-const ENV = process.env.ENV || 'local'
+/* eslint import/no-mutable-exports:0 */
+const API_PORT = '8080'
+const API_PATH_FRONTEND = 'api/v2'
+const API_PATH_MEMBERSHIP_GATEWAY = '/api/v0'
+const API_PORT_MEMBERSHIP_GATEWAY = '80'
+const GCP_KEYFILE = './gcskeyfile.json'
+const GCP_PROJECT_ID = 'mirrormedia-1470651750304'
+const GCP_STACKDRIVER_LOG_NAME = 'mirror-media-nuxt-user-behavior'
+const PREVIEW_QUERY = 'preview=true'
+const REDIS_PORT = 6379
+const URL_STATIC_COMBO_SECTIONS =
+  'https://storage.googleapis.com/statics.mirrormedia.mg/json/sections.json'
 
-let GOOGLE_OPT_CONTAINER_ID = '' // eslint-disable-line
+// The following variables are from environment variables
+const ENV = process.env.ENV || 'local'
+const REDIS_READ_HOST = process.env.REDIS_READ_HOST || 'redis-read-host'
+const REDIS_WRITE_HOST = process.env.REDIS_WRITE_HOST || 'redis-write-host'
+const REDIS_AUTH = process.env.REDIS_AUTH || 'redis-auth'
+const NEWEBPAY_KEY = process.env.NEWEBPAY_KEY || 'newebpay-key'
+const NEWEBPAY_IV = process.env.NEWEBPAY_IV || 'newebpay-iv'
+const NEWEBPAY_PAPERMAG_KEY =
+  process.env.NEWEBPAY_PAPERMAG_KEY || 'newebpay-papermag-key'
+const NEWEBPAY_PAPERMAG_IV =
+  process.env.NEWEBPAY_PAPERMAG_IV || 'newebpay-papermag-iv'
+const ISRAFEL_ORIGIN = process.env.ISRAFEL_ORIGIN || 'israfel-origin'
+const IS_AD_DISABLE = process.env.IS_AD_DISABLE === 'true' || false
+
+// The following variables are given values according to different `ENV`
+let API_HOST = ''
+let API_HOST_MEMBERSHIP_GATEWAY = ''
+let API_MEMBER_SUBSCRIPTION_GATEWAY = ''
+let API_PROTOCOL = ''
+let API_TIMEOUT = 5000
+let DOMAIN_NAME = ''
+let GOOGLE_OPT_CONTAINER_ID = ''
+let GPT_MODE = ''
+let SALEOR_HOST = ''
+
 switch (ENV) {
   case 'prod':
-  case 'staging':
+    API_HOST = 'tr-projects-rest'
+    API_HOST_MEMBERSHIP_GATEWAY = 'apigateway.default.svc.cluster.local'
+    API_MEMBER_SUBSCRIPTION_GATEWAY =
+      'apigateway.default.svc.cluster.local/api/v2/graphql/member'
+    API_PROTOCOL = 'http'
+    API_TIMEOUT = 1500
+    DOMAIN_NAME = 'www.mirrormedia.mg'
     GOOGLE_OPT_CONTAINER_ID = 'OPT-N9L3WX3'
+    GPT_MODE = 'prod'
+    SALEOR_HOST = 'saleor-mirror.default.svc.cluster.local'
+    break
+  case 'staging':
+    API_HOST = 'tr-projects-rest'
+    API_HOST_MEMBERSHIP_GATEWAY = 'apigateway.default.svc.cluster.local'
+    API_MEMBER_SUBSCRIPTION_GATEWAY =
+      'apigateway.default.svc.cluster.local/api/v2/graphql/member'
+    API_PROTOCOL = 'http'
+    API_TIMEOUT = 1500
+    DOMAIN_NAME = 'www-staging.mirrormedia.mg'
+    GOOGLE_OPT_CONTAINER_ID = 'OPT-N9L3WX3'
+    GPT_MODE = 'prod'
+    SALEOR_HOST = 'saleor-mirror.default.svc.cluster.local'
     break
   case 'dev':
   default:
+    API_HOST = 'rest-service'
+    API_HOST_MEMBERSHIP_GATEWAY = 'apigateway'
+    API_MEMBER_SUBSCRIPTION_GATEWAY = 'apigateway/api/v2/graphql/member'
+    API_PROTOCOL = 'http'
+    API_TIMEOUT = 5000
+    DOMAIN_NAME = 'dev.mirrormedia.mg'
     GOOGLE_OPT_CONTAINER_ID = 'OPT-NHZNB2Z'
+    GPT_MODE = 'dev'
+    SALEOR_HOST = 'saleor-mirror'
 }
 
-export { ENV, GOOGLE_OPT_CONTAINER_ID }
-
-export const API_PROTOCOL = process.env.API_PROTOCOL || 'http'
-export const API_HOST = process.env.API_HOST || 'localhost'
-export const API_PORT = process.env.API_PORT || '8080'
-export const API_HOST_MEMBERSHIP_GATEWAY =
-  process.env.API_HOST_MEMBERSHIP_GATEWAY || 'apigateway'
-export const API_PATH_MEMBERSHIP_GATEWAY =
-  process.env.API_PATH_MEMBERSHIP_GATEWAY || '/api/v0/'
-export const API_PORT_MEMBERSHIP_GATEWAY =
-  process.env.API_PORT_MEMBERSHIP_GATEWAY || '80'
-export const API_TIMEOUT = process.env.API_TIMEOUT || 5000
-export const SALEOR_HOST = process.env.SALEOR_HOST || '104.155.209.114'
-export const API_PATH_FRONTEND = 'api/v2'
-export const DOMAIN_NAME = process.env.DOMAIN_NAME || 'www.mirrormedia.mg'
-export const IS_AD_DISABLE = process.env.IS_AD_DISABLE === 'true' || false
-export const GPT_MODE = process.env.GPT_MODE || 'dev'
-export const PREVIEW_QUERY = process.env.PREVIEW_QUERY || 'preview=true'
-export const REDIS_READ_HOST = process.env.REDIS_READ_HOST || 'redis-read-host'
-export const REDIS_WRITE_HOST =
-  process.env.REDIS_WRITE_HOST || 'redis-write-host'
-export const REDIS_PORT = process.env.REDIS_PORT || 'redis-port'
-export const REDIS_AUTH = process.env.REDIS_AUTH || 'redis-auth'
-export const URL_STATIC_COMBO_SECTIONS =
-  process.env.URL_STATIC_COMBO_SECTIONS ||
-  'https://storage.googleapis.com/statics.mirrormedia.mg/json/sections.json'
-export const GCP_PROJECT_ID =
-  process.env.GCP_PROJECT_ID || 'mirrormedia-1470651750304'
-export const GCP_STACKDRIVER_LOG_NAME =
-  process.env.GCP_STACKDRIVER_LOG_NAME || 'mirror-media-nuxt-user-behavior'
-export const GCP_KEYFILE = process.env.GCP_KEYFILE || './gcskeyfile.json'
-export const API_MEMBER_SUBSCRIPTION_GATEWAY =
-  process.env.API_MEMBER_SUBSCRIPTION_GATEWAY ||
-  'app-dev.mirrormedia.mg/api/v2/graphql/member'
-export const NEWEBPAY_KEY = process.env.NEWEBPAY_KEY || 'newebpay-key'
-export const NEWEBPAY_IV = process.env.NEWEBPAY_IV || 'newebpay-iv'
-export const K3_API_FOR_GET_POSTS =
-  process.env.K3_API_FOR_GET_POSTS || 'k3-api-for-get-posts'
-export const NEWEBPAY_PAPERMAG_KEY =
-  process.env.NEWEBPAY_PAPERMAG_KEY || 'newebpay-papermag-key'
-export const NEWEBPAY_PAPERMAG_IV =
-  process.env.NEWEBPAY_PAPERMAG_IV || 'newebpay-papermag-iv'
-export const ISRAFEL_ORIGIN = process.env.ISRAFEL_ORIGIN || 'israfel-origin'
+export {
+  API_HOST,
+  API_HOST_MEMBERSHIP_GATEWAY,
+  API_MEMBER_SUBSCRIPTION_GATEWAY,
+  API_PATH_FRONTEND,
+  API_PATH_MEMBERSHIP_GATEWAY,
+  API_PORT,
+  API_PORT_MEMBERSHIP_GATEWAY,
+  API_PROTOCOL,
+  API_TIMEOUT,
+  DOMAIN_NAME,
+  ENV,
+  GCP_KEYFILE,
+  GCP_PROJECT_ID,
+  GCP_STACKDRIVER_LOG_NAME,
+  GOOGLE_OPT_CONTAINER_ID,
+  GPT_MODE,
+  ISRAFEL_ORIGIN,
+  IS_AD_DISABLE,
+  NEWEBPAY_IV,
+  NEWEBPAY_KEY,
+  NEWEBPAY_PAPERMAG_IV,
+  NEWEBPAY_PAPERMAG_KEY,
+  PREVIEW_QUERY,
+  REDIS_AUTH,
+  REDIS_PORT,
+  REDIS_READ_HOST,
+  REDIS_WRITE_HOST,
+  SALEOR_HOST,
+  URL_STATIC_COMBO_SECTIONS,
+}
