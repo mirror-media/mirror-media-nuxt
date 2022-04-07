@@ -253,7 +253,6 @@ module.exports = {
    */
   serverMiddleware: [
     express.urlencoded({ extended: true }),
-    '~/api/headers.js',
     {
       path: `/${API_PATH_FRONTEND}/gcs`,
       handler: '~/api/gcs.js',
@@ -300,6 +299,7 @@ module.exports = {
       handler: '~/api/papermag.js',
     },
     { path: `/${API_PATH_FRONTEND}`, handler: '~/api/index.js' }, // this proxy MUST be in the last of serverMiddleware
+    '~/api/headers.js',
   ],
 
   /**
