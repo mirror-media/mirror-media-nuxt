@@ -62,10 +62,23 @@ switch (ENV) {
     SALEOR_HOST = 'saleor-mirror.default.svc.cluster.local'
     break
   case 'dev':
-  default:
     API_HOST = 'rest-service'
     API_HOST_MEMBERSHIP_GATEWAY = 'apigateway'
     API_MEMBER_SUBSCRIPTION_GATEWAY = 'apigateway/api/v2/graphql/member'
+    API_PROTOCOL = 'http'
+    API_TIMEOUT = 5000
+    DOMAIN_NAME = 'dev.mirrormedia.mg'
+    GOOGLE_OPT_CONTAINER_ID = 'OPT-NHZNB2Z'
+    GPT_MODE = 'dev'
+    SALEOR_HOST = 'saleor-mirror'
+    break
+  default:
+    API_HOST = process.env.API_HOST || 'api-host'
+    API_HOST_MEMBERSHIP_GATEWAY =
+      process.env.API_HOST_MEMBERSHIP_GATEWAY || 'api-host-membership-gateway'
+    API_MEMBER_SUBSCRIPTION_GATEWAY =
+      process.env.API_MEMBER_SUBSCRIPTION_GATEWAY ||
+      'api-member-subscription-gateway'
     API_PROTOCOL = 'http'
     API_TIMEOUT = 5000
     DOMAIN_NAME = 'dev.mirrormedia.mg'
