@@ -35,6 +35,8 @@ let DOMAIN_NAME = ''
 let GOOGLE_OPT_CONTAINER_ID = ''
 let GPT_MODE = ''
 let SALEOR_HOST = ''
+let NEWEBPAY_MEMBERSHIP_API_URL = ''
+let NEWEBPAY_PAPERMAG_API_URL = ''
 
 switch (ENV) {
   case 'prod':
@@ -48,6 +50,12 @@ switch (ENV) {
     GOOGLE_OPT_CONTAINER_ID = 'OPT-N9L3WX3'
     GPT_MODE = 'prod'
     SALEOR_HOST = 'saleor-mirror.default.svc.cluster.local'
+    NEWEBPAY_MEMBERSHIP_API_URL =
+      process.env.NEWEBPAY_MEMBERSHIP_API_URL ||
+      'https://core.newebpay.com/MPG/mpg_gateway'
+    NEWEBPAY_PAPERMAG_API_URL =
+      process.env.NEWEBPAY_PAPERMAG_API_URL ||
+      'https://core.newebpay.com/MPG/mpg_gateway'
     break
   case 'staging':
     API_HOST = 'tr-projects-rest'
@@ -60,6 +68,12 @@ switch (ENV) {
     GOOGLE_OPT_CONTAINER_ID = 'OPT-N9L3WX3'
     GPT_MODE = 'prod'
     SALEOR_HOST = 'saleor-mirror.default.svc.cluster.local'
+    NEWEBPAY_MEMBERSHIP_API_URL =
+      process.env.NEWEBPAY_MEMBERSHIP_API_URL ||
+      'https://core.newebpay.com/MPG/mpg_gateway'
+    NEWEBPAY_PAPERMAG_API_URL =
+      process.env.NEWEBPAY_PAPERMAG_API_URL ||
+      'https://core.newebpay.com/MPG/mpg_gateway'
     break
   case 'dev':
     API_HOST = 'rest-service'
@@ -71,6 +85,12 @@ switch (ENV) {
     GOOGLE_OPT_CONTAINER_ID = 'OPT-NHZNB2Z'
     GPT_MODE = 'dev'
     SALEOR_HOST = 'saleor-mirror'
+    NEWEBPAY_MEMBERSHIP_API_URL =
+      process.env.NEWEBPAY_MEMBERSHIP_API_URL ||
+      'https://ccore.newebpay.com/MPG/mpg_gateway'
+    NEWEBPAY_PAPERMAG_API_URL =
+      process.env.NEWEBPAY_PAPERMAG_API_URL ||
+      'https://ccore.newebpay.com/MPG/mpg_gateway'
     break
   default:
     API_HOST = process.env.API_HOST || 'api-host'
@@ -85,6 +105,12 @@ switch (ENV) {
     GOOGLE_OPT_CONTAINER_ID = 'OPT-NHZNB2Z'
     GPT_MODE = 'dev'
     SALEOR_HOST = 'saleor-mirror'
+    NEWEBPAY_MEMBERSHIP_API_URL =
+      process.env.NEWEBPAY_MEMBERSHIP_API_URL ||
+      'https://ccore.newebpay.com/MPG/mpg_gateway'
+    NEWEBPAY_PAPERMAG_API_URL =
+      process.env.NEWEBPAY_PAPERMAG_API_URL ||
+      'https://ccore.newebpay.com/MPG/mpg_gateway'
 }
 
 export {
@@ -117,4 +143,6 @@ export {
   REDIS_WRITE_HOST,
   SALEOR_HOST,
   URL_STATIC_COMBO_SECTIONS,
+  NEWEBPAY_MEMBERSHIP_API_URL,
+  NEWEBPAY_PAPERMAG_API_URL,
 }
