@@ -118,6 +118,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import { useViewport } from '~/composition/viewport.js'
 
 import UiLanding from '~/components/UiLanding.vue'
 import UiArticleInfo from '~/components/culture-post-for-premium/UiArticleInfo.vue'
@@ -159,6 +160,9 @@ export default {
     // MicroAdWithLabel,
   },
   layout: 'empty',
+  setup() {
+    useViewport()
+  },
   async fetch() {
     const processPostResponse = (response) => {
       if (response.status === 'fulfilled') {
