@@ -13,23 +13,14 @@
 
       <section class="editor-choices-container">
         <ClientOnly>
-          <UiEditorChoicesExperimentVariant
-            v-if="
-              $GOExp['homepage-editor-choice-mobile-redesign'].variant === '1'
-            "
+          <UiColumnHeader
+            title="編輯精選"
+            class="home__column-header home__column-header--editor-choices"
+          />
+          <UiEditorChoices
             :articles="editorChoicesArticles"
             @sendGa="sendGaForClick('choice')"
           />
-          <div v-else>
-            <UiColumnHeader
-              title="編輯精選"
-              class="home__column-header home__column-header--editor-choices"
-            />
-            <UiEditorChoices
-              :articles="editorChoicesArticles"
-              @sendGa="sendGaForClick('choice')"
-            />
-          </div>
         </ClientOnly>
       </section>
 
@@ -151,7 +142,6 @@ import localforage from 'localforage'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiColumnHeader from '~/components/UiColumnHeader.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
-import UiEditorChoicesExperimentVariant from '~/components/UiEditorChoicesExperimentVariant.vue'
 import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
@@ -189,7 +179,6 @@ export default {
     UiFlashNews,
     UiColumnHeader,
     UiEditorChoices,
-    UiEditorChoicesExperimentVariant,
     UiVideoModal,
     UiArticleListFocus,
     UiArticleGallery,
