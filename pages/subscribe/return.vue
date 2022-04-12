@@ -14,12 +14,10 @@
 <script>
 import axios from 'axios'
 import errors from '@twreporter/errors'
-import { print } from 'graphql/language/printer'
 import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import { NEWEBPAY_KEY, NEWEBPAY_IV, ISRAFEL_ORIGIN } from '~/configs/config'
-import { fetchSubscriprionByOrderNumber } from '~/apollo/queries/memberSubscriptionQuery.gql'
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
@@ -50,11 +48,27 @@ export default {
       const MerchantOrderNo = JSON.parse(Object.keys(decryptedTradeInfo)[0])
         .Result.MerchantOrderNo
 
+      const query = `query fetchSubscriprionByOrderNumber($orderNumber: String) {
+        allSubscriptions(
+          where: {
+          orderNumber: $orderNumber
+        }
+        ) {
+          id
+          orderNumber
+          frequency
+          periodCreateDatetime
+          periodFirstDatetime
+          periodEndDatetime
+          promoteId
+        }
+      }`
+
       const { data: result } = await axios({
         url: `${ISRAFEL_ORIGIN}/api/graphql`,
         method: 'post',
         data: {
-          query: print(fetchSubscriprionByOrderNumber),
+          query,
           variables: { orderNumber: MerchantOrderNo },
         },
         headers: {
