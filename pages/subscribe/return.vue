@@ -30,7 +30,7 @@ export default {
     SubscribeFail,
   },
   async asyncData({ req, redirect }) {
-    if (req.method !== 'POST') redirect('/subscribe')
+    if (req.method !== 'POST') return redirect('/subscribe')
 
     try {
       const infoData = req.body
