@@ -76,7 +76,16 @@ export default {
           'Cache-Control': 'no-cache',
         },
       })
-      if (result.errors) throw new Error(result.errors[0].message)
+      if (result.errors) {
+        errors.helpers.wrap(
+          new Error(
+            'Errors occured while fetching fetchSubscriprion by orderNumber.'
+          ),
+          'GraphQLError',
+          'Errors returned in `fetchSubscriprionByOrderNumber` mutation',
+          { gqlErrors: result.errors }
+        )
+      }
       const decryptInfoData = result?.data?.allSubscriptions[0]
 
       if (!decryptInfoData.id) {
