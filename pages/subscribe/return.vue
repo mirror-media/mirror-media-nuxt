@@ -67,7 +67,7 @@ export default {
       let result = {}
 
       try {
-        const data = await axios({
+        const axiosRes = await axios({
           url: `${ISRAFEL_ORIGIN}/api/graphql`,
           method: 'post',
           data: {
@@ -79,7 +79,7 @@ export default {
             'Cache-Control': 'no-cache',
           },
         })
-        result = data.data
+        result = axiosRes.data
       } catch (e) {
         throw errors.helpers.annotateAxiosError(e)
       }
