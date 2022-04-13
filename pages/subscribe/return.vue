@@ -77,7 +77,7 @@ export default {
         },
       })
       if (result.errors) {
-        errors.helpers.wrap(
+        throw errors.helpers.wrap(
           new Error(
             'Errors occured while fetching fetchSubscriprion by orderNumber.'
           ),
