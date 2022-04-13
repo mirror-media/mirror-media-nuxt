@@ -76,18 +76,26 @@
         </div>
       </div>
     </div>
+    <NewebpayForm
+      :merchantId="paymentPayload.MerchantID"
+      :tradeInfo="paymentPayload.TradeInfo"
+      :tradeSha="paymentPayload.TradeSha"
+      :version="paymentPayload.Version"
+    />
   </div>
 </template>
 
 <script>
 import qs from 'qs'
 import { required, email } from 'vuelidate/lib/validators'
-import { useRoute, useStore } from '@nuxtjs/composition-api'
+import { ENV, DOMAIN_NAME } from '~/configs/config.js'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
+import NewebpayForm from '~/components/NewebpayForm.vue'
+import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
   middleware: [
     'authenticate',
@@ -101,6 +109,7 @@ export default {
     MembershipFormPerchaseInfo,
     SubscribeFormReceipt,
     UiSubscribeButton,
+    NewebpayForm,
   },
   setup() {
     const route = useRoute()
@@ -172,6 +181,7 @@ export default {
       formStatus: {
         receipt: 'OK',
       },
+      paymentPayload: {},
     }
   },
   computed: {
@@ -282,15 +292,20 @@ export default {
         const result = await this.getPaymentDataFromApiGateWay()
         const tradeInfo = qs.parse(result)
 
+        tradeInfo.ReturnURL =
+          ENV === 'local'
+            ? `http://localhost:3000/subscribe/return`
+            : `https://${DOMAIN_NAME}/subscribe/return`
+
         // // encrypt tradeInfo
-        const encryptPaymentPayload = await this.$axios.$post(
+        this.paymentPayload = await this.$axios.$post(
           `${window.location.origin}/api/v2/newebpay/v1`,
           tradeInfo
         )
-
-        // carry encrypted paymentPayload to redirect page
-        const queryString = qs.stringify(encryptPaymentPayload)
-        this.$router.push(`/subscribe/redirect?${queryString}`)
+        this.$nextTick(() => {
+          const formDOM = document.forms.newebpay
+          formDOM.submit()
+        })
       } catch (error) {
         console.error(error.message)
         window.alert('您的訂閱流程發生了錯誤，請稍後再試')
@@ -349,7 +364,6 @@ export default {
           buyerUBN: this.validReceiptData.carrierUbn,
           category: getCategory.bind(this)(),
         }
-        console.log(gateWayPayload)
       } else {
         // one_time
         const subscribePostId = this.perchasedPlan?.[0]?.id
@@ -366,7 +380,6 @@ export default {
           buyerUBN: this.validReceiptData.carrierUbn,
           category: getCategory.bind(this)(),
         }
-        console.log(gateWayPayload)
       }
 
       return await this.$getPaymentDataOfSubscription(gateWayPayload)
