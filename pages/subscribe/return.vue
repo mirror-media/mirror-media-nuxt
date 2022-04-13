@@ -64,31 +64,42 @@ export default {
         }
       }`
 
-      const { data: result } = await axios({
-        url: `${ISRAFEL_ORIGIN}/api/graphql`,
-        method: 'post',
-        data: {
-          query,
-          variables: { orderNumber: MerchantOrderNo },
-        },
-        headers: {
-          'content-type': 'application/json',
-          'Cache-Control': 'no-cache',
-        },
-      })
+      let result = {}
+
+      try {
+        const data = await axios({
+          url: `${ISRAFEL_ORIGIN}/api/graphql`,
+          method: 'post',
+          data: {
+            query,
+            variables: { orderNumber: MerchantOrderNo },
+          },
+          headers: {
+            'content-type': 'application/json',
+            'Cache-Control': 'no-cache',
+          },
+        })
+        result = data.data
+      } catch (e) {
+        throw errors.helpers.annotateAxiosError(e)
+      }
+
       if (result.errors) {
-        throw errors.helpers.wrap(
-          new Error(
-            'Errors occured while fetching fetchSubscriprion by orderNumber.'
-          ),
-          'GraphQLError',
-          'Errors returned in `fetchSubscriprionByOrderNumber` mutation',
-          { gqlErrors: result.errors }
+        throw new Error(
+          errors.helpers.wrap(
+            new Error(
+              'Errors occured while fetching fetchSubscriprion by orderNumber.'
+            ),
+            'GraphQLError',
+            'Errors returned in `fetchSubscriprionByOrderNumber` query',
+            { gqlErrors: result.errors }
+          )
         )
       }
+
       const decryptInfoData = result?.data?.allSubscriptions[0]
 
-      if (!decryptInfoData.id) {
+      if (!decryptInfoData?.id) {
         return {
           errorData: {
             orderId: '',
@@ -106,24 +117,15 @@ export default {
         },
       }
     } catch (e) {
-      if (e.stack) {
-        console.log(
-          JSON.stringify({
-            severity: 'ERROR',
-          })
-        )
-      } else {
-        const annotatingError = errors.helpers.annotateAxiosError(e)
-        console.log(
-          JSON.stringify({
-            severity: 'ERROR',
-            message: errors.helpers.printAll(annotatingError, {
-              withStack: true,
-              withPayload: true,
-            }),
-          })
-        )
-      }
+      console.log(
+        JSON.stringify({
+          severity: 'ERROR',
+          message: errors.helpers.printAll(e, {
+            withStack: true,
+            withPayload: true,
+          }),
+        })
+      )
     }
   },
   data() {
