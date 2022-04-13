@@ -5,14 +5,14 @@
       :tradeInfo="paymentPayload.TradeInfo"
       :tradeSha="paymentPayload.TradeSha"
       :version="paymentPayload.Version"
+      :newebpayApiUrl="newebpayApiUrl"
     />
   </div>
 </template>
 
 <script>
+import { NEWEBPAY_MEMBERSHIP_API_URL } from '~/configs/config.js'
 import NewebpayForm from '~/components/NewebpayForm.vue'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
-import { persistStorageState } from '~/xstate/member-subscribe/util'
 
 export default {
   components: {
@@ -26,11 +26,9 @@ export default {
       // redirect('/papermag')
     }
   },
-  setup() {
-    const { state, send } = useMemberSubscribeMachine()
+  data() {
     return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
+      newebpayApiUrl: NEWEBPAY_MEMBERSHIP_API_URL,
     }
   },
   computed: {
@@ -45,9 +43,6 @@ export default {
     },
   },
   mounted() {
-    this.sendMembershipSubscribe('付款')
-    persistStorageState(this.stateMembershipSubscribe)
-
     // submit newebpay form-post to redirect to newebpay page
     const formDOM = document.forms.newebpay
     formDOM.submit()

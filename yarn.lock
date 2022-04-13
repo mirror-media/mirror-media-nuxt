@@ -6339,13 +6339,6 @@
   dependencies:
     tslib "^1.14.1"
 
-"@xstate/inspect@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@xstate/inspect/-/inspect-0.4.1.tgz#6b00b945c03280a333de8ddf10e91830c361052d"
-  integrity sha512-tcGBUCVymP8ij0K2fXZckrwrQkmNJL1DgQAM0eSILQKb8iBDN3GeqhYkNCS4HP29EzF2TZL0+k74FPWKaU9Fhw==
-  dependencies:
-    fast-safe-stringify "^2.0.7"
-
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
@@ -22228,16 +22221,6 @@ xss@^1.0.6:
   dependencies:
     commander "^2.20.3"
     cssfilter "0.0.10"
-
-xstate-vue2@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/xstate-vue2/-/xstate-vue2-0.2.1.tgz#61a31ed15fb68fd79ec951801de8c4baad8882f3"
-  integrity sha512-x/XiTtrbg5F1n+GpnKDvPbiOh2EXdUufHgJzvaSsy9FXHSWkkz8/fL1ck0gXPKkCv9suNdouJWeE67sTML7KFw==
-
-xstate@^4.23.1:
-  version "4.23.1"
-  resolved "https://registry.yarnpkg.com/xstate/-/xstate-4.23.1.tgz#a85ce0ca4ad9737f1497e2da7a3abc6a5697fbcd"
-  integrity sha512-8ZoCe8d6wDSPfkep+GBgi+fKAdMyXcaizoNf5FKceEhlso4+9n1TeK6oviaDsXZ3Z5O8xKkJOxXPNuD4cA9LCw==
 
 xtend@4.0.1:
   version "4.0.1"

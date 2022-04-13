@@ -20,7 +20,9 @@
               更多內容，歡迎<a
                 href="https://docs.google.com/forms/d/e/1FAIpQLSeqbPjhSZx63bDWFO298acE--otet1s4-BGOmTKyjG1E4t4yQ/viewform"
                 >訂閱鏡週刊</a
-              >、<a href="/story/webauthorize/">了解內容授權資訊</a>。
+              >、<a :href="`${storyPageBaseUrl}/webauthorize/`"
+                >了解內容授權資訊</a
+              >。
             </p>
           </div>
           <div class="magazine">
@@ -37,77 +39,48 @@
       </ClientOnly>
     </article>
     <ClientOnly v-if="!hideInvite">
-      <template v-if="!isMemberSubscribeFeatureToggled($route)">
-        <div
-          v-if="pageState === 'premiumPageNotLogin'"
-          class="invite-to-login-wrapper"
-        >
-          <div class="invite-to-login-wrapper__fade-out-effect" />
-          <UiPremiumInviteToLogin />
-        </div>
-      </template>
-      <template v-else>
-        <div
-          v-if="
-            !failTimes &&
-            (isArticleContentTruncatedByGateway ||
-              (stateMembershipSubscribe &&
-                [
-                  '會員訂閱功能.會員文章頁.未登入',
-                  '會員訂閱功能.會員文章頁.已登入.未訂閱',
-                ].some(stateMembershipSubscribe.matches)))
-          "
-          class="invite-to-login-wrapper"
-        >
-          <div class="invite-to-login-wrapper__fade-out-effect" />
-          <UiPremiumInviteToSubscribe
-            :shouldShowLoginNow="
-              stateMembershipSubscribe.matches('會員訂閱功能.會員文章頁.未登入')
-            "
-            @subscribePremium="sendMembershipSubscribe('加入Premium會員')"
-            @subscribePost="
-              sendMembershipSubscribe({
-                type: '解鎖這篇報導',
-                postId,
-              })
-            "
-            @login="sendMembershipSubscribe('立即登入')"
-          />
-        </div>
-      </template>
+      <div
+        v-if="!failTimes && isArticleContentTruncatedByGateway"
+        class="invite-to-login-wrapper"
+      >
+        <div class="invite-to-login-wrapper__fade-out-effect" />
+        <UiPremiumInviteToSubscribe
+          :shouldShowLoginNow="!$store.getters['membership/isLoggedIn']"
+          @subscribePremium="$router.replace('/subscribe')"
+          @subscribePost="handleSubscribePost"
+          @login="handleLogin"
+        />
+      </div>
     </ClientOnly>
   </div>
 </template>
 
 <script>
+import { computed, useStore } from '@nuxtjs/composition-api'
 import ContentHandler from './ContentHandler.vue'
 import UiPremiumBrief from './UiPremiumBrief.vue'
-import UiPremiumInviteToLogin from '~/components/UiPremiumInviteToLogin.vue'
 import UiArticleSkeleton from '~/components/culture-post-for-premium/UiArticleSkeleton.vue'
 import UiReloadArticle from '~/components/culture-post-for-premium/UiReloadArticle.vue'
 import UiPremiumInviteToSubscribe from '~/components/UiPremiumInviteToSubscribe.vue'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
-import { isMemberSubscribeFeatureToggled } from '~/xstate/member-subscribe/util'
 
 export default {
   name: 'UiArticleBody',
 
   components: {
     ContentHandler,
-    UiPremiumInviteToLogin,
     UiPremiumInviteToSubscribe,
     UiPremiumBrief,
-    // eslint-disable-next-line vue/no-unused-components
     UiArticleSkeleton,
     UiReloadArticle,
   },
 
   setup() {
-    const { state, send } = useMemberSubscribeMachine()
+    const store = useStore()
+    const storyPageBaseUrl = computed(
+      () => store?.getters?.['membership-subscribe/storyPageBaseUrl']
+    )
     return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
-      isMemberSubscribeFeatureToggled,
+      storyPageBaseUrl,
     }
   },
 
@@ -170,6 +143,14 @@ export default {
     },
     handleReload() {
       this.$emit('reload')
+    },
+    handleLogin() {
+      window.location.assign(`/login?destination=${this.$route.fullPath}`)
+    },
+    handleSubscribePost() {
+      window.location.assign(
+        `/subscribe/info?plan=one-time&one-time-post-id=${this.postId}`
+      )
     },
   },
 }

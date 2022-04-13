@@ -62,4 +62,11 @@ export const getters = {
         state.basicInfo.type === 'subscribe_monthly')
     )
   },
+  storyPageBaseUrl(state, getters) {
+    let baseUrl = '/story'
+    if (getters.isPremiumMember) {
+      baseUrl = '/pre/story'
+    }
+    return baseUrl
+  },
 }

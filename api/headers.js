@@ -26,7 +26,7 @@ module.exports = function handleHeaders(req, res, next) {
   }
 
   if (url === '/section/videohub') {
-    res.setHeader('Cache-Control', `public, max-age=${60 * 10}`)
+    res.setHeader('Cache-Control', `public, max-age=${60 * 15}`)
     return next()
   }
 

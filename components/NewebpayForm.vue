@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import { ENV } from '../configs/config'
-
 export default {
   props: {
     merchantId: {
@@ -36,14 +34,11 @@ export default {
       isRequired: true,
       default: '1.6',
     },
-  },
-  data() {
-    return {
-      newebpayApiUrl:
-        ENV === 'prod'
-          ? 'https://core.newebpay.com/MPG/mpg_gateway'
-          : 'https://ccore.newebpay.com/MPG/mpg_gateway',
-    }
+    newebpayApiUrl: {
+      type: String,
+      default: 'https://ccore.newebpay.com/MPG/mpg_gateway',
+      isRequired: true,
+    },
   },
 }
 </script>

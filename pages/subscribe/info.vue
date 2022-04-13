@@ -97,7 +97,12 @@ import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
 import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
 export default {
-  // middleware: ['handle-go-to-marketing', 'handle-forbid-direct-navigate'],
+  middleware: [
+    'authenticate',
+    'handle-go-to-marketing',
+    'handle-go-to-email-verify',
+    'handle-go-to-service-rule',
+  ],
   components: {
     SubscribeStepProgress,
     MembershipFormPlanList,
@@ -107,25 +112,22 @@ export default {
     NewebpayForm,
   },
   setup() {
-    const { state, send } = useMemberSubscribeMachine()
+    const route = useRoute()
+    const { state } = useStore()
     const perchasedPlan = usePerchasedPlan()
     return {
-      stateMembershipSubscribe: state,
-      sendMembershipSubscribe: send,
       perchasedPlan,
-      isUpgradeFromMonthToYear: !!state?.value?.matches(
-        '會員訂閱功能.方案購買流程.確認訂購頁.確認訂購表單頁.準備將月訂閱升級年訂閱'
-      ),
+      isUpgradeFromMonthToYear:
+        route.value.query.plan === 'yearly' &&
+        state['membership-subscribe'].basicInfo.type === 'subscribe_monthly',
     }
 
     function usePerchasedPlan() {
-      const { state } = useMemberSubscribeMachine()
-      const prefix = '會員訂閱功能.方案購買流程.確認訂購頁.確認訂購表單頁'
-
-      if (state?.value?.matches(`${prefix}.準備單篇訂閱`)) {
+      const route = useRoute()
+      if (route.value.query.plan === 'one-time') {
         return [
           {
-            id: state.value.context.subscriptionOrderOneTimePostId,
+            id: route.value.query['one-time-post-id'],
             detail: '鏡週刊Basic會員（單篇）',
             hint: '單篇 $1 元，享 14 天內無限次觀看',
             price: '原價 NT$1',
@@ -133,7 +135,7 @@ export default {
             key: 'basic',
           },
         ]
-      } else if (state?.value?.matches(`${prefix}.準備月訂閱`)) {
+      } else if (route.value.query.plan === 'monthly') {
         return [
           {
             id: 1,
@@ -144,10 +146,7 @@ export default {
             key: 'monthly',
           },
         ]
-      } else if (
-        state?.value?.matches(`${prefix}.準備年訂閱`) ||
-        state?.value?.matches(`${prefix}.準備將月訂閱升級年訂閱`)
-      ) {
+      } else if (route.value.query.plan === 'yearly') {
         return [
           {
             id: 1,
@@ -344,12 +343,6 @@ export default {
         console.error(error)
         this.isLoading = false
       }
-
-      /*
-       * if (this.orderStatus === 'success')
-       *   return this.sendMembershipSubscribe('付款成功')
-       * this.sendMembershipSubscribe('付款失敗')
-       */
     },
 
     async getPaymentDataFromApiGateWay() {

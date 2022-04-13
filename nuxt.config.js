@@ -245,7 +245,6 @@ module.exports = {
     '~/plugins/user-behavior-log/index.client.js',
     { src: '~/plugins/vuelidate', ssr: true },
     '~/plugins/google-optimize-experiments/index.js',
-    '~/plugins/xstate-inspector.client.js',
     '~/plugins/ad/index.client.js',
   ],
 
@@ -571,19 +570,6 @@ module.exports = {
 
   router: {
     extendRoutes(routes, resolve) {
-      // Toggle on the feature of replace /login origin pages/login.vue page component with pages/loginNew.vue
-      const originalLoginRouteIndex = routes.findIndex(
-        function getRoutePathLogin(route) {
-          return route.path === '/login'
-        }
-      )
-      routes.splice(originalLoginRouteIndex, 1)
-      routes.push({
-        path: '/login',
-        name: 'login',
-        component: resolve(__dirname, 'pages/loginNew.vue'),
-      })
-
       // Toggle on the feature of replace /topic origin pages/topic/_id.vue page component with deprecated/topic-page/Topic.vue
       const originalTopicRouteIndex = routes.findIndex(
         function getRouteNameTopic(route) {
@@ -610,5 +596,9 @@ module.exports = {
 
   publicRuntimeConfig: {
     noAdFeatureToggle: process.env.NO_AD_FEATURE_TOGGLE || 'off',
+  },
+
+  env: {
+    ENV,
   },
 }
