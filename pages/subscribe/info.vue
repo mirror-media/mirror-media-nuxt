@@ -81,6 +81,7 @@
       :tradeInfo="paymentPayload.TradeInfo"
       :tradeSha="paymentPayload.TradeSha"
       :version="paymentPayload.Version"
+      :newebpayApiUrl="newebpayApiUrl"
     />
   </div>
 </template>
@@ -88,14 +89,19 @@
 <script>
 import qs from 'qs'
 import { required, email } from 'vuelidate/lib/validators'
-import { ENV, DOMAIN_NAME } from '~/configs/config.js'
+import { useRoute, useStore } from '@nuxtjs/composition-api'
+import {
+  ENV,
+  DOMAIN_NAME,
+  NEWEBPAY_MEMBERSHIP_API_URL,
+} from '~/configs/config.js'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
-import { useMemberSubscribeMachine } from '~/xstate/member-subscribe/compositions'
+
 export default {
   middleware: [
     'authenticate',
@@ -182,6 +188,7 @@ export default {
         receipt: 'OK',
       },
       paymentPayload: {},
+      newebpayApiUrl: NEWEBPAY_MEMBERSHIP_API_URL,
     }
   },
   computed: {
