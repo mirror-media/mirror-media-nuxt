@@ -375,6 +375,7 @@ export default {
       return this.popularStories.length > 0
     },
   },
+
   methods: {
     handleLoadStoryListRelated() {
       this.fetchRelatedImages()
@@ -412,7 +413,7 @@ export default {
           return {
             slug,
             title,
-            href: `/story/${slug}/`,
+            href: `/pre/story/${slug}/`,
             imgSrc: getImgSrc(heroImage),
             label: getLabel(categories),
             sectionName: sections[0]?.name,
@@ -438,7 +439,7 @@ export default {
           return {
             slug,
             title,
-            href: slug,
+            href: `/pre${slug}`,
             imgSrc: getImgSrc(heroImage),
             label: getLabel(sections),
             sectionName: sections[0]?.name,
