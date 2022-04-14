@@ -24,12 +24,6 @@ steps:
       - ./gcskeyfile.json
   - name: bash
     args:
-      - cp
-      - "-R"
-      - ./configs.build/mirror-media/mirror-media-nuxt/${BRANCH_NAME}/config.js
-      - ./configs/config.js
-  - name: bash
-    args:
       - rm
       - "-R"
       - ./configs.build
@@ -47,6 +41,8 @@ steps:
       - "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}_${SHORT_SHA}_${BUILD_ID}"
       - "--cache-from"
       - "gcr.io/$PROJECT_ID/mirror-media-nuxt:${BRANCH_NAME}"
+      - "--build-arg"
+      - "ENV=${BRANCH_NAME}"
       - .
   - name: gcr.io/cloud-builders/docker
     args:

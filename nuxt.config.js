@@ -596,4 +596,8 @@ module.exports = {
   publicRuntimeConfig: {
     noAdFeatureToggle: process.env.NO_AD_FEATURE_TOGGLE || 'off',
   },
+
+  env: {
+    ENV,
+  },
 }

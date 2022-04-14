@@ -3,20 +3,10 @@
     class="video-subscriptions"
     :class="{ isPremiumMember: isPremiumMember }"
   >
-    <div v-if="isPremiumMember" class="scroll-container premium">
-      <UiYoutubeSubscribeForPremium
-        v-for="channel in CHANNELS"
-        :key="`channel-${channel.id}`"
-        :channelId="channel.id"
-        :channelName="channel.name"
-        :channelTitle="channel.title"
-        class="video-subscriptions__channel"
-      />
-    </div>
-    <div v-else class="scroll-container">
+    <div class="scroll-container">
       <UiYoutubeSubscribe
         v-for="channel in CHANNELS"
-        :key="`channel-${channel}`"
+        :key="`channel-${channel.id}`"
         :channelId="channel.id"
         :channelName="channel.name"
         :channelTitle="channel.title"
@@ -28,7 +18,6 @@
 
 <script>
 import UiYoutubeSubscribe from './UiYoutubeSubscribe.vue'
-import UiYoutubeSubscribeForPremium from './UiYoutubeSubscribeForPremium.vue'
 
 const CHANNELS = [
   {
@@ -70,7 +59,6 @@ export default {
   title: 'UiVideoSubscriptions',
   components: {
     UiYoutubeSubscribe,
-    UiYoutubeSubscribeForPremium,
   },
   data() {
     return {

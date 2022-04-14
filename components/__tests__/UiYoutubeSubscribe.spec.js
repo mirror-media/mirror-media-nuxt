@@ -1,4 +1,4 @@
-import UiYoutubeSubscribe from '../UiYoutubeSubscribe.vue'
+import UiYoutubeSubscribe from '../../deprecated/topic-page/components/UiYoutubeSubscribe.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const channelId = 'UCYkldEK001GxR884OZMFnRw'
