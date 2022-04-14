@@ -48,9 +48,6 @@ const createWrapper = createWrapperHelper({
       'homepage-latest-redesign': {
         variant: '2',
       },
-      'homepage-editor-choice-mobile-redesign': {
-        variant: '2',
-      },
     },
   },
   stubs: ['ClientOnly'],

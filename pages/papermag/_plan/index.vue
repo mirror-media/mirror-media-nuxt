@@ -13,6 +13,7 @@
       :tradeInfo="paymentPayload.TradeInfo"
       :tradeSha="paymentPayload.TradeSha"
       :version="paymentPayload.Version"
+      :newebpayApiUrl="newebpayApiUrl"
     />
 
     <!-- loading mask -->
@@ -26,6 +27,7 @@
 
 <script>
 // import qs from 'qs'
+import { NEWEBPAY_PAPERMAG_API_URL } from '~/configs/config.js'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeForm from '~/components/SubscribeForm.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
@@ -50,6 +52,7 @@ export default {
       isLoading: false,
       validateOn: true,
       paymentPayload: {},
+      newebpayApiUrl: NEWEBPAY_PAPERMAG_API_URL,
     }
   },
   computed: {
@@ -84,6 +87,7 @@ export default {
         this.isLoading = false
       } catch (err) {
         console.error(err)
+
         // payment fail
         this.$router.push(`/papermag/return?order-fail=true`)
       }
