@@ -12,16 +12,14 @@
       <ContainerGptAd class="home__ad home__ad--hd" pageKey="home" adKey="HD" />
 
       <section class="editor-choices-container">
-        <ClientOnly>
-          <UiColumnHeader
-            title="編輯精選"
-            class="home__column-header home__column-header--editor-choices"
-          />
-          <UiEditorChoices
-            :articles="editorChoicesArticles"
-            @sendGa="sendGaForClick('choice')"
-          />
-        </ClientOnly>
+        <UiColumnHeader
+          title="編輯精選"
+          class="home__column-header home__column-header--editor-choices"
+        />
+        <UiEditorChoices
+          :articles="editorChoicesArticles"
+          @sendGa="sendGaForClick('choice')"
+        />
       </section>
 
       <ContainerGptAd
