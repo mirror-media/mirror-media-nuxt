@@ -5,11 +5,13 @@
       :tradeInfo="paymentPayload.TradeInfo"
       :tradeSha="paymentPayload.TradeSha"
       :version="paymentPayload.Version"
+      :newebpayApiUrl="newebpayApiUrl"
     />
   </div>
 </template>
 
 <script>
+import { NEWEBPAY_MEMBERSHIP_API_URL } from '~/configs/config.js'
 import NewebpayForm from '~/components/NewebpayForm.vue'
 
 export default {
@@ -22,6 +24,11 @@ export default {
     const isReadyToPay = store.getters['subscribe/isReadyToPay']
     if (!isReadyToPay) {
       // redirect('/papermag')
+    }
+  },
+  data() {
+    return {
+      newebpayApiUrl: NEWEBPAY_MEMBERSHIP_API_URL,
     }
   },
   computed: {

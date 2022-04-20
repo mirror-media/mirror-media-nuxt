@@ -395,6 +395,7 @@ module.exports = {
             ssr: {
               ignorePaths: [
                 '/papermag/return',
+                '/subscribe/return',
                 '/campaigns',
                 '/projects',
                 '/dist',

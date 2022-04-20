@@ -12,25 +12,14 @@
       <ContainerGptAd class="home__ad home__ad--hd" pageKey="home" adKey="HD" />
 
       <section class="editor-choices-container">
-        <ClientOnly>
-          <UiEditorChoicesExperimentVariant
-            v-if="
-              $GOExp['homepage-editor-choice-mobile-redesign'].variant === '1'
-            "
-            :articles="editorChoicesArticles"
-            @sendGa="sendGaForClick('choice')"
-          />
-          <div v-else>
-            <UiColumnHeader
-              title="編輯精選"
-              class="home__column-header home__column-header--editor-choices"
-            />
-            <UiEditorChoices
-              :articles="editorChoicesArticles"
-              @sendGa="sendGaForClick('choice')"
-            />
-          </div>
-        </ClientOnly>
+        <UiColumnHeader
+          title="編輯精選"
+          class="home__column-header home__column-header--editor-choices"
+        />
+        <UiEditorChoices
+          :articles="editorChoicesArticles"
+          @sendGa="sendGaForClick('choice')"
+        />
       </section>
 
       <ContainerGptAd
@@ -151,7 +140,6 @@ import localforage from 'localforage'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiColumnHeader from '~/components/UiColumnHeader.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
-import UiEditorChoicesExperimentVariant from '~/components/UiEditorChoicesExperimentVariant.vue'
 import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
@@ -166,7 +154,6 @@ import SvgCloseIcon from '~/assets/close-black.svg?inline'
 // import { isTruthy } from '~/utils/index.js'
 import { stripHtmlTags } from '~/utils/article.js'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
-
 const CATEGORY_ID_POLITICAL = '5979ac0de531830d00e330a7' // 政治
 const CATEGORY_ID_CITY_NEWS = '5979ac33e531830d00e330a9' // 社會
 const CATEGORY_ID_BUSINESS = '57e1e16dee85930e00cad4ec' // 財經
@@ -189,7 +176,6 @@ export default {
     UiFlashNews,
     UiColumnHeader,
     UiEditorChoices,
-    UiEditorChoicesExperimentVariant,
     UiVideoModal,
     UiArticleListFocus,
     UiArticleGallery,
@@ -280,8 +266,7 @@ export default {
 
     editorChoicesArticles() {
       const { choices: articles = [] } = this.groupedArticles
-
-      return articles.map(function transformContent(article) {
+      function transformContent(article, isPremiumMember) {
         const {
           slug = '',
           title = '',
@@ -295,18 +280,22 @@ export default {
         const [section = {}] = sections
 
         return {
+          style,
           slug,
           title,
           href:
             style !== 'projects'
-              ? `${getHref(article)}?${GA_UTM_EDITOR_CHOICES}`
-              : getHref(article),
+              ? `${getHref(article, isPremiumMember)}?${GA_UTM_EDITOR_CHOICES}`
+              : getHref(article, isPremiumMember),
           imgSrc: tablet.url || SITE_OG_IMG,
           imgSrcMobile: mobile.url || SITE_OG_IMG,
           label: section.title,
           sectionName: section.name,
         }
-      })
+      }
+      return articles.map((article) =>
+        transformContent(article, this.isPremiumMember)
+      )
     },
     doesHaveAnyLatestItemsLeftToLoad() {
       const { total, maxResults, page: currentPage } = this.latestList
@@ -360,27 +349,33 @@ export default {
     focusArticles() {
       const { grouped: articles = [] } = this.groupedArticles
 
-      return articles.map(transformContentOfFocus)
+      return articles.map((article) =>
+        transformContentOfFocus(article, this.isPremiumMember)
+      )
 
-      function transformContentOfFocus(article) {
+      function transformContentOfFocus(article, isPremiumMember) {
         const { slug = '', title = '', relateds = [] } = article
 
         return {
           title,
           slug,
-          href: getHref(article),
+          href: getHref(article, isPremiumMember),
           imgSrc: getImg(article),
-          relateds: relateds.slice(0, 3).map(transformContentOfFocusRelated),
+          relateds: relateds
+            .slice(0, 3)
+            .map((related) =>
+              transformContentOfFocusRelated(related, this.isPremiumMember)
+            ),
         }
       }
 
-      function transformContentOfFocusRelated(article) {
+      function transformContentOfFocusRelated(article, isPremiumMember) {
         const { slug = '', title = '' } = article
 
         return {
           slug,
           title,
-          href: getHref(article),
+          href: getHref(article, isPremiumMember),
         }
       }
     },
@@ -474,7 +469,7 @@ export default {
         description: _.isObject(brief)
           ? stripHtmlTags(brief.html ?? '')
           : brief,
-        href: getHref(item),
+        href: getHref(item, this.isPremiumMember),
         imgSrc: getImg(item),
         label: getLabel(item),
         sectionName: item.partner ? 'external' : sections[0]?.name,
@@ -678,19 +673,21 @@ function transformContentOfFlashNews(article = {}) {
   }
 }
 
-function getHref({ style = '', slug = '', partner, name = '' } = {}) {
+function getHref(
+  { style = '', slug = '', partner, name = '' } = {},
+  isPremiumMember = false
+) {
   if (partner) {
     return `/external/${slug}/`
   }
-
-  switch (style) {
-    case 'campaign':
-      return `/campaigns/${slug}/`
-    case 'projects':
-      return `/projects/${slug}/`
-    default:
-      return `/story/${slug}/`
+  if (style === 'campaign') {
+    return `/campaigns/${slug}/`
+  } else if (style === 'projects') {
+    return `/projects/${slug}/`
+  } else if (isPremiumMember) {
+    return `pre/story/${slug}/`
   }
+  return `/story/${slug}/`
 }
 
 function getImg({ heroImage, ogImage, heroVideo, partner } = {}) {

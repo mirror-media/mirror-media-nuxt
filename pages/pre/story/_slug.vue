@@ -1,116 +1,124 @@
 <template>
   <section>
-    <UiLanding
-      class="landing"
-      :sectionLabel="post.sectionLabelFirst"
-      :sectionLabelColor="post.sectionLabelFirstColor"
-      :sectionLabelHref="`/section/${post.sectionFirstName}`"
-      :title="post.title"
-      :titleStyle="{
-        fontFamily: 'sans-serif',
-        fontWeight: 'normal',
-      }"
-      :coverVideo="post.coverVideo"
-      :coverPicture="post.coverPicture"
-      :heroCaption="post.heroCaption"
-    />
-    <UiArticleInfo
-      class="article-info"
-      :publishTime="post.publishedDate"
-      :updateTime="post.updatedAt"
-      :writers="post.writers"
-      :extendByline="post.extendByline"
-      :photographers="post.photographers"
-      :tags="post.tags"
-      @shareLinksVisibilityChanged="handleShareLinksVisibilityChanged"
-    />
-    <div class="article-body-wrapper">
-      <UiArticleBody
-        ref="articleBody"
-        class="culture-post__article-body"
-        :postId="post.id"
-        :brief="post.brief"
-        :briefColor="post.sectionLabelFirstColor"
-        :content="post.content"
-        :isArticleContentTruncatedByGateway="post.isTruncated"
-        :isLoading="false"
-        :isFail="false"
-        :failTimes="0"
-        :hideInvite="true"
-        @reload="handleReload"
+    <section v-if="isStylePhotography">
+      <ContainerPhotoGallery :story="story" />
+    </section>
+    <section v-else>
+      <ContainerHeaderPremium />
+
+      <UiLanding
+        class="landing"
+        :sectionLabel="post.sectionLabelFirst"
+        :sectionLabelColor="post.sectionLabelFirstColor"
+        :sectionLabelHref="`/section/${post.sectionFirstName}`"
+        :title="post.title"
+        :titleStyle="{
+          fontFamily: 'sans-serif',
+          fontWeight: 'normal',
+        }"
+        :coverVideo="post.coverVideo"
+        :coverPicture="post.coverPicture"
+        :heroCaption="post.heroCaption"
       />
-      <transition name="fade">
-        <UiShareLinksHasCopyLink
-          v-show="showShareLinksAside"
-          class="article-body-wrapper__share-links"
-          :direction="'vertical-reverse'"
+      <UiArticleInfo
+        class="article-info"
+        :publishTime="post.publishedDate"
+        :updateTime="post.updatedAt"
+        :writers="post.writers"
+        :extendByline="post.extendByline"
+        :photographers="post.photographers"
+        :tags="post.tags"
+        @shareLinksVisibilityChanged="handleShareLinksVisibilityChanged"
+      />
+      <div class="article-body-wrapper">
+        <UiArticleBody
+          ref="articleBody"
+          class="culture-post__article-body"
+          :postId="post.id"
+          :brief="post.brief"
+          :briefColor="post.sectionLabelFirstColor"
+          :content="post.content"
+          :isArticleContentTruncatedByGateway="post.isTruncated"
+          :isLoading="false"
+          :isFail="false"
+          :failTimes="0"
+          :hideInvite="true"
+          @reload="handleReload"
         />
-      </transition>
-    </div>
-    <div class="additional-info-wrapper">
-      <UiAnniversary class="anniversary" />
-      <UiSocialNetworkServices class="sns" />
-    </div>
-    <LazyRenderer
-      class="story__list related-list"
-      @load="handleLoadStoryListRelated"
-    >
-      <UiStoryListRelatedMobileLayoutColumn
-        :items="relateds"
-        :images="relatedImages"
-        @sendGa="sendGaForClick('related')"
-      >
-        <!--        <template v-if="canAdvertise" #ads>-->
-        <!--          <ClientOnly>-->
-        <!--            <MicroAdWithLabel-->
-        <!--              v-for="unit in microAdUnits[device]"-->
-        <!--              :key="unit.name"-->
-        <!--              :unitId="unit.id"-->
-        <!--            />-->
-        <!--            <div id="_popIn_recommend"></div>-->
-        <!--          </ClientOnly>-->
-        <!--        </template>-->
-      </UiStoryListRelatedMobileLayoutColumn>
-    </LazyRenderer>
-    <section
-      v-observe-visibility="handleLatestListVisibilityChanged"
-      class="latest-list-wrapper"
-    >
-      <h1 class="latest-list-wrapper__title">最新文章</h1>
-      <LazyRenderer
-        class="latest-list-wrapper__latest-list"
-        @load="fetchLatestStories"
-      >
-        <section v-if="doesHaveLatestStories">
-          <UiArticleListCompact
-            :items="latestStories"
-            @sendGa="sendGaForClick('popular')"
+        <transition name="fade">
+          <UiShareLinksHasCopyLink
+            v-show="showShareLinksAside"
+            class="article-body-wrapper__share-links"
+            :direction="'vertical-reverse'"
           />
-        </section>
-      </LazyRenderer>
-    </section>
-    <div class="separator" />
-    <section class="popular-list-wrapper">
-      <h1 class="popular-list-wrapper__title">熱門文章</h1>
+        </transition>
+      </div>
+      <div class="additional-info-wrapper">
+        <UiAnniversary class="anniversary" />
+        <UiSocialNetworkServices class="sns" />
+      </div>
       <LazyRenderer
-        class="popular-list-wrapper__popular-list"
-        @load="fetchPopularStories"
+        class="story__list related-list"
+        @load="handleLoadStoryListRelated"
       >
-        <section v-if="doesHavePopularStories">
-          <UiArticleListCompact
-            :items="popularStories"
-            :titleColor="'#054f77'"
-            @sendGa="sendGaForClick('popular')"
-          />
-        </section>
+        <UiStoryListRelatedMobileLayoutColumn
+          :items="relateds"
+          :images="relatedImages"
+          @sendGa="sendGaForClick('related')"
+        >
+          <!--        <template v-if="canAdvertise" #ads>-->
+          <!--          <ClientOnly>-->
+          <!--            <MicroAdWithLabel-->
+          <!--              v-for="unit in microAdUnits[device]"-->
+          <!--              :key="unit.name"-->
+          <!--              :unitId="unit.id"-->
+          <!--            />-->
+          <!--            <div id="_popIn_recommend"></div>-->
+          <!--          </ClientOnly>-->
+          <!--        </template>-->
+        </UiStoryListRelatedMobileLayoutColumn>
       </LazyRenderer>
+      <section
+        v-observe-visibility="handleLatestListVisibilityChanged"
+        class="latest-list-wrapper"
+      >
+        <h1 class="latest-list-wrapper__title">最新文章</h1>
+        <LazyRenderer
+          class="latest-list-wrapper__latest-list"
+          @load="fetchLatestStories"
+        >
+          <section v-if="doesHaveLatestStories">
+            <UiArticleListCompact
+              :items="latestStories"
+              @sendGa="sendGaForClick('popular')"
+            />
+          </section>
+        </LazyRenderer>
+      </section>
+      <div class="separator" />
+      <section class="popular-list-wrapper">
+        <h1 class="popular-list-wrapper__title">熱門文章</h1>
+        <LazyRenderer
+          class="popular-list-wrapper__popular-list"
+          @load="fetchPopularStories"
+        >
+          <section v-if="doesHavePopularStories">
+            <UiArticleListCompact
+              :items="popularStories"
+              :titleColor="'#054f77'"
+              @sendGa="sendGaForClick('popular')"
+            />
+          </section>
+        </LazyRenderer>
+      </section>
+      <UiShareLinksToggled class="share-toggled" />
     </section>
-    <UiShareLinksToggled class="share-toggled" />
   </section>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import { useViewport } from '~/composition/viewport.js'
 
 import UiLanding from '~/components/UiLanding.vue'
 import UiArticleInfo from '~/components/culture-post-for-premium/UiArticleInfo.vue'
@@ -121,9 +129,8 @@ import UiStoryListRelatedMobileLayoutColumn from '~/components/UiStoryListRelate
 import UiArticleListCompact from '~/components/UiArticleListCompact.vue'
 import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
 import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
-
-// import MicroAdWithLabel from '~/components/MicroAdWithLabel.vue'
-
+import ContainerPhotoGallery from '~/components/photo-gallery/ContainerPhotoGallery.vue' // import MicroAdWithLabel from '~/components/MicroAdWithLabel.vue'
+import ContainerHeaderPremium from '~/components/ContainerHeaderPremium.vue'
 import { DOMAIN_NAME, ENV, PREVIEW_QUERY } from '~/configs/config'
 import { getSectionColor } from '~/utils/index.js'
 
@@ -147,8 +154,14 @@ export default {
     UiArticleListCompact,
     UiShareLinksToggled,
     UiShareLinksHasCopyLink,
+    ContainerPhotoGallery,
+    ContainerHeaderPremium,
 
     // MicroAdWithLabel,
+  },
+  layout: 'empty',
+  setup() {
+    useViewport()
   },
   async fetch() {
     const processPostResponse = (response) => {
@@ -158,7 +171,6 @@ export default {
           'setCanAdvertise',
           !this.story.hiddenAdvertised ?? true
         )
-
         const isTitleExist = this.story.title
         const isContentExist = (this.story?.content?.apiData ?? []).length > 0
         if (!isTitleExist || !isContentExist) {
@@ -346,7 +358,9 @@ export default {
     relateds() {
       return (this.story.relateds ?? []).filter((item) => item.slug)
     },
-
+    isStylePhotography() {
+      return this.story.style === 'photography'
+    },
     section() {
       return this.story.sections?.[0] || {}
     },
@@ -361,6 +375,7 @@ export default {
       return this.popularStories.length > 0
     },
   },
+
   methods: {
     handleLoadStoryListRelated() {
       this.fetchRelatedImages()
@@ -398,7 +413,7 @@ export default {
           return {
             slug,
             title,
-            href: `/story/${slug}/`,
+            href: `/pre/story/${slug}/`,
             imgSrc: getImgSrc(heroImage),
             label: getLabel(categories),
             sectionName: sections[0]?.name,
@@ -424,7 +439,7 @@ export default {
           return {
             slug,
             title,
-            href: slug,
+            href: `/pre${slug}`,
             imgSrc: getImgSrc(heroImage),
             label: getLabel(sections),
             sectionName: sections[0]?.name,
