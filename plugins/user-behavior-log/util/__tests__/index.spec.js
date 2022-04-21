@@ -235,7 +235,7 @@ describe('properties of log', function () {
     })
   })
 
-  test('client-id, session-id and current-runtime-id in a fresh env(no cookies)', function () {
+  test('client-id and session-id in a fresh env(no cookies)', function () {
     const mockuuid = 'uuid'
     uuid.mockReturnValue(mockuuid)
     getCookie.mockReturnValue(undefined) // like we will never get the cookie we want
@@ -244,7 +244,6 @@ describe('properties of log', function () {
     expect(log).toMatchObject({
       'client-id': mockuuid,
       'session-id': mockuuid,
-      'current-runtime-id': mockuuid,
     })
 
     // get the cookie first, if nothing, set the cookie we want
@@ -258,7 +257,7 @@ describe('properties of log', function () {
     })
   })
 
-  test('client-id, session-id and current-runtime-id in a messy env(some of the cookies exist)', function () {
+  test('client-id and session-id in a messy env(some of the cookies exist)', function () {
     const mockuuid = 'uuid'
     uuid.mockReturnValue(mockuuid)
     getCookie.mockReturnValue(mockuuid) // like we always can get the cookie we want
@@ -267,7 +266,6 @@ describe('properties of log', function () {
     expect(log).toMatchObject({
       'client-id': mockuuid,
       'session-id': mockuuid,
-      'current-runtime-id': mockuuid,
     })
 
     expect(getCookie).toHaveBeenCalledWith('mmid')
