@@ -494,6 +494,8 @@ export default {
 
   async beforeMount() {
     await handleStoryPremiumRedirect(this.$nuxt.context)
+    if (this.story.redirect)
+      window.location.replace(`/story/${this.story.redirect}`)
   },
 
   mounted() {
