@@ -1,8 +1,12 @@
 import dayjs from 'dayjs'
 import debounce from 'lodash/debounce'
 import TimeMe from 'timeme.js'
-import { createUserBehaviorLog, isScrollToBottom, sendLog } from './util'
-
+import {
+  createUserBehaviorLog,
+  isScrollToBottom,
+  sendLog,
+  premiumStoryInfoForLogger,
+} from './util'
 const debug = require('debug')('user-behavior-log')
 
 export default (context, inject) => {
@@ -33,10 +37,18 @@ export default (context, inject) => {
           ? { keyword: createSearchKeywordValue() }
           : {}),
 
-        'member-info-firebase': context?.store?.state?.membership,
-        'member-info-israfel': context?.store?.state?.['membership-subscribe'],
-      }
+        'member-info-firebase': {
+          userEmailVerified:
+            context?.store?.state?.membership?.userEmailVerified,
+          userSignInInfo: context?.store?.state?.membership?.userSignInInfo,
+          userEmail: context?.store?.state?.membership?.userEmail,
+          user: context?.store?.state?.membership?.user,
+        },
 
+        'member-info-israfel': {
+          basicInfo: context?.store?.state?.['membership-subscribe']?.basicInfo,
+        },
+      }
       debug('Prepare to send pageview event user behavior log to server: ', log)
       sendLog(log)
     } catch (err) {
@@ -61,10 +73,18 @@ export default (context, inject) => {
         description: '',
         'event-type': 'click',
 
-        'member-info-firebase': context?.store?.state?.membership,
-        'member-info-israfel': context?.store?.state?.['membership-subscribe'],
+        'member-info-firebase': {
+          userEmailVerified:
+            context?.store?.state?.membership?.userEmailVerified,
+          userSignInInfo: context?.store?.state?.membership?.userSignInInfo,
+          userEmail: context?.store?.state?.membership?.userEmail,
+          user: context?.store?.state?.membership?.user,
+        },
+        'member-info-israfel': {
+          basicInfo: context?.store?.state?.['membership-subscribe']?.basicInfo,
+        },
 
-        'premium-story-info': context?.store?.state?.['premium-story'],
+        'premium-story-info': premiumStoryInfoForLogger(context),
       }
       debug(
         'Prepare to send click event user behavior log to server, data: ',
@@ -91,10 +111,18 @@ export default (context, inject) => {
         'event-type': 'exit',
         'exit-time': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
 
-        'member-info-firebase': context?.store?.state?.membership,
-        'member-info-israfel': context?.store?.state?.['membership-subscribe'],
+        'member-info-firebase': {
+          userEmailVerified:
+            context?.store?.state?.membership?.userEmailVerified,
+          userSignInInfo: context?.store?.state?.membership?.userSignInInfo,
+          userEmail: context?.store?.state?.membership?.userEmail,
+          user: context?.store?.state?.membership?.user,
+        },
+        'member-info-israfel': {
+          basicInfo: context?.store?.state?.['membership-subscribe']?.basicInfo,
+        },
 
-        'premium-story-info': context?.store?.state?.['premium-story'],
+        'premium-story-info': premiumStoryInfoForLogger(context),
 
         'stay-time-in-seconds': TimeMe.getTimeOnCurrentPageInSeconds(),
       }
@@ -121,11 +149,19 @@ export default (context, inject) => {
             description: '',
             'event-type': 'scroll-to-bottom',
 
-            'member-info-firebase': context?.store?.state?.membership,
-            'member-info-israfel':
-              context?.store?.state?.['membership-subscribe'],
+            'member-info-firebase': {
+              userEmailVerified:
+                context?.store?.state?.membership?.userEmailVerified,
+              userSignInInfo: context?.store?.state?.membership?.userSignInInfo,
+              userEmail: context?.store?.state?.membership?.userEmail,
+              user: context?.store?.state?.membership?.user,
+            },
+            'member-info-israfel': {
+              basicInfo:
+                context?.store?.state?.['membership-subscribe']?.basicInfo,
+            },
 
-            'premium-story-info': context?.store?.state?.['premium-story'],
+            'premium-story-info': premiumStoryInfoForLogger(context),
           }
           debug(
             'Prepare to send exit event user behavior log to server, data: ',
