@@ -125,4 +125,10 @@ export default {
 .isPremiumMember {
   background: #f5f5f5;
 }
+
+.youtube-policies {
+  background: #fff;
+  padding-bottom: 12px;
+  text-align: center;
+}
 </style>
