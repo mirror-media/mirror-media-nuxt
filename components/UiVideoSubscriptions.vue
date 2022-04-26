@@ -1,23 +1,27 @@
 <template>
-  <section
-    class="video-subscriptions"
-    :class="{ isPremiumMember: isPremiumMember }"
-  >
-    <div class="scroll-container">
-      <UiYoutubeSubscribe
-        v-for="channel in CHANNELS"
-        :key="`channel-${channel.id}`"
-        :channelId="channel.id"
-        :channelName="channel.name"
-        :channelTitle="channel.title"
-        class="video-subscriptions__channel"
-      />
-    </div>
+  <section>
+    <UiYoutubePolicies class="section__policies" />
+    <section
+      class="video-subscriptions"
+      :class="{ isPremiumMember: isPremiumMember }"
+    >
+      <div class="scroll-container">
+        <UiYoutubeSubscribe
+          v-for="channel in CHANNELS"
+          :key="`channel-${channel.id}`"
+          :channelId="channel.id"
+          :channelName="channel.name"
+          :channelTitle="channel.title"
+          class="video-subscriptions__channel"
+        />
+      </div>
+    </section>
   </section>
 </template>
 
 <script>
 import UiYoutubeSubscribe from './UiYoutubeSubscribe.vue'
+import UiYoutubePolicies from './UiYoutubePolicies.vue'
 
 const CHANNELS = [
   {
@@ -59,6 +63,7 @@ export default {
   title: 'UiVideoSubscriptions',
   components: {
     UiYoutubeSubscribe,
+    UiYoutubePolicies,
   },
   data() {
     return {
@@ -78,6 +83,7 @@ export default {
   padding: 20px 0 0;
   background-color: #ffffff;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  margin-top: 12px;
   @include media-breakpoint-up(xl) {
     background-color: #ececec;
     box-shadow: none;
