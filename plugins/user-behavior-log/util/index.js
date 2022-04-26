@@ -1,6 +1,8 @@
 import dayjs from 'dayjs'
+import isEmpty from 'lodash/isEmpty'
 import getBrowserInfo from './browser'
 import getClientOsInfo from './client-os'
+
 import {
   getElementDataUserBehaviorDescription,
   getAlinkHref,
@@ -13,6 +15,7 @@ import getSessionId from './session-id'
 import getRref from './rref'
 import isInApp from './is-in-app-browser'
 import { API_PATH_FRONTEND } from '~/configs/config'
+const _ = { isEmpty }
 
 export function createUserBehaviorLog({ target = {}, ...props } = {}) {
   return {
@@ -39,7 +42,6 @@ export function createUserBehaviorLog({ target = {}, ...props } = {}) {
     'target-window-size': getWindowSizeInfo(),
 
     'client-id': getClientId(),
-    'current-runtime-id': getClientId(),
     'current-runtime-start': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
     'session-id': getSessionId(),
 
@@ -58,4 +60,31 @@ export function isScrollToBottom() {
   const totalPageHeight = document.body.scrollHeight
   const scrollPoint = window.scrollY + window.innerHeight
   return scrollPoint >= totalPageHeight
+}
+
+export function premiumStoryInfoForLogger(context) {
+  if (_.isEmpty(context?.store?.state?.['premium-story']?.story)) {
+    return { story: {} }
+  } else {
+    const {
+      heroImage: {
+        image: { resizedTargets, ...remainImageInfo },
+        ...remainHeroImageInfo
+      },
+      links,
+      engineers,
+      relateds,
+      ...remainStoryInfo
+    } = context?.store?.state?.['premium-story']?.story
+
+    return {
+      story: {
+        heroImage: {
+          image: { ...remainImageInfo },
+          ...remainHeroImageInfo,
+        },
+        ...remainStoryInfo,
+      },
+    }
+  }
 }

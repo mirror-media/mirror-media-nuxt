@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import isEmpty from 'lodash/isEmpty'
 import { ENV, DOMAIN_NAME } from '~/configs/config'
 import ContainerCulturePost from '~/components/culture-post-for-premium/ContainerCulturePost.vue'
 import {
@@ -25,6 +26,7 @@ import {
 
 import { DABLE_WIDGET_IDS } from '~/constants/ads'
 import { checkCategoryHasMemberOnly } from '~/utils/article'
+const _ = { isEmpty }
 
 export default {
   layout: 'empty',
@@ -89,18 +91,53 @@ export default {
     }
 
     this.$store.commit('premium-story/SET_STORY', this.story)
+
     this.$sendUserBehaviorLog({
       category: 'whole-site',
       description: '',
       'event-type': 'pageview',
 
-      'member-info-firebase': this?.$store?.state?.membership,
-      'member-info-israfel': this?.$store?.state?.['membership-subscribe'],
+      'member-info-firebase': {
+        userEmailVerified: this.$store?.state?.membership?.userEmailVerified,
+        userSignInInfo: this.$store?.state?.membership?.userSignInInfo,
+        userEmail: this.$store?.state?.membership?.userEmail,
+        user: this.$store?.state?.membership?.user,
+      },
+      'member-info-israfel': {
+        basicInfo: this.$store?.state['membership-subscribe']?.basicInfo,
+      },
 
-      'premium-story-info': this?.$store?.state?.['premium-story'],
+      'premium-story-info': this.premiumStoryInfoForLogger(),
     })
   },
+
   methods: {
+    premiumStoryInfoForLogger() {
+      if (_.isEmpty(this.$store?.state?.['premium-story']?.story)) {
+        return { story: {} }
+      } else {
+        const {
+          heroImage: {
+            image: { resizedTargets, ...remainImageInfo },
+            ...remainHeroImageInfo
+          },
+          links,
+          engineers,
+          relateds,
+          ...remainStoryInfo
+        } = this.$store?.state?.['premium-story']?.story
+
+        return {
+          story: {
+            heroImage: {
+              image: { ...remainImageInfo },
+              ...remainHeroImageInfo,
+            },
+            ...remainStoryInfo,
+          },
+        }
+      }
+    },
     mockFailRequest() {
       return Promise.reject(new Error('mock error'))
     },

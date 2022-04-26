@@ -1,9 +1,8 @@
 <template>
   <div class="member-info">
-    鏡週刊五歲了！我們正式宣告新的轉變，鏡週刊訂閱制10/5正式上線，讓有價的閱聽成就更多優質文章，並獻上無廣告的閱讀環境，讓您盡情享受15類會員專屬內容，誠摯邀請您<strong
-      @click="enterMemberSectionPage"
-      >立即加入</strong
-    >。
+    鏡週刊五歲了！我們正式宣告新的轉變，鏡週刊訂閱制10/5正式上線，讓有價的閱聽成就更多優質文章，並獻上無廣告的閱讀環境，讓您盡情享受15類會員專屬內容，誠摯邀請您
+    <strong @click="enterMemberSectionPage">立即加入</strong>。
+    <p>即日起加入年費會員，月月抽Sony旗艦機</p>
   </div>
 </template>
 
@@ -43,6 +42,10 @@ export default {
     color: #eac151;
     font-weight: 600;
     border-bottom: 1px solid #eac151;
+  }
+
+  p {
+    color: #eac151;
   }
 }
 </style>
