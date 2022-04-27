@@ -42,7 +42,6 @@
           @sendGa="handleSendGa"
         />
       </div>
-      <UiYoutubePolicies class="section__policies" />
     </div>
 
     <UiStickyAd pageKey="videohub" />
@@ -66,7 +65,6 @@ import UiVideoCategory from '~/components/UiVideoCategory.vue'
 import UiVideoIframeWithItems from '~/components/UiVideoIframeWithItems.vue'
 import UiVideoPopular from '~/components/UiVideoPopular.vue'
 import UiVideoSubscriptions from '~/components/UiVideoSubscriptions.vue'
-import UiYoutubePolicies from '~/components/UiYoutubePolicies.vue'
 
 const INVERTED_PLAYLIST_MAPPING = _.invert(PLAYLIST_MAPPING)
 
@@ -80,7 +78,6 @@ export default {
     UiVideoIframeWithItems,
     UiVideoPopular,
     UiVideoSubscriptions,
-    UiYoutubePolicies,
   },
   async fetch() {
     const response = await this.fetchChannelData()
