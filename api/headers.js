@@ -14,6 +14,7 @@ module.exports = function handleHeaders(req, res, next) {
     ) ||
     // deprecated topic page, due to ads in different device environments
     /topic/gs.test(url) ||
+    new RegExp(`/${API_PATH_FRONTEND}/section/videohub`, 'gs').test(url) ||
     // membership api paths
     new RegExp(`/${API_PATH_FRONTEND}/membership`, 'gs').test(url) ||
     new RegExp(`/${API_PATH_FRONTEND}/saleor`, 'gs').test(url) ||
@@ -30,9 +31,8 @@ module.exports = function handleHeaders(req, res, next) {
     return next()
   }
 
-  const isDefaultListingPages = /^\/(section|category|topic|search|author|tag)\//gs.test(
-    url
-  )
+  const isDefaultListingPages =
+    /^\/(section|category|topic|search|author|tag)\//gs.test(url)
   if (isDefaultListingPages) {
     res.setHeader('Cache-Control', `public, max-age=${60 * 5}`)
     return next()
