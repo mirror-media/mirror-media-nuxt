@@ -3,7 +3,8 @@ FROM node:14.19.1-alpine3.15
 WORKDIR /app
 
 RUN apk upgrade --no-cache \
-    && apk add --no-cache --virtual .builds-deps build-base python3 make g++
+    && apk add python3 \
+    && apk add --no-cache make g++
 
 COPY package.json .
 COPY yarn.lock .
