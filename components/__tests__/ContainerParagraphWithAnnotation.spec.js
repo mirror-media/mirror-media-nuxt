@@ -35,6 +35,7 @@ test('should have correct splitContents computed', () => {
       '<!--__ANNOTATION__={"text":"被註解文字","annotation":"<div>註解內容</div>","pureAnnotationText":"註解內容"}--><!--被註解文字-->',
   })
 
+
   /*
    * expect(wrapper.vm.splitContents).toEqual([
    *   {
@@ -45,6 +46,7 @@ test('should have correct splitContents computed', () => {
    *   },
    * ])
    */
+
 })
 
 test('should render correct content with correct order', () => {

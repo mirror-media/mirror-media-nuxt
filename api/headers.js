@@ -8,7 +8,7 @@ module.exports = function handleHeaders(req, res, next) {
     /keystone/gs.test(hostname) ||
     /^\/(video_category|externals)\//gs.test(url) ||
     new RegExp(PREVIEW_QUERY, 'gs').test(url) ||
-    // membership page paths
+    // eslint-disable-next-line
     /(login|finishSignUp|profile|cancelMembership|magazine|subscribe|pre\/story)/gs.test(
       url
     ) ||
@@ -29,10 +29,9 @@ module.exports = function handleHeaders(req, res, next) {
     res.setHeader('Cache-Control', `public, max-age=${60 * 15}`)
     return next()
   }
-
-  const isDefaultListingPages = /^\/(section|category|topic|search|author|tag)\//gs.test(
-    url
-  )
+  // eslint-disable-next-line
+  const isDefaultListingPages =
+    /^\/(section|category|topic|search|author|tag)\//gs.test(url)
   if (isDefaultListingPages) {
     res.setHeader('Cache-Control', `public, max-age=${60 * 5}`)
     return next()

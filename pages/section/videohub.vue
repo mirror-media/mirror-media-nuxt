@@ -10,7 +10,7 @@
         <h1>最新影片</h1>
       </template>
     </UiVideoIframeWithItems>
-    <div class="section__bottom-wrapper" :class="{ grey: isPremiumMember }">
+    <div class="section__bottom-wrapper">
       <UiVideoPopular
         v-if="!isPremiumMember"
         :items="popularData"
@@ -42,7 +42,6 @@
           @sendGa="handleSendGa"
         />
       </div>
-      <UiYoutubePolicies class="section__policies" />
     </div>
 
     <UiStickyAd pageKey="videohub" />
@@ -66,7 +65,6 @@ import UiVideoCategory from '~/components/UiVideoCategory.vue'
 import UiVideoIframeWithItems from '~/components/UiVideoIframeWithItems.vue'
 import UiVideoPopular from '~/components/UiVideoPopular.vue'
 import UiVideoSubscriptions from '~/components/UiVideoSubscriptions.vue'
-import UiYoutubePolicies from '~/components/UiYoutubePolicies.vue'
 
 const INVERTED_PLAYLIST_MAPPING = _.invert(PLAYLIST_MAPPING)
 
@@ -80,7 +78,6 @@ export default {
     UiVideoIframeWithItems,
     UiVideoPopular,
     UiVideoSubscriptions,
-    UiYoutubePolicies,
   },
   async fetch() {
     const response = await this.fetchChannelData()
@@ -374,7 +371,6 @@ $categories: (
 
     .video-subscriptions {
       box-shadow: none;
-      margin: 0 20px;
     }
 
     .video-popular {
