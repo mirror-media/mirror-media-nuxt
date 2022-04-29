@@ -20,6 +20,4 @@ COPY . .
 
 ARG ENV
 ENV ENV ${ENV}
-RUN yarn build \
-    && apk add --no-cache ca-certificates \
-    && apk del .build-deps
+RUN yarn build && apk add --no-cache ca-certificates
