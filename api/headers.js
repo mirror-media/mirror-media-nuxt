@@ -8,13 +8,12 @@ module.exports = function handleHeaders(req, res, next) {
     /keystone/gs.test(hostname) ||
     /^\/(video_category|externals)\//gs.test(url) ||
     new RegExp(PREVIEW_QUERY, 'gs').test(url) ||
-    // membership page paths
+    // eslint-disable-next-line
     /(login|finishSignUp|profile|cancelMembership|magazine|subscribe|pre\/story)/gs.test(
       url
     ) ||
     // deprecated topic page, due to ads in different device environments
     /topic/gs.test(url) ||
-    new RegExp(`/${API_PATH_FRONTEND}/section/videohub`, 'gs').test(url) ||
     // membership api paths
     new RegExp(`/${API_PATH_FRONTEND}/membership`, 'gs').test(url) ||
     new RegExp(`/${API_PATH_FRONTEND}/saleor`, 'gs').test(url) ||
@@ -30,7 +29,7 @@ module.exports = function handleHeaders(req, res, next) {
     res.setHeader('Cache-Control', `public, max-age=${60 * 15}`)
     return next()
   }
-
+  // eslint-disable-next-line
   const isDefaultListingPages =
     /^\/(section|category|topic|search|author|tag)\//gs.test(url)
   if (isDefaultListingPages) {

@@ -10,7 +10,7 @@
         <h1>最新影片</h1>
       </template>
     </UiVideoIframeWithItems>
-    <div class="section__bottom-wrapper" :class="{ grey: isPremiumMember }">
+    <div class="section__bottom-wrapper">
       <UiVideoPopular
         v-if="!isPremiumMember"
         :items="popularData"
@@ -371,7 +371,6 @@ $categories: (
 
     .video-subscriptions {
       box-shadow: none;
-      margin: 0 20px;
     }
 
     .video-popular {
