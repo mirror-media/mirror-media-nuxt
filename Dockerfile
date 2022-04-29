@@ -4,6 +4,7 @@ WORKDIR /app
 
 RUN apk upgrade --no-cache \
     && apk add python3 \
+    && apk add --no-cache --virtual .builds-deps
     && apk add --no-cache make g++
 
 COPY package.json .
