@@ -330,13 +330,13 @@ export default {
         this.isLoading = true
 
         // get this member's current subscription id
-        const currentSubscription = await this.$getPremiumMemberSubscriptionInfo()
+        const currentSubscription =
+          await this.$getPremiumMemberSubscriptionInfo()
         if (!currentSubscription) return
 
         // update subscription from month to year
-        const updatedSubscription = await this.$updateSubscriptionFromMonthToYear(
-          currentSubscription.id
-        )
+        const updatedSubscription =
+          await this.$updateSubscriptionFromMonthToYear(currentSubscription.id)
         this.isLoading = false
 
         window.alert('方案已升級為年訂閱，下次扣款日立即生效。')

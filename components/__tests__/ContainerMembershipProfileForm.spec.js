@@ -1,7 +1,7 @@
 import { createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import Vuex from 'vuex'
-import createWrapperHelper from '@/test/helpers/createWrapperHelper'
 import ContainerMembershipProfileForm from '../ContainerMembershipProfileForm.vue'
+import createWrapperHelper from '@/test/helpers/createWrapperHelper'
 import {
   getters as gettersMembership,
   state as stateMembership,

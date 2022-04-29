@@ -76,11 +76,12 @@ export default {
       return [categoryId]
     },
     listData() {
-      return _.uniqBy(this.listData_, function identifyDuplicatedItemById(
-        listItem
-      ) {
-        return listItem.id
-      })
+      return _.uniqBy(
+        this.listData_,
+        function identifyDuplicatedItemById(listItem) {
+          return listItem.id
+        }
+      )
     },
 
     /**

@@ -405,7 +405,8 @@ describe('computed "contents"', () => {
   })
 
   test('should have all ADs with correct order when unstyled and not empty contents of "apiData" >= 6', () => {
-    const apiDataNumOfUnstyledAndNotEmptyMock = THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY
+    const apiDataNumOfUnstyledAndNotEmptyMock =
+      THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY
 
     applyTestToContents(apiDataNumOfUnstyledAndNotEmptyMock, (contents) => {
       expect(contents).toHaveLength(

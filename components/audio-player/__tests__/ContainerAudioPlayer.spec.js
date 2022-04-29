@@ -16,8 +16,7 @@ beforeAll(function mockMedia() {
 })
 
 const mockContent = {
-  url:
-    'https://www.mirrormedia.com.tw/assets/audios/20200821155644-aaa56a6088d4b4afd6867be35ea58c4d.mp3',
+  url: 'https://www.mirrormedia.com.tw/assets/audios/20200821155644-aaa56a6088d4b4afd6867be35ea58c4d.mp3',
   title: '英國鄉村獸醫的跨州動物救援檔案',
 }
 

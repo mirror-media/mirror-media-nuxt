@@ -129,7 +129,8 @@ export default {
   },
   async fetch() {
     // check if user's subscription is paid by mobile
-    const isMemberPaidWithMobile = await this.$isMemberPaidSubscriptionWithMobile()
+    const isMemberPaidWithMobile =
+      await this.$isMemberPaidSubscriptionWithMobile()
     this.isPayByApp = isMemberPaidWithMobile
   },
   data() {
