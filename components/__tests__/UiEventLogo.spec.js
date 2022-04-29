@@ -8,8 +8,7 @@ const mockEventLogo = {
     image: {
       resizedTargets: {
         mobile: {
-          url:
-            'https://storage.googleapis.com/mirrormedia-files/assets/images/20200505103510-bd1a428fe1306868ad92ef07db39b12e-mobile.gif',
+          url: 'https://storage.googleapis.com/mirrormedia-files/assets/images/20200505103510-bd1a428fe1306868ad92ef07db39b12e-mobile.gif',
         },
       },
     },

@@ -237,14 +237,8 @@ export default {
       deep: true,
       handler() {
         if (this.receiverDataIsSameAsOrderer) {
-          const {
-            name,
-            cellphone,
-            phone,
-            phoneExt,
-            address,
-            email,
-          } = this.ordererData
+          const { name, cellphone, phone, phoneExt, address, email } =
+            this.ordererData
           this.name = name
           this.cellphone = cellphone
           this.phone = phone
@@ -291,14 +285,8 @@ export default {
       e.preventDefault()
       this.setReceiverDataIsSameAsOrderer(!this.receiverDataIsSameAsOrderer)
       if (this.receiverDataIsSameAsOrderer) return
-      const {
-        name,
-        cellphone,
-        phone,
-        phoneExt,
-        address,
-        email,
-      } = this.ordererData
+      const { name, cellphone, phone, phoneExt, address, email } =
+        this.ordererData
       this.name = name
       this.cellphone = cellphone
       this.phone = phone

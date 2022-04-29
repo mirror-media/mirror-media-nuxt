@@ -232,8 +232,7 @@ describe('JSON-LD', () => {
         image: {
           resizedTargets: {
             tablet: {
-              url:
-                'https://www.mirrormedia.com.tw/assets/images/20201013164229-0272e9dd58d7935dfa1d4aa1cb9dcf4a-mobile.jpg',
+              url: 'https://www.mirrormedia.com.tw/assets/images/20201013164229-0272e9dd58d7935dfa1d4aa1cb9dcf4a-mobile.jpg',
             },
           },
         },

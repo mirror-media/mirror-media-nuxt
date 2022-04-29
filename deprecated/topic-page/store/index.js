@@ -463,13 +463,8 @@ export function createStore() {
         let authors = []
         const origAuthors = _.values(state.authors)
         _.map(_.get(articles, ['items']), (article) => {
-          const {
-            cameraMan,
-            designers,
-            engineers,
-            photographers,
-            writers,
-          } = article
+          const { cameraMan, designers, engineers, photographers, writers } =
+            article
           _.map(
             _.concat(cameraMan, designers, engineers, photographers, writers),
             (o) => {

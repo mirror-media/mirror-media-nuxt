@@ -304,14 +304,15 @@ export default {
       return currentPage < maxPage
     },
     latestItems() {
-      return _.uniqBy(this.latestList.items, function identifyDuplicateById(
-        item
-      ) {
-        if (item.isMicroAd) {
-          return `microId-${item.idx}`
+      return _.uniqBy(
+        this.latestList.items,
+        function identifyDuplicateById(item) {
+          if (item.isMicroAd) {
+            return `microId-${item.idx}`
+          }
+          return item.id
         }
-        return item.id
-      })
+      )
     },
 
     isValidEventModItem() {
