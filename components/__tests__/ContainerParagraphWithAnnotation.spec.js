@@ -36,11 +36,26 @@ test('should have correct splitContents computed', () => {
   })
 
   expect(wrapper.vm.splitContents).toEqual([
+    { html: '一般文字 1', id: 0 },
     {
-      id: 0,
-      text: '被註解文字',
-      annotation: '<div>註解內容</div>',
-      pureAnnotationText: '註解內容',
+      annotation: '<div>註解內容 1</div>',
+      id: 1,
+      pureAnnotationText: '註解內容 1',
+      text: '被註解文字 1',
+    },
+    {
+      html: '一般文字 2',
+      id: 2,
+    },
+    {
+      annotation: '<div>註解內容 2</div>',
+      id: 3,
+      pureAnnotationText: '註解內容 2',
+      text: '被註解文字 2',
+    },
+    {
+      html: '一般文字 3',
+      id: 4,
     },
   ])
 })
