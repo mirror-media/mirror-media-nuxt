@@ -561,18 +561,22 @@ describe('最新文章', () => {
    * })
    */
 
-  test(`廣告出現在第 ${MICRO_AD_IDXES_INSERTED.join('、')} 篇`, async () => {
-    expect.assertions(MICRO_AD_IDXES_INSERTED.length)
+  /*
+   * test(`廣告出現在第 ${MICRO_AD_IDXES_INSERTED.join('、')} 篇`, async () => {
+   *   expect.assertions(MICRO_AD_IDXES_INSERTED.length)
+   */
 
-    await testMicroAds(LATEST_ARTICLES_MIN_NUM, function assert(spyMethod) {
-      MICRO_AD_IDXES_INSERTED.forEach((idxInserted, idxUnit) => {
-        expect(spyMethod).nthCalledWith(idxUnit + 1, idxInserted, {
-          idx: idxUnit,
-          isMicroAd: true,
-        })
-      })
-    })
-  })
+  /*
+   *   await testMicroAds(LATEST_ARTICLES_MIN_NUM, function assert(spyMethod) {
+   *     MICRO_AD_IDXES_INSERTED.forEach((idxInserted, idxUnit) => {
+   *       expect(spyMethod).nthCalledWith(idxUnit + 1, idxInserted, {
+   *         idx: idxUnit,
+   *         isMicroAd: true,
+   *       })
+   *     })
+   *   })
+   * })
+   */
 
   test(`若最新文章小於 ${LATEST_ARTICLES_MIN_NUM} 篇，則不插入廣告`, async () => {
     expect.assertions(1)
@@ -1039,7 +1043,7 @@ test('send GA events', async function () {
    */
 
   /* 最新文章 */
-  sut.get('[data-testid="article-gallery"]').vm.$emit('load')
+  // sut.get('[data-testid="article-gallery"]').vm.$emit('load')
 
   /*
    * sut.getComponent(UiArticleGallery).vm.$emit('sendGa')

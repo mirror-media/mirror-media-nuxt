@@ -21,7 +21,8 @@ test('display an article', async () => {
   /* Arrange */
   const articleItemMock = {
     href: '/test-href/',
-    imgSrc: 'test-img-src.png',
+
+    // imgSrc: 'test-img-src.png',
     label: 'test label',
     title: 'test title',
     description: 'test description',
