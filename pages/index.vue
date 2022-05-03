@@ -67,38 +67,33 @@
               pageKey="home"
               adKey="PC_B1"
             />
-
-            <section class="container">
-              <UiColumnHeader title="最新文章" class="home__column-header" />
-              <LazyRenderer
-                data-testid="article-gallery"
-                @load="loadLatestListInitial"
-              >
-                <UiArticleGalleryB
-                  v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
-                  :items="latestItems"
-                  :isPremiumMember="isPremiumMember"
-                  @sendGa="sendGaForClick('latest')"
-                />
-                <UiArticleGallery
-                  v-else-if="shouldShowFocus"
-                  :isPremiumMember="isPremiumMember"
-                  :items="latestItems"
-                  @sendGa="sendGaForClick('latest')"
-                />
-                <UiArticleGalleryWithoutFocus
-                  v-else
-                  :isPremiumMember="isPremiumMember"
-                  :items="latestItems"
-                  @sendGa="sendGaForClick('latest')"
-                />
-                <UiInfiniteLoading
-                  v-if="latestItems.length > 3"
-                  @infinite="loadMoreLatestItems"
-                />
-              </LazyRenderer>
-            </section>
           </ClientOnly>
+
+          <section class="container">
+            <UiColumnHeader title="最新文章" class="home__column-header" />
+            <UiArticleGalleryB
+              v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
+              :items="latestItems"
+              :isPremiumMember="isPremiumMember"
+              @sendGa="sendGaForClick('latest')"
+            />
+            <UiArticleGallery
+              v-if="shouldShowFocus"
+              :isPremiumMember="isPremiumMember"
+              :items="latestItems"
+              @sendGa="sendGaForClick('latest')"
+            />
+            <UiArticleGalleryWithoutFocus
+              v-else
+              :isPremiumMember="isPremiumMember"
+              :items="latestItems"
+              @sendGa="sendGaForClick('latest')"
+            />
+            <UiInfiniteLoading
+              v-if="latestItems.length > 3"
+              @infinite="loadMoreLatestItems"
+            />
+          </section>
         </div>
       </div>
 
@@ -192,7 +187,6 @@ export default {
       this.$fetchGroupedWithExternal('post_external01'),
       this.fetchFlashNews(),
     ])
-
     if (
       groupedResponse.status === 'rejected' ||
       flashNewsResponse.status === 'rejected'
@@ -207,6 +201,8 @@ export default {
     if (flashNewsResponse.status === 'fulfilled') {
       this.flashNews = flashNewsResponse.value || []
     }
+
+    this.loadLatestListInitial()
   },
 
   data() {
@@ -383,26 +379,6 @@ export default {
   },
 
   watch: {
-    latestItems: [
-      function insertMicroAds() {
-        if (
-          this.latestItems.length < LATEST_ARTICLES_MIN_NUM ||
-          this.areMicroAdsInserted
-        ) {
-          return
-        }
-
-        MICRO_AD_IDXES_INSERTED.forEach((idxInserted, idxUnit) => {
-          this.insertLatestItems(idxInserted, {
-            isMicroAd: true,
-            idx: idxUnit,
-          })
-        })
-
-        this.areMicroAdsInserted = true
-      },
-    ],
-
     isDesktopWidth: ['handleFixLastFocusList'],
     canFixLastFocusList: ['handleFixLastFocusList'],
 
@@ -412,12 +388,49 @@ export default {
   beforeMount() {
     this.checkScrolled()
   },
-
+  async mounted() {
+    try {
+      if (this.shouldUpdateLatestArticle()) {
+        const groupedResponse = await this.$fetchGroupedWithExternal(
+          'post_external01'
+        )
+        this.groupedArticles = groupedResponse
+        this.loadLatestListInitial()
+      }
+      this.insertMicroAds()
+    } catch (err) {
+      this.$nuxt.context.error({ statusCode: 500 })
+    }
+  },
   beforeDestroy() {
     this.cleanFixedLastFocusList()
   },
 
   methods: {
+    shouldUpdateLatestArticle() {
+      const articlesUpdateTimestamp = new Date(
+        this.groupedArticles?.timestamp
+      ).getTime()
+      const currentTimestamp = new Date().getTime()
+      return currentTimestamp - articlesUpdateTimestamp > 1000 * 180
+    },
+    insertMicroAds() {
+      if (
+        this.latestItems.length < LATEST_ARTICLES_MIN_NUM ||
+        this.areMicroAdsInserted
+      ) {
+        return
+      }
+
+      MICRO_AD_IDXES_INSERTED.forEach((idxInserted, idxUnit) => {
+        this.insertLatestItems(idxInserted, {
+          isMicroAd: true,
+          idx: idxUnit,
+        })
+      })
+
+      this.areMicroAdsInserted = true
+    },
     async fetchFlashNews() {
       const { items: articles = [] } =
         (await this.$fetchPostsFromMembershipGateway({

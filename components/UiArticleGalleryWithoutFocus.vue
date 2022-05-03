@@ -1,7 +1,7 @@
 <template>
   <div class="article-gallery">
     <ul>
-      <template v-for="item in items">
+      <template v-for="(item, index) in items">
         <li v-if="!item.isMicroAd" :key="item.id">
           <a
             :href="item.href"
@@ -11,7 +11,12 @@
           >
             <article>
               <div class="img-wrapper">
-                <img v-lazy="item.imgSrc" alt="" />
+                <img
+                  v-if="index < 20"
+                  :src="item.imgSrc || require('~/assets/default-og-img.png')"
+                  alt=""
+                />
+                <img v-else v-lazy="item.imgSrc" alt="" />
               </div>
 
               <div
