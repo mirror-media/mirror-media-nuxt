@@ -99,6 +99,47 @@
             />
           </div>
         </template>
+        <ListBody
+          v-else-if="topicType === 'list'"
+          :mediaData="mediaData"
+          :isPresidentElectionId="isPresidentElectionId"
+          :candidateData="candidateData"
+          :loading="loading"
+          :leadingType="getValue(topic, ['leading'])"
+          @loadMorePresident="loadMorePresident"
+        >
+          <template v-slot:articleList>
+            <article-list
+              v-if="!isPresidentElectionId"
+              id="articleList"
+              ref="articleList"
+              :articles="autoScrollArticles"
+              :hasDFP="false"
+            />
+          </template>
+          <template v-slot:vueDfp
+            ><div v-if="hasDFP" class="ad">
+              <vue-dfp
+                :is="props.vueDfp"
+                :pos="dfpPos"
+                :dfpUnits="props.dfpUnits"
+                :section="props.section"
+                :dfpId="props.dfpId"
+                :unitId="mobileDfp"
+                :size="getValue($store, 'getters.deprecatedStore.adSize')"
+              /></div
+          ></template>
+          <template v-slot:articleListAutoScroll>
+            <article-list
+              v-if="!isPresidentElectionId"
+              v-show="hasAutoScroll"
+              id="articleListAutoScroll"
+              ref="articleListAutoScroll"
+              :articles="autoScrollArticlesLoadMore"
+              :hasDFP="false"
+            />
+          </template>
+        </ListBody>
 
         <template v-else>
           <div class="topic">
@@ -161,7 +202,6 @@ import Cookie from 'vue-cookie'
 import VueDfpProvider from 'plate-vue-dfp/DfpProvider.vue'
 import { currentYPosition, elmYPosition } from '../kc-scroll'
 import { adtracker } from './util/adtracking'
-
 import { currEnv, getTruncatedVal, getValue, unLockJS } from './util/comm'
 import { getRole } from './util/mmABRoleAssign'
 import {
@@ -197,6 +237,7 @@ import ArticleList from './components/ArticleList.vue'
 import ProjectSliderContainer from './components/project/ProjectSliderContainer.vue'
 // eslint-disable-next-line no-unused-vars
 import { createStore } from './store'
+import ListBody from './components/list/ListBody.vue'
 
 const MAXRESULT = 12
 const PAGE = 1
@@ -392,6 +433,7 @@ export default {
     ProjectSliderContainer,
     PresidentElectionProgress,
     PresidentElectionList,
+    ListBody,
   },
 
   /*
@@ -771,6 +813,10 @@ export default {
   },
   updated() {
     this.updateSysStage()
+    console.log(this.pageStyle)
+    console.log(this.topicType)
+    console.log(this.getValue)
+    console.log(this.$refs.articleList)
   },
   destroyed() {
     window.removeEventListener('resize', this.updateViewport)
@@ -778,6 +824,9 @@ export default {
     window.removeEventListener('scroll', this.timelineScrollHandler)
   },
   methods: {
+    testEmit(data1, data2) {
+      console.log(data2.$el.offsetHeight)
+    },
     checkIfLockJS() {
       unLockJS()
     },
@@ -859,6 +908,7 @@ export default {
         const articleListBottom =
           this.elmYPosition('#articleList') +
           this.$refs.articleList.$el.offsetHeight
+
         this.articleListAutoScrollHeight =
           this.$refs.articleListAutoScroll.$el.offsetHeight
         const articleListAutoScrollBottom =
