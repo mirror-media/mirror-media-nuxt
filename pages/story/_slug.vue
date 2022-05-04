@@ -596,9 +596,8 @@ export default {
       }
 
       const { bottom: latestListBottom } = latestList.getBoundingClientRect()
-      const {
-        top: fixedTriggerEndTop,
-      } = fixedTriggerEnd.getBoundingClientRect()
+      const { top: fixedTriggerEndTop } =
+        fixedTriggerEnd.getBoundingClientRect()
 
       // 當視窗頂部 <= latestList 底部，結束 fix
       if (latestListBottom > 0) {

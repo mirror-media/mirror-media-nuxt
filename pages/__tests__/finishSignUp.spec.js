@@ -1,7 +1,7 @@
-import createWrapperHelper from '@/test/helpers/createWrapperHelper'
 import localforage from 'localforage'
 import flushPromises from 'flush-promises'
 import page from '../finishSignUp.vue'
+import createWrapperHelper from '@/test/helpers/createWrapperHelper'
 import UiMembershipError from '~/components/UiMembershipError.vue'
 import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
 

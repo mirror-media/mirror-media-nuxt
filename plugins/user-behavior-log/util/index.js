@@ -34,9 +34,8 @@ export function createUserBehaviorLog({ target = {}, ...props } = {}) {
     'target-tag-name': target.tagName,
     'target-tag-class': target.className,
     'target-tag-id': target.id,
-    'target-data-user-behavior-description': getElementDataUserBehaviorDescription(
-      target
-    ),
+    'target-data-user-behavior-description':
+      getElementDataUserBehaviorDescription(target),
     'target-text': truncate(getElementInnerText(target), 100),
 
     'target-window-size': getWindowSizeInfo(),

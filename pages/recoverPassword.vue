@@ -149,9 +149,8 @@ export default {
 
       this.isLoading = true
       try {
-        const isEmailSignInWithEmailMethods = await this.checkFirebaseUserExistWithEmailSignInMethods(
-          this.email
-        )
+        const isEmailSignInWithEmailMethods =
+          await this.checkFirebaseUserExistWithEmailSignInMethods(this.email)
 
         this.isLoading = false
         this.isEmailSignInWithEmailMethod = isEmailSignInWithEmailMethods

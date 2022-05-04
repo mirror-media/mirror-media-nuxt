@@ -235,8 +235,11 @@ export default {
       return this.heroImg.image?.url ?? ''
     },
     heroImgSrcset() {
-      const { mobile = {}, tablet = {}, desktop = {} } =
-        this.heroImg.image?.resizedTargets || {}
+      const {
+        mobile = {},
+        tablet = {},
+        desktop = {},
+      } = this.heroImg.image?.resizedTargets || {}
       return `${mobile.url} 800w, ${tablet.url} 1200w, ${desktop.url} 2000w`
     },
     landscapeClass() {

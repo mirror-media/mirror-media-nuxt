@@ -195,9 +195,8 @@ export default {
          * it'll cause error, e.code = auth/account-exists-with-different-credential
          */
         if (e.code === 'auth/account-exists-with-different-credential') {
-          const responseArray = await this.$fire.auth.fetchSignInMethodsForEmail(
-            e.email
-          )
+          const responseArray =
+            await this.$fire.auth.fetchSignInMethodsForEmail(e.email)
           const prevAuthMethod = responseArray?.[0]
 
           switch (prevAuthMethod) {
