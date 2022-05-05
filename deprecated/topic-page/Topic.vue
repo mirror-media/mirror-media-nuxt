@@ -446,8 +446,11 @@ export default {
     await fetchData(this.$store, this.$route.params.topicId)
     await this.beforeRouteUpdate({ path: this.$route.path }, '', () => {})
     if (this.shouldRenderRedesignTopicList) {
-      await this.initList(true)
-      await this.initList(false)
+      const typeOfIsFeaturedArticles = [true, false]
+      await Promise.all(
+        typeOfIsFeaturedArticles.map((item) => this.fetchList(1, item))
+      )
+      this.concatArticleList()
     }
   },
   data() {
@@ -850,6 +853,20 @@ export default {
     window.removeEventListener('scroll', this.timelineScrollHandler)
   },
   methods: {
+    concatArticleList() {
+      if (this.articlesIsFeaturedCount < MAXRESULT) {
+        this.articlesIsFeatured = this.articlesIsFeatured?.concat(
+          _.take(
+            this.articlesIsNotFeatured,
+            MAXRESULT - this.articlesIsFeaturedCount
+          )
+        )
+        this.articlesIsNotFeatured = this.articlesIsNotFeatured?.slice(
+          MAXRESULT - this.articlesIsFeaturedCount,
+          MAXRESULT
+        )
+      }
+    },
     formatArticles(oldArticlesList, newArticlesList) {
       /*
        * three situation:
@@ -865,9 +882,7 @@ export default {
         return oldArticlesList
       }
     },
-    async initList(isFeatured = false) {
-      await this.fetchList(1, isFeatured)
-    },
+
     async fetchList(page, isFeatured = false) {
       const data = await this.$fetchPostsFromMembershipGateway({
         maxResults: MAXRESULT,
