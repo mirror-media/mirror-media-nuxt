@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="topic-wrapper">
     <div class="topic">
       <div class="topic-title">
         <h1 />
@@ -13,12 +13,18 @@
       :candidateData="candidateData"
       @loadMore="loadMorePresident"
     />
-
-    <slot name="articleList"></slot>
-
-    <slot name="vueDfp"></slot>
-    <slot name="articleListAutoScroll"></slot>
-
+    <div class="article-list">
+      <slot name="articleListIsFeatured"></slot>
+      <button
+        v-if="shouldLoadMore"
+        class="load-more-button"
+        @click="loadMoreIsFeaturedArticles()"
+      >
+        看更多
+      </button>
+      <slot name="vueDfp"></slot>
+      <slot name="articlesIsNotFeatured"></slot>
+    </div>
     <Loading :show="loading" />
     <Share :right="`20px`" :bottom="`20px`" />
   </div>
@@ -41,6 +47,7 @@ export default {
     PresidentElectionList,
   },
   props: [
+    'shouldLoadMore',
     'mediaData',
     'isPresidentElectionId',
     'candidateData',
@@ -50,16 +57,36 @@ export default {
     'loading',
     'leadingType',
   ],
-
   destroyed() {},
   updated() {
     // console.log(this.$refs.articleList)
   },
-  methods: { getValue },
+  methods: {
+    getValue,
+    loadMoreIsFeaturedArticles() {
+      this.$emit('loadMoreIsFeaturedArticles')
+    },
+  },
 }
 </script>
 
 <style lang="stylus" scoped>
+.article-list
+  display flex
+  flex-direction column
+  align-items center
+  justify-content center
+.load-more-button
+  background #FFFFFF
+  border 1px solid rgba(0, 0, 0, 0.3)
+  border-radius: 2px
+  width 176px
+  height 48px
+  margin-top 20px
+  @media (min-width: 320px)
+    width 320px
+  @media (min-width: 600px)
+    margin 0 auto
 
 .topic
   position relative

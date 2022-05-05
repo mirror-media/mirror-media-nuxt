@@ -100,20 +100,31 @@
           </div>
         </template>
         <ListBody
-          v-else-if="topicType === 'list'"
+          v-if="shouldRenderRedesignTopicList"
           :mediaData="mediaData"
           :isPresidentElectionId="isPresidentElectionId"
           :candidateData="candidateData"
           :loading="loading"
           :leadingType="getValue(topic, ['leading'])"
+          :shouldLoadMore="shouldLoadMoreIsFeaturedArticles"
           @loadMorePresident="loadMorePresident"
+          @loadMoreIsFeaturedArticles="loadMoreIsFeaturedArticles()"
         >
-          <template v-slot:articleList>
+          <template v-slot:articleListIsFeatured>
             <article-list
               v-if="!isPresidentElectionId"
               id="articleList"
               ref="articleList"
-              :articles="autoScrollArticles"
+              :articles="articlesIsFeatured"
+              :hasDFP="false"
+            />
+          </template>
+          <template v-slot:articlesIsNotFeatured>
+            <article-list
+              v-if="!isPresidentElectionId"
+              id="articleListIsNotFeatured"
+              ref="articleListIsNotFeatured"
+              :articles="articlesIsNotFeatured"
               :hasDFP="false"
             />
           </template>
@@ -129,16 +140,6 @@
                 :size="getValue($store, 'getters.deprecatedStore.adSize')"
               /></div
           ></template>
-          <template v-slot:articleListAutoScroll>
-            <article-list
-              v-if="!isPresidentElectionId"
-              v-show="hasAutoScroll"
-              id="articleListAutoScroll"
-              ref="articleListAutoScroll"
-              :articles="autoScrollArticlesLoadMore"
-              :hasDFP="false"
-            />
-          </template>
         </ListBody>
 
         <template v-else>
@@ -444,9 +445,23 @@ export default {
   async fetch() {
     await fetchData(this.$store, this.$route.params.topicId)
     await this.beforeRouteUpdate({ path: this.$route.path }, '', () => {})
+    if (this.shouldRenderRedesignTopicList) {
+      await this.initList(true)
+      await this.initList(false)
+    }
   },
   data() {
     return {
+      // data for new feature
+      pageOfNotFeaturedArticle: 1,
+      pageOfIsFeaturedArticle: 1,
+      articlesIsNotFeatured: [],
+      articlesIsFeatured: [],
+      articlesIsNotFeaturedCount: 0,
+      articlesIsFeaturedCount: 0,
+
+      //
+
       abIndicator: '',
       articleListAutoScrollHeight: 0,
       canScrollLoadMord: true,
@@ -516,6 +531,21 @@ export default {
       }
       return _.slice(this.articles, 12)
     },
+    shouldRenderRedesignTopicList() {
+      return (
+        this.$config.topicListFeatureToggle === 'on' &&
+        this.topicType === 'list'
+      )
+    },
+    shouldLoadMoreNotFeaturedArticles() {
+      return (
+        this.articlesIsNotFeaturedCount - this.articlesIsNotFeatured.length > 0
+      )
+    },
+    shouldLoadMoreIsFeaturedArticles() {
+      return this.articlesIsFeaturedCount - this.articlesIsFeatured.length > 0
+    },
+
     candidateData() {
       this.persidentCandidateData.forEach((cand) => {
         cand.articles = _.uniqBy(
@@ -813,10 +843,6 @@ export default {
   },
   updated() {
     this.updateSysStage()
-    console.log(this.pageStyle)
-    console.log(this.topicType)
-    console.log(this.getValue)
-    console.log(this.$refs.articleList)
   },
   destroyed() {
     window.removeEventListener('resize', this.updateViewport)
@@ -824,8 +850,52 @@ export default {
     window.removeEventListener('scroll', this.timelineScrollHandler)
   },
   methods: {
-    testEmit(data1, data2) {
-      console.log(data2.$el.offsetHeight)
+    formatArticles(oldArticlesList, newArticlesList) {
+      /*
+       * three situation:
+       * create new array, edit and extend existing array,
+       * do not modify existing array
+       */
+
+      if (oldArticlesList.length === 0) {
+        return newArticlesList
+      } else if (oldArticlesList.length !== 0 && newArticlesList) {
+        return oldArticlesList.concat(newArticlesList)
+      } else {
+        return oldArticlesList
+      }
+    },
+    async initList(isFeatured = false) {
+      await this.fetchList(1, isFeatured)
+    },
+    async fetchList(page, isFeatured = false) {
+      const data = await this.$fetchPostsFromMembershipGateway({
+        maxResults: MAXRESULT,
+        isFeatured,
+        sort: '-publishedDate',
+        topics: [this.currArticleSlug],
+        page,
+      })
+      if (isFeatured) {
+        this.articlesIsFeatured = this.formatArticles(
+          this.articlesIsFeatured,
+          data?.items
+        )
+        this.articlesIsFeaturedCount = data?.meta?.total
+      } else {
+        this.articlesIsNotFeatured = this.formatArticles(
+          this.articlesIsNotFeatured,
+          data?.items
+        )
+        this.articlesIsNotFeaturedCount = data?.meta?.total
+      }
+    },
+    loadMoreIsFeaturedArticles() {
+      this.pageOfIsFeaturedArticle += 1
+      this.loading = true
+      this.fetchList(this.pageOfIsFeaturedArticle, true).then(() => {
+        this.loading = false
+      })
     },
     checkIfLockJS() {
       unLockJS()
@@ -871,23 +941,35 @@ export default {
         document.querySelector('#custJS').innerHTML = this.customJS
       }
     },
-    loadMore() {
-      const maxResult = this.topicType === 'wide' ? 3 : MAXRESULT
-      let currentPage = this.page
-      currentPage += 1
-      this.loading = true
 
-      fetchArticlesByUuid(
-        this.$store,
-        this.uuid,
-        TOPIC,
-        currentPage,
-        false,
-        maxResult
-      ).then(() => {
-        this.loading = false
-        this.canScrollLoadMord = true
-      })
+    loadMore() {
+      // loadMore for new design topic list
+      if (this.shouldRenderRedesignTopicList) {
+        this.pageOfNotFeaturedArticle += 1
+        this.loading = true
+        this.fetchList(this.pageOfNotFeaturedArticle, false).then(() => {
+          this.loading = false
+          this.canScrollLoadMord = true
+        })
+      } // original loadMore
+      else {
+        const maxResult = this.topicType === 'wide' ? 3 : MAXRESULT
+        let currentPage = this.page
+        currentPage += 1
+        this.loading = true
+
+        fetchArticlesByUuid(
+          this.$store,
+          this.uuid,
+          TOPIC,
+          currentPage,
+          false,
+          maxResult
+        ).then(() => {
+          this.loading = false
+          this.canScrollLoadMord = true
+        })
+      }
     },
     loadMorePresident(tagId, page) {
       fetchArticlesByUuid(this.$store, tagId, TAG, page, false, 3)
@@ -899,7 +981,31 @@ export default {
       throw e
     },
     scrollHandler() {
-      if (this.$refs.articleList) {
+      // scrollHandler for new design topic list
+      if (this.shouldRenderRedesignTopicList) {
+        if (this.$refs.articleListIsNotFeatured) {
+          const vh =
+            window.innerHeight ||
+            document.documentElement.clientHeight ||
+            document.body.clientHeight
+          const currentBottom = this.currentYPosition() + vh
+          const articleListBottom =
+            this.elmYPosition('#articleListIsNotFeatured') +
+            this.$refs.articleListIsNotFeatured.$el.offsetHeight
+
+          if (
+            this.shouldLoadMoreNotFeaturedArticles &&
+            this.canScrollLoadMord &&
+            currentBottom > articleListBottom - 300
+          ) {
+            this.canScrollLoadMord = false
+            this.loadMore()
+          }
+        }
+      }
+
+      // original function
+      else if (this.$refs.articleList) {
         const vh =
           window.innerHeight ||
           document.documentElement.clientHeight ||
