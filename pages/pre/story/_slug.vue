@@ -4,7 +4,7 @@
       <ContainerPhotoGallery :story="story" />
     </section>
     <section v-else>
-      <ContainerHeaderPremium />
+      <ContainerHeader />
 
       <UiLanding
         class="landing"
@@ -130,7 +130,7 @@ import UiArticleListCompact from '~/components/UiArticleListCompact.vue'
 import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
 import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
 import ContainerPhotoGallery from '~/components/photo-gallery/ContainerPhotoGallery.vue' // import MicroAdWithLabel from '~/components/MicroAdWithLabel.vue'
-import ContainerHeaderPremium from '~/components/ContainerHeaderPremium.vue'
+import ContainerHeader from '~/components/ContainerHeader.vue'
 import { DOMAIN_NAME, ENV, PREVIEW_QUERY } from '~/configs/config'
 import { getSectionColor } from '~/utils/index.js'
 
@@ -155,7 +155,7 @@ export default {
     UiShareLinksToggled,
     UiShareLinksHasCopyLink,
     ContainerPhotoGallery,
-    ContainerHeaderPremium,
+    ContainerHeader,
 
     // MicroAdWithLabel,
   },
