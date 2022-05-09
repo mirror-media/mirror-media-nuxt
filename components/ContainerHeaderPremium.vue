@@ -25,6 +25,14 @@
             :eventLogo="eventLogo"
             @sendGa="handleSendGa"
           />
+
+          <ContainerGptAd
+            v-show="shouldShowGptLogo"
+            pageKey="global"
+            adKey="RWD_LOGO"
+            class="logo"
+            @slotRenderEnded="handleLogoAdRenderEnded"
+          />
         </ClientOnly>
       </div>
 
@@ -91,6 +99,7 @@ import UiPromotionList from './UiPromotionList.vue'
 import UiHeaderNavSection from './UiHeaderNavSection.vue'
 import UiHeaderNavTopic from './UiHeaderNavTopic.vue'
 import UiSidebar from './UiSidebar.vue'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMemberIcon.vue'
 import UiSubscribeMagazineEntrance from '~/components/UiSubscribeMagazineEntrance.vue'
 
@@ -112,6 +121,7 @@ export default {
     UiHeaderNavSection,
     UiHeaderNavTopic,
     UiSidebar,
+    ContainerGptAd,
     ContainerMembershipMemberIcon,
     UiSubscribeMagazineEntrance,
   },
@@ -202,7 +212,7 @@ export default {
       return Object.keys(this.eventLogo).length > 0
     },
     shouldShowGptLogo() {
-      return false
+      return !this.isPremiumMember && this.hasGptLogo && !this.shouldFixHeader
     },
 
     options() {
@@ -210,6 +220,10 @@ export default {
         (section) => section.name !== 'videohub'
       )
       return [this.defaultOption, ...sections]
+    },
+
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
     },
   },
   watch: {
@@ -250,11 +264,9 @@ export default {
     handleFixHeader() {
       this.shouldFixHeader = window.pageYOffset >= headerHight
 
-      /*
-       * document.body.style.paddingTop = this.shouldFixHeader
-       *   ? `${headerHight}px`
-       *   : ''
-       */
+      document.body.style.paddingTop = this.shouldFixHeader
+        ? `${headerHight}px`
+        : ''
     },
     cleanFixedHeader() {
       window.removeEventListener('scroll', this.handleFixHeader)
