@@ -596,6 +596,7 @@ module.exports = {
    */
 
   publicRuntimeConfig: {
+    emailVerifyFeatureToggle: process.env.EMAIL_VERIFY_FEATURE_TOGGLE || 'off',
     noAdFeatureToggle: process.env.NO_AD_FEATURE_TOGGLE || 'off',
   },
 
