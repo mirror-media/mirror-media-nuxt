@@ -87,7 +87,9 @@ export default {
     width 320px
   @media (min-width: 600px)
     margin 0 auto
-
+  &:hover, &:active
+    background #054F77
+    color #FFFFFF
 .topic
   position relative
   width 100%
