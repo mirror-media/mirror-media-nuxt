@@ -8,8 +8,7 @@ describe('promotion nav', () => {
   const promotionMock = {
     name: 'subscribe',
     title: '訂閱鏡週刊',
-    href:
-      'https://docs.google.com/forms/d/1es1wqWfhwJn2sxDLc-6NRVokGn_fU0_M2YffhKMlcyM/viewform',
+    href: 'https://docs.google.com/forms/d/1es1wqWfhwJn2sxDLc-6NRVokGn_fU0_M2YffhKMlcyM/viewform',
   }
 
   test('render the proper promotion link', () => {

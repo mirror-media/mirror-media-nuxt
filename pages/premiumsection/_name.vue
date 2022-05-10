@@ -84,11 +84,12 @@ export default {
       })
     },
     listData() {
-      return _.uniqBy(this.listData_, function identifyDuplicatedItemById(
-        listItem
-      ) {
-        return listItem.id
-      })
+      return _.uniqBy(
+        this.listData_,
+        function identifyDuplicatedItemById(listItem) {
+          return listItem.id
+        }
+      )
     },
 
     /**

@@ -1,7 +1,7 @@
 import flushPromises from 'flush-promises'
-import UiMembershipEmailInput from '@/components/UiMembershipEmailInput.vue'
 import localforage from 'localforage'
 import ContainerMembershipLoginWithEmail from '../ContainerMembershipLoginWithEmail.vue'
+import UiMembershipEmailInput from '@/components/UiMembershipEmailInput.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper()

@@ -859,7 +859,8 @@ export default {
         const articleListBottom =
           this.elmYPosition('#articleList') +
           this.$refs.articleList.$el.offsetHeight
-        this.articleListAutoScrollHeight = this.$refs.articleListAutoScroll.$el.offsetHeight
+        this.articleListAutoScrollHeight =
+          this.$refs.articleListAutoScroll.$el.offsetHeight
         const articleListAutoScrollBottom =
           this.elmYPosition('#articleListAutoScroll') +
           this.articleListAutoScrollHeight

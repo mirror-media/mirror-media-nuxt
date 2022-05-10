@@ -20,6 +20,7 @@ module.exports = {
   rules: {
     'nuxt/no-cjs-in-config': 'off',
     'vue/attribute-hyphenation': ['error', 'never'],
+    'vue/comment-directive': 'off',
 
     /**
      * Comments 規範參考自 https://github.com/airbnb/javascript#comments

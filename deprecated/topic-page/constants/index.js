@@ -277,8 +277,7 @@ export const DFP_OPTIONS = {
 // export const MATCHED_CONTENT_AD_SLOT = '3362911316'
 //
 export const SOCIAL_LINK = {
-  AD:
-    'https://www.mirrormedia.mg/story/ad1018001/index.html?utm_source=mm&utm_medium=footer&utm_campaign=salesteam',
+  AD: 'https://www.mirrormedia.mg/story/ad1018001/index.html?utm_source=mm&utm_medium=footer&utm_campaign=salesteam',
   AUTH: 'https://www.mirrormedia.mg/story/webauthorize/',
   DOWNLOADAPP: 'https://www.mirrormedia.mg/story/20161228corpmkt001/',
   EMAIL: 'mailto:mirror885@mirrormedia.mg',

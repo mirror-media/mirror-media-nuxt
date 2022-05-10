@@ -17,15 +17,14 @@ export const mutations = {
 
 export const actions = {
   async FETCH_BASIC_INFO({ rootState, commit }) {
-    const result = await this.app.apolloProvider.clients.memberSubscription.query(
-      {
+    const result =
+      await this.app.apolloProvider.clients.memberSubscription.query({
         fetchPolicy: 'no-cache',
         query: fetchMemberBasicInfo,
         variables: {
           firebaseId: rootState.membership.userUid,
         },
-      }
-    )
+      })
 
     /*
      * we use "allMembers" query to fetch member in israfel

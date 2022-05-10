@@ -15,7 +15,7 @@
     "build-storybook": "build-storybook"
   },
   "engines": {
-    "node": ">= 12"
+    "node": "~14.19.1"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint --ext .js,.vue --ignore-path .gitignore"
@@ -121,5 +121,8 @@
     "style-loader": "^2.0.0",
     "vue-jest": "^4.0.0-0",
     "vue-loader": "^15.9.7"
+  },
+  "resolutions": {
+    "redis": "^2.8.0"
   }
 }

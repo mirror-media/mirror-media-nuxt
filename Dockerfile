@@ -1,13 +1,14 @@
-FROM node:12.16.2-alpine
+FROM node:14.19.1-alpine3.15
 
 WORKDIR /app
 
 RUN apk upgrade --no-cache \
-    && apk add --no-cache --virtual .build-deps python make g++
+    && apk add python3 \
+    && apk add --no-cache --virtual .builds-deps make g++
 
 COPY package.json .
 COPY yarn.lock .
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 ENV NUXT_HOST 0.0.0.0
 ENV NUXT_PORT 3000
@@ -19,6 +20,4 @@ COPY . .
 
 ARG ENV
 ENV ENV ${ENV}
-RUN yarn build \
-    && apk add --no-cache ca-certificates \
-    && apk del .build-deps
+RUN yarn build && apk add --no-cache ca-certificates
