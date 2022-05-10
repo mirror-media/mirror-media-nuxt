@@ -26,6 +26,10 @@ export const actions = {
       'membership-subscribe/getFeatureToggleStatus',
       app.$config.noAdFeatureToggle
     )
+    commit(
+      'membership/getFeatureToggleStatus',
+      app.$config.emailVerifyFeatureToggle
+    )
   },
 
   async fetchGlobalData({ dispatch }) {
