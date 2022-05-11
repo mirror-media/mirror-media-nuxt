@@ -3,15 +3,14 @@ export default function ({ store, redirect, route }) {
   if (store.state.membership.emailVerifyFeatureToggle === 'on') {
     const userEmail = store.state.membership?.userEmail
 
-    //  If Facebook authUser has no email, userEmail will be '[0x001] - firebaseId:${uid}'
-    const hasInvalidEmail = userEmail?.includes('[0x001] ')
+    //  If Facebook authUser has no email, userEmail will be null
     const isSubscribeOneTime = route.query.plan === 'one-time'
 
     /*
      *  If user is logged in by facebook account, then check which email has been verified,
      *  if not, redirect to email-verify page.
      */
-    if (hasInvalidEmail && !isEmailVerified) {
+    if (!userEmail && !isEmailVerified) {
       redirect('/email-verify')
     }
 
@@ -20,7 +19,7 @@ export default function ({ store, redirect, route }) {
      *  if not, then check which email has been verified, if which is not verified, then redirect to email-verify page.
      *  if user just subscribe one-time, then no need to check has verified or redirect to email-verify page.
      */
-    if (!hasInvalidEmail && !isSubscribeOneTime && !isEmailVerified) {
+    if (userEmail && !isSubscribeOneTime && !isEmailVerified) {
       redirect('/email-verify')
     }
   } else if (!isEmailVerified) {
