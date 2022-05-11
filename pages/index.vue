@@ -398,6 +398,7 @@ export default {
         this.loadLatestListInitial()
       }
       this.insertMicroAds()
+      console.log(this.$store.state.membership.userEmail)
     } catch (err) {
       this.$nuxt.context.error({ statusCode: 500 })
     }
