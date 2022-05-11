@@ -7,9 +7,13 @@ export const state = () => ({
   userEmailVerified: undefined,
   userToken: undefined,
   userSignInInfo: {},
+  emailVerifyFeatureToggle: '',
 })
 
 export const mutations = {
+  getFeatureToggleStatus(state, featureToggle) {
+    state.emailVerifyFeatureToggle = featureToggle
+  },
   ON_AUTH_STATE_CHANGED_MUTATION(
     state,
     { authUser = {}, token, claims = {} } = {}
