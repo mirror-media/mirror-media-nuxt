@@ -14,12 +14,7 @@
 
       <div class="logo-wrapper">
         <a href="/" class="logo logo--site" @click="sendHeaderGa('logo')">
-          <img
-            :src="
-              require(`~/assets/${shouldFixHeader ? 'logo@2x' : 'logo'}.png`)
-            "
-            :alt="SITE_TITLE"
-          />
+          <img :src="require(`~/assets/premium-logo.svg`)" :alt="SITE_TITLE" />
         </a>
 
         <ClientOnly>
@@ -48,7 +43,7 @@
             :options="options"
             @sendGa="handleSendGa"
           />
-          <UiSubscribeMagazineEntrance v-if="showSubscribeMag" />
+          <UiSubscribeMagazineEntrance />
         </div>
         <ClientOnly>
           <ContainerMembershipMemberIcon class="member-icon-desktop" />
@@ -61,13 +56,6 @@
           @sendGa="handleSendGa"
         />
       </div>
-
-      <ClientOnly>
-        <div v-if="shouldFixHeader" class="share-wrapper">
-          <UiShareFb />
-          <UiShareLine />
-        </div>
-      </ClientOnly>
     </div>
 
     <nav class="header-nav">
@@ -111,13 +99,10 @@ import UiPromotionList from './UiPromotionList.vue'
 import UiHeaderNavSection from './UiHeaderNavSection.vue'
 import UiHeaderNavTopic from './UiHeaderNavTopic.vue'
 import UiSidebar from './UiSidebar.vue'
-import UiShareFb from '~/components/UiShareFb.vue'
-import UiShareLine from '~/components/UiShareLine.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerMembershipMemberIcon from '~/components/ContainerMembershipMemberIcon.vue'
 import UiSubscribeMagazineEntrance from '~/components/UiSubscribeMagazineEntrance.vue'
 
-// import { ENV } from '~/configs/config'
 import {
   SUB_BRAND_LINKS,
   SOCIAL_MEDIA_LINKS,
@@ -136,8 +121,6 @@ export default {
     UiHeaderNavSection,
     UiHeaderNavTopic,
     UiSidebar,
-    UiShareFb,
-    UiShareLine,
     ContainerGptAd,
     ContainerMembershipMemberIcon,
     UiSubscribeMagazineEntrance,
@@ -229,7 +212,7 @@ export default {
       return Object.keys(this.eventLogo).length > 0
     },
     shouldShowGptLogo() {
-      return this.hasGptLogo && !this.shouldFixHeader
+      return !this.isPremiumMember && this.hasGptLogo && !this.shouldFixHeader
     },
 
     options() {
@@ -239,9 +222,8 @@ export default {
       return [this.defaultOption, ...sections]
     },
 
-    showSubscribeMag() {
-      // return ENV === 'local' || ENV === 'dev'
-      return true
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
     },
   },
   watch: {
@@ -344,7 +326,7 @@ export default {
 <style lang="scss" scoped>
 $header-top-layer-width: 90%;
 $header-top-layer-padding-x: (100% - $header-top-layer-width) / 2;
-$menu-icon-width: 24px;
+$menu-icon-width: 16px;
 $logo-wrapper-margin-x: 8px;
 $header-search-margin-right: 20px;
 $share-wrapper-width: 70px;
@@ -352,9 +334,13 @@ $search-icon-width: 18px;
 $search-field-arrow-width: 11px;
 
 header {
-  background-color: #f5f5f5;
+  background: #204f74;
   z-index: 519;
+  padding-bottom: 5px;
   position: relative;
+  @include media-breakpoint-up(xl) {
+    height: 160px;
+  }
 
   &.fixed {
     position: fixed;
@@ -362,18 +348,8 @@ header {
     left: 0;
     width: 100%;
 
-    .header-top-layer {
-      height: 50px;
-    }
-
-    .logo-wrapper {
-      width: auto;
-      margin-right: auto;
-      margin-left: 10px;
-    }
-
-    .logo--site img {
-      width: 30px;
+    .header-nav {
+      display: none;
     }
 
     .header-search {
@@ -381,7 +357,7 @@ header {
     }
 
     .header__search-bar-wrapper::v-deep .search-bar .field {
-      top: 50px;
+      top: 76px;
 
       &::before {
         right: calc(
@@ -399,9 +375,15 @@ header {
   justify-content: space-between;
   width: $header-top-layer-width;
   max-width: 1024px;
-  height: 90px;
+  height: 71px;
   margin-left: auto;
   margin-right: auto;
+  padding-top: 33px;
+  padding-bottom: 13px;
+  @include media-breakpoint-up(md) {
+    padding-top: 0px;
+    padding-bottom: 0;
+  }
   @include media-breakpoint-up(xl) {
     height: 70px;
   }
@@ -409,9 +391,9 @@ header {
 .menu-icon {
   flex-shrink: 0;
   width: $menu-icon-width;
-  height: 40px;
-  background-image: url(~assets/hamburger@2x.png);
-  background-size: 24px;
+  height: 10px;
+  background-image: url(~assets/hamburger-white@2x.png);
+  // background-size: 16px;
   background-position: center;
   background-repeat: no-repeat;
   cursor: pointer;
@@ -420,11 +402,14 @@ header {
     display: none;
   }
 }
-.member-icon-mobile {
-  width: 30px;
-  margin: 0 0 0 10px;
+.member-icon-mobile::v-deep {
+  width: 26px;
+  margin: 0 0 0 20px;
   @include media-breakpoint-up(xl) {
     display: none;
+  }
+  .logged-in-icon__icon path {
+    fill: #fff;
   }
 }
 .member-icon-desktop {
@@ -456,7 +441,7 @@ header {
   cursor: pointer;
   user-select: none;
   &::v-deep img {
-    width: 95px;
+    width: 74px;
     @include media-breakpoint-up(xl) {
       width: auto;
       height: 50px;
@@ -471,13 +456,70 @@ header {
   flex-shrink: 0;
   align-items: center;
   z-index: 529;
-  &__and-magazine {
+  &__and-magazine::v-deep {
     display: flex;
     align-items: center;
     flex-direction: row-reverse;
     @include media-breakpoint-up(xl) {
       flex-direction: row;
     }
+
+    .subscribe-magazine-entrance {
+      background: #000000;
+      color: #fff;
+
+      @include media-breakpoint-up(xl) {
+        display: block;
+      }
+    }
+
+    .field {
+      background-color: #d8d8d8;
+      top: 76px;
+      padding: 16px 24px;
+      &::after {
+        content: '';
+        display: block;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 8px 16px 8px;
+        border-color: transparent transparent #d8d8d8 transparent;
+        position: absolute;
+        top: -16px;
+        right: calc(5vw);
+        @include media-breakpoint-up(md) {
+          right: calc(5vw + 20px);
+        }
+      }
+
+      .search-bar-select {
+        height: 32px;
+      }
+
+      .search-bar-input {
+        height: 32px;
+        margin-top: 16px;
+        input {
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+}
+
+.header-search::v-deep {
+  path {
+    fill: #fff;
+  }
+
+  .more-icon {
+    background-image: url(~assets/more_white@2x.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 5px;
+    height: 20px;
+    background-size: inherit;
   }
 }
 
@@ -499,10 +541,68 @@ header {
     display: block;
   }
 }
-.header-nav {
-  box-shadow: 0 2px 1px rgba(#000, 0.2);
-  @include media-breakpoint-up(xl) {
-    box-shadow: 0 0 5px #ccc;
+.header-nav::v-deep {
+  height: 24px;
+  .section {
+    color: #fff !important;
+    padding-top: 0;
+    &::after {
+      content: none !important;
+    }
+    @each $name, $color in $sections-color {
+      &--#{$name}.active {
+        color: $color !important;
+      }
+    }
+
+    @include media-breakpoint-up(md) {
+      padding: 0;
+      border-top-color: #000 !important;
+      @each $name, $color in $sections-color {
+        &--#{$name} {
+          &:hover {
+            background: inherit !important;
+            h2 {
+              color: $color !important;
+            }
+          }
+          & .section__dropdown a:hover {
+            background-color: $color !important;
+          }
+        }
+      }
+    }
+    &--member {
+      background: inherit !important;
+    }
+    &__dropdown {
+      z-index: 20;
+      color: white;
+    }
+  }
+
+  .topic-item {
+    border-bottom: 3px solid #000 !important;
+    position: relative;
+    &::before {
+      content: '';
+      height: 3px;
+      width: 100px;
+      background-color: #000;
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      transform: translate(-100%, 100%);
+    }
+    &--normal {
+      &::before {
+        display: none !important;
+      }
+      &:hover {
+        background-color: #004dbc !important;
+      }
+    }
   }
 }
 .slide-enter-active,
