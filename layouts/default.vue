@@ -8,10 +8,7 @@
       },
     ]"
   >
-    <ClientOnly>
-      <ContainerHeaderPremium v-if="isPremiumMember" />
-      <ContainerHeader v-else />
-    </ClientOnly>
+    <ContainerHeader />
     <div class="content">
       <nuxt />
     </div>
@@ -24,7 +21,6 @@
 </template>
 
 <script>
-import ContainerHeaderPremium from '~/components/ContainerHeaderPremium.vue'
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
@@ -35,10 +31,9 @@ import { fireActivationEvent } from '~/utils/google-optimize.js'
 
 export default {
   components: {
-    ContainerHeader,
     UiFooter,
     TheGdpr,
-    ContainerHeaderPremium,
+    ContainerHeader,
   },
   setup() {
     useViewport()

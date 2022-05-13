@@ -28,7 +28,7 @@ const createWrapper = createWrapperHelper({
 
 describe('fixed header', () => {
   test('disply the content when the header is fixed', async () => {
-    expect.assertions(4)
+    expect.assertions(3)
 
     /* Arrange */
     const sut = createWrapper(ContainerHeader, {
@@ -53,9 +53,6 @@ describe('fixed header', () => {
 
     // hide the AD of RWD_LOGO
     expect(sut.getComponent(ContainerGptAd).isVisible()).toBe(false)
-
-    // show the share icons
-    expect(sut.find('.share-wrapper').exists()).toBe(true)
 
     /**
      * 以下的行為測不到，僅作為提醒：
@@ -84,9 +81,6 @@ describe('fixed header', () => {
 
     // show the AD of RWD_LOGO
     expect(sut.getComponent(ContainerGptAd).isVisible()).toBe(true)
-
-    // hide the share icons
-    expect(sut.find('.share-wrapper').exists()).toBe(false)
 
     /**
      * 以下的行為測不到，僅作為提醒：

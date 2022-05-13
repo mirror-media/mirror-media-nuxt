@@ -99,6 +99,48 @@
             />
           </div>
         </template>
+        <ListBody
+          v-if="shouldRenderRedesignTopicList"
+          :mediaData="mediaData"
+          :isPresidentElectionId="isPresidentElectionId"
+          :candidateData="candidateData"
+          :loading="loading"
+          :leadingType="getValue(topic, ['leading'])"
+          :shouldLoadMore="shouldLoadMoreIsFeaturedArticles"
+          @loadMorePresident="loadMorePresident"
+          @loadMoreIsFeaturedArticles="loadMoreIsFeaturedArticles()"
+        >
+          <template v-slot:articleListIsFeatured>
+            <article-list
+              v-if="!isPresidentElectionId"
+              id="articleList"
+              ref="articleList"
+              :articles="articlesIsFeatured"
+              :hasDFP="false"
+            />
+          </template>
+          <template v-slot:articlesIsNotFeatured>
+            <article-list
+              v-if="!isPresidentElectionId"
+              id="articleListIsNotFeatured"
+              ref="articleListIsNotFeatured"
+              :articles="articlesIsNotFeatured"
+              :hasDFP="false"
+            />
+          </template>
+          <template v-slot:vueDfp
+            ><div v-if="hasDFP" class="ad">
+              <vue-dfp
+                :is="props.vueDfp"
+                :pos="dfpPos"
+                :dfpUnits="props.dfpUnits"
+                :section="props.section"
+                :dfpId="props.dfpId"
+                :unitId="mobileDfp"
+                :size="getValue($store, 'getters.deprecatedStore.adSize')"
+              /></div
+          ></template>
+        </ListBody>
 
         <template v-else>
           <div class="topic">
@@ -161,7 +203,6 @@ import Cookie from 'vue-cookie'
 import VueDfpProvider from 'plate-vue-dfp/DfpProvider.vue'
 import { currentYPosition, elmYPosition } from '../kc-scroll'
 import { adtracker } from './util/adtracking'
-
 import { currEnv, getTruncatedVal, getValue, unLockJS } from './util/comm'
 import { getRole } from './util/mmABRoleAssign'
 import {
@@ -197,6 +238,7 @@ import ArticleList from './components/ArticleList.vue'
 import ProjectSliderContainer from './components/project/ProjectSliderContainer.vue'
 // eslint-disable-next-line no-unused-vars
 import { createStore } from './store'
+import ListBody from './components/list/ListBody.vue'
 
 const MAXRESULT = 12
 const PAGE = 1
@@ -392,6 +434,7 @@ export default {
     ProjectSliderContainer,
     PresidentElectionProgress,
     PresidentElectionList,
+    ListBody,
   },
 
   /*
@@ -402,9 +445,26 @@ export default {
   async fetch() {
     await fetchData(this.$store, this.$route.params.topicId)
     await this.beforeRouteUpdate({ path: this.$route.path }, '', () => {})
+    if (this.shouldRenderRedesignTopicList) {
+      const typeOfIsFeaturedArticles = [true, false]
+      await Promise.all(
+        typeOfIsFeaturedArticles.map((item) => this.fetchList(1, item))
+      )
+      this.concatArticleList()
+    }
   },
   data() {
     return {
+      // data for new feature
+      pageOfNotFeaturedArticle: 1,
+      pageOfIsFeaturedArticle: 1,
+      articlesIsNotFeatured: [],
+      articlesIsFeatured: [],
+      articlesIsNotFeaturedCount: 0,
+      articlesIsFeaturedCount: 0,
+
+      //
+
       abIndicator: '',
       articleListAutoScrollHeight: 0,
       canScrollLoadMord: true,
@@ -474,6 +534,21 @@ export default {
       }
       return _.slice(this.articles, 12)
     },
+    shouldRenderRedesignTopicList() {
+      return (
+        this.$config.topicListFeatureToggle === 'on' &&
+        this.topicType === 'list'
+      )
+    },
+    shouldLoadMoreNotFeaturedArticles() {
+      return (
+        this.articlesIsNotFeaturedCount - this.articlesIsNotFeatured?.length > 0
+      )
+    },
+    shouldLoadMoreIsFeaturedArticles() {
+      return this.articlesIsFeaturedCount - this.articlesIsFeatured?.length > 0
+    },
+
     candidateData() {
       this.persidentCandidateData.forEach((cand) => {
         cand.articles = _.uniqBy(
@@ -778,6 +853,60 @@ export default {
     window.removeEventListener('scroll', this.timelineScrollHandler)
   },
   methods: {
+    concatArticleList() {
+      if (this.articlesIsFeaturedCount < MAXRESULT) {
+        this.articlesIsFeatured = this.articlesIsFeatured?.concat(
+          _.take(
+            this.articlesIsNotFeatured,
+            MAXRESULT - this.articlesIsFeaturedCount
+          )
+        )
+        this.articlesIsNotFeatured = this.articlesIsNotFeatured?.slice(
+          MAXRESULT - this.articlesIsFeaturedCount,
+          MAXRESULT
+        )
+      }
+    },
+    formatArticles(oldArticlesList, newArticlesList) {
+      /*
+       * three situation:
+       * create new array, edit and extend existing array,
+       * do not modify existing array
+       */
+      if (oldArticlesList?.length === 0) {
+        return newArticlesList
+      } else if (oldArticlesList?.length !== 0 && newArticlesList) {
+        return oldArticlesList.concat(newArticlesList)
+      } else {
+        return oldArticlesList
+      }
+    },
+
+    async fetchList(page, isFeatured = false) {
+      const data = await this.$fetchStoryFromMembershipGateway({
+        maxResults: MAXRESULT,
+        isFeatured,
+        sort: '-publishedDate',
+        topics: [this.currArticleSlug],
+        page,
+      })
+      if (isFeatured) {
+        this.articlesIsFeatured =
+          this.formatArticles(this.articlesIsFeatured, data?.items) || []
+        this.articlesIsFeaturedCount = data?.meta?.total || 0
+      } else {
+        this.articlesIsNotFeatured =
+          this.formatArticles(this.articlesIsNotFeatured, data?.items) || []
+        this.articlesIsNotFeaturedCount = data?.meta?.total || 0
+      }
+    },
+    loadMoreIsFeaturedArticles() {
+      this.pageOfIsFeaturedArticle += 1
+      this.loading = true
+      this.fetchList(this.pageOfIsFeaturedArticle, true).then(() => {
+        this.loading = false
+      })
+    },
     checkIfLockJS() {
       unLockJS()
     },
@@ -822,23 +951,35 @@ export default {
         document.querySelector('#custJS').innerHTML = this.customJS
       }
     },
-    loadMore() {
-      const maxResult = this.topicType === 'wide' ? 3 : MAXRESULT
-      let currentPage = this.page
-      currentPage += 1
-      this.loading = true
 
-      fetchArticlesByUuid(
-        this.$store,
-        this.uuid,
-        TOPIC,
-        currentPage,
-        false,
-        maxResult
-      ).then(() => {
-        this.loading = false
-        this.canScrollLoadMord = true
-      })
+    loadMore() {
+      // loadMore for new design topic list
+      if (this.shouldRenderRedesignTopicList) {
+        this.pageOfNotFeaturedArticle += 1
+        this.loading = true
+        this.fetchList(this.pageOfNotFeaturedArticle, false).then(() => {
+          this.loading = false
+          this.canScrollLoadMord = true
+        })
+      } // original loadMore
+      else {
+        const maxResult = this.topicType === 'wide' ? 3 : MAXRESULT
+        let currentPage = this.page
+        currentPage += 1
+        this.loading = true
+
+        fetchArticlesByUuid(
+          this.$store,
+          this.uuid,
+          TOPIC,
+          currentPage,
+          false,
+          maxResult
+        ).then(() => {
+          this.loading = false
+          this.canScrollLoadMord = true
+        })
+      }
     },
     loadMorePresident(tagId, page) {
       fetchArticlesByUuid(this.$store, tagId, TAG, page, false, 3)
@@ -850,7 +991,31 @@ export default {
       throw e
     },
     scrollHandler() {
-      if (this.$refs.articleList) {
+      // scrollHandler for new design topic list
+      if (this.shouldRenderRedesignTopicList) {
+        if (this.$refs.articleListIsNotFeatured) {
+          const vh =
+            window.innerHeight ||
+            document.documentElement.clientHeight ||
+            document.body.clientHeight
+          const currentBottom = this.currentYPosition() + vh
+          const articleListBottom =
+            this.elmYPosition('#articleListIsNotFeatured') +
+            this.$refs.articleListIsNotFeatured.$el.offsetHeight
+
+          if (
+            this.shouldLoadMoreNotFeaturedArticles &&
+            this.canScrollLoadMord &&
+            currentBottom > articleListBottom - 300
+          ) {
+            this.canScrollLoadMord = false
+            this.loadMore()
+          }
+        }
+      }
+
+      // original function
+      else if (this.$refs.articleList) {
         const vh =
           window.innerHeight ||
           document.documentElement.clientHeight ||
@@ -859,6 +1024,7 @@ export default {
         const articleListBottom =
           this.elmYPosition('#articleList') +
           this.$refs.articleList.$el.offsetHeight
+
         this.articleListAutoScrollHeight =
           this.$refs.articleListAutoScroll.$el.offsetHeight
         const articleListAutoScrollBottom =
