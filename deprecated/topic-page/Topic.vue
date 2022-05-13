@@ -542,11 +542,11 @@ export default {
     },
     shouldLoadMoreNotFeaturedArticles() {
       return (
-        this.articlesIsNotFeaturedCount - this.articlesIsNotFeatured.length > 0
+        this.articlesIsNotFeaturedCount - this.articlesIsNotFeatured?.length > 0
       )
     },
     shouldLoadMoreIsFeaturedArticles() {
-      return this.articlesIsFeaturedCount - this.articlesIsFeatured.length > 0
+      return this.articlesIsFeaturedCount - this.articlesIsFeatured?.length > 0
     },
 
     candidateData() {
@@ -873,10 +873,9 @@ export default {
        * create new array, edit and extend existing array,
        * do not modify existing array
        */
-
-      if (oldArticlesList.length === 0) {
+      if (oldArticlesList?.length === 0) {
         return newArticlesList
-      } else if (oldArticlesList.length !== 0 && newArticlesList) {
+      } else if (oldArticlesList?.length !== 0 && newArticlesList) {
         return oldArticlesList.concat(newArticlesList)
       } else {
         return oldArticlesList
@@ -884,7 +883,7 @@ export default {
     },
 
     async fetchList(page, isFeatured = false) {
-      const data = await this.$fetchPostsFromMembershipGateway({
+      const data = await this.$fetchStoryFromMembershipGateway({
         maxResults: MAXRESULT,
         isFeatured,
         sort: '-publishedDate',
@@ -892,17 +891,13 @@ export default {
         page,
       })
       if (isFeatured) {
-        this.articlesIsFeatured = this.formatArticles(
-          this.articlesIsFeatured,
-          data?.items
-        )
-        this.articlesIsFeaturedCount = data?.meta?.total
+        this.articlesIsFeatured =
+          this.formatArticles(this.articlesIsFeatured, data?.items) || []
+        this.articlesIsFeaturedCount = data?.meta?.total || 0
       } else {
-        this.articlesIsNotFeatured = this.formatArticles(
-          this.articlesIsNotFeatured,
-          data?.items
-        )
-        this.articlesIsNotFeaturedCount = data?.meta?.total
+        this.articlesIsNotFeatured =
+          this.formatArticles(this.articlesIsNotFeatured, data?.items) || []
+        this.articlesIsNotFeaturedCount = data?.meta?.total || 0
       }
     },
     loadMoreIsFeaturedArticles() {

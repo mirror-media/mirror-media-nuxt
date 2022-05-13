@@ -124,7 +124,7 @@ export default {
   &__hero-caption {
     margin: 16px 20px 0 20px;
     width: calc(100% - 40px);
-    height: 63.39px;
+    // height: 63.39px;
     @include media-breakpoint-up(md) {
       width: 608px;
       margin: 16px auto 0 auto;
