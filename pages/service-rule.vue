@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import errors from '@twreporter/errors'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiStoryContentHandler from '~/components/UiStoryContentHandler.vue'
 import redirectDestination from '~/utils/redirect-destination'
@@ -34,22 +35,14 @@ export default {
     UiStoryContentHandler,
   },
   async fetch() {
-    const fetchPartnersAndTopicsData = async () => {
-      await Promise.all([this.$store.dispatch('topics/fetchTopicsData')])
-    }
-
-    const [postResponse] = await Promise.allSettled([
-      this.$fetchPostsFromMembershipGateway({
+    try {
+      const postResponse = await this.$fetchPostsFromMembershipGateway({
         slug: 'service-rule',
         isAudioSiteOnly: false,
         clean: 'content',
         related: 'article',
-      }),
-      fetchPartnersAndTopicsData(),
-    ])
-
-    if (postResponse.status === 'fulfilled') {
-      this.story = postResponse.value.items?.[0] ?? {}
+      })
+      this.story = postResponse?.items?.[0] ?? {}
 
       const isTitleExist = this.story.title
       const isContentExist = (this.story?.content?.apiData ?? []).length > 0
@@ -59,13 +52,17 @@ export default {
         }
         throw new Error('not found')
       }
-    } else {
-      const { statusCode, message } = postResponse.reason
-
-      if (process.server) {
-        this.$nuxt.context.res.statusCode = statusCode
-      }
-      throw new Error(message)
+    } catch (e) {
+      console.log(
+        JSON.stringify({
+          severity: 'ERROR',
+          message: errors.helpers.printAll(e, {
+            withStack: true,
+            withPayload: true,
+          }),
+        })
+      )
+      this.$nuxt.error({ statusCode: 404 })
     }
   },
   data() {
