@@ -47,6 +47,29 @@
             :setFormStatus="setFormStatus"
             :email="email"
           />
+          <div v-if="!isServicesRuleAgree" class="service-rule">
+            <span
+              v-if="isNeedToCheck && !isCheckingServiceRule"
+              class="service-rule__error"
+              >以下尚未勾選
+            </span>
+            <label>
+              <input
+                v-model="isCheckingServiceRule"
+                type="checkbox"
+                :checked="isCheckingServiceRule"
+              />
+              <span
+                >我同意與接受鏡傳媒的<a
+                  href="https://www.mirrormedia.mg/story/service-rule/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="service-rule__link"
+                  >《服務條款》</a
+                ></span
+              >
+            </label>
+          </div>
           <p
             v-if="!isUpgradeFromMonthToYear"
             class="subscribe-info__form_left_hint"
@@ -88,7 +111,7 @@
 
 <script>
 import qs from 'qs'
-import { required, email } from 'vuelidate/lib/validators'
+import { required, email, sameAs } from 'vuelidate/lib/validators'
 import { useRoute, useStore } from '@nuxtjs/composition-api'
 import {
   ENV,
@@ -101,6 +124,8 @@ import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
+
+// import redirectDestination from '~/utils/redirect-destination'
 
 export default {
   middleware: [
@@ -121,11 +146,17 @@ export default {
     const route = useRoute()
     const { state } = useStore()
     const perchasedPlan = usePerchasedPlan()
+    const isServicesRuleAgree = state['membership-subscribe'].basicInfo.tos
+    const isCheckingServiceRule = false
+    const isNeedToCheck = false
     return {
       perchasedPlan,
       isUpgradeFromMonthToYear:
         route.value.query.plan === 'yearly' &&
         state['membership-subscribe'].basicInfo.type === 'subscribe_monthly',
+      isServicesRuleAgree,
+      isCheckingServiceRule,
+      isNeedToCheck,
     }
 
     function usePerchasedPlan() {
@@ -252,14 +283,17 @@ export default {
       email,
       required,
     },
+    isCheckingServiceRule: { required, sameAs: sameAs(() => true) },
   },
   async created() {
-    // ======To Kevin Start=======
-    const isMemberCheckedServiceRule = await this.$getMemberServiceRuleStatus(
-      this
-    )
-    console.log(isMemberCheckedServiceRule)
-
+    /*
+     * ======To Kevin Start=======
+     * const isMemberCheckedServiceRule = await this.$getMemberServiceRuleStatus(
+     *   this
+     * )
+     * console.log(this)
+     * console.log(isMemberCheckedServiceRule)
+     */
     // ======To Kevin End=======
   },
 
@@ -287,6 +321,18 @@ export default {
         this.isLoading = true
         this.$refs.receiptDOM.check()
         this.$v.email.$touch()
+        if (
+          this.$store.state.membership.emailVerifyFeatureToggle === 'on' &&
+          !this.isServicesRuleAgree
+        ) {
+          if (this.$v.isCheckingServiceRule.sameAs) {
+            this.$setMemberServiceRuleStatusToTrue()
+          } else {
+            this.isLoading = false
+            this.isNeedToCheck = true
+            return
+          }
+        }
         if (
           this.validateOn &&
           (this.$v.email.$error || this.formStatus.receipt !== 'OK')
@@ -468,7 +514,9 @@ export default {
       & > div {
         margin-bottom: 48px;
       }
-
+      & > .service-rule {
+        margin-top: 32px;
+      }
       & > .subcribe-button {
         max-width: 490px;
         margin: auto;
@@ -601,6 +649,39 @@ export default {
       font-size: 24px;
       line-height: 31px;
     }
+  }
+}
+.service-rule {
+  font-size: 18px;
+  line-height: 25px;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+
+  label {
+    display: flex;
+    align-items: center;
+
+    input[type='checkbox'] {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+    }
+  }
+
+  &__link {
+    color: #1d9fb8;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  &__error {
+    font-size: 16px;
+    line-height: 150%;
+    color: #e51731;
+    margin-bottom: 8px;
   }
 }
 </style>
