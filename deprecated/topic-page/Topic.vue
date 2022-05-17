@@ -100,7 +100,7 @@
           </div>
         </template>
         <ListBody
-          v-if="shouldRenderRedesignTopicList"
+          v-else-if="shouldRenderRedesignTopicList"
           :mediaData="mediaData"
           :isPresidentElectionId="isPresidentElectionId"
           :candidateData="candidateData"
