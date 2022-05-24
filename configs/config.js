@@ -73,7 +73,7 @@ switch (ENV) {
       'https://core.newebpay.com/MPG/mpg_gateway'
     NEWEBPAY_PAPERMAG_API_URL =
       process.env.NEWEBPAY_PAPERMAG_API_URL ||
-      'https://core.newebpay.com/MPG/mpg_gateway'
+      'https://ccore.newebpay.com/MPG/mpg_gateway'
     break
   case 'dev':
     API_HOST = 'rest-service'
