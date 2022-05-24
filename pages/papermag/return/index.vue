@@ -64,8 +64,9 @@ export default {
       const decryptedTradeInfo = await newebpay.getDecryptedTradeInfo(
         infoData.TradeInfo
       )
-      const MerchantOrderNo = JSON.parse(Object.keys(decryptedTradeInfo)[0])
-        .Result.MerchantOrderNo
+      const MerchantOrderNo =
+        decryptedTradeInfo.Result?.MerchantOrderNo ||
+        JSON.parse(Object.keys(decryptedTradeInfo)[0]).Result.MerchantOrderNo
 
       const { data: result } = await axios({
         url: `${ISRAFEL_ORIGIN}/api/graphql`,
