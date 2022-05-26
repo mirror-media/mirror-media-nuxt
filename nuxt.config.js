@@ -581,6 +581,7 @@ module.exports = {
       routes.push({
         path: '/topic/:topicId',
         component: resolve(__dirname, 'deprecated/topic-page/Topic.vue'),
+        name: 'topic-id',
       })
     },
   },
