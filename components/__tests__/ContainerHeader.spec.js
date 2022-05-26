@@ -12,6 +12,7 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 const createWrapper = createWrapperHelper({
   computed: {
     sections: () => [],
+    searchedSections: () => [],
     getSectionByCategoryName: () => () => ({
       name: undefined,
     }),
@@ -19,6 +20,7 @@ const createWrapper = createWrapperHelper({
     topics: () => [],
     isDesktopWidth: () => false,
   },
+
   mocks: {
     $fetchEvent: () => Promise.resolve({}),
     $route: { path: '/' },
@@ -151,7 +153,7 @@ describe('options computed', () => {
   test('get the proper data', () => {
     const wrapper = createWrapper(ContainerHeader, {
       computed: {
-        sections: () => [{ title: '文化' }, { name: 'videohub' }],
+        searchedSections: () => [{ title: '文化' }, { name: 'videohub' }],
       },
     })
 
