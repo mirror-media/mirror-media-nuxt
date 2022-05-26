@@ -96,7 +96,7 @@ export default {
       category: 'whole-site',
       description: '',
       'event-type': 'pageview',
-
+      'page-type': 'premium-story',
       'member-info-firebase': {
         userEmailVerified: this.$store?.state?.membership?.userEmailVerified,
         userSignInInfo: this.$store?.state?.membership?.userSignInInfo,

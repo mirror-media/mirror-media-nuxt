@@ -6,6 +6,7 @@ import {
   isScrollToBottom,
   sendLog,
   premiumStoryInfoForLogger,
+  getFormattedPageType,
 } from './util'
 const debug = require('debug')('user-behavior-log')
 
@@ -36,7 +37,7 @@ export default (context, inject) => {
         ...(to.name === 'search'
           ? { keyword: createSearchKeywordValue() }
           : {}),
-
+        'page-type': getFormattedPageType(to.name),
         'member-info-firebase': {
           userEmailVerified:
             context?.store?.state?.membership?.userEmailVerified,
@@ -72,7 +73,7 @@ export default (context, inject) => {
         category: 'whole-site',
         description: '',
         'event-type': 'click',
-
+        'page-type': getFormattedPageType(context?.route?.name),
         'member-info-firebase': {
           userEmailVerified:
             context?.store?.state?.membership?.userEmailVerified,
@@ -109,6 +110,7 @@ export default (context, inject) => {
         category: 'whole-site',
         description: '',
         'event-type': 'exit',
+        'page-type': getFormattedPageType(context?.route?.name),
         'exit-time': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
 
         'member-info-firebase': {
@@ -148,7 +150,7 @@ export default (context, inject) => {
             category: 'whole-site',
             description: '',
             'event-type': 'scroll-to-bottom',
-
+            'page-type': getFormattedPageType(context?.route?.name),
             'member-info-firebase': {
               userEmailVerified:
                 context?.store?.state?.membership?.userEmailVerified,
