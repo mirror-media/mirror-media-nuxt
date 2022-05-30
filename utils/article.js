@@ -62,9 +62,19 @@ function getStoryPathByType(story) {
 }
 
 function getStoryPath(story = {}) {
-  return checkCategoryHasMemberOnly(story)
-    ? `/premium/${story.slug}`
-    : getStoryPathByType(story)
+  switch (story.style) {
+    case 'campaign': {
+      return `/campaigns/${story.slug}/`
+    }
+    case 'projects': {
+      return `/projects/${story.slug}/`
+    }
+    default: {
+      return checkCategoryHasMemberOnly(story)
+        ? `/premium/${story.slug}`
+        : getStoryPathByType(story)
+    }
+  }
 }
 
 export {
