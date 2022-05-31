@@ -87,3 +87,38 @@ export function premiumStoryInfoForLogger(context) {
     }
   }
 }
+
+export function getFormattedPageType(routeName) {
+  switch (routeName) {
+    case 'index':
+      return 'index'
+
+    case 'story-slug':
+    case 'pre-story-slug':
+      return 'story'
+
+    case 'topic-id':
+      return 'topic'
+
+    case 'video-id':
+      return 'video'
+
+    case 'premium-slug':
+      return 'premium-story'
+
+    case 'section-name':
+    case 'premiumsection-name':
+    case 'section-member':
+    case 'section-videohub':
+    case 'section-topic':
+      return 'section'
+
+    case 'category-name':
+    case 'category-marketing':
+    case 'video_category-name':
+      return 'category'
+
+    default:
+      return 'other'
+  }
+}

@@ -154,6 +154,7 @@ export default {
   computed: {
     ...mapGetters({
       sections: 'sections/displayedSections',
+      searchedSections: 'sections/sections',
       getSectionByCategoryName: 'sections/getSectionByCategoryName',
       partners: 'partners/displayedPartners',
       topics: 'topics/displayedTopics',
@@ -216,8 +217,8 @@ export default {
     },
 
     options() {
-      const sections = this.sections.filter(
-        (section) => section.name !== 'videohub'
+      const sections = this.searchedSections.filter(
+        (section) => section.name !== 'videohub' && section.name !== 'member'
       )
       return [this.defaultOption, ...sections]
     },
