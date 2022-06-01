@@ -695,7 +695,7 @@ function getHref(
     return `/external/${slug}/`
   }
   if (style === 'campaign') {
-    return `/campaigns/${slug}/`
+    return `/campaigns/${slug}`
   } else if (style === 'projects') {
     return `/projects/${slug}/`
   } else if (isPremiumMember) {
