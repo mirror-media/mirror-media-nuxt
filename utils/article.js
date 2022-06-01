@@ -64,7 +64,7 @@ function getStoryPathByType(story) {
 function getStoryPath(story = {}) {
   switch (story.style) {
     case 'campaign': {
-      return `/campaigns/${story.slug}/`
+      return `/campaigns/${story.slug}`
     }
     case 'projects': {
       return `/projects/${story.slug}/`
