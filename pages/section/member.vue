@@ -1,6 +1,12 @@
 <template>
   <section class="page">
     <div class="page-wrapper">
+      <ContainerGptAd
+        v-if="!isPremiumMember"
+        class="ad"
+        pageKey="5fe1770b1b3e3a0f00328cdb"
+        adKey="HD"
+      />
       <a href="/subscribe" class="page__banner" />
       <div
         v-for="section in data"
@@ -32,10 +38,17 @@
         </ol>
       </div>
     </div>
+    <ContainerGptAd
+      v-if="!isPremiumMember"
+      class="ad"
+      pageKey="5fe1770b1b3e3a0f00328cdb"
+      adKey="FT"
+    />
   </section>
 </template>
 
 <script>
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiBreadcrumb from '~/components/UiBreadcrumb.vue'
 import UiArticleCardPremium from '~/components/UiArticleCardPremium.vue'
 import { getStoryPath, stripHtmlTags } from '~/utils/article'
@@ -46,6 +59,7 @@ export default {
   components: {
     UiBreadcrumb,
     UiArticleCardPremium,
+    ContainerGptAd,
   },
 
   async fetch() {
@@ -56,6 +70,12 @@ export default {
     return {
       data: [],
     }
+  },
+
+  computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
   },
 
   methods: {
@@ -214,5 +234,9 @@ export default {
     width: 100%;
     height: 10px;
   }
+}
+
+.ad {
+  margin: 20px auto;
 }
 </style>
