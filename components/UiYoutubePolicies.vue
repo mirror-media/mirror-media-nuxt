@@ -19,8 +19,14 @@
       target="_blank"
       rel="noopener noreferrer"
     >
-      Google 隱私權與條款
-    </a>
+      Google 隱私權與條款</a
+    >。鏡週刊
+    <a
+      href="https://www.mirrormedia.mg/story/privacy/"
+      target="_blank"
+      rel="noopener noreferrer"
+      >隱私權政策</a
+    >
   </div>
 </template>
 
