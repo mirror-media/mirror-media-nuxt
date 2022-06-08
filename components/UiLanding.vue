@@ -1,6 +1,12 @@
 <template>
   <div class="landing">
     <div class="landing-info">
+      <ContainerGptAd
+        v-if="shouldShwowAd"
+        class="ad"
+        :pageKey="sectionId"
+        adKey="HD"
+      />
       <div class="landing-info__label">
         <span v-if="shouldShowMemberLabel">
           <UiSectionLabel label="會員專區" />｜
@@ -32,6 +38,7 @@ import UiTheCover from './culture-post-for-premium/UiTheCover.vue'
 import UiH1 from './culture-post-for-premium/UiH1.vue'
 import UiSectionLabel from './culture-post-for-premium/UiSectionLabel.vue'
 import UiCaption from './culture-post-for-premium/UiCaption.vue'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 export default {
   components: {
@@ -39,6 +46,7 @@ export default {
     UiH1,
     UiSectionLabel,
     UiCaption,
+    ContainerGptAd,
   },
   props: {
     shouldShowMemberLabel: {
@@ -76,6 +84,14 @@ export default {
     heroCaption: {
       type: String,
       default: '',
+    },
+    sectionId: {
+      type: String,
+      default: '',
+    },
+    shouldShwowAd: {
+      type: Boolean,
+      default: true,
     },
   },
 }
