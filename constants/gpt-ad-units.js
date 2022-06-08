@@ -253,7 +253,7 @@ export default {
       ],
     },
     MB_FT: {
-      adUnit: 'mirror_m_member_300x250_HD',
+      adUnit: 'mirror_m_member_300x250_FT',
       adSize: [
         [336, 280],
         [300, 250],
@@ -262,7 +262,7 @@ export default {
       ],
     },
     PC_FT: {
-      adUnit: 'mirror_pc_member_970x250_HD',
+      adUnit: 'mirror_pc_member_970x250_FT',
       adSize: [
         [970, 250],
         [970, 90],
