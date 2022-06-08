@@ -1,14 +1,12 @@
 <template>
   <div class="landing">
     <div class="landing-info">
-      <ClientOnly>
-        <ContainerGptAd
-          v-if="shouldShwowAd"
-          class="ad"
-          :pageKey="sectionId"
-          adKey="HD"
-        />
-      </ClientOnly>
+      <ContainerGptAd
+        v-if="shouldShwowAd"
+        class="ad"
+        pageKey="5fe1770b1b3e3a0f00328cdb"
+        adKey="HD"
+      />
       <div class="landing-info__label">
         <span v-if="shouldShowMemberLabel">
           <UiSectionLabel label="會員專區" />｜
@@ -151,5 +149,9 @@ export default {
       width: 640px;
     }
   }
+}
+
+.ad {
+  margin: 20px auto;
 }
 </style>
