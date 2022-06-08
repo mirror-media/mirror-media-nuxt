@@ -38,10 +38,12 @@
       <UiLanding
         :shouldShowMemberLabel="true"
         :sectionLabel="post.sectionLabelFirst"
+        :sectionId="post.sectionIdFirst"
         :title="post.title"
         :coverVideo="post.coverVideo"
         :coverPicture="post.coverPicture"
         :heroCaption="post.heroCaption"
+        :shouldShwowAd="shouldShwowAd"
       />
 
       <UiArticleInfo
@@ -238,6 +240,7 @@ export default {
         updatedAt: new Date(updatedAt),
         relateds,
         sectionLabelFirst: sections?.[0]?.title,
+        sectionIdFirst: sections?.[0]?.id,
         tags,
         isTruncated,
       }
@@ -297,6 +300,13 @@ export default {
       } else {
         return 'premiumPageNotLogin'
       }
+    },
+    shouldShwowAd() {
+      return (
+        this.story.isTruncated ||
+        this.$store.state['membership-subscribe']?.basicInfo?.type ===
+          'marketing'
+      )
     },
   },
 
