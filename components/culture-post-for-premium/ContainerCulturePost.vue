@@ -80,6 +80,19 @@
         </transition>
       </div>
 
+      <ContainerGptAd
+        v-if="shouldShwowAd"
+        class="ad"
+        :pageKey="post.sectionIdFirst"
+        adKey="E1"
+      />
+      <ContainerGptAd
+        v-if="shouldShwowAd"
+        class="ad"
+        :pageKey="post.sectionIdFirst"
+        adKey="E2"
+      />
+
       <LazyRenderer
         v-if="doesHaveAnyRelateds"
         :class="{
