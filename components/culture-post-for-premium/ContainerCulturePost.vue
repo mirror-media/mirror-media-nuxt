@@ -168,6 +168,10 @@ export default {
       type: Number,
       default: 0,
     },
+    shouldShwowAd: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -300,13 +304,6 @@ export default {
       } else {
         return 'premiumPageNotLogin'
       }
-    },
-    shouldShwowAd() {
-      return (
-        this.story.isTruncated ||
-        this.$store.state['membership-subscribe']?.basicInfo?.type ===
-          'marketing'
-      )
     },
   },
 

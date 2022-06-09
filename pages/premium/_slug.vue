@@ -8,6 +8,7 @@
       :isLoading="isLoading"
       :isFail="isFail"
       :failTimes="failTimes"
+      :shouldShwowAd="shouldShwowAd"
       @reload="handleReload"
     />
   </div>
@@ -63,6 +64,13 @@ export default {
     },
     isTest() {
       return this.$route.query.mf && ENV !== 'prod'
+    },
+    shouldShwowAd() {
+      return (
+        this.story.isTruncated ||
+        this.$store.state['membership-subscribe']?.basicInfo?.type ===
+          'marketing'
+      )
     },
   },
   async beforeMount() {
@@ -307,7 +315,7 @@ export default {
         { rel: 'canonical', href: pageUrl },
         {
           hid: 'gptLink',
-          skip: !this.canAdvertise,
+          skip: !this.shouldShwowAd,
           rel: 'preload',
           href: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
           as: 'script',
@@ -317,7 +325,7 @@ export default {
         ...jsonLds.bind(this)(),
         {
           hid: 'gptScript',
-          skip: !this.canAdvertise,
+          skip: !this.shouldShwowAd,
           src: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
           async: true,
         },
