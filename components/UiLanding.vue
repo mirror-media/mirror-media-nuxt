@@ -4,7 +4,7 @@
       <ContainerGptAd
         v-if="shouldShwowAd"
         class="ad"
-        pageKey="5fe1770b1b3e3a0f00328cdb"
+        :pageKey="sectionId"
         adKey="HD"
       />
       <div class="landing-info__label">

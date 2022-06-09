@@ -103,6 +103,12 @@
           @sendGa="sendGaForClick('related')"
         />
       </LazyRenderer>
+      <ContainerGptAd
+        v-if="shouldShwowAd"
+        class="ad"
+        :pageKey="post.sectionIdFirst"
+        adKey="FT"
+      />
 
       <UiWineWarning v-if="doesHaveWineCategory" />
     </section>
@@ -129,6 +135,7 @@ import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
 import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 export default {
   name: 'ContainerCulturePost',
@@ -146,6 +153,7 @@ export default {
     UiFooter,
     UiShareLinksToggled,
     UiShareLinksHasCopyLink,
+    ContainerGptAd,
   },
 
   props: {
@@ -648,5 +656,9 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.ad {
+  margin: 20px 0;
 }
 </style>
