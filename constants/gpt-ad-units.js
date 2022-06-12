@@ -301,6 +301,14 @@ export default {
         [1, 1],
       ],
     },
+    MB_ST: {
+      adUnit: 'mirror_m_news_320x100_ST',
+      adSize: [
+        [320, 100],
+        [320, 50],
+        [1, 1],
+      ],
+    },
   },
 
   // page key: 時事, news
@@ -1006,6 +1014,15 @@ export default {
     },
     MB_E1: {
       adUnit: 'mirror_m_tra_300x250_E1',
+      adSize: [
+        [336, 280],
+        [300, 250],
+        [320, 100],
+        [1, 1],
+      ],
+    },
+    MB_E2: {
+      adUnit: 'mirror_m_tra_300x250_E2',
       adSize: [
         [336, 280],
         [300, 250],
