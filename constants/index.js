@@ -135,7 +135,7 @@ const VIDEOHUB_CATEGORIES_PLAYLIST_MAPPING = {
 }
 
 const SECTION_IDS = {
-  member: '5fe1770b1b3e3a0f00328cdb',
+  member: '5fe15f1e123c831000ee54c2',
   news: '57e1e0e5ee85930e00cad4e9',
   entertainment: '57e1e11cee85930e00cad4ea',
   businessmoney: '596441d04bbe120f002a319a',

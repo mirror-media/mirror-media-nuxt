@@ -4,7 +4,7 @@
       <ContainerGptAd
         v-if="!isPremiumMember"
         class="ad"
-        pageKey="5fe1770b1b3e3a0f00328cdb"
+        pageKey="5fe15f1e123c831000ee54c2"
         adKey="HD"
       />
       <a href="/subscribe" class="page__banner" />
@@ -41,7 +41,7 @@
     <ContainerGptAd
       v-if="!isPremiumMember"
       class="ad"
-      pageKey="5fe1770b1b3e3a0f00328cdb"
+      pageKey="5fe15f1e123c831000ee54c2"
       adKey="FT"
     />
   </section>
