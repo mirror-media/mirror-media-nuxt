@@ -80,18 +80,15 @@
         </transition>
       </div>
 
-      <ContainerGptAd
-        v-if="shouldShwowAd"
-        class="ad"
-        :pageKey="post.sectionIdFirst"
-        adKey="E1"
-      />
-      <ContainerGptAd
-        v-if="shouldShwowAd"
-        class="ad"
-        :pageKey="post.sectionIdFirst"
-        adKey="E2"
-      />
+      <div v-if="shouldShwowAd" class="article-ad">
+        <ContainerGptAd class="ad" :pageKey="post.sectionIdFirst" adKey="E1" />
+        <ContainerGptAd
+          v-if="isViewportWidthUpMd"
+          class="ad"
+          :pageKey="post.sectionIdFirst"
+          adKey="E2"
+        />
+      </div>
 
       <LazyRenderer
         v-if="doesHaveAnyRelateds"
@@ -213,6 +210,7 @@ export default {
   computed: {
     ...mapGetters({
       isViewportWidthUpXl: 'viewport/isViewportWidthUpXl',
+      isViewportWidthUpMd: 'viewport/isViewportWidthUpMd',
     }),
     movingPixel() {
       return `${this.movingDirection}px`
@@ -673,5 +671,14 @@ export default {
 
 .ad {
   margin: 20px 0;
+}
+
+.article-ad {
+  display: flex;
+  justify-content: center;
+
+  .ad:nth-child(2) {
+    margin-left: 40px;
+  }
 }
 </style>

@@ -269,6 +269,38 @@ export default {
         [1, 1],
       ],
     },
+    MB_E1: {
+      adUnit: 'mirror_m_member_300x250_E1',
+      adSize: [
+        [336, 280],
+        [300, 250],
+        [320, 100],
+        [1, 1],
+      ],
+    },
+    MB_E2: {
+      adUnit: 'mirror_m_member_300x250_E2',
+      adSize: [
+        [336, 280],
+        [300, 250],
+        [320, 100],
+        [1, 1],
+      ],
+    },
+    PC_E1: {
+      adUnit: 'mirror_pc_member_300x250_E1',
+      adSize: [
+        [300, 250],
+        [1, 1],
+      ],
+    },
+    PC_E2: {
+      adUnit: 'mirror_pc_member_300x250_E2',
+      adSize: [
+        [300, 250],
+        [1, 1],
+      ],
+    },
   },
 
   // page key: 時事, news
