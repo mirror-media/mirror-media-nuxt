@@ -1,12 +1,6 @@
 <template>
   <div class="landing">
-    <div class="landing-info">
-      <ContainerGptAd
-        v-if="shouldShwowAd"
-        class="ad"
-        :pageKey="sectionId"
-        adKey="HD"
-      />
+    <div class="landing-info" :class="[{ 'without-ad': !shouldShwowAd }]">
       <div class="landing-info__label">
         <span v-if="shouldShowMemberLabel">
           <UiSectionLabel label="會員專區" />｜
@@ -38,7 +32,6 @@ import UiTheCover from './culture-post-for-premium/UiTheCover.vue'
 import UiH1 from './culture-post-for-premium/UiH1.vue'
 import UiSectionLabel from './culture-post-for-premium/UiSectionLabel.vue'
 import UiCaption from './culture-post-for-premium/UiCaption.vue'
-import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 export default {
   components: {
@@ -46,7 +39,6 @@ export default {
     UiH1,
     UiSectionLabel,
     UiCaption,
-    ContainerGptAd,
   },
   props: {
     shouldShowMemberLabel: {
@@ -85,10 +77,6 @@ export default {
       type: String,
       default: '',
     },
-    sectionId: {
-      type: String,
-      default: '',
-    },
     shouldShwowAd: {
       type: Boolean,
       default: true,
@@ -105,17 +93,23 @@ export default {
 }
 
 .landing-info {
-  padding: 88px 20px 0 20px;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   @include media-breakpoint-up(md) {
-    padding: 112px 0 0 0;
+    padding: 0;
     max-width: 608px;
     margin: 0 auto;
   }
   @include media-breakpoint-up(xl) {
     max-width: 800px;
+  }
+  &.without-ad {
+    padding-top: 88px;
+    @include media-breakpoint-up(md) {
+      padding-top: 112px;
+    }
   }
   &__title {
     margin: 8px 0 0 0;

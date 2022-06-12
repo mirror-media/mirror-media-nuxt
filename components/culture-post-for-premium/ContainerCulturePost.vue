@@ -35,10 +35,16 @@
         :currentIndex="currentIndex"
       />
 
+      <ContainerGptAd
+        v-if="shouldShwowAd"
+        class="ad ad--head"
+        :pageKey="post.sectionIdFirst"
+        adKey="HD"
+      />
+
       <UiLanding
         :shouldShowMemberLabel="true"
         :sectionLabel="post.sectionLabelFirst"
-        :sectionId="post.sectionIdFirst"
         :title="post.title"
         :coverVideo="post.coverVideo"
         :coverPicture="post.coverPicture"
@@ -671,6 +677,13 @@ export default {
 
 .ad {
   margin: 20px 0;
+
+  &--head {
+    margin-top: 88px;
+    @include media-breakpoint-up(md) {
+      margin-top: 112px;
+    }
+  }
 }
 
 .article-ad {
