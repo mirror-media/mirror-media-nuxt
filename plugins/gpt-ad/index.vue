@@ -139,6 +139,8 @@ export default {
 .gpt-ad-wrapper {
   max-width: 100%;
   text-align: center;
+  display: block !important;
+  height: 200px;
 
   /* not using align-items: center; to prevent gpt layout issue */
   &::v-deep iframe {

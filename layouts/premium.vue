@@ -35,12 +35,14 @@ import UiArticleIndex from '~/components/culture-post-for-premium/UiArticleIndex
 import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
 
+import { useViewport } from '~/composition/viewport.js'
 import { fireActivationEvent } from '~/utils/google-optimize.js'
 import { useMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
 
 export default {
   name: 'Premium',
   setup() {
+    useViewport()
     useMemberPageViewToFbPixel()
   },
   components: {
