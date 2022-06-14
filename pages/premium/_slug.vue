@@ -69,7 +69,7 @@ export default {
       return this.$route.query.mf && ENV !== 'prod'
     },
     shouldShwowAd() {
-      if (!PREMIUM_AD_FEATURE_TOGGLE) return false
+      if (!this.PREMIUM_AD_FEATURE_TOGGLE) return false
       return (
         this.story.isTruncated ||
         this.$store.state['membership-subscribe']?.basicInfo?.type ===

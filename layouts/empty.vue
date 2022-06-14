@@ -13,7 +13,7 @@ import TheGdpr from '~/components/TheGdpr.vue'
 
 import { fireActivationEvent } from '~/utils/google-optimize.js'
 
-// import { useViewport } from '~/composition/viewport.js'
+import { useViewport } from '~/composition/viewport.js'
 import { useMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
 
 export default {
@@ -21,7 +21,7 @@ export default {
   setup() {
     useMemberPageViewToFbPixel()
 
-    // useViewport()
+    useViewport()
   },
   errorCaptured(error, vm, info) {
     if (vm.$route.name === 'premium-slug') {
