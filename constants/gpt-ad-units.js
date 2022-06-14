@@ -302,7 +302,7 @@ export default {
       ],
     },
     MB_ST: {
-      adUnit: 'mirror_m_news_320x100_ST',
+      adUnit: 'mirror_m_member_320x100_ST',
       adSize: [
         [320, 100],
         [320, 50],
