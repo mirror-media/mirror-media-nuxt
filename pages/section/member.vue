@@ -44,6 +44,7 @@
       pageKey="5fe15f1e123c831000ee54c2"
       adKey="FT"
     />
+    <UiStickyAd v-if="!isPremiumMember" pageKey="5fe15f1e123c831000ee54c2" />
   </section>
 </template>
 
@@ -51,6 +52,7 @@
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiBreadcrumb from '~/components/UiBreadcrumb.vue'
 import UiArticleCardPremium from '~/components/UiArticleCardPremium.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 import { getStoryPath, stripHtmlTags } from '~/utils/article'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '~/constants'
 
@@ -60,6 +62,7 @@ export default {
     UiBreadcrumb,
     UiArticleCardPremium,
     ContainerGptAd,
+    UiStickyAd,
   },
 
   async fetch() {

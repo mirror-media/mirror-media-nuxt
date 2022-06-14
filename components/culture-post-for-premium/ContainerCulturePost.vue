@@ -132,6 +132,7 @@
       <UiFooter />
     </div>
     <UiShareLinksToggled class="share-toggled" />
+    <UiStickyAd v-if="shouldShwowAd" pageKey="5fe15f1e123c831000ee54c2" />
   </section>
 </template>
 
@@ -152,6 +153,7 @@ import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 
 export default {
   name: 'ContainerCulturePost',
@@ -170,6 +172,7 @@ export default {
     UiShareLinksToggled,
     UiShareLinksHasCopyLink,
     ContainerGptAd,
+    UiStickyAd,
   },
 
   props: {
