@@ -27,6 +27,8 @@ import {
 
 import { DABLE_WIDGET_IDS } from '~/constants/ads'
 import { checkCategoryHasMemberOnly } from '~/utils/article'
+
+import { PREMIUM_AD_FEATURE_TOGGLE } from '~/configs/config.js'
 const _ = { isEmpty }
 
 export default {
@@ -50,6 +52,7 @@ export default {
       isLoading: true,
       isFail: false,
       failTimes: 0,
+      PREMIUM_AD_FEATURE_TOGGLE,
     }
   },
   computed: {
@@ -66,6 +69,7 @@ export default {
       return this.$route.query.mf && ENV !== 'prod'
     },
     shouldShwowAd() {
+      if (!PREMIUM_AD_FEATURE_TOGGLE) return false
       return (
         this.story.isTruncated ||
         this.$store.state['membership-subscribe']?.basicInfo?.type ===

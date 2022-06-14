@@ -2,7 +2,7 @@
   <section class="page">
     <div class="page-wrapper">
       <ContainerGptAd
-        v-if="!isPremiumMember"
+        v-if="shouldShowAd"
         class="ad"
         pageKey="5fe15f1e123c831000ee54c2"
         adKey="HD"
@@ -30,12 +30,12 @@
       />
     </div>
     <ContainerGptAd
-      v-if="!isPremiumMember"
+      v-if="shouldShowAd"
       class="ad"
       pageKey="5fe15f1e123c831000ee54c2"
       adKey="FT"
     />
-    <UiStickyAd v-if="!isPremiumMember" pageKey="5fe15f1e123c831000ee54c2" />
+    <UiStickyAd v-if="shouldShowAd" pageKey="5fe15f1e123c831000ee54c2" />
   </section>
 </template>
 
@@ -48,6 +48,7 @@ import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import { getStoryPath, stripHtmlTags } from '~/utils/article'
+import { PREMIUM_AD_FEATURE_TOGGLE } from '~/configs/config.js'
 
 export default {
   layout: 'premium',
@@ -77,12 +78,16 @@ export default {
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
+      PREMIUM_AD_FEATURE_TOGGLE,
     }
   },
 
   computed: {
     isPremiumMember() {
       return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
+    shouldShowAd() {
+      return this.PREMIUM_AD_FEATURE_TOGGLE && !this.isPremiumMember
     },
     categoriesId() {
       const routeName = this.$route.params.name
