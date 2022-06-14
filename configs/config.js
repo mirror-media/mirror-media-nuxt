@@ -24,6 +24,8 @@ const NEWEBPAY_PAPERMAG_IV =
   process.env.NEWEBPAY_PAPERMAG_IV || 'newebpay-papermag-iv'
 const ISRAFEL_ORIGIN = process.env.ISRAFEL_ORIGIN || 'israfel-origin'
 const IS_AD_DISABLE = process.env.IS_AD_DISABLE === 'true' || false
+const PREMIUM_AD_FEATURE_TOGGLE =
+  process.env.PREMIUM_AD_FEATURE_TOGGLE === 'on' || false
 
 // The following variables are given values according to different `ENV`
 let API_HOST = ''
@@ -145,4 +147,5 @@ export {
   URL_STATIC_COMBO_SECTIONS,
   NEWEBPAY_MEMBERSHIP_API_URL,
   NEWEBPAY_PAPERMAG_API_URL,
+  PREMIUM_AD_FEATURE_TOGGLE,
 }

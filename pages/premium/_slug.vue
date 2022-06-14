@@ -8,6 +8,7 @@
       :isLoading="isLoading"
       :isFail="isFail"
       :failTimes="failTimes"
+      :shouldShwowAd="shouldShwowAd"
       @reload="handleReload"
     />
   </div>
@@ -26,6 +27,8 @@ import {
 
 import { DABLE_WIDGET_IDS } from '~/constants/ads'
 import { checkCategoryHasMemberOnly } from '~/utils/article'
+
+import { PREMIUM_AD_FEATURE_TOGGLE } from '~/configs/config.js'
 const _ = { isEmpty }
 
 export default {
@@ -49,6 +52,7 @@ export default {
       isLoading: true,
       isFail: false,
       failTimes: 0,
+      PREMIUM_AD_FEATURE_TOGGLE,
     }
   },
   computed: {
@@ -63,6 +67,14 @@ export default {
     },
     isTest() {
       return this.$route.query.mf && ENV !== 'prod'
+    },
+    shouldShwowAd() {
+      if (!PREMIUM_AD_FEATURE_TOGGLE) return false
+      return (
+        this.story.isTruncated ||
+        this.$store.state['membership-subscribe']?.basicInfo?.type ===
+          'marketing'
+      )
     },
   },
   async beforeMount() {
@@ -307,7 +319,7 @@ export default {
         { rel: 'canonical', href: pageUrl },
         {
           hid: 'gptLink',
-          skip: !this.canAdvertise,
+          skip: !this.shouldShwowAd,
           rel: 'preload',
           href: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
           as: 'script',
@@ -317,7 +329,7 @@ export default {
         ...jsonLds.bind(this)(),
         {
           hid: 'gptScript',
-          skip: !this.canAdvertise,
+          skip: !this.shouldShwowAd,
           src: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
           async: true,
         },

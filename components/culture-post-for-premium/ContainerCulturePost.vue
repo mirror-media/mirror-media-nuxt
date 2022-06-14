@@ -35,10 +35,16 @@
         :currentIndex="currentIndex"
       />
 
+      <ContainerGptAd
+        v-if="shouldShwowAd"
+        class="ad ad--head"
+        :pageKey="post.sectionIdFirst"
+        adKey="HD"
+      />
+
       <UiLanding
         :shouldShowMemberLabel="true"
         :sectionLabel="post.sectionLabelFirst"
-        :sectionId="post.sectionIdFirst"
         :title="post.title"
         :coverVideo="post.coverVideo"
         :coverPicture="post.coverPicture"
@@ -80,6 +86,16 @@
         </transition>
       </div>
 
+      <div v-if="shouldShwowAd" class="article-ad">
+        <ContainerGptAd class="ad" :pageKey="post.sectionIdFirst" adKey="E1" />
+        <ContainerGptAd
+          v-if="isViewportWidthUpMd"
+          class="ad"
+          :pageKey="post.sectionIdFirst"
+          adKey="E2"
+        />
+      </div>
+
       <LazyRenderer
         v-if="doesHaveAnyRelateds"
         :class="{
@@ -103,6 +119,12 @@
           @sendGa="sendGaForClick('related')"
         />
       </LazyRenderer>
+      <ContainerGptAd
+        v-if="shouldShwowAd"
+        class="ad"
+        :pageKey="post.sectionIdFirst"
+        adKey="FT"
+      />
 
       <UiWineWarning v-if="doesHaveWineCategory" />
     </section>
@@ -110,6 +132,7 @@
       <UiFooter />
     </div>
     <UiShareLinksToggled class="share-toggled" />
+    <UiStickyAd v-if="shouldShwowAd" pageKey="5fe15f1e123c831000ee54c2" />
   </section>
 </template>
 
@@ -129,6 +152,8 @@ import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
 import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 
 export default {
   name: 'ContainerCulturePost',
@@ -146,6 +171,8 @@ export default {
     UiFooter,
     UiShareLinksToggled,
     UiShareLinksHasCopyLink,
+    ContainerGptAd,
+    UiStickyAd,
   },
 
   props: {
@@ -168,6 +195,10 @@ export default {
       type: Number,
       default: 0,
     },
+    shouldShwowAd: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -188,6 +219,7 @@ export default {
   computed: {
     ...mapGetters({
       isViewportWidthUpXl: 'viewport/isViewportWidthUpXl',
+      isViewportWidthUpMd: 'viewport/isViewportWidthUpMd',
     }),
     movingPixel() {
       return `${this.movingDirection}px`
@@ -300,13 +332,6 @@ export default {
       } else {
         return 'premiumPageNotLogin'
       }
-    },
-    shouldShwowAd() {
-      return (
-        this.story.isTruncated ||
-        this.$store.state['membership-subscribe']?.basicInfo?.type ===
-          'marketing'
-      )
     },
   },
 
@@ -651,5 +676,25 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.ad {
+  margin: 20px 0;
+
+  &--head {
+    margin-top: 88px;
+    @include media-breakpoint-up(md) {
+      margin-top: 112px;
+    }
+  }
+}
+
+.article-ad {
+  display: flex;
+  justify-content: center;
+
+  .ad:nth-child(2) {
+    margin-left: 40px;
+  }
 }
 </style>

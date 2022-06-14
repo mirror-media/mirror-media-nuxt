@@ -1,6 +1,12 @@
 <template>
   <section class="page">
     <div class="page-wrapper">
+      <ContainerGptAd
+        v-if="shouldShowAd"
+        class="ad"
+        pageKey="5fe15f1e123c831000ee54c2"
+        adKey="HD"
+      />
       <UiBreadcrumb class="category__breadcrumb" :breadcrumbs="breadcrumbs" />
       <ol class="category__list list">
         <li
@@ -23,6 +29,13 @@
         @infinite="infiniteHandler"
       />
     </div>
+    <ContainerGptAd
+      v-if="shouldShowAd"
+      class="ad"
+      pageKey="5fe15f1e123c831000ee54c2"
+      adKey="FT"
+    />
+    <UiStickyAd v-if="shouldShowAd" pageKey="5fe15f1e123c831000ee54c2" />
   </section>
 </template>
 
@@ -32,7 +45,10 @@ import { usePremiumBreadcrumbs } from '~/composition/premium-breadcrumbs'
 import UiBreadcrumb from '~/components/UiBreadcrumb.vue'
 import UiArticleCardPremiumCompact from '~/components/UiArticleCardPremiumCompact.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 import { getStoryPath, stripHtmlTags } from '~/utils/article'
+import { PREMIUM_AD_FEATURE_TOGGLE } from '~/configs/config.js'
 
 export default {
   layout: 'premium',
@@ -40,6 +56,8 @@ export default {
     UiBreadcrumb,
     UiArticleCardPremiumCompact,
     UiInfiniteLoading,
+    ContainerGptAd,
+    UiStickyAd,
   },
   setup() {
     const breadcrumbs = usePremiumBreadcrumbs()
@@ -60,10 +78,17 @@ export default {
       listDataCurrentPage: 0,
       listDataMaxResults: 9,
       listDataTotal: undefined,
+      PREMIUM_AD_FEATURE_TOGGLE,
     }
   },
 
   computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
+    shouldShowAd() {
+      return this.PREMIUM_AD_FEATURE_TOGGLE && !this.isPremiumMember
+    },
     categoriesId() {
       const routeName = this.$route.params.name
       const categoryId = (
@@ -255,5 +280,9 @@ export default {
     width: 100%;
     height: 10px;
   }
+}
+
+.ad {
+  margin: 20px 0;
 }
 </style>
