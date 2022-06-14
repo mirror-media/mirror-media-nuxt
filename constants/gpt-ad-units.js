@@ -309,6 +309,15 @@ export default {
         [1, 1],
       ],
     },
+    MB_AT1: {
+      adUnit: 'mirror_m_member_300x250_AT1',
+      adSize: [
+        [336, 280],
+        [300, 250],
+        [320, 100],
+        [1, 1],
+      ],
+    },
   },
 
   // page key: 時事, news
