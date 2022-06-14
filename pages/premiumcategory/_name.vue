@@ -35,16 +35,22 @@
       pageKey="5fe15f1e123c831000ee54c2"
       adKey="FT"
     />
+    <UiStickyAd
+      v-if="!isPremiumMember && !isDesktopWidth"
+      pageKey="5fe15f1e123c831000ee54c2"
+    />
   </section>
 </template>
 
 <script>
 import _ from 'lodash'
+import { mapGetters } from 'vuex'
 import { usePremiumBreadcrumbs } from '~/composition/premium-breadcrumbs'
 import UiBreadcrumb from '~/components/UiBreadcrumb.vue'
 import UiArticleCardPremiumCompact from '~/components/UiArticleCardPremiumCompact.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 import { getStoryPath, stripHtmlTags } from '~/utils/article'
 
 export default {
@@ -54,6 +60,7 @@ export default {
     UiArticleCardPremiumCompact,
     UiInfiniteLoading,
     ContainerGptAd,
+    UiStickyAd,
   },
   setup() {
     const breadcrumbs = usePremiumBreadcrumbs()
@@ -78,6 +85,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      isDesktopWidth: 'viewport/isViewportWidthUpXl',
+    }),
     isPremiumMember() {
       return this.$store?.getters?.['membership-subscribe/isPremiumMember']
     },
