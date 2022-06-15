@@ -1,6 +1,6 @@
 <template>
   <div class="landing">
-    <div class="landing-info">
+    <div class="landing-info" :class="[{ 'without-ad': !shouldShwowAd }]">
       <div class="landing-info__label">
         <span v-if="shouldShowMemberLabel">
           <UiSectionLabel label="會員專區" />｜
@@ -77,6 +77,10 @@ export default {
       type: String,
       default: '',
     },
+    shouldShwowAd: {
+      type: Boolean,
+      default: true,
+    },
   },
 }
 </script>
@@ -89,17 +93,23 @@ export default {
 }
 
 .landing-info {
-  padding: 88px 20px 0 20px;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   @include media-breakpoint-up(md) {
-    padding: 112px 0 0 0;
+    padding: 0;
     max-width: 608px;
     margin: 0 auto;
   }
   @include media-breakpoint-up(xl) {
     max-width: 800px;
+  }
+  &.without-ad {
+    padding-top: 88px;
+    @include media-breakpoint-up(md) {
+      padding-top: 112px;
+    }
   }
   &__title {
     margin: 8px 0 0 0;
@@ -133,5 +143,9 @@ export default {
       width: 640px;
     }
   }
+}
+
+.ad {
+  margin: 20px auto;
 }
 </style>

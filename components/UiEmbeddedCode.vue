@@ -1,9 +1,10 @@
 <template>
-  <LazyRenderer @load="insertScriptsInBody(scripts)">
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <div v-html="embeddedCodeWithoutScript" />
-    <p v-if="caption" class="caption">{{ caption }}</p>
-  </LazyRenderer>
+  <div>
+    <div ref="embeddedcode" />
+    <LazyRenderer @load="insertScriptsInBody(embeddedCode)">
+      <p v-if="caption" class="caption">{{ caption }}</p>
+    </LazyRenderer>
+  </div>
 </template>
 
 <script>
@@ -21,23 +22,36 @@ export default {
     caption() {
       return this.content?.caption ?? ''
     },
-    scripts() {
-      return this.content?.scripts ?? []
-    },
-    embeddedCodeWithoutScript() {
-      return this.content?.embeddedCodeWithoutScript ?? ''
+    embeddedCode() {
+      return this.content?.embeddedCode ?? ''
     },
   },
   methods: {
-    insertScriptsInBody(scripts) {
-      if (process.browser) {
-        scripts.forEach((item) => {
-          const src = item.attribs?.src ?? ''
-          const s = document.createElement('script')
-          s.setAttribute('src', src)
-          document.body.appendChild(s)
-        })
-      }
+    insertScriptsInBody(embeddedCode) {
+      const fragment = document.createDocumentFragment()
+
+      const parser = new DOMParser()
+      const embeddedCodeString = `<div id="draft-embed">${embeddedCode}</div>`
+      const ele = parser.parseFromString(embeddedCodeString, 'text/html')
+
+      const scripts = ele.querySelectorAll('script')
+      const nonScripts = ele.querySelectorAll('div#draft-embed > :not(script)')
+
+      nonScripts.forEach((ele) => {
+        fragment.appendChild(ele)
+      })
+
+      scripts.forEach((s) => {
+        const scriptEle = document.createElement('script')
+        const attrs = s.attributes
+        for (let i = 0; i < attrs.length; i++) {
+          scriptEle.setAttribute(attrs[i].name, attrs[i].value)
+        }
+        scriptEle.text = s.text || ''
+        fragment.appendChild(scriptEle)
+      })
+
+      this.$refs.embeddedcode.appendChild(fragment)
     },
   },
 }

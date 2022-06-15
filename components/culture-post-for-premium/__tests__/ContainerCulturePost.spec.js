@@ -15,6 +15,9 @@ const createWrapper = createWrapperHelper({
       getters: {
         'viewport/isViewportWidthUpXl': false,
       },
+      state: {
+        'membership-subscribe': { basicInfo: 'none' },
+      },
     },
   },
 })

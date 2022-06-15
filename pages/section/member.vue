@@ -1,6 +1,12 @@
 <template>
   <section class="page">
     <div class="page-wrapper">
+      <ContainerGptAd
+        v-if="shouldShowAd"
+        class="ad"
+        pageKey="5fe15f1e123c831000ee54c2"
+        adKey="HD"
+      />
       <a href="/subscribe" class="page__banner" />
       <div
         v-for="section in data"
@@ -32,20 +38,32 @@
         </ol>
       </div>
     </div>
+    <ContainerGptAd
+      v-if="shouldShowAd"
+      class="ad"
+      pageKey="5fe15f1e123c831000ee54c2"
+      adKey="FT"
+    />
+    <UiStickyAd v-if="shouldShowAd" pageKey="5fe15f1e123c831000ee54c2" />
   </section>
 </template>
 
 <script>
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiBreadcrumb from '~/components/UiBreadcrumb.vue'
 import UiArticleCardPremium from '~/components/UiArticleCardPremium.vue'
+import UiStickyAd from '~/components/UiStickyAd.vue'
 import { getStoryPath, stripHtmlTags } from '~/utils/article'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '~/constants'
+import { PREMIUM_AD_FEATURE_TOGGLE } from '~/configs/config.js'
 
 export default {
   layout: 'premium',
   components: {
     UiBreadcrumb,
     UiArticleCardPremium,
+    ContainerGptAd,
+    UiStickyAd,
   },
 
   async fetch() {
@@ -55,7 +73,17 @@ export default {
   data() {
     return {
       data: [],
+      PREMIUM_AD_FEATURE_TOGGLE,
     }
+  },
+
+  computed: {
+    isPremiumMember() {
+      return this.$store?.getters?.['membership-subscribe/isPremiumMember']
+    },
+    shouldShowAd() {
+      return this.PREMIUM_AD_FEATURE_TOGGLE && !this.isPremiumMember
+    },
   },
 
   methods: {
@@ -214,5 +242,9 @@ export default {
     width: 100%;
     height: 10px;
   }
+}
+
+.ad {
+  margin: 20px auto;
 }
 </style>
