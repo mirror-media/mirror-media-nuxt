@@ -2,7 +2,11 @@
   <div class="wrapper">
     <article class="article-body">
       <UiPremiumBrief :brief="brief" :briefColor="briefColor" />
-      <ContentHandler v-for="item in content" :key="item.id" :item="item" />
+      <ContentHandler
+        v-for="item in contentWithAd"
+        :key="item.id"
+        :item="item"
+      />
       <UiArticleSkeleton v-show="isLoading" />
 
       <ClientOnly>
@@ -56,6 +60,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { computed, useStore } from '@nuxtjs/composition-api'
 import ContentHandler from './ContentHandler.vue'
 import UiPremiumBrief from './UiPremiumBrief.vue'
@@ -135,6 +140,28 @@ export default {
     hideInvite: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    ...mapGetters({
+      isViewportWidthUpXl: 'viewport/isViewportWidthUpMd',
+    }),
+    contentWithAd() {
+      let content = this.content
+      if (!this.isViewportWidthUpMd) {
+        const ad = {
+          type: 'gpt-ad',
+          id: 'adA1',
+          content: [{ pageKey: '5fe15f1e123c831000ee54c2', adKey: 'AT1' }],
+        }
+        for (let i = 0; i < content.length; i++) {
+          if (content[i].content?.[0]) {
+            content = [...content.slice(0, i + 1), ad, ...content.slice(i + 1)]
+            break
+          }
+        }
+      }
+      return content
     },
   },
   methods: {
