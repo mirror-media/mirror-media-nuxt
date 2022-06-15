@@ -1,7 +1,11 @@
 <template>
   <div>
     <error v-if="$fetchState.error" :error="$fetchState.error" />
-    <div v-else class="story-slug">
+    <div
+      v-else
+      class="story-slug"
+      :class="{ 'story-slug--background-yellow': shouldSetBackgroundToYellow }"
+    >
       <ContainerPhotoGallery v-if="isStylePhotography" :story="story" />
 
       <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
@@ -237,6 +241,11 @@ import {
 } from '~/utils/article'
 
 import handleStoryPremiumRedirect from '~/middleware/handle-story-premium-redirect'
+
+const PROJECTS_2022_SEA_TURTLE_SLUG = [
+  'sea_turtle2022_seaghost',
+  'sea_turtle2022_timetraveling',
+]
 
 const DEFAULT_SECTION_ID = 'other'
 
@@ -478,6 +487,12 @@ export default {
         this.isDesktopWidth &&
         this.doesHaveAdPcFloating &&
         !this.doesClickCloseAdPcFloating
+      )
+    },
+    shouldSetBackgroundToYellow() {
+      return (
+        this.isStyleWide &&
+        PROJECTS_2022_SEA_TURTLE_SLUG?.includes(this.storySlug)
       )
     },
   },
@@ -981,6 +996,9 @@ $story-max-width: 1160px;
 $aside-width: 300px;
 
 .story-slug {
+  &--background-yellow {
+    background-color: #f8f3e8;
+  }
   &__story-body {
     max-width: 645px;
     padding-top: 20px;

@@ -89,7 +89,7 @@
       <div v-if="shouldShwowAd" class="article-ad">
         <ContainerGptAd class="ad" :pageKey="post.sectionIdFirst" adKey="E1" />
         <ContainerGptAd
-          v-if="isViewportWidthUpMd"
+          v-show="isViewportWidthUpMd"
           class="ad"
           :pageKey="post.sectionIdFirst"
           adKey="E2"

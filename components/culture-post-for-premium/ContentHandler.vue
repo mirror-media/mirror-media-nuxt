@@ -12,6 +12,7 @@ import UiStoryVideo from '~/components/UiStoryVideo.vue'
 import UiEmbeddedCode from '~/components/UiEmbeddedCode.vue'
 import ContainerAudioPlayer from '~/components/audio-player/ContainerAudioPlayer.vue'
 import ContainerParagraphWithAnnotation from '~/components/ContainerParagraphWithAnnotation.vue'
+import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 export default {
   name: 'ContentHandler',
@@ -184,6 +185,14 @@ export default {
 
       case 'unstyled':
         return <p domPropsInnerHTML={content} />
+
+      case 'gpt-ad': {
+        const { pageKey, adKey } = content
+
+        return (
+          <ContainerGptAd class="story__ad" pageKey={pageKey} adKey={adKey} />
+        )
+      }
 
       default:
         return undefined
