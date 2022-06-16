@@ -267,6 +267,14 @@ export default {
       showShareLinksAside: false,
     }
   },
+  beforeMount() {
+    const { style, slug } = this.story
+    if (style === 'campaign') {
+      window.location.replace(`/campaigns/${slug}`)
+    } else if (style === 'projects') {
+      window.location.replace(`/projects/${slug}/`)
+    }
+  },
   computed: {
     storySlug() {
       return this.$route.params.slug

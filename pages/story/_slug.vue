@@ -511,6 +511,12 @@ export default {
     await handleStoryPremiumRedirect(this.$nuxt.context)
     if (this.story.redirect)
       window.location.replace(`/story/${this.story.redirect}`)
+    const { style, slug } = this.story
+    if (style === 'campaign') {
+      window.location.replace(`/campaigns/${slug}`)
+    } else if (style === 'projects') {
+      window.location.replace(`/projects/${slug}/`)
+    }
   },
 
   mounted() {
