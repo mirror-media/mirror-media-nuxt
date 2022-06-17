@@ -8,8 +8,6 @@ const loggingClient = new Logging({
 })
 
 module.exports = function (req, res, next) {
-  if (config.ENV === 'local') return
-
   try {
     res.send({ msg: 'Received.' })
     const query = !isEmpty(req.body) ? req.body : req.query
@@ -17,6 +15,13 @@ module.exports = function (req, res, next) {
     const log = loggingClient.log(logName)
     const metadata = { resource: { type: 'global' } }
     query.ip = req.clientIp
+
+    if (config.ENV === 'local') {
+      console.log(`[LOG] API tracking`)
+      console.log(query)
+      return
+    }
+
     const entry = log.entry(metadata, query)
     log.write(entry)
   } catch (error) {
