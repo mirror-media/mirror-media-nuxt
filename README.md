@@ -31,12 +31,12 @@ To avoid unpredictable error occur when developing, please use Classic Stable ve
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
 | --- | --- | --- | --- |
 | ENV | 字串 | 'local' | 系統環境 |
-| REDIS_READ_HOST | 字串 | 'redis-read-host' | nuxt SSR rendering cache |
-| REDIS_WRITE_HOST | 字串 | 'redis-write-host' | nuxt SSR rendering cache |
-| REDIS_AUTH | 字串 | 'redis-auth' | nuxt SSR rendering cache |
-| NEWEBPAY_KEY | 長度為 32 的字串 | 'newebpay-key' | 藍新支付 API key |
-| NEWEBPAY_IV | 長度為 16 的字串 | 'newebpay-iv' | 藍新支付 API iv |
-| NEWEBPAY_MEMBERSHIP_API_URL | 字串 | 'https://ccore.newebpay.com/MPG/mpg_gateway' | 藍新支付 API URL |
+| REDIS_READ_HOST | 字串 | 'redis-read-host' | 讀取用的 Redis hostname or ip |
+| REDIS_WRITE_HOST | 字串 | 'redis-write-host' | 寫入用的 Redis hostname or ip |
+| REDIS_AUTH | 字串 | 'redis-auth' | Reids 驗證用資訊 |
+| NEWEBPAY_KEY | 長度為 32 的字串 | 'newebpay-key' | 藍新支付 API key (Premium 訂閱) |
+| NEWEBPAY_IV | 長度為 16 的字串 | 'newebpay-iv' | 藍新支付 API iv (Premium 訂閱) |
+| NEWEBPAY_MEMBERSHIP_API_URL | 字串 | 'https://ccore.newebpay.com/MPG/mpg_gateway' | 藍新支付 API URL (Premium 訂閱) |
 | NEWEBPAY_PAPERMAG_KEY | 字串 | 'newebpay-papermag-key' | 藍新支付 API key (紙本雜誌) |
 | NEWEBPAY_PAPERMAG_IV | 字串 | 'newebpay-papermag-iv' | 藍新支付 API iv (紙本雜誌) |
 | NEWEBPAY_PAPERMAG_API_URL | 字串 | 'https://ccore.newebpay.com/MPG/mpg_gateway' | 藍新支付 API URL (紙本雜誌) |
