@@ -130,7 +130,7 @@ export default {
           return [
             {
               detail: '鏡週刊Basic會員（單篇）',
-              hint: `$${this.orderPlanPrice}} 元可享單篇好文 14 天無限瀏覽`,
+              hint: `$${this.orderPlanPrice} 元可享單篇好文 14 天無限瀏覽`,
               price: `原價 NT$${this.orderPlanPrice}`,
               newPrice: this.orderPlanPrice,
               key: 'basic',
