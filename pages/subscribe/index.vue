@@ -158,7 +158,11 @@ export default {
           details: [
             { text: '支持鏡週刊報導精神' },
             { text: '好文解鎖 隨心所欲' },
-            { text: '$1 元可享單篇好文 14 天無限瀏覽' },
+            {
+              text: `$${
+                this.$config.subscriptionPriceFeatureToggle === 'on' ? 5 : 1
+              } 元可享單篇好文 14 天無限瀏覽`,
+            },
           ],
           buttons: [
             {
