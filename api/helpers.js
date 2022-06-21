@@ -64,7 +64,27 @@ function createOrderNumberByTaipeiTZ(date, id) {
   return orderNumber
 }
 
+async function fireGqlRequest(query, variables, apiUrl) {
+  const { data: result } = await axios({
+    url: apiUrl,
+    method: 'post',
+    data: {
+      query,
+      variables,
+    },
+    headers: {
+      'content-type': 'application/json',
+      'Cache-Control': 'no-cache',
+    },
+  })
+  if (result.errors) {
+    throw new Error(result.errors[0].message)
+  }
+  return result
+}
+
 module.exports = {
   createProxy,
   createOrderNumberByTaipeiTZ,
+  fireGqlRequest,
 }
