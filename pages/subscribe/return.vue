@@ -62,6 +62,7 @@ export default {
           periodFirstDatetime
           periodEndDatetime
           promoteId
+          amount
         }
       }`
 
@@ -115,6 +116,7 @@ export default {
           orderId: decryptInfoData.orderNumber,
           promoteId: decryptedTradeInfo.promoteId,
           frequency: decryptInfoData.frequency,
+          amount: decryptInfoData.amount,
         },
       }
     } catch (e) {

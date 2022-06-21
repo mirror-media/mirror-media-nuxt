@@ -84,15 +84,55 @@ export default {
     }
   },
   computed: {
+    orderPlanPrice() {
+      let orderPlanPrice
+      if (this.$config.subscriptionPriceFeatureToggle === 'on') {
+        if (this.orderInfo?.amount) {
+          orderPlanPrice = this.orderInfo?.amount
+        } else {
+          switch (this.orderInfo.frequency) {
+            // set default price if can not fetch orderInfo
+            case 'one time': {
+              orderPlanPrice = 5
+              break
+            }
+            case 'monthly': {
+              orderPlanPrice = 49
+              break
+            }
+            case 'yearly': {
+              orderPlanPrice = 499
+              break
+            }
+          }
+        }
+      } else {
+        switch (this.orderInfo.frequency) {
+          case 'one_time': {
+            orderPlanPrice = 1
+            break
+          }
+          case 'monthly': {
+            orderPlanPrice = 49
+            break
+          }
+          case 'yearly': {
+            orderPlanPrice = 499
+            break
+          }
+        }
+      }
+      return orderPlanPrice
+    },
     perchasedList() {
       switch (this.orderInfo.frequency) {
         case 'one_time': {
           return [
             {
               detail: '鏡週刊Basic會員（單篇）',
-              hint: '單篇 $1 元，享 14 天內無限次觀看',
-              price: '原價 NT$1',
-              newPrice: 1,
+              hint: `$${this.orderPlanPrice} 元可享單篇好文 14 天無限瀏覽`,
+              price: `原價 NT$${this.orderPlanPrice}`,
+              newPrice: this.orderPlanPrice,
               key: 'basic',
             },
           ]
@@ -101,9 +141,9 @@ export default {
           return [
             {
               detail: '鏡週刊Premium會員（月方案）',
-              hint: '每月 $49 元，信用卡自動續扣',
+              hint: `每月 $${this.orderPlanPrice} 元，信用卡自動續扣`,
               price: '原價 NT$99',
-              newPrice: 49,
+              newPrice: this.orderPlanPrice,
               key: 'month',
             },
           ]
@@ -112,9 +152,9 @@ export default {
           return [
             {
               detail: '鏡週刊Premium會員（年方案）',
-              hint: '每年 $499 元，信用卡自動續扣',
+              hint: `每年 $${this.orderPlanPrice} 元，信用卡自動續扣`,
               price: '原價 NT$1188',
-              newPrice: 499,
+              newPrice: this.orderInfo.amount,
               key: 'year',
             },
           ]
