@@ -141,6 +141,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    sectionIdFirst: {
+      type: String,
+      default: '5fe15f1e123c831000ee54c2',
+    },
   },
   computed: {
     ...mapGetters({
@@ -152,7 +156,7 @@ export default {
         const ad = {
           type: 'gpt-ad',
           id: 'adA1',
-          content: [{ pageKey: '5fe15f1e123c831000ee54c2', adKey: 'AT1' }],
+          content: [{ pageKey: this.sectionIdFirst, adKey: 'AT1' }],
         }
         for (let i = 0; i < content.length; i++) {
           if (content[i].content?.[0]) {
