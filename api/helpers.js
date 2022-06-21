@@ -1,6 +1,18 @@
 const axios = require('axios')
 const moment = require('moment-timezone')
-const { API_TIMEOUT } = require('../configs/config')
+const { createLinePayClient } = require('line-pay-merchant')
+const {
+  API_TIMEOUT,
+  ENV,
+  LINEPAY_CHANNEL_ID,
+  LINEPAY_CHANNEL_KEY,
+} = require('../configs/config')
+
+const linepayClient = createLinePayClient({
+  channelId: LINEPAY_CHANNEL_ID,
+  channelSecretKey: LINEPAY_CHANNEL_KEY,
+  env: ['staging', 'prod'].includes(ENV) ? 'production' : 'development',
+})
 
 function createProxy(baseUrl, timeout = API_TIMEOUT) {
   return async function (req, res) {
@@ -87,4 +99,5 @@ module.exports = {
   createProxy,
   createOrderNumberByTaipeiTZ,
   fireGqlRequest,
+  linepayClient,
 }

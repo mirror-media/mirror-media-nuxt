@@ -26,6 +26,8 @@ const ISRAFEL_ORIGIN = process.env.ISRAFEL_ORIGIN || 'israfel-origin'
 const IS_AD_DISABLE = process.env.IS_AD_DISABLE === 'true' || false
 const PREMIUM_AD_FEATURE_TOGGLE =
   process.env.PREMIUM_AD_FEATURE_TOGGLE === 'on' || false
+const LINEPAY_CHANNEL_ID = process.env.LINEPAY_CHANNEL_ID || ''
+const LINEPAY_CHANNEL_KEY = process.env.LINEPAY_CHANNEL_KEY || ''
 
 // The following variables are given values according to different `ENV`
 let API_HOST = ''
@@ -148,4 +150,6 @@ export {
   NEWEBPAY_MEMBERSHIP_API_URL,
   NEWEBPAY_PAPERMAG_API_URL,
   PREMIUM_AD_FEATURE_TOGGLE,
+  LINEPAY_CHANNEL_ID,
+  LINEPAY_CHANNEL_KEY,
 }
