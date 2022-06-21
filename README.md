@@ -44,7 +44,6 @@ To avoid unpredictable error occur when developing, please use Classic Stable ve
 | API_HOST | 字串 | 'api-host' | API GATEWAY URL |
 | API_HOST_MEMBERSHIP_GATEWAY | 字串 | 'api-host-membership-gateway' | API GATEWAY URL |
 | API_MEMBER_SUBSCRIPTION_GATEWAY | 字串 | 'api-member-subscription-gateway' | API GATEWAY URL |
-| RELEASE_TARGET | 字串 | undefined | |
 | EMAIL_VERIFY_FEATURE_TOGGLE | 'on', 'off' | 'off' | |
 | NO_AD_FEATURE_TOGGLE | 'on', 'off' | 'off' | |
 | TOPIC_LIST_FEATURE_TOGGLE | 'on', 'off' | 'off' | |
