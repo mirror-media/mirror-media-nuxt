@@ -296,6 +296,10 @@ module.exports = {
       handler: '~/api/newebpay.js',
     },
     {
+      path: `/${API_PATH_FRONTEND}/linepay/v1`,
+      handler: '~/api/linepay.js',
+    },
+    {
       path: `/${API_PATH_FRONTEND}/papermag/v1`,
       handler: '~/api/papermag.js',
     },

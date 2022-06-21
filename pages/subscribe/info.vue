@@ -70,6 +70,7 @@
               >
             </label>
           </div>
+          <!-- TODO: update layout and display text -->
           <p
             v-if="!isUpgradeFromMonthToYear"
             class="subscribe-info__form_left_hint"
@@ -77,6 +78,7 @@
             按下開始結帳後，頁面將會跳離，抵達由藍新金流 NewebPay
             所提供的線上結帳頁面，完成後將會再跳回到鏡週刊
           </p>
+          <!-- TODO: update layout and button style -->
           <UiSubscribeButton
             v-if="isUpgradeFromMonthToYear"
             class="change-plan-btn"
@@ -84,12 +86,18 @@
             :isLoading="isLoading"
             @click.native="updateHandler"
           />
-          <UiSubscribeButton
-            v-else
-            title="開始結帳"
-            :isLoading="isLoading"
-            @click.native="submitHandler"
-          />
+          <template v-else>
+            <UiSubscribeButton
+              title="使用信用卡結帳"
+              :isLoading="isLoading"
+              @click.native="submitHandler($event, 'newebpay')"
+            />
+            <UiSubscribeButton
+              title="使用 LINE Pay 結帳"
+              :isLoading="isLoading"
+              @click.native="submitHandler($event, 'linepay')"
+            />
+          </template>
         </div>
         <div class="subscribe-info__form_right">
           <MembershipFormPerchaseInfo
@@ -313,11 +321,12 @@ export default {
     setOrderStatus(val) {
       this.orderStatus = val
     },
-    async submitHandler(e) {
+    async submitHandler(e, type) {
       e.preventDefault()
       if (this.isLoading) return
 
       try {
+        // input validation section
         this.isLoading = true
         this.$refs.receiptDOM.check()
         this.$v.email.$touch()
@@ -338,6 +347,13 @@ export default {
           (this.$v.email.$error || this.formStatus.receipt !== 'OK')
         ) {
           this.isLoading = false
+          return
+        }
+
+        if (type === 'linepay') {
+          // TODO: need to confirm whether go back is valid operation
+          const { data } = await this.getPaymentInfoFromBackend()
+          window.location.href = data.paymentUrl.web
           return
         }
 
@@ -398,6 +414,68 @@ export default {
       }
     },
 
+    // for LINE Pay payment
+    async getPaymentInfoFromBackend() {
+      let payload
+      const isPremiumPurchase =
+        this.frequency === 'yearly' || this.frequency === 'monthly'
+
+      if (isPremiumPurchase) {
+        payload = {
+          member: {
+            connect: {
+              firebaseId: this.getUserFirebaseId(),
+            },
+          },
+          email: this.email,
+          frequency: this.frequency,
+          paymentMethod: 'line_pay',
+          status: null, // write null to left field empty
+          linePayStatus: 'paying',
+          promoteId: this.promoteId, // 折扣碼 (TODO)
+          loveCode: parseInt(this.validReceiptData.donateOrganization),
+          carrierType: this.validReceiptData.carrierType,
+          carrierNum: this.validReceiptData.carrierNumber,
+          buyerName: this.validReceiptData.carrierTitle,
+          buyerUBN: this.validReceiptData.carrierUbn,
+          category: this.getCategory(),
+        }
+      } else {
+        // one_time
+        const subscribePostId = this.perchasedPlan?.[0]?.id
+        payload = {
+          member: {
+            connect: {
+              firebaseId: this.getUserFirebaseId(),
+            },
+          },
+          email: this.email,
+          paymentMethod: 'line_pay',
+          status: null, // write null to left field empty
+          linePayStatus: 'paying',
+          promoteId: this.promoteId, // 折扣碼 (TODO)
+          postId: subscribePostId,
+          loveCode: parseInt(this.validReceiptData.donateOrganization),
+          carrierType: this.validReceiptData.carrierType,
+          carrierNum: this.validReceiptData.carrierNumber,
+          buyerName: this.validReceiptData.carrierTitle,
+          buyerUBN: this.validReceiptData.carrierUbn,
+          category: this.getCategory(),
+        }
+      }
+
+      return await this.$axios.post(
+        `${window.location.origin}/api/v2/linepay/v1?frequency=${this.frequency}`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${this.$store.state.membership.userToken}`,
+          },
+        }
+      )
+    },
+
+    // for Newebpay Payment
     async getPaymentDataFromApiGateWay() {
       let gateWayPayload
       const isPremiumPurchase =
@@ -415,7 +493,7 @@ export default {
           carrierNum: this.validReceiptData.carrierNumber,
           buyerName: this.validReceiptData.carrierTitle,
           buyerUBN: this.validReceiptData.carrierUbn,
-          category: getCategory.bind(this)(),
+          category: this.getCategory(),
         }
       } else {
         // one_time
@@ -431,23 +509,25 @@ export default {
           carrierNum: this.validReceiptData.carrierNumber,
           buyerName: this.validReceiptData.carrierTitle,
           buyerUBN: this.validReceiptData.carrierUbn,
-          category: getCategory.bind(this)(),
+          category: this.getCategory(),
         }
       }
 
       return await this.$getPaymentDataOfSubscription(gateWayPayload)
+    },
+    getCategory() {
+      switch (this.receiptData.receiptPlan) {
+        case '三聯式發票':
+          return 'B2B'
 
-      function getCategory() {
-        switch (this.receiptData.receiptPlan) {
-          case '三聯式發票':
-            return 'B2B'
-
-          case '捐贈':
-          default:
-          case '二聯式發票（含載具）':
-            return 'B2C'
-        }
+        case '捐贈':
+        default:
+        case '二聯式發票（含載具）':
+          return 'B2C'
       }
+    },
+    getUserFirebaseId() {
+      return this.$store?.state?.membership?.userUid
     },
   },
 }
