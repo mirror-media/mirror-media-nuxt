@@ -30,7 +30,7 @@ To avoid unpredictable error occur when developing, please use Classic Stable ve
 ## Environment Variables
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
 | --- | --- | --- | --- |
-| ENV | 字串 | 'local' | 系統環境 |
+| ENV | 字串 | 'local' | 系統環境，目前已知有；`local`、`dev`、`staging`、`production` 和 `lighthouse` |
 | REDIS_READ_HOST | 字串 | 'redis-read-host' | 讀取用的 Redis hostname or ip |
 | REDIS_WRITE_HOST | 字串 | 'redis-write-host' | 寫入用的 Redis hostname or ip |
 | REDIS_AUTH | 字串 | 'redis-auth' | Reids 驗證用資訊 |
@@ -50,5 +50,6 @@ To avoid unpredictable error occur when developing, please use Classic Stable ve
 | TOPIC_LIST_FEATURE_TOGGLE | 'on', 'off' | 'off' | |
 | IS_AD_DISABLE | 布林值 | false | | |
 | PREMIUM_AD_FEATURE_TOGGLE | 布林值 | false | 用 'on' 啟用的數值 ... |
+| DISABLE_CLOUD_LOGGING | 布林值 | false | 關閉 gcloud/logging 行為 |
 
 ※ 在執行指令時，使用 `key=value` 的前綴來執行，例如：`ENV=dev yarn dev`，即可設定執行時的環境變數。

@@ -16,7 +16,7 @@ module.exports = function (req, res, next) {
     const metadata = { resource: { type: 'global' } }
     query.ip = req.clientIp
 
-    if (config.ENV === 'local') {
+    if (config.DISABLE_CLOUD_LOGGING === true) {
       console.log(`[LOG] API tracking`)
       console.log(query)
       return
