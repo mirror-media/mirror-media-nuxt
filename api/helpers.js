@@ -1,4 +1,5 @@
 const axios = require('axios')
+const moment = require('moment-timezone')
 const { API_TIMEOUT } = require('../configs/config')
 
 function createProxy(baseUrl, timeout = API_TIMEOUT) {
@@ -53,6 +54,17 @@ function createProxy(baseUrl, timeout = API_TIMEOUT) {
   }
 }
 
+function createOrderNumberByTaipeiTZ(date, id) {
+  const time = moment(date).tz('Asia/Taipei')
+  const prefix = 'M'
+  const dateString = time.format('YYMMDD')
+  const idString = (id % 10000).toString().padStart(5, '0')
+  const orderNumber = `${prefix}${dateString}${idString}`
+
+  return orderNumber
+}
+
 module.exports = {
   createProxy,
+  createOrderNumberByTaipeiTZ,
 }
