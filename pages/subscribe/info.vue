@@ -636,7 +636,7 @@ export default {
 
     &__message {
       margin-top: 8px;
-      color: #e51731 !important;
+      color: #e51731;
       font-size: 16px;
       line-height: 150%;
     }
