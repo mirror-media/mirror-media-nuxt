@@ -156,7 +156,7 @@ export default {
         const ad = {
           type: 'gpt-ad',
           id: 'adA1',
-          content: [{ pageKey: this.sectionIdFirst, adKey: 'AT1' }],
+          content: [{ pageKey: this.sectionIdFirst, adKey: 'MB_AT1' }],
         }
         for (let i = 0; i < content.length; i++) {
           if (content[i].content?.[0]) {
