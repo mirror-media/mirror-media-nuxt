@@ -28,11 +28,12 @@
         </li>
       </section>
     </ul>
-    <span
+    <p
       v-if="!$v.value.required && $v.value.$error && isNeedToCheck"
       class="error__message"
-      >欄位不得為空</span
     >
+      欄位不得為空
+    </p>
   </div>
 </template>
 
@@ -64,6 +65,7 @@ export default {
         ]
       },
     },
+
     // validation
     validateField: {
       type: String,
@@ -135,7 +137,7 @@ export default {
 <style lang="scss" scoped>
 .select {
   position: relative;
-  height: 48px;
+  height: auto;
 
   &__devider {
     height: 12px;
@@ -171,9 +173,7 @@ export default {
   }
 
   ul {
-    z-index: 2;
     color: #1b1b1b;
-    position: absolute;
     width: 100%;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.3);

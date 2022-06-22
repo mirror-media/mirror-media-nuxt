@@ -52,8 +52,8 @@
             @handleChangeCarrierType="handleChangeCarrierType"
           />
           <UiValidationInput
-            ref="carrierNumberDOM"
             v-if="receiptData.carrierType && receiptData.carrierType < 2"
+            ref="carrierNumberDOM"
             v-model="receiptData.carrierNumber"
             :carrierType="receiptData.carrierType"
             :placeholder="carrierNumberPlaceHolder"
@@ -234,6 +234,7 @@ export default {
         } else if (this.receiptData.carrierType === '2') {
           this.receiptData.carrierNumber = this.email
         }
+
         // reset validation status after chagned value
         this.receiptFormStatus = {
           receiptPlan: 'OK',
@@ -271,8 +272,11 @@ export default {
           this.$refs.donateOrganizationDOM.check()
         } else if (this.receiptData.receiptPlan === '二聯式發票（含載具）') {
           this.$refs.carrierTypeDOM.check()
-          if (this.receiptData.carrierType !== '2')
-            this.$refs.carrierNumberDOM.check()
+
+          /*
+           * if (this.receiptData.carrierType !== '2')
+           *   this.$refs.carrierNumberDOM.check()
+           */
         } else if (this.receiptData.receiptPlan === '三聯式發票') {
           this.$refs.carrierTitleDOM.check()
           this.$refs.carrierUbnDOM.check()
