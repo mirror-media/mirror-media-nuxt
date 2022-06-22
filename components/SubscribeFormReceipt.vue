@@ -273,10 +273,11 @@ export default {
         } else if (this.receiptData.receiptPlan === '二聯式發票（含載具）') {
           this.$refs.carrierTypeDOM.check()
 
-          /*
-           * if (this.receiptData.carrierType !== '2')
-           *   this.$refs.carrierNumberDOM.check()
-           */
+          if (
+            this.receiptData.carrierType &&
+            this.receiptData.carrierType !== '2'
+          )
+            this.$refs.carrierNumberDOM.check()
         } else if (this.receiptData.receiptPlan === '三聯式發票') {
           this.$refs.carrierTitleDOM.check()
           this.$refs.carrierUbnDOM.check()

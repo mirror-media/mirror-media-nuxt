@@ -3,7 +3,6 @@
     v-click-outside="hideOption"
     class="select"
     :class="{
-      error: $v.value.$error && isNeedToCheck,
       isFocused,
       shouldShowOptionField,
     }"
