@@ -21,8 +21,7 @@
               本新聞文字、照片、影片專供鏡週刊會員閱覽，未經鏡週刊授權，任何媒體、社群網站、論壇等均不得引用、改寫、轉貼，以免訟累。
             </p>
             <p>
-              更多內容，歡迎<a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSeqbPjhSZx63bDWFO298acE--otet1s4-BGOmTKyjG1E4t4yQ/viewform"
+              更多內容，歡迎<a href="https://www.mirrormedia.mg/papermag"
                 >訂閱鏡週刊</a
               >、<a :href="`${storyPageBaseUrl}/webauthorize/`"
                 >了解內容授權資訊</a
@@ -141,6 +140,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    sectionIdFirst: {
+      type: String,
+      default: '5fe15f1e123c831000ee54c2',
+    },
   },
   computed: {
     ...mapGetters({
@@ -152,7 +155,7 @@ export default {
         const ad = {
           type: 'gpt-ad',
           id: 'adA1',
-          content: [{ pageKey: '5fe15f1e123c831000ee54c2', adKey: 'AT1' }],
+          content: [{ pageKey: this.sectionIdFirst, adKey: 'MB_AT1' }],
         }
         for (let i = 0; i < content.length; i++) {
           if (content[i].content?.[0]) {

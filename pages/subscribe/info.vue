@@ -112,7 +112,7 @@
 <script>
 import qs from 'qs'
 import { required, email, sameAs } from 'vuelidate/lib/validators'
-import { useRoute, useStore } from '@nuxtjs/composition-api'
+import { useRoute, useStore, useContext } from '@nuxtjs/composition-api'
 import {
   ENV,
   DOMAIN_NAME,
@@ -161,14 +161,21 @@ export default {
 
     function usePerchasedPlan() {
       const route = useRoute()
+      const { $config } = useContext()
+
       if (route.value.query.plan === 'one-time') {
         return [
           {
             id: route.value.query['one-time-post-id'],
             detail: '鏡週刊Basic會員（單篇）',
-            hint: '單篇 $1 元，享 14 天內無限次觀看',
-            price: '原價 NT$1',
-            newPrice: 1,
+            hint:
+              $config.subscriptionPriceFeatureToggle === 'on'
+                ? '$5 元可享單篇好文 14 天無限瀏覽'
+                : '單篇 $1 元，享 14 天內無限次觀看',
+            price: `原價 NT$${
+              $config.subscriptionPriceFeatureToggle === 'on' ? 5 : 1
+            }`,
+            newPrice: $config.subscriptionPriceFeatureToggle === 'on' ? 5 : 1,
             key: 'basic',
           },
         ]
@@ -629,7 +636,7 @@ export default {
 
     &__message {
       margin-top: 8px;
-      color: #e51731 !important;
+      color: #e51731;
       font-size: 16px;
       line-height: 150%;
     }
