@@ -1,6 +1,7 @@
 const axios = require('axios')
 const moment = require('moment-timezone')
 const { createLinePayClient } = require('line-pay-merchant')
+const { PubSub } = require('@google-cloud/pubsub')
 const {
   API_TIMEOUT,
   ENV,
@@ -95,9 +96,42 @@ async function fireGqlRequest(query, variables, apiUrl) {
   return result
 }
 
+async function publishMessageToPubSub(topicName, projectId, message) {
+  try {
+    const pubsub = new PubSub({
+      projectId,
+    })
+    const topic = await pubsub.topic(topicName)
+    await topic.publishJSON(message.data, message.attributes)
+  } catch (error) {
+    console.error(
+      JSON.stringify({
+        severity: 'CRITICAL',
+        message: `Error to publish data to pubsub topic (${topicName})`,
+        debugPayload: {
+          message,
+        },
+      })
+    )
+    return false
+  }
+
+  console.log(
+    JSON.stringify({
+      severity: 'INFO',
+      message: `publish message to PubSub topic: ${topicName} successfully`,
+      debugPayload: {
+        message,
+      },
+    })
+  )
+  return true
+}
+
 module.exports = {
   createProxy,
   createOrderNumberByTaipeiTZ,
   fireGqlRequest,
   linepayClient,
+  publishMessageToPubSub,
 }
