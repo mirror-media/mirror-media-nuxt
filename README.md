@@ -52,5 +52,6 @@ To avoid unpredictable error occur when developing, please use Classic Stable ve
 | PREMIUM_AD_FEATURE_TOGGLE | 布林值 | false | 用 'on' 啟用的數值 ... |
 | LINEPAY_CHANNEL_ID | 字串 | '' | LINE Pay 串接所需的 channel id |
 | LINEPAY_CHANNEL_KEY | 字串 | '' | LINE Pay 串接所需的 channel key |
+| PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME | 字串 | 'linepay-webhook-dev' | LINE Pay 付款資訊寫入 PubSub 的主題名稱 |
 
 ※ 在執行指令時，使用 `key=value` 的前綴來執行，例如：`ENV=dev yarn dev`，即可設定執行時的環境變數。

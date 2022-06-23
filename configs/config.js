@@ -41,6 +41,7 @@ let GPT_MODE = ''
 let SALEOR_HOST = ''
 let NEWEBPAY_MEMBERSHIP_API_URL = ''
 let NEWEBPAY_PAPERMAG_API_URL = ''
+let PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME = ''
 
 switch (ENV) {
   case 'prod':
@@ -60,6 +61,8 @@ switch (ENV) {
     NEWEBPAY_PAPERMAG_API_URL =
       process.env.NEWEBPAY_PAPERMAG_API_URL ||
       'https://core.newebpay.com/MPG/mpg_gateway'
+    PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME =
+      process.env.PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME || 'linepay-webhook'
     break
   case 'staging':
     API_HOST = 'tr-projects-rest'
@@ -78,6 +81,8 @@ switch (ENV) {
     NEWEBPAY_PAPERMAG_API_URL =
       process.env.NEWEBPAY_PAPERMAG_API_URL ||
       'https://ccore.newebpay.com/MPG/mpg_gateway'
+    PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME =
+      process.env.PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME || 'linepay-webhook-staging'
     break
   case 'dev':
     API_HOST = 'rest-service'
@@ -95,6 +100,8 @@ switch (ENV) {
     NEWEBPAY_PAPERMAG_API_URL =
       process.env.NEWEBPAY_PAPERMAG_API_URL ||
       'https://ccore.newebpay.com/MPG/mpg_gateway'
+    PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME =
+      process.env.PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME || 'linepay-webhook-dev'
     break
   default:
     API_HOST = process.env.API_HOST || 'api-host'
@@ -115,6 +122,8 @@ switch (ENV) {
     NEWEBPAY_PAPERMAG_API_URL =
       process.env.NEWEBPAY_PAPERMAG_API_URL ||
       'https://ccore.newebpay.com/MPG/mpg_gateway'
+    PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME =
+      process.env.PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME || 'linepay-webhook-dev'
 }
 
 export {
@@ -152,4 +161,5 @@ export {
   PREMIUM_AD_FEATURE_TOGGLE,
   LINEPAY_CHANNEL_ID,
   LINEPAY_CHANNEL_KEY,
+  PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME,
 }

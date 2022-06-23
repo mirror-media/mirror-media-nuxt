@@ -109,8 +109,8 @@ function getRedirectInfo() {
   return {
     confirmUrl:
       ENV === 'local'
-        ? `http://localhost:3000/subscribe/return`
-        : `https://${DOMAIN_NAME}/subscribe/return`,
+        ? `http://localhost:3000/subscribe/confirm`
+        : `https://${DOMAIN_NAME}/subscribe/confirm`,
     cancelUrl:
       ENV === 'local'
         ? `http://localhost:3000/subscribe/`
