@@ -496,7 +496,6 @@ export default {
         const reserveCount = groupArticleLength - latestLength
         if (reserveCount < 20 || (reserveCount === 20 && this.fileId === 5)) {
           const newLatest = await this.fetchLatestList()
-          if (!newLatest[0] && !reserveCount) return state.complete()
           this.groupedArticles.latest?.push(
             ...newLatest.map((item) => {
               return {
@@ -519,7 +518,10 @@ export default {
         )
 
         this.latestList.page++
-
+        if (reserveCount < 0) {
+          state.complete()
+          return
+        }
         state.loaded()
 
         this.sendGa('scroll', 'loadmore', this.latestList.page)
