@@ -187,6 +187,7 @@ export default {
     this.story = externalResponse.value?.items?.[0] ?? {}
     this.story.extendByline = `文｜${this.story.extendByline}`
     this.story.categories = [{ title: '時事' }]
+    this.story.sections = [{ id: '57e1e0e5ee85930e00cad4e9' }]
   },
 
   data() {
