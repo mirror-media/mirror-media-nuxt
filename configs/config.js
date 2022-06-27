@@ -26,8 +26,7 @@ const ISRAFEL_ORIGIN = process.env.ISRAFEL_ORIGIN || 'israfel-origin'
 const IS_AD_DISABLE = process.env.IS_AD_DISABLE === 'true' || false
 const PREMIUM_AD_FEATURE_TOGGLE =
   process.env.PREMIUM_AD_FEATURE_TOGGLE === 'on' || false
-const DISABLE_CLOUD_LOGGING =
-  process.env.DISABLE_CLOUD_LOGGING === 'true' || false
+const ENABLE_CLOUD_LOGGING = process.env.ENABLE_CLOUD_LOGGING === 'true'
 
 // The following variables are given values according to different `ENV`
 let API_HOST = ''
@@ -150,5 +149,5 @@ export {
   NEWEBPAY_MEMBERSHIP_API_URL,
   NEWEBPAY_PAPERMAG_API_URL,
   PREMIUM_AD_FEATURE_TOGGLE,
-  DISABLE_CLOUD_LOGGING,
+  ENABLE_CLOUD_LOGGING,
 }
