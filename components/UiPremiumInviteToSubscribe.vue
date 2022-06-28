@@ -24,7 +24,14 @@
       <div class="plans__plan plan">
         <div>
           <div class="plan__description">
-            <p>$1元解鎖單篇，享14天無限次觀看</p>
+            <p>
+              {{
+                `$${
+                  this.$config.subscriptionPriceFeatureToggle === 'on' ? 5 : 1
+                }
+              元可享單篇好文 14 天無限瀏覽`
+              }}
+            </p>
           </div>
           <UiMembershipButtonLight
             class="plan__button"

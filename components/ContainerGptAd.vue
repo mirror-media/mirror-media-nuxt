@@ -94,5 +94,8 @@ export default {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  iframe {
+    display: block;
+  }
 }
 </style>

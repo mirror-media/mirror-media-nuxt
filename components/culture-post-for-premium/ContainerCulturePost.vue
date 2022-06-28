@@ -70,6 +70,7 @@
           :postId="post.id"
           :brief="post.brief"
           :content="post.content"
+          :sectionIdFirst="post.sectionIdFirst"
           :isArticleContentTruncatedByGateway="post.isTruncated"
           :pageState="articleBodyPageState"
           :isLoading="isLoading"
@@ -132,7 +133,7 @@
       <UiFooter />
     </div>
     <UiShareLinksToggled class="share-toggled" />
-    <UiStickyAd v-if="shouldShwowAd" pageKey="5fe15f1e123c831000ee54c2" />
+    <UiStickyAd v-if="shouldShwowAd" :pageKey="post.sectionIdFirst" />
   </section>
 </template>
 

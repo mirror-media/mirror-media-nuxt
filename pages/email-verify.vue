@@ -81,6 +81,9 @@ export default {
     UiMembershipLoadingIcon,
   },
   middleware({ store, redirect }) {
+    if (!store.getters['membership/isLoggedIn']) {
+      redirect('/login')
+    }
     if (store.state.membership.userEmailVerified) {
       redirect('/subscribe')
     }
