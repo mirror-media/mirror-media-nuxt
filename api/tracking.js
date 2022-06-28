@@ -15,6 +15,13 @@ module.exports = function (req, res, next) {
     const log = loggingClient.log(logName)
     const metadata = { resource: { type: 'global' } }
     query.ip = req.clientIp
+
+    if (config.ENABLE_CLOUD_LOGGING === false) {
+      console.log(`[LOG] API tracking`)
+      console.log(query)
+      return
+    }
+
     const entry = log.entry(metadata, query)
     log.write(entry)
   } catch (error) {
