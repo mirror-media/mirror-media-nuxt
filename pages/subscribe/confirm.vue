@@ -48,8 +48,7 @@ export default {
               { orderNumber: $orderId},
               { linepayPayment_some: {
                 transactionId: $transactionId
-              }},
-              { linePayStatus: paying }
+              }}
             ]
           }) {
             id
@@ -58,6 +57,7 @@ export default {
             promoteId
             amount
             currency
+            linePayStatus
             periodCreateDatetime
             periodFirstDatetime
             periodEndDatetime
@@ -112,9 +112,35 @@ export default {
         }
       }
 
-      // fire Confrim API request to LINE Pay Server, then push the response to PubSub
       const subscription = allSubscriptions[0]
+      const status = subscription.linePayStatus
 
+      switch (status) {
+        case 'paying': {
+          break
+        }
+        case 'paid': {
+          // show success page even if requesting with same transactionId and orderId again
+          return {
+            status: 'success',
+            orderInfo: {
+              orderId,
+              promoteId: subscription.promoteId,
+              frequency: subscription.frequency,
+            },
+          }
+        }
+        default: {
+          return {
+            status: 'fail',
+            errorData: {
+              message: 'linepay-fail',
+            },
+          }
+        }
+      }
+
+      // fire Confrim API request to LINE Pay Server, then push the response to PubSub
       const { body: confirmResult } = await linepayClient.confirm.send({
         transactionId,
         body: {
