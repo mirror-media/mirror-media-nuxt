@@ -153,11 +153,7 @@ export default {
       return Math.ceil(this.listDataTotal / this.listDataMaxResults)
     },
     pageKey() {
-      if (this.$route.params.name === 'mirrorcolumn') {
-        return '5964418a4bbe120f002a3198'
-      } else {
-        return '5fe15f1e123c831000ee54c2'
-      }
+      return '5fe15f1e123c831000ee54c2'
     },
     gptAdFTPostion() {
       if (!this.isViewportWidthUpXl && this.isViewportWidthUpMd) {
