@@ -250,6 +250,10 @@ export default {
       const heroVideoPoster =
         heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
       const heroImgsResized = heroImage?.image?.resizedTargets || {}
+      let sectionIdFirst = sections?.[0]?.id
+      if (sections?.[0]?.name === 'mirrorcolumn') {
+        sectionIdFirst = '5964418a4bbe120f002a3198'
+      }
 
       return {
         id,
@@ -273,7 +277,7 @@ export default {
         updatedAt: new Date(updatedAt),
         relateds,
         sectionLabelFirst: sections?.[0]?.title,
-        sectionIdFirst: sections?.[0]?.id,
+        sectionIdFirst,
         tags,
         isTruncated,
       }
