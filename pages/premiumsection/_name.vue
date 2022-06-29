@@ -4,7 +4,7 @@
       <ContainerGptAd
         v-if="shouldShowAd"
         class="ad"
-        pageKey="5fe15f1e123c831000ee54c2"
+        :pageKey="pageKey"
         adKey="HD"
       />
       <UiBreadcrumb class="category__breadcrumb" :breadcrumbs="breadcrumbs" />
@@ -32,10 +32,10 @@
     <ContainerGptAd
       v-if="shouldShowAd"
       class="ad"
-      pageKey="5fe15f1e123c831000ee54c2"
+      :pageKey="pageKey"
       adKey="FT"
     />
-    <UiStickyAd v-if="shouldShowAd" pageKey="5fe15f1e123c831000ee54c2" />
+    <UiStickyAd v-if="shouldShowAd" :pageKey="pageKey" />
   </section>
 </template>
 
@@ -131,6 +131,13 @@ export default {
         return undefined
       }
       return Math.ceil(this.listDataTotal / this.listDataMaxResults)
+    },
+    pageKey() {
+      if (this.$route.params.name === 'mirrorcolumn') {
+        return '5964418a4bbe120f002a3198'
+      } else {
+        return '5fe15f1e123c831000ee54c2'
+      }
     },
   },
 
