@@ -306,6 +306,9 @@ export default {
     @include media-breakpoint-up(xl) {
       margin: 2px 0 0 -32px;
     }
+    .ad {
+      width: 100%;
+    }
   }
 }
 
