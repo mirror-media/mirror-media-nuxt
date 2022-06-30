@@ -36,20 +36,31 @@
           </a>
         </div>
       </div>
-
-      <!--      <div class="section section&#45;&#45;external">-->
-      <!--        <h2>合作媒體</h2>-->
-      <!--        <div class="section__dropdown">-->
-      <!--          <a-->
-      <!--            v-for="partner in partners"-->
-      <!--            :key="partner.id"-->
-      <!--            :href="`/externals/${partner.name}`"-->
-      <!--            @click="emitGa(`external ${partner.name}`)"-->
-      <!--          >-->
-      <!--            <h3>{{ partner.display }}</h3>-->
-      <!--          </a>-->
-      <!--        </div>-->
-      <!--      </div>-->
+      <div
+        v-for="partner in displayPartners"
+        :key="partner.id"
+        class="section section--external"
+      >
+        <a
+          :href="`/externals/${partner.name}`"
+          @click="emitGa(`external ${partner.name}`)"
+        >
+          <h2>{{ partner.display }}</h2>
+        </a>
+      </div>
+      <!-- <div class="section section&#45;&#45;external">
+        <h2>合作媒體</h2>
+        <div class="section__dropdown">
+          <a
+            v-for="partner in partners"
+            :key="partner.id"
+            :href="`/externals/${partner.name}`"
+            @click="emitGa(`external ${partner.name}`)"
+          >
+            <h3>{{ partner.display }}</h3>
+          </a>
+        </div>
+      </div> -->
     </div>
   </section>
 </template>
@@ -71,6 +82,13 @@ export default {
       type: Array,
       required: true,
       default: () => [],
+    },
+  },
+  computed: {
+    displayPartners() {
+      return (
+        this.partners.filter((partner) => partner.name === 'healthnews') ?? []
+      )
     },
   },
   methods: {
@@ -217,12 +235,12 @@ export default {
         }
       }
     }
-    &--external {
+    /* &--external {
       display: none;
       @include media-breakpoint-up(xl) {
         display: block;
       }
-    }
+    } */
     &__dropdown {
       position: absolute;
       display: none;
