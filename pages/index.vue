@@ -408,9 +408,15 @@ export default {
 
   methods: {
     shouldUpdateLatestArticle() {
-      const articlesUpdateTimestamp = new Date(
-        this.groupedArticles?.timestamp
-      ).getTime()
+      /*
+       * Safari can't accept original format of time ("YYYY-MM-DD hh:mm:ss") in groupedArticles to generate Date object,
+       * should convert to certain format("YYYY-MM-DDThh:mm:ss") first.
+       */
+      const formattedTimeStamp = this.groupedArticles?.timestamp.replace(
+        / /g,
+        'T'
+      )
+      const articlesUpdateTimestamp = new Date(formattedTimeStamp).getTime()
       const currentTimestamp = new Date().getTime()
       return currentTimestamp - articlesUpdateTimestamp > 1000 * 180
     },
@@ -453,14 +459,16 @@ export default {
       const list = [...this.groupedArticles.latest]
       this.pushLatestItems(list.splice(0, 20))
       this.setLatestTotal(20)
-      this.fileId++
+
+      this.fileId += 1
     },
     async fetchLatestList() {
       if (this.fileId === 5) return []
       const { latest = [] } = await this.$fetchGroupedWithExternal(
         `post_external0${this.fileId}`
       )
-      this.fileId++
+
+      this.fileId += 1
       return latest
     },
     pushLatestItems(items = []) {
