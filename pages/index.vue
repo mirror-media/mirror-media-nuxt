@@ -461,6 +461,7 @@ export default {
         `post_external0${this.fileId}`
       )
       this.fileId++
+      console.log('fetchLatestList')
       return latest
     },
     pushLatestItems(items = []) {
@@ -490,13 +491,18 @@ export default {
       }
     },
     async loadMoreLatestItems(state) {
+      /*
+       * TODOS: if user scroll to bottom of page when latest news is not fully render at server side,
+       *  latest new will not render completely and lack about 10 articles of which.
+       */
       try {
         const groupArticleLength = this.groupedArticles.latest?.length
         const latestLength = this.latestList?.items?.length
         const reserveCount = groupArticleLength - latestLength
+        let newLatestLength
         if (reserveCount < 20 || (reserveCount === 20 && this.fileId === 5)) {
           const newLatest = await this.fetchLatestList()
-          if (!newLatest[0] && !reserveCount) return state.complete()
+          newLatestLength = newLatest.length
           this.groupedArticles.latest?.push(
             ...newLatest.map((item) => {
               return {
@@ -519,7 +525,19 @@ export default {
         )
 
         this.latestList.page++
-
+        if (reserveCount < 0) {
+          /*
+           * when page is initialized at server side, if user  scroll to the bottom of page,
+           * reversedCount will less than 0 ,and trigger state.complete first,
+           * reserveCount will less then 0, which will cause methods `this.pushLatestItems` not be executed.
+           * The solution of which is calculate length of `newLatest`, if it is 0, which means don't remain latest news
+           * have to fecth from backend, then stop the load.
+           */
+          if (newLatestLength === 0) {
+            state.complete()
+            return
+          }
+        }
         state.loaded()
 
         this.sendGa('scroll', 'loadmore', this.latestList.page)

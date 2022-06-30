@@ -70,6 +70,7 @@
           :postId="post.id"
           :brief="post.brief"
           :content="post.content"
+          :sectionIdFirst="post.sectionIdFirst"
           :isArticleContentTruncatedByGateway="post.isTruncated"
           :pageState="articleBodyPageState"
           :isLoading="isLoading"
@@ -132,7 +133,7 @@
       <UiFooter />
     </div>
     <UiShareLinksToggled class="share-toggled" />
-    <UiStickyAd v-if="shouldShwowAd" pageKey="5fe15f1e123c831000ee54c2" />
+    <UiStickyAd v-if="shouldShwowAd" :pageKey="post.sectionIdFirst" />
   </section>
 </template>
 
@@ -249,6 +250,10 @@ export default {
       const heroVideoPoster =
         heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
       const heroImgsResized = heroImage?.image?.resizedTargets || {}
+      let sectionIdFirst = sections?.[0]?.id
+      if (sections?.[0]?.name === 'mirrorcolumn') {
+        sectionIdFirst = '5964418a4bbe120f002a3198'
+      }
 
       return {
         id,
@@ -272,7 +277,7 @@ export default {
         updatedAt: new Date(updatedAt),
         relateds,
         sectionLabelFirst: sections?.[0]?.title,
-        sectionIdFirst: sections?.[0]?.id,
+        sectionIdFirst,
         tags,
         isTruncated,
       }

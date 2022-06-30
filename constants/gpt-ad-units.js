@@ -367,6 +367,15 @@ export default {
         [1, 1],
       ],
     },
+    MB_E2: {
+      adUnit: 'mirror_m_news_300x250_E2',
+      adSize: [
+        [336, 280],
+        [300, 250],
+        [320, 100],
+        [1, 1],
+      ],
+    },
     MB_FT: {
       adUnit: 'mirror_m_news_300x250_FT',
       adSize: [

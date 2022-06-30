@@ -31,11 +31,11 @@ async function start() {
   app.use(requestIp.mw())
 
   app.get('/robots.txt', (req, res, next) => {
-    if (process.env.RELEASE_TARGET === 'prod') {
+    if (process.env.ENV === 'prod') {
       res.type('text/plain').send('User-agent: * \n' + 'Allow: /')
       return
     }
-    if (process.env.RELEASE_TARGET !== 'prod') {
+    if (process.env.ENV !== 'prod') {
       res.type('text/plain').send('User-agent: * \n' + 'Disallow: /')
       return
     }

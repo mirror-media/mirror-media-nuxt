@@ -52,8 +52,8 @@
             @handleChangeCarrierType="handleChangeCarrierType"
           />
           <UiValidationInput
-            ref="carrierNumberDOM"
             v-if="receiptData.carrierType && receiptData.carrierType < 2"
+            ref="carrierNumberDOM"
             v-model="receiptData.carrierNumber"
             :carrierType="receiptData.carrierType"
             :placeholder="carrierNumberPlaceHolder"
@@ -228,12 +228,8 @@ export default {
     receiptData: {
       handler(val) {
         this.setReceiptData(val)
-        if (val.receiptPlan !== '二聯式發票（含載具）') {
-          this.receiptData.carrierType = '請選擇'
-          this.receiptData.carrierNumber = ''
-        } else if (this.receiptData.carrierType === '2') {
-          this.receiptData.carrierNumber = this.email
-        }
+        this.removeUnneededReceiptData(val)
+
         // reset validation status after chagned value
         this.receiptFormStatus = {
           receiptPlan: 'OK',
@@ -256,6 +252,25 @@ export default {
     setReciptFormStatus(type, formStatus) {
       this.receiptFormStatus[type] = formStatus
     },
+    removeUnneededReceiptData(val) {
+      if (val.receiptPlan === '捐贈') {
+        this.receiptData.carrierType = ''
+        this.receiptData.carrierNumber = ''
+        this.receiptData.carrierTitle = ''
+        this.receiptData.carrierUbn = ''
+      } else if (val.receiptPlan === '二聯式發票（含載具）') {
+        this.receiptData.donateOrganization = ''
+        this.receiptData.carrierTitle = ''
+        this.receiptData.carrierUbn = ''
+        if (this.receiptData.carrierType === '2') {
+          this.receiptData.carrierNumber = this.email
+        }
+      } else if (val.receiptPlan === '三聯式發票') {
+        this.receiptData.donateOrganization = ''
+        this.receiptData.carrierType = ''
+        this.receiptData.carrierNumber = ''
+      }
+    },
     validationPass() {
       const validateArray = Object.values(this.receiptFormStatus)
       if (validateArray.find((item) => item !== 'OK')) {
@@ -271,8 +286,13 @@ export default {
           this.$refs.donateOrganizationDOM.check()
         } else if (this.receiptData.receiptPlan === '二聯式發票（含載具）') {
           this.$refs.carrierTypeDOM.check()
-          if (this.receiptData.carrierType !== '2')
+
+          if (
+            this.receiptData.carrierType &&
+            this.receiptData.carrierType !== '2'
+          ) {
             this.$refs.carrierNumberDOM.check()
+          }
         } else if (this.receiptData.receiptPlan === '三聯式發票') {
           this.$refs.carrierTitleDOM.check()
           this.$refs.carrierUbnDOM.check()
