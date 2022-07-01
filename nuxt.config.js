@@ -602,6 +602,8 @@ module.exports = {
     topicListFeatureToggle: process.env.TOPIC_LIST_FEATURE_TOGGLE || 'off',
     subscriptionPriceFeatureToggle:
       process.env.SUBSCRIPTION_PRICE_FEATURE_TOGGLE || 'off',
+    headerExternalsFeatureToggle:
+      process.env.HEADER_EXTERNALS_FEATURE_TOGGLE || 'off',
   },
 
   env: {
