@@ -36,17 +36,19 @@
           </a>
         </div>
       </div>
-      <div
-        v-for="partner in displayPartners"
-        :key="partner.id"
-        class="section section--external"
-      >
-        <a
-          :href="`/externals/${partner.name}`"
-          @click="emitGa(`external ${partner.name}`)"
+      <div v-if="shouldShowExternals">
+        <div
+          v-for="partner in displayPartners"
+          :key="partner.id"
+          class="section section--external"
         >
-          <h2>{{ partner.display }}</h2>
-        </a>
+          <a
+            :href="`/externals/${partner.name}`"
+            @click="emitGa(`external ${partner.name}`)"
+          >
+            <h2>{{ partner.display }}</h2>
+          </a>
+        </div>
       </div>
       <!-- <div class="section section&#45;&#45;external">
         <h2>合作媒體</h2>
@@ -89,6 +91,9 @@ export default {
       return (
         this.partners.filter((partner) => partner.name === 'healthnews') ?? []
       )
+    },
+    shouldShowExternals() {
+      return this.$config.headerExternalsFeatureToggle === 'on'
     },
   },
   methods: {
