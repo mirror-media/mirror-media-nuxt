@@ -226,7 +226,7 @@ export default {
       },
       areMicroAdsInserted: false,
       areExternalsInserted: false,
-      fileId: 1,
+      fileId: 0,
 
       eventMod: {
         item: {},
@@ -408,9 +408,15 @@ export default {
 
   methods: {
     shouldUpdateLatestArticle() {
-      const articlesUpdateTimestamp = new Date(
-        this.groupedArticles?.timestamp
-      ).getTime()
+      /*
+       * Safari can't accept original format of time ("YYYY-MM-DD hh:mm:ss") in groupedArticles to generate Date object,
+       * should convert to certain format("YYYY-MM-DDThh:mm:ss") first.
+       */
+      const formattedTimeStamp = this.groupedArticles?.timestamp.replace(
+        / /g,
+        'T'
+      )
+      const articlesUpdateTimestamp = new Date(formattedTimeStamp).getTime()
       const currentTimestamp = new Date().getTime()
       return currentTimestamp - articlesUpdateTimestamp > 1000 * 180
     },
@@ -453,15 +459,16 @@ export default {
       const list = [...this.groupedArticles.latest]
       this.pushLatestItems(list.splice(0, 20))
       this.setLatestTotal(20)
-      this.fileId++
+
+      this.fileId += 1
     },
     async fetchLatestList() {
       if (this.fileId === 5) return []
       const { latest = [] } = await this.$fetchGroupedWithExternal(
         `post_external0${this.fileId}`
       )
-      this.fileId++
-      console.log('fetchLatestList')
+
+      this.fileId += 1
       return latest
     },
     pushLatestItems(items = []) {
@@ -491,10 +498,6 @@ export default {
       }
     },
     async loadMoreLatestItems(state) {
-      /*
-       * TODOS: if user scroll to bottom of page when latest news is not fully render at server side,
-       *  latest new will not render completely and lack about 10 articles of which.
-       */
       try {
         const groupArticleLength = this.groupedArticles.latest?.length
         const latestLength = this.latestList?.items?.length
@@ -520,24 +523,29 @@ export default {
             indexOfOlndex = i + 1
           }
         })
-        this.pushLatestItems(
-          this.groupedArticles.latest.slice(indexOfOlndex, indexOfOlndex + 20)
-        )
+
+        /*
+         * when page is initialized at server side, if user scroll to the bottom of page,
+         * methods `this.pushLatestItems` will executed one less time.
+         * The root cause has not been found and resolved, but we take the workaround solution temporarily,
+         * which is calculate length of `newLatest`, if it is 0, which means don't remain latest news
+         * have to fetch from backend, then execute`pushLatestItems` by pushing double amount of latest news,
+         * and stop the load.
+         */
+        if (newLatestLength === 0 && reserveCount < 0) {
+          this.pushLatestItems(
+            this.groupedArticles.latest.slice(indexOfOlndex, indexOfOlndex + 40)
+          )
+          state.complete()
+          return
+        } else {
+          this.pushLatestItems(
+            this.groupedArticles.latest.slice(indexOfOlndex, indexOfOlndex + 20)
+          )
+        }
 
         this.latestList.page++
-        if (reserveCount < 0) {
-          /*
-           * when page is initialized at server side, if user  scroll to the bottom of page,
-           * reversedCount will less than 0 ,and trigger state.complete first,
-           * reserveCount will less then 0, which will cause methods `this.pushLatestItems` not be executed.
-           * The solution of which is calculate length of `newLatest`, if it is 0, which means don't remain latest news
-           * have to fecth from backend, then stop the load.
-           */
-          if (newLatestLength === 0) {
-            state.complete()
-            return
-          }
-        }
+
         state.loaded()
 
         this.sendGa('scroll', 'loadmore', this.latestList.page)
