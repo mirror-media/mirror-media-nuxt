@@ -122,6 +122,7 @@
 import { mapState, mapGetters } from 'vuex'
 import { ref, computed, onMounted, useContext } from '@nuxtjs/composition-api'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 
 import UiStoryContentHandler from './UiStoryContentHandler.vue'
 import UiShareFb from '~/components/UiShareFb.vue'
@@ -139,6 +140,7 @@ import {
   DIGITAL_LINK,
 } from '~/constants/index.js'
 import { creditHtml } from '~/utils/article.js'
+dayjs.extend(utc)
 
 const THE_LAST_NUM_AD_INSERT_API_DATA_UNSTYLED_AND_NOT_EMPTY = 6
 const AD_KEYS_IN_STORY_CONTENT = ['MB_AT1', 'PC_AT1', 'MB_AT2']
@@ -331,7 +333,9 @@ export default {
     },
     publishedDate() {
       return (
-        dayjs(this.story.publishedDate).format('YYYY.MM.DD HH:mm') + ' 臺北時間'
+        dayjs(this.story.publishedDate)
+          .utcOffset(8)
+          .format('YYYY.MM.DD HH:mm') + ' 臺北時間'
       )
     },
     section() {
