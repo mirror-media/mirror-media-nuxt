@@ -61,9 +61,6 @@ export default {
             amount
             currency
             linePayStatus
-            periodCreateDatetime
-            periodFirstDatetime
-            periodEndDatetime
           }
         }
       `
@@ -87,7 +84,9 @@ export default {
         )
       }
 
-      const { allSubscriptions } = queryResult
+      const {
+        data: { allSubscriptions },
+      } = queryResult
       if (allSubscriptions === undefined || allSubscriptions.length === 0) {
         return {
           status: 'fail',
@@ -134,16 +133,27 @@ export default {
         },
       })
 
+      const payInfo = confirmResult.info?.payInfo[0]
+
       const message = {
         data: {
-          subscription,
-          confirm: confirmResult,
+          transactionId,
+          orderId,
+          amount: payInfo?.amount,
+          transactionTime: new Date().toISOString(),
+          payInfoMethod: payInfo?.method,
+          returnCode: confirmResult.returnCode,
+          returnMessage: confirmResult.returnMessage,
+          creditCardNickName: payInfo?.creditCardNickname,
+          creditCardBrand: payInfo?.creditCardBrand,
+          maskedCreditCardNumber: payInfo?.maskedCreditCardNumber,
+          regKey: confirmResult.info?.regKey,
         },
         attributes: {
           product: 'premium',
           transactionId,
-          orderId,
-          frequency: subscription.frequency,
+          premiumSubscriptionOrderNumber: subscription.orderNumber,
+          premiumSubscriptionFrequency: subscription.frequency,
         },
       }
 

@@ -267,12 +267,12 @@ async function createDraftPayment(responseBody, subscription) {
           orderNumber: subscription.orderNumber,
         },
       },
-      transactionId: info.transactionId,
+      transactionId: info?.transactionId,
       transactionTime: new Date().toISOString(),
       orderId: subscription.orderNumber,
       amount: subscription.amount,
       returnCode: responseBody.returnCode,
-      returnMessage: JSON.stringify(responseBody),
+      returnMessage: responseBody.returnMessage,
       frequency: subscription.frequency,
     }
 
