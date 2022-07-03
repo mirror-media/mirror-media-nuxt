@@ -110,6 +110,7 @@ async function publishMessageToPubSub(topicName, projectId, message) {
     const topic = await pubsub.topic(topicName)
     await topic.publishJSON(message.data, message.attributes)
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(
       JSON.stringify({
         severity: 'CRITICAL',
@@ -122,6 +123,7 @@ async function publishMessageToPubSub(topicName, projectId, message) {
     return false
   }
 
+  // eslint-disable-next-line no-console
   console.log(
     JSON.stringify({
       severity: 'INFO',

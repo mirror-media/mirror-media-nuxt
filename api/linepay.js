@@ -34,6 +34,7 @@ async function verifyRequest(req) {
     const { data } = await axios.get(requestUrl, requestConfig)
     return data.tokenState === 'OK'
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(
       JSON.stringify({
         severity: 'ERROR',
@@ -309,6 +310,7 @@ async function getLINEPayInfoOfOneTime(req) {
     ] = await getMerchandiseInfo(frequency)
 
     if (merchandiseState !== 'active') {
+      // eslint-disable-next-line no-console
       console.log(
         JSON.stringify({
           severity: 'INFO',
@@ -348,6 +350,7 @@ async function getLINEPayInfoOfOneTime(req) {
       return null
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(
       JSON.stringify({
         severity: 'ERROR',
@@ -378,6 +381,7 @@ async function getLINEPayInfoOfRecurring(req) {
     ] = await getMerchandiseInfo(frequency)
 
     if (merchandiseState !== 'active') {
+      // eslint-disable-next-line no-console
       console.log(
         JSON.stringify({
           severity: 'INFO',
@@ -416,6 +420,7 @@ async function getLINEPayInfoOfRecurring(req) {
       return null
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(
       JSON.stringify({
         severity: 'ERROR',
