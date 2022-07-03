@@ -15,13 +15,16 @@
 </template>
 
 <script>
-import axios from 'axios'
 import errors from '@twreporter/errors'
 import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 
-import { linepayClient, publishMessageToPubSub } from '~/api/helpers'
+import {
+  linepayClient,
+  publishMessageToPubSub,
+  fireGqlRequest,
+} from '~/api/helpers'
 import {
   ISRAFEL_ORIGIN,
   PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME,
@@ -67,38 +70,20 @@ export default {
 
       let queryResult = {}
       try {
-        const {
-          data: { data },
-        } = await axios({
-          url: `${ISRAFEL_ORIGIN}/api/graphql`,
-          method: 'post',
-          data: {
-            query,
-            variables: {
-              orderId,
-              transactionId,
-            },
-          },
-          headers: {
-            'content-type': 'application/json',
-            'Cache-Control': 'no-cache',
-          },
-        })
+        const data = await fireGqlRequest(
+          query,
+          { orderId, transactionId },
+          `${ISRAFEL_ORIGIN}/api/graphql`
+        )
         queryResult = data
       } catch (error) {
-        throw errors.helpers.annotateAxiosError(error)
-      }
-
-      if (queryResult.errors) {
-        throw new Error(
-          errors.helpers.wrap(
-            new Error(
-              'Errors occured while fetching fetchSubscriprion by orderNumber.'
-            ),
-            'GraphQLError',
-            'Errors returned in `fetchSubscriprionByOrderNumber` query',
-            { gqlErrors: queryResult.errors }
-          )
+        throw errors.helpers.wrap(
+          new Error(
+            'Errors occured while fetching fetchSubscriprion by orderNumber and transactionId.'
+          ),
+          'GraphQLError',
+          'Errors returned in `fetchSubscriptionByOrderNumberAndTransactionId` query',
+          { error }
         )
       }
 
@@ -181,7 +166,7 @@ export default {
         },
       }
     } catch (e) {
-      console.log(
+      console.error(
         JSON.stringify({
           severity: 'ERROR',
           message: errors.helpers.printAll(e, {
