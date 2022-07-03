@@ -84,11 +84,14 @@ async function getMerchandiseInfo(code) {
       merchandise.state,
       merchandise.comment,
       merchandise.desc,
-      null,
     ]
   } catch (error) {
-    console.error(error)
-    return [0, '', '', '', '', error]
+    throw errors.helpers.wrap(
+      error,
+      'FunctionError',
+      'error on getting merchandise info',
+      { error }
+    )
   }
 }
 
@@ -180,8 +183,12 @@ async function createDraftSubscription(createQuery, payload) {
     )
     return data.createsubscription
   } catch (error) {
-    console.error(error)
-    return null
+    throw errors.helpers.wrap(
+      error,
+      'FunctionError',
+      'error on creating draft subscription',
+      { error }
+    )
   }
 }
 
@@ -209,11 +216,12 @@ async function updateOrderNumberOfSubscription(subscription) {
 
     return orderNumber
   } catch (error) {
-    console.error(
-      `update odernumber to subscription(${subscription.id}) encounter error`
+    throw errors.helpers.wrap(
+      error,
+      'FunctionError',
+      `update odernumber to subscription(${subscription.id}) encounter error`,
+      { error }
     )
-    console.error(error)
-    return null
   }
 }
 
@@ -223,8 +231,12 @@ async function getPaymentInfo(data, isPreapproved = false) {
     const res = await linepayClient.request.send(requestObject)
     return res
   } catch (error) {
-    console.error(error)
-    return null
+    throw errors.helpers.wrap(
+      error,
+      'ApiError',
+      'error on getting LINEPay payment info',
+      { error }
+    )
   }
 }
 
@@ -273,8 +285,12 @@ async function createDraftPayment(responseBody, subscription) {
     )
     return data.createlinepayPayment
   } catch (error) {
-    console.error(error)
-    return null
+    throw errors.helpers.wrap(
+      error,
+      'FunctionError',
+      'error on creating draft LINEPay payment',
+      { error }
+    )
   }
 }
 
@@ -283,60 +299,67 @@ async function getLINEPayInfoOfOneTime(req) {
   const nextFrequency = 'none'
   const payload = req.body
 
-  const [
-    merchandisePrice,
-    merchandiseCurrency,
-    merchandiseState,
-    merchandiesComment,
-    merchandiseDesc,
-    error,
-  ] = await getMerchandiseInfo(frequency)
+  try {
+    const [
+      merchandisePrice,
+      merchandiseCurrency,
+      merchandiseState,
+      merchandiesComment,
+      merchandiseDesc,
+    ] = await getMerchandiseInfo(frequency)
 
-  if (error) {
-    return null
-  }
+    if (merchandiseState !== 'active') {
+      console.log(
+        JSON.stringify({
+          severity: 'INFO',
+          message: `frequency(${frequency}) is not active`,
+        })
+      )
+      return null
+    }
 
-  if (merchandiseState !== 'active') {
-    console.error(`frequency(${frequency}) is not active`)
-    return null
-  }
+    payload.frequency = frequency
+    payload.nextFrequency = nextFrequency
+    payload.amount = merchandisePrice
+    payload.currency = merchandiseCurrency
+    payload.comment = merchandiesComment
+    payload.desc = merchandiseDesc
+    payload.orderNumber = 'preparing-order-' + new Date().valueOf()
 
-  payload.frequency = frequency
-  payload.nextFrequency = nextFrequency
-  payload.amount = merchandisePrice
-  payload.currency = merchandiseCurrency
-  payload.comment = merchandiesComment
-  payload.desc = merchandiseDesc
-  payload.orderNumber = 'preparing-order-' + new Date().valueOf()
+    // construct GraphQL mutation
+    const subsMutation = constructSubscriptionMutation(payload)
 
-  // construct GraphQL mutation
-  const subsMutation = constructSubscriptionMutation(payload)
+    // write draft subscription record to Israfel
+    const subscription = await createDraftSubscription(subsMutation, payload)
 
-  // write draft subscription record to Israfel
-  const subscription = await createDraftSubscription(subsMutation, payload)
-  if (subscription === null) {
-    return null
-  }
+    // update orderNumber of draft subscription
+    const orderNumber = await updateOrderNumberOfSubscription(subscription)
+    subscription.orderNumber = orderNumber
 
-  // update orderNumber of draft subscription
-  const orderNumber = await updateOrderNumberOfSubscription(subscription)
-  if (orderNumber === null) {
-    return null
-  }
+    // send Request API to LINE Pay server to retreive payment info
+    const paymentInfo = await getPaymentInfo(subscription)
 
-  subscription.orderNumber = orderNumber
+    // write draft payment
+    await createDraftPayment(paymentInfo.body, subscription)
 
-  // send Request API to LINE Pay server to retreive payment info
-  const paymentInfo = await getPaymentInfo(subscription)
-
-  // write draft payment
-  const payment = await createDraftPayment(paymentInfo.body, subscription)
-
-  if (payment === null) {
-    return null
-  } else if (paymentInfo.body.returnCode === '0000') {
-    return paymentInfo.body.info
-  } else {
+    if (paymentInfo.body.returnCode === '0000') {
+      return paymentInfo.body.info
+    } else {
+      return null
+    }
+  } catch (error) {
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: error.message,
+        debugPayload: {
+          error: errors.helpers.printAll(error, {
+            withStack: true,
+            withPayload: true,
+          }),
+        },
+      })
+    )
     return null
   }
 }
@@ -345,60 +368,63 @@ async function getLINEPayInfoOfRecurring(req) {
   const payload = req.body
   const { frequency } = payload
 
-  const [
-    merchandisePrice,
-    merchandiseCurrency,
-    merchandiseState,
-    merchandiesComment,
-    merchandiseDesc,
-    error,
-  ] = await getMerchandiseInfo(frequency)
+  try {
+    const [
+      merchandisePrice,
+      merchandiseCurrency,
+      merchandiseState,
+      merchandiesComment,
+      merchandiseDesc,
+    ] = await getMerchandiseInfo(frequency)
 
-  if (error) {
-    return null
-  }
+    if (merchandiseState !== 'active') {
+      console.log(
+        JSON.stringify({
+          severity: 'INFO',
+          message: `frequency(${frequency}) is not active`,
+        })
+      )
+      return null
+    }
 
-  if (merchandiseState !== 'active') {
-    console.error(`frequency(${frequency}) is not active`)
-    return null
-  }
+    payload.nextFrequency = payload.frequency
+    payload.amount = merchandisePrice
+    payload.currency = merchandiseCurrency
+    payload.comment = merchandiesComment
+    payload.desc = merchandiseDesc
+    payload.orderNumber = 'preparing-order-' + new Date().valueOf()
 
-  payload.nextFrequency = payload.frequency
-  payload.amount = merchandisePrice
-  payload.currency = merchandiseCurrency
-  payload.comment = merchandiesComment
-  payload.desc = merchandiseDesc
-  payload.orderNumber = 'preparing-order-' + new Date().valueOf()
+    // construct GraphQL mutation
+    const subsMutation = constructSubscriptionMutation(payload)
 
-  // construct GraphQL mutation
-  const subsMutation = constructSubscriptionMutation(payload)
+    // write draft subscription record to Israfel
+    const subscription = await createDraftSubscription(subsMutation, payload)
 
-  // write draft subscription record to Israfel
-  const subscription = await createDraftSubscription(subsMutation, payload)
+    // update orderNumber of draft subscription
+    const orderNumber = await updateOrderNumberOfSubscription(subscription)
+    subscription.orderNumber = orderNumber
 
-  if (subscription === null) {
-    return null
-  }
+    // send Request API to LINE Pay server to retreive payment info
+    const paymentInfo = await getPaymentInfo(subscription)
 
-  // update orderNumber of draft subscription
-  const orderNumber = await updateOrderNumberOfSubscription(subscription)
-  if (orderNumber === null) {
-    return null
-  }
+    // write draft payment
+    await createDraftPayment(paymentInfo.body, subscription)
 
-  subscription.orderNumber = orderNumber
-
-  // send Request API to LINE Pay server to retreive payment info
-  const paymentInfo = await getPaymentInfo(subscription)
-
-  // write draft payment
-  const payment = await createDraftPayment(paymentInfo.body, subscription)
-
-  if (payment === null) {
-    return null
-  } else if (paymentInfo.body.returnCode === '0000') {
-    return paymentInfo.body.info
-  } else {
+    if (paymentInfo.body.returnCode === '0000') {
+      return paymentInfo.body.info
+    } else {
+      return null
+    }
+  } catch (error) {
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: errors.helpers.printAll(error, {
+          withStack: true,
+          withPayload: true,
+        }),
+      })
+    )
     return null
   }
 }
