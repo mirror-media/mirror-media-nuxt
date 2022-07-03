@@ -1,3 +1,4 @@
+const { default: errors } = require('@twreporter/errors')
 const axios = require('axios')
 const moment = require('moment-timezone')
 const { createLinePayClient } = require('line-pay-merchant')
@@ -91,7 +92,12 @@ async function fireGqlRequest(query, variables, apiUrl) {
     },
   })
   if (result.errors) {
-    throw new Error(result.errors[0].message)
+    throw errors.helpers.wrap(
+      new Error(result.errors[0].message),
+      'GraphQLError',
+      result.errors[0].message,
+      { gqlErrors: result.errors[0].data }
+    )
   }
   return result
 }

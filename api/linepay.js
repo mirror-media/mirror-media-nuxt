@@ -1,5 +1,6 @@
 import axios from 'axios'
 import uuid from 'uuid/v4'
+import errors from '@twreporter/errors'
 import {
   ENV,
   DOMAIN_NAME,
@@ -32,8 +33,19 @@ async function verifyRequest(req) {
   try {
     const { data } = await axios.get(requestUrl, requestConfig)
     return data.tokenState === 'OK'
-  } catch (err) {
-    console.error(err)
+  } catch (error) {
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: 'error on verifying request',
+        debugPayload: {
+          message: errors.helpers.printAll(error, {
+            withStack: true,
+            withPayload: true,
+          }),
+        },
+      })
+    )
     return false
   }
 }
