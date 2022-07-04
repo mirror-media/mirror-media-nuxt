@@ -579,7 +579,7 @@ export default {
   }
 }
 
-/deep/ {
+::v-deep {
   .receipt {
     margin-bottom: 24px !important;
   }
