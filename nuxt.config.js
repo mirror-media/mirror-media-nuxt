@@ -11,6 +11,7 @@ const {
   ENV = 'dev',
   API_PATH_FRONTEND,
   GOOGLE_OPT_CONTAINER_ID,
+  LINEPAY_PAYMENT_UI_TOGGLE,
 } = require('./configs/config')
 
 module.exports = {
@@ -618,5 +619,6 @@ module.exports = {
 
   env: {
     ENV,
+    LINEPAY_PAYMENT_UI_TOGGLE,
   },
 }

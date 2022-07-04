@@ -39,6 +39,13 @@
               >電子郵件不得為空</span
             >
           </div>
+          <SubscribeFormPayment
+            v-if="showLINEPayUI"
+            ref="paymentDOM"
+            :setPaymentMethod="setPaymentMethod"
+            :validateOn="validateOn"
+            :setFormStatus="setFormStatus"
+          />
           <SubscribeFormReceipt
             v-if="!isUpgradeFromMonthToYear"
             ref="receiptDOM"
@@ -129,6 +136,7 @@ import {
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
+import SubscribeFormPayment from '~/components/SubscribeFormPayment.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
@@ -146,6 +154,7 @@ export default {
     SubscribeStepProgress,
     MembershipFormPlanList,
     MembershipFormPerchaseInfo,
+    SubscribeFormPayment,
     SubscribeFormReceipt,
     UiSubscribeButton,
     NewebpayForm,
@@ -219,6 +228,7 @@ export default {
       isLoading: false,
       promoteId: 0, // NOTE： 折扣碼必須有值，如果undefined（發query的時候沒有附帶在variables中）會報錯
       email: '',
+      paymentMethod: '',
       receiptData: {
         receiptPlan: '捐贈',
         donateOrganization: '',
@@ -231,10 +241,12 @@ export default {
       orderStatus: 'success', //  fail, success
       validateOn: true,
       formStatus: {
+        payment: 'OK',
         receipt: 'OK',
       },
       paymentPayload: {},
       newebpayApiUrl: NEWEBPAY_MEMBERSHIP_API_URL,
+      linepayUiToggle: process.env.LINEPAY_PAYMENT_UI_TOGGLE,
     }
   },
   computed: {
@@ -283,6 +295,9 @@ export default {
 
       return validReceiptData
     },
+    showLINEPayUI() {
+      return this.perchasedPlan?.[0]?.key === 'basic' && this.linepayUiToggle
+    },
   },
   watch: {
     'receiptData.carrierType'() {
@@ -319,6 +334,9 @@ export default {
     setValidateOn() {
       this.validateOn = !this.validateOn
     },
+    setPaymentMethod(paymentMethod) {
+      this.paymentMethod = paymentMethod
+    },
     setReceiptData(editedReceiptData) {
       this.receiptData = editedReceiptData
     },
@@ -336,6 +354,9 @@ export default {
         // input validation section
         this.isLoading = true
         this.$refs.receiptDOM.check()
+        if (this.showLINEPayUI) {
+          this.$refs.paymentDOM.check()
+        }
         this.$v.email.$touch()
         if (
           this.$store.state.membership.emailVerifyFeatureToggle === 'on' &&
@@ -349,10 +370,16 @@ export default {
             return
           }
         }
+
         if (
           this.validateOn &&
           (this.$v.email.$error || this.formStatus.receipt !== 'OK')
         ) {
+          this.isLoading = false
+          return
+        }
+
+        if (this.showLINEPayUI && this.formStatus.payment !== 'OK') {
           this.isLoading = false
           return
         }
