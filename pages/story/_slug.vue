@@ -105,54 +105,52 @@
                     @load="handleLoadDableWidget"
                   ></LazyRenderer>
                 </div>
-
-                <div v-if="shouldOpenLatestList" ref="latestList">
-                  <LazyRenderer
-                    class="lazy-latest-list"
-                    :style="{
-                      height: doesHaveLatestStories ? undefined : '100vh',
-                    }"
-                    @load="fetchLatestStories"
-                  >
-                    <UiArticleListAside
-                      class="latest-list"
-                      heading="最新文章"
-                      :items="latestStories"
-                      @sendGa="sendGaForClick('latest')"
-                    />
-                  </LazyRenderer>
-                </div>
-
-                <div
-                  ref="fixedContainer"
-                  class="fixed-container"
-                  :class="{ fixed: shouldFixAside }"
+              </ClientOnly>
+              <div v-if="shouldOpenLatestList" ref="latestList">
+                <LazyRenderer
+                  class="lazy-latest-list"
+                  :style="{
+                    height: doesHaveLatestStories ? undefined : '100vh',
+                  }"
+                  @load="fetchLatestStories"
                 >
+                  <UiArticleListAside
+                    class="latest-list"
+                    heading="最新文章"
+                    :items="latestStories"
+                    @sendGa="sendGaForClick('latest')"
+                  />
+                </LazyRenderer>
+              </div>
+
+              <div
+                ref="fixedContainer"
+                class="fixed-container"
+                :class="{ fixed: shouldFixAside }"
+              >
+                <ClientOnly>
                   <ContainerGptAd
                     class="story__ad"
                     :pageKey="sectionId"
                     adKey="PC_R2"
                   />
+                </ClientOnly>
 
-                  <LazyRenderer
-                    ref="popularList"
-                    class="story__popular-list"
-                    @load="fetchPopularStories"
-                  >
-                    <section v-if="doesHavePopularStories">
-                      <UiArticleListAsideB
-                        heading="熱門文章"
-                        :items="popularStories"
-                        @sendGa="sendGaForClick('popular')"
-                      />
-                    </section>
-                  </LazyRenderer>
-
+                <div ref="popularList" class="story__popular-list">
+                  <section v-if="doesHavePopularStories">
+                    <UiArticleListAsideB
+                      heading="熱門文章"
+                      :items="popularStories"
+                      @sendGa="sendGaForClick('popular')"
+                    />
+                  </section>
+                </div>
+                <ClientOnly>
                   <LazyRenderer v-if="isDesktopWidth" class="story__fb-page">
                     <FbPage />
                   </LazyRenderer>
-                </div>
-              </ClientOnly>
+                </ClientOnly>
+              </div>
             </aside>
           </div>
 
@@ -284,6 +282,15 @@ export default {
   },
 
   async fetch() {
+    const [popularStoriesResponse] = await Promise.allSettled([
+      this.fetchPopularStories(),
+    ])
+    if (popularStoriesResponse === 'rejected') {
+      popularStoriesResponse.value = []
+    }
+    if (popularStoriesResponse.status === 'fulfilled') {
+      this.popularStories = popularStoriesResponse.value || []
+    }
     const processPostResponse = (response) => {
       if (response.status === 'fulfilled') {
         this.story = response.value?.items?.[0] ?? {}
@@ -523,7 +530,6 @@ export default {
     if (this.isStyleDefault) {
       this.observeScrollDepthForGa()
     }
-    console.log(this.$GOExp)
   },
 
   beforeDestroy() {
@@ -585,7 +591,7 @@ export default {
       }
 
       const { report: items = [] } = await this.$fetchPopular()
-      this.popularStories = items
+      return items
         .slice(0, 9)
         .map(function transformContent({
           slug = '',
