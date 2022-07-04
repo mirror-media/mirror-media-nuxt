@@ -151,7 +151,6 @@ export default {
         },
         attributes: {
           product: 'premium',
-          transactionId,
           premiumSubscriptionOrderNumber: subscription.orderNumber,
           premiumSubscriptionFrequency: subscription.frequency,
         },

@@ -82,28 +82,47 @@
             v-if="!isUpgradeFromMonthToYear"
             class="subscribe-info__form_left_hint"
           >
-            按下開始結帳後，頁面將會跳離，抵達由藍新金流 NewebPay
-            所提供的線上結帳頁面，完成後將會再跳回到鏡週刊
+            <template v-if="showLINEPayUI">
+              按下開始結帳後，頁面將會跳離，抵達由藍新金流 NewebPay&#xff0f;LINE
+              Pay 所提供的線上結帳頁面，完成後將會再跳回到鏡週刊
+            </template>
+            <template v-else>
+              按下開始結帳後，頁面將會跳離，抵達由藍新金流 NewebPay
+              所提供的線上結帳頁面，完成後將會再跳回到鏡週刊
+            </template>
           </p>
           <!-- TODO: update layout and button style -->
-          <UiSubscribeButton
-            v-if="isUpgradeFromMonthToYear"
-            class="change-plan-btn"
-            title="確認變更方案"
-            :isLoading="isLoading"
-            @click.native="updateHandler"
-          />
+          <template v-if="showLINEPayUI">
+            <UiSubscribeButton
+              v-if="isUpgradeFromMonthToYear"
+              class="change-plan-btn"
+              title="確認變更方案"
+              :isLoading="isLoading"
+              @click.native="updateHandler"
+            />
+            <template v-else>
+              <UiSubscribeButton
+                title="開始結帳"
+                :isLoading="isLoading"
+                @click.native="submitHandler"
+              />
+            </template>
+          </template>
           <template v-else>
             <UiSubscribeButton
-              title="使用信用卡結帳"
+              v-if="isUpgradeFromMonthToYear"
+              class="change-plan-btn"
+              title="確認變更方案"
               :isLoading="isLoading"
-              @click.native="submitHandler($event, 'newebpay')"
+              @click.native="updateHandler"
             />
-            <UiSubscribeButton
-              title="使用 LINE Pay 結帳"
-              :isLoading="isLoading"
-              @click.native="submitHandler($event, 'linepay')"
-            />
+            <template v-else>
+              <UiSubscribeButton
+                title="使用信用卡結帳"
+                :isLoading="isLoading"
+                @click.native="submitHandler"
+              />
+            </template>
           </template>
         </div>
         <div class="subscribe-info__form_right">
@@ -346,7 +365,7 @@ export default {
     setOrderStatus(val) {
       this.orderStatus = val
     },
-    async submitHandler(e, type) {
+    async submitHandler(e) {
       e.preventDefault()
       if (this.isLoading) return
 
@@ -384,8 +403,7 @@ export default {
           return
         }
 
-        if (type === 'linepay') {
-          // TODO: need to confirm whether go back is valid operation
+        if (this.showLINEPayUI && this.paymentMethod === 'linepay') {
           const { data } = await this.getPaymentInfoFromBackend()
           window.location.href = data.paymentUrl.web
           return
