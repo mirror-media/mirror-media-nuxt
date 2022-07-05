@@ -10,7 +10,27 @@
       <UiBreadcrumb class="category__breadcrumb" :breadcrumbs="breadcrumbs" />
       <ol class="category__list list">
         <li
-          v-for="article in listData"
+          v-for="article in listData.slice(0, gptAdFTPostion)"
+          :key="article.id"
+          class="list__item item"
+        >
+          <UiArticleCardPremiumCompact
+            class="item__card card"
+            :href="article.href"
+            :imgSrc="article.imgSrc"
+            :infoTitle="article.infoTitle"
+            :infoDescription="article.infoDescription"
+            :infoDate="article.infoDate"
+          />
+        </li>
+        <ContainerGptAd
+          v-if="shouldShowAd"
+          class="ad"
+          pageKey="5fe15f1e123c831000ee54c2"
+          adKey="FT"
+        />
+        <li
+          v-for="article in listData.slice(gptAdFTPostion)"
           :key="article.id"
           class="list__item item"
         >
@@ -41,6 +61,7 @@
 
 <script>
 import _ from 'lodash'
+import { mapGetters } from 'vuex'
 import { usePremiumBreadcrumbs } from '~/composition/premium-breadcrumbs'
 import UiBreadcrumb from '~/components/UiBreadcrumb.vue'
 import UiArticleCardPremiumCompact from '~/components/UiArticleCardPremiumCompact.vue'
@@ -83,6 +104,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      isViewportWidthUpXl: 'viewport/isViewportWidthUpXl',
+      isViewportWidthUpMd: 'viewport/isViewportWidthUpMd',
+    }),
     isPremiumMember() {
       return this.$store?.getters?.['membership-subscribe/isPremiumMember']
     },
@@ -107,6 +132,13 @@ export default {
           return listItem.id
         }
       )
+    },
+    gptAdFTPostion() {
+      console.log('here')
+      if (!this.isViewportWidthUpXl && this.isViewportWidthUpMd) {
+        return 8
+      }
+      return 12
     },
 
     /**
@@ -232,6 +264,9 @@ export default {
     }
     @include media-breakpoint-up(xl) {
       margin: 2px 0 0 -32px;
+    }
+    .ad {
+      width: 100%;
     }
   }
 }

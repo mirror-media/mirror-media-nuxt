@@ -92,7 +92,8 @@ export default {
           return {
             title,
             href: slug,
-            imgSrc: heroImage?.image.resizedTargets?.mobile?.url || SITE_OG_IMG,
+            imgSrc:
+              heroImage?.image?.resizedTargets?.mobile?.url || SITE_OG_IMG,
             sectionName: sections[0]?.name,
             sectionTitle: sections[0]?.title,
           }

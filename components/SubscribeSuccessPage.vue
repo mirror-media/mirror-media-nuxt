@@ -282,7 +282,7 @@ export default {
     }
   }
 
-  /deep/ .content_row__title {
+  ::v-deep .content_row__title {
     min-width: 100px;
     @include media-breakpoint-up(sm) {
       min-width: 180px;
