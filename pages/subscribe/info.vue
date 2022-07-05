@@ -104,6 +104,7 @@
               <UiSubscribeButton
                 title="開始結帳"
                 :isLoading="isLoading"
+                :class="{ disabled: paymentMethod === '' }"
                 @click.native="submitHandler"
               />
             </template>
