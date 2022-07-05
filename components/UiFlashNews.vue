@@ -233,11 +233,11 @@ a {
 
   $width--arrow: 10px;
   $height--arrow: 5px;
-  $width-half--arrow: $width--arrow / 2;
+  $width-half--arrow: math.div($width--arrow, 2);
 
   $width--arrow--md: 13px;
   $height--arrow--md: 6px;
-  $width-half--arrow--md: $width--arrow--md / 2;
+  $width-half--arrow--md: math.div($width--arrow--md, 2);
 
   &.next::before {
     border-width: 0 $width-half--arrow $height--arrow $width-half--arrow;

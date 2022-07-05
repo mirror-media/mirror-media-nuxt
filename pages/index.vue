@@ -933,7 +933,7 @@ $right--events: 10px;
   position: relative;
 
   &--embedded {
-    padding-top: 9 / 16 * 100%;
+    padding-top: math.div(9, 16) * 100%;
 
     div {
       position: absolute;
