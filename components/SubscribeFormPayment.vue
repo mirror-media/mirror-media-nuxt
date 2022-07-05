@@ -14,6 +14,7 @@
           v-model="paymentMethod"
           radioValue="newebpay"
           radioName="信用卡付款"
+          :isValid="isValid"
         />
       </div>
 
@@ -22,6 +23,7 @@
           v-model="paymentMethod"
           radioValue="linepay"
           radioName="LINE Pay"
+          :isValid="isValid"
         />
       </div>
     </div>
@@ -63,10 +65,14 @@ export default {
     isNeedToCheck() {
       return this.validateOn
     },
+    isValid() {
+      return this.paymentFormStatus === 'OK'
+    },
   },
   watch: {
     paymentMethod(val) {
       this.setPaymentMethod(val)
+      this.check()
     },
   },
   methods: {
