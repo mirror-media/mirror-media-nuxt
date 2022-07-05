@@ -107,20 +107,12 @@
                 </div>
               </ClientOnly>
               <div v-if="shouldOpenLatestList" ref="latestList">
-                <LazyRenderer
-                  class="lazy-latest-list"
-                  :style="{
-                    height: doesHaveLatestStories ? undefined : '100vh',
-                  }"
-                  @load="fetchLatestStories"
-                >
-                  <UiArticleListAside
-                    class="latest-list"
-                    heading="最新文章"
-                    :items="latestStories"
-                    @sendGa="sendGaForClick('latest')"
-                  />
-                </LazyRenderer>
+                <UiArticleListAside
+                  class="latest-list"
+                  heading="最新文章"
+                  :items="latestStories"
+                  @sendGa="sendGaForClick('latest')"
+                />
               </div>
 
               <div
@@ -223,7 +215,6 @@ import UiFooter from '~/components/UiFooter.vue'
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
 import error from '~/layouts/error.vue'
-
 import { DOMAIN_NAME, ENV, PREVIEW_QUERY } from '~/configs/config'
 import {
   SECTION_IDS,
@@ -282,15 +273,6 @@ export default {
   },
 
   async fetch() {
-    const [popularStoriesResponse] = await Promise.allSettled([
-      this.fetchPopularStories(),
-    ])
-    if (popularStoriesResponse === 'rejected') {
-      popularStoriesResponse.value = []
-    }
-    if (popularStoriesResponse.status === 'fulfilled') {
-      this.popularStories = popularStoriesResponse.value || []
-    }
     const processPostResponse = (response) => {
       if (response.status === 'fulfilled') {
         this.story = response.value?.items?.[0] ?? {}
@@ -375,13 +357,24 @@ export default {
 
       processPostResponse(postResponse)
     }
+    const [popularStoriesResponse, latestStoriesResponse] =
+      await Promise.allSettled([
+        this.fetchPopularStories(),
+        this.fetchLatestStories(),
+      ])
+    if (popularStoriesResponse === 'rejected') {
+      this.popularStories.value = []
+    } else if (latestStoriesResponse === 'rejected') {
+      this.latestStories.value = []
+    } else {
+      this.popularStories = popularStoriesResponse.value || []
+      this.latestStories = latestStoriesResponse.value || []
+    }
   },
 
   data() {
     return {
       latestStories: [],
-      hasLoadedLatestStories: false,
-
       popularStories: [],
       story: {},
       membershipTokenState: undefined,
@@ -474,11 +467,7 @@ export default {
       return this.section.title ?? ''
     },
     shouldOpenLatestList() {
-      return (
-        this.isDesktopWidth &&
-        this.sectionId !== DEFAULT_SECTION_ID &&
-        (this.hasLoadedLatestStories ? this.doesHaveLatestStories : true)
-      )
+      return this.sectionId !== DEFAULT_SECTION_ID && this.doesHaveLatestStories
     },
     doesHaveLatestStories() {
       return this.latestStories.length > 0
@@ -563,7 +552,7 @@ export default {
         sections: this.sectionId,
       })
 
-      this.latestStories = items
+      return items
         .filter(this.doesNotHaveCurrentStorySlug)
         .slice(0, 6)
         .map(function transformContent({
@@ -582,8 +571,6 @@ export default {
             sectionName: sections[0]?.name,
           }
         })
-
-      this.hasLoadedLatestStories = true
     },
     async fetchPopularStories() {
       if (ENV === 'lighthouse') {
@@ -1332,6 +1319,12 @@ aside {
         }
       }
     }
+  }
+}
+.latest-list {
+  display: none;
+  @include media-breakpoint-up(xl) {
+    display: block;
   }
 }
 </style>
