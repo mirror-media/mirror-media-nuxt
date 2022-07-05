@@ -63,7 +63,7 @@ $duration: 1.4s;
     stroke-dashoffset: $offset;
   }
   50% {
-    stroke-dashoffset: ($offset/2);
+    stroke-dashoffset: (math.div($offset, 2));
     transform: rotate(135deg);
   }
   100% {

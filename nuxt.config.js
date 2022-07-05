@@ -506,6 +506,7 @@ module.exports = {
 
   styleResources: {
     scss: '~/scss/*.scss',
+    hoistUseStatements: true,
   },
 
   apollo: {
