@@ -69,6 +69,12 @@ function createProxy(baseUrl, timeout = API_TIMEOUT) {
   }
 }
 
+/**
+ * create custom orderNumber for subscription
+ * @param  {Date} date
+ * @param  {String} id
+ * @return {String} orderNumber
+ */
 function createOrderNumberByTaipeiTZ(date, id) {
   const time = moment(date).tz('Asia/Taipei')
   const prefix = 'M'
@@ -79,6 +85,13 @@ function createOrderNumberByTaipeiTZ(date, id) {
   return orderNumber
 }
 
+/**
+ * fire GraphQL request
+ * @param  {GraphQLQuery} query
+ * @param  {Object} variables
+ * @param  {String} apiUrl
+ * @return {Object} result
+ */
 async function fireGqlRequest(query, variables, apiUrl) {
   const { data: result } = await axios({
     url: apiUrl,
@@ -103,6 +116,13 @@ async function fireGqlRequest(query, variables, apiUrl) {
   return result
 }
 
+/**
+ * publish message to designated PubSub topic
+ * @param  {String} topicName
+ * @param  {String} projectId
+ * @param  {Object} message
+ * @return {Boolean} success
+ */
 async function publishMessageToPubSub(topicName, projectId, message) {
   try {
     const pubsub = new PubSub({
@@ -137,6 +157,14 @@ async function publishMessageToPubSub(topicName, projectId, message) {
   return true
 }
 
+/**
+ * send response with custom paramters
+ * @param  {REQUEST_STATUS} { status
+ * @param  {HTTP_CODE}        code=200
+ * @param  {Object}           data
+ * @param  {String}           message
+ * @param  {Response}         res }
+ */
 function sendResponse({ status, code = 200, data, message, res }) {
   switch (status) {
     case REQUEST_STATUS.SUCCESS:

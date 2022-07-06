@@ -13,6 +13,11 @@ import {
 
 const apiUrl = `${ISRAFEL_ORIGIN}/api/graphql`
 
+/**
+ * retrieve merchandise information from Israfel
+ * @param  {String} code
+ * @return {Array} merchandise info
+ */
 async function getMerchandiseInfo(code) {
   const query = `
     query ($code: String) {
@@ -58,6 +63,12 @@ async function getMerchandiseInfo(code) {
   }
 }
 
+/**
+ * get request object for LINEPay REQUEST API
+ * @param  {Subscription} subscription
+ * @param  {Boolean} isPreapproved=false
+ * @return {request} request
+ */
 function getRequestObject(subscription, isPreapproved = false) {
   return {
     body: {
@@ -83,6 +94,10 @@ function getRequestObject(subscription, isPreapproved = false) {
   }
 }
 
+/**
+ * get redirectUrls of request object
+ * @return {Object} redirectUrls
+ */
 function getRedirectInfo() {
   return {
     confirmUrl:
@@ -96,6 +111,11 @@ function getRedirectInfo() {
   }
 }
 
+/**
+ * get options of request object
+ * @param  {Boolean} isPreapproved
+ * @return {Object} options
+ */
 function getRequestOption(isPreapproved) {
   if (isPreapproved) {
     return {
@@ -108,6 +128,11 @@ function getRequestOption(isPreapproved) {
   }
 }
 
+/**
+ * construct GraphQL query for creating subscription record
+ * @param  {Request.body} payload
+ * @return {GraphQLQuery} mutation
+ */
 function constructSubscriptionMutation(payload) {
   const mutation = `
 mutation ($input: subscriptionCreateInput) {
@@ -136,6 +161,12 @@ mutation ($input: subscriptionCreateInput) {
   return mutation
 }
 
+/**
+ * create draft subscription
+ * @param  {GraphQLQuery} createQuery
+ * @param  {Request.body} payload
+ * @return {Subscription} subscription
+ */
 async function createDraftSubscription(createQuery, payload) {
   try {
     const { data } = await fireGqlRequest(
@@ -159,6 +190,11 @@ async function createDraftSubscription(createQuery, payload) {
   }
 }
 
+/**
+ * update orderNumber of subscription and return orderNumber
+ * @param  {Subscription} subscription
+ * @return {String} orderNumber
+ */
 async function updateOrderNumberOfSubscription(subscription) {
   const id = parseInt(subscription.id)
   const orderNumber = createOrderNumberByTaipeiTZ(new Date(), id)
@@ -198,6 +234,12 @@ async function updateOrderNumberOfSubscription(subscription) {
   }
 }
 
+/**
+ * fire REQUEST API request to LINEPay server
+ * @param  {Subscription} data
+ * @param  {Boolean} isPreapproved=false
+ * @return {Object} response
+ */
 async function getPaymentInfo(data, isPreapproved = false) {
   const requestObject = getRequestObject(data, isPreapproved)
   try {
@@ -213,6 +255,12 @@ async function getPaymentInfo(data, isPreapproved = false) {
   }
 }
 
+/**
+ * create draft linepayPayment
+ * @param  {Response.body} responseBody
+ * @param  {Subscription} subscription
+ * @return {LINEPayPayment} linepayPayment
+ */
 async function createDraftPayment(responseBody, subscription) {
   const mutation = `
     mutation ($input: linepayPaymentCreateInput) {
@@ -269,6 +317,11 @@ async function createDraftPayment(responseBody, subscription) {
   }
 }
 
+/**
+ * get one time LINE Pay payment info
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 async function getLINEPayInfoOfOneTime(req, res) {
   const frequency = 'one_time'
   const nextFrequency = 'none'
@@ -368,6 +421,11 @@ async function getLINEPayInfoOfOneTime(req, res) {
   }
 }
 
+/**
+ * get recurring LINE Pay payment info
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 async function getLINEPayInfoOfRecurring(req, res) {
   const payload = req.body
   const { frequency } = payload
