@@ -18,6 +18,34 @@ import { API_PATH_FRONTEND } from '~/configs/config'
 const _ = { isEmpty }
 
 export function createUserBehaviorLog({ target = {}, ...props } = {}) {
+  console.log({
+    browser: getBrowserInfo(),
+    'is-in-app-browser': isInApp(window.navigator.userAgent),
+    'user-agent': window.navigator.userAgent,
+
+    'client-os': getClientOsInfo(),
+
+    'curr-url': window.location.href,
+    datetime: dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
+
+    'redirect-to': getAlinkHref(target),
+    referrer: document.referrer,
+    rref: getRref(target),
+    'target-tag-name': target.tagName,
+    'target-tag-class': target.className,
+    'target-tag-id': target.id,
+    'target-data-user-behavior-description':
+      getElementDataUserBehaviorDescription(target),
+    'target-text': truncate(getElementInnerText(target), 100),
+
+    'target-window-size': getWindowSizeInfo(),
+
+    'client-id': getClientId(),
+    'current-runtime-start': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
+    'session-id': getSessionId(),
+
+    ...props,
+  })
   return {
     browser: getBrowserInfo(),
     'is-in-app-browser': isInApp(window.navigator.userAgent),
@@ -52,6 +80,7 @@ export function sendLog(log) {
   const blob = new Blob([JSON.stringify({ clientInfo: log })], {
     type: 'application/json; charset=UTF-8',
   })
+  console.log(blob)
   navigator.sendBeacon(`/${API_PATH_FRONTEND}/tracking`, blob)
 }
 
