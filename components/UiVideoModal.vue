@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$aspect-ratio: 9 / 16;
+$aspect-ratio: math.div(9, 16);
 
 .video-modal {
   position: relative;

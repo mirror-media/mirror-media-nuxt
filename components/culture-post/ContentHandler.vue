@@ -439,7 +439,7 @@ $quote-color: #4a90e2;
   }
 
   .youtube {
-    $aspect-ratio--youtube: 315 / 560;
+    $aspect-ratio--youtube: math.div(315, 560);
 
     .wrapper {
       position: relative;
