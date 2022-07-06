@@ -53,7 +53,7 @@ async function getMerchandiseInfo(code) {
       error,
       'FunctionError',
       'error on getting merchandise info',
-      { error }
+      { query, input: code }
     )
   }
 }
@@ -151,7 +151,10 @@ async function createDraftSubscription(createQuery, payload) {
       error,
       'FunctionError',
       'error on creating draft subscription',
-      { error }
+      {
+        createQuery,
+        input: payload,
+      }
     )
   }
 }
@@ -184,7 +187,13 @@ async function updateOrderNumberOfSubscription(subscription) {
       error,
       'FunctionError',
       `update odernumber to subscription(${subscription.id}) encounter error`,
-      { error }
+      {
+        updateQuery,
+        input: {
+          id,
+          orderNumber,
+        },
+      }
     )
   }
 }
@@ -199,7 +208,7 @@ async function getPaymentInfo(data, isPreapproved = false) {
       error,
       'ApiError',
       'error on getting LINEPay payment info',
-      { error }
+      { data, isPreapproved }
     )
   }
 }
@@ -222,10 +231,12 @@ async function createDraftPayment(responseBody, subscription) {
     }
   `
 
+  let payload
+
   try {
     const { info } = responseBody
 
-    const payload = {
+    payload = {
       subscription: {
         connect: {
           orderNumber: subscription.orderNumber,
@@ -253,7 +264,7 @@ async function createDraftPayment(responseBody, subscription) {
       error,
       'FunctionError',
       'error on creating draft LINEPay payment',
-      { error }
+      { mutation, input: payload }
     )
   }
 }
@@ -332,19 +343,23 @@ async function getLINEPayInfoOfOneTime(req, res) {
       })
     }
   } catch (error) {
+    const annotatingError = errors.helpers.wrap(
+      error,
+      'api/linepay',
+      'Encounter error on `getLINEPayInfoOfOneTime`'
+    )
+
     // eslint-disable-next-line no-console
     console.error(
       JSON.stringify({
         severity: 'ERROR',
-        message: error.message,
-        debugPayload: {
-          error: errors.helpers.printAll(error, {
-            withStack: true,
-            withPayload: true,
-          }),
-        },
+        message: errors.helpers.printAll(annotatingError, {
+          withStack: true,
+          withPayload: true,
+        }),
       })
     )
+
     return sendResponse({
       status: REQUEST_STATUS.ERROR,
       message: 'Encounter error when getting payment info.',
@@ -425,16 +440,23 @@ async function getLINEPayInfoOfRecurring(req, res) {
       })
     }
   } catch (error) {
+    const annotatingError = errors.helpers.wrap(
+      error,
+      'api/linepay',
+      'Encounter error on `getLINEPayInfoOfOneTime`'
+    )
+
     // eslint-disable-next-line no-console
     console.error(
       JSON.stringify({
         severity: 'ERROR',
-        message: errors.helpers.printAll(error, {
+        message: errors.helpers.printAll(annotatingError, {
           withStack: true,
           withPayload: true,
         }),
       })
     )
+
     return sendResponse({
       status: REQUEST_STATUS.ERROR,
       message: 'Encounter error when getting payment info.',
