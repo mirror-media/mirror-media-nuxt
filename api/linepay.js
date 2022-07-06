@@ -1,55 +1,15 @@
-import axios from 'axios'
+import express from 'express'
 import uuid from 'uuid/v4'
 import errors from '@twreporter/errors'
-import {
-  ENV,
-  DOMAIN_NAME,
-  API_PATH_FRONTEND,
-  ISRAFEL_ORIGIN,
-} from '../configs/config.js'
+import { ENV, DOMAIN_NAME, ISRAFEL_ORIGIN } from '../configs/config.js'
+import requestAuthentication from '../serverMiddleware/requestAuthentication.js'
 import {
   createOrderNumberByTaipeiTZ,
   fireGqlRequest,
   linepayClient,
 } from './helpers'
 
-const baseUrl = 'http://localhost:3000/'
 const apiUrl = `${ISRAFEL_ORIGIN}/api/graphql`
-
-async function verifyRequest(req) {
-  const bearerHeader = req.headers.authorization
-
-  if (bearerHeader === undefined) {
-    return false
-  }
-
-  const requestUrl = `${baseUrl}${API_PATH_FRONTEND}/membership/v1/tokenState`
-  const requestConfig = {
-    headers: {
-      Authorization: bearerHeader,
-    },
-  }
-
-  try {
-    const { data } = await axios.get(requestUrl, requestConfig)
-    return data.tokenState === 'OK'
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(
-      JSON.stringify({
-        severity: 'ERROR',
-        message: 'error on verifying request',
-        debugPayload: {
-          message: errors.helpers.printAll(error, {
-            withStack: true,
-            withPayload: true,
-          }),
-        },
-      })
-    )
-    return false
-  }
-}
 
 async function getMerchandiseInfo(code) {
   const query = `
@@ -434,15 +394,10 @@ async function getLINEPayInfoOfRecurring(req) {
   }
 }
 
-module.exports = async function (req, res) {
-  // check request is authenicated
-  const isAuthenicated = await verifyRequest(req)
+const app = express()
+app.use(requestAuthentication())
 
-  if (isAuthenicated === false) {
-    res.status(401).send()
-    return
-  }
-
+app.post('/', async (req, res) => {
   const { frequency } = req.query
   switch (frequency) {
     case 'monthly':
@@ -472,4 +427,6 @@ module.exports = async function (req, res) {
       res.status(400).send()
     }
   }
-}
+})
+
+module.exports = app
