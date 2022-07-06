@@ -3,6 +3,7 @@ const axios = require('axios')
 const moment = require('moment-timezone')
 const { createLinePayClient } = require('line-pay-merchant')
 const { PubSub } = require('@google-cloud/pubsub')
+const REQUEST_STATUS = require('../constants/request').STATUS
 const {
   API_TIMEOUT,
   ENV,
@@ -136,10 +137,37 @@ async function publishMessageToPubSub(topicName, projectId, message) {
   return true
 }
 
+function sendResponse({ status, code = 200, data, message, res }) {
+  switch (status) {
+    case REQUEST_STATUS.SUCCESS:
+    case REQUEST_STATUS.FAIL: {
+      res.status(code).json({
+        status,
+        data,
+      })
+      break
+    }
+    case REQUEST_STATUS.ERROR: {
+      res.status(code).json({
+        status,
+        message,
+      })
+      break
+    }
+    default: {
+      res.status(500).json({
+        status: REQUEST_STATUS.ERROR,
+        message: 'Called with invalid status.',
+      })
+    }
+  }
+}
+
 module.exports = {
   createProxy,
   createOrderNumberByTaipeiTZ,
   fireGqlRequest,
   linepayClient,
   publishMessageToPubSub,
+  sendResponse,
 }

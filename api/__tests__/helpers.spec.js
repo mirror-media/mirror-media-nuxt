@@ -5,6 +5,7 @@ const {
   createProxy,
   createOrderNumberByTaipeiTZ,
   publishMessageToPubSub,
+  sendResponse,
 } = require('../helpers')
 
 // createProxy
@@ -193,5 +194,102 @@ describe('publishMessageToPubSub helper function', () => {
 
     expect(mockErrorFunc).toHaveBeenCalled()
     expect(result).toBe(false)
+  })
+})
+
+// sendResponse
+function createResponseMock() {
+  const mockJsonFunc = jest.fn()
+  const mockStatusFunc = jest.fn()
+  mockStatusFunc.mockReturnValue({
+    json: mockJsonFunc,
+  })
+
+  return {
+    mockResponse: {
+      status: mockStatusFunc,
+    },
+    mockStatusFunc,
+    mockJsonFunc,
+  }
+}
+
+describe('sendResponse helper function', () => {
+  test('It should response with `status` and `data` when `status` is `success` or `fail`', () => {
+    const status = 'success'
+    const code = 200
+    const data = { title: 'Success.' }
+    const { mockResponse, mockStatusFunc, mockJsonFunc } = createResponseMock()
+
+    sendResponse({
+      status,
+      code,
+      data,
+      res: mockResponse,
+    })
+
+    expect(mockStatusFunc.mock.calls[0][0]).toBe(code)
+    expect(mockJsonFunc.mock.calls[0][0]).toEqual({
+      status,
+      data,
+    })
+  })
+
+  test('It should response with `status` and `message` when `status` is `error`', () => {
+    const status = 'error'
+    const code = 500
+    const message = 'Error.'
+    const { mockResponse, mockStatusFunc, mockJsonFunc } = createResponseMock()
+
+    sendResponse({
+      status,
+      code,
+      message,
+      res: mockResponse,
+    })
+
+    expect(mockStatusFunc.mock.calls[0][0]).toBe(code)
+    expect(mockJsonFunc.mock.calls[0][0]).toEqual({
+      status,
+      message,
+    })
+  })
+
+  test('It should response with `status` and `message` when `status` is not valid', () => {
+    const status = 'other'
+    const code = 200
+    const message = 'other message'
+    const data = { title: 'other data' }
+    const { mockResponse, mockStatusFunc, mockJsonFunc } = createResponseMock()
+
+    sendResponse({
+      status,
+      code,
+      message,
+      data,
+      res: mockResponse,
+    })
+
+    expect(mockStatusFunc.mock.calls[0][0]).toBe(500)
+    expect(mockJsonFunc.mock.calls[0][0]).toEqual({
+      status: 'error',
+      message: expect.any(String),
+    })
+  })
+
+  test('It should throw error when `res` is not valid', () => {
+    const status = 'other'
+    const code = 200
+    const message = 'other message'
+    const data = { title: 'other data' }
+
+    expect(() => {
+      sendResponse({
+        status,
+        code,
+        message,
+        data,
+      })
+    }).toThrow(TypeError)
   })
 })
