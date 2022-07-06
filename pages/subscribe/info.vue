@@ -160,6 +160,7 @@ import SubscribeFormPayment from '~/components/SubscribeFormPayment.vue'
 import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
+import { STATUS as REQUEST_STATUS } from '~/constants/request.js'
 
 // import redirectDestination from '~/utils/redirect-destination'
 
@@ -405,9 +406,19 @@ export default {
         }
 
         if (this.showLINEPayUI && this.paymentMethod === 'linepay') {
-          const { data } = await this.getPaymentInfoFromBackend()
-          window.location.href = data.paymentUrl.web
-          return
+          const {
+            data: { status, data, message },
+          } = await this.getPaymentInfoFromBackend()
+
+          if (status === REQUEST_STATUS.SUCCESS) {
+            window.location.href = data.paymentInfo?.paymentUrl?.web
+          } else if (status === REQUEST_STATUS.FAIL) {
+            window.alert('您的訂閱資料有誤，請修正後再嘗試')
+            this.isLoading = false
+            return
+          } else {
+            throw new Error(message)
+          }
         }
 
         // emit apiGateWay

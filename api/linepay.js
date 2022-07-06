@@ -3,10 +3,12 @@ import uuid from 'uuid/v4'
 import errors from '@twreporter/errors'
 import { ENV, DOMAIN_NAME, ISRAFEL_ORIGIN } from '../configs/config.js'
 import requestAuthentication from '../serverMiddleware/requestAuthentication.js'
+import { STATUS as REQUEST_STATUS } from '../constants/request.js'
 import {
   createOrderNumberByTaipeiTZ,
   fireGqlRequest,
   linepayClient,
+  sendResponse,
 } from './helpers'
 
 const apiUrl = `${ISRAFEL_ORIGIN}/api/graphql`
@@ -36,7 +38,7 @@ async function getMerchandiseInfo(code) {
     )
 
     if (merchandise === null) {
-      throw new Error(`merchandise with code ${code} is not found`)
+      return []
     }
 
     return [
@@ -256,7 +258,7 @@ async function createDraftPayment(responseBody, subscription) {
   }
 }
 
-async function getLINEPayInfoOfOneTime(req) {
+async function getLINEPayInfoOfOneTime(req, res) {
   const frequency = 'one_time'
   const nextFrequency = 'none'
   const payload = req.body
@@ -278,7 +280,13 @@ async function getLINEPayInfoOfOneTime(req) {
           message: `frequency(${frequency}) is not active`,
         })
       )
-      return null
+      return sendResponse({
+        status: REQUEST_STATUS.FAIL,
+        data: {
+          title: `Frequency(${frequency}) is not active.`,
+        },
+        res,
+      })
     }
 
     payload.frequency = frequency
@@ -306,9 +314,22 @@ async function getLINEPayInfoOfOneTime(req) {
     await createDraftPayment(paymentInfo.body, subscription)
 
     if (paymentInfo.body.returnCode === '0000') {
-      return paymentInfo.body.info
+      return sendResponse({
+        status: REQUEST_STATUS.SUCCESS,
+        data: {
+          title: 'Succeed in getting payment info.',
+          paymentInfo: paymentInfo.body.info,
+        },
+        res,
+      })
     } else {
-      return null
+      return sendResponse({
+        status: REQUEST_STATUS.FAIL,
+        data: {
+          title: 'Failed to get payment info.',
+        },
+        res,
+      })
     }
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -324,11 +345,15 @@ async function getLINEPayInfoOfOneTime(req) {
         },
       })
     )
-    return null
+    return sendResponse({
+      status: REQUEST_STATUS.ERROR,
+      message: 'Encounter error when getting payment info.',
+      res,
+    })
   }
 }
 
-async function getLINEPayInfoOfRecurring(req) {
+async function getLINEPayInfoOfRecurring(req, res) {
   const payload = req.body
   const { frequency } = payload
 
@@ -349,7 +374,13 @@ async function getLINEPayInfoOfRecurring(req) {
           message: `frequency(${frequency}) is not active`,
         })
       )
-      return null
+      return sendResponse({
+        status: REQUEST_STATUS.FAIL,
+        data: {
+          title: `Frequency(${frequency}) is not active.`,
+        },
+        res,
+      })
     }
 
     payload.nextFrequency = payload.frequency
@@ -376,9 +407,22 @@ async function getLINEPayInfoOfRecurring(req) {
     await createDraftPayment(paymentInfo.body, subscription)
 
     if (paymentInfo.body.returnCode === '0000') {
-      return paymentInfo.body.info
+      return sendResponse({
+        status: REQUEST_STATUS.SUCCESS,
+        data: {
+          title: 'Succeed in getting payment info.',
+          paymentInfo: paymentInfo.body.info,
+        },
+        res,
+      })
     } else {
-      return null
+      return sendResponse({
+        status: REQUEST_STATUS.FAIL,
+        data: {
+          title: 'Failed to get payment info.',
+        },
+        res,
+      })
     }
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -391,7 +435,11 @@ async function getLINEPayInfoOfRecurring(req) {
         }),
       })
     )
-    return null
+    return sendResponse({
+      status: REQUEST_STATUS.ERROR,
+      message: 'Encounter error when getting payment info.',
+      res,
+    })
   }
 }
 
@@ -403,29 +451,19 @@ app.post('/', async (req, res) => {
   switch (frequency) {
     case 'monthly':
     case 'yearly': {
-      const recurringResult = await getLINEPayInfoOfRecurring(req)
-
-      if (recurringResult === null) {
-        res.status(400).send()
-      } else {
-        res.status(200).json(recurringResult)
-      }
-
-      return
+      return await getLINEPayInfoOfRecurring(req, res)
     }
     case 'one_time': {
-      const oneTimeResult = await getLINEPayInfoOfOneTime(req)
-
-      if (oneTimeResult === null) {
-        res.status(400).send()
-      } else {
-        res.status(200).json(oneTimeResult)
-      }
-
-      return
+      return await getLINEPayInfoOfOneTime(req, res)
     }
     default: {
-      res.status(400).send()
+      return sendResponse({
+        status: REQUEST_STATUS.FAIL,
+        data: {
+          title: 'Frequency is not valid.',
+        },
+        res,
+      })
     }
   }
 })
