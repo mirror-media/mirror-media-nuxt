@@ -107,30 +107,31 @@ function getRequestOption(isPreapproved) {
 }
 
 function constructSubscriptionMutation(payload) {
-  const mutationArray = [
-    'mutation ($input: subscriptionCreateInput) {',
-    'createsubscription(data: $input) {',
-  ]
+  const mutation = `
+mutation ($input: subscriptionCreateInput) {
+  createsubscription(data: $input) {
+    ${(function () {
+      const payloadField = Object.keys(payload)
 
-  const payloadField = Object.keys(payload)
-  mutationArray.push(...payloadField)
+      if (payloadField.includes('createdAt') === false) {
+        payloadField.push('createdAt')
+      }
 
-  if (payloadField.includes('createdAt') === false) {
-    mutationArray.push('createdAt')
+      if (payloadField.includes('id') === false) {
+        payloadField.push('id')
+      }
+
+      if (payloadField.includes('member')) {
+        const index = payloadField.indexOf('member')
+        payloadField.splice(index, 1, 'member { firebaseId }')
+      }
+
+      return payloadField.join('\n')
+    })()}
   }
+}`
 
-  if (payloadField.includes('id') === false) {
-    mutationArray.push('id')
-  }
-
-  mutationArray.push('}', '}')
-
-  if (mutationArray.includes('member')) {
-    const index = mutationArray.indexOf('member')
-    mutationArray.splice(index, 1, 'member { firebaseId }')
-  }
-
-  return mutationArray.join('\n')
+  return mutation
 }
 
 async function createDraftSubscription(createQuery, payload) {
