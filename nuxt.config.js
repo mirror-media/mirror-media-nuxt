@@ -11,6 +11,7 @@ const {
   ENV = 'dev',
   API_PATH_FRONTEND,
   GOOGLE_OPT_CONTAINER_ID,
+  LINEPAY_PAYMENT_UI_TOGGLE,
 } = require('./configs/config')
 
 module.exports = {
@@ -296,6 +297,10 @@ module.exports = {
       handler: '~/api/newebpay.js',
     },
     {
+      path: `/${API_PATH_FRONTEND}/linepay/v1`,
+      handler: '~/api/linepay.js',
+    },
+    {
       path: `/${API_PATH_FRONTEND}/papermag/v1`,
       handler: '~/api/papermag.js',
     },
@@ -561,6 +566,14 @@ module.exports = {
       // if (ctx.isClient) {
       //   config.devtool = 'source-map'
       // }
+
+      // ref: https://stackoverflow.com/questions/66720347/module-not-found-cant-resolve-child-process-google-spreadsheet
+      config.node = {
+        fs: 'empty',
+        child_process: 'empty',
+        net: 'empty',
+        tls: 'empty',
+      }
     },
   },
 
@@ -609,5 +622,6 @@ module.exports = {
 
   env: {
     ENV,
+    LINEPAY_PAYMENT_UI_TOGGLE,
   },
 }

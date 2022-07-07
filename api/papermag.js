@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { fireGqlRequest } from './helpers'
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 const {
@@ -10,25 +10,6 @@ const {
 } = require('../configs/config')
 
 const apiUrl = `${ISRAFEL_ORIGIN}/api/graphql`
-
-async function fireGqlRequest(query, variables) {
-  const { data: result } = await axios({
-    url: apiUrl,
-    method: 'post',
-    data: {
-      query,
-      variables,
-    },
-    headers: {
-      'content-type': 'application/json',
-      'Cache-Control': 'no-cache',
-    },
-  })
-  if (result.errors) {
-    throw new Error(result.errors[0].message)
-  }
-  return result
-}
 
 async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
   const fetchPaymentDataOfPapermag = `mutation fetchPaymentDataOfPapermag(
@@ -51,7 +32,8 @@ async function getPaymentDataOfPapermagSubscription(gateWayPayload) {
   `
   const { data } = await fireGqlRequest(
     fetchPaymentDataOfPapermag,
-    gateWayPayload
+    gateWayPayload,
+    apiUrl
   )
   data.createNewebpayTradeInfoForMagazineOrder.ReturnURL =
     ENV === 'local'
