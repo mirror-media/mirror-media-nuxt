@@ -618,10 +618,10 @@ module.exports = {
       process.env.SUBSCRIPTION_PRICE_FEATURE_TOGGLE || 'off',
     headerExternalsFeatureToggle:
       process.env.HEADER_EXTERNALS_FEATURE_TOGGLE || 'off',
+    linepayUiToggle: LINEPAY_PAYMENT_UI_TOGGLE,
   },
 
   env: {
     ENV,
-    LINEPAY_PAYMENT_UI_TOGGLE,
   },
 }

@@ -267,7 +267,7 @@ export default {
       },
       paymentPayload: {},
       newebpayApiUrl: NEWEBPAY_MEMBERSHIP_API_URL,
-      linepayUiToggle: process.env.LINEPAY_PAYMENT_UI_TOGGLE,
+      linepayUiToggle: this.$config.linepayUiToggle,
     }
   },
   computed: {
