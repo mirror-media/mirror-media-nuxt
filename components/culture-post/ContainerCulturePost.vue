@@ -129,7 +129,7 @@ export default {
       const heroVideoSrc = heroVideo.video?.url || ''
       const heroVideoPoster =
         heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
-      const heroImgsResized = heroImage.image?.resizedTargets || {}
+      const heroImgsResized = heroImage?.image?.resizedTargets || {}
 
       return {
         title,
