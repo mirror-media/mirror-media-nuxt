@@ -103,8 +103,7 @@ export default {
     }
 
     this.$store.commit('premium-story/SET_STORY', this.story)
-
-    this.$sendUserBehaviorLog({
+    const log = {
       category: 'whole-site',
       description: '',
       'event-type': 'pageview',
@@ -120,7 +119,10 @@ export default {
       },
 
       'premium-story-info': this.premiumStoryInfoForLogger(),
-    })
+    }
+    if (log) {
+      this.$sendUserBehaviorLog(log)
+    }
   },
 
   methods: {
