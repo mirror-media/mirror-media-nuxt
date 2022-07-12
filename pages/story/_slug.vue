@@ -105,54 +105,44 @@
                     @load="handleLoadDableWidget"
                   ></LazyRenderer>
                 </div>
+              </ClientOnly>
+              <div v-if="shouldOpenLatestList" ref="latestList">
+                <UiArticleListAside
+                  class="latest-list"
+                  heading="最新文章"
+                  :items="latestStories"
+                  @sendGa="sendGaForClick('latest')"
+                />
+              </div>
 
-                <div v-if="shouldOpenLatestList" ref="latestList">
-                  <LazyRenderer
-                    class="lazy-latest-list"
-                    :style="{
-                      height: doesHaveLatestStories ? undefined : '100vh',
-                    }"
-                    @load="fetchLatestStories"
-                  >
-                    <UiArticleListAside
-                      class="latest-list"
-                      heading="最新文章"
-                      :items="latestStories"
-                      @sendGa="sendGaForClick('latest')"
-                    />
-                  </LazyRenderer>
-                </div>
-
-                <div
-                  ref="fixedContainer"
-                  class="fixed-container"
-                  :class="{ fixed: shouldFixAside }"
-                >
+              <div
+                ref="fixedContainer"
+                class="fixed-container"
+                :class="{ fixed: shouldFixAside }"
+              >
+                <ClientOnly>
                   <ContainerGptAd
                     class="story__ad"
                     :pageKey="sectionId"
                     adKey="PC_R2"
                   />
+                </ClientOnly>
 
-                  <LazyRenderer
-                    ref="popularList"
-                    class="story__popular-list"
-                    @load="fetchPopularStories"
-                  >
-                    <section v-if="doesHavePopularStories">
-                      <UiArticleListAsideB
-                        heading="熱門文章"
-                        :items="popularStories"
-                        @sendGa="sendGaForClick('popular')"
-                      />
-                    </section>
-                  </LazyRenderer>
-
+                <div ref="popularList" class="story__popular-list">
+                  <section v-if="doesHavePopularStories">
+                    <UiArticleListAsideB
+                      heading="熱門文章"
+                      :items="popularStories"
+                      @sendGa="sendGaForClick('popular')"
+                    />
+                  </section>
+                </div>
+                <ClientOnly>
                   <LazyRenderer v-if="isDesktopWidth" class="story__fb-page">
                     <FbPage />
                   </LazyRenderer>
-                </div>
-              </ClientOnly>
+                </ClientOnly>
+              </div>
             </aside>
           </div>
 
@@ -225,7 +215,6 @@ import UiFooter from '~/components/UiFooter.vue'
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
 import error from '~/layouts/error.vue'
-
 import { DOMAIN_NAME, ENV, PREVIEW_QUERY } from '~/configs/config'
 import {
   SECTION_IDS,
@@ -368,13 +357,26 @@ export default {
 
       processPostResponse(postResponse)
     }
+    const [popularStoriesResponse, latestStoriesResponse] =
+      await Promise.allSettled([
+        this.fetchPopularStories(),
+        this.fetchLatestStories(),
+      ])
+    if (popularStoriesResponse.status === 'fulfilled') {
+      this.popularStories = popularStoriesResponse.value
+    } else {
+      this.popularStories = []
+    }
+    if (latestStoriesResponse.status === 'fulfilled') {
+      this.latestStories = latestStoriesResponse.value
+    } else {
+      this.latestStories = []
+    }
   },
 
   data() {
     return {
       latestStories: [],
-      hasLoadedLatestStories: false,
-
       popularStories: [],
       story: {},
       membershipTokenState: undefined,
@@ -467,11 +469,7 @@ export default {
       return this.section.title ?? ''
     },
     shouldOpenLatestList() {
-      return (
-        this.isDesktopWidth &&
-        this.sectionId !== DEFAULT_SECTION_ID &&
-        (this.hasLoadedLatestStories ? this.doesHaveLatestStories : true)
-      )
+      return this.sectionId !== DEFAULT_SECTION_ID && this.doesHaveLatestStories
     },
     doesHaveLatestStories() {
       return this.latestStories.length > 0
@@ -523,7 +521,6 @@ export default {
     if (this.isStyleDefault) {
       this.observeScrollDepthForGa()
     }
-    console.log(this.$GOExp)
   },
 
   beforeDestroy() {
@@ -557,7 +554,7 @@ export default {
         sections: this.sectionId,
       })
 
-      this.latestStories = items
+      return items
         .filter(this.doesNotHaveCurrentStorySlug)
         .slice(0, 6)
         .map(function transformContent({
@@ -576,8 +573,6 @@ export default {
             sectionName: sections[0]?.name,
           }
         })
-
-      this.hasLoadedLatestStories = true
     },
     async fetchPopularStories() {
       if (ENV === 'lighthouse') {
@@ -585,7 +580,7 @@ export default {
       }
 
       const { report: items = [] } = await this.$fetchPopular()
-      this.popularStories = items
+      return items
         .slice(0, 9)
         .map(function transformContent({
           slug = '',
@@ -1326,6 +1321,12 @@ aside {
         }
       }
     }
+  }
+}
+.latest-list {
+  display: none;
+  @include media-breakpoint-up(xl) {
+    display: block;
   }
 }
 </style>
