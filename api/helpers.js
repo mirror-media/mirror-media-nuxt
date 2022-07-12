@@ -143,7 +143,8 @@ async function publishMessageToPubSub(topicName, projectId, message) {
         severity: 'CRITICAL',
         message: `Error to publish data to pubsub topic (${topicName})`,
         debugPayload: {
-          message: errors.helpers.printAll(annotatingError, {
+          message,
+          error: errors.helpers.printAll(annotatingError, {
             withStack: true,
             withPayload: true,
           }),
