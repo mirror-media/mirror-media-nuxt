@@ -131,13 +131,22 @@ async function publishMessageToPubSub(topicName, projectId, message) {
     const topic = await pubsub.topic(topicName)
     await topic.publishJSON(message.data, message.attributes)
   } catch (error) {
+    const annotatingError = errors.helpers.wrap(
+      error,
+      'PubSub',
+      'Encounter error on `publishMessageToPubSub`'
+    )
+
     // eslint-disable-next-line no-console
     console.error(
       JSON.stringify({
         severity: 'CRITICAL',
         message: `Error to publish data to pubsub topic (${topicName})`,
         debugPayload: {
-          message,
+          message: errors.helpers.printAll(annotatingError, {
+            withStack: true,
+            withPayload: true,
+          }),
         },
       })
     )
