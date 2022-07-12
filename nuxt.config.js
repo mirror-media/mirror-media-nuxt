@@ -349,115 +349,123 @@ module.exports = {
       ? ['@mirror-media/nuxt-ssr-cache']
       : []),
 
-    [
-      '@nuxtjs/firebase',
-      {
-        /*
-         * exposed apiKey in config is not a security risk
-         * see: https://stackoverflow.com/a/37484053
-         */
-        config: (function getFirebaseConfig(ENV) {
-          switch (ENV) {
-            case 'prod': {
-              return {
-                apiKey: 'AIzaSyBZVaJXDbtc6O6Iy36OeYDG8Cd9pB2vq54',
-                authDomain: 'mirror-weekly.firebaseapp.com',
-                projectId: 'mirror-weekly',
-                storageBucket: 'mirror-weekly.appspot.com',
-                messagingSenderId: '814835936704',
-                appId: '1:814835936704:web:ce5288f6d1c0f71828ec25',
-                measurementId: 'G-2FDRC4S37L',
-              }
-            }
+    // [
+    //   '@nuxtjs/firebase',
+    //   {
+    //     /*
+    //      * exposed apiKey in config is not a security risk
+    //      * see: https://stackoverflow.com/a/37484053
+    //      */
+    //     config: (function getFirebaseConfig(ENV) {
+    //       switch (ENV) {
+    //         case 'prod': {
+    //           return {
+    //             apiKey: 'AIzaSyBZVaJXDbtc6O6Iy36OeYDG8Cd9pB2vq54',
+    //             authDomain: 'mirror-weekly.firebaseapp.com',
+    //             projectId: 'mirror-weekly',
+    //             storageBucket: 'mirror-weekly.appspot.com',
+    //             messagingSenderId: '814835936704',
+    //             appId: '1:814835936704:web:ce5288f6d1c0f71828ec25',
+    //             measurementId: 'G-2FDRC4S37L',
+    //           }
+    //         }
 
-            case 'staging': {
-              return {
-                apiKey: 'AIzaSyD-cFjoIjlEn7-dZtl3zw7OYCRPerl5URs',
-                authDomain: 'mirrormedia-staging.firebaseapp.com',
-                projectId: 'mirrormedia-staging',
-                storageBucket: 'mirrormedia-staging.appspot.com',
-                messagingSenderId: '388524095772',
-                appId: '1:388524095772:web:e3739160c042909827a2d9',
-              }
-            }
+    /*
+     *         case 'staging': {
+     *           return {
+     *             apiKey: 'AIzaSyD-cFjoIjlEn7-dZtl3zw7OYCRPerl5URs',
+     *             authDomain: 'mirrormedia-staging.firebaseapp.com',
+     *             projectId: 'mirrormedia-staging',
+     *             storageBucket: 'mirrormedia-staging.appspot.com',
+     *             messagingSenderId: '388524095772',
+     *             appId: '1:388524095772:web:e3739160c042909827a2d9',
+     *           }
+     *         }
+     */
 
-            case 'dev':
-            default: {
-              return {
-                apiKey: 'AIzaSyAavk46-8OQ4B2cv0TOqxOMjd5Fe4tIauc',
-                authDomain: 'mirrormediaapptest.firebaseapp.com',
-                databaseURL: 'https://mirrormediaapptest.firebaseio.com',
-                projectId: 'mirrormediaapptest',
-                storageBucket: 'mirrormediaapptest.appspot.com',
-                messagingSenderId: '305253456270',
-                appId: '1:305253456270:web:21f9851dd09f60ebfbacdf',
-                measurementId: 'G-EY5CYC602Z',
-              }
-            }
-          }
-        })(ENV),
-        services: {
-          auth: {
-            ssr: {
-              ignorePaths: [
-                '/papermag/return',
-                '/subscribe/return',
-                '/campaigns',
-                '/projects',
-                '/dist',
-                '/assets',
-                '/json',
-                '/rss',
-                '/questionnaire',
-                '/robots.txt',
-                '/manifest.json',
-                '/firebase-messaging-sw.js',
-                '/ads.txt',
-                '/hodo_adject.php',
-                '/story',
-              ],
-            },
-            initialize: {
-              onAuthStateChangedAction:
-                'membership/ON_AUTH_STATE_CHANGED_ACTION',
-            },
-          },
-        },
+    /*
+     *         case 'dev':
+     *         default: {
+     *           return {
+     *             apiKey: 'AIzaSyAavk46-8OQ4B2cv0TOqxOMjd5Fe4tIauc',
+     *             authDomain: 'mirrormediaapptest.firebaseapp.com',
+     *             databaseURL: 'https://mirrormediaapptest.firebaseio.com',
+     *             projectId: 'mirrormediaapptest',
+     *             storageBucket: 'mirrormediaapptest.appspot.com',
+     *             messagingSenderId: '305253456270',
+     *             appId: '1:305253456270:web:21f9851dd09f60ebfbacdf',
+     *             measurementId: 'G-EY5CYC602Z',
+     *           }
+     *         }
+     *       }
+     *     })(ENV),
+     *     services: {
+     *       auth: {
+     *         ssr: {
+     *           ignorePaths: [
+     *             '/papermag/return',
+     *             '/subscribe/return',
+     *             '/campaigns',
+     *             '/projects',
+     *             '/dist',
+     *             '/assets',
+     *             '/json',
+     *             '/rss',
+     *             '/questionnaire',
+     *             '/robots.txt',
+     *             '/manifest.json',
+     *             '/firebase-messaging-sw.js',
+     *             '/ads.txt',
+     *             '/hodo_adject.php',
+     *             '/story',
+     *           ],
+     *         },
+     *         initialize: {
+     *           onAuthStateChangedAction:
+     *             'membership/ON_AUTH_STATE_CHANGED_ACTION',
+     *         },
+     *       },
+     *     },
+     */
 
-        /*
-         * disable lazy-load due to issue with $fire.authReady() and $fireModule
-         * https://github.com/nuxt-community/firebase-module/issues/366
-         */
+    //     /*
+    //      * disable lazy-load due to issue with $fire.authReady() and $fireModule
+    //      * https://github.com/nuxt-community/firebase-module/issues/366
+    //      */
 
-        // lazy: true,
-      },
-    ],
-    [
-      '@nuxtjs/pwa',
-      {
-        // disable the modules you don't need
-        meta: false,
-        icon: false,
+    /*
+     *     // lazy: true,
+     *   },
+     * ],
+     * [
+     *   '@nuxtjs/pwa',
+     *   {
+     *     // disable the modules you don't need
+     *     meta: false,
+     *     icon: false,
+     */
 
-        /*
-         * if you omit a module key form configuration sensible defaults will be applied
-         * manifest: false,
-         */
+    //     /*
+    //      * if you omit a module key form configuration sensible defaults will be applied
+    //      * manifest: false,
+    //      */
 
-        workbox: {
-          importScripts: [
-            // ...
-            '/firebase-auth-sw.js',
-          ],
+    /*
+     *     workbox: {
+     *       importScripts: [
+     *         // ...
+     *         '/firebase-auth-sw.js',
+     *       ],
+     */
 
-          /*
-           * by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
-           * only set this true for testing and remember to always clear your browser cache in development
-           */
-          dev: process.env.NODE_ENV !== 'production',
-        },
-      },
-    ],
+    //       /*
+    //        * by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
+    //        * only set this true for testing and remember to always clear your browser cache in development
+    //        */
+    //       dev: process.env.NODE_ENV !== 'production',
+    //     },
+    //   },
+    // ],
     '@nuxtjs/apollo',
     'vue-scrollto/nuxt',
     '@nuxtjs/gtm',
