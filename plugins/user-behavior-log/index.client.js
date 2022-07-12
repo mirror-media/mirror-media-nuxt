@@ -51,7 +51,9 @@ export default (context, inject) => {
         },
       }
       debug('Prepare to send pageview event user behavior log to server: ', log)
-      sendLog(log)
+      if (log) {
+        sendLog(log)
+      }
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err)
@@ -91,7 +93,9 @@ export default (context, inject) => {
         'Prepare to send click event user behavior log to server, data: ',
         log
       )
-      sendLog(log)
+      if (log) {
+        sendLog(log)
+      }
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err)
@@ -132,7 +136,9 @@ export default (context, inject) => {
         'Prepare to send exit event user behavior log to server, data: ',
         JSON.stringify(log)
       )
-      sendLog(log)
+      if (log) {
+        sendLog(log)
+      }
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err)
@@ -169,7 +175,9 @@ export default (context, inject) => {
             'Prepare to send exit event user behavior log to server, data: ',
             JSON.stringify(log)
           )
-          sendLog(log)
+          if (log) {
+            sendLog(log)
+          }
         } catch (err) {
           // eslint-disable-next-line no-console
           console.log(err)
@@ -205,7 +213,9 @@ export default (context, inject) => {
           'Prepare to send exit event user behavior log to server, data: ',
           JSON.stringify(log)
         )
-        sendLog(log)
+        if (log) {
+          sendLog(log)
+        }
       } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err)
