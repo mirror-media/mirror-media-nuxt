@@ -19,9 +19,13 @@ module.exports = function (req, res, next) {
     console.log(
       JSON.stringify({
         severity: 'INFO',
-        message: `Request: ${req.method} ${req.originalUrl}`,
+        message: `Request: ${req.method} ${
+          req.originalUrl
+        }, User-Agent: ${req.get('User-Agent')}`,
         debugPayload: {
           query,
+          'req.body': req.body,
+          'req.query': req.query,
         },
       })
     )
