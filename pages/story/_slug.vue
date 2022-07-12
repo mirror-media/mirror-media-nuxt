@@ -362,13 +362,15 @@ export default {
         this.fetchPopularStories(),
         this.fetchLatestStories(),
       ])
-    if (popularStoriesResponse === 'rejected') {
-      this.popularStories.value = []
-    } else if (latestStoriesResponse === 'rejected') {
-      this.latestStories.value = []
+    if (popularStoriesResponse.status === 'fulfilled') {
+      this.popularStories = popularStoriesResponse.value
     } else {
-      this.popularStories = popularStoriesResponse.value || []
-      this.latestStories = latestStoriesResponse.value || []
+      this.popularStories = []
+    }
+    if (latestStoriesResponse.status === 'fulfilled') {
+      this.latestStories = latestStoriesResponse.value
+    } else {
+      this.latestStories = []
     }
   },
 
