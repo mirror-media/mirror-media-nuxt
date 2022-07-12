@@ -9,6 +9,7 @@ const {
   ENV,
   LINEPAY_CHANNEL_ID,
   LINEPAY_CHANNEL_KEY,
+  GCP_KEYFILE,
 } = require('../configs/config')
 
 const linepayClient = createLinePayClient({
@@ -127,6 +128,7 @@ async function publishMessageToPubSub(topicName, projectId, message) {
   try {
     const pubsub = new PubSub({
       projectId,
+      keyFilename: GCP_KEYFILE,
     })
     const topic = await pubsub.topic(topicName)
     await topic.publishJSON(message.data, message.attributes)
