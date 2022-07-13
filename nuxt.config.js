@@ -254,7 +254,6 @@ module.exports = {
    */
   serverMiddleware: [
     express.urlencoded({ extended: true }),
-    express.json(),
     '~/api/headers.js',
     {
       path: `/${API_PATH_FRONTEND}/gcs`,
