@@ -11,7 +11,6 @@ const {
   ENV = 'dev',
   API_PATH_FRONTEND,
   GOOGLE_OPT_CONTAINER_ID,
-  LINEPAY_PAYMENT_UI_TOGGLE,
 } = require('./configs/config')
 
 module.exports = {
@@ -618,7 +617,7 @@ module.exports = {
       process.env.SUBSCRIPTION_PRICE_FEATURE_TOGGLE || 'off',
     headerExternalsFeatureToggle:
       process.env.HEADER_EXTERNALS_FEATURE_TOGGLE || 'off',
-    linepayUiToggle: LINEPAY_PAYMENT_UI_TOGGLE,
+    linepayUiToggle: process.env.LINEPAY_PAYMENT_UI_TOGGLE === 'on',
   },
 
   env: {
