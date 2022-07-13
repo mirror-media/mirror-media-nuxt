@@ -523,11 +523,10 @@ export default {
   },
 
   mounted() {
+    this.insertCustomizedMarkup()
     if (this.isStyleDefault) {
       this.observeScrollDepthForGa()
     }
-    console.log(this.$GOExp)
-    this.insertCustomizedMarkup()
   },
 
   beforeDestroy() {
