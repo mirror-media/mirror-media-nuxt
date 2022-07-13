@@ -236,6 +236,7 @@ export default {
         content = {},
         heroVideo = {},
         heroImage = {},
+        ogImage = {},
         heroCaption = '',
         mobileImage = {},
         publishedDate = '',
@@ -250,6 +251,7 @@ export default {
       const heroVideoPoster =
         heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
       const heroImgsResized = heroImage?.image?.resizedTargets || {}
+      const ogImgsResized = ogImage?.image?.resizedTargets || {}
       let sectionIdFirst = sections?.[0]?.id
       if (sections?.[0]?.name === 'mirrorcolumn') {
         sectionIdFirst = '5964418a4bbe120f002a3198'
@@ -264,6 +266,7 @@ export default {
         brief: getBrief(),
         content: content.apiData || [],
         heroImage: heroImgsResized,
+        ogImage: ogImgsResized,
         heroCaption,
         coverVideo: {
           src: heroVideoSrc,
@@ -423,10 +426,10 @@ export default {
   },
 
   head() {
-    const { title = '', brief = '', heroImage = {} } = this.post
+    const { title = '', brief = '', heroImage = {}, ogImage = {} } = this.post
     const description = brief.map((item) => item.content).join('')
-    const image = heroImage.desktop?.url || SITE_OG_IMG
-    const dableImgUrl = heroImage.tiny?.url || SITE_OG_IMG
+    const image = ogImage.tablet?.url || heroImage.tablet?.url || SITE_OG_IMG
+    const dableImgUrl = ogImage.tiny?.url || heroImage.tiny?.url || SITE_OG_IMG
 
     return {
       title,

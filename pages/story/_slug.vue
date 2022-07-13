@@ -468,6 +468,9 @@ export default {
     sectionTitle() {
       return this.section.title ?? ''
     },
+    customCss() {
+      return _.get(this.story, ['css'], null)
+    },
     shouldOpenLatestList() {
       return this.sectionId !== DEFAULT_SECTION_ID && this.doesHaveLatestStories
     },
@@ -518,6 +521,7 @@ export default {
   },
 
   mounted() {
+    this.insertCustomizedMarkup()
     if (this.isStyleDefault) {
       this.observeScrollDepthForGa()
     }
@@ -653,6 +657,20 @@ export default {
     handleRenderEndedAdPcFloating({ isEmpty }) {
       if (!isEmpty) {
         this.doesHaveAdPcFloating = true
+      }
+    },
+    insertCustomizedMarkup() {
+      const custCss = document.createElement('style')
+      custCss.setAttribute('id', 'custCss')
+
+      if (this.customCss) {
+        custCss.appendChild(document.createTextNode(this.customCss))
+      }
+
+      if (!document.getElementById('custCss')) {
+        document.querySelector('body').appendChild(custCss)
+      } else {
+        document.querySelector('#custCss').innerHTML = this.customCss
       }
     },
 
