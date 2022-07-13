@@ -16,20 +16,6 @@ module.exports = function (req, res, next) {
     const metadata = { resource: { type: 'global' } }
     query.ip = req.clientIp
 
-    console.log(
-      JSON.stringify({
-        severity: 'INFO',
-        message: `Request: ${req.method} ${
-          req.originalUrl
-        }, User-Agent: ${req.get('User-Agent')}`,
-        debugPayload: {
-          query,
-          'req.body': req.body,
-          'req.query': req.query,
-        },
-      })
-    )
-
     if (config.ENABLE_CLOUD_LOGGING === false) {
       console.log(`[LOG] API tracking`)
       console.log(query)
