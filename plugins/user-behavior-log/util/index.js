@@ -49,9 +49,6 @@ export function createUserBehaviorLog({ target = {}, ...props } = {}) {
 }
 
 export function sendLog(log) {
-  if (_.isEmpty(log)) {
-    return
-  }
   const blob = new Blob([JSON.stringify({ clientInfo: log })], {
     type: 'application/json; charset=UTF-8',
   })
