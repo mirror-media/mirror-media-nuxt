@@ -111,6 +111,7 @@ export default {
               orderId,
               promoteId: subscription.promoteId,
               frequency: subscription.frequency,
+              amount: subscription.amount,
             },
           }
         }
@@ -172,6 +173,7 @@ export default {
           orderId,
           promoteId: subscription.promoteId,
           frequency: subscription.frequency,
+          amount: subscription.amount,
         },
       }
     } catch (e) {
