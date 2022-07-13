@@ -49,20 +49,10 @@ export function createUserBehaviorLog({ target = {}, ...props } = {}) {
 }
 
 export function sendLog(log) {
-  if (_.isEmpty(log)) {
-    return
-  }
-  const logJson = JSON.stringify({ clientInfo: log })
-  const testJson = JSON.stringify({ test: 123 })
-  console.log(typeof logJson)
-  const blob = new Blob([logJson], {
-    type: 'application/json; charset=UTF-8',
-  })
-  const testBlob = new Blob([testJson], {
+  const blob = new Blob([JSON.stringify({ clientInfo: log })], {
     type: 'application/json; charset=UTF-8',
   })
   navigator.sendBeacon(`/${API_PATH_FRONTEND}/tracking`, blob)
-  navigator.sendBeacon(`/${API_PATH_FRONTEND}/tracking`, testBlob)
 }
 
 export function isScrollToBottom() {
