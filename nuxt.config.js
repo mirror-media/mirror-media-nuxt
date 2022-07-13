@@ -414,7 +414,6 @@ module.exports = {
                 '/firebase-messaging-sw.js',
                 '/ads.txt',
                 '/hodo_adject.php',
-                '/story',
               ],
             },
             initialize: {
