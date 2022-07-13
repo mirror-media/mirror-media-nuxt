@@ -468,7 +468,7 @@ export default {
 }
 
 function getImgSrc({ image = {} } = {}) {
-  return image.resizedTargets?.mobile?.url || SITE_OG_IMG
+  return image?.resizedTargets?.mobile?.url || SITE_OG_IMG
 }
 
 function getLabel([item = {}] = []) {
