@@ -68,11 +68,24 @@ export default {
       })
     },
     transformListItemContent(item) {
+      let imgText
+      let imgTextBackgroundColor
+      if (this.partnerName === 'healthnews') {
+        imgText = '生活'
+        imgTextBackgroundColor = '#30bac8'
+      } else if (this.partnerName === 'ebc') {
+        imgText = '時事'
+        imgTextBackgroundColor = '#30bac8'
+      } else {
+        // default text and background color
+        imgText = '合作媒體'
+        imgTextBackgroundColor = '#fd9b18'
+      }
       return {
         href: `/external/${item.name}`,
         imgSrc: item.thumb,
-        imgText: '合作媒體',
-        imgTextBackgroundColor: '#fd9b18',
+        imgText,
+        imgTextBackgroundColor,
       }
     },
   },
