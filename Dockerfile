@@ -8,7 +8,7 @@ RUN apk upgrade --no-cache \
 
 COPY package.json .
 COPY yarn.lock .
-COPY patches .
+COPY patches ./patches
 RUN yarn install --frozen-lockfile
 
 ENV NUXT_HOST 0.0.0.0
