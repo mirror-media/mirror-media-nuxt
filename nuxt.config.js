@@ -400,6 +400,7 @@ module.exports = {
               ignorePaths: [
                 '/papermag/return',
                 '/subscribe/return',
+                '/subscribe/confirm',
                 '/campaigns',
                 '/projects',
                 '/dist',
