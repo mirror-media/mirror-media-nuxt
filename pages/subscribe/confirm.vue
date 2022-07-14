@@ -126,13 +126,38 @@ export default {
       }
 
       // fire Confrim API request to LINE Pay Server, then push the response to PubSub
-      const { body: confirmResult } = await linepayClient.confirm.send({
-        transactionId,
-        body: {
-          currency: subscription.currency,
-          amount: subscription.amount,
-        },
-      })
+      let confirmResult
+
+      try {
+        const response = await linepayClient.confirm.send({
+          transactionId,
+          body: {
+            currency: subscription.currency,
+            amount: subscription.amount,
+          },
+        })
+
+        confirmResult = response.body
+      } catch (error) {
+        const annotatingError = errors.helpers.wrap(
+          error,
+          'linepayClient',
+          'Encounter error on invoking `Confirm API`'
+        )
+
+        // eslint-disable-next-line no-console
+        console.error(
+          JSON.stringify({
+            severity: 'ERROR',
+            message: errors.helpers.printAll(annotatingError, {
+              withStack: true,
+              withPayload: true,
+            }),
+          })
+        )
+
+        confirmResult = error.data
+      }
 
       const payInfo = confirmResult.info?.payInfo[0]
 
@@ -140,7 +165,7 @@ export default {
         data: {
           transactionId,
           orderId,
-          amount: payInfo?.amount,
+          amount: payInfo?.amount || subscription.amount,
           transactionTime: new Date().toISOString(),
           payInfoMethod: payInfo?.method,
           returnCode: confirmResult.returnCode,
@@ -167,6 +192,15 @@ export default {
       }
 
       // return result and update data attritube
+      if (confirmResult.returnCode !== '0000') {
+        return {
+          status: 'fail',
+          errorData: {
+            message: 'linepay-fail',
+          },
+        }
+      }
+
       return {
         status: 'success',
         orderInfo: {
