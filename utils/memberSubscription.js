@@ -178,7 +178,9 @@ function getMemberPayRecords(subscriptionList) {
     subscription.newebpayPayment?.forEach((newebpayPayment) => {
       const payRecord = {
         number: subscription.orderNumber,
-        date: getFormatDateWording(newebpayPayment.paymentTime),
+        date: getFormatDateWording(
+          newebpayPayment.createdAt ?? newebpayPayment.paymentTime
+        ),
         type: getSubscriptionTypeWording(subscription.frequency),
         method: newebpayPayment.paymentMethod,
         methodNote: `(${newebpayPayment.cardInfoLastFour || ''})`,
@@ -191,7 +193,9 @@ function getMemberPayRecords(subscriptionList) {
     subscription.googlePlayPayment?.forEach((payment) => {
       const payRecord = {
         number: subscription.orderNumber,
-        date: getFormatDateWording(payment.transactionDatetime),
+        date: getFormatDateWording(
+          payment.createdAt ?? payment.transactionDatetime
+        ),
         type: '',
         method: 'Google Play 續扣',
         methodNote: '',
