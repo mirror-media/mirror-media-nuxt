@@ -12,7 +12,8 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "postinstall": "patch-package"
   },
   "engines": {
     "node": "~16.14.1"
@@ -117,6 +118,8 @@
     "lint-staged": "^10.3.0",
     "lodash-webpack-plugin": "^0.11.5",
     "nodemon": "^2.0.4",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.1.1",
     "sass-loader": "^10.0.2",
     "sass-resources-loader": "^2.2.3",
