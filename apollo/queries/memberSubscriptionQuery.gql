@@ -50,6 +50,22 @@ query fetchOneTimeSubscriptions($firebaseId: String!) {
     }
   }
 }
+
+query fetchOneTimeSubscriptionsWithLINEPay($firebaseId: String!) {
+  member(where: { firebaseId: $firebaseId }) {
+    email
+    subscription(
+      where: { AND: [{ frequency: one_time, isActive: true, OR: [{ status: paid }, { linePayStatus: paid }] }] }
+      orderBy: { oneTimeEndDatetime: desc }
+    ) {
+      frequency
+      orderNumber
+      paymentMethod
+      postId
+      oneTimeEndDatetime
+    }
+  }
+}
 query fetchRecurringSubscription($firebaseId: String!) {
   member(where: { firebaseId: $firebaseId }) {
     email

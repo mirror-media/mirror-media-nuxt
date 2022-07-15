@@ -1,12 +1,14 @@
 import { print } from 'graphql/language/printer'
 import axios from 'axios'
 import moment from 'moment'
+import { API_PATH_FRONTEND } from '~/configs/config.js'
 import {
   fetchMemberSubscriptions,
   fetchMemberBasicInfo,
   fetchOneTimeSubscriptions,
   fetchSubscriptionPayments,
   fetchRecurringSubscription,
+  fetchOneTimeSubscriptionsWithLINEPay,
 } from '~/apollo/queries/memberSubscriptionQuery.gql'
 import {
   setMemberTosToTrue,
@@ -16,12 +18,11 @@ import {
   setSubscriptionFromMonthToYear,
 } from '~/apollo/mutations/memberSubscriptionMutation.gql'
 
-import { API_PATH_FRONTEND } from '~/configs/config.js'
-
 const baseUrl = process.browser
   ? `${location.origin}/`
   : 'http://localhost:3000/'
 const apiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0`
+const newApiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v2`
 const k3ApiUrl = `${baseUrl}${API_PATH_FRONTEND}/getposts`
 
 async function getMemberType(context) {
@@ -167,6 +168,29 @@ async function fireGqlRequest(query, variables, context) {
   } catch (error) {
     throw new Error(error.message)
   }
+}
+
+async function fireGqlRequestNewApi(query, variables, context) {
+  const firebaseToken = getFirebaseToken(context)
+  const { data: result } = await axios({
+    url: newApiUrl,
+    method: 'post',
+    data: {
+      query: print(query),
+      variables,
+    },
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${firebaseToken}`,
+      'Cache-Control': 'no-store',
+    },
+  })
+
+  if (result.errors) {
+    throw new Error(result.errors[0].message)
+  }
+
+  return result
 }
 
 function getMemberPayRecords(subscriptionList) {
@@ -363,13 +387,24 @@ async function getMemberOneTimeSubscriptions(context, loadmoreConfig) {
   if (!firebaseId) return null
 
   // get user's subscription state
-  const result = await fireGqlRequest(
-    fetchOneTimeSubscriptions,
-    {
-      firebaseId,
-    },
-    context
-  )
+  let result
+  if (context.$config.linepayUiToggle) {
+    result = await fireGqlRequestNewApi(
+      fetchOneTimeSubscriptionsWithLINEPay,
+      {
+        firebaseId,
+      },
+      context
+    )
+  } else {
+    result = await fireGqlRequest(
+      fetchOneTimeSubscriptions,
+      {
+        firebaseId,
+      },
+      context
+    )
+  }
 
   // get member's all subscriptions
   const subscriptions = result?.data?.member?.subscription
