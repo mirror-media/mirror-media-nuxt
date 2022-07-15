@@ -116,4 +116,38 @@ query fetchSubscriptionPayments($firebaseId: String!) {
   }
 }
 
+query fetchSubscriptionPaymentsWithLINEPay($firebaseId: String!) {
+  member(where: { firebaseId: $firebaseId }) {
+    email
+    subscription(orderBy: { periodEndDatetime: desc }) {
+      orderNumber
+      frequency
+      periodEndDatetime
+      oneTimeEndDatetime
+      paymentMethod
+      linePayStatus
+      newebpayPayment(orderBy: { paymentTime: desc }) {
+        paymentMethod
+        paymentTime
+        amount
+        cardInfoLastFour
+        createdAt
+        status
+      }
+      linepayPayment(orderBy: { transactionTime: desc }) {
+        payInfoMethod
+        transactionTime
+        amount
+        maskedCreditCardNumber
+        createdAt
+        returnCode
+      }
+      googlePlayPayment(orderBy: { transactionDatetime: desc }) {
+        transactionDatetime
+        amount
+      }
+    }
+  }
+}
+
 

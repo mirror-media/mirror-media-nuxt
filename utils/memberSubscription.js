@@ -9,6 +9,7 @@ import {
   fetchSubscriptionPayments,
   fetchRecurringSubscription,
   fetchOneTimeSubscriptionsWithLINEPay,
+  fetchSubscriptionPaymentsWithLINEPay,
 } from '~/apollo/queries/memberSubscriptionQuery.gql'
 import {
   setMemberTosToTrue,
@@ -193,6 +194,11 @@ async function fireGqlRequestNewApi(query, variables, context) {
   return result
 }
 
+const LINEPayStatusMap = {
+  paid: 'SUCCESS',
+  fail: 'FAIL',
+}
+
 function getMemberPayRecords(subscriptionList) {
   if (!subscriptionList?.length) return []
 
@@ -211,6 +217,23 @@ function getMemberPayRecords(subscriptionList) {
         price: newebpayPayment.amount,
         status: newebpayPayment.status,
         createAt: newebpayPayment.createdAt,
+      }
+      payRecords.push(payRecord)
+    })
+    subscription.linepayPayment?.forEach((linepayPayment) => {
+      const payRecord = {
+        number: subscription.orderNumber,
+        date: getFormatDateWording(
+          linepayPayment.createdAt ?? linepayPayment.transactionTime
+        ),
+        type: getSubscriptionTypeWording(subscription.frequency),
+        method: linepayPayment.payInfoMethod ?? 'LINE Pay',
+        methodNote: `(${(linepayPayment.maskedCreditCardNumber ?? '').slice(
+          -4
+        )})`,
+        price: linepayPayment.amount,
+        status: LINEPayStatusMap[subscription.linePayStatus] ?? '',
+        createAt: linepayPayment.createdAt,
       }
       payRecords.push(payRecord)
     })
@@ -550,13 +573,24 @@ async function getSubscriptionPayments(context, loadmoreConfig) {
 
   try {
     // get user's subscription state
-    const result = await fireGqlRequest(
-      fetchSubscriptionPayments,
-      {
-        firebaseId,
-      },
-      context
-    )
+    let result
+    if (context.$config.linepayUiToggle) {
+      result = await fireGqlRequestNewApi(
+        fetchSubscriptionPaymentsWithLINEPay,
+        {
+          firebaseId,
+        },
+        context
+      )
+    } else {
+      result = await fireGqlRequest(
+        fetchSubscriptionPayments,
+        {
+          firebaseId,
+        },
+        context
+      )
+    }
 
     // get member's all subscriptions
     const subscriptions = result?.data?.member?.subscription
