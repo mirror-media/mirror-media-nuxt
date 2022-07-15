@@ -112,6 +112,8 @@ export default {
   },
 
   async created() {
+    if (process.server) return
+
     try {
       if (this.isPremium || this.isBasic) {
         this.memberShipStatus = await this.$getMemberShipStatus(
