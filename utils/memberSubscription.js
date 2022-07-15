@@ -204,7 +204,7 @@ function getMemberPayRecords(subscriptionList) {
 
   // sort all records by date_dsc
   payRecords.sort((recordA, recordB) => {
-    return new Date(recordA.createdAt) - new Date(recordB.createdAt)
+    return new Date(recordB.createAt) - new Date(recordA.createAt)
   })
 
   return payRecords
