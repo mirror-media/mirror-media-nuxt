@@ -1,5 +1,6 @@
 import { print } from 'graphql/language/printer'
 import axios from 'axios'
+import moment from 'moment'
 import {
   fetchMemberSubscriptions,
   fetchMemberBasicInfo,
@@ -400,7 +401,7 @@ async function getMemberSubscribePosts(subscriptionList) {
     })
 
     const post = {
-      id: subscription.postId,
+      id: getUniquePostId(subscription.postId, subscription.oneTimeEndDatetime),
       title: correspondPost.title,
       url: `/story/${correspondPost.slug}`,
       deadline: getFormatDateWording(subscription.oneTimeEndDatetime),
@@ -408,6 +409,10 @@ async function getMemberSubscribePosts(subscriptionList) {
     postList.push(post)
   })
   return postList
+}
+
+function getUniquePostId(postId, endDateTime) {
+  return `${postId}-${moment(endDateTime).format('YYYYMMDDHHmmss')}`
 }
 
 async function getMemberShipStatus(context, memberShipStatusName) {
