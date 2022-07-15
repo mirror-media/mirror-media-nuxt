@@ -1,6 +1,6 @@
 <template>
   <a
-    :href="href"
+    :href="articleHref"
     :target="target"
     class="article"
     :class="{ 'article--premium': isPremiumMember }"
@@ -51,6 +51,11 @@ export default {
       default: '/',
       required: true,
     },
+    redirectHref: {
+      type: String,
+      default: undefined,
+      required: false,
+    },
     target: {
       type: String,
       default: '_blank',
@@ -94,7 +99,23 @@ export default {
       },
     }
   },
+
   computed: {
+    articleHref() {
+      let articleHref
+      const redirectHref = this.redirectHref?.trim()
+      if (!redirectHref) {
+        articleHref = this.href
+      } else if (
+        redirectHref.startsWith('https://') ||
+        redirectHref.startsWith('http://')
+      ) {
+        articleHref = redirectHref
+      } else {
+        articleHref = `/story/${redirectHref}`
+      }
+      return articleHref
+    },
     isPremiumMember() {
       return this.$store?.getters?.['membership-subscribe/isPremiumMember']
     },
