@@ -474,7 +474,7 @@ async function getLINEPayInfoOfRecurring(req, res) {
     subscription.orderNumber = orderNumber
 
     // send Request API to LINE Pay server to retreive payment info
-    const paymentInfo = await getPaymentInfo(subscription)
+    const paymentInfo = await getPaymentInfo(subscription, true)
 
     // write draft payment
     await createDraftPayment(paymentInfo.body, subscription)
