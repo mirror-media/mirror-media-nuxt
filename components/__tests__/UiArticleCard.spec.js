@@ -1,7 +1,9 @@
 import { shallowMount } from '@vue/test-utils'
 import UiArticleCard from '../UiArticleCard.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
-
+const mockFeatureToggle = {
+  redirectLinkFeatureToggle: 'on',
+}
 const createWrapper = createWrapperHelper({
   mocks: {
     $router: {
@@ -9,6 +11,9 @@ const createWrapper = createWrapperHelper({
     },
     $ga: {
       event: jest.fn(),
+    },
+    $config: {
+      ...mockFeatureToggle,
     },
   },
 })
@@ -147,6 +152,11 @@ describe('info wrapper', () => {
         infoTitle,
         infoDescription: '',
       },
+      mocks: {
+        $config: {
+          ...mockFeatureToggle,
+        },
+      },
     })
     const h1 = wrapper.get('h1')
     expect(h1.text()).toBe(infoTitle)
@@ -161,6 +171,11 @@ describe('info wrapper', () => {
         imgTextBackgroundColor: '',
         infoTitle: '',
         infoDescription,
+      },
+      mocks: {
+        $config: {
+          ...mockFeatureToggle,
+        },
       },
     })
     const p = wrapper.get('p')

@@ -101,7 +101,13 @@ export default {
   },
 
   computed: {
+    shouldUseRedirectLink() {
+      return this.$config.redirectLinkFeatureToggle === 'on'
+    },
     articleHref() {
+      if (!this.shouldUseRedirectLink) {
+        return this.href
+      }
       let articleHref
       const redirectHref = this.redirectHref?.trim()
       if (!redirectHref) {
