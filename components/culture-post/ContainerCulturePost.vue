@@ -120,6 +120,7 @@ export default {
         content = {},
         heroVideo = {},
         heroImage = {},
+        ogImage = {},
         mobileImage = {},
         publishedDate = '',
         updatedAt = '',
@@ -129,7 +130,8 @@ export default {
       const heroVideoSrc = heroVideo.video?.url || ''
       const heroVideoPoster =
         heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
-      const heroImgsResized = heroImage.image?.resizedTargets || {}
+      const heroImgsResized = heroImage?.image?.resizedTargets || {}
+      const ogImgsResized = ogImage?.image?.resizedTargets || {}
 
       return {
         title,
@@ -137,6 +139,7 @@ export default {
         brief: getBrief(),
         content: content.apiData || [],
         heroImage: heroImgsResized,
+        ogImage: ogImgsResized,
         coverVideo: {
           src: heroVideoSrc,
           poster: heroVideoPoster,
@@ -288,10 +291,10 @@ export default {
   },
 
   head() {
-    const { title = '', brief = '', heroImage = {} } = this.post
+    const { title = '', brief = '', heroImage = {}, ogImage = {} } = this.post
     const description = brief.map((item) => item.content).join('')
-    const image = heroImage.desktop?.url || SITE_OG_IMG
-    const dableImgUrl = heroImage.tiny?.url || SITE_OG_IMG
+    const image = ogImage.tablet?.url || heroImage.tablet?.url || SITE_OG_IMG
+    const dableImgUrl = ogImage.tiny?.url || heroImage.tiny?.url || SITE_OG_IMG
 
     return {
       title,

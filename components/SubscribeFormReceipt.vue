@@ -14,6 +14,7 @@
           v-model="receiptData.receiptPlan"
           radioValue="捐贈"
           radioName="捐贈"
+          :isValid="isValid"
         />
 
         <div
@@ -36,6 +37,7 @@
           v-model="receiptData.receiptPlan"
           radioValue="二聯式發票（含載具）"
           radioName="二聯式發票（含載具）"
+          :isValid="isValid"
         />
 
         <div
@@ -69,6 +71,7 @@
           v-model="receiptData.receiptPlan"
           radioValue="三聯式發票"
           radioName="三聯式發票"
+          :isValid="isValid"
         />
 
         <div
@@ -222,6 +225,9 @@ export default {
           value: '5260',
         },
       ]
+    },
+    isValid() {
+      return this.validationPass() === 'OK'
     },
   },
   watch: {

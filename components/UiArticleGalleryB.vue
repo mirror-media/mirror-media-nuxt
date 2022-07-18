@@ -162,11 +162,11 @@ $aspect-ratio--sm: 1.67;
 }
 
 .img-wrapper {
-  padding-top: $width--img-wrapper / $aspect-ratio;
+  padding-top: math.div($width--img-wrapper, $aspect-ratio);
   margin-right: 20px;
 
   @include media-breakpoint-up(sm) {
-    padding-top: $width--img-wrapper--sm / $aspect-ratio--sm;
+    padding-top: math.div($width--img-wrapper--sm, $aspect-ratio--sm);
     margin-right: 0;
   }
   @include media-breakpoint-up(xl) {
@@ -351,12 +351,12 @@ $padding-top--ad-img: 100%;
     }
 
     .latest-list_item_img {
-      padding-top: $padding-top--ad-img / $aspect-ratio;
+      padding-top: math.div($padding-top--ad-img, $aspect-ratio);
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
       @include media-breakpoint-up(sm) {
-        padding-top: $padding-top--ad-img / $aspect-ratio--sm;
+        padding-top: math.div($padding-top--ad-img, $aspect-ratio--sm);
       }
       @include media-breakpoint-up(xl) {
         padding-top: 66.7%;

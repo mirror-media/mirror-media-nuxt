@@ -326,7 +326,7 @@ export default {
 
 <style lang="scss" scoped>
 $header-top-layer-width: 90%;
-$header-top-layer-padding-x: (100% - $header-top-layer-width) / 2;
+$header-top-layer-padding-x: math.div(100% - $header-top-layer-width, 2);
 $menu-icon-width: 16px;
 $logo-wrapper-margin-x: 8px;
 $header-search-margin-right: 20px;
@@ -363,7 +363,7 @@ header {
       &::before {
         right: calc(
           #{$header-top-layer-padding-x} + #{$share-wrapper-width} + #{$header-search-margin-right} +
-            #{($search-icon-width - $search-field-arrow-width) / 2}
+            #{math.div($search-icon-width - $search-field-arrow-width, 2)}
         );
       }
     }

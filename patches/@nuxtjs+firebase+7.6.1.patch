@@ -1,0 +1,16 @@
+diff --git a/node_modules/@nuxtjs/firebase/lib/sw-templates/firebase-auth-sw.js b/node_modules/@nuxtjs/firebase/lib/sw-templates/firebase-auth-sw.js
+index b38a5d9..050dc4d 100644
+--- a/node_modules/@nuxtjs/firebase/lib/sw-templates/firebase-auth-sw.js
++++ b/node_modules/@nuxtjs/firebase/lib/sw-templates/firebase-auth-sw.js
+@@ -76,6 +76,11 @@ const fetchWithAuthorization = async (original, idToken) => {
+ }
+ 
+ self.addEventListener('fetch', (event) => {
++  if(event.request && event.request.url.indexOf('/api/v2/tracking') > -1){
++    console.log('skip service worker')
++    return
++  }
++  
+   const url = new URL(event.request.url)
+ 
+   const expectsHTML = event.request.headers.get('accept').includes('text/html')

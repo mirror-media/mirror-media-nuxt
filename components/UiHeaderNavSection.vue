@@ -36,7 +36,7 @@
           </a>
         </div>
       </div>
-      <div v-if="shouldShowExternals">
+      <template v-if="shouldShowExternals">
         <div
           v-for="partner in displayPartners"
           :key="partner.id"
@@ -49,7 +49,7 @@
             <h2>{{ partner.display }}</h2>
           </a>
         </div>
-      </div>
+      </template>
       <!-- <div class="section section&#45;&#45;external">
         <h2>合作媒體</h2>
         <div class="section__dropdown">

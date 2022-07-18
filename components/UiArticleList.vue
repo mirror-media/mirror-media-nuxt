@@ -22,6 +22,7 @@
       <template v-for="(item, index) in listItems">
         <li :key="item.id" class="list__list-item">
           <UiArticleCard
+            :redirectHref="item.redirect"
             :href="item.href"
             :imgSrc="item.imgSrc"
             :imgText="item.imgText"

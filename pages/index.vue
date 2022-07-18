@@ -750,7 +750,13 @@ function getImg({ heroImage, ogImage, heroVideo, partner } = {}) {
 
 function getLabel({ sections = [], categories = [], partner } = {}) {
   if (partner) {
-    return '時事'
+    if (partner.name === 'healthnews') {
+      return '生活'
+    } else if (partner.name === 'ebc') {
+      return '時事'
+    } else {
+      return '時事'
+    }
   }
 
   if (sections.length > 0) {
@@ -933,7 +939,7 @@ $right--events: 10px;
   position: relative;
 
   &--embedded {
-    padding-top: 9 / 16 * 100%;
+    padding-top: math.div(9, 16) * 100%;
 
     div {
       position: absolute;

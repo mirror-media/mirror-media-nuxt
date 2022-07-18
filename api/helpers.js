@@ -1,5 +1,22 @@
+const { default: errors } = require('@twreporter/errors')
 const axios = require('axios')
-const { API_TIMEOUT } = require('../configs/config')
+const moment = require('moment-timezone')
+const { createLinePayClient } = require('line-pay-merchant')
+const { PubSub } = require('@google-cloud/pubsub')
+const REQUEST_STATUS = require('../constants/request').STATUS
+const {
+  API_TIMEOUT,
+  ENV,
+  LINEPAY_CHANNEL_ID,
+  LINEPAY_CHANNEL_KEY,
+  GCP_KEYFILE,
+} = require('../configs/config')
+
+const linepayClient = createLinePayClient({
+  channelId: LINEPAY_CHANNEL_ID,
+  channelSecretKey: LINEPAY_CHANNEL_KEY,
+  env: ['staging', 'prod'].includes(ENV) ? 'production' : 'development',
+})
 
 function createProxy(baseUrl, timeout = API_TIMEOUT) {
   return async function (req, res) {
@@ -53,6 +70,144 @@ function createProxy(baseUrl, timeout = API_TIMEOUT) {
   }
 }
 
+/**
+ * create custom orderNumber for subscription
+ * @param  {Date} date
+ * @param  {String} id
+ * @return {String} orderNumber
+ */
+function createOrderNumberByTaipeiTZ(date, id) {
+  const time = moment(date).tz('Asia/Taipei')
+  const prefix = 'M'
+  const dateString = time.format('YYMMDD')
+  const idString = (id % 10000).toString().padStart(5, '0')
+  const orderNumber = `${prefix}${dateString}${idString}`
+
+  return orderNumber
+}
+
+/**
+ * fire GraphQL request
+ * @param  {GraphQLQuery} query
+ * @param  {Object} variables
+ * @param  {String} apiUrl
+ * @return {Object} result
+ */
+async function fireGqlRequest(query, variables, apiUrl) {
+  const { data: result } = await axios({
+    url: apiUrl,
+    method: 'post',
+    data: {
+      query,
+      variables,
+    },
+    headers: {
+      'content-type': 'application/json',
+      'Cache-Control': 'no-cache',
+    },
+  })
+  if (result.errors) {
+    throw errors.helpers.wrap(
+      new Error(result.errors[0].message),
+      'GraphQLError',
+      result.errors[0].message,
+      { gqlErrors: result.errors[0].data }
+    )
+  }
+  return result
+}
+
+/**
+ * publish message to designated PubSub topic
+ * @param  {String} topicName
+ * @param  {String} projectId
+ * @param  {Object} message
+ * @return {Boolean} success
+ */
+async function publishMessageToPubSub(topicName, projectId, message) {
+  try {
+    const pubsub = new PubSub({
+      projectId,
+      keyFilename: GCP_KEYFILE,
+    })
+    const topic = await pubsub.topic(topicName)
+    await topic.publishJSON(message.data, message.attributes)
+  } catch (error) {
+    const annotatingError = errors.helpers.wrap(
+      error,
+      'PubSub',
+      'Encounter error on `publishMessageToPubSub`'
+    )
+
+    // eslint-disable-next-line no-console
+    console.error(
+      JSON.stringify({
+        severity: 'CRITICAL',
+        message: `Error to publish data to pubsub topic (${topicName})`,
+        debugPayload: {
+          message,
+          error: errors.helpers.printAll(annotatingError, {
+            withStack: true,
+            withPayload: true,
+          }),
+        },
+      })
+    )
+    return false
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(
+    JSON.stringify({
+      severity: 'INFO',
+      message: `publish message to PubSub topic: ${topicName} successfully`,
+      debugPayload: {
+        message,
+      },
+    })
+  )
+  return true
+}
+
+/**
+ * send response with custom paramters
+ * @param  {REQUEST_STATUS} { status
+ * @param  {HTTP_CODE}        code=200
+ * @param  {Object}           data
+ * @param  {String}           message
+ * @param  {Response}         res }
+ */
+function sendResponse({ status, code = 200, data, message, res }) {
+  switch (status) {
+    case REQUEST_STATUS.SUCCESS:
+    case REQUEST_STATUS.FAIL: {
+      res.status(code).json({
+        status,
+        data,
+      })
+      break
+    }
+    case REQUEST_STATUS.ERROR: {
+      res.status(code).json({
+        status,
+        message,
+      })
+      break
+    }
+    default: {
+      res.status(500).json({
+        status: REQUEST_STATUS.ERROR,
+        message: 'Called with invalid status.',
+      })
+    }
+  }
+}
+
 module.exports = {
   createProxy,
+  createOrderNumberByTaipeiTZ,
+  fireGqlRequest,
+  linepayClient,
+  publishMessageToPubSub,
+  sendResponse,
 }

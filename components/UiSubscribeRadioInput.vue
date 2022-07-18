@@ -5,6 +5,7 @@
         :checked="value === radioValue"
         type="radio"
         :value="radioValue"
+        :class="{ invalid: !isValid }"
         @input="changeHandler"
       />
       <span class="radio">{{ radioName }} </span>
@@ -39,6 +40,11 @@ export default {
       isRequired: true,
       default: '捐贈',
     },
+    isValid: {
+      type: Boolean,
+      isRequired: false,
+      default: true,
+    },
   },
 
   methods: {
@@ -59,7 +65,46 @@ export default {
     line-height: normal;
 
     input[type='radio'] {
+      -webkit-appearance: none;
+      appearance: none;
       margin-right: 8px;
+      width: 20px;
+      height: 20px;
+      padding: 0px;
+      border-width: 2px;
+      border-style: solid;
+      border-color: #000000;
+      border-radius: 50%;
+      background-color: #ffffff;
+      opacity: 0.4;
+      outline: none;
+
+      &.invalid {
+        border-color: #e51731;
+        opacity: 1;
+      }
+
+      &:hover {
+        opacity: 0.5;
+      }
+
+      &::before {
+        content: '';
+        display: block;
+        width: 70%;
+        height: 70%;
+        margin: 15% auto;
+        border-radius: 50%;
+      }
+
+      &:checked {
+        border-color: var(--swiper-theme-color);
+        opacity: 1;
+
+        &::before {
+          background-color: var(--swiper-theme-color);
+        }
+      }
     }
   }
 

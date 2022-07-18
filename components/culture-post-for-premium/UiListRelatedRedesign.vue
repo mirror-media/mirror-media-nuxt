@@ -137,7 +137,7 @@ export default {
 
   &__img {
     @function change-height($key) {
-      @return change-width($key) / 3 * 2;
+      @return math.div(change-width($key), 3) * 2;
     }
     display: block;
     align-self: center;

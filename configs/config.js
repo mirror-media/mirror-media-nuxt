@@ -27,6 +27,8 @@ const IS_AD_DISABLE = process.env.IS_AD_DISABLE === 'true' || false
 const PREMIUM_AD_FEATURE_TOGGLE =
   process.env.PREMIUM_AD_FEATURE_TOGGLE === 'on' || false
 const ENABLE_CLOUD_LOGGING = process.env.ENABLE_CLOUD_LOGGING === 'true'
+const LINEPAY_CHANNEL_ID = process.env.LINEPAY_CHANNEL_ID || ''
+const LINEPAY_CHANNEL_KEY = process.env.LINEPAY_CHANNEL_KEY || ''
 
 // The following variables are given values according to different `ENV`
 let API_HOST = ''
@@ -40,6 +42,7 @@ let GPT_MODE = ''
 let SALEOR_HOST = ''
 let NEWEBPAY_MEMBERSHIP_API_URL = ''
 let NEWEBPAY_PAPERMAG_API_URL = ''
+let PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME = ''
 
 switch (ENV) {
   case 'prod':
@@ -59,6 +62,8 @@ switch (ENV) {
     NEWEBPAY_PAPERMAG_API_URL =
       process.env.NEWEBPAY_PAPERMAG_API_URL ||
       'https://core.newebpay.com/MPG/mpg_gateway'
+    PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME =
+      process.env.PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME || 'linepay-webhook'
     break
   case 'staging':
     API_HOST = 'tr-projects-rest'
@@ -77,6 +82,8 @@ switch (ENV) {
     NEWEBPAY_PAPERMAG_API_URL =
       process.env.NEWEBPAY_PAPERMAG_API_URL ||
       'https://ccore.newebpay.com/MPG/mpg_gateway'
+    PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME =
+      process.env.PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME || 'linepay-webhook-staging'
     break
   case 'dev':
     API_HOST = 'rest-service'
@@ -94,6 +101,8 @@ switch (ENV) {
     NEWEBPAY_PAPERMAG_API_URL =
       process.env.NEWEBPAY_PAPERMAG_API_URL ||
       'https://ccore.newebpay.com/MPG/mpg_gateway'
+    PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME =
+      process.env.PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME || 'linepay-webhook-dev'
     break
   default:
     API_HOST = process.env.API_HOST || 'api-host'
@@ -114,6 +123,8 @@ switch (ENV) {
     NEWEBPAY_PAPERMAG_API_URL =
       process.env.NEWEBPAY_PAPERMAG_API_URL ||
       'https://ccore.newebpay.com/MPG/mpg_gateway'
+    PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME =
+      process.env.PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME || 'linepay-webhook-dev'
 }
 
 export {
@@ -150,4 +161,7 @@ export {
   NEWEBPAY_PAPERMAG_API_URL,
   PREMIUM_AD_FEATURE_TOGGLE,
   ENABLE_CLOUD_LOGGING,
+  LINEPAY_CHANNEL_ID,
+  LINEPAY_CHANNEL_KEY,
+  PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME,
 }
