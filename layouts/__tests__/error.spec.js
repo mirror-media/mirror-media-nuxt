@@ -7,10 +7,24 @@ const createWrapper = createWrapperHelper({
   propsData: {
     error: {},
   },
+  mocks: {
+    $fetchPopular: () =>
+      Promise.resolve({
+        report: [{}],
+      }),
+  },
 })
 
 describe('page information with default empty error settings', () => {
-  const wrapper = createWrapper(Page)
+  const mockItems = [{}]
+
+  const wrapper = createWrapper(Page, {
+    data() {
+      return {
+        latestStories: mockItems,
+      }
+    },
+  })
   test('Should provide info of 500 by default', () => {
     expect(wrapper.find('h1').text()).toBe('500')
     expect(wrapper.find('h2').text()).toEqual('抱歉！系統忙碌中')

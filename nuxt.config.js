@@ -296,6 +296,10 @@ module.exports = {
       handler: '~/api/newebpay.js',
     },
     {
+      path: `/${API_PATH_FRONTEND}/linepay/v1`,
+      handler: '~/api/linepay.js',
+    },
+    {
       path: `/${API_PATH_FRONTEND}/papermag/v1`,
       handler: '~/api/papermag.js',
     },
@@ -501,6 +505,7 @@ module.exports = {
 
   styleResources: {
     scss: '~/scss/*.scss',
+    hoistUseStatements: true,
   },
 
   apollo: {
@@ -560,6 +565,14 @@ module.exports = {
       // if (ctx.isClient) {
       //   config.devtool = 'source-map'
       // }
+
+      // ref: https://stackoverflow.com/questions/66720347/module-not-found-cant-resolve-child-process-google-spreadsheet
+      config.node = {
+        fs: 'empty',
+        child_process: 'empty',
+        net: 'empty',
+        tls: 'empty',
+      }
     },
   },
 
@@ -604,6 +617,9 @@ module.exports = {
       process.env.SUBSCRIPTION_PRICE_FEATURE_TOGGLE || 'off',
     headerExternalsFeatureToggle:
       process.env.HEADER_EXTERNALS_FEATURE_TOGGLE || 'off',
+    linepayUiToggle: process.env.LINEPAY_PAYMENT_UI_TOGGLE === 'on',
+    redirectLinkFeatureToggle:
+      process.env.REDIRECT_LINK_FEATURE_TOGGLE || 'off',
   },
 
   env: {

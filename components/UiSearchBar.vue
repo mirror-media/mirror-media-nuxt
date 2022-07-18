@@ -60,10 +60,10 @@ export default {
 
 <style lang="scss" scoped>
 $header-top-layer-w: 90%;
-$header-top-layer-padding-x: (100% - $header-top-layer-w) / 2;
+$header-top-layer-padding-x: math.div(100% - $header-top-layer-w, 2);
 $search-icon-width: 18px;
 $search-field-arrow-width: 11px;
-$search-field-arrow-width-half: $search-field-arrow-width / 2;
+$search-field-arrow-width-half: math.div($search-field-arrow-width, 2);
 
 .search-bar {
   @include media-breakpoint-up(xl) {
@@ -93,9 +93,10 @@ $search-field-arrow-width-half: $search-field-arrow-width / 2;
     position: absolute;
     top: -12px;
     right: calc(
-      #{$header-top-layer-padding-x} + #{(
-          $search-icon-width - $search-field-arrow-width
-        ) / 2}
+      #{$header-top-layer-padding-x} + #{math.div(
+          $search-icon-width - $search-field-arrow-width,
+          2
+        )}
     );
     border-color: transparent transparent #064f77;
     border-style: solid;
