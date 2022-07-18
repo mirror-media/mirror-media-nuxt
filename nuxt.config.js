@@ -618,6 +618,8 @@ module.exports = {
     headerExternalsFeatureToggle:
       process.env.HEADER_EXTERNALS_FEATURE_TOGGLE || 'off',
     linepayUiToggle: process.env.LINEPAY_PAYMENT_UI_TOGGLE === 'on',
+    redirectLinkFeatureToggle:
+      process.env.REDIRECT_LINK_FEATURE_TOGGLE || 'off',
   },
 
   env: {
