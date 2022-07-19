@@ -1,6 +1,6 @@
 import { print } from 'graphql/language/printer'
 import axios from 'axios'
-import moment from 'moment'
+import _ from 'lodash'
 import { API_PATH_FRONTEND } from '~/configs/config.js'
 import {
   fetchMemberSubscriptions,
@@ -463,18 +463,16 @@ async function getMemberSubscribePosts(subscriptionList) {
     })
 
     const post = {
-      id: getUniquePostId(subscription.postId, subscription.oneTimeEndDatetime),
+      id: subscription.postId,
       title: correspondPost.title,
       url: `/story/${correspondPost.slug}`,
       deadline: getFormatDateWording(subscription.oneTimeEndDatetime),
     }
     postList.push(post)
   })
-  return postList
-}
 
-function getUniquePostId(postId, endDateTime) {
-  return `${postId}-${moment(endDateTime).format('YYYYMMDDHHmmss')}`
+  // return newest unique posts
+  return _.uniqBy(postList, 'id')
 }
 
 async function getMemberShipStatus(context, memberShipStatusName) {
