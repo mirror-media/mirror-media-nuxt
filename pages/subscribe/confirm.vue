@@ -192,7 +192,8 @@ export default {
       }
 
       // return result and update data attritube
-      if (confirmResult.returnCode !== '0000') {
+      const ok = '0000'
+      if (confirmResult.returnCode !== ok) {
         return {
           status: 'fail',
           errorData: {
