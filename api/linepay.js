@@ -250,7 +250,7 @@ async function getPaymentInfo(data, isPreapproved = false) {
       error,
       'ApiError',
       'error on getting LINEPay payment info',
-      { data, isPreapproved }
+      { data, isPreapproved, errorData: error.data }
     )
   }
 }
