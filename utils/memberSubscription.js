@@ -183,7 +183,7 @@ async function fireGqlRequestNewApi(query, variables, context) {
     headers: {
       'content-type': 'application/json',
       Authorization: `Bearer ${firebaseToken}`,
-      'Cache-Control': 'no-store',
+      'Cache-Control': 'no-cache',
     },
   })
 
