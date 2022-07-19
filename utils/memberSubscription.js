@@ -216,7 +216,7 @@ function getMemberPayRecords(subscriptionList) {
         methodNote: `(${newebpayPayment.cardInfoLastFour || ''})`,
         price: newebpayPayment.amount,
         status: newebpayPayment.status,
-        createAt: newebpayPayment.createdAt,
+        createdAt: newebpayPayment.createdAt,
       }
       payRecords.push(payRecord)
     })
@@ -233,7 +233,7 @@ function getMemberPayRecords(subscriptionList) {
         )})`,
         price: linepayPayment.amount,
         status: LINEPayStatusMap[subscription.linePayStatus] ?? '',
-        createAt: linepayPayment.createdAt,
+        createdAt: linepayPayment.createdAt,
       }
       payRecords.push(payRecord)
     })
@@ -248,7 +248,7 @@ function getMemberPayRecords(subscriptionList) {
         methodNote: '',
         price: payment.amount,
         status: '',
-        createAt: payment.createdAt ?? payment.transactionDatetime,
+        createdAt: payment.createdAt ?? payment.transactionDatetime,
       }
       payRecords.push(payRecord)
     })
@@ -256,7 +256,7 @@ function getMemberPayRecords(subscriptionList) {
 
   // sort all records by date_dsc
   payRecords.sort((recordA, recordB) => {
-    return new Date(recordB.createAt) - new Date(recordA.createAt)
+    return new Date(recordB.createdAt) - new Date(recordA.createdAt)
   })
 
   return payRecords
