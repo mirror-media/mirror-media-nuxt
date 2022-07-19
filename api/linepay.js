@@ -377,24 +377,14 @@ async function getLINEPayInfoOfOneTime(req, res) {
     // write draft payment
     await createDraftPayment(paymentInfo.body, subscription)
 
-    if (paymentInfo.body.returnCode === '0000') {
-      return sendResponse({
-        status: REQUEST_STATUS.SUCCESS,
-        data: {
-          title: 'Succeed in getting payment info.',
-          paymentInfo: paymentInfo.body.info,
-        },
-        res,
-      })
-    } else {
-      return sendResponse({
-        status: REQUEST_STATUS.FAIL,
-        data: {
-          title: 'Failed to get payment info.',
-        },
-        res,
-      })
-    }
+    return sendResponse({
+      status: REQUEST_STATUS.SUCCESS,
+      data: {
+        title: 'Succeed in getting payment info.',
+        paymentInfo: paymentInfo.body.info,
+      },
+      res,
+    })
   } catch (error) {
     const annotatingError = errors.helpers.wrap(
       error,
@@ -479,24 +469,14 @@ async function getLINEPayInfoOfRecurring(req, res) {
     // write draft payment
     await createDraftPayment(paymentInfo.body, subscription)
 
-    if (paymentInfo.body.returnCode === '0000') {
-      return sendResponse({
-        status: REQUEST_STATUS.SUCCESS,
-        data: {
-          title: 'Succeed in getting payment info.',
-          paymentInfo: paymentInfo.body.info,
-        },
-        res,
-      })
-    } else {
-      return sendResponse({
-        status: REQUEST_STATUS.FAIL,
-        data: {
-          title: 'Failed to get payment info.',
-        },
-        res,
-      })
-    }
+    return sendResponse({
+      status: REQUEST_STATUS.SUCCESS,
+      data: {
+        title: 'Succeed in getting payment info.',
+        paymentInfo: paymentInfo.body.info,
+      },
+      res,
+    })
   } catch (error) {
     const annotatingError = errors.helpers.wrap(
       error,
