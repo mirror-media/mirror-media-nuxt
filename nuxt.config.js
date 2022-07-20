@@ -292,6 +292,10 @@ module.exports = {
       handler: '~/api/member-subscription-proxy.js',
     },
     {
+      path: `/${API_PATH_FRONTEND}/member-subscription/v2`,
+      handler: '~/api/member-subscription-proxy-v2.js',
+    },
+    {
       path: `/${API_PATH_FRONTEND}/newebpay/v1`,
       handler: '~/api/newebpay.js',
     },
@@ -400,6 +404,7 @@ module.exports = {
               ignorePaths: [
                 '/papermag/return',
                 '/subscribe/return',
+                '/subscribe/confirm',
                 '/campaigns',
                 '/projects',
                 '/dist',

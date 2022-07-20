@@ -50,6 +50,22 @@ query fetchOneTimeSubscriptions($firebaseId: String!) {
     }
   }
 }
+
+query fetchOneTimeSubscriptionsWithLINEPay($firebaseId: String!) {
+  member(where: { firebaseId: $firebaseId }) {
+    email
+    subscription(
+      where: { AND: [{ frequency: one_time, isActive: true, OR: [{ status: paid }, { linePayStatus: paid }] }] }
+      orderBy: { oneTimeEndDatetime: desc }
+    ) {
+      frequency
+      orderNumber
+      paymentMethod
+      postId
+      oneTimeEndDatetime
+    }
+  }
+}
 query fetchRecurringSubscription($firebaseId: String!) {
   member(where: { firebaseId: $firebaseId }) {
     email
@@ -91,6 +107,40 @@ query fetchSubscriptionPayments($firebaseId: String!) {
         cardInfoLastFour
         createdAt
         status
+      }
+      googlePlayPayment(orderBy: { transactionDatetime: desc }) {
+        transactionDatetime
+        amount
+      }
+    }
+  }
+}
+
+query fetchSubscriptionPaymentsWithLINEPay($firebaseId: String!) {
+  member(where: { firebaseId: $firebaseId }) {
+    email
+    subscription(orderBy: { periodEndDatetime: desc }) {
+      orderNumber
+      frequency
+      periodEndDatetime
+      oneTimeEndDatetime
+      paymentMethod
+      linePayStatus
+      newebpayPayment(orderBy: { paymentTime: desc }) {
+        paymentMethod
+        paymentTime
+        amount
+        cardInfoLastFour
+        createdAt
+        status
+      }
+      linepayPayment(orderBy: { transactionTime: desc }) {
+        payInfoMethod
+        transactionTime
+        amount
+        maskedCreditCardNumber
+        createdAt
+        returnCode
       }
       googlePlayPayment(orderBy: { transactionDatetime: desc }) {
         transactionDatetime
