@@ -415,10 +415,11 @@ export default {
           } else if (status === REQUEST_STATUS.FAIL) {
             window.alert('您的訂閱資料有誤，請修正後再嘗試')
             this.isLoading = false
-            return
           } else {
             throw new Error(message)
           }
+
+          return
         }
 
         // emit apiGateWay

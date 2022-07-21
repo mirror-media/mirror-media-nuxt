@@ -1,11 +1,15 @@
 import { print } from 'graphql/language/printer'
 import axios from 'axios'
+import _ from 'lodash'
+import { API_PATH_FRONTEND } from '~/configs/config.js'
 import {
   fetchMemberSubscriptions,
   fetchMemberBasicInfo,
   fetchOneTimeSubscriptions,
   fetchSubscriptionPayments,
   fetchRecurringSubscription,
+  fetchOneTimeSubscriptionsWithLINEPay,
+  fetchSubscriptionPaymentsWithLINEPay,
 } from '~/apollo/queries/memberSubscriptionQuery.gql'
 import {
   setMemberTosToTrue,
@@ -15,12 +19,11 @@ import {
   setSubscriptionFromMonthToYear,
 } from '~/apollo/mutations/memberSubscriptionMutation.gql'
 
-import { API_PATH_FRONTEND } from '~/configs/config.js'
-
 const baseUrl = process.browser
   ? `${location.origin}/`
   : 'http://localhost:3000/'
 const apiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0`
+const newApiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v2`
 const k3ApiUrl = `${baseUrl}${API_PATH_FRONTEND}/getposts`
 
 async function getMemberType(context) {
@@ -168,6 +171,34 @@ async function fireGqlRequest(query, variables, context) {
   }
 }
 
+async function fireGqlRequestNewApi(query, variables, context) {
+  const firebaseToken = getFirebaseToken(context)
+  const { data: result } = await axios({
+    url: newApiUrl,
+    method: 'post',
+    data: {
+      query: print(query),
+      variables,
+    },
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${firebaseToken}`,
+      'Cache-Control': 'no-cache',
+    },
+  })
+
+  if (result.errors) {
+    throw new Error(result.errors[0].message)
+  }
+
+  return result
+}
+
+const LINEPayStatusMap = {
+  paid: 'SUCCESS',
+  fail: 'FAIL',
+}
+
 function getMemberPayRecords(subscriptionList) {
   if (!subscriptionList?.length) return []
 
@@ -177,26 +208,47 @@ function getMemberPayRecords(subscriptionList) {
     subscription.newebpayPayment?.forEach((newebpayPayment) => {
       const payRecord = {
         number: subscription.orderNumber,
-        date: getFormatDateWording(newebpayPayment.paymentTime),
+        date: getFormatDateWording(
+          newebpayPayment.createdAt ?? newebpayPayment.paymentTime
+        ),
         type: getSubscriptionTypeWording(subscription.frequency),
         method: newebpayPayment.paymentMethod,
         methodNote: `(${newebpayPayment.cardInfoLastFour || ''})`,
         price: newebpayPayment.amount,
         status: newebpayPayment.status,
-        createAt: newebpayPayment.createdAt,
+        createdAt: newebpayPayment.createdAt,
+      }
+      payRecords.push(payRecord)
+    })
+    subscription.linepayPayment?.forEach((linepayPayment) => {
+      const payRecord = {
+        number: subscription.orderNumber,
+        date: getFormatDateWording(
+          linepayPayment.createdAt ?? linepayPayment.transactionTime
+        ),
+        type: getSubscriptionTypeWording(subscription.frequency),
+        method: linepayPayment.payInfoMethod ?? 'LINE Pay',
+        methodNote: `(${(linepayPayment.maskedCreditCardNumber ?? '').slice(
+          -4
+        )})`,
+        price: linepayPayment.amount,
+        status: LINEPayStatusMap[subscription.linePayStatus] ?? '',
+        createdAt: linepayPayment.createdAt,
       }
       payRecords.push(payRecord)
     })
     subscription.googlePlayPayment?.forEach((payment) => {
       const payRecord = {
         number: subscription.orderNumber,
-        date: getFormatDateWording(payment.transactionDatetime),
+        date: getFormatDateWording(
+          payment.createdAt ?? payment.transactionDatetime
+        ),
         type: '',
         method: 'Google Play 續扣',
         methodNote: '',
         price: payment.amount,
         status: '',
-        createAt: payment.createdAt ?? payment.transactionDatetime,
+        createdAt: payment.createdAt ?? payment.transactionDatetime,
       }
       payRecords.push(payRecord)
     })
@@ -204,7 +256,7 @@ function getMemberPayRecords(subscriptionList) {
 
   // sort all records by date_dsc
   payRecords.sort((recordA, recordB) => {
-    return new Date(recordA.createdAt) - new Date(recordB.createdAt)
+    return new Date(recordB.createdAt) - new Date(recordA.createdAt)
   })
 
   return payRecords
@@ -358,13 +410,24 @@ async function getMemberOneTimeSubscriptions(context, loadmoreConfig) {
   if (!firebaseId) return null
 
   // get user's subscription state
-  const result = await fireGqlRequest(
-    fetchOneTimeSubscriptions,
-    {
-      firebaseId,
-    },
-    context
-  )
+  let result
+  if (context.$config.linepayUiToggle) {
+    result = await fireGqlRequestNewApi(
+      fetchOneTimeSubscriptionsWithLINEPay,
+      {
+        firebaseId,
+      },
+      context
+    )
+  } else {
+    result = await fireGqlRequest(
+      fetchOneTimeSubscriptions,
+      {
+        firebaseId,
+      },
+      context
+    )
+  }
 
   // get member's all subscriptions
   const subscriptions = result?.data?.member?.subscription
@@ -407,7 +470,9 @@ async function getMemberSubscribePosts(subscriptionList) {
     }
     postList.push(post)
   })
-  return postList
+
+  // return newest unique posts
+  return _.uniqBy(postList, 'id')
 }
 
 async function getMemberShipStatus(context, memberShipStatusName) {
@@ -506,13 +571,24 @@ async function getSubscriptionPayments(context, loadmoreConfig) {
 
   try {
     // get user's subscription state
-    const result = await fireGqlRequest(
-      fetchSubscriptionPayments,
-      {
-        firebaseId,
-      },
-      context
-    )
+    let result
+    if (context.$config.linepayUiToggle) {
+      result = await fireGqlRequestNewApi(
+        fetchSubscriptionPaymentsWithLINEPay,
+        {
+          firebaseId,
+        },
+        context
+      )
+    } else {
+      result = await fireGqlRequest(
+        fetchSubscriptionPayments,
+        {
+          firebaseId,
+        },
+        context
+      )
+    }
 
     // get member's all subscriptions
     const subscriptions = result?.data?.member?.subscription
