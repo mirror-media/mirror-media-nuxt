@@ -511,13 +511,14 @@ export default {
   async beforeMount() {
     await handleStoryPremiumRedirect(this.$nuxt.context)
     if (this.story.redirect && this.story.redirect?.trim()) {
+      const redirectHref = this.story.redirect?.trim()
       if (
-        this.story.redirect?.startsWith('https://') ||
-        this.story.redirect?.startsWith('http://')
+        redirectHref?.startsWith('https://') ||
+        redirectHref?.startsWith('http://')
       ) {
-        window.location.replace(this.story.redirect)
+        window.location.replace(redirectHref)
       } else {
-        window.location.replace(`/story/${this.story.redirect}`)
+        window.location.replace(`/story/${redirectHref}`)
       }
     }
     const { style, slug } = this.story
