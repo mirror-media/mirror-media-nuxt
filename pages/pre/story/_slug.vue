@@ -268,6 +268,17 @@ export default {
     }
   },
   beforeMount() {
+    if (this.story.redirect && this.story.redirect?.trim()) {
+      const redirectHref = this.story.redirect?.trim()
+      if (
+        redirectHref?.startsWith('https://') ||
+        redirectHref?.startsWith('http://')
+      ) {
+        window.location.replace(redirectHref)
+      } else {
+        window.location.replace(`/story/${redirectHref}`)
+      }
+    }
     const { style, slug } = this.story
     if (style === 'campaign') {
       window.location.replace(`/campaigns/${slug}`)
