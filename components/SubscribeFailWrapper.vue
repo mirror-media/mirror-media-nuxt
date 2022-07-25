@@ -37,7 +37,7 @@ export default {
     category: {
       type: String,
       isRequired: true,
-      default: 'magazine',
+      default: 'default',
     },
   },
   computed: {
