@@ -1180,7 +1180,7 @@ aside {
 }
 
 .ad-pc-floating {
-  z-index: 999999;
+  z-index: 2147483647;
   position: fixed;
   top: 175px;
   right: 15px;
