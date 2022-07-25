@@ -5,12 +5,7 @@
     <SubscribeStepProgress :currentStep="step" />
     <SubscribeSuccessPage v-if="status === 'success'" :orderInfo="orderInfo" />
 
-    <SubscribeFail
-      v-else
-      :resultStatus="status"
-      :orderId="errorData.orderId"
-      :message="errorData.message"
-    />
+    <SubscribeFail v-else category="linepay" />
   </div>
 </template>
 
