@@ -276,6 +276,26 @@ export default {
     const processPostResponse = (response) => {
       if (response.status === 'fulfilled') {
         this.story = response.value?.items?.[0] ?? {}
+
+        const { style, slug, redirect } = this.story
+
+        if (redirect && redirect?.trim()) {
+          const redirectHref = redirect?.trim()
+          if (
+            redirectHref?.startsWith('https://') ||
+            redirectHref?.startsWith('http://')
+          ) {
+            this.$nuxt.context.redirect(redirectHref)
+          } else {
+            this.$nuxt.context.redirect(`/story/${redirectHref}`)
+          }
+        }
+        if (style === 'campaign') {
+          this.$nuxt.context.redirect(`/campaigns/${slug}`)
+        } else if (style === 'projects') {
+          this.$nuxt.context.redirect(`/projects/${slug}/`)
+        }
+
         this.$store.commit(
           'setCanAdvertise',
           !this.story.hiddenAdvertised ?? true
@@ -315,7 +335,6 @@ export default {
 
       isPreviewMode = this.$route.query[name] === value
     }
-
     const fetchPartnersAndTopicsData = async () => {
       await Promise.all([
         this.$store.dispatch('partners/fetchPartnersData'),
@@ -357,6 +376,7 @@ export default {
 
       processPostResponse(postResponse)
     }
+
     const [popularStoriesResponse, latestStoriesResponse] =
       await Promise.allSettled([
         this.fetchPopularStories(),
@@ -510,14 +530,6 @@ export default {
 
   async beforeMount() {
     await handleStoryPremiumRedirect(this.$nuxt.context)
-    if (this.story.redirect)
-      window.location.replace(`/story/${this.story.redirect}`)
-    const { style, slug } = this.story
-    if (style === 'campaign') {
-      window.location.replace(`/campaigns/${slug}`)
-    } else if (style === 'projects') {
-      window.location.replace(`/projects/${slug}/`)
-    }
   },
 
   mounted() {
@@ -1168,6 +1180,7 @@ aside {
 }
 
 .ad-pc-floating {
+  z-index: 2147483647;
   position: fixed;
   top: 175px;
   right: 15px;

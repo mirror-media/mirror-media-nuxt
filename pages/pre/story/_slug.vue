@@ -167,6 +167,26 @@ export default {
     const processPostResponse = (response) => {
       if (response.status === 'fulfilled') {
         this.story = response.value?.items?.[0] ?? {}
+
+        // redirect
+        const { style, slug, redirect } = this.story
+        if (redirect && redirect?.trim()) {
+          const redirectHref = redirect?.trim()
+          if (
+            redirectHref?.startsWith('https://') ||
+            redirectHref?.startsWith('http://')
+          ) {
+            this.$nuxt.context.redirect(redirectHref)
+          } else {
+            this.$nuxt.context.redirect(`/pre/story/${redirectHref}`)
+          }
+        }
+        if (style === 'campaign') {
+          this.$nuxt.context.redirect(`/campaigns/${slug}`)
+        } else if (style === 'projects') {
+          this.$nuxt.context.redirect(`/projects/${slug}/`)
+        }
+
         this.$store.commit(
           'setCanAdvertise',
           !this.story.hiddenAdvertised ?? true
@@ -267,14 +287,7 @@ export default {
       showShareLinksAside: false,
     }
   },
-  beforeMount() {
-    const { style, slug } = this.story
-    if (style === 'campaign') {
-      window.location.replace(`/campaigns/${slug}`)
-    } else if (style === 'projects') {
-      window.location.replace(`/projects/${slug}/`)
-    }
-  },
+
   computed: {
     storySlug() {
       return this.$route.params.slug
