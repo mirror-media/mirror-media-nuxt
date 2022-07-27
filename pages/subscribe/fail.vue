@@ -1,11 +1,7 @@
 <template>
   <div>
     <SubscribeStepProgress :currentStep="2" />
-    <SubscribeFail
-      :resultStatus="resultStatus"
-      :orderId="orderId"
-      :message="failMessage"
-    />
+    <SubscribeFail category="newebpay" />
   </div>
 </template>
 
