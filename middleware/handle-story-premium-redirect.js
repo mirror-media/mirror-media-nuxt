@@ -37,27 +37,36 @@ function redirectToOtherPage({ redirect, href }) {
 
 function redirectToPremiumPage({ redirect, route }) {
   if (route.name === 'story-slug' || route.name === 'pre-story-slug') {
+    const query = qs.stringify(route.query)
+      ? `?${qs.stringify(route.query)}`
+      : ''
     redirectToOtherPage({
       redirect,
-      href: `/premium/${route?.params?.slug}?${qs.stringify(route.query)}`,
+      href: `/premium/${route?.params?.slug}${query}`,
     })
   }
 }
 
 function redirectToPreStoryPage({ redirect, route }) {
   if (route.name === 'premium-slug' || route.name === 'story-slug') {
+    const query = qs.stringify(route.query)
+      ? `?${qs.stringify(route.query)}`
+      : ''
     redirectToOtherPage({
       redirect,
-      href: `/pre/story/${route?.params?.slug}?${qs.stringify(route.query)}`,
+      href: `/pre/story/${route?.params?.slug}${query}`,
     })
   }
 }
 
 function redirectToStoryPage({ redirect, route }) {
   if (route.name === 'premium-slug' || route.name === 'pre-story-slug') {
+    const query = qs.stringify(route.query)
+      ? `?${qs.stringify(route.query)}`
+      : ''
     redirectToOtherPage({
       redirect,
-      href: `/story/${route?.params?.slug}?${qs.stringify(route.query)}`,
+      href: `/story/${route?.params?.slug}${query}`,
     })
   }
 }
