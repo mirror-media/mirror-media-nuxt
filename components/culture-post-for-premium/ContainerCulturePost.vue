@@ -255,6 +255,8 @@ export default {
       let sectionIdFirst = sections?.[0]?.id
       if (sections?.[0]?.name === 'mirrorcolumn') {
         sectionIdFirst = '5964418a4bbe120f002a3198'
+      } else if (sections?.[0]?.name === 'member') {
+        sectionIdFirst = '5fe15f1e123c831000ee54c2'
       }
 
       return {
