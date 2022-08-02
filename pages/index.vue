@@ -300,7 +300,7 @@ export default {
       return currentPage < maxPage
     },
     latestItems() {
-      return _.uniqBy(
+      const listWithUniqueItems = _.uniqBy(
         this.latestList.items,
         function identifyDuplicateById(item) {
           if (item.isMicroAd) {
@@ -309,6 +309,9 @@ export default {
           return item.id
         }
       )
+      return listWithUniqueItems.sort(function (currentItem, nextItem) {
+        return nextItem.publishedTimeStamp - currentItem.publishedTimeStamp
+      })
     },
 
     isValidEventModItem() {
@@ -483,7 +486,13 @@ export default {
       this.latestList.total = total
     },
     transformContentOfLatestItem(item = {}) {
-      const { id = '', title = '', brief, sections = [] } = item
+      const {
+        id = '',
+        title = '',
+        brief,
+        sections = [],
+        publishedDate = '',
+      } = item
 
       return {
         id,
@@ -495,6 +504,7 @@ export default {
         imgSrc: getImg(item),
         label: getLabel(item),
         sectionName: item.partner ? 'external' : sections[0]?.name,
+        publishedTimestamp: new Date(publishedDate).getTime(),
       }
     },
     async loadMoreLatestItems(state) {
