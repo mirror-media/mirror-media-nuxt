@@ -133,7 +133,10 @@
       <UiFooter />
     </div>
     <UiShareLinksToggled class="share-toggled" />
-    <UiStickyAd v-if="shouldShwowAd" :pageKey="post.sectionIdFirst" />
+    <UiStickyAd
+      v-if="shouldShwowAd && !doesHaveWineCategory"
+      :pageKey="post.sectionIdFirst"
+    />
   </section>
 </template>
 
