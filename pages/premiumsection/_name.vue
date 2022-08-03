@@ -51,6 +51,7 @@
     </div>
 
     <UiStickyAd v-if="shouldShowAd" :pageKey="pageKey" />
+    <ContainerFullScreenAds v-if="shouldShowAd" />
   </section>
 </template>
 
@@ -66,6 +67,7 @@ import UiStickyAd from '~/components/UiStickyAd.vue'
 import { getStoryPath, stripHtmlTags } from '~/utils/article'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '~/constants'
 import { PREMIUM_AD_FEATURE_TOGGLE } from '~/configs/config.js'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 export default {
   layout: 'premium',
@@ -75,6 +77,7 @@ export default {
     UiInfiniteLoading,
     ContainerGptAd,
     UiStickyAd,
+    ContainerFullScreenAds,
   },
   setup() {
     const breadcrumbs = usePremiumBreadcrumbs()
