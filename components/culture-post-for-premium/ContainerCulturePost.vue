@@ -137,6 +137,7 @@
       v-if="shouldShwowAd && !doesHaveWineCategory"
       :pageKey="post.sectionIdFirst"
     />
+    <ContainerFullScreenAds v-if="shouldShwowAd" />
   </section>
 </template>
 
@@ -158,6 +159,7 @@ import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 export default {
   name: 'ContainerCulturePost',
@@ -177,6 +179,7 @@ export default {
     UiShareLinksHasCopyLink,
     ContainerGptAd,
     UiStickyAd,
+    ContainerFullScreenAds,
   },
 
   props: {
