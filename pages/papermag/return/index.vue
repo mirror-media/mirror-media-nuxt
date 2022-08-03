@@ -10,7 +10,7 @@
     </template>
     <template v-else>
       <SubscribeStepProgress :currentStep="2" />
-      <SubscribeFail :resultStatus="status" />
+      <SubscribeFail category="magazine" />
     </template>
   </div>
 </template>
