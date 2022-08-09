@@ -3,12 +3,12 @@
     <ContainerList
       :fetchList="fetchList"
       :transformListItemContent="transformListItemContent"
-      :gptAdPageKey="sectionName"
+      :gptAdPageKey="sectionId"
       :listTitle="partnerTitle"
       :listTitleColor="sectionColor"
     />
 
-    <UiStickyAd :pageKey="sectionName" />
+    <UiStickyAd :pageKey="sectionId" />
     <ContainerFullScreenAds />
   </section>
 </template>
@@ -33,10 +33,11 @@ export default {
 
   data() {
     return {
-      sectionName: 'other',
+      sectionId: 'other',
       sectionColor: getSectionColor('external'),
     }
   },
+
   computed: {
     ...mapGetters({
       partners: 'partners/displayedPartners',
@@ -57,6 +58,11 @@ export default {
     partnerTitle() {
       return this.partnerData.display ?? ''
     },
+  },
+  mounted() {
+    if (this.$route.params.name === 'healthnews') {
+      this.sectionId = '57e1e0e5ee85930e00cad4e9'
+    }
   },
   methods: {
     async fetchList(page) {
@@ -108,7 +114,7 @@ export default {
         {
           hid: 'section-name',
           name: 'section-name',
-          content: this.sectionName,
+          content: 'other',
         },
       ],
     }

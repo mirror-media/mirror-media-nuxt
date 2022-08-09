@@ -477,6 +477,9 @@ export default {
       return !_.isEmpty(this.section)
     },
     sectionId() {
+      if (this.section.name === 'mirrorcolumn') {
+        return '5964418a4bbe120f002a3198'
+      }
       return this.section.id ?? DEFAULT_SECTION_ID
     },
     storySlug() {
