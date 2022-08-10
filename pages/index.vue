@@ -89,7 +89,7 @@
               @sendGa="sendGaForClick('latest')"
             />
             <UiInfiniteLoading
-              v-if="hasLoadedFirstGroupedArticle && latestItems.length > 3"
+              v-if="latestItems.length > 3"
               @infinite="handleInfiniteLoad"
             />
           </section>
