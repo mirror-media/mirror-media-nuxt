@@ -317,7 +317,7 @@ export default {
       return validReceiptData
     },
     showLINEPayUI() {
-      return this.perchasedPlan?.[0]?.key === 'basic' && this.linepayUiToggle
+      return this.linepayUiToggle
     },
   },
   watch: {
