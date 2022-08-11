@@ -45,6 +45,9 @@ export default {
       )
     },
     sectionId() {
+      if (this.$route.params.name === 'mirrorcolumn') {
+        return '5964418a4bbe120f002a3198'
+      }
       return this.sectionData.id
     },
     sectionTitle() {

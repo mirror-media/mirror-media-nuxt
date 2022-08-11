@@ -1,6 +1,6 @@
 <template>
   <div class="fail">
-    <SubscribeFailWrapper :resultStatus="resultStatus" />
+    <SubscribeFailWrapper :category="category" />
   </div>
 </template>
 
@@ -11,10 +11,10 @@ export default {
     SubscribeFailWrapper,
   },
   props: {
-    resultStatus: {
+    category: {
       type: String,
       isRequired: true,
-      default: 'order-fail',
+      default: 'default',
     },
   },
 }

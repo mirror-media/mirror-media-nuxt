@@ -133,7 +133,11 @@
       <UiFooter />
     </div>
     <UiShareLinksToggled class="share-toggled" />
-    <UiStickyAd v-if="shouldShwowAd" :pageKey="post.sectionIdFirst" />
+    <UiStickyAd
+      v-if="shouldShwowAd && !doesHaveWineCategory"
+      :pageKey="post.sectionIdFirst"
+    />
+    <ContainerFullScreenAds v-if="shouldShwowAd && !doesHaveWineCategory" />
   </section>
 </template>
 
@@ -155,6 +159,7 @@ import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 export default {
   name: 'ContainerCulturePost',
@@ -174,6 +179,7 @@ export default {
     UiShareLinksHasCopyLink,
     ContainerGptAd,
     UiStickyAd,
+    ContainerFullScreenAds,
   },
 
   props: {
@@ -253,8 +259,13 @@ export default {
       const heroImgsResized = heroImage?.image?.resizedTargets || {}
       const ogImgsResized = ogImage?.image?.resizedTargets || {}
       let sectionIdFirst = sections?.[0]?.id
-      if (sections?.[0]?.name === 'mirrorcolumn') {
+      if (
+        sections?.[0]?.name === 'mirrorcolumn' ||
+        sections?.[0]?.name === 'timesquare'
+      ) {
         sectionIdFirst = '5964418a4bbe120f002a3198'
+      } else if (sections?.[0]?.name === 'member') {
+        sectionIdFirst = '5fe15f1e123c831000ee54c2'
       }
 
       return {
