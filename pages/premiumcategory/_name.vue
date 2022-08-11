@@ -55,7 +55,11 @@
       pageKey="5fe15f1e123c831000ee54c2"
       adKey="FT"
     />
-    <UiStickyAd v-if="shouldShowAd" pageKey="5fe15f1e123c831000ee54c2" />
+    <UiStickyAd
+      v-if="shouldShowAd && !isWineCategory"
+      pageKey="5fe15f1e123c831000ee54c2"
+    />
+    <ContainerFullScreenAds v-if="shouldShowAd && !isWineCategory" />
   </section>
 </template>
 
@@ -70,6 +74,7 @@ import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import { getStoryPath, stripHtmlTags } from '~/utils/article'
 import { PREMIUM_AD_FEATURE_TOGGLE } from '~/configs/config.js'
+import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 
 export default {
   layout: 'premium',
@@ -79,6 +84,7 @@ export default {
     UiInfiniteLoading,
     ContainerGptAd,
     UiStickyAd,
+    ContainerFullScreenAds,
   },
   setup() {
     const breadcrumbs = usePremiumBreadcrumbs()
@@ -113,6 +119,9 @@ export default {
     },
     shouldShowAd() {
       return this.PREMIUM_AD_FEATURE_TOGGLE && !this.isPremiumMember
+    },
+    isWineCategory() {
+      return this.$route.params.name === 'wine'
     },
     categoriesId() {
       const routeName = this.$route.params.name
