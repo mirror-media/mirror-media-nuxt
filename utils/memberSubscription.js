@@ -2,6 +2,8 @@ import { print } from 'graphql/language/printer'
 import axios from 'axios'
 import _ from 'lodash'
 import { API_PATH_FRONTEND } from '~/configs/config.js'
+import { PaymentMethod, MemberType, Frequency } from '~/constants/common'
+
 import {
   fetchMemberSubscriptions,
   fetchMemberBasicInfo,
@@ -47,23 +49,23 @@ async function getMemberType(context) {
 
 function formatMemberType(israfelMemberType) {
   switch (israfelMemberType) {
-    case 'subscribe_one_time':
-    case 'one_time':
-      return 'subscribe_one_time'
+    case MemberType.OneTime:
+    case Frequency.OneTime:
+      return MemberType.OneTime
 
-    case 'subscribe_monthly':
-    case 'monthly':
-      return 'subscribe_monthly'
+    case MemberType.Monthly:
+    case Frequency.Monthly:
+      return MemberType.Monthly
 
-    case 'subscribe_yearly':
-    case 'yearly':
-      return 'subscribe_yearly'
+    case MemberType.Yearly:
+    case Frequency.Yearly:
+      return MemberType.Yearly
 
-    case 'marketing':
-      return 'marketing'
-    case 'none':
+    case MemberType.Marketing:
+      return MemberType.Marketing
+    case MemberType.None:
     default:
-      return 'none'
+      return MemberType.None
   }
 }
 
@@ -264,11 +266,11 @@ function getMemberPayRecords(subscriptionList) {
 
 function getSubscriptionTypeWording(type) {
   switch (type) {
-    case 'yearly':
+    case Frequency.Yearly:
       return '年訂閱'
-    case 'monthly':
+    case Frequency.Monthly:
       return '月訂閱'
-    case 'one_time':
+    case Frequency.OneTime:
       return '單篇訂閱'
     default:
       break
@@ -375,8 +377,8 @@ function isSubscriptionPayByMobileAppStore(subscriptions = []) {
   const appSubscribeRecord = subscriptions.find(
     (subscription) =>
       subscription.isActive &&
-      (subscription.paymentMethod === 'app_store' ||
-        subscription.paymentMethod === 'google_play')
+      (subscription.paymentMethod === PaymentMethod.AppStore ||
+        subscription.paymentMethod === PaymentMethod.GooglePay)
   )
 
   return !!appSubscribeRecord
@@ -387,7 +389,9 @@ async function getPaymentDataOfSubscription(context, gateWayPayload) {
   if (!firebaseId) return null
 
   const { frequency } = gateWayPayload
-  const isRecurringPurchase = frequency === 'yearly' || frequency === 'monthly'
+  const isRecurringPurchase = [Frequency.Monthly, Frequency.Yearly].includes(
+    frequency
+  )
   let query
 
   if (isRecurringPurchase) {
@@ -479,9 +483,9 @@ async function getMemberShipStatus(context, memberShipStatusName) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
-  if (memberShipStatusName === 'subscribe_one_time') {
+  if (memberShipStatusName === MemberType.OneTime) {
     return {
-      name: 'subscribe_one_time',
+      name: MemberType.OneTime,
       dueDate: null,
       nextPayDate: null,
       payMethod: null,
@@ -517,16 +521,16 @@ async function getMemberShipStatus(context, memberShipStatusName) {
 
   const payMethodText = generatePayMethodText(paymentMethod, cardInfoLastFour)
 
-  if (isCanceled && frequency === 'yearly') {
+  if (isCanceled && frequency === Frequency.Yearly) {
     return {
-      name: 'subscribe_yearly_disturb',
+      name: MemberType.YearlyDisturbed,
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: null,
       payMethod: null,
     }
-  } else if (isCanceled && frequency === 'monthly') {
+  } else if (isCanceled && frequency === Frequency.Monthly) {
     return {
-      name: 'subscribe_monthly_disturb',
+      name: MemberType.MonthlyDisturbed,
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: null,
       payMethod: null,
@@ -546,11 +550,11 @@ async function getMemberShipStatus(context, memberShipStatusName) {
         ? `${paymentMethod}(${cardInfoLastFour})`
         : ''
     switch (paymentMethod) {
-      case 'app_store':
+      case PaymentMethod.AppStore:
         return 'Apple Pay'
-      case 'google_play':
+      case PaymentMethod.GooglePay:
         return 'Google Store'
-      case 'newebpay':
+      case PaymentMethod.NewebPay:
         return paymentMethodText
       default:
         return paymentMethodText
@@ -558,10 +562,13 @@ async function getMemberShipStatus(context, memberShipStatusName) {
   }
 
   function generateMemberShipStatusName() {
-    if (frequency === 'monthly' && nextFrequency === 'yearly') {
-      return 'subscribe_monthly_update_to_yearly'
-    } else if (frequency === 'yearly' && nextFrequency === 'monthly') {
-      return 'subscribe_yearly_update_to_monthly'
+    if (frequency === Frequency.Monthly && nextFrequency === Frequency.Yearly) {
+      return MemberType.MonthlyToYearly
+    } else if (
+      frequency === Frequency.Yearly &&
+      nextFrequency === Frequency.Monthly
+    ) {
+      return MemberType.YearlyToMonthly
     } else return memberShipStatusName
   }
 }
