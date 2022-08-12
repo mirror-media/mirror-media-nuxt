@@ -69,6 +69,7 @@ function formatMemberType(israfelMemberType) {
   }
 }
 
+// TODO: might not in use, should be removed
 async function getMemberDetailData(context) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
@@ -118,6 +119,7 @@ async function cancelMemberSubscription(context, reason) {
   )
 }
 
+// TODO: might not in use, should be removed
 async function getMemberAllSubscriptions(firebaseId, context) {
   try {
     // get user's subscription state
@@ -508,6 +510,7 @@ async function getMemberShipStatus(context, memberShipStatusName) {
     )
     subscription = s
   } else {
+    // TODO: remove this section when LINE Pay feature is stable in production
     const {
       data: {
         member: { subscription: s },
