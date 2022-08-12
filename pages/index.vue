@@ -147,6 +147,7 @@ import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
 // import { isTruthy } from '~/utils/index.js'
 import { stripHtmlTags } from '~/utils/article.js'
+import { removeArticleWithExternalLink } from '~/utils/index.js'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
 const CATEGORY_ID_POLITICAL = '5979ac0de531830d00e330a7' // 政治
 const CATEGORY_ID_CITY_NEWS = '5979ac33e531830d00e330a9' // 社會
@@ -200,6 +201,10 @@ export default {
     if (flashNewsResponse.status === 'fulfilled') {
       this.flashNews = flashNewsResponse.value || []
     }
+    this.groupedArticles.choices = removeArticleWithExternalLink(
+      this.groupedArticles.choices
+    )
+    this.getGroupedArticlesWithoutExternalLink()
 
     this.loadLatestListInitial()
   },
@@ -392,6 +397,8 @@ export default {
           'post_external01'
         )
         this.groupedArticles = groupedResponse
+        this.getGroupedArticlesWithoutExternalLink()
+
         this.loadLatestListInitial()
       }
       this.hasLoadedFirstGroupedArticle = true
@@ -434,6 +441,12 @@ export default {
       })
 
       this.areMicroAdsInserted = true
+    },
+
+    getGroupedArticlesWithoutExternalLink() {
+      this.groupedArticles.latest = removeArticleWithExternalLink(
+        this.groupedArticles.latest
+      )
     },
     async fetchFlashNews() {
       const { items: articles = [] } =
@@ -490,6 +503,7 @@ export default {
         brief,
         sections = [],
         publishedDate = '',
+        redirect = '',
       } = item
 
       return {
@@ -503,6 +517,7 @@ export default {
         label: getLabel(item),
         sectionName: item.partner ? 'external' : sections[0]?.name,
         publishedTimestamp: new Date(publishedDate).getTime(),
+        redirect,
       }
     },
     async handleInfiniteLoad(state) {
@@ -532,6 +547,7 @@ export default {
             }
           })
         )
+        this.getGroupedArticlesWithoutExternalLink()
       }
       this.pushLatestItems(
         this.groupedArticles.latest.slice(
