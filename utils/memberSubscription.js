@@ -493,17 +493,34 @@ async function getMemberShipStatus(context, memberShipStatusName) {
   }
 
   // get user's subscription state
-  const {
-    data: {
-      member: { subscription },
-    },
-  } = await fireGqlRequest(
-    fetchRecurringSubscription,
-    {
-      firebaseId,
-    },
-    context
-  )
+  let subscription
+  if (context.$config.linepayUiToggle) {
+    const {
+      data: {
+        member: { subscription: s },
+      },
+    } = await fireGqlRequestNewApi(
+      fetchRecurringSubscription,
+      {
+        firebaseId,
+      },
+      context
+    )
+    subscription = s
+  } else {
+    const {
+      data: {
+        member: { subscription: s },
+      },
+    } = await fireGqlRequest(
+      fetchRecurringSubscription,
+      {
+        firebaseId,
+      },
+      context
+    )
+    subscription = s
+  }
 
   // destructure subscription and format it
   const {
@@ -512,14 +529,24 @@ async function getMemberShipStatus(context, memberShipStatusName) {
     periodEndDatetime,
     periodNextPayDatetime,
     newebpayPayment,
+    linepayPayment,
     isCanceled,
     paymentMethod,
   } = subscription[0]
-  const { cardInfoLastFour } = newebpayPayment?.[0] || {
+  const cardInfoLastFour = newebpayPayment?.[0] || {
     cardInfoLastFour: null,
   }
+  const { maskedCreditCardNumber } = linepayPayment?.[0] || {
+    maskedCreditCardNumber: null,
+  }
+  const lastFourDigit =
+    paymentMethod === PaymentMethod.NewebPay
+      ? cardInfoLastFour
+      : paymentMethod === PaymentMethod.LINEPay
+      ? maskedCreditCardNumber.slice(-4)
+      : null
 
-  const payMethodText = generatePayMethodText(paymentMethod, cardInfoLastFour)
+  const payMethodText = generatePayMethodText(paymentMethod, lastFourDigit)
 
   if (isCanceled && frequency === Frequency.Yearly) {
     return {
@@ -554,6 +581,8 @@ async function getMemberShipStatus(context, memberShipStatusName) {
         return 'Apple Pay'
       case PaymentMethod.GooglePay:
         return 'Google Store'
+      case PaymentMethod.LINEPay:
+        return 'LINE Pay'
       case PaymentMethod.NewebPay:
         return paymentMethodText
       default:
