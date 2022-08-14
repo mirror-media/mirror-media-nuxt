@@ -162,6 +162,8 @@ import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
 import { STATUS as REQUEST_STATUS } from '~/constants/request.js'
 
+import { objectToQueryString } from '~/serverMiddleware/appendUtmToUrl'
+
 // import redirectDestination from '~/utils/redirect-destination'
 
 export default {
@@ -431,7 +433,19 @@ export default {
             ? `http://localhost:3000/subscribe/return`
             : `https://${DOMAIN_NAME}/subscribe/return`
 
+        const utmCookieString = document.cookie
+          .split('; ')
+          .filter((cookieStr) => cookieStr.includes('utm='))[0]
+        if (utmCookieString) {
+          const queryObject = JSON.parse(
+            decodeURIComponent(utmCookieString.split('=')[1])
+          )
+          const queryString = objectToQueryString(queryObject)
+          tradeInfo.ReturnURL += queryString
+        }
+
         // // encrypt tradeInfo
+        console.log(tradeInfo.ReturnURL)
         this.paymentPayload = await this.$axios.$post(
           `${window.location.origin}/api/v2/newebpay/v1`,
           tradeInfo

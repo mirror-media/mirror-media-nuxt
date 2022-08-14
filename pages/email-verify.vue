@@ -74,6 +74,7 @@ import { required, email } from 'vuelidate/lib/validators'
 import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settings-app-config'
+import { objectToQueryString } from '~/serverMiddleware/appendUtmToUrl'
 
 export default {
   components: {
@@ -235,7 +236,21 @@ export default {
          * (for more detail, see pages/verify-success.vue)
          */
 
-        const queryString = email ? `?email=${email}` : ''
+        // const queryString = email ? `?email=${email}` : ''
+
+        let queryObject = { email }
+        const utmCookieString = document.cookie
+          .split('; ')
+          .filter((cookieStr) => cookieStr.includes('utm='))[0]
+        if (utmCookieString) {
+          const utmObject = JSON.parse(
+            decodeURIComponent(utmCookieString.split('=')[1])
+          )
+          queryObject = { ...queryObject, ...utmObject }
+        }
+        const queryString = objectToQueryString(queryObject)
+
+        console.log('return url = ', `${origin}${path}${queryString}`)
         return `${origin}${path}${queryString}`
       }
     },
