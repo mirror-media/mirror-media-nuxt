@@ -254,6 +254,7 @@ module.exports = {
   serverMiddleware: [
     express.urlencoded({ extended: true }),
     '~/api/headers.js',
+    '~/serverMiddleware/appendUtmToUrl.js',
     {
       path: `/${API_PATH_FRONTEND}/gcs`,
       handler: '~/api/gcs.js',
