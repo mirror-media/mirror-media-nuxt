@@ -28,53 +28,42 @@ const pageName = [
   'updatePassword',
   'verify-success',
 ]
+const trackingCampaignKeyword = 'member'
 export const trackingSeconds = 24 * 60 * 60
 
 export default function (req, res, next) {
-  // return next()
   if (
     req.method === 'GET' &&
     (req.path === '/' || pageName.includes(req.path.split('/')[1]))
   ) {
     let cookieUtm
     if (req.cookies.utm) {
-      console.log(req.cookies.utm, typeof req.cookies.utm)
-      cookieUtm = JSON.parse(req.cookies.utm)
+      try {
+        cookieUtm = JSON.parse(req.cookies.utm)
+      } catch (error) {
+        cookieUtm = null
+      }
     }
-    console.log(
-      `newMiddle called, path='${req.path}', utm_campaign='${req.query.utm_campaign}, c_utm_campaign='${cookieUtm?.utm_campaign}'`
-    )
 
-    // 1. check url query contains member utm
-    const urlHasMemberCampaign =
+    const urlHasTrakingCampainKeyword =
       !!req.query.utm_campaign &&
-      req.query.utm_campaign.toLowerCase().includes('member')
+      req.query.utm_campaign?.toLowerCase().includes(trackingCampaignKeyword)
 
-    // 2. check cookies contains member utm
-    const cookieHasMemberCampaign = cookieUtm
-
-    if (urlHasMemberCampaign) {
+    if (urlHasTrakingCampainKeyword) {
       const utmObj = utmObjectFromQuery(req.query)
-      if (!cookieHasMemberCampaign) {
-        console.log('set cookie')
+
+      // store cookie if not exist or update cookie if new campaign detected
+      if (!cookieUtm || cookieUtm.utm_campaign !== req.query.utm_campaign) {
         res.cookie('utm', JSON.stringify(utmObj), {
-          maxAge: 24 * 60 * 60 * 1000,
-        })
-      } else if (
-        cookieHasMemberCampaign.utm_campaign !== req.query.utm_campaign
-      ) {
-        console.log('update cookie')
-        res.cookie('utm', JSON.stringify(utmObj), {
-          maxAge: 24 * 60 * 60 * 1000,
+          maxAge: trackingSeconds,
         })
       }
-    } else if (cookieHasMemberCampaign) {
-      console.log(
-        'redirect with utm url params',
-        req.path +
-          objectToQueryString({ ...req.query, ...cookieHasMemberCampaign })
-      )
-
+    } else if (cookieUtm && !cookieUtm.terminated) {
+      /*
+       * append utm params and redirect if cookieUtm exists and is not terminated
+       * redo string to object and object to string to avoid duplicate query strings
+       * produced by sign_in url cache mechanism
+       */
       res.redirect(
         req.path +
           objectToQueryString(
