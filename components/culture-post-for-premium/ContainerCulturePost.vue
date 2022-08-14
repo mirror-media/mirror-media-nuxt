@@ -119,7 +119,14 @@
           :imgs="relatedImgs"
           @sendGa="sendGaForClick('related')"
         />
+        <UiMagazineAfterArticle
+          v-if="
+            $GOExp['premium-post-related-position'].variant === '1' &&
+            articleBodyPageState === 'premiumPageIsLogin'
+          "
+        />
       </LazyRenderer>
+
       <ContainerGptAd
         v-if="shouldShwowAd"
         class="ad"
@@ -160,6 +167,7 @@ import { doesContainWineName } from '~/utils/article.js'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+import UiMagazineAfterArticle from '~/components/culture-post-for-premium/UiMagazineAfterArticle.vue'
 
 export default {
   name: 'ContainerCulturePost',
@@ -180,6 +188,7 @@ export default {
     ContainerGptAd,
     UiStickyAd,
     ContainerFullScreenAds,
+    UiMagazineAfterArticle,
   },
 
   props: {
