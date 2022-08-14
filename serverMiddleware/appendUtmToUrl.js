@@ -28,6 +28,7 @@ const pageName = [
   'updatePassword',
   'verify-success',
 ]
+export const trackingSeconds = 24 * 60 * 60
 
 export default function (req, res, next) {
   // return next()
@@ -84,7 +85,16 @@ export default function (req, res, next) {
   next()
 }
 
-function objectToQueryString(object) {
+export function queryStringFromCookieObject(cookieKey, otherObject = {}) {
+  const queryObject = { ...otherObject, ...getCookieObject(cookieKey) }
+  return objectToQueryString(queryObject)
+}
+
+export function objectToQueryString(object) {
+  if (!Object.keys(object).length) {
+    return ''
+  }
+
   let queryString = '?'
   Object.entries(object).forEach(([key, value], i) => {
     const query = `${key}=${value}`
@@ -94,6 +104,21 @@ function objectToQueryString(object) {
   return queryString
 }
 
+export function getCookieObject(key) {
+  if (!key || !document.cookie.length) {
+    return null
+  }
+
+  const cookieString = document.cookie
+    .split('; ')
+    .filter((cookieStr) => cookieStr.includes(key))[0]
+  try {
+    const returnObj = JSON.parse(decodeURIComponent(cookieString.split('=')[1]))
+    return returnObj
+  } catch (error) {
+    return null
+  }
+}
 function utmObjectFromQuery(query) {
   const utmObjs = {}
   Object.keys(query)

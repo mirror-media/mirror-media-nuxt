@@ -13,6 +13,10 @@ import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import { NEWEBPAY_KEY, NEWEBPAY_IV, ISRAFEL_ORIGIN } from '~/configs/config'
+import {
+  getCookieObject,
+  trackingSeconds,
+} from '~/serverMiddleware/appendUtmToUrl'
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
@@ -139,13 +143,22 @@ export default {
     },
   },
   mounted() {
+    // !!!to be chagned to monthly / yearly subscription!!!!!
     if (this.status === 'success' && this.orderInfo?.frequency === 'one_time') {
-      console.log('clear utm cookie!!')
-      const utmCookieString = document.cookie
-        .split('; ')
-        .filter((cookieStr) => cookieStr.includes('utm='))[0]
-      if (utmCookieString) {
-        document.cookie = `utm=removed; max-age=${24 * 60 * 60 * 1000}; path=/`
+      const utmObject = getCookieObject('utm=')
+      console.log('utmObject', utmObject)
+      if (utmObject) {
+        // turn utm cookie value into invalid json to stop being appended to url
+        console.log('new utm', {
+          utm_campaign: utmObject.utm_campaign,
+          terminated: true,
+        })
+        document.cookie = `utm=${encodeURIComponent(
+          JSON.stringify({
+            utm_campaign: utmObject.utm_campaign,
+            terminated: true,
+          })
+        )}; max-age=${trackingSeconds}; path=/`
       }
     }
   },

@@ -74,7 +74,7 @@ import { required, email } from 'vuelidate/lib/validators'
 import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settings-app-config'
-import { objectToQueryString } from '~/serverMiddleware/appendUtmToUrl'
+import { queryStringFromCookieObject } from '~/serverMiddleware/appendUtmToUrl'
 
 export default {
   components: {
@@ -232,25 +232,13 @@ export default {
 
         /*
          * when verified and redirect to verify-success page,
-         * we need this email to check which page-state should show
+         * we need email to check which page-state should show
          * (for more detail, see pages/verify-success.vue)
+         *
+         * add utm query strings if there is utm object stored in cookie
+         * to track conversion rate to speicfic campaign
          */
-
-        // const queryString = email ? `?email=${email}` : ''
-
-        let queryObject = { email }
-        const utmCookieString = document.cookie
-          .split('; ')
-          .filter((cookieStr) => cookieStr.includes('utm='))[0]
-        if (utmCookieString) {
-          const utmObject = JSON.parse(
-            decodeURIComponent(utmCookieString.split('=')[1])
-          )
-          queryObject = { ...queryObject, ...utmObject }
-        }
-        const queryString = objectToQueryString(queryObject)
-
-        console.log('return url = ', `${origin}${path}${queryString}`)
+        const queryString = queryStringFromCookieObject('utm=', { email })
         return `${origin}${path}${queryString}`
       }
     },
