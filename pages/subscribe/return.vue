@@ -138,5 +138,16 @@ export default {
       return this.status === 'success' ? 3 : 2
     },
   },
+  mounted() {
+    if (this.status === 'success' && this.orderInfo?.frequency === 'one_time') {
+      console.log('clear utm cookie!!')
+      const utmCookieString = document.cookie
+        .split('; ')
+        .filter((cookieStr) => cookieStr.includes('utm='))[0]
+      if (utmCookieString) {
+        document.cookie = `utm=removed; max-age=${24 * 60 * 60 * 1000}; path=/`
+      }
+    }
+  },
 }
 </script>
