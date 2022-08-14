@@ -77,7 +77,11 @@ export default function (req, res, next) {
 
       res.redirect(
         req.path +
-          objectToQueryString({ ...req.query, ...cookieHasMemberCampaign })
+          objectToQueryString(
+            queryStringToObject(
+              objectToQueryString({ ...req.query, ...cookieUtm })
+            )
+          )
       )
     }
   }
@@ -104,6 +108,22 @@ export function objectToQueryString(object) {
   return queryString
 }
 
+function queryStringToObject(queryString) {
+  if (!queryString) {
+    return {}
+  }
+
+  const queryObject = queryString
+    .substring(1)
+    .split('&')
+    .reduce((queryObj, query) => {
+      const [key, value] = query.split('=')
+      queryObj[key] = value
+      return queryObj
+    }, {})
+
+  return queryObject
+}
 export function getCookieObject(key) {
   if (!key || !document.cookie.length) {
     return null
