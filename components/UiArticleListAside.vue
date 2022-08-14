@@ -14,6 +14,7 @@
           class="item__image"
           target="_blank"
           rel="noopener noreferrer"
+          :class="{ adjusted: isStyleAdjusted }"
           @click="$emit('sendGa')"
         >
           <img :src="item.imgSrc" alt="" />
@@ -27,6 +28,7 @@
             class="item__title"
             target="_blank"
             rel="noopener noreferrer"
+            :class="{ adjusted: isStyleAdjusted }"
             @click="$emit('sendGa')"
             >{{ item.title }}</a
           >
@@ -48,6 +50,11 @@ export default {
       type: Array,
       required: true,
       default: () => [],
+    },
+    isStyleAdjusted: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
 }
@@ -115,6 +122,11 @@ export default {
         width: 50%;
         margin-right: 10px;
         padding: 0;
+        &.adjusted {
+          width: 120px;
+          height: 80px;
+          margin-right: 12px;
+        }
       }
       img {
         position: absolute;
@@ -178,6 +190,10 @@ export default {
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         height: calc(16px * 1.14 * 3);
+        &.adjusted {
+          -webkit-line-clamp: 2;
+          height: calc(16px * 1.14 * 2);
+        }
       }
     }
     @each $name, $color in $sections-color {
