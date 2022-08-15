@@ -143,16 +143,10 @@ export default {
     },
   },
   mounted() {
-    // !!!to be chagned to monthly / yearly subscription!!!!!
-    if (this.status === 'success' && this.orderInfo?.frequency === 'one_time') {
+    if (this.status === 'success' && this.orderInfo?.frequency !== 'one_time') {
       const utmObject = getCookieObject('utm=')
-      console.log('utmObject', utmObject)
       if (utmObject) {
         // turn utm cookie value into invalid json to stop being appended to url
-        console.log('new utm', {
-          utm_campaign: utmObject.utm_campaign,
-          terminated: true,
-        })
         document.cookie = `utm=${encodeURIComponent(
           JSON.stringify({
             utm_campaign: utmObject.utm_campaign,
