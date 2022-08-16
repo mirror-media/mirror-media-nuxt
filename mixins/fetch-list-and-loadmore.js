@@ -100,7 +100,7 @@ export default function fetchListAndLoadmore({
           imgTextBackgroundColor: section.name && getSectionColor(section.name),
           infoTitle: item.title ?? '',
           infoDescription: stripHtmlTags(brief),
-
+          redirect: item.redirect ?? '',
           ...transformListItemContent?.call(this, item),
         }
       },

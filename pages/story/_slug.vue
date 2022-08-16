@@ -303,6 +303,8 @@ export default {
             redirectHref?.startsWith('http://')
           ) {
             this.$nuxt.context.redirect(redirectHref)
+          } else if (redirectHref?.startsWith('www.')) {
+            this.$nuxt.context.redirect(`https://${redirectHref}`)
           } else {
             this.$nuxt.context.redirect(`/story/${redirectHref}`)
           }
