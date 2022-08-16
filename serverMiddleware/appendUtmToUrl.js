@@ -45,11 +45,11 @@ export default function (req, res, next) {
       }
     }
 
-    const urlHasTrakingCampainKeyword =
+    const hasTrackingCampaignInUrl =
       !!req.query.utm_campaign &&
       req.query.utm_campaign?.toLowerCase().includes(trackingCampaignKeyword)
 
-    if (urlHasTrakingCampainKeyword) {
+    if (hasTrackingCampaignInUrl) {
       const utmObj = utmObjectFromQuery(req.query)
 
       // store cookie if not exist or update cookie if new campaign detected
@@ -101,12 +101,11 @@ export function objectToQueryString(object) {
     return ''
   }
 
-  let queryString = '?'
-  Object.entries(object).forEach(([key, value], i) => {
-    const query = `${key}=${value}`
-    const end = i === Object.keys(object).length - 1 ? '' : '&'
-    queryString += query + end
-  })
+  const queryString =
+    '?' +
+    Object.entries(object)
+      .map((keyValArr) => keyValArr.join('='))
+      .join('&')
   return queryString
 }
 
