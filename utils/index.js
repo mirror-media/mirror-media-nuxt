@@ -35,7 +35,8 @@ function removeArticleWithExternalLink(articleList) {
     const redirectLink = item.redirect.trim()
     return (
       !redirectLink.startsWith('https://') &&
-      !redirectLink.startsWith('http://')
+      !redirectLink.startsWith('http://') &&
+      !redirectLink.startsWith('www.')
     )
   })
 }
