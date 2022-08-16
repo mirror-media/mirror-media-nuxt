@@ -1064,7 +1064,12 @@ $aside-width-adjusted: 365px;
       max-width: 695px;
       padding-bottom: 0;
       margin-left: 0;
-      &.adjusted {
+    }
+    &.adjusted::v-deep {
+      .story__list {
+        margin-top: 20px;
+      }
+      @include media-breakpoint-up(xl) {
         width: calc(100% - #{$aside-width-adjusted});
       }
     }
