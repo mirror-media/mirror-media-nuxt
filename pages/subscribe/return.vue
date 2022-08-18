@@ -13,10 +13,8 @@ import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import { NEWEBPAY_KEY, NEWEBPAY_IV, ISRAFEL_ORIGIN } from '~/configs/config'
-import {
-  getCookieObject,
-  trackingSeconds,
-} from '~/serverMiddleware/appendUtmToUrl'
+import { trackingSeconds } from '~/serverMiddleware/appendUtmToUrl'
+import { getCookieObject } from '~/utils/cookieQueryStringConverter'
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {

@@ -74,7 +74,7 @@ import { required, email } from 'vuelidate/lib/validators'
 import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settings-app-config'
-import { queryStringFromCookieObject } from '~/serverMiddleware/appendUtmToUrl'
+import { queryStringFromCookieObject } from '~/utils/cookieQueryStringConverter'
 
 export default {
   components: {
@@ -239,6 +239,7 @@ export default {
          * to track conversion rate to speicfic campaign
          */
         const queryString = queryStringFromCookieObject('utm=', { email })
+        console.log('queryString', queryString)
         return `${origin}${path}${queryString}`
       }
     },

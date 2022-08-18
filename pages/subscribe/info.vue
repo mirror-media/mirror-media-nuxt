@@ -161,7 +161,7 @@ import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
 import { STATUS as REQUEST_STATUS } from '~/constants/request.js'
-import { queryStringFromCookieObject } from '~/serverMiddleware/appendUtmToUrl'
+import { queryStringFromCookieObject } from '~/utils/cookieQueryStringConverter'
 
 // import redirectDestination from '~/utils/redirect-destination'
 
