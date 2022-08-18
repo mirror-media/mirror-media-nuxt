@@ -45,6 +45,20 @@ export default function (req, res, next) {
       }
     }
 
+    if (
+      !!req.query.utm_campaign &&
+      typeof req.query.utm_campaign !== 'string'
+    ) {
+      /*
+       * ignore the case when there are more than one utm_campaign cause it's hard to tell what to store in cookie
+       * for now there are only two conditions to encounter this corner case:
+       *  1. Yser accidentally copy past double utm_campaign (maybe more like a qa's behavior try to test the site).
+       *  2. When one member campaign is stored in cookie and user click on other non member campaign, so the utm_campaign will
+       *     be added to the url. In this case since we already stored the campaign we care, it will be ok just to ignore it.
+       */
+      return next()
+    }
+
     const hasTrackingCampaignInUrl =
       !!req.query.utm_campaign &&
       req.query.utm_campaign?.toLowerCase().includes(trackingCampaignKeyword)
