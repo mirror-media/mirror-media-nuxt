@@ -40,7 +40,7 @@
             >
           </div>
           <SubscribeFormPayment
-            v-if="showLINEPayUI"
+            v-if="showLINEPayUI && !isUpgradeFromMonthToYear"
             ref="paymentDOM"
             :setPaymentMethod="setPaymentMethod"
             :validateOn="validateOn"
