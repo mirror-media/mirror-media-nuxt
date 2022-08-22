@@ -20,4 +20,24 @@ function getSectionColor(name) {
   return color
 }
 
-export { isTruthy, getSectionColor }
+/**
+ * @typedef {Object} ArticleList -  an list of article info
+ * @property {string} redirect - a link to redirect other page of external site
+ */
+
+/**
+ * @param {ArticleList[]} articleList
+ * @return {ArticleList[]}
+ */
+
+function removeArticleWithExternalLink(articleList) {
+  return articleList.filter((item) => {
+    const redirectLink = item.redirect.trim()
+    return (
+      !redirectLink.startsWith('https://') &&
+      !redirectLink.startsWith('http://') &&
+      !redirectLink.startsWith('www.')
+    )
+  })
+}
+export { isTruthy, getSectionColor, removeArticleWithExternalLink }
