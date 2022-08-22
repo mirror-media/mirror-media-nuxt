@@ -665,11 +665,14 @@ async function updateSubscriptionFromMonthToYear(context, subscriptionId) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
+  const changeDate = new Date().toISOString()
+
   // get user's subscription state
   return await fireGqlRequest(
     setSubscriptionFromMonthToYear,
     {
       id: subscriptionId,
+      changeDate,
     },
     context
   )
