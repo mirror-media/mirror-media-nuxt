@@ -674,6 +674,8 @@ async function updateSubscriptionFromMonthToYear(context, subscriptionId) {
 }
 
 export {
+  getUserFirebaseId,
+  getFirebaseToken,
   getMemberDetailData,
   getMemberServiceRuleStatus,
   setMemberServiceRuleStatusToTrue,
