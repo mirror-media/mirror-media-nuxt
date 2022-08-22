@@ -3,6 +3,9 @@
     <section v-if="isStylePhotography">
       <ContainerPhotoGallery :story="story" />
     </section>
+    <section v-else-if="isStyleWide">
+      <ContainerCulturePost :story="story" />
+    </section>
     <section v-else>
       <ContainerHeader />
 
@@ -131,6 +134,7 @@ import UiShareLinksToggled from '~/components/UiShareLinksToggled.vue'
 import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
 import ContainerPhotoGallery from '~/components/photo-gallery/ContainerPhotoGallery.vue' // import MicroAdWithLabel from '~/components/MicroAdWithLabel.vue'
 import ContainerHeader from '~/components/ContainerHeader.vue'
+import ContainerCulturePost from '~/components/culture-post/ContainerCulturePost.vue'
 import { DOMAIN_NAME, ENV, PREVIEW_QUERY } from '~/configs/config'
 import { getSectionColor } from '~/utils/index.js'
 
@@ -156,6 +160,7 @@ export default {
     UiShareLinksHasCopyLink,
     ContainerPhotoGallery,
     ContainerHeader,
+    ContainerCulturePost,
 
     // MicroAdWithLabel,
   },
@@ -393,9 +398,11 @@ export default {
     doesHaveLatestStories() {
       return this.latestStories.length > 0
     },
-
     doesHavePopularStories() {
       return this.popularStories.length > 0
+    },
+    isStyleWide() {
+      return this.story.style === 'wide'
     },
   },
 
