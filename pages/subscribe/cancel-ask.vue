@@ -84,6 +84,7 @@ import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vu
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import UiMembershipCheckoutLabel from '~/components/UiMembershipCheckoutLabel.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
+import { STATUS as REQUEST_STATUS } from '~/constants/request'
 
 export default {
   middleware: ['handle-go-to-marketing'],
@@ -153,7 +154,36 @@ export default {
       try {
         this.isLoading = true
         this.updateReason()
-        await this.$cancelMemberSubscription(this.reasonString)
+
+        if (this.$config.linepayUiToggle) {
+          const result = await this.$axios.$post(
+            `${window.location.origin}/api/v2/cancel-subscription/v1`,
+            {
+              firebaseId: this.$getUserFirebaseId(),
+              note: this.reasonString,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${this.$getFirebaseToken()}`,
+              },
+            }
+          )
+
+          switch (result.status) {
+            case REQUEST_STATUS.FAIL: {
+              throw new Error(result.data.title)
+            }
+            case REQUEST_STATUS.ERROR: {
+              throw new Error(result.message)
+            }
+            case REQUEST_STATUS.SUCCESS:
+            default: {
+              break
+            }
+          }
+        } else {
+          await this.$cancelMemberSubscription(this.reasonString)
+        }
 
         this.isLoading = false
         this.$router.push('/subscribe/cancel-success')

@@ -3,6 +3,8 @@ import _ from 'lodash'
 import axios from 'axios'
 import qs from 'qs'
 import {
+  getUserFirebaseId,
+  getFirebaseToken,
   getMemberDetailData,
   getMemberServiceRuleStatus,
   setMemberServiceRuleStatusToTrue,
@@ -397,5 +399,11 @@ export default (context, inject) => {
   })
   inject('isMemberPaidSubscriptionWithMobile', async () => {
     return await isMemberPaidSubscriptionWithMobile(context)
+  })
+  inject('getUserFirebaseId', () => {
+    return getUserFirebaseId(context)
+  })
+  inject('getFirebaseToken', () => {
+    return getFirebaseToken(context)
   })
 }

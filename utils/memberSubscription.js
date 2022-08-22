@@ -92,6 +92,8 @@ async function getMemberDetailData(context) {
 }
 
 async function cancelMemberSubscription(context, reason) {
+  // TODO: remove this function when LINE Pay feature is stable in production
+
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
@@ -674,6 +676,8 @@ async function updateSubscriptionFromMonthToYear(context, subscriptionId) {
 }
 
 export {
+  getUserFirebaseId,
+  getFirebaseToken,
   getMemberDetailData,
   getMemberServiceRuleStatus,
   setMemberServiceRuleStatusToTrue,
