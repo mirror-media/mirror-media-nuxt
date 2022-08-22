@@ -319,6 +319,9 @@ export default {
     showLINEPayUI() {
       return this.linepayUiToggle
     },
+    isPremiumPurchase() {
+      return [Frequency.Monthly, Frequency.Yearly].includes(this.frequency)
+    },
   },
   watch: {
     'receiptData.carrierType'() {
@@ -485,14 +488,11 @@ export default {
     // for LINE Pay payment
     async getPaymentInfoFromBackend() {
       let payload
-      const isPremiumPurchase =
-        this.frequency === 'yearly' || this.frequency === 'monthly'
-
-      if (isPremiumPurchase) {
+      if (this.isPremiumPurchase) {
         payload = {
           member: {
             connect: {
-              firebaseId: this.getUserFirebaseId(),
+              firebaseId: this.$getUserFirebaseId(),
             },
           },
           email: this.email,
@@ -514,7 +514,7 @@ export default {
         payload = {
           member: {
             connect: {
-              firebaseId: this.getUserFirebaseId(),
+              firebaseId: this.$getUserFirebaseId(),
             },
           },
           email: this.email,
@@ -546,10 +546,8 @@ export default {
     // for Newebpay Payment
     async getPaymentDataFromApiGateWay() {
       let gateWayPayload
-      const isPremiumPurchase =
-        this.frequency === 'yearly' || this.frequency === 'monthly'
 
-      if (isPremiumPurchase) {
+      if (this.isPremiumPurchase) {
         gateWayPayload = {
           email: this.email,
           frequency: this.frequency,
@@ -593,9 +591,6 @@ export default {
         case '二聯式發票（含載具）':
           return 'B2C'
       }
-    },
-    getUserFirebaseId() {
-      return this.$store?.state?.membership?.userUid
     },
   },
 }
