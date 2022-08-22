@@ -1,6 +1,6 @@
 <template>
   <div class="cancel-ask">
-    <template v-if="!canShowFeat && doesHaveIsPayByAppValue">
+    <template v-if="doesHaveIsPayByAppValue">
       <SubscribeWrapper v-if="isPayByApp">
         <h6 class="cancel-ask__title">取消訂閱提示</h6>
         <p class="cancel-ask__description">
@@ -13,28 +13,47 @@
           >回訂閱紀錄</UiMembershipButtonPrimary
         >
       </SubscribeWrapper>
-      <SubscribeWrapper v-else @back="handleBack" @submit="handleSubmit">
+      <!-- 
+        ref in v-for will produce an array of ref in Vue 2.
+        This feature will be break in Vue 3.
+
+        @see https://www.vueframework.com/guide/migration/array-refs.html
+      -->
+      <SubscribeWrapper
+        v-for="i in 1"
+        v-else
+        :key="i"
+        @back="handleBack"
+        @submit="handleSubmit"
+      >
         <h6 class="cancel-ask__title">取消訂閱</h6>
         <p class="cancel-ask__description">
           請問您為何想取消訂閱鏡週刊 Premium 服務？
         </p>
         <UiMembershipCheckoutLabel
+          ref="option"
           content="文章無法滿足需求"
-          @change="handleChange"
+          @handle-change="updateReason"
         />
         <UiMembershipCheckoutLabel
+          ref="option"
           content="已訂閱其他媒體"
-          @change="handleChange"
+          @handle-change="updateReason"
         />
         <UiMembershipCheckoutLabel
+          ref="option"
           content="使用體驗不佳"
-          @change="handleChange"
+          @handle-change="updateReason"
         />
         <UiMembershipCheckoutLabel
+          ref="option"
           content="想改用單篇付費方式繼續閱讀"
-          @change="handleChange"
         />
-        <UiMembershipCheckoutLabel content="其他" @change="handleChange" />
+        <UiMembershipCheckoutLabel
+          ref="option"
+          content="其他"
+          @handle-change="updateReason"
+        />
         <textarea
           v-if="shouldShowTextarea"
           v-model="otherDetail"
@@ -45,58 +64,6 @@
           <UiMembershipButtonSecondary @click.native="handleBack"
             >返回
           </UiMembershipButtonSecondary>
-          <UiMembershipButtonPrimary @click.native="handleSubmit"
-            >確認取消訂閱</UiMembershipButtonPrimary
-          >
-        </div>
-      </SubscribeWrapper>
-    </template>
-
-    <template v-if="canShowFeat && doesHaveIsPayByAppValue">
-      <SubscribeWrapper v-if="isPayByApp">
-        <h6 class="cancel-ask__title">取消訂閱提示</h6>
-        <p class="cancel-ask__description">
-          由於您先前於 APP 購買，如要取消訂閱，請至 App Store (iOS 系統) 或
-          Google Play (Android 系統) 操作
-        </p>
-        <UiMembershipButtonPrimary
-          class="subscribe-cancel__back"
-          @click.native="handleBack"
-          >回訂閱紀錄</UiMembershipButtonPrimary
-        >
-      </SubscribeWrapper>
-      <SubscribeWrapper v-else @back="handleBack" @submit="handleSubmit">
-        <h6 class="cancel-ask__title">取消訂閱</h6>
-        <p class="cancel-ask__description">
-          請問您為何想取消訂閱鏡週刊 Premium 服務？
-        </p>
-        <UiMembershipCheckoutLabel
-          content="文章無法滿足需求"
-          @change="handleChange"
-        />
-        <UiMembershipCheckoutLabel
-          content="已訂閱其他媒體"
-          @change="handleChange"
-        />
-        <UiMembershipCheckoutLabel
-          content="使用體驗不佳"
-          @change="handleChange"
-        />
-        <UiMembershipCheckoutLabel
-          content="想改用單篇付費方式繼續閱讀"
-          @change="handleChange"
-        />
-        <UiMembershipCheckoutLabel content="其他" @change="handleChange" />
-        <textarea
-          v-if="shouldShowTextarea"
-          v-model="otherDetail"
-          placeholder="請輸入您的回饋..."
-          rows="3"
-        />
-        <div class="cancel-ask__button_group">
-          <UiMembershipButtonSecondary @click.native="handleBack"
-            >返回</UiMembershipButtonSecondary
-          >
           <UiMembershipButtonPrimary @click.native="handleSubmit"
             >確認取消訂閱</UiMembershipButtonPrimary
           >
@@ -137,15 +104,12 @@ export default {
     return {
       isLoading: false,
       isPayByApp: undefined,
-      reason: [],
-      cancelStatus: 'success',
       otherDetail: '',
+      reason: [],
+      shouldShowTextarea: false,
     }
   },
   computed: {
-    shouldShowTextarea() {
-      return this.reason.includes('其他')
-    },
     reasonString() {
       return this.reason.length
         ? `取消原因：${this.reason.join('、')}。`
@@ -159,6 +123,22 @@ export default {
     },
   },
   methods: {
+    updateReason() {
+      this.shouldShowTextarea = false
+      this.reason.splice(0)
+      this.$refs.option.forEach((ref) => {
+        if (ref.checked) {
+          let text
+          if (ref.content === '其他') {
+            this.shouldShowTextarea = true
+            text = `其他「${this.otherDetail}」`
+          } else {
+            text = ref.content
+          }
+          this.reason.push(text)
+        }
+      })
+    },
     handleBack() {
       window.location.assign('/subscribe/set')
     },
@@ -172,25 +152,16 @@ export default {
        */
       try {
         this.isLoading = true
+        this.updateReason()
         await this.$cancelMemberSubscription(this.reasonString)
 
         this.isLoading = false
-        this.cancelStatus = 'success'
         this.$router.push('/subscribe/cancel-success')
       } catch (error) {
         console.error(error)
         this.isLoading = false
         this.$router.push('/subscribe/cancel-fail')
       }
-    },
-    setCancelStatus(val) {
-      this.cancelStatus = val
-    },
-    handleChange(value) {
-      if (value.type === 'add') {
-        return this.reason.push(value.value)
-      }
-      this.reason = this.reason.filter((item) => item !== value.value)
     },
   },
 }
