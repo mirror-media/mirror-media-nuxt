@@ -537,7 +537,7 @@ async function getMemberShipStatus(context, memberShipStatusName) {
     paymentMethod,
   } = subscription[0]
   const cardInfoLastFour = newebpayPayment?.[0] || {
-    cardInfoLastFour: null,
+    cardInfoLastFour: '',
   }
   const { maskedCreditCardNumber } = linepayPayment?.[0] || {
     maskedCreditCardNumber: null,
@@ -547,7 +547,7 @@ async function getMemberShipStatus(context, memberShipStatusName) {
       ? cardInfoLastFour
       : paymentMethod === PaymentMethod.LINEPay
       ? maskedCreditCardNumber.slice(-4)
-      : null
+      : ''
 
   const payMethodText = generatePayMethodText(paymentMethod, lastFourDigit)
 
