@@ -1,10 +1,11 @@
 <template>
   <label>
     <input
-      type="checkbox"
       :id="content"
+      v-model="checked"
+      type="checkbox"
       :value="content"
-      @change="handleChange"
+      @change="$emit('handle-change')"
     />
     {{ content }}</label
   >
@@ -19,13 +20,10 @@ export default {
       default: '',
     },
   },
-  methods: {
-    handleChange(event) {
-      const isChecked = event.target.checked
-      const emitEvent = { value: event.target.value }
-      emitEvent.type = isChecked ? 'add' : 'remove'
-      this.$emit('change', emitEvent)
-    },
+  data() {
+    return {
+      checked: false,
+    }
   },
 }
 </script>
