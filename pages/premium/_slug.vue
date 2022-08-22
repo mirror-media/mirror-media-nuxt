@@ -132,6 +132,8 @@ export default {
           heroImage: {
             image: { resizedTargets, ...remainImageInfo },
             ...remainHeroImageInfo
+          } = {
+            image: {},
           },
           links,
           engineers,
