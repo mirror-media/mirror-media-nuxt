@@ -60,6 +60,7 @@ import UiArticleSkeleton from '~/components/culture-post-for-premium/UiArticleSk
 import UiReloadArticle from '~/components/culture-post-for-premium/UiReloadArticle.vue'
 import UiPremiumInviteToSubscribe from '~/components/UiPremiumInviteToSubscribe.vue'
 import UiMagazineAfterArticle from '~/components/culture-post-for-premium/UiMagazineAfterArticle.vue'
+import { Frequency } from '~/constants/common'
 
 export default {
   name: 'UiArticleBody',
@@ -172,7 +173,7 @@ export default {
     },
     handleSubscribePost() {
       window.location.assign(
-        `/subscribe/info?plan=one-time&one-time-post-id=${this.postId}`
+        `/subscribe/info?plan=${Frequency.OneTime}&one-time-post-id=${this.postId}`
       )
     },
   },
