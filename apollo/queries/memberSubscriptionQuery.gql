@@ -87,10 +87,13 @@ query fetchRecurringSubscription($firebaseId: String!) {
         paymentMethod
         cardInfoLastFour
       }
+      linepayPayment(orderBy: { transactionTime: desc }) {
+        payInfoMethod
+        maskedCreditCardNumber
+      }
     }
   }
 }
-
 query fetchSubscriptionPayments($firebaseId: String!) {
   member(where: { firebaseId: $firebaseId }) {
     email
