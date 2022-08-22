@@ -102,7 +102,7 @@
               <UiSubscribeButton
                 title="開始結帳"
                 :isLoading="isLoading"
-                :class="{ disabled: paymentMethod === '' }"
+                :class="{ disabled: disallowToSubmit }"
                 @click.native="submitHandler"
               />
             </template>
@@ -321,6 +321,9 @@ export default {
     },
     isPremiumPurchase() {
       return [Frequency.Monthly, Frequency.Yearly].includes(this.frequency)
+    },
+    disallowToSubmit() {
+      return this.paymentMethod === '' || !this.frequency
     },
   },
   watch: {
