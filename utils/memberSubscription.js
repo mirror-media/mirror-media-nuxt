@@ -536,7 +536,7 @@ async function getMemberShipStatus(context, memberShipStatusName) {
     isCanceled,
     paymentMethod,
   } = subscription[0]
-  const cardInfoLastFour = newebpayPayment?.[0] || {
+  const { cardInfoLastFour } = newebpayPayment?.[0] || {
     cardInfoLastFour: '',
   }
   const { maskedCreditCardNumber } = linepayPayment?.[0] || {
