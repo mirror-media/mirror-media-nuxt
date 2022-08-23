@@ -10,10 +10,13 @@
 
       <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
 
-      <div v-else class="article">
+      <div v-else class="article" :class="{ isStyleFeatureToggleOn }">
         <ContainerHeader :currentSectionName="sectionName" />
 
-        <div class="story-container">
+        <div
+          class="story-container"
+          :class="{ adjusted: isStyleFeatureToggleOn }"
+        >
           <ContainerGptAd
             class="story__ad story__ad--fixed-height"
             :pageKey="sectionId"
@@ -21,7 +24,11 @@
           />
 
           <div class="story-wrapper">
-            <ContainerStoryBody :story="story" class="story-slug__story-body">
+            <ContainerStoryBody
+              :story="story"
+              class="story-slug__story-body"
+              :class="{ adjusted: isStyleFeatureToggleOn }"
+            >
               <template #fixedTriggerEnd>
                 <div ref="fixedTriggerEnd" />
               </template>
@@ -75,7 +82,7 @@
               </template>
             </ContainerStoryBody>
 
-            <aside>
+            <aside :class="{ adjusted: isStyleFeatureToggleOn }">
               <ClientOnly>
                 <ContainerGptAd
                   class="story__ad"
@@ -111,6 +118,7 @@
                   class="latest-list"
                   heading="最新文章"
                   :items="latestStories"
+                  :isStyleAdjusted="isStyleFeatureToggleOn"
                   @sendGa="sendGaForClick('latest')"
                 />
               </div>
@@ -118,7 +126,10 @@
               <div
                 ref="fixedContainer"
                 class="fixed-container"
-                :class="{ fixed: shouldFixAside }"
+                :class="{
+                  fixed: shouldFixAside,
+                  adjusted: isStyleFeatureToggleOn,
+                }"
               >
                 <ClientOnly>
                   <ContainerGptAd
@@ -133,6 +144,7 @@
                     <UiArticleListAsideB
                       heading="熱門文章"
                       :items="popularStories"
+                      :isStyleAdjusted="isStyleFeatureToggleOn"
                       @sendGa="sendGaForClick('popular')"
                     />
                   </section>
@@ -154,7 +166,7 @@
 
           <UiAdultContentWarning v-if="story.isAdult" />
 
-          <div v-show="shouldShowAdPcFloating" class="ad-pc-floating">
+          <div v-if="shouldShowAdPcFloating" class="ad-pc-floating">
             <ContainerGptAd
               :pageKey="sectionCarandwatchId"
               adKey="PC_FLOATING"
@@ -215,7 +227,12 @@ import UiFooter from '~/components/UiFooter.vue'
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
 import error from '~/layouts/error.vue'
-import { DOMAIN_NAME, ENV, PREVIEW_QUERY } from '~/configs/config'
+import {
+  DOMAIN_NAME,
+  ENV,
+  PREVIEW_QUERY,
+  STORY_STYLE_FEATURE_TOGGLE,
+} from '~/configs/config'
 import {
   SECTION_IDS,
   SITE_OG_IMG,
@@ -286,6 +303,8 @@ export default {
             redirectHref?.startsWith('http://')
           ) {
             this.$nuxt.context.redirect(redirectHref)
+          } else if (redirectHref?.startsWith('www.')) {
+            this.$nuxt.context.redirect(`https://${redirectHref}`)
           } else {
             this.$nuxt.context.redirect(`/story/${redirectHref}`)
           }
@@ -412,10 +431,9 @@ export default {
       sectionCarandwatchId: SECTION_IDS.carandwatch,
       doesClickCloseAdPcFloating: false,
       doesHaveAdPcFloating: false,
-
       shouldFixAside: false,
-
       scrollDepthObserver: undefined,
+      isStyleFeatureToggleOn: STORY_STYLE_FEATURE_TOGGLE,
     }
   },
 
@@ -477,6 +495,9 @@ export default {
       return !_.isEmpty(this.section)
     },
     sectionId() {
+      if (this.section.name === 'mirrorcolumn') {
+        return '5964418a4bbe120f002a3198'
+      }
       return this.section.id ?? DEFAULT_SECTION_ID
     },
     storySlug() {
@@ -536,6 +557,9 @@ export default {
     this.insertCustomizedMarkup()
     if (this.isStyleDefault) {
       this.observeScrollDepthForGa()
+      if (this.isDesktopWidth) {
+        window.addEventListener('scroll', this.handleFixAside)
+      }
     }
   },
 
@@ -1023,8 +1047,10 @@ function getLabel([item = {}] = []) {
 
 <style lang="scss" scoped>
 $story-max-width: 1160px;
+$story-max-width-adjusted: 1220px;
 
 $aside-width: 300px;
+$aside-width-adjusted: 365px;
 
 .story-slug {
   &--background-yellow {
@@ -1042,12 +1068,23 @@ $aside-width: 300px;
       padding-bottom: 0;
       margin-left: 0;
     }
+    &.adjusted::v-deep {
+      .story__list {
+        margin-top: 20px;
+      }
+      @include media-breakpoint-up(xl) {
+        width: calc(100% - #{$aside-width-adjusted});
+      }
+    }
   }
 }
 
 .article {
   @include media-breakpoint-up(xl) {
     background-color: #414141;
+  }
+  &.isStyleFeatureToggleOn {
+    background: #fff;
   }
 }
 
@@ -1063,6 +1100,9 @@ $aside-width: 300px;
     margin-left: auto;
     margin-right: auto;
     background-color: #fff;
+    &.adjusted {
+      max-width: $story-max-width-adjusted;
+    }
   }
 }
 
@@ -1123,6 +1163,10 @@ aside {
     width: $aside-width;
     margin-right: 0;
     margin-bottom: 0;
+    &.adjusted {
+      width: $aside-width-adjusted;
+      // margin-left: 60px;
+    }
   }
 
   > * {
@@ -1144,6 +1188,9 @@ aside {
       position: fixed;
       top: 0;
       width: $aside-width;
+      &.adjusted {
+        width: $aside-width-adjusted;
+      }
     }
   }
 }

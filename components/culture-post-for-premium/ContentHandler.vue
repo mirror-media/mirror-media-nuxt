@@ -365,7 +365,6 @@ $quote-color: #4a90e2;
     @include media-breakpoint-up(xl) {
       width: 720px;
       position: relative;
-      left: calc((720px - 640px) / 2 * -1);
     }
     @include media-breakpoint-up(xxl) {
       left: 0;

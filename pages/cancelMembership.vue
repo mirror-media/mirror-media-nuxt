@@ -19,6 +19,7 @@ import ContainerMembershipCancelHoldUp from '~/components/ContainerMembershipCan
 import ContainerMembershipCancelPleaseConfirm from '~/components/ContainerMembershipCancelPleaseConfirm.vue'
 import ContainerMembershipCancelSuccess from '~/components/ContainerMembershipCancelSuccess.vue'
 import ContainerMembershipCancelError from '~/components/ContainerMembershipCancelError.vue'
+import { Frequency, MemberType } from '~/constants/common'
 
 export default {
   components: {
@@ -31,14 +32,14 @@ export default {
   async asyncData(context) {
     const memberType = await context.$getMemberType()
 
-    console.log(memberType)
+    const isPremiumOrVip = [
+      Frequency.Yearly,
+      Frequency.Monthly,
+      MemberType.Yearly,
+      MemberType.Monthly,
+      MemberType.Marketing,
+    ].includes(memberType)
 
-    const isPremiumOrVip =
-      memberType === 'year' ||
-      memberType === 'subscribe_yearly' ||
-      memberType === 'month' ||
-      memberType === 'subscribe_monthly' ||
-      memberType === 'marketing'
     if (isPremiumOrVip) {
       return {
         pageState: 'holdUp',

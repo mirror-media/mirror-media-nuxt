@@ -2,6 +2,8 @@ import { print } from 'graphql/language/printer'
 import axios from 'axios'
 import _ from 'lodash'
 import { API_PATH_FRONTEND } from '~/configs/config.js'
+import { PaymentMethod, MemberType, Frequency } from '~/constants/common'
+
 import {
   fetchMemberSubscriptions,
   fetchMemberBasicInfo,
@@ -26,122 +28,14 @@ const apiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0`
 const newApiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v2`
 const k3ApiUrl = `${baseUrl}${API_PATH_FRONTEND}/getposts`
 
-async function getMemberType(context) {
-  // determine whether user is logged in or not
-  const firebaseId = await getUserFirebaseId(context)
-  if (!firebaseId) return 'not-member' // no user is logged in
-
-  try {
-    const res = await fireGqlRequest(
-      fetchMemberBasicInfo,
-      { firebaseId },
-      context
-    )
-    const memberBasicInfo = res.data?.allMembers?.[0]
-    return formatMemberType(memberBasicInfo.type)
-  } catch (error) {
-    console.error(error)
-    return 'not-member'
-  }
-}
-
-function formatMemberType(israfelMemberType) {
-  switch (israfelMemberType) {
-    case 'subscribe_one_time':
-    case 'one_time':
-      return 'subscribe_one_time'
-
-    case 'subscribe_monthly':
-    case 'monthly':
-      return 'subscribe_monthly'
-
-    case 'subscribe_yearly':
-    case 'yearly':
-      return 'subscribe_yearly'
-
-    case 'marketing':
-      return 'marketing'
-    case 'none':
-    default:
-      return 'none'
-  }
-}
-
-async function getMemberDetailData(context) {
-  const firebaseId = await getUserFirebaseId(context)
-  if (!firebaseId) return null
-
-  try {
-    const result = await fireGqlRequest(
-      fetchMemberSubscriptions,
-      {
-        firebaseId,
-      },
-      context
-    )
-
-    const memberData = result?.data?.member
-    return memberData
-  } catch (error) {
-    console.error(error)
-    return {}
-  }
-}
-
-async function cancelMemberSubscription(context, reason) {
-  const firebaseId = await getUserFirebaseId(context)
-  if (!firebaseId) return null
-
-  // get user's subscription state
-  const {
-    data: {
-      member: { subscription },
-    },
-  } = await fireGqlRequest(
-    fetchRecurringSubscription,
-    {
-      firebaseId,
-    },
-    context
-  )
-
-  // change subscription.isCanceled to true (carry unsubscribe reason)
-  await fireGqlRequest(
-    unsubscribe,
-    {
-      id: subscription[0].id,
-      note: reason,
-    },
-    context
-  )
-}
-
-async function getMemberAllSubscriptions(firebaseId, context) {
-  try {
-    // get user's subscription state
-    const result = await fireGqlRequest(
-      fetchMemberSubscriptions,
-      {
-        firebaseId,
-      },
-      context
-    )
-
-    // get member's all subscriptions
-    const subscriptions = result?.data?.member?.subscription
-
-    return subscriptions || []
-  } catch (error) {
-    // handle network error
-    console.error(error)
-    return []
-  }
-}
-
 function getUserFirebaseId(context) {
   const currentUserUid = context.store?.state?.membership?.userUid
 
   return currentUserUid || null
+}
+
+function getFirebaseToken(context) {
+  return context.store?.state?.membership?.userToken
 }
 
 async function fireGqlRequest(query, variables, context) {
@@ -194,15 +88,156 @@ async function fireGqlRequestNewApi(query, variables, context) {
   return result
 }
 
-const LINEPayStatusMap = {
-  paid: 'SUCCESS',
-  fail: 'FAIL',
+async function getMemberType(context) {
+  // determine whether user is logged in or not
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return 'not-member' // no user is logged in
+
+  try {
+    if (context.$config.linepayUiToggle) {
+      const res = await fireGqlRequestNewApi(
+        fetchMemberBasicInfo,
+        { firebaseId },
+        context
+      )
+      const memberBasicInfo = res.data?.allMembers?.[0]
+      return formatMemberType(memberBasicInfo.type)
+    }
+
+    // TODO: remove following lines when LINE Pay feature is stable in production
+    const res = await fireGqlRequest(
+      fetchMemberBasicInfo,
+      { firebaseId },
+      context
+    )
+    const memberBasicInfo = res.data?.allMembers?.[0]
+    return formatMemberType(memberBasicInfo.type)
+  } catch (error) {
+    console.error(error)
+    return 'not-member'
+  }
+}
+
+function formatMemberType(israfelMemberType) {
+  switch (israfelMemberType) {
+    case MemberType.OneTime:
+    case Frequency.OneTime:
+      return MemberType.OneTime
+
+    case MemberType.Monthly:
+    case Frequency.Monthly:
+      return MemberType.Monthly
+
+    case MemberType.Yearly:
+    case Frequency.Yearly:
+      return MemberType.Yearly
+
+    case MemberType.Marketing:
+      return MemberType.Marketing
+    case MemberType.None:
+    default:
+      return MemberType.None
+  }
+}
+
+// TODO: might not in use, should be removed
+async function getMemberDetailData(context) {
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return null
+
+  try {
+    const result = await fireGqlRequest(
+      fetchMemberSubscriptions,
+      {
+        firebaseId,
+      },
+      context
+    )
+
+    const memberData = result?.data?.member
+    return memberData
+  } catch (error) {
+    console.error(error)
+    return {}
+  }
+}
+
+async function cancelMemberSubscription(context, reason) {
+  // TODO: remove this function when LINE Pay feature is stable in production
+
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return null
+
+  // get user's subscription state
+  const {
+    data: {
+      member: { subscription },
+    },
+  } = await fireGqlRequest(
+    fetchRecurringSubscription,
+    {
+      firebaseId,
+    },
+    context
+  )
+
+  // change subscription.isCanceled to true (carry unsubscribe reason)
+  await fireGqlRequest(
+    unsubscribe,
+    {
+      id: subscription[0].id,
+      note: reason,
+    },
+    context
+  )
+}
+
+async function getMemberAllSubscriptions(firebaseId, context) {
+  try {
+    // get user's subscription state
+    if (context.$config.linepayUiToggle) {
+      const result = await fireGqlRequestNewApi(
+        fetchMemberSubscriptions,
+        {
+          firebaseId,
+        },
+        context
+      )
+
+      // get member's all subscriptions
+      const subscriptions = result?.data?.member?.subscription
+
+      return subscriptions || []
+    }
+
+    // TODO: remove following lines when LINE Pay feature is stable in production
+    const result = await fireGqlRequest(
+      fetchMemberSubscriptions,
+      {
+        firebaseId,
+      },
+      context
+    )
+
+    // get member's all subscriptions
+    const subscriptions = result?.data?.member?.subscription
+
+    return subscriptions || []
+  } catch (error) {
+    // handle network error
+    console.error(error)
+    return []
+  }
 }
 
 function getMemberPayRecords(subscriptionList) {
   if (!subscriptionList?.length) return []
 
   const payRecords = []
+  const LINEPayStatusMap = {
+    paid: 'SUCCESS',
+    fail: 'FAIL',
+  }
 
   subscriptionList.forEach((subscription) => {
     subscription.newebpayPayment?.forEach((newebpayPayment) => {
@@ -264,11 +299,11 @@ function getMemberPayRecords(subscriptionList) {
 
 function getSubscriptionTypeWording(type) {
   switch (type) {
-    case 'yearly':
+    case Frequency.Yearly:
       return '年訂閱'
-    case 'monthly':
+    case Frequency.Monthly:
       return '月訂閱'
-    case 'one_time':
+    case Frequency.OneTime:
       return '單篇訂閱'
     default:
       break
@@ -290,6 +325,7 @@ function getFormatDateWording(dateString) {
  * https://mirrormedia.slack.com/archives/C028CE3BGA1/p1630551612076200
  */
 
+// TODO: might not in use, should be removed
 async function getMemberServiceRuleStatus(context) {
   // determine whether user is logged in or not
   const firebaseId = await getUserFirebaseId(context)
@@ -326,6 +362,21 @@ async function setMemberServiceRuleStatusToTrue(context) {
 
   // fire mutation, set member's tos(service rule) to true
 
+  if (context.$config.linepayUiToggle) {
+    const result = await fireGqlRequestNewApi(
+      setMemberTosToTrue,
+      {
+        id: memberIsrafelId,
+      },
+      context
+    )
+
+    // check member's tos
+    const member = result?.data?.updatemember
+    return !!member.tos
+  }
+
+  // TODO: remove following lines when LINE Pay feature is stable in production
   const result = await fireGqlRequest(
     setMemberTosToTrue,
     {
@@ -341,6 +392,20 @@ async function setMemberServiceRuleStatusToTrue(context) {
 
 async function getMemberIsrafelId(firebaseId, context) {
   // TODO： put member's israfelID to vuex
+
+  if (context.$config.linepayUiToggle) {
+    const result = await fireGqlRequestNewApi(
+      fetchMemberBasicInfo,
+      {
+        firebaseId,
+      },
+      context
+    )
+    const memberIsrafelId = result?.data?.allMembers?.[0]?.id
+    return memberIsrafelId
+  }
+
+  // TODO: remove following lines when LINE Pay feature is stable in production
   const result = await fireGqlRequest(
     fetchMemberBasicInfo,
     {
@@ -350,10 +415,6 @@ async function getMemberIsrafelId(firebaseId, context) {
   )
   const memberIsrafelId = result?.data?.allMembers?.[0]?.id
   return memberIsrafelId
-}
-
-function getFirebaseToken(context) {
-  return context.store?.state?.membership?.userToken
 }
 
 async function isMemberPaidSubscriptionWithMobile(context) {
@@ -375,8 +436,8 @@ function isSubscriptionPayByMobileAppStore(subscriptions = []) {
   const appSubscribeRecord = subscriptions.find(
     (subscription) =>
       subscription.isActive &&
-      (subscription.paymentMethod === 'app_store' ||
-        subscription.paymentMethod === 'google_play')
+      (subscription.paymentMethod === PaymentMethod.AppStore ||
+        subscription.paymentMethod === PaymentMethod.GooglePay)
   )
 
   return !!appSubscribeRecord
@@ -387,7 +448,9 @@ async function getPaymentDataOfSubscription(context, gateWayPayload) {
   if (!firebaseId) return null
 
   const { frequency } = gateWayPayload
-  const isRecurringPurchase = frequency === 'yearly' || frequency === 'monthly'
+  const isRecurringPurchase = [Frequency.Monthly, Frequency.Yearly].includes(
+    frequency
+  )
   let query
 
   if (isRecurringPurchase) {
@@ -420,6 +483,7 @@ async function getMemberOneTimeSubscriptions(context, loadmoreConfig) {
       context
     )
   } else {
+    // TODO: remove this section when LINE Pay feature is stable in production
     result = await fireGqlRequest(
       fetchOneTimeSubscriptions,
       {
@@ -479,9 +543,9 @@ async function getMemberShipStatus(context, memberShipStatusName) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
-  if (memberShipStatusName === 'subscribe_one_time') {
+  if (memberShipStatusName === MemberType.OneTime) {
     return {
-      name: 'subscribe_one_time',
+      name: MemberType.OneTime,
       dueDate: null,
       nextPayDate: null,
       payMethod: null,
@@ -489,17 +553,35 @@ async function getMemberShipStatus(context, memberShipStatusName) {
   }
 
   // get user's subscription state
-  const {
-    data: {
-      member: { subscription },
-    },
-  } = await fireGqlRequest(
-    fetchRecurringSubscription,
-    {
-      firebaseId,
-    },
-    context
-  )
+  let subscription
+  if (context.$config.linepayUiToggle) {
+    const {
+      data: {
+        member: { subscription: s },
+      },
+    } = await fireGqlRequestNewApi(
+      fetchRecurringSubscription,
+      {
+        firebaseId,
+      },
+      context
+    )
+    subscription = s
+  } else {
+    // TODO: remove this section when LINE Pay feature is stable in production
+    const {
+      data: {
+        member: { subscription: s },
+      },
+    } = await fireGqlRequest(
+      fetchRecurringSubscription,
+      {
+        firebaseId,
+      },
+      context
+    )
+    subscription = s
+  }
 
   // destructure subscription and format it
   const {
@@ -508,25 +590,35 @@ async function getMemberShipStatus(context, memberShipStatusName) {
     periodEndDatetime,
     periodNextPayDatetime,
     newebpayPayment,
+    linepayPayment,
     isCanceled,
     paymentMethod,
   } = subscription[0]
   const { cardInfoLastFour } = newebpayPayment?.[0] || {
-    cardInfoLastFour: null,
+    cardInfoLastFour: '',
   }
+  const { maskedCreditCardNumber } = linepayPayment?.[0] || {
+    maskedCreditCardNumber: null,
+  }
+  const lastFourDigit =
+    paymentMethod === PaymentMethod.NewebPay
+      ? cardInfoLastFour
+      : paymentMethod === PaymentMethod.LINEPay
+      ? maskedCreditCardNumber.slice(-4)
+      : ''
 
-  const payMethodText = generatePayMethodText(paymentMethod, cardInfoLastFour)
+  const payMethodText = generatePayMethodText(paymentMethod, lastFourDigit)
 
-  if (isCanceled && frequency === 'yearly') {
+  if (isCanceled && frequency === Frequency.Yearly) {
     return {
-      name: 'subscribe_yearly_disturb',
+      name: MemberType.YearlyDisturbed,
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: null,
       payMethod: null,
     }
-  } else if (isCanceled && frequency === 'monthly') {
+  } else if (isCanceled && frequency === Frequency.Monthly) {
     return {
-      name: 'subscribe_monthly_disturb',
+      name: MemberType.MonthlyDisturbed,
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: null,
       payMethod: null,
@@ -546,11 +638,13 @@ async function getMemberShipStatus(context, memberShipStatusName) {
         ? `${paymentMethod}(${cardInfoLastFour})`
         : ''
     switch (paymentMethod) {
-      case 'app_store':
+      case PaymentMethod.AppStore:
         return 'Apple Pay'
-      case 'google_play':
+      case PaymentMethod.GooglePay:
         return 'Google Store'
-      case 'newebpay':
+      case PaymentMethod.LINEPay:
+        return 'LINE Pay'
+      case PaymentMethod.NewebPay:
         return paymentMethodText
       default:
         return paymentMethodText
@@ -558,10 +652,13 @@ async function getMemberShipStatus(context, memberShipStatusName) {
   }
 
   function generateMemberShipStatusName() {
-    if (frequency === 'monthly' && nextFrequency === 'yearly') {
-      return 'subscribe_monthly_update_to_yearly'
-    } else if (frequency === 'yearly' && nextFrequency === 'monthly') {
-      return 'subscribe_yearly_update_to_monthly'
+    if (frequency === Frequency.Monthly && nextFrequency === Frequency.Yearly) {
+      return MemberType.MonthlyToYearly
+    } else if (
+      frequency === Frequency.Yearly &&
+      nextFrequency === Frequency.Monthly
+    ) {
+      return MemberType.YearlyToMonthly
     } else return memberShipStatusName
   }
 }
@@ -581,6 +678,7 @@ async function getSubscriptionPayments(context, loadmoreConfig) {
         context
       )
     } else {
+      // TODO: remove this section when LINE Pay feature is stable in production
       result = await fireGqlRequest(
         fetchSubscriptionPayments,
         {
@@ -606,6 +704,22 @@ async function getPremiumMemberSubscriptionInfo(context) {
   if (!firebaseId) return null
 
   // get user's subscription state
+  if (context.$config.linepayUiToggle) {
+    const {
+      data: {
+        member: { subscription },
+      },
+    } = await fireGqlRequestNewApi(
+      fetchRecurringSubscription,
+      {
+        firebaseId,
+      },
+      context
+    )
+    return subscription[0]
+  }
+
+  // TODO: remove following lines when LINE Pay feature is stable in production
   const {
     data: {
       member: { subscription },
@@ -624,17 +738,34 @@ async function updateSubscriptionFromMonthToYear(context, subscriptionId) {
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
 
+  const changeDate = new Date().toISOString()
+
   // get user's subscription state
+  if (context.$config.linepayUiToggle) {
+    return await fireGqlRequestNewApi(
+      setSubscriptionFromMonthToYear,
+      {
+        id: subscriptionId,
+        changeDate,
+      },
+      context
+    )
+  }
+
+  // TODO: remove following lines when LINE Pay feature is stable in production
   return await fireGqlRequest(
     setSubscriptionFromMonthToYear,
     {
       id: subscriptionId,
+      changeDate,
     },
     context
   )
 }
 
 export {
+  getUserFirebaseId,
+  getFirebaseToken,
   getMemberDetailData,
   getMemberServiceRuleStatus,
   setMemberServiceRuleStatusToTrue,

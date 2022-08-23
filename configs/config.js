@@ -29,6 +29,13 @@ const PREMIUM_AD_FEATURE_TOGGLE =
 const ENABLE_CLOUD_LOGGING = process.env.ENABLE_CLOUD_LOGGING === 'true'
 const LINEPAY_CHANNEL_ID = process.env.LINEPAY_CHANNEL_ID || ''
 const LINEPAY_CHANNEL_KEY = process.env.LINEPAY_CHANNEL_KEY || ''
+const STORY_STYLE_FEATURE_TOGGLE =
+  process.env.STORY_STYLE_FEATURE_TOGGLE === 'on'
+const LINEPAY_CLIENT_MODE = ['development', 'production'].includes(
+  process.env.LINEPAY_CLIENT_MODE
+)
+  ? process.env.LINEPAY_CLIENT_MODE
+  : 'development'
 
 // The following variables are given values according to different `ENV`
 let API_HOST = ''
@@ -163,5 +170,7 @@ export {
   ENABLE_CLOUD_LOGGING,
   LINEPAY_CHANNEL_ID,
   LINEPAY_CHANNEL_KEY,
+  LINEPAY_CLIENT_MODE,
   PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME,
+  STORY_STYLE_FEATURE_TOGGLE,
 }

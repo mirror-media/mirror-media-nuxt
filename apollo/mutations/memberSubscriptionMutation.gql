@@ -17,12 +17,13 @@ mutation unsubscribe($id: ID!, $note: String) {
   }
 }
 
-mutation setSubscriptionFromMonthToYear($id: ID!) {
-  updatesubscription(id: $id, data: { nextFrequency: yearly }) {
+mutation setSubscriptionFromMonthToYear($id: ID!, $changeDate: String!) {
+  updatesubscription(id: $id, data: { nextFrequency: yearly, isCanceled: false, changePlanDatetime: $changeDate }) {
     orderNumber
     id
     frequency
     nextFrequency
+    changePlanDatetime
     isActive
     isCanceled
     note

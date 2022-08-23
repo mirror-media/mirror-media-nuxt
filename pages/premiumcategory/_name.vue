@@ -55,8 +55,11 @@
       pageKey="5fe15f1e123c831000ee54c2"
       adKey="FT"
     />
-    <UiStickyAd v-if="shouldShowAd" pageKey="5fe15f1e123c831000ee54c2" />
-    <ContainerFullScreenAds v-if="shouldShowAd" />
+    <UiStickyAd
+      v-if="shouldShowAd && !isWineCategory"
+      pageKey="5fe15f1e123c831000ee54c2"
+    />
+    <ContainerFullScreenAds v-if="shouldShowAd && !isWineCategory" />
   </section>
 </template>
 
@@ -116,6 +119,9 @@ export default {
     },
     shouldShowAd() {
       return this.PREMIUM_AD_FEATURE_TOGGLE && !this.isPremiumMember
+    },
+    isWineCategory() {
+      return this.$route.params.name === 'wine'
     },
     categoriesId() {
       const routeName = this.$route.params.name

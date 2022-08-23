@@ -72,6 +72,7 @@
                     class="latest-list"
                     heading="最新文章"
                     :items="latestStories"
+                    :isStyleAdjusted="false"
                     @sendGa="sendGaForClick('latest')"
                   />
                 </LazyRenderer>
@@ -97,6 +98,7 @@
                     v-if="doesHavePopularStories"
                     heading="熱門文章"
                     :items="popularStories"
+                    :isStyleAdjusted="false"
                     @sendGa="sendGaForClick('popular')"
                   />
                 </LazyRenderer>

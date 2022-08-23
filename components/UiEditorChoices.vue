@@ -26,6 +26,7 @@
     <UiArticleListAside
       class="editor-choices__article-list-aside"
       :items="articles"
+      :isStyleAdjusted="false"
       @sendGa="$emit('sendGa')"
     />
 

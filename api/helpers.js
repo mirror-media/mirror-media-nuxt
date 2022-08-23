@@ -6,16 +6,16 @@ const { PubSub } = require('@google-cloud/pubsub')
 const REQUEST_STATUS = require('../constants/request').STATUS
 const {
   API_TIMEOUT,
-  ENV,
   LINEPAY_CHANNEL_ID,
   LINEPAY_CHANNEL_KEY,
+  LINEPAY_CLIENT_MODE,
   GCP_KEYFILE,
 } = require('../configs/config')
 
 const linepayClient = createLinePayClient({
   channelId: LINEPAY_CHANNEL_ID,
   channelSecretKey: LINEPAY_CHANNEL_KEY,
-  env: ['staging', 'prod'].includes(ENV) ? 'production' : 'development',
+  env: LINEPAY_CLIENT_MODE,
 })
 
 function createProxy(baseUrl, timeout = API_TIMEOUT) {

@@ -54,6 +54,7 @@ import MemberShipStatus from '~/components/MemberShipStatus.vue'
 import MembershipPosts from '~/components/MembershipPosts.vue'
 import MembershipPayRecord from '~/components/MembershipPayRecord.vue'
 import UiMembershipUpgradeToPremium from '~/components/UiMembershipUpgradeToPremium.vue'
+import { MemberType } from '~/constants/common'
 
 export default {
   middleware: ['authenticate', 'handle-go-to-marketing'],
@@ -89,14 +90,14 @@ export default {
     isPremium() {
       const status = this.memberShipStatusName
       return (
-        status === 'subscribe_yearly' ||
-        status === 'subscribe_monthly' ||
-        status === 'disturb'
+        status === MemberType.Yearly ||
+        status === MemberType.Monthly ||
+        status === MemberType.Disturbed
       )
     },
     isBasic() {
       const status = this.memberShipStatusName
-      return status === 'subscribe_one_time'
+      return status === MemberType.OneTime
     },
     showedPostList() {
       return this.postList.slice(0, this.postMetaCount)
@@ -106,7 +107,8 @@ export default {
     },
     memberShipStatusName() {
       return (
-        this.$store.state?.['membership-subscribe']?.basicInfo?.type ?? 'none'
+        this.$store.state?.['membership-subscribe']?.basicInfo?.type ??
+        MemberType.None
       )
     },
   },

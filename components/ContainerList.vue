@@ -38,7 +38,7 @@ import MicroAd from '~/components/MicroAd.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
-
+import { removeArticleWithExternalLink } from '~/utils/index'
 import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore.js'
 
 export default {
@@ -112,17 +112,39 @@ export default {
     isPremiumMember() {
       return this.$store?.getters?.['membership-subscribe/isPremiumMember']
     },
+    listItemsAfterRedirect() {
+      return this.listItems.map((item) => {
+        return {
+          ...item,
+          href: this.getHref(item, this.isPremiumMember),
+        }
+      })
+    },
     listItemsInFirstPage() {
-      return this.listItems.slice(0, this.maxResults)
+      return removeArticleWithExternalLink(this.listItemsAfterRedirect).slice(
+        0,
+        this.maxResults
+      )
     },
     listItemsInLoadmorePage() {
-      return this.listItems.slice(this.maxResults, Infinity)
+      return removeArticleWithExternalLink(this.listItemsAfterRedirect).slice(
+        this.maxResults,
+        Infinity
+      )
     },
-
     microAdUnits() {
       return this.shouldMountMicroAds && !this.isPremiumMember
         ? MICRO_AD_UNITS.LISTING.RWD
         : []
+    },
+  },
+  methods: {
+    getHref(item, isPremiumMember = false) {
+      const { href } = item
+      if (href.split('/')[1] === 'story' && isPremiumMember) {
+        return '/pre' + href
+      }
+      return href
     },
   },
 }
