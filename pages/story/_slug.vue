@@ -557,6 +557,9 @@ export default {
     this.insertCustomizedMarkup()
     if (this.isStyleDefault) {
       this.observeScrollDepthForGa()
+      if (this.isDesktopWidth) {
+        window.addEventListener('scroll', this.handleFixAside)
+      }
     }
   },
 
