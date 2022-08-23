@@ -4,7 +4,7 @@ import {
   utmObjectFromQuery,
 } from '../utils/cookieQueryStringConverter'
 
-const pageName = [
+export const pageNames = [
   'author',
   'category',
   'external',
@@ -35,12 +35,12 @@ const pageName = [
   'verify-success',
 ]
 const trackingCampaignKeyword = 'member'
-export const trackingSeconds = 24 * 60 * 60
+export const trackingMilliseconds = 24 * 60 * 60 * 1000
 
 export default function (req, res, next) {
   if (
     req.method === 'GET' &&
-    (req.path === '/' || pageName.includes(req.path.split('/')[1]))
+    (req.path === '/' || pageNames.includes(req.path.split('/')[1]))
   ) {
     let cookieUtm
     if (req.cookies.utm) {
@@ -75,7 +75,9 @@ export default function (req, res, next) {
       // store cookie if not exist or update cookie if new campaign detected
       if (!cookieUtm || cookieUtm.utm_campaign !== req.query.utm_campaign) {
         res.cookie('utm', JSON.stringify(utmObj), {
-          maxAge: trackingSeconds,
+          maxAge: trackingMilliseconds,
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== 'development',
         })
       }
     } else if (cookieUtm && !cookieUtm.terminated) {
