@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     changePlanHandler() {
-      this.$router.push(`/papermag/${this.planUrl}`)
+      this.$customRouter.push(`/papermag/${this.planUrl}`)
     },
   },
 }

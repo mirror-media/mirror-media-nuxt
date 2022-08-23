@@ -478,9 +478,10 @@ export default {
 
         const orderNumber =
           updatedSubscription?.data?.updatesubscription?.orderNumber
-        this.$router.push(
-          `/subscribe/success?orderNumber=${orderNumber}&code=yearly`
-        )
+        this.$customRouter.push('/subscribe/success', {
+          orderNumber,
+          code: 'yearly',
+        })
       } catch (error) {
         console.error(error)
         this.isLoading = false

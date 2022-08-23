@@ -238,6 +238,7 @@ module.exports = {
    * Plugins to load before mounting the App
    */
   plugins: [
+    '~/plugins/vuePluginsCustomRouter.js',
     '~/plugins/vuePluginsGlobal.js',
     '~/plugins/vuePluginsGlobal.client.js',
     '~/plugins/vueDirectivesGlobal.js',
