@@ -40,8 +40,6 @@ export default {
     justify-content: space-between;
     padding: 24px 32px;
     font-size: 20px;
-  }
-  @include media-breakpoint-up(xxl) {
     width: 640px;
     margin-right: auto;
     margin-left: auto;
