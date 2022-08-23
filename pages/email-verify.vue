@@ -74,7 +74,6 @@ import { required, email } from 'vuelidate/lib/validators'
 import UiMembershipLoadingIcon from '~/components/UiMembershipLoadingIcon.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import actionCodeSettingsAppConfig from '~/constants/firebase-action-code-settings-app-config'
-import { queryStringFromCookieObject } from '~/utils/cookieQueryStringConverter'
 
 export default {
   components: {
@@ -218,7 +217,7 @@ export default {
          * URL you want to redirect back to. The domain (www.example.com) for this
          * URL must be in the authorized domains list in the Firebase Console.
          */
-        url: createUrl(this.email),
+        url: createUrl.call(this),
 
         // This must be true.
         handleCodeInApp: true,
@@ -226,7 +225,7 @@ export default {
         ...actionCodeSettingsAppConfig,
       }
 
-      function createUrl(email) {
+      function createUrl() {
         const origin = window.location.origin
         const path = '/verify-success'
 
@@ -238,8 +237,11 @@ export default {
          * add utm query strings if there is utm object stored in cookie
          * to track conversion rate to speicfic campaign
          */
-        const queryString = queryStringFromCookieObject('utm=', { email })
-        console.log('queryString', queryString)
+        const queryString = this.$store?.getters?.[
+          'utm-url-params/getUtmQueryString'
+        ]({
+          email: this.email,
+        })
         return `${origin}${path}${queryString}`
       }
     },

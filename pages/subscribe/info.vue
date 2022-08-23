@@ -161,7 +161,6 @@ import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
 import { STATUS as REQUEST_STATUS } from '~/constants/request.js'
-import { queryStringFromCookieObject } from '~/utils/cookieQueryStringConverter'
 
 // import redirectDestination from '~/utils/redirect-destination'
 
@@ -436,7 +435,8 @@ export default {
          * add utm query strings if there is utm object stored in cookie
          * to track conversion rate to speicfic campaign
          */
-        const queryString = queryStringFromCookieObject('utm=')
+        const queryString =
+          this.$store?.getters?.['utm-url-params/getUtmQueryString']()
         tradeInfo.ReturnURL += queryString
 
         // // encrypt tradeInfo
