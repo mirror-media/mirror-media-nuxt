@@ -38,12 +38,10 @@ export default {
     }
     @include media-breakpoint-up(xl) {
       width: 720px;
-      left: calc(((720px - 640px) / 2) * -1);
+      left: 0;
     }
     @include media-breakpoint-up(xxl) {
-      width: 852px;
-
-      left: 0;
+      width: 774px;
       margin: 0 auto;
     }
   }
@@ -51,7 +49,7 @@ export default {
   &__caption {
     margin: 16px 0 0 0;
     @include media-breakpoint-up(xxl) {
-      width: 852px;
+      width: 774px;
       margin: 16px auto 0 auto;
     }
   }
