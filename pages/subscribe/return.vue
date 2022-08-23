@@ -13,8 +13,8 @@ import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import { NEWEBPAY_KEY, NEWEBPAY_IV, ISRAFEL_ORIGIN } from '~/configs/config'
-import { trackingSeconds } from '~/serverMiddleware/appendUtmToUrl'
-import { getCookieObject } from '~/utils/cookieQueryStringConverter'
+import { trackingMilliseconds } from '~/serverMiddleware/appendUtmToUrl'
+
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
@@ -24,7 +24,7 @@ export default {
     SubscribeSuccessPage,
     SubscribeFail,
   },
-  async asyncData({ req, redirect }) {
+  async asyncData({ req, res, redirect }) {
     if (req.method !== 'POST') return redirect('/subscribe')
 
     try {
@@ -107,6 +107,43 @@ export default {
         }
       }
 
+      if (process.server) {
+        if (decryptInfoData.frequency === 'one_time' && req.cookies.utm) {
+          try {
+            const cookieUtm = JSON.parse(req.cookies.utm)
+            res.cookie(
+              'utm',
+              JSON.stringify({
+                ...cookieUtm,
+                terminated: true,
+              }),
+              {
+                maxAge: trackingMilliseconds,
+                httpOnly: true,
+                secure: process.env.NODE_ENV !== 'development',
+              }
+            )
+          } catch (error) {
+            const annotatingError = errors.helpers.wrap(
+              error,
+              'subscribe/return asyncData()',
+              `Encounter error on parsing utm cookie ${req.cookies.utm}`
+            )
+
+            // eslint-disable-next-line no-console
+            console.error(
+              JSON.stringify({
+                severity: 'ERROR',
+                message: errors.helpers.printAll(annotatingError, {
+                  withStack: true,
+                  withPayload: true,
+                }),
+              })
+            )
+          }
+        }
+      }
+
       return {
         status: 'success',
         orderInfo: {
@@ -117,6 +154,7 @@ export default {
         },
       }
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(
         JSON.stringify({
           severity: 'ERROR',
@@ -139,20 +177,6 @@ export default {
     step() {
       return this.status === 'success' ? 3 : 2
     },
-  },
-  mounted() {
-    if (this.status === 'success' && this.orderInfo?.frequency !== 'one_time') {
-      const utmObject = getCookieObject('utm=')
-      if (utmObject) {
-        // turn utm cookie value into invalid json to stop being appended to url
-        document.cookie = `utm=${encodeURIComponent(
-          JSON.stringify({
-            utm_campaign: utmObject.utm_campaign,
-            terminated: true,
-          })
-        )}; max-age=${trackingSeconds}; path=/`
-      }
-    }
   },
 }
 </script>
