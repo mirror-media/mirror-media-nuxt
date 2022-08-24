@@ -1,6 +1,16 @@
 <template>
   <div class="story-slug">
+    <ContainerCulturePostWide
+      v-if="isStyleWide"
+      :story="story"
+      :isPremium="true"
+      :isLoading="isLoading"
+      :isFail="isFail"
+      :failTimes="failTimes"
+      :shouldShwowAd="shouldShwowAd"
+    />
     <ContainerCulturePost
+      v-else
       :story="story"
       :isLoading="isLoading"
       :isFail="isFail"
@@ -14,6 +24,7 @@
 <script>
 import isEmpty from 'lodash/isEmpty'
 import { DOMAIN_NAME } from '~/configs/config'
+import ContainerCulturePostWide from '~/components/culture-post/ContainerCulturePost.vue'
 import ContainerCulturePost from '~/components/culture-post-for-premium/ContainerCulturePost.vue'
 import {
   SITE_DESCRIPTION,
@@ -33,6 +44,7 @@ export default {
   middleware: ['handle-story-premium-redirect'],
   components: {
     ContainerCulturePost,
+    ContainerCulturePostWide,
   },
   async fetch() {
     /*
@@ -68,6 +80,9 @@ export default {
         this.$store.state['membership-subscribe']?.basicInfo?.type ===
           'marketing'
       )
+    },
+    isStyleWide() {
+      return this.story.style === 'wide'
     },
   },
   async beforeMount() {

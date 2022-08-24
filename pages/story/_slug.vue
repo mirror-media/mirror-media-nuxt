@@ -8,7 +8,11 @@
     >
       <ContainerPhotoGallery v-if="isStylePhotography" :story="story" />
 
-      <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
+      <ContainerCulturePost
+        v-else-if="isStyleWide"
+        :story="story"
+        :isPremium="false"
+      />
 
       <div v-else class="article" :class="{ isStyleFeatureToggleOn }">
         <ContainerHeader :currentSectionName="sectionName" />
