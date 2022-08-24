@@ -212,7 +212,7 @@ export default {
     color: #054f77;
     text-decoration: none;
   }
-  @include media-breakpoint-up(xxl) {
+  @include media-breakpoint-up(xl) {
     width: 640px;
     margin-right: auto;
     margin-left: auto;

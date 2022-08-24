@@ -4,7 +4,7 @@
       <ContainerPhotoGallery :story="story" />
     </section>
     <section v-else-if="isStyleWide">
-      <ContainerCulturePost :story="story" />
+      <ContainerCulturePost :story="story" :isPremium="false" />
     </section>
     <section v-else>
       <ContainerHeader />

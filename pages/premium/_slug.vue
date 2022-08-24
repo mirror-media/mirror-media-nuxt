@@ -1,9 +1,16 @@
 <template>
   <div class="story-slug">
-    <label v-if="isTest" class="story-slug__sim">
-      <input v-model="mockFail" type="checkbox" /> mock error
-    </label>
+    <ContainerCulturePostWide
+      v-if="isStyleWide"
+      :story="story"
+      :isPremium="true"
+      :isLoading="isLoading"
+      :isFail="isFail"
+      :failTimes="failTimes"
+      :shouldShwowAd="shouldShwowAd"
+    />
     <ContainerCulturePost
+      v-else
       :story="story"
       :isLoading="isLoading"
       :isFail="isFail"
@@ -16,7 +23,8 @@
 
 <script>
 import isEmpty from 'lodash/isEmpty'
-import { ENV, DOMAIN_NAME } from '~/configs/config'
+import { DOMAIN_NAME } from '~/configs/config'
+import ContainerCulturePostWide from '~/components/culture-post/ContainerCulturePost.vue'
 import ContainerCulturePost from '~/components/culture-post-for-premium/ContainerCulturePost.vue'
 import {
   SITE_DESCRIPTION,
@@ -36,6 +44,7 @@ export default {
   middleware: ['handle-story-premium-redirect'],
   components: {
     ContainerCulturePost,
+    ContainerCulturePostWide,
   },
   async fetch() {
     /*
@@ -48,7 +57,6 @@ export default {
     return {
       story: {},
       membershipTokenState: undefined,
-      mockFail: false,
       isLoading: true,
       isFail: false,
       failTimes: 0,
@@ -65,9 +73,6 @@ export default {
     shouldShowPremiumStory() {
       return this.doesCategoryHaveMemberOnly
     },
-    isTest() {
-      return this.$route.query.mf && ENV !== 'prod'
-    },
     shouldShwowAd() {
       if (!this.PREMIUM_AD_FEATURE_TOGGLE) return false
       return (
@@ -76,10 +81,12 @@ export default {
           'marketing'
       )
     },
+    isStyleWide() {
+      return this.story.style === 'wide'
+    },
   },
   async beforeMount() {
     if (this.$store.getters['membership/isLoggedIn']) {
-      if (this.isTest) this.mockFail = true
       this.isLoading = true
       await this.fetchPost(this.$store.state.membership.userToken)
       this.$ga.set('dimension1', 'isMember')
@@ -152,9 +159,6 @@ export default {
         }
       }
     },
-    mockFailRequest() {
-      return Promise.reject(new Error('mock error'))
-    },
     handleReload() {
       this.isFail = false
       this.fetchPost(this.$store.state.membership.userToken)
@@ -183,26 +187,23 @@ export default {
     async fetchPost(token) {
       if (this.isLoading && this.failTimes) return
       this.isLoading = true
-      const [postResponse] = this.mockFail
-        ? await Promise.allSettled([this.mockFailRequest()])
-        : await Promise.allSettled([
-            this.$fetchPostsFromMembershipGateway(
-              {
-                slug: this.storySlug,
-                isAudioSiteOnly: false,
-                clean: 'content',
-                related: 'article',
-              },
-              token
-            ),
-          ])
+      const [postResponse] = await Promise.allSettled([
+        this.$fetchPostsFromMembershipGateway(
+          {
+            slug: this.storySlug,
+            isAudioSiteOnly: false,
+            clean: 'content',
+            related: 'article',
+          },
+          token
+        ),
+      ])
 
       if (postResponse.status === 'fulfilled') {
         this.isLoading = false
         this.story = postResponse.value.items?.[0] ?? {}
         this.membershipTokenState = postResponse.value.tokenState
       } else {
-        const time = this.isTest ? 3000 : 0
         setTimeout(() => {
           this.isLoading = false
           this.isFail = true
@@ -217,7 +218,7 @@ export default {
             description: message,
             eventType: 'premiumFetchPostError',
           })
-        }, time)
+        }, 0)
 
         /*
          * this.$nuxt.error({

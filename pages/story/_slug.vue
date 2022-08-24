@@ -8,7 +8,11 @@
     >
       <ContainerPhotoGallery v-if="isStylePhotography" :story="story" />
 
-      <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
+      <ContainerCulturePost
+        v-else-if="isStyleWide"
+        :story="story"
+        :isPremium="false"
+      />
 
       <div v-else class="article" :class="{ isStyleFeatureToggleOn }">
         <ContainerHeader :currentSectionName="sectionName" />
@@ -166,7 +170,7 @@
 
           <UiAdultContentWarning v-if="story.isAdult" />
 
-          <div v-show="shouldShowAdPcFloating" class="ad-pc-floating">
+          <div v-if="shouldShowAdPcFloating" class="ad-pc-floating">
             <ContainerGptAd
               :pageKey="sectionCarandwatchId"
               adKey="PC_FLOATING"
@@ -557,6 +561,9 @@ export default {
     this.insertCustomizedMarkup()
     if (this.isStyleDefault) {
       this.observeScrollDepthForGa()
+      if (this.isDesktopWidth) {
+        window.addEventListener('scroll', this.handleFixAside)
+      }
     }
   },
 
