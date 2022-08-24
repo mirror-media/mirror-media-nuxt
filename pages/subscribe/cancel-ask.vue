@@ -30,21 +30,9 @@
         <p class="cancel-ask__description">
           請問您為何想取消訂閱鏡週刊 Premium 服務？
         </p>
-        <UiMembershipCheckoutLabel
-          ref="option"
-          content="文章無法滿足需求"
-          @handle-change="updateReason"
-        />
-        <UiMembershipCheckoutLabel
-          ref="option"
-          content="已訂閱其他媒體"
-          @handle-change="updateReason"
-        />
-        <UiMembershipCheckoutLabel
-          ref="option"
-          content="使用體驗不佳"
-          @handle-change="updateReason"
-        />
+        <UiMembershipCheckoutLabel ref="option" content="文章無法滿足需求" />
+        <UiMembershipCheckoutLabel ref="option" content="已訂閱其他媒體" />
+        <UiMembershipCheckoutLabel ref="option" content="使用體驗不佳" />
         <UiMembershipCheckoutLabel
           ref="option"
           content="想改用單篇付費方式繼續閱讀"
