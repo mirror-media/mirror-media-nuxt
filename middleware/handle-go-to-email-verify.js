@@ -6,7 +6,7 @@ export default function ({ store, redirect, route }) {
     const userEmail = store.state.membership?.userEmail
 
     //  If Facebook authUser has no email, userEmail will be null
-    const isSubscribeOneTime = route.query.plan === Frequency.OneTime
+    const isSubscribeOneTime = route.query.plan === Frequency.OneTimeHyphen
 
     /*
      *  If user is logged in by facebook account, then check which email has been verified,

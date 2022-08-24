@@ -173,7 +173,7 @@ export default {
     },
     handleSubscribePost() {
       window.location.assign(
-        `/subscribe/info?plan=${Frequency.OneTime}&one-time-post-id=${this.postId}`
+        `/subscribe/info?plan=${Frequency.OneTimeHyphen}&one-time-post-id=${this.postId}`
       )
     },
   },
