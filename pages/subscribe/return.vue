@@ -108,21 +108,16 @@ export default {
       }
 
       if (process.server) {
-        if (decryptInfoData.frequency === 'one_time' && req.cookies.utm) {
+        if (
+          decryptInfoData.frequency === 'one_time' &&
+          res.locals.terminatedUtm
+        ) {
           try {
-            const cookieUtm = JSON.parse(req.cookies.utm)
-            res.cookie(
-              'utm',
-              JSON.stringify({
-                ...cookieUtm,
-                terminated: true,
-              }),
-              {
-                maxAge: trackingMilliseconds,
-                httpOnly: true,
-                secure: process.env.NODE_ENV !== 'development',
-              }
-            )
+            res.cookie('utm', JSON.stringify(res.locals.terminatedUtm), {
+              maxAge: trackingMilliseconds,
+              httpOnly: true,
+              secure: process.env.NODE_ENV !== 'development',
+            })
           } catch (error) {
             const annotatingError = errors.helpers.wrap(
               error,

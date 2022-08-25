@@ -38,6 +38,17 @@ const trackingCampaignKeyword = 'member'
 export const trackingMilliseconds = 24 * 60 * 60 * 1000
 
 export default function (req, res, next) {
+  /*
+   * Since this request is sent from Neweb to give the result of the payment,
+   * there won't be any utm cookies. We need to grab the utm queries and save them
+   * in the res.locals for asyncData to terminate utm cookie.
+   */
+  if (req.method === 'POST' && req.path === '/subscribe/return') {
+    if (req.body.Status === 'SUCCESS' && req.query.utm_campaign) {
+      const utmObj = utmObjectFromQuery(req.query)
+      res.locals.terminatedUtm = { ...utmObj, terminated: true }
+    }
+  }
   if (
     req.method === 'GET' &&
     (req.path === '/' || pageNames.includes(req.path.split('/')[1]))
