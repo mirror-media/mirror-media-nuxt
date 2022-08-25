@@ -201,7 +201,7 @@ export default {
       const { $config } = useContext()
 
       switch (route.value.query.plan) {
-        case Frequency.OneTime:
+        case Frequency.OneTimeHyphen:
           return [
             {
               id: route.value.query['one-time-post-id'],

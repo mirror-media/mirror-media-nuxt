@@ -34,6 +34,7 @@ const Frequency = {
   Marketing: 'marketing',
   Monthly: 'monthly',
   OneTime: 'one_time',
+  OneTimeHyphen: 'one-time',
   Yearly: 'yearly',
 }
 
