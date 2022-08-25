@@ -3,8 +3,7 @@ import errors from '@twreporter/errors'
 import { ISRAFEL_ORIGIN } from '../configs/config.js'
 import requestAuthentication from '../serverMiddleware/requestAuthentication.js'
 import { STATUS as REQUEST_STATUS } from '../constants/request.js'
-import { PaymentMethod } from '../constants/common.js'
-import { fireGqlRequest, linepayClient, sendResponse } from './helpers'
+import { fireGqlRequest, sendResponse } from './helpers'
 
 /**
  *  @typedef {import('express').Request} Request
@@ -86,49 +85,6 @@ app.post('/', async (req, res) => {
         },
         res,
       })
-    }
-
-    // LINE Pay related handle
-
-    const { linepayPaymentInfo } = subscription
-    if (
-      subscription.paymentMethod === PaymentMethod.LINEPay &&
-      linepayPaymentInfo
-    ) {
-      const { id, regKey } = linepayPaymentInfo
-
-      // call Expire RegKey API to make regKey expired
-      try {
-        await linepayClient.expireRegKey.send({
-          regKey,
-        })
-      } catch (err) {
-        const returnCode = err.data?.returnCode
-
-        // unexpected error
-        if (!returnCode) {
-          throw err
-        }
-      }
-
-      // set `isExpired` in linepayPaymentInfo to 'true'
-      const expireKey = `
-        mutation ($id: ID!) {
-          updatelinepayPaymentInfo(id: $id, data: { isExpired: true }) {
-            id
-            regKey
-            isExpired
-          }
-        }
-      `
-
-      await fireGqlRequest(
-        expireKey,
-        {
-          id,
-        },
-        apiUrl
-      )
     }
 
     // change subscription.isCanceled to true (carry unsubscribe reason)
