@@ -90,6 +90,9 @@ export default function (req, res, next) {
           httpOnly: true,
           secure: process.env.NODE_ENV !== 'development',
         })
+
+        // pass utmObj for vuex store to use before cookie created by browser
+        res.locals.utm = utmObj
       }
     } else if (cookieUtm && !cookieUtm.terminated) {
       /*

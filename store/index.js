@@ -35,11 +35,15 @@ export const actions = {
     )
     if (
       req.method === 'GET' &&
-      (req.path === '/' || pageNames.includes(req.path.split('/')[1])) &&
-      req.cookies.utm
+      (req.path === '/' || pageNames.includes(req.path.split('/')[1]))
     ) {
       try {
-        commit('utm-url-params/SET_UTM', JSON.parse(req.cookies.utm))
+        const utmObj = req.cookies.utm
+          ? JSON.parse(req.cookies.utm)
+          : res.locals.utm
+        if (utmObj && !utmObj.terminated) {
+          commit('utm-url-params/SET_UTM', utmObj)
+        }
       } catch (error) {
         const annotatingError = errors.helpers.wrap(
           error,
