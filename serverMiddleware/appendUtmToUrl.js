@@ -96,9 +96,13 @@ export default function (req, res, next) {
       }
     } else if (cookieUtm && !cookieUtm.terminated) {
       /*
-       * append utm params and redirect if cookieUtm exists and is not terminated
-       * redo string to object and object to string to avoid duplicate query strings
-       * produced by sign_in url cache mechanism
+       * append utm params and redirect if cookieUtm exists and is not terminated.
+       *
+       * When otherObject contains url as url params value and the url holds the same utm
+       * params, there will be duplicate url params after one conversion from merged object
+       * to query string.
+       * So we convert it again back to object to eliminate the possible
+       * duplication and then convert it back to query string.
        */
       res.redirect(
         req.path +
