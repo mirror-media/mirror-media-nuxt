@@ -1,7 +1,7 @@
 import {
   objectToQueryString,
   queryStringToObject,
-} from '~/utils/cookieQueryStringConverter'
+} from '~/utils/cookie-query-string-converter'
 
 export const state = () => ({
   utmObject: {},

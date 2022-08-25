@@ -2,38 +2,9 @@ import {
   objectToQueryString,
   queryStringToObject,
   utmObjectFromQuery,
-} from '../utils/cookieQueryStringConverter'
+} from '../utils/cookie-query-string-converter'
+import { isPageRequesting } from '../utils/detect-page'
 
-export const pageNames = [
-  'author',
-  'category',
-  'external',
-  'externals',
-  'magazine',
-  'papermag',
-  'pre',
-  'premium',
-  'premiumcategory',
-  'premiumsection',
-  'profile',
-  'search',
-  'section',
-  'story',
-  'subscribe',
-  'tag',
-  'topic',
-  'video',
-  'video_category',
-  'cancelMembership',
-  'email-verify',
-  'finishSignUp',
-  'login',
-  'marketing',
-  'recoverPassword',
-  'service-rule',
-  'updatePassword',
-  'verify-success',
-]
 const trackingCampaignKeyword = 'member'
 export const trackingMilliseconds = 24 * 60 * 60 * 1000
 
@@ -49,10 +20,7 @@ export default function (req, res, next) {
       res.locals.terminatedUtm = { ...utmObj, terminated: true }
     }
   }
-  if (
-    req.method === 'GET' &&
-    (req.path === '/' || pageNames.includes(req.path.split('/')[1]))
-  ) {
+  if (isPageRequesting(req)) {
     let cookieUtm
     if (req.cookies.utm) {
       try {

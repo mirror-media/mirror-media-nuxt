@@ -1,5 +1,5 @@
 import errors from '@twreporter/errors'
-import { pageNames } from '~/serverMiddleware/appendUtmToUrl'
+import { isPageRequesting } from '~/utils/detect-page'
 
 export const state = () => ({
   canAdvertise: true,
@@ -33,10 +33,7 @@ export const actions = {
       'membership/getFeatureToggleStatus',
       app.$config.emailVerifyFeatureToggle
     )
-    if (
-      req.method === 'GET' &&
-      (req.path === '/' || pageNames.includes(req.path.split('/')[1]))
-    ) {
+    if (isPageRequesting(req)) {
       try {
         const utmObj = req.cookies.utm
           ? JSON.parse(req.cookies.utm)
