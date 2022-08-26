@@ -17,7 +17,12 @@
     <div v-if="credit" class="story__credit" v-html="credit"></div>
 
     <div class="story__share share">
-      <img src="../assets/logo@2x.png" alt="Mirror Media" class="share__logo" />
+      <img
+        src="../assets/logo@2x.png"
+        alt="Mirror Media"
+        class="share__logo"
+        @click="handleClickHomeLogo"
+      />
       <br class="share__br" />
       <UiShareFb />
       <UiShareLine />
@@ -381,6 +386,9 @@ export default {
     isString(value) {
       return typeof value === 'string'
     },
+    handleClickHomeLogo() {
+      window.open('/')
+    },
   },
 }
 
@@ -570,6 +578,9 @@ export {
     .share__logo {
       width: 35px;
       display: flex;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 
