@@ -16,13 +16,9 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-if="credit" class="story__credit" v-html="credit"></div>
 
-    <div class="story__share">
-      <img
-        src="../assets/logo@2x.png"
-        alt="Mirror Media"
-        class="story__share--logo"
-      />
-      <div class="story__share--br" />
+    <div class="story__share share">
+      <img src="../assets/logo@2x.png" alt="Mirror Media" class="share__logo" />
+      <br class="share__br" />
       <UiShareFb />
       <UiShareLine />
     </div>
@@ -562,14 +558,16 @@ export {
       }
     }
 
-    &--br {
+    .share__br {
+      content: '';
+      display: block;
       margin: 0 20px;
       width: 1px;
       height: 16px;
       background: #a1a1a1;
     }
 
-    &--logo {
+    .share__logo {
       width: 35px;
       display: flex;
     }
