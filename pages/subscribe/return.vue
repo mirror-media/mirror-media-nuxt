@@ -109,7 +109,7 @@ export default {
 
       if (process.server) {
         if (
-          decryptInfoData.frequency === 'one_time' &&
+          decryptInfoData.frequency !== 'one_time' &&
           res.locals.terminatedUtm
         ) {
           setUtmCookieTerminated(res, res.locals.terminatedUtm)
