@@ -60,7 +60,11 @@ export default {
     },
   },
   mounted() {
-    if (this.$route.params.name === 'healthnews') {
+    /*
+     * if partnerName is healthnews, this pages should show
+     * advertisements which is originally displayed at /section/news
+     */
+    if (this.partnerName === 'healthnews') {
       this.sectionId = '57e1e0e5ee85930e00cad4e9'
     }
   },
