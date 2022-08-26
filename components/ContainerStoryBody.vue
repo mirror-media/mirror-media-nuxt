@@ -23,7 +23,7 @@
         class="share__logo"
         @click="handleClickHomeLogo"
       />
-      <br class="share__br" />
+      <div class="share__br" />
       <UiShareFb />
       <UiShareLine />
     </div>
