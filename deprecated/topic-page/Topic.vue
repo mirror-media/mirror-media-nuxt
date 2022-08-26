@@ -1190,6 +1190,7 @@ export default {
       ogImage = {},
       ogTitle = '',
       name = '',
+      subtitle = '',
     } = this.topic
     const metaTitle = ogTitle || name
     const metaDescription = ogDescription
@@ -1204,6 +1205,9 @@ export default {
       title: metaTitle,
       meta: [
         { name: 'robots', content: 'index' },
+        subtitle
+          ? { hid: 'subtitle', name: 'subtitle', content: subtitle }
+          : {},
         { hid: 'description', name: 'description', content: metaDescription },
         { hid: 'og:title', property: 'og:title', content: metaTitle },
         {

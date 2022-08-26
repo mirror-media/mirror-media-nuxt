@@ -1,10 +1,12 @@
+import { Frequency } from '~/constants/common'
+
 export default function ({ store, redirect, route }) {
   const isEmailVerified = store.state.membership?.userEmailVerified
   if (store.state.membership.emailVerifyFeatureToggle === 'on') {
     const userEmail = store.state.membership?.userEmail
 
     //  If Facebook authUser has no email, userEmail will be null
-    const isSubscribeOneTime = route.query.plan === 'one-time'
+    const isSubscribeOneTime = route.query.plan === Frequency.OneTimeHyphen
 
     /*
      *  If user is logged in by facebook account, then check which email has been verified,

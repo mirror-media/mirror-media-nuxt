@@ -38,7 +38,7 @@ import MicroAd from '~/components/MicroAd.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 
 import { MICRO_AD_UNITS } from '~/constants/ads.js'
-
+import { removeArticleWithExternalLink } from '~/utils/index'
 import fetchListAndLoadmore from '~/mixins/fetch-list-and-loadmore.js'
 
 export default {
@@ -121,10 +121,16 @@ export default {
       })
     },
     listItemsInFirstPage() {
-      return this.listItemsAfterRedirect.slice(0, this.maxResults)
+      return removeArticleWithExternalLink(this.listItemsAfterRedirect).slice(
+        0,
+        this.maxResults
+      )
     },
     listItemsInLoadmorePage() {
-      return this.listItemsAfterRedirect.slice(this.maxResults, Infinity)
+      return removeArticleWithExternalLink(this.listItemsAfterRedirect).slice(
+        this.maxResults,
+        Infinity
+      )
     },
     microAdUnits() {
       return this.shouldMountMicroAds && !this.isPremiumMember

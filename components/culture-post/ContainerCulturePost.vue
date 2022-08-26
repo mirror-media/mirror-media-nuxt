@@ -1,17 +1,6 @@
 <template>
   <section class="culture-post">
-    <ContainerHeaderSectionMember
-      v-if="isCurrentPagePremium"
-      class="header"
-      @sidebarToggle="handleIndexActive(!isIndexActive)"
-    />
-    <a
-      v-else
-      :href="SITE_URL"
-      class="logo"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a :href="SITE_URL" class="logo" target="_blank" rel="noopener noreferrer">
       <img src="~/assets/logo@2x.png" :alt="SITE_TITLE" />
     </a>
 
@@ -38,11 +27,28 @@
     </div>
 
     <UiArticleBody
+      v-if="!isPremium"
       ref="articleBody"
       class="culture-post__article-body"
       :brief="post.brief"
       :content="post.content"
       :pageState="articleBodyPageState"
+      :isPremium="isPremium"
+    />
+    <UiArticleBodyForPremium
+      v-else
+      ref="articleBody"
+      class="culture-post__article-body"
+      :postId="post.id"
+      :brief="post.brief"
+      :content="post.content"
+      :sectionIdFirst="post.sectionIdFirst"
+      :isArticleContentTruncatedByGateway="post.isTruncated"
+      :pageState="articleBodyPageState"
+      :isLoading="isLoading"
+      :isFail="isFail"
+      :failTimes="failTimes"
+      :shouldShwowAd="shouldShwowAd"
     />
 
     <LazyRenderer
@@ -67,7 +73,7 @@ import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
 import UiArticleIndex from './UiArticleIndex.vue'
 import UiListRelated from './UiListRelated.vue'
-import ContainerHeaderSectionMember from '~/components/ContainerHeaderSectionMember.vue'
+import UiArticleBodyForPremium from '~/components/culture-post-for-premium/UiArticleBody.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
@@ -77,12 +83,12 @@ export default {
   name: 'ContainerCulturePost',
 
   components: {
-    ContainerHeaderSectionMember,
     UiTheCover,
     UiArticleBody,
     UiArticleIndex,
     UiListRelated,
     UiWineWarning,
+    UiArticleBodyForPremium,
   },
 
   props: {
@@ -90,6 +96,24 @@ export default {
       type: Object,
       default: () => ({}),
       required: true,
+    },
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+    isLoading: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    isFail: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    failTimes: {
+      type: Number,
+      default: 0,
     },
   },
 

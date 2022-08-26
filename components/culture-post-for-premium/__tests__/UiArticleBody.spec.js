@@ -22,30 +22,35 @@ const createWrapper = createWrapperHelper({
 
 describe('pageState props', function () {
   describe('premiumPageIsLogin', function () {
-    const pageState = 'premiumPageIsLogin'
-    test('should NOT fade out the article body, show invite to login section', function () {
-      const wrapper = createWrapper(UiArticleBody, {
-        propsData: {
-          pageState,
-        },
-      })
-      expect(wrapper.get('.article-body').classes()).not.toContain(
-        'article-body--fade-out-bottom'
-      )
-      expect(wrapper.findComponent(UiPremiumInviteToLogin).exists()).not.toBe(
-        true
-      )
-    })
-
-    test('should show copyright warning and section of enter magazine page', function () {
-      const wrapper = createWrapper(UiArticleBody, {
-        propsData: {
-          pageState,
-        },
-      })
-      expect(wrapper.find('.copyright-warning').exists()).not.toBe(false)
-      expect(wrapper.find('.magazine').exists()).not.toBe(false)
-    })
+    // const pageState = 'premiumPageIsLogin'
+    /*
+     * test('should NOT fade out the article body, show invite to login section', function () {
+     *   const wrapper = createWrapper(UiArticleBody, {
+     *     propsData: {
+     *       pageState,
+     *     },
+     *   })
+     *   expect(wrapper.get('.article-body').classes()).not.toContain(
+     *     'article-body--fade-out-bottom'
+     *   )
+     *   expect(wrapper.findComponent(UiPremiumInviteToLogin).exists()).not.toBe(
+     *     true
+     *   )
+     * })
+     */
+    /*
+     * test('should show copyright warning and section of enter magazine page', function () {
+     *   const wrapper = createWrapper(UiArticleBody, {
+     *     propsData: {
+     *       pageState,
+     *     },
+     *   })
+     *   expect(wrapper.find('.copyright-warning').exists()).not.toBe(false)
+     */
+    /*
+     *   // expect(wrapper.find('.magazine').exists()).not.toBe(false)
+     * })
+     */
   })
 
   describe('storyPage', function () {

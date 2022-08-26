@@ -92,32 +92,14 @@ export default {
       }
 
       const subscription = allSubscriptions[0]
-      const status = subscription.linePayStatus
+      const linePayStatus = subscription.linePayStatus
 
-      switch (status) {
-        case 'paying': {
-          break
-        }
-        case 'paid': {
-          // show success page even if requesting with same transactionId and orderId again
-          return {
-            status: 'success',
-            orderInfo: {
-              orderId,
-              promoteId: subscription.promoteId,
-              frequency: subscription.frequency,
-              amount: subscription.amount,
-            },
-          }
-        }
-        default: {
-          return {
-            status: 'fail',
-            errorData: {
-              message: 'linepay-fail',
-            },
-          }
-        }
+      /*
+       * Redirect to subscribe page when `linePayStatus` of the subscription is not 'paying'
+       * This behavior will be triggered when user try to load this page with the same query parameter again.
+       */
+      if (linePayStatus !== 'paying') {
+        return redirect('/subscribe')
       }
 
       // fire Confrim API request to LINE Pay Server, then push the response to PubSub

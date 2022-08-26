@@ -14,6 +14,7 @@
           class="item__image"
           target="_blank"
           rel="noopener noreferrer"
+          :class="{ adjusted: isStyleAdjusted }"
           @click="$emit('sendGa')"
         >
           <img :src="item.imgSrc" alt="" />
@@ -26,6 +27,7 @@
             class="item__title"
             target="_blank"
             rel="noopener noreferrer"
+            :class="{ adjusted: isStyleAdjusted }"
             @click="$emit('sendGa')"
             >{{ item.title }}</a
           >
@@ -37,7 +39,7 @@
 
 <script>
 export default {
-  name: 'UiArticleListAside',
+  name: 'UiArticleListAsideB',
   props: {
     heading: {
       type: String,
@@ -47,6 +49,11 @@ export default {
       type: Array,
       required: true,
       default: () => [],
+    },
+    isStyleAdjusted: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
 }
@@ -124,6 +131,11 @@ export default {
       @include media-breakpoint-up(md) {
         width: 50%;
       }
+      &.adjusted {
+        width: 120px;
+        height: 80px;
+        margin-right: 12px;
+      }
       img {
         position: absolute;
         top: 0;
@@ -193,6 +205,10 @@ export default {
         line-height: 24px;
         color: #054f77;
         height: calc(24px * 3);
+        &.adjusted {
+          -webkit-line-clamp: 2;
+          height: calc(16px * 1.4 * 2);
+        }
       }
     }
     @each $name, $color in $sections-color {

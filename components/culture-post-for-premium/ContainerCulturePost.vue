@@ -119,7 +119,14 @@
           :imgs="relatedImgs"
           @sendGa="sendGaForClick('related')"
         />
+        <UiMagazineAfterArticle
+          v-if="
+            $GOExp['premium-post-related-position'].variant === '1' &&
+            articleBodyPageState === 'premiumPageIsLogin'
+          "
+        />
       </LazyRenderer>
+
       <ContainerGptAd
         v-if="shouldShwowAd"
         class="ad"
@@ -160,6 +167,7 @@ import { doesContainWineName } from '~/utils/article.js'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+import UiMagazineAfterArticle from '~/components/culture-post-for-premium/UiMagazineAfterArticle.vue'
 
 export default {
   name: 'ContainerCulturePost',
@@ -180,6 +188,7 @@ export default {
     ContainerGptAd,
     UiStickyAd,
     ContainerFullScreenAds,
+    UiMagazineAfterArticle,
   },
 
   props: {
@@ -477,6 +486,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$article-body-width-in-xl-viewport: 720px;
+$article-body-width-in-xxl-viewport: 774px;
+
 .culture-post {
   color: rgba(#000, 0.87);
   word-break: break-word;
@@ -490,10 +502,10 @@ export default {
       max-width: 608px;
     }
     @include media-breakpoint-up(xl) {
-      max-width: 640px;
+      max-width: $article-body-width-in-xl-viewport;
     }
     @include media-breakpoint-up(xxl) {
-      max-width: 1080px;
+      max-width: $article-body-width-in-xxl-viewport;
     }
   }
 }
@@ -529,16 +541,13 @@ export default {
     right: auto;
     bottom: auto;
     transform: translate(-50%, -50%);
-    width: auto;
+    width: 240px;
     height: auto;
   }
   @include media-breakpoint-up(xxl) {
-    left: calc((100% - 1080px) / 4);
-    width: calc((100vw - 1080px) / 2 - 42px);
+    left: calc((100% - #{$article-body-width-in-xxl-viewport}) / 4);
     min-width: 139px;
     max-width: 300px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 15px 24px 16px;
   }
 }
 .subtitle-navigator-moving-down {
@@ -581,7 +590,7 @@ export default {
     margin: 52px auto 0 auto;
   }
   @include media-breakpoint-up(xl) {
-    max-width: 640px;
+    max-width: $article-body-width-in-xl-viewport;
     margin: 64px auto 0 auto;
   }
 }
@@ -644,8 +653,8 @@ export default {
     padding-bottom: 48px;
   }
   @include media-breakpoint-up(xl) {
-    padding-left: calc((100vw - 640px) / 2);
-    padding-right: calc((100vw - 640px) / 2);
+    padding-left: calc((100vw - #{$article-body-width-in-xl-viewport}) / 2);
+    padding-right: calc((100vw - #{$article-body-width-in-xl-viewport}) / 2);
     background-color: white;
     position: relative;
     z-index: 511;
@@ -680,12 +689,12 @@ export default {
       pointer-events: initial;
       position: fixed;
       top: calc((100vh - 140px) / 2);
-      right: calc((100vw - 634px) / 4);
+      right: calc((100vw - #{$article-body-width-in-xl-viewport}) / 4 - 18px);
       bottom: 0;
       margin: 0 auto;
     }
     @include media-breakpoint-up(xxl) {
-      right: calc((100vw - 1080px) / 4 - 18px);
+      right: calc((100vw - #{$article-body-width-in-xxl-viewport}) / 4 - 18px);
     }
   }
 }
