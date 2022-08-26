@@ -14,13 +14,10 @@
         :isPremium="false"
       />
 
-      <div v-else class="article" :class="{ isStyleFeatureToggleOn }">
+      <div v-else class="article">
         <ContainerHeader :currentSectionName="sectionName" />
 
-        <div
-          class="story-container"
-          :class="{ adjusted: isStyleFeatureToggleOn }"
-        >
+        <div class="story-container">
           <ContainerGptAd
             class="story__ad story__ad--fixed-height"
             :pageKey="sectionId"
@@ -28,11 +25,7 @@
           />
 
           <div class="story-wrapper">
-            <ContainerStoryBody
-              :story="story"
-              class="story-slug__story-body"
-              :class="{ adjusted: isStyleFeatureToggleOn }"
-            >
+            <ContainerStoryBody :story="story" class="story-slug__story-body">
               <template #fixedTriggerEnd>
                 <div ref="fixedTriggerEnd" />
               </template>
@@ -86,7 +79,7 @@
               </template>
             </ContainerStoryBody>
 
-            <aside :class="{ adjusted: isStyleFeatureToggleOn }">
+            <aside>
               <ClientOnly>
                 <ContainerGptAd
                   class="story__ad"
@@ -122,7 +115,7 @@
                   class="latest-list"
                   heading="最新文章"
                   :items="latestStories"
-                  :isStyleAdjusted="isStyleFeatureToggleOn"
+                  :isStyleAdjusted="true"
                   @sendGa="sendGaForClick('latest')"
                 />
               </div>
@@ -132,7 +125,6 @@
                 class="fixed-container"
                 :class="{
                   fixed: shouldFixAside,
-                  adjusted: isStyleFeatureToggleOn,
                 }"
               >
                 <ClientOnly>
@@ -148,7 +140,7 @@
                     <UiArticleListAsideB
                       heading="熱門文章"
                       :items="popularStories"
-                      :isStyleAdjusted="isStyleFeatureToggleOn"
+                      :isStyleAdjusted="true"
                       @sendGa="sendGaForClick('popular')"
                     />
                   </section>
@@ -231,12 +223,7 @@ import UiFooter from '~/components/UiFooter.vue'
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
 import error from '~/layouts/error.vue'
-import {
-  DOMAIN_NAME,
-  ENV,
-  PREVIEW_QUERY,
-  STORY_STYLE_FEATURE_TOGGLE,
-} from '~/configs/config'
+import { DOMAIN_NAME, ENV, PREVIEW_QUERY } from '~/configs/config'
 import {
   SECTION_IDS,
   SITE_OG_IMG,
@@ -437,7 +424,6 @@ export default {
       doesHaveAdPcFloating: false,
       shouldFixAside: false,
       scrollDepthObserver: undefined,
-      isStyleFeatureToggleOn: STORY_STYLE_FEATURE_TOGGLE,
     }
   },
 
@@ -1050,11 +1036,9 @@ function getLabel([item = {}] = []) {
 </script>
 
 <style lang="scss" scoped>
-$story-max-width: 1160px;
-$story-max-width-adjusted: 1220px;
+$story-max-width: 1220px;
 
-$aside-width: 300px;
-$aside-width-adjusted: 365px;
+$aside-width: 365px;
 
 .story-slug {
   &--background-yellow {
@@ -1067,27 +1051,16 @@ $aside-width-adjusted: 365px;
     margin-left: auto;
     margin-right: auto;
     @include media-breakpoint-up(xl) {
-      width: calc(100% - #{$aside-width} - 20px);
+      width: calc(100% - #{$aside-width});
       max-width: 695px;
       padding-bottom: 0;
       margin-left: 0;
-    }
-    &.adjusted::v-deep {
-      .story__list {
-        margin-top: 20px;
-      }
-      @include media-breakpoint-up(xl) {
-        width: calc(100% - #{$aside-width-adjusted});
-      }
     }
   }
 }
 
 .article {
   @include media-breakpoint-up(xl) {
-    background-color: #414141;
-  }
-  &.isStyleFeatureToggleOn {
     background: #fff;
   }
 }
@@ -1104,9 +1077,7 @@ $aside-width-adjusted: 365px;
     margin-left: auto;
     margin-right: auto;
     background-color: #fff;
-    &.adjusted {
-      max-width: $story-max-width-adjusted;
-    }
+    max-width: $story-max-width;
   }
 }
 
@@ -1119,40 +1090,42 @@ $aside-width-adjusted: 365px;
   }
 }
 
-.story {
-  &__list {
-    margin-top: 20px;
-  }
-
-  &__popular-list {
-    margin-bottom: 20px;
-  }
-
-  &__fb-page {
-    margin-bottom: 20px;
-    @include media-breakpoint-up(xl) {
-      margin-bottom: 0;
+::v-deep {
+  .story {
+    &__list {
+      margin-top: 20px;
     }
-  }
 
-  &__ad {
-    width: 100%;
-    margin-bottom: 20px;
-
-    &--ft {
-      margin-bottom: 0;
+    &__popular-list {
+      margin-bottom: 20px;
     }
-    //When page is initialized, the ad is unmounted and the container of which is empty,
-    //However, when the ad is mounted, the container's height is resize to ad height (normally is 250px),
-    //which cause serious CLS problem.
-    //The current solution is set the height of container by CSS, make it unable resized by ad.
-    //But if user is using ad blocking plugins of browser, the container will show as a huge empty div on page,
-    //which influence user experience.
-    //We decide to adopt current solution to solve CLS problem, despite it is not perfect.
-    //The perfect solution need more survey and discussion, we will start to dig in ASAP.
 
-    &--fixed-height {
-      height: 250px;
+    &__fb-page {
+      margin-bottom: 20px;
+      @include media-breakpoint-up(xl) {
+        margin-bottom: 0;
+      }
+    }
+
+    &__ad {
+      width: 100%;
+      margin-bottom: 20px;
+
+      &--ft {
+        margin-bottom: 0;
+      }
+      //When page is initialized, the ad is unmounted and the container of which is empty,
+      //However, when the ad is mounted, the container's height is resize to ad height (normally is 250px),
+      //which cause serious CLS problem.
+      //The current solution is set the height of container by CSS, make it unable resized by ad.
+      //But if user is using ad blocking plugins of browser, the container will show as a huge empty div on page,
+      //which influence user experience.
+      //We decide to adopt current solution to solve CLS problem, despite it is not perfect.
+      //The perfect solution need more survey and discussion, we will start to dig in ASAP.
+
+      &--fixed-height {
+        height: 250px;
+      }
     }
   }
 }
@@ -1167,10 +1140,6 @@ aside {
     width: $aside-width;
     margin-right: 0;
     margin-bottom: 0;
-    &.adjusted {
-      width: $aside-width-adjusted;
-      // margin-left: 60px;
-    }
   }
 
   > * {
@@ -1192,9 +1161,6 @@ aside {
       position: fixed;
       top: 0;
       width: $aside-width;
-      &.adjusted {
-        width: $aside-width-adjusted;
-      }
     }
   }
 }
