@@ -7,6 +7,7 @@ import { isPageRequesting } from '../utils/detect-page'
 
 const trackingCampaignKeyword = 'member'
 export const trackingMilliseconds = 24 * 60 * 60 * 1000
+export const userLogoutQuery = 'user_logout'
 
 export default function (req, res, next) {
   /*
@@ -25,6 +26,23 @@ export default function (req, res, next) {
     if (req.cookies.utm) {
       try {
         cookieUtm = JSON.parse(req.cookies.utm)
+
+        // user logout - end of tracking utm
+        if (cookieUtm && req.query[userLogoutQuery]) {
+          res.cookie(
+            'utm',
+            JSON.stringify({
+              ...cookieUtm,
+              terminated: true,
+            }),
+            {
+              maxAge: trackingMilliseconds,
+              httpOnly: true,
+              secure: process.env.NODE_ENV !== 'development',
+            }
+          )
+          return next()
+        }
       } catch (error) {
         cookieUtm = null
       }
