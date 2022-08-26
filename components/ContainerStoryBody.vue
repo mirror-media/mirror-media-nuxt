@@ -387,7 +387,7 @@ export default {
       return typeof value === 'string'
     },
     handleClickHomeLogo() {
-      window.open('/')
+      window.location.href = '/'
     },
   },
 }
