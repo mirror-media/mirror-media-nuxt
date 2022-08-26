@@ -6,8 +6,21 @@ import {
 import { isPageRequesting } from '../utils/detect-page'
 
 const trackingCampaignKeyword = 'member'
-export const trackingMilliseconds = 24 * 60 * 60 * 1000
+const trackingMilliseconds = 24 * 60 * 60 * 1000
 export const userLogoutQuery = 'user_logout'
+const cookieOption = {
+  maxAge: trackingMilliseconds,
+  httpOnly: true,
+  secure: process.env.NODE_ENV !== 'development',
+}
+
+function setUtmCookie(res, cookieObj) {
+  res.cookie('utm', JSON.stringify(cookieObj), cookieOption)
+}
+
+export function setUtmCookieTerminated(res, cookieObj) {
+  setUtmCookie(res, { ...cookieObj, terminated: true })
+}
 
 export default function (req, res, next) {
   /*
@@ -26,21 +39,8 @@ export default function (req, res, next) {
     if (req.cookies.utm) {
       try {
         cookieUtm = JSON.parse(req.cookies.utm)
-
-        // user logout - end of tracking utm
         if (cookieUtm && req.query[userLogoutQuery]) {
-          res.cookie(
-            'utm',
-            JSON.stringify({
-              ...cookieUtm,
-              terminated: true,
-            }),
-            {
-              maxAge: trackingMilliseconds,
-              httpOnly: true,
-              secure: process.env.NODE_ENV !== 'development',
-            }
-          )
+          setUtmCookieTerminated(res, cookieUtm)
           return next()
         }
       } catch (error) {
@@ -71,11 +71,7 @@ export default function (req, res, next) {
 
       // store cookie if not exist or update cookie if new campaign detected
       if (!cookieUtm || cookieUtm.utm_campaign !== req.query.utm_campaign) {
-        res.cookie('utm', JSON.stringify(utmObj), {
-          maxAge: trackingMilliseconds,
-          httpOnly: true,
-          secure: process.env.NODE_ENV !== 'development',
-        })
+        setUtmCookie(res, utmObj)
 
         // pass utmObj for vuex store to use before cookie created by browser
         res.locals.utm = utmObj

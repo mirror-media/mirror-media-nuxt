@@ -13,7 +13,7 @@ import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import { NEWEBPAY_KEY, NEWEBPAY_IV, ISRAFEL_ORIGIN } from '~/configs/config'
-import { trackingMilliseconds } from '~/serverMiddleware/appendUtmToUrl'
+import { setUtmCookieTerminated } from '~/serverMiddleware/appendUtmToUrl'
 
 const NewebPay = require('@mirrormedia/newebpay-node')
 
@@ -112,30 +112,7 @@ export default {
           decryptInfoData.frequency === 'one_time' &&
           res.locals.terminatedUtm
         ) {
-          try {
-            res.cookie('utm', JSON.stringify(res.locals.terminatedUtm), {
-              maxAge: trackingMilliseconds,
-              httpOnly: true,
-              secure: process.env.NODE_ENV !== 'development',
-            })
-          } catch (error) {
-            const annotatingError = errors.helpers.wrap(
-              error,
-              'subscribe/return asyncData()',
-              `Encounter error on parsing utm cookie ${req.cookies.utm}`
-            )
-
-            // eslint-disable-next-line no-console
-            console.error(
-              JSON.stringify({
-                severity: 'ERROR',
-                message: errors.helpers.printAll(annotatingError, {
-                  withStack: true,
-                  withPayload: true,
-                }),
-              })
-            )
-          }
+          setUtmCookieTerminated(res, res.locals.terminatedUtm)
         }
       }
 
