@@ -7,6 +7,8 @@ const { loadNuxt, build } = require('nuxt')
 const app = express()
 
 const helmet = require('helmet')
+
+const cookieParser = require('cookie-parser')
 const isDev = process.env.NODE_ENV !== 'production'
 
 async function start() {
@@ -41,6 +43,8 @@ async function start() {
     }
     next()
   })
+
+  app.use(cookieParser())
 
   // Give nuxt middleware to express
   app.use(nuxt.render)

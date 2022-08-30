@@ -144,11 +144,11 @@ export default {
         await this.$cancelMemberSubscription(this.reasonString)
 
         this.isLoading = false
-        this.$router.push('/subscribe/cancel-success')
+        this.$customRouter.push('/subscribe/cancel-success')
       } catch (error) {
         console.error(error)
         this.isLoading = false
-        this.$router.push('/subscribe/cancel-fail')
+        this.$customRouter.push('/subscribe/cancel-fail')
       }
     },
   },
