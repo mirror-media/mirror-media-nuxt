@@ -1,9 +1,6 @@
 <template>
   <div class="invite-to-subscribe">
     <h1>歡迎加入鏡週刊 會員專區</h1>
-    <p class="invite-to-subscribe__description">
-      即日起加入年費會員 月月抽Sony旗艦機
-    </p>
     <div class="invite-to-subscribe__plans plans">
       <div class="plans__plan">
         <div class="plans__plan plan plan--highlight-border">
@@ -99,12 +96,6 @@ export default {
   border-radius: 4px;
   @include media-breakpoint-up(xl) {
     padding: 32px;
-  }
-
-  &__description {
-    color: #e51731;
-    margin-top: 6px;
-    font-size: 20px;
   }
 
   &__plans {
