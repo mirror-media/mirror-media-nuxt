@@ -62,7 +62,7 @@ export default {
 
   methods: {
     async handleSubmit() {
-      const destination = 'subscribe'
+      const queryObject = { destination: '/subscribe' }
       if (this.isLoggedIn) {
         if (this.emailIsDifferent) {
           await this.$fire.auth.signOut()
@@ -71,13 +71,12 @@ export default {
           this.$store.commit('membership/ON_AUTH_STATE_CHANGED_MUTATION', {
             authUser: {},
           })
-
-          this.$router.push(`/login?destination=%2F${destination}`)
+          this.$customRouter.push('/login', queryObject)
         } else {
-          this.$router.push('/subscribe')
+          this.$customRouter.push('/subscribe')
         }
       } else {
-        this.$router.push(`/login?destination=%2F${destination}`)
+        this.$customRouter.push('/login', queryObject)
       }
     },
   },

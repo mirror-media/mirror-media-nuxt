@@ -42,7 +42,7 @@
         <div class="invite-to-login-wrapper__fade-out-effect" />
         <UiPremiumInviteToSubscribe
           :shouldShowLoginNow="!$store.getters['membership/isLoggedIn']"
-          @subscribePremium="$router.replace('/subscribe')"
+          @subscribePremium="$customRouter.push('/subscribe')"
           @subscribePost="handleSubscribePost"
           @login="handleLogin"
         />
@@ -233,11 +233,10 @@ export default {
     }
     @include media-breakpoint-up(xl) {
       width: 720px;
-      left: calc(((720px - 640px) / 2) * -1);
+      left: 0;
     }
     @include media-breakpoint-up(xxl) {
-      width: 1080px;
-      left: 0;
+      width: 774px;
     }
   }
 }

@@ -163,10 +163,37 @@ async function getMemberDetailData(context) {
 }
 
 async function cancelMemberSubscription(context, reason) {
-  // TODO: remove this function when LINE Pay feature is stable in production
-
   const firebaseId = await getUserFirebaseId(context)
   if (!firebaseId) return null
+
+  if (context.$config.linepayUiToggle) {
+    // get user's subscription state
+    const {
+      data: {
+        member: { subscription },
+      },
+    } = await fireGqlRequestNewApi(
+      fetchRecurringSubscription,
+      {
+        firebaseId,
+      },
+      context
+    )
+
+    // change subscription.isCanceled to true (carry unsubscribe reason)
+    await fireGqlRequestNewApi(
+      unsubscribe,
+      {
+        id: subscription[0].id,
+        note: reason,
+      },
+      context
+    )
+
+    return
+  }
+
+  // TODO: remove following lines when LINE Pay feature is stable in production
 
   // get user's subscription state
   const {

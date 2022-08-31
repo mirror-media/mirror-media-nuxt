@@ -136,11 +136,6 @@ export default {
             { text: '免費閱讀數位版動態雜誌' },
             { text: '月方案定價 $99 元，限時優惠 $49 元' },
             { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
-
-            {
-              text: '加入年方案訂閱，就有機會獲得Sony旗艦手機',
-              isHightlight: true,
-            },
           ],
           buttons: [
             {
@@ -216,11 +211,6 @@ export default {
                 { text: '免費閱讀數位版動態雜誌' },
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
-
-                {
-                  text: '加入年方案訂閱，就有機會獲得Sony旗艦手機',
-                  isHightlight: true,
-                },
               ],
               buttons: [
                 {
@@ -243,11 +233,6 @@ export default {
                 { text: '免費閱讀數位版動態雜誌' },
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
-
-                {
-                  text: '加入年方案訂閱，就有機會獲得Sony旗艦手機',
-                  isHightlight: true,
-                },
               ],
               buttons: [
                 {
@@ -274,11 +259,6 @@ export default {
                 { text: '免費閱讀數位版動態雜誌' },
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
-
-                {
-                  text: '加入年方案訂閱，就有機會獲得Sony旗艦手機',
-                  isHightlight: true,
-                },
               ],
               buttons: [
                 {

@@ -192,7 +192,7 @@ export default {
       }
     },
     handleBackButtonClick() {
-      this.$router.back()
+      this.$customRouter.back()
     },
     handleRegisterButtonClick() {
       window.location.assign('/login')

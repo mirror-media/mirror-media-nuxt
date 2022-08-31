@@ -2,7 +2,6 @@
   <div class="member-info">
     鏡週刊訂閱制上線，讓有價的閱聽成就更多優質文章，並獻上無廣告的閱讀環境，讓您盡情享受15類會員專屬內容，誠摯邀請您
     <strong @click="enterMemberSectionPage">立即加入</strong>。
-    <p>即日起加入年費會員，月月抽Sony旗艦機</p>
   </div>
 </template>
 
