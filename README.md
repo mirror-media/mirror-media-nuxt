@@ -49,6 +49,7 @@ To avoid unpredictable error occur when developing, please use Classic Stable ve
 | ENABLE_CLOUD_LOGGING | 布林值 | false | 開啟 gcloud/logging 行為 |
 | LINEPAY_CHANNEL_ID | 字串 | '' | LINE Pay 串接所需的 channel id |
 | LINEPAY_CHANNEL_KEY | 字串 | '' | LINE Pay 串接所需的 channel key |
+| LINEPAY_CLIENT_MODE | 字串 | 'development' | 串接 LINE Pay 的模式，數值有 `development` 和 `production` |
 | PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME | 字串 | 'linepay-webhook-dev' | LINE Pay 付款資訊寫入 PubSub 的主題名稱 |
 
 ## Feature Toggle

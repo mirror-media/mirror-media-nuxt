@@ -2,12 +2,7 @@
   <section class="index" :class="{ active: isIndexActive }">
     <button class="index__btn open" @click="$emit('openIndex')">
       <!-- TODO: inline svg -->
-      <img
-        v-if="isCurrentPagePremium"
-        src="~/assets/premium-header-sidebar-toggle.svg"
-        alt="開啟"
-      />
-      <img v-else src="~/assets/hamburger.svg" alt="開啟" />
+      <img src="~/assets/hamburger.svg" alt="開啟" />
     </button>
 
     <div class="index__curtain">

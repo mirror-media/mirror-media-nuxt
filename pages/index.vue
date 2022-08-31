@@ -8,7 +8,6 @@
         @sendGa:next="sendGaForClick('breakingnews up')"
         @sendGa:prev="sendGaForClick('breakingnews down')"
       />
-
       <ContainerGptAd class="home__ad home__ad--hd" pageKey="home" adKey="HD" />
 
       <section class="editor-choices-container">
@@ -91,7 +90,7 @@
             />
             <UiInfiniteLoading
               v-if="latestItems.length > 3"
-              @infinite="loadMoreLatestItems"
+              @infinite="handleInfiniteLoad"
             />
           </section>
         </div>
@@ -148,6 +147,7 @@ import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
 // import { isTruthy } from '~/utils/index.js'
 import { stripHtmlTags } from '~/utils/article.js'
+import { removeArticleWithExternalLink } from '~/utils/index.js'
 import { CATEGORY_ID_MARKETING, SITE_OG_IMG } from '~/constants/index.js'
 const CATEGORY_ID_POLITICAL = '5979ac0de531830d00e330a7' // 政治
 const CATEGORY_ID_CITY_NEWS = '5979ac33e531830d00e330a9' // 社會
@@ -201,6 +201,10 @@ export default {
     if (flashNewsResponse.status === 'fulfilled') {
       this.flashNews = flashNewsResponse.value || []
     }
+    this.groupedArticles.choices = removeArticleWithExternalLink(
+      this.groupedArticles.choices
+    )
+    this.getGroupedArticlesWithoutExternalLink()
 
     this.loadLatestListInitial()
   },
@@ -241,7 +245,8 @@ export default {
       },
 
       hasScrolled: false,
-
+      hasLoadedFirstGroupedArticle: false,
+      isNoNeedToFetchLatestList: false,
       observerOfLastSecondFocusList: undefined,
       canFixLastFocusList: false,
       shouldFixLastFocusList: false,
@@ -292,12 +297,6 @@ export default {
       return articles.map((article) =>
         transformContent(article, this.isPremiumMember)
       )
-    },
-    doesHaveAnyLatestItemsLeftToLoad() {
-      const { total, maxResults, page: currentPage } = this.latestList
-      const maxPage = Math.ceil(total / maxResults)
-
-      return currentPage < maxPage
     },
     latestItems() {
       const listWithUniqueItems = _.uniqBy(
@@ -398,8 +397,11 @@ export default {
           'post_external01'
         )
         this.groupedArticles = groupedResponse
+        this.getGroupedArticlesWithoutExternalLink()
+
         this.loadLatestListInitial()
       }
+      this.hasLoadedFirstGroupedArticle = true
       this.insertMicroAds()
     } catch (err) {
       this.$nuxt.context.error({ statusCode: 500 })
@@ -440,6 +442,12 @@ export default {
 
       this.areMicroAdsInserted = true
     },
+
+    getGroupedArticlesWithoutExternalLink() {
+      this.groupedArticles.latest = removeArticleWithExternalLink(
+        this.groupedArticles.latest
+      )
+    },
     async fetchFlashNews() {
       const { items: articles = [] } =
         (await this.$fetchPostsFromMembershipGateway({
@@ -466,7 +474,10 @@ export default {
       this.fileId += 1
     },
     async fetchLatestList() {
-      if (this.fileId === 5) return []
+      if (this.fileId === 5) {
+        this.isNoNeedToFetchLatestList = true
+        return []
+      }
       const { latest = [] } = await this.$fetchGroupedWithExternal(
         `post_external0${this.fileId}`
       )
@@ -492,6 +503,7 @@ export default {
         brief,
         sections = [],
         publishedDate = '',
+        redirect = '',
       } = item
 
       return {
@@ -505,65 +517,44 @@ export default {
         label: getLabel(item),
         sectionName: item.partner ? 'external' : sections[0]?.name,
         publishedTimestamp: new Date(publishedDate).getTime(),
+        redirect,
       }
     },
-    async loadMoreLatestItems(state) {
-      try {
-        const groupArticleLength = this.groupedArticles.latest?.length
-        const latestLength = this.latestList?.items?.length
-        const reserveCount = groupArticleLength - latestLength
-        let newLatestLength
-        if (reserveCount < 20 || (reserveCount === 20 && this.fileId === 5)) {
-          const newLatest = await this.fetchLatestList()
-          newLatestLength = newLatest.length
-          this.groupedArticles.latest?.push(
-            ...newLatest.map((item) => {
-              return {
-                id: item.slug,
-                ...item,
-              }
-            })
-          )
-        }
-
-        const oldestId = this.latestList?.items[latestLength - 1].id
-        let indexOfOlndex
-        this.groupedArticles.latest?.map((item, i) => {
-          if (item.id === oldestId) {
-            indexOfOlndex = i + 1
-          }
-        })
-
-        /*
-         * when page is initialized at server side, if user scroll to the bottom of page,
-         * methods `this.pushLatestItems` will executed one less time.
-         * The root cause has not been found and resolved, but we take the workaround solution temporarily,
-         * which is calculate length of `newLatest`, if it is 0, which means don't remain latest news
-         * have to fetch from backend, then execute`pushLatestItems` by pushing double amount of latest news,
-         * and stop the load.
-         */
-        if (newLatestLength === 0 && reserveCount < 0) {
-          this.pushLatestItems(
-            this.groupedArticles.latest.slice(indexOfOlndex, indexOfOlndex + 40)
-          )
-          state.complete()
-          return
-        } else {
-          this.pushLatestItems(
-            this.groupedArticles.latest.slice(indexOfOlndex, indexOfOlndex + 20)
-          )
-        }
-
-        this.latestList.page++
-
-        state.loaded()
-
-        this.sendGa('scroll', 'loadmore', this.latestList.page)
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err)
-        state.error()
+    async handleInfiniteLoad(state) {
+      if (!this.hasLoadedFirstGroupedArticle) {
+        return
       }
+      if (this.isNoNeedToFetchLatestList) {
+        state.complete()
+      } else {
+        await this.loadMoreLatestItems()
+        state.loaded()
+      }
+      this.sendGa('scroll', 'loadmore', this.latestList.page)
+    },
+    async loadMoreLatestItems() {
+      this.latestList.page += 1
+      if (
+        this.groupedArticles?.latest.length <=
+        this.latestList.maxResults * (this.latestList.page + 1)
+      ) {
+        const newLatest = await this.fetchLatestList()
+        this.groupedArticles.latest?.push(
+          ...newLatest.map((item) => {
+            return {
+              id: item.slug,
+              ...item,
+            }
+          })
+        )
+        this.getGroupedArticlesWithoutExternalLink()
+      }
+      this.pushLatestItems(
+        this.groupedArticles.latest.slice(
+          this.latestList.maxResults * this.latestList.page,
+          this.latestList.maxResults * (this.latestList.page + 1)
+        )
+      )
     },
 
     async loadFixedEventMod() {

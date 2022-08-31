@@ -40,7 +40,7 @@
             >
           </div>
           <SubscribeFormPayment
-            v-if="showLINEPayUI"
+            v-if="showLINEPayUI && !isUpgradeFromMonthToYear"
             ref="paymentDOM"
             :setPaymentMethod="setPaymentMethod"
             :validateOn="validateOn"
@@ -77,7 +77,6 @@
               >
             </label>
           </div>
-          <!-- TODO: update layout and display text -->
           <p
             v-if="!isUpgradeFromMonthToYear"
             class="subscribe-info__form_left_hint"
@@ -91,7 +90,6 @@
               所提供的線上結帳頁面，完成後將會再跳回到鏡週刊
             </template>
           </p>
-          <!-- TODO: update layout and button style -->
           <template v-if="showLINEPayUI">
             <UiSubscribeButton
               v-if="isUpgradeFromMonthToYear"
@@ -104,7 +102,7 @@
               <UiSubscribeButton
                 title="開始結帳"
                 :isLoading="isLoading"
-                :class="{ disabled: paymentMethod === '' }"
+                :class="{ disabled: disallowToSubmit }"
                 @click.native="submitHandler"
               />
             </template>
@@ -161,6 +159,7 @@ import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
 import { STATUS as REQUEST_STATUS } from '~/constants/request.js'
+import { Frequency, MemberType, PaymentMethod } from '~/constants/common'
 
 // import redirectDestination from '~/utils/redirect-destination'
 
@@ -190,8 +189,8 @@ export default {
     return {
       perchasedPlan,
       isUpgradeFromMonthToYear:
-        route.value.query.plan === 'yearly' &&
-        state['membership-subscribe'].basicInfo.type === 'subscribe_monthly',
+        route.value.query.plan === Frequency.Yearly &&
+        state['membership-subscribe'].basicInfo.type === MemberType.Monthly,
       isServicesRuleAgree,
       isCheckingServiceRule,
       isNeedToCheck,
@@ -201,46 +200,47 @@ export default {
       const route = useRoute()
       const { $config } = useContext()
 
-      if (route.value.query.plan === 'one-time') {
-        return [
-          {
-            id: route.value.query['one-time-post-id'],
-            detail: '鏡週刊Basic會員（單篇）',
-            hint:
-              $config.subscriptionPriceFeatureToggle === 'on'
-                ? '$5 元可享單篇好文 14 天無限瀏覽'
-                : '單篇 $1 元，享 14 天內無限次觀看',
-            price: `原價 NT$${
-              $config.subscriptionPriceFeatureToggle === 'on' ? 5 : 1
-            }`,
-            newPrice: $config.subscriptionPriceFeatureToggle === 'on' ? 5 : 1,
-            key: 'basic',
-          },
-        ]
-      } else if (route.value.query.plan === 'monthly') {
-        return [
-          {
-            id: 1,
-            detail: '鏡週刊Premium會員（月方案）',
-            hint: '每月 $49 元，信用卡自動續扣',
-            price: '原價 NT$99',
-            newPrice: 49,
-            key: 'monthly',
-          },
-        ]
-      } else if (route.value.query.plan === 'yearly') {
-        return [
-          {
-            id: 1,
-            detail: '鏡週刊Premium會員（年方案）',
-            hint: '每年 $499 元，信用卡自動續扣',
-            price: '原價 NT$1188',
-            newPrice: 499,
-            key: 'yearly',
-          },
-        ]
-      } else {
-        return [{}]
+      switch (route.value.query.plan) {
+        case Frequency.OneTimeHyphen:
+          return [
+            {
+              id: route.value.query['one-time-post-id'],
+              detail: '鏡週刊Basic會員（單篇）',
+              hint:
+                $config.subscriptionPriceFeatureToggle === 'on'
+                  ? '$5 元可享單篇好文 14 天無限瀏覽'
+                  : '單篇 $1 元，享 14 天內無限次觀看',
+              price: `原價 NT$${
+                $config.subscriptionPriceFeatureToggle === 'on' ? 5 : 1
+              }`,
+              newPrice: $config.subscriptionPriceFeatureToggle === 'on' ? 5 : 1,
+              key: 'basic',
+            },
+          ]
+        case Frequency.Monthly:
+          return [
+            {
+              id: 1,
+              detail: '鏡週刊Premium會員（月方案）',
+              hint: '每月 $49 元，信用卡自動續扣',
+              price: '原價 NT$99',
+              newPrice: 49,
+              key: 'monthly',
+            },
+          ]
+        case Frequency.Yearly:
+          return [
+            {
+              id: 1,
+              detail: '鏡週刊Premium會員（年方案）',
+              hint: '每年 $499 元，信用卡自動續扣',
+              price: '原價 NT$1188',
+              newPrice: 499,
+              key: 'yearly',
+            },
+          ]
+        default:
+          return [{}]
       }
     }
   },
@@ -274,9 +274,9 @@ export default {
     frequency() {
       const planFrequency = this.perchasedPlan?.[0]?.key
       const map = {
-        basic: 'one_time',
-        monthly: 'monthly',
-        yearly: 'yearly',
+        basic: Frequency.OneTime,
+        monthly: Frequency.Monthly,
+        yearly: Frequency.Yearly,
       }
       return map[planFrequency]
     },
@@ -317,7 +317,13 @@ export default {
       return validReceiptData
     },
     showLINEPayUI() {
-      return this.perchasedPlan?.[0]?.key === 'basic' && this.linepayUiToggle
+      return this.linepayUiToggle
+    },
+    isPremiumPurchase() {
+      return [Frequency.Monthly, Frequency.Yearly].includes(this.frequency)
+    },
+    disallowToSubmit() {
+      return this.paymentMethod === '' || !this.frequency
     },
   },
   watch: {
@@ -370,6 +376,9 @@ export default {
     async submitHandler(e) {
       e.preventDefault()
       if (this.isLoading) return
+
+      // invalid plan
+      if (!this.frequency) return
 
       try {
         // input validation section
@@ -471,7 +480,7 @@ export default {
         const orderNumber =
           updatedSubscription?.data?.updatesubscription?.orderNumber
         this.$router.push(
-          `/subscribe/success?orderNumber=${orderNumber}&code=yearly`
+          `/subscribe/success?orderNumber=${orderNumber}&code=${Frequency.Yearly}`
         )
       } catch (error) {
         console.error(error)
@@ -482,19 +491,16 @@ export default {
     // for LINE Pay payment
     async getPaymentInfoFromBackend() {
       let payload
-      const isPremiumPurchase =
-        this.frequency === 'yearly' || this.frequency === 'monthly'
-
-      if (isPremiumPurchase) {
+      if (this.isPremiumPurchase) {
         payload = {
           member: {
             connect: {
-              firebaseId: this.getUserFirebaseId(),
+              firebaseId: this.$getUserFirebaseId(),
             },
           },
           email: this.email,
           frequency: this.frequency,
-          paymentMethod: 'line_pay',
+          paymentMethod: PaymentMethod.LINEPay,
           status: null, // write null to left field empty
           linePayStatus: 'paying',
           promoteId: this.promoteId, // 折扣碼 (TODO)
@@ -511,11 +517,11 @@ export default {
         payload = {
           member: {
             connect: {
-              firebaseId: this.getUserFirebaseId(),
+              firebaseId: this.$getUserFirebaseId(),
             },
           },
           email: this.email,
-          paymentMethod: 'line_pay',
+          paymentMethod: PaymentMethod.LINEPay,
           status: null, // write null to left field empty
           linePayStatus: 'paying',
           promoteId: this.promoteId, // 折扣碼 (TODO)
@@ -543,14 +549,12 @@ export default {
     // for Newebpay Payment
     async getPaymentDataFromApiGateWay() {
       let gateWayPayload
-      const isPremiumPurchase =
-        this.frequency === 'yearly' || this.frequency === 'monthly'
 
-      if (isPremiumPurchase) {
+      if (this.isPremiumPurchase) {
         gateWayPayload = {
           email: this.email,
           frequency: this.frequency,
-          paymentMethod: 'newebpay',
+          paymentMethod: PaymentMethod.NewebPay,
           status: 'paying',
           promoteId: this.promoteId, // 折扣碼 (TODO)
           loveCode: parseInt(this.validReceiptData.donateOrganization),
@@ -565,7 +569,7 @@ export default {
         const subscribePostId = this.perchasedPlan?.[0]?.id
         gateWayPayload = {
           email: this.email,
-          paymentMethod: 'newebpay',
+          paymentMethod: PaymentMethod.NewebPay,
           status: 'paying',
           promoteId: this.promoteId, // 折扣碼 (TODO)
           postId: subscribePostId,
@@ -590,9 +594,6 @@ export default {
         case '二聯式發票（含載具）':
           return 'B2C'
       }
-    },
-    getUserFirebaseId() {
-      return this.$store?.state?.membership?.userUid
     },
   },
 }

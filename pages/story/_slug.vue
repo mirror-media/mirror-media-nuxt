@@ -8,7 +8,11 @@
     >
       <ContainerPhotoGallery v-if="isStylePhotography" :story="story" />
 
-      <ContainerCulturePost v-else-if="isStyleWide" :story="story" />
+      <ContainerCulturePost
+        v-else-if="isStyleWide"
+        :story="story"
+        :isPremium="false"
+      />
 
       <div v-else class="article">
         <ContainerHeader :currentSectionName="sectionName" />
@@ -111,6 +115,7 @@
                   class="latest-list"
                   heading="最新文章"
                   :items="latestStories"
+                  :isStyleAdjusted="true"
                   @sendGa="sendGaForClick('latest')"
                 />
               </div>
@@ -118,7 +123,9 @@
               <div
                 ref="fixedContainer"
                 class="fixed-container"
-                :class="{ fixed: shouldFixAside }"
+                :class="{
+                  fixed: shouldFixAside,
+                }"
               >
                 <ClientOnly>
                   <ContainerGptAd
@@ -133,6 +140,7 @@
                     <UiArticleListAsideB
                       heading="熱門文章"
                       :items="popularStories"
+                      :isStyleAdjusted="true"
                       @sendGa="sendGaForClick('popular')"
                     />
                   </section>
@@ -286,6 +294,8 @@ export default {
             redirectHref?.startsWith('http://')
           ) {
             this.$nuxt.context.redirect(redirectHref)
+          } else if (redirectHref?.startsWith('www.')) {
+            this.$nuxt.context.redirect(`https://${redirectHref}`)
           } else {
             this.$nuxt.context.redirect(`/story/${redirectHref}`)
           }
@@ -412,9 +422,7 @@ export default {
       sectionCarandwatchId: SECTION_IDS.carandwatch,
       doesClickCloseAdPcFloating: false,
       doesHaveAdPcFloating: false,
-
       shouldFixAside: false,
-
       scrollDepthObserver: undefined,
     }
   },
@@ -539,6 +547,9 @@ export default {
     this.insertCustomizedMarkup()
     if (this.isStyleDefault) {
       this.observeScrollDepthForGa()
+      if (this.isDesktopWidth) {
+        window.addEventListener('scroll', this.handleFixAside)
+      }
     }
   },
 
@@ -1025,9 +1036,9 @@ function getLabel([item = {}] = []) {
 </script>
 
 <style lang="scss" scoped>
-$story-max-width: 1160px;
+$story-max-width: 1220px;
 
-$aside-width: 300px;
+$aside-width: 365px;
 
 .story-slug {
   &--background-yellow {
@@ -1040,7 +1051,7 @@ $aside-width: 300px;
     margin-left: auto;
     margin-right: auto;
     @include media-breakpoint-up(xl) {
-      width: calc(100% - #{$aside-width} - 20px);
+      width: calc(100% - #{$aside-width});
       max-width: 695px;
       padding-bottom: 0;
       margin-left: 0;
@@ -1050,7 +1061,7 @@ $aside-width: 300px;
 
 .article {
   @include media-breakpoint-up(xl) {
-    background-color: #414141;
+    background: #fff;
   }
 }
 
@@ -1066,6 +1077,7 @@ $aside-width: 300px;
     margin-left: auto;
     margin-right: auto;
     background-color: #fff;
+    max-width: $story-max-width;
   }
 }
 
@@ -1078,40 +1090,42 @@ $aside-width: 300px;
   }
 }
 
-.story {
-  &__list {
-    margin-top: 20px;
-  }
-
-  &__popular-list {
-    margin-bottom: 20px;
-  }
-
-  &__fb-page {
-    margin-bottom: 20px;
-    @include media-breakpoint-up(xl) {
-      margin-bottom: 0;
+::v-deep {
+  .story {
+    &__list {
+      margin-top: 20px;
     }
-  }
 
-  &__ad {
-    width: 100%;
-    margin-bottom: 20px;
-
-    &--ft {
-      margin-bottom: 0;
+    &__popular-list {
+      margin-bottom: 20px;
     }
-    //When page is initialized, the ad is unmounted and the container of which is empty,
-    //However, when the ad is mounted, the container's height is resize to ad height (normally is 250px),
-    //which cause serious CLS problem.
-    //The current solution is set the height of container by CSS, make it unable resized by ad.
-    //But if user is using ad blocking plugins of browser, the container will show as a huge empty div on page,
-    //which influence user experience.
-    //We decide to adopt current solution to solve CLS problem, despite it is not perfect.
-    //The perfect solution need more survey and discussion, we will start to dig in ASAP.
 
-    &--fixed-height {
-      height: 250px;
+    &__fb-page {
+      margin-bottom: 20px;
+      @include media-breakpoint-up(xl) {
+        margin-bottom: 0;
+      }
+    }
+
+    &__ad {
+      width: 100%;
+      margin-bottom: 20px;
+
+      &--ft {
+        margin-bottom: 0;
+      }
+      //When page is initialized, the ad is unmounted and the container of which is empty,
+      //However, when the ad is mounted, the container's height is resize to ad height (normally is 250px),
+      //which cause serious CLS problem.
+      //The current solution is set the height of container by CSS, make it unable resized by ad.
+      //But if user is using ad blocking plugins of browser, the container will show as a huge empty div on page,
+      //which influence user experience.
+      //We decide to adopt current solution to solve CLS problem, despite it is not perfect.
+      //The perfect solution need more survey and discussion, we will start to dig in ASAP.
+
+      &--fixed-height {
+        height: 250px;
+      }
     }
   }
 }
