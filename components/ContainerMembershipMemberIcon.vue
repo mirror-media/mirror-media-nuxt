@@ -34,8 +34,6 @@
 
 <script>
 import SvgMembershipMemberIconLoggedIn from '~/assets/membership-member-icon-logged-in.svg?inline'
-import { userLogoutQuery } from '~/serverMiddleware/appendUtmToUrl'
-
 export default {
   components: {
     SvgMembershipMemberIconLoggedIn,
@@ -59,9 +57,7 @@ export default {
         authUser: {},
       })
 
-      const url = window.location.href
-      window.location.href =
-        url + (url.includes('?') ? '&' : '?') + `${userLogoutQuery}=true`
+      window.location.reload()
     },
     handleMemberIconClick() {
       this.shouldShowDropdownMenu = !this.shouldShowDropdownMenu

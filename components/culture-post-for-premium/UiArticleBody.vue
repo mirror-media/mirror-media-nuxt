@@ -42,7 +42,7 @@
         <div class="invite-to-login-wrapper__fade-out-effect" />
         <UiPremiumInviteToSubscribe
           :shouldShowLoginNow="!$store.getters['membership/isLoggedIn']"
-          @subscribePremium="$customRouter.push('/subscribe')"
+          @subscribePremium="$router.replace('/subscribe')"
           @subscribePost="handleSubscribePost"
           @login="handleLogin"
         />

@@ -49,6 +49,7 @@ export default {
       const { id } = this.selectedOption
       const query = id ? `?section=${id}` : ''
 
+      // this.$router.push(`/search/${keyword}${query}`)
       location.assign(`/search/${keyword}${query}`)
     },
     handleWhitespace(str) {

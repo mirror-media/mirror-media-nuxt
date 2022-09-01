@@ -440,14 +440,6 @@ export default {
             ? `http://localhost:3000/subscribe/return`
             : `https://${DOMAIN_NAME}/subscribe/return`
 
-        /*
-         * add utm query strings if there is utm object stored in cookie
-         * to track conversion rate to speicfic campaign
-         */
-        const queryString =
-          this.$store?.getters?.['utm-url-params/getUtmQueryString']()
-        tradeInfo.ReturnURL += queryString
-
         // // encrypt tradeInfo
         this.paymentPayload = await this.$axios.$post(
           `${window.location.origin}/api/v2/newebpay/v1`,
@@ -487,10 +479,9 @@ export default {
 
         const orderNumber =
           updatedSubscription?.data?.updatesubscription?.orderNumber
-        this.$customRouter.push('/subscribe/success', {
-          orderNumber,
-          code: Frequency.Yearly,
-        })
+        this.$router.push(
+          `/subscribe/success?orderNumber=${orderNumber}&code=${Frequency.Yearly}`
+        )
       } catch (error) {
         console.error(error)
         this.isLoading = false

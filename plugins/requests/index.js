@@ -19,12 +19,7 @@ import {
   isMemberPaidSubscriptionWithMobile,
 } from '~/utils/memberSubscription'
 
-import {
-  API_TIMEOUT,
-  DOMAIN_NAME,
-  ENV,
-  API_PATH_FRONTEND,
-} from '~/configs/config.js'
+import { API_TIMEOUT, ENV, API_PATH_FRONTEND } from '~/configs/config.js'
 
 const baseUrl = process.browser
   ? `//${location.host}/`
@@ -164,7 +159,7 @@ async function fetchGcsData(filename) {
     let data
 
     if (ENV === 'prod' || !process.browser) {
-      apiUrl = `https://${DOMAIN_NAME}/json/${filename}.json`
+      apiUrl = `https://statics.mirrormedia.mg/json/${filename}.json`
       ;({ data = {} } = await axios.get(apiUrl, { timeout: API_TIMEOUT }))
     } else {
       // 由於 CORS 的問題，不能直接在 browser 端打 api（除了生產環境），而是必須透過前端 server 去打

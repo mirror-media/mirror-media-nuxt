@@ -84,6 +84,8 @@ function getRequestObject(subscription, isPreapproved = false) {
               name: `${subscription.desc} - ${subscription.comment}`,
               quantity: 1,
               price: subscription.amount,
+              imageUrl:
+                'https://storage.googleapis.com/mirrormedia-files/assets/images/20220901144131-a2c042ef75430fdcb4fb3abbe58476e2.png',
             },
           ],
         },
