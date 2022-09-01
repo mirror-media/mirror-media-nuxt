@@ -6,7 +6,6 @@ import {
   state as stateMembership,
   getters as gettersMembership,
 } from '~/store/membership'
-import { userLogoutQuery } from '~/serverMiddleware/appendUtmToUrl'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -84,8 +83,9 @@ describe('data bindings with vuex store, and user email exist', function () {
       },
     }
     delete window.location
-    const url = 'https://www.test.com/'
-    window.location = new URL(url)
+    window.location = {
+      reload: jest.fn(),
+    }
     const wrapper = createWrapper(ContainerMembershipMemberIcon, {
       localVue,
       store: new Vuex.Store(storeOptions),
@@ -96,7 +96,7 @@ describe('data bindings with vuex store, and user email exist', function () {
     const signOutButton = wrapper.get('.sign-out-button')
     await signOutButton.trigger('click')
     expect(mockFire.auth.signOut).toHaveBeenCalled()
-    expect(window.location.href).toEqual(url + '?' + `${userLogoutQuery}=true`)
+    expect(window.location.reload).toHaveBeenCalled()
   })
 
   test('should hide the dropdown menu in the logged in wrapper after mounted', function () {
