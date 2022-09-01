@@ -8,7 +8,7 @@
 export default {
   methods: {
     handleClick() {
-      this.$customRouter.push('/papermag')
+      this.$router.push('/papermag')
     },
   },
 }
