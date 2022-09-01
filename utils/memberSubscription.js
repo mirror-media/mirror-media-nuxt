@@ -289,10 +289,8 @@ function getMemberPayRecords(subscriptionList) {
           linepayPayment.createdAt ?? linepayPayment.transactionTime
         ),
         type: getSubscriptionTypeWording(subscription.frequency),
-        method: linepayPayment.payInfoMethod ?? 'LINE Pay',
-        methodNote: `(${(linepayPayment.maskedCreditCardNumber ?? '').slice(
-          -4
-        )})`,
+        method: 'LINE Pay',
+        methodNote: '',
         price: linepayPayment.amount,
         status: LINEPayStatusMap[subscription.linePayStatus] ?? '',
         createdAt: linepayPayment.createdAt,
