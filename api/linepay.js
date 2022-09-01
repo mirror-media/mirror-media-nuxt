@@ -85,7 +85,7 @@ function getRequestObject(subscription, isPreapproved = false) {
               quantity: 1,
               price: subscription.amount,
               imageUrl:
-                'https://storage.googleapis.com/mirrormedia-files/assets/images/20220901114724-1befc370aa193a7b1871ed3e1176d1e4.jpg',
+                'https://storage.googleapis.com/mirrormedia-files/assets/images/20220901144131-a2c042ef75430fdcb4fb3abbe58476e2.png',
             },
           ],
         },
