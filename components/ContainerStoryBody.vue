@@ -16,7 +16,14 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-if="credit" class="story__credit" v-html="credit"></div>
 
-    <div class="story__share">
+    <div class="story__share share">
+      <img
+        src="../assets/logo@2x.png"
+        alt="Mirror Media"
+        class="share__logo"
+        @click="handleClickHomeLogo"
+      />
+      <div class="share__br" />
       <UiShareFb />
       <UiShareLine />
     </div>
@@ -379,6 +386,9 @@ export default {
     isString(value) {
       return typeof value === 'string'
     },
+    handleClickHomeLogo() {
+      window.location.href = '/'
+    },
   },
 }
 
@@ -546,12 +556,30 @@ export {
   &__share {
     display: flex;
     margin-bottom: 45px;
+    align-items: center;
 
     a {
       width: 35px;
 
       + a {
         margin-left: 10px;
+      }
+    }
+
+    .share__br {
+      content: '';
+      display: block;
+      margin: 0 20px;
+      width: 1px;
+      height: 16px;
+      background: #a1a1a1;
+    }
+
+    .share__logo {
+      width: 35px;
+      display: flex;
+      &:hover {
+        cursor: pointer;
       }
     }
   }

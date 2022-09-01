@@ -154,7 +154,7 @@ describe('AD', () => {
     expect(wrapper.find('.dable-widget').exists()).toBe(false)
     expect(wrapper.findComponent(UiStickyAd).exists()).toBe(false)
     expect(wrapper.findComponent(ContainerFullScreenAds).exists()).toBe(false)
-    expect(wrapper.find('.ad-pc-floating').exists()).toBe(false)
+    expect(wrapper.get('.ad-pc-floating').isVisible()).toBe(false)
   })
 
   test('do not show ADs of MB_ST, MB_FS, MB_AD2 & MB_INNITY when a story has the wine category name', () => {
