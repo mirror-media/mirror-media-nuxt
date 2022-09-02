@@ -304,10 +304,6 @@ module.exports = {
       handler: '~/api/linepay.js',
     },
     {
-      path: `/${API_PATH_FRONTEND}/cancel-subscription/v1`,
-      handler: '~/api/cancel-subscription.js',
-    },
-    {
       path: `/${API_PATH_FRONTEND}/papermag/v1`,
       handler: '~/api/papermag.js',
     },

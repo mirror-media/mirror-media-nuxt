@@ -472,10 +472,10 @@ $categories: (
     }
 
     .section__categories-wrapper {
-      @include media-breakpoint-up(xl) {
-        margin-left: 296px;
-        padding: 0 0 0 24px;
-      }
+      // @include media-breakpoint-up(xl) {
+      //   margin-left: 296px;
+      //   padding: 0 0 0 24px;
+      // }
     }
 
     .video-category {
