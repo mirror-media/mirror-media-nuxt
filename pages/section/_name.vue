@@ -3,13 +3,13 @@
     <ContainerList
       :fetchList="fetchList"
       :transformListItemContent="transformListItemContent"
-      :gptAdPageKey="sectionId"
+      :gptAdPageKey="sectionIdForAd"
       :listTitle="sectionTitle"
       :listTitleColor="sectionColor"
       :shouldMountMicroAds="!isSectionMember"
     />
 
-    <UiStickyAd :pageKey="sectionId" />
+    <UiStickyAd :pageKey="sectionIdForAd" />
     <ContainerFullScreenAds v-if="!isSectionMember" />
   </section>
 </template>
@@ -45,10 +45,15 @@ export default {
       )
     },
     sectionId() {
-      if (this.$route.params.name === 'mirrorcolumn') {
+      return this.sectionData.id
+    },
+
+    // if section name is "mirrorcolumn", should render ad which belongs to "culture" section
+    sectionIdForAd() {
+      if (this.sectionName === 'mirrorcolumn') {
         return '5964418a4bbe120f002a3198'
       }
-      return this.sectionData.id
+      return this.sectionId
     },
     sectionTitle() {
       return this.sectionData.title
