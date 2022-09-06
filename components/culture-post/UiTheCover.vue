@@ -96,6 +96,7 @@ export default {
   align-items: center;
   position: relative;
   z-index: 2;
+  background: #d9d9d9;
 }
 
 h1 {
