@@ -86,7 +86,7 @@ export default function (req, res, next) {
        * So we convert it again back to object to eliminate the possible
        * duplication and then convert it back to query string.
        */
-      res.redirect(
+      return res.redirect(
         req.path +
           objectToQueryString(
             queryStringToObject(
