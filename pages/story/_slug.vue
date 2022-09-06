@@ -20,7 +20,7 @@
         <div class="story-container">
           <ContainerGptAd
             class="story__ad story__ad--fixed-height"
-            :pageKey="sectionId"
+            :pageKey="sectionIdForAd"
             adKey="HD"
           />
 
@@ -83,7 +83,7 @@
               <ClientOnly>
                 <ContainerGptAd
                   class="story__ad"
-                  :pageKey="sectionId"
+                  :pageKey="sectionIdForAd"
                   adKey="PC_R1"
                 />
 
@@ -93,7 +93,7 @@
 
                 <ContainerGptAd
                   class="story__ad"
-                  :pageKey="sectionId"
+                  :pageKey="sectionIdForAd"
                   adKey="MB_E1"
                 />
 
@@ -130,7 +130,7 @@
                 <ClientOnly>
                   <ContainerGptAd
                     class="story__ad"
-                    :pageKey="sectionId"
+                    :pageKey="sectionIdForAd"
                     adKey="PC_R2"
                   />
                 </ClientOnly>
@@ -156,7 +156,7 @@
 
           <ContainerGptAd
             class="story__ad story__ad--ft"
-            :pageKey="sectionId"
+            :pageKey="sectionIdForAd"
             adKey="FT"
           />
 
@@ -181,7 +181,7 @@
 
           <UiStickyAd
             v-if="!doesHaveWineCategory && canAdvertise"
-            :pageKey="sectionId"
+            :pageKey="sectionIdForAd"
           />
 
           <UiWineWarning v-if="doesHaveWineCategory" />
@@ -485,10 +485,15 @@ export default {
       return !_.isEmpty(this.section)
     },
     sectionId() {
+      return this.section.id ?? DEFAULT_SECTION_ID
+    },
+
+    // if section name is "mirrorcolumn", should render ad which belongs to "culture" section
+    sectionIdForAd() {
       if (this.section.name === 'mirrorcolumn') {
         return '5964418a4bbe120f002a3198'
       }
-      return this.section.id ?? DEFAULT_SECTION_ID
+      return this.sectionId
     },
     storySlug() {
       return this.$route.params.slug
@@ -514,7 +519,7 @@ export default {
 
     shouldShowAdPcFloating() {
       return (
-        this.sectionId === this.sectionCarandwatchId &&
+        this.sectionIdForAd === this.sectionCarandwatchId &&
         this.canAdvertise &&
         this.isDesktopWidth &&
         this.doesHaveAdPcFloating &&
