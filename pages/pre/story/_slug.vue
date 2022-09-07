@@ -444,7 +444,7 @@ export default {
             slug,
             title,
             href: `/pre/story/${slug}/`,
-            imgSrc: getImgSrc(heroImage),
+            imgSrc: heroImage ? getImgSrc(heroImage) : SITE_OG_IMG,
             label: getLabel(categories),
             sectionName: sections[0]?.name,
           }
