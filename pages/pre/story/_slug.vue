@@ -805,11 +805,11 @@ function getLabel([item = {}] = []) {
 .article-info {
   margin: 36px 20px 0 20px;
   @include media-breakpoint-up(md) {
-    max-width: 608px;
+    max-width: 720px;
     margin: 52px auto 0 auto;
   }
   @include media-breakpoint-up(xl) {
-    max-width: 960px;
+    max-width: 774px;
     margin: 64px auto 0 auto;
   }
 }
@@ -872,10 +872,10 @@ function getLabel([item = {}] = []) {
     @include media-breakpoint-up(md) {
       padding: 0;
       margin: 0 auto;
-      max-width: 608px;
+      max-width: 720px;
     }
     @include media-breakpoint-up(xl) {
-      max-width: 960px;
+      max-width: 774px;
     }
   }
 }
