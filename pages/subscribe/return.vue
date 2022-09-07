@@ -13,6 +13,8 @@ import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import { NEWEBPAY_KEY, NEWEBPAY_IV, ISRAFEL_ORIGIN } from '~/configs/config'
+import { setUtmCookieTerminated } from '~/serverMiddleware/appendUtmToUrl'
+
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
@@ -22,7 +24,7 @@ export default {
     SubscribeSuccessPage,
     SubscribeFail,
   },
-  async asyncData({ req, redirect }) {
+  async asyncData({ req, res, redirect }) {
     if (req.method !== 'POST') return redirect('/subscribe')
 
     try {
@@ -105,6 +107,15 @@ export default {
         }
       }
 
+      if (process.server) {
+        if (
+          decryptInfoData.frequency !== 'one_time' &&
+          res.locals.terminatedUtm
+        ) {
+          setUtmCookieTerminated(res, res.locals.terminatedUtm)
+        }
+      }
+
       return {
         status: 'success',
         orderInfo: {
@@ -115,6 +126,7 @@ export default {
         },
       }
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(
         JSON.stringify({
           severity: 'ERROR',

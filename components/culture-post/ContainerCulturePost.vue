@@ -149,6 +149,7 @@ export default {
         publishedDate = '',
         updatedAt = '',
         relateds = [],
+        isTruncated = false,
       } = this.story
 
       const heroVideoSrc = heroVideo.video?.url || ''
@@ -175,6 +176,7 @@ export default {
         publishedDate: dayjs(publishedDate).format('YYYY.M.D'),
         updatedAt: dayjs(updatedAt).format('YYYY.M.D HH:mm'),
         relateds,
+        isTruncated,
       }
 
       function getCredits() {
