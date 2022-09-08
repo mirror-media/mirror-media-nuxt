@@ -805,11 +805,11 @@ function getLabel([item = {}] = []) {
 .article-info {
   margin: 36px 20px 0 20px;
   @include media-breakpoint-up(md) {
-    max-width: 720px;
+    max-width: 608px;
     margin: 52px auto 0 auto;
   }
   @include media-breakpoint-up(xl) {
-    max-width: 774px;
+    max-width: 720px;
     margin: 64px auto 0 auto;
   }
 }
@@ -872,10 +872,10 @@ function getLabel([item = {}] = []) {
     @include media-breakpoint-up(md) {
       padding: 0;
       margin: 0 auto;
-      max-width: 720px;
+      max-width: 608px;
     }
     @include media-breakpoint-up(xl) {
-      max-width: 774px;
+      max-width: 720px;
     }
   }
 }
@@ -884,7 +884,7 @@ function getLabel([item = {}] = []) {
   @include media-breakpoint-up(xl) {
     display: flex;
     justify-content: space-between;
-    max-width: 774px;
+    max-width: 720px;
     margin: 0 auto;
   }
 }
@@ -892,7 +892,7 @@ function getLabel([item = {}] = []) {
 .anniversary {
   margin: 0 20px;
   @include media-breakpoint-up(md) {
-    max-width: 720px;
+    max-width: 608px;
     margin: 0 auto;
   }
   @include media-breakpoint-up(xl) {
@@ -905,7 +905,7 @@ function getLabel([item = {}] = []) {
 .sns {
   margin: 12.5px 20px 0 20px;
   @include media-breakpoint-up(md) {
-    max-width: 618px;
+    max-width: 608px;
     margin: 12.5px auto 0 auto;
   }
   @include media-breakpoint-up(xl) {
@@ -916,7 +916,7 @@ function getLabel([item = {}] = []) {
 
 .related-list {
   @include media-breakpoint-up(md) {
-    max-width: 658px;
+    max-width: 608px;
     margin: 12.5px auto 0 auto;
   }
   @include media-breakpoint-up(xl) {
@@ -931,7 +931,7 @@ function getLabel([item = {}] = []) {
   padding: 36px 0;
   @include media-breakpoint-up(md) {
     align-items: flex-start;
-    max-width: 720px;
+    max-width: 608px;
     margin: 0 auto;
     padding: 0 0 36px 0;
   }
