@@ -884,7 +884,7 @@ function getLabel([item = {}] = []) {
   @include media-breakpoint-up(xl) {
     display: flex;
     justify-content: space-between;
-    max-width: 960px;
+    max-width: 774px;
     margin: 0 auto;
   }
 }
@@ -892,7 +892,7 @@ function getLabel([item = {}] = []) {
 .anniversary {
   margin: 0 20px;
   @include media-breakpoint-up(md) {
-    max-width: 618px;
+    max-width: 720px;
     margin: 0 auto;
   }
   @include media-breakpoint-up(xl) {
@@ -931,7 +931,7 @@ function getLabel([item = {}] = []) {
   padding: 36px 0;
   @include media-breakpoint-up(md) {
     align-items: flex-start;
-    max-width: 658px;
+    max-width: 720px;
     margin: 0 auto;
     padding: 0 0 36px 0;
   }
