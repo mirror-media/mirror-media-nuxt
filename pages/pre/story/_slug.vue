@@ -812,6 +812,9 @@ function getLabel([item = {}] = []) {
     max-width: 720px;
     margin: 64px auto 0 auto;
   }
+  @include media-breakpoint-up(xxl) {
+    max-width: 774px;
+  }
 }
 
 .article-body-wrapper {
@@ -877,6 +880,9 @@ function getLabel([item = {}] = []) {
     @include media-breakpoint-up(xl) {
       max-width: 720px;
     }
+    @include media-breakpoint-up(xxl) {
+      max-width: 774px;
+    }
   }
 }
 
@@ -886,6 +892,9 @@ function getLabel([item = {}] = []) {
     justify-content: space-between;
     max-width: 720px;
     margin: 0 auto;
+  }
+  @include media-breakpoint-up(xxl) {
+    max-width: 774px;
   }
 }
 
@@ -899,6 +908,9 @@ function getLabel([item = {}] = []) {
     max-width: initial;
     flex: 1 1 auto;
     margin: 0 20px 0 0;
+  }
+  @include media-breakpoint-up(xxl) {
+    max-width: 774px;
   }
 }
 
