@@ -444,7 +444,7 @@ export default {
             slug,
             title,
             href: `/pre/story/${slug}/`,
-            imgSrc: getImgSrc(heroImage),
+            imgSrc: heroImage ? getImgSrc(heroImage) : SITE_OG_IMG,
             label: getLabel(categories),
             sectionName: sections[0]?.name,
           }
@@ -809,8 +809,11 @@ function getLabel([item = {}] = []) {
     margin: 52px auto 0 auto;
   }
   @include media-breakpoint-up(xl) {
-    max-width: 960px;
+    max-width: 720px;
     margin: 64px auto 0 auto;
+  }
+  @include media-breakpoint-up(xxl) {
+    max-width: 774px;
   }
 }
 
@@ -875,7 +878,10 @@ function getLabel([item = {}] = []) {
       max-width: 608px;
     }
     @include media-breakpoint-up(xl) {
-      max-width: 960px;
+      max-width: 720px;
+    }
+    @include media-breakpoint-up(xxl) {
+      max-width: 774px;
     }
   }
 }
@@ -884,15 +890,18 @@ function getLabel([item = {}] = []) {
   @include media-breakpoint-up(xl) {
     display: flex;
     justify-content: space-between;
-    max-width: 960px;
+    max-width: 720px;
     margin: 0 auto;
+  }
+  @include media-breakpoint-up(xxl) {
+    max-width: 774px;
   }
 }
 
 .anniversary {
   margin: 0 20px;
   @include media-breakpoint-up(md) {
-    max-width: 618px;
+    max-width: 608px;
     margin: 0 auto;
   }
   @include media-breakpoint-up(xl) {
@@ -900,12 +909,15 @@ function getLabel([item = {}] = []) {
     flex: 1 1 auto;
     margin: 0 20px 0 0;
   }
+  @include media-breakpoint-up(xxl) {
+    max-width: 774px;
+  }
 }
 
 .sns {
   margin: 12.5px 20px 0 20px;
   @include media-breakpoint-up(md) {
-    max-width: 618px;
+    max-width: 608px;
     margin: 12.5px auto 0 auto;
   }
   @include media-breakpoint-up(xl) {
@@ -916,7 +928,7 @@ function getLabel([item = {}] = []) {
 
 .related-list {
   @include media-breakpoint-up(md) {
-    max-width: 658px;
+    max-width: 608px;
     margin: 12.5px auto 0 auto;
   }
   @include media-breakpoint-up(xl) {
@@ -931,7 +943,7 @@ function getLabel([item = {}] = []) {
   padding: 36px 0;
   @include media-breakpoint-up(md) {
     align-items: flex-start;
-    max-width: 658px;
+    max-width: 608px;
     margin: 0 auto;
     padding: 0 0 36px 0;
   }
