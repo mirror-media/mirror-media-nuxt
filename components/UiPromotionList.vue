@@ -3,7 +3,7 @@
     <button type="button" class="more-icon" @click="handleClickMoreIcon" />
     <div v-if="shouldOpenList" class="wrapper">
       <a
-        v-for="link in links"
+        v-for="link in uniqLinks"
         :key="link.title"
         :href="link.href"
         target="_blank"
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
   name: 'UiPromotionList',
   props: {
@@ -34,6 +35,11 @@ export default {
     return {
       shouldOpenList: false,
     }
+  },
+  computed: {
+    uniqLinks() {
+      return _.uniqBy(this.links, (link) => link.title)
+    },
   },
   methods: {
     toggleList() {
