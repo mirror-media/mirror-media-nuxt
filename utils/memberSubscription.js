@@ -623,7 +623,7 @@ async function getMemberShipStatus(context, memberShipStatusName) {
     cardInfoLastFour: '',
   }
   const { maskedCreditCardNumber } = linepayPayment?.[0] || {
-    maskedCreditCardNumber: null,
+    maskedCreditCardNumber: '',
   }
   const lastFourDigit =
     paymentMethod === PaymentMethod.NewebPay
