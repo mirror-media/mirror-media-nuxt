@@ -89,7 +89,7 @@
               @sendGa="sendGaForClick('latest')"
             />
             <UiInfiniteLoading
-              v-if="latestItems.length > 3"
+              v-if="hasLoadedFirstGroupedArticle && latestItems.length > 3"
               @infinite="handleInfiniteLoad"
             />
           </section>
@@ -521,9 +521,6 @@ export default {
       }
     },
     async handleInfiniteLoad(state) {
-      if (!this.hasLoadedFirstGroupedArticle) {
-        return
-      }
       if (this.isNoNeedToFetchLatestList) {
         state.complete()
       } else {
