@@ -1,4 +1,5 @@
 import errors from '@twreporter/errors'
+import { SEARCH_URL } from '~/configs/config'
 import { isPageRequesting } from '~/utils/detect-page'
 
 export const state = () => ({
@@ -23,7 +24,7 @@ export const actions = {
 
       await dispatch('membership-subscribe/FETCH_BASIC_INFO')
     }
-    commit('search-url/SET_SEARCH_URL', process.env.SEARCH_URL)
+    commit('search-url/SET_SEARCH_URL', SEARCH_URL)
     const sectionsResponse = await dispatch('fetchGlobalData')
     commitSectionsData(commit, sectionsResponse)
     commit(

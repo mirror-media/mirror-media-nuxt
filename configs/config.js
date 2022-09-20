@@ -34,6 +34,7 @@ const LINEPAY_CLIENT_MODE = ['development', 'production'].includes(
 )
   ? process.env.LINEPAY_CLIENT_MODE
   : 'development'
+const SEARCH_URL = process.env.SEARCH_URL || 'search-url/search'
 
 // The following variables are given values according to different `ENV`
 let API_HOST = ''
@@ -169,5 +170,6 @@ export {
   LINEPAY_CHANNEL_ID,
   LINEPAY_CHANNEL_KEY,
   LINEPAY_CLIENT_MODE,
+  SEARCH_URL,
   PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME,
 }
