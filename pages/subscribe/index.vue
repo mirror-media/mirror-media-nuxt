@@ -35,6 +35,7 @@
                 :key="plan.title"
                 :title="plan.title"
                 :details="plan.details"
+                :discountDetails="plan.discountDetails"
                 :buttons="plan.buttons"
                 :hintUnderButton="hintUnderButton"
                 @subscribePlan="handleSubscribePlan"
@@ -137,6 +138,12 @@ export default {
             { text: '月方案定價 $99 元，限時優惠 $49 元' },
             { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
           ],
+          discountDetails: [
+            {
+              text: '優惠年訂閱團體折扣，請洽會員專屬客服信箱',
+              mailTo: 'MM-onlineservice@mirrormedia.mg',
+            },
+          ],
           buttons: [
             {
               title: '訂閱年方案',
@@ -157,6 +164,12 @@ export default {
               text: `$${
                 this.$config.subscriptionPriceFeatureToggle === 'on' ? 5 : 1
               } 元可享單篇好文 14 天無限瀏覽`,
+            },
+          ],
+          discountDetails: [
+            {
+              text: '優惠年訂閱團體折扣，請洽會員專屬客服信箱',
+              mailTo: 'MM-onlineservice@mirrormedia.mg',
             },
           ],
           buttons: [
@@ -212,6 +225,12 @@ export default {
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
               ],
+              discountDetails: [
+                {
+                  text: '優惠年訂閱團體折扣，請洽會員專屬客服信箱',
+                  mailTo: 'MM-onlineservice@mirrormedia.mg',
+                },
+              ],
               buttons: [
                 {
                   title: '訂閱年方案',
@@ -233,6 +252,12 @@ export default {
                 { text: '免費閱讀數位版動態雜誌' },
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
+              ],
+              discountDetails: [
+                {
+                  text: '優惠年訂閱團體折扣，請洽會員專屬客服信箱',
+                  mailTo: 'MM-onlineservice@mirrormedia.mg',
+                },
               ],
               buttons: [
                 {
@@ -259,6 +284,12 @@ export default {
                 { text: '免費閱讀數位版動態雜誌' },
                 { text: '月方案定價 $99 元，限時優惠 $49 元' },
                 { text: '年方案定價 $1,188 元，限時優惠 $499 元' },
+              ],
+              discountDetails: [
+                {
+                  text: '優惠年訂閱團體折扣，請洽會員專屬客服信箱',
+                  mailTo: 'MM-onlineservice@mirrormedia.mg',
+                },
               ],
               buttons: [
                 {
