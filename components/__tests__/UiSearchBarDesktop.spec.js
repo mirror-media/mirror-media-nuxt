@@ -1,5 +1,4 @@
 import UiSearchBarDesktop from '../UiSearchBarDesktop.vue'
-import UiSearchBarSelect from '../UiSearchBarSelect.vue'
 import UiSearchBarInput from '../UiSearchBarInput.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -23,16 +22,6 @@ describe('custom events', () => {
 
     wrapper.findComponent(UiSearchBarInput).vm.$emit('search')
     expect(wrapper.emitted().search).toBeTruthy()
-  })
-
-  test('emit setSelectedOption when UiSearchBarSelect.vue emits setSelectedOption', () => {
-    const wrapper = createWrapper(UiSearchBarDesktop)
-    const option = { title: '全部類別' }
-
-    wrapper
-      .findComponent(UiSearchBarSelect)
-      .vm.$emit('setSelectedOption', option)
-    expect(wrapper.emitted().setSelectedOption[0]).toEqual([option])
   })
 
   test('emit search when users click the search icon', () => {

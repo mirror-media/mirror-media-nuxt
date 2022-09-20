@@ -40,7 +40,6 @@
         <div class="header-search__and-magazine">
           <UiSearchBarWrapper
             class="header__search-bar-wrapper"
-            :options="options"
             @sendGa="handleSendGa"
           />
           <UiSubscribeMagazineEntrance />
@@ -215,14 +214,6 @@ export default {
     shouldShowGptLogo() {
       return !this.isPremiumMember && this.hasGptLogo && !this.shouldFixHeader
     },
-
-    options() {
-      const sections = this.searchedSections.filter(
-        (section) => section.name !== 'videohub' && section.name !== 'member'
-      )
-      return [this.defaultOption, ...sections]
-    },
-
     isPremiumMember() {
       return this.$store?.getters?.['membership-subscribe/isPremiumMember']
     },
