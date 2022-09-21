@@ -293,7 +293,7 @@ function getMemberPayRecords(subscriptionList) {
         methodNote: '',
         price: linepayPayment.amount,
         status: LINEPayStatusMap[subscription.linePayStatus] ?? '',
-        createdAt: linepayPayment.createdAt,
+        createdAt: linepayPayment.createdAt ?? linepayPayment.transactionTime,
       }
       payRecords.push(payRecord)
     })
