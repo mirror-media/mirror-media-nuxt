@@ -1,14 +1,7 @@
 <template>
   <section>
-    <UiSearchBar
-      :options="options"
-      @setSelectedOption="selectedOption = $event"
-      @setText="keyword = $event"
-      @search="search"
-    />
+    <UiSearchBar @setText="keyword = $event" @search="search" />
     <UiSearchBarDesktop
-      :options="options"
-      @setSelectedOption="selectedOption = $event"
       @setText="keyword = $event"
       @search="search"
       @sendGa="emitGa"
@@ -26,16 +19,8 @@ export default {
     UiSearchBar,
     UiSearchBarDesktop,
   },
-  props: {
-    options: {
-      type: Array,
-      required: true,
-      default: () => [],
-    },
-  },
   data() {
     return {
-      selectedOption: {},
       keyword: '',
     }
   },
@@ -45,12 +30,10 @@ export default {
         return
       }
 
+      const searchPageUrl = this.$store?.getters?.['search-url/getSearchUrl']
       const keyword = this.handleWhitespace(this.keyword)
-      const { id } = this.selectedOption
-      const query = id ? `?section=${id}` : ''
 
-      // this.$router.push(`/search/${keyword}${query}`)
-      location.assign(`/search/${keyword}${query}`)
+      location.assign(`${searchPageUrl}/${keyword}`)
     },
     handleWhitespace(str) {
       /**

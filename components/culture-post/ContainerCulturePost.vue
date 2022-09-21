@@ -149,11 +149,12 @@ export default {
         publishedDate = '',
         updatedAt = '',
         relateds = [],
+        isTruncated = false,
       } = this.story
 
-      const heroVideoSrc = heroVideo.video?.url || ''
+      const heroVideoSrc = heroVideo?.video?.url || ''
       const heroVideoPoster =
-        heroVideo.coverPhoto?.image?.resizedTargets?.mobile?.url || false
+        heroVideo?.coverPhoto?.image?.resizedTargets?.mobile?.url || false
       const heroImgsResized = heroImage?.image?.resizedTargets || {}
       const ogImgsResized = ogImage?.image?.resizedTargets || {}
 
@@ -175,6 +176,7 @@ export default {
         publishedDate: dayjs(publishedDate).format('YYYY.M.D'),
         updatedAt: dayjs(updatedAt).format('YYYY.M.D HH:mm'),
         relateds,
+        isTruncated,
       }
 
       function getCredits() {

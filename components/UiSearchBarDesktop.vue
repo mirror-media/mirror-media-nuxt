@@ -5,31 +5,17 @@
       @setText="$emit('setText', $event)"
       @search="emitSearch"
     />
-    <UiSearchBarSelect
-      class="search-bar-desktop__select"
-      :options="options"
-      @setSelectedOption="$emit('setSelectedOption', $event)"
-    />
     <button type="button" class="search-icon" @click="handleClickSearchIcon" />
   </div>
 </template>
 
 <script>
-import UiSearchBarSelect from './UiSearchBarSelect.vue'
 import UiSearchBarInput from './UiSearchBarInput.vue'
 
 export default {
   name: 'UiSearchBarDesktop',
   components: {
-    UiSearchBarSelect,
     UiSearchBarInput,
-  },
-  props: {
-    options: {
-      type: Array,
-      required: true,
-      default: () => [],
-    },
   },
   methods: {
     emitSearch() {

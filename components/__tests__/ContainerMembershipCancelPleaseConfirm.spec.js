@@ -57,7 +57,7 @@ describe('buttons in the page', function () {
     }
     const wrapper = shallowMount(ContainerMembershipCancelPleaseConfirm, {
       mocks: {
-        $router: mockRouter,
+        $customRouter: mockRouter,
       },
       localVue,
       store: new Vuex.Store(storeOptions),
