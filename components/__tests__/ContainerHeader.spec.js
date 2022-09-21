@@ -149,21 +149,6 @@ describe('event logo', () => {
   })
 })
 
-describe('options computed', () => {
-  test('get the proper data', () => {
-    const wrapper = createWrapper(ContainerHeader, {
-      computed: {
-        searchedSections: () => [{ title: '文化' }, { name: 'videohub' }],
-      },
-    })
-
-    expect(wrapper.vm.options).toEqual([
-      { title: '全部類別' },
-      { title: '文化' },
-    ])
-  })
-})
-
 describe('sidebar', () => {
   test('open it when users click the menu icon', async () => {
     const wrapper = createWrapper(ContainerHeader, {

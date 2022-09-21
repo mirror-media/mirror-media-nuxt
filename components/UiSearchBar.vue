@@ -10,10 +10,6 @@
     </button>
 
     <div v-show="shouldShowField" class="field">
-      <UiSearchBarSelect
-        :options="options"
-        @setSelectedOption="$emit('setSelectedOption', $event)"
-      />
       <UiSearchBarInput
         class="search-bar__input"
         @setText="$emit('setText', $event)"
@@ -24,23 +20,14 @@
 </template>
 
 <script>
-import UiSearchBarSelect from './UiSearchBarSelect.vue'
 import UiSearchBarInput from './UiSearchBarInput.vue'
 import SvgSearchIcon from '~/assets/icon_search_mobile.svg?inline'
 
 export default {
   name: 'UiSearchBar',
   components: {
-    UiSearchBarSelect,
     UiSearchBarInput,
     SvgSearchIcon,
-  },
-  props: {
-    options: {
-      type: Array,
-      required: true,
-      default: () => [],
-    },
   },
   data() {
     return {
