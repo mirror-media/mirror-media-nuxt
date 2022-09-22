@@ -1,5 +1,4 @@
 import UiSearchBar from '../UiSearchBar.vue'
-import UiSearchBarSelect from '../UiSearchBarSelect.vue'
 import UiSearchBarInput from '../UiSearchBarInput.vue'
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
@@ -10,16 +9,6 @@ const createWrapper = createWrapperHelper({
 })
 
 describe('custom events', () => {
-  test('emit setSelectedOption when UiSearchBarSelect.vue emits setSelectedOption', () => {
-    const wrapper = createWrapper(UiSearchBar)
-    const option = { title: '全部類別' }
-
-    wrapper
-      .findComponent(UiSearchBarSelect)
-      .vm.$emit('setSelectedOption', option)
-    expect(wrapper.emitted().setSelectedOption[0]).toEqual([option])
-  })
-
   test('emit setText when UiSearchBarInput.vue emits setText', () => {
     const wrapper = createWrapper(UiSearchBar)
     const keyword = '明星'
