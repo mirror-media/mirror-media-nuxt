@@ -1,0 +1,6 @@
+const RETURN_CODE = {
+  SUCCESS: '0000',
+  ORDER_NUMBER_DUPLICATED: '1172',
+}
+
+export { RETURN_CODE }
