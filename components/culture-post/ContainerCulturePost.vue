@@ -115,6 +115,10 @@ export default {
       type: Number,
       default: 0,
     },
+    shouldShwowAd: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -135,6 +139,7 @@ export default {
     }),
     post() {
       const {
+        id = '',
         title = '',
         brief = {},
         writers = [],
@@ -159,6 +164,7 @@ export default {
       const ogImgsResized = ogImage?.image?.resizedTargets || {}
 
       return {
+        id,
         title,
         credits: getCredits(),
         brief: getBrief(),
