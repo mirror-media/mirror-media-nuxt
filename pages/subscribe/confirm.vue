@@ -14,6 +14,7 @@ import errors from '@twreporter/errors'
 import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
+import { RETURN_CODE } from '~/constants/linepay'
 
 import {
   linepayClient,
@@ -35,6 +36,11 @@ export default {
   },
   async asyncData({ req, redirect }) {
     if (req.method !== 'GET') return redirect('/subscribe')
+
+    if (!process.server) {
+      // should execute only on server side
+      return
+    }
 
     try {
       // check payment existence and payment status in subscription is valid
@@ -134,6 +140,16 @@ export default {
         )
 
         confirmResult = error.data
+        if (confirmResult.returnCode === RETURN_CODE.ORDER_NUMBER_DUPLICATED) {
+          // A record of transaction with the same order number already exists.
+
+          return {
+            status: 'fail',
+            errorData: {
+              message: 'linepay-fail',
+            },
+          }
+        }
       }
 
       const payInfo = confirmResult.info?.payInfo[0]
@@ -169,8 +185,8 @@ export default {
       }
 
       // return result and update data attritube
-      const ok = '0000'
-      if (confirmResult.returnCode !== ok) {
+      if (confirmResult.returnCode !== RETURN_CODE.SUCCESS) {
+        // Not success
         return {
           status: 'fail',
           errorData: {
