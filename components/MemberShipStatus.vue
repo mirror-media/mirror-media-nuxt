@@ -89,8 +89,9 @@ export default {
     },
     canUpdateToYearly() {
       return (
-        this.memberShipStatus.name === MemberType.Monthly ||
-        this.memberShipStatus.name === MemberType.MonthlyDisturbed
+        (this.memberShipStatus.name === MemberType.Monthly ||
+          this.memberShipStatus.name === MemberType.MonthlyDisturbed) &&
+        this.memberShipStatus.payMethod !== 'LINE Pay'
       )
     },
     isDisturb() {
