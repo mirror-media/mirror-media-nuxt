@@ -9,10 +9,6 @@
         @input="changeHandler"
       />
       <span class="radio">{{ radioName }} </span>
-
-      <span v-if="shouldShowWarningOnLinePay" class="radio--warning">
-        （單次扣款）
-      </span>
     </div>
     <ul v-if="radioValue === '限時掛號'" class="radio-input__total">
       <li v-for="hint in hints" :key="hint.text">
@@ -44,19 +40,10 @@ export default {
       isRequired: true,
       default: '捐贈',
     },
-    frequency: {
-      type: String,
-      default: undefined,
-    },
     isValid: {
       type: Boolean,
       isRequired: false,
       default: true,
-    },
-  },
-  computed: {
-    shouldShowWarningOnLinePay() {
-      return this.frequency === 'yearly' && this.radioValue === 'linepay'
     },
   },
   methods: {
@@ -125,11 +112,6 @@ export default {
     font-size: 16px;
     list-style: disc;
     line-height: 1.5;
-  }
-}
-.radio {
-  &--warning {
-    color: #e51731;
   }
 }
 </style>
