@@ -22,8 +22,9 @@
         <UiSubscribeRadioInput
           v-model="paymentMethod"
           radioValue="linepay"
-          radioName="LINE Pay"
-          :frequency="frequency"
+          :radioName="
+            frequency === 'yearly' ? 'LINE Pay（單次扣款）' : 'LINE Pay'
+          "
           :isValid="isValid"
         />
       </div>
