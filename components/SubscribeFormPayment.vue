@@ -23,6 +23,7 @@
           v-model="paymentMethod"
           radioValue="linepay"
           radioName="LINE Pay"
+          :frequency="frequency"
           :isValid="isValid"
         />
       </div>
@@ -51,6 +52,10 @@ export default {
     setFormStatus: {
       type: Function,
       default: () => {},
+    },
+    frequency: {
+      type: String,
+      default: undefined,
     },
   },
   data() {
