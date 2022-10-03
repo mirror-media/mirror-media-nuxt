@@ -45,6 +45,7 @@
             :setPaymentMethod="setPaymentMethod"
             :validateOn="validateOn"
             :setFormStatus="setFormStatus"
+            :frequency="frequency"
           />
           <SubscribeFormReceipt
             v-if="!isUpgradeFromMonthToYear"
