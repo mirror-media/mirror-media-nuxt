@@ -21,18 +21,20 @@
           </div>
         </template>
         <template v-else-if="shouldShowLinePayWarning">
-          <SubscribeWrapper>
-            <div class="subscribe-choose__year_description">
-              LINE Pay
-              僅進行月訂閱續扣，如要改為年訂閱續扣，請取消目前訂閱後，以「信用卡」付款方式進行訂閱
-            </div>
-            <UiMembershipButtonPrimary
-              class="subscribe-choose__textcard_back"
-              @click.native="handleGoToSectionMember"
-            >
-              回會員專區
-            </UiMembershipButtonPrimary>
-          </SubscribeWrapper>
+          <div class="subscribe-choose__textcard">
+            <SubscribeWrapper>
+              <div class="subscribe-choose__textcard_description">
+                LINE Pay
+                僅進行月訂閱續扣，如要改為年訂閱續扣，請取消目前訂閱後，以「信用卡」付款方式進行訂閱
+              </div>
+              <UiMembershipButtonPrimary
+                class="subscribe-choose__textcard_back"
+                @click.native="handleGoToSectionMember"
+              >
+                回會員專區
+              </UiMembershipButtonPrimary>
+            </SubscribeWrapper>
+          </div>
         </template>
 
         <template v-else-if="memberStatus !== 'year'">
@@ -61,15 +63,15 @@
           <UiSubscribeInfo type="membership" :infoList="infoList" />
         </template>
         <template v-else>
-          <div class="subscribe-choose__year">
+          <div class="subscribe-choose__textcard">
             <SubscribeWrapper>
-              <h6 class="subscribe-choose__year_title">取想要變更方案嗎？</h6>
-              <div class="subscribe-choose__year_description">
+              <h6 class="subscribe-choose__textcard_title">想要變更方案嗎？</h6>
+              <div class="subscribe-choose__textcard_description">
                 您目前訂閱的方案為<span>鏡週刊 Premium 服務-年訂閱方案</span
                 >。如需變更，請先取消目前的方案，再重新訂閱新的方案。
               </div>
               <UiMembershipButtonPrimary
-                class="subscribe-choose__year_back"
+                class="subscribe-choose__textcard_back"
                 @click.native="handleSet"
               >
                 前往付款設定
