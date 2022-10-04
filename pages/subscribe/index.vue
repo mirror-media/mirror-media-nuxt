@@ -20,6 +20,21 @@
             </SubscribeWrapper>
           </div>
         </template>
+        <template v-else-if="shouldShowLinePayWarning">
+          <SubscribeWrapper>
+            <div class="subscribe-choose__year_description">
+              LINE Pay
+              僅進行月訂閱續扣，如要改為年訂閱續扣，請取消目前訂閱後，以「信用卡」付款方式進行訂閱
+            </div>
+            <UiMembershipButtonPrimary
+              class="subscribe-choose__textcard_back"
+              @click.native="handleGoToSectionMember"
+            >
+              回會員專區
+            </UiMembershipButtonPrimary>
+          </SubscribeWrapper>
+        </template>
+
         <template v-else-if="memberStatus !== 'year'">
           <div class="subscribe-choose__wrapper">
             <h2
@@ -71,13 +86,21 @@
 </template>
 
 <script>
-import { computed, useStore } from '@nuxtjs/composition-api'
+import {
+  computed,
+  useStore,
+  useContext,
+  useAsync,
+  ref,
+} from '@nuxtjs/composition-api'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
+import { MemberType } from '~/constants/common'
+
 export default {
   middleware: ['handle-go-to-marketing'],
   components: {
@@ -90,8 +113,13 @@ export default {
   },
   setup() {
     const memberStatus = useMemberStatus()
+    let shouldShowLinePayWarning = ref(false)
+    if (memberStatus !== 'none') {
+      shouldShowLinePayWarning = useShouldShowLinePayWarning(memberStatus)
+    }
     return {
       memberStatus,
+      shouldShowLinePayWarning,
     }
 
     function useMemberStatus() {
@@ -115,6 +143,25 @@ export default {
         } else {
           return 'basic'
         }
+      }
+    }
+
+    function useShouldShowLinePayWarning(memberStatus) {
+      const { $getMemberShipStatus } = useContext()
+
+      const memberShipStatus = useAsync(() =>
+        $getMemberShipStatus(memberStatus)
+      )
+      const shouldShowLinePayWarning = computed(() =>
+        computeShouldShowLinePayWarning(memberShipStatus)
+      )
+      return shouldShowLinePayWarning
+      function computeShouldShowLinePayWarning(memberShipStatus) {
+        return (
+          (memberShipStatus.value?.name === MemberType.MonthlyDisturbed ||
+            memberShipStatus.value?.name === MemberType.Monthly) &&
+          memberShipStatus.value?.payMethod === 'LINE Pay'
+        )
       }
     }
   },
@@ -336,6 +383,19 @@ export default {
       return this.isPayByApp !== undefined
     },
   },
+  async created() {
+    if (process.server) return
+    try {
+      if (this.memberStatus !== 'none') {
+        this.memberShipStatus = await this.$getMemberShipStatus(
+          this.memberStatus
+        )
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  },
+
   methods: {
     handleGoToSectionMember() {
       window.location.assign('/section/member')
