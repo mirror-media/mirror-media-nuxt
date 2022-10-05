@@ -46,7 +46,6 @@ export default {
       default: true,
     },
   },
-
   methods: {
     changeHandler(e) {
       this.$emit('input', e.target.value)
