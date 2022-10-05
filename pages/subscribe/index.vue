@@ -20,7 +20,7 @@
             </SubscribeWrapper>
           </div>
         </template>
-        <template v-else-if="shouldShowLinePayWarning">
+        <template v-else-if="shouldShowLinePayWarning.value">
           <div class="subscribe-choose__textcard">
             <SubscribeWrapper>
               <div class="subscribe-choose__textcard_description">
@@ -101,7 +101,6 @@ import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
-import { MemberType } from '~/constants/common'
 
 export default {
   middleware: ['handle-go-to-marketing'],
@@ -116,9 +115,13 @@ export default {
   setup() {
     const memberStatus = useMemberStatus()
     let shouldShowLinePayWarning = ref(false)
-    if (memberStatus !== 'none') {
-      shouldShowLinePayWarning = useShouldShowLinePayWarning(memberStatus)
+    if (memberStatus.value === 'month') {
+      // if user is subscribe monthly, and paid by line pay, this page will show some warning to user
+      shouldShowLinePayWarning = useAsync(() =>
+        useShouldShowLinePayWarning(memberStatus)
+      )
     }
+
     return {
       memberStatus,
       shouldShowLinePayWarning,
@@ -148,23 +151,18 @@ export default {
       }
     }
 
-    function useShouldShowLinePayWarning(memberStatus) {
+    async function useShouldShowLinePayWarning(memberStatus) {
       const { $getMemberShipStatus } = useContext()
 
-      const memberShipStatus = useAsync(() =>
-        $getMemberShipStatus(memberStatus)
-      )
+      const memberShipStatus = ref(null)
+      memberShipStatus.value = await $getMemberShipStatus(memberStatus)
       const shouldShowLinePayWarning = computed(() =>
         computeShouldShowLinePayWarning(memberShipStatus)
       )
       return shouldShowLinePayWarning
-      function computeShouldShowLinePayWarning(memberShipStatus) {
-        return (
-          (memberShipStatus.value?.name === MemberType.MonthlyDisturbed ||
-            memberShipStatus.value?.name === MemberType.Monthly) &&
-          memberShipStatus.value?.payMethod === 'LINE Pay'
-        )
-      }
+    }
+    function computeShouldShowLinePayWarning(memberShipStatus) {
+      return memberShipStatus?.value?.payMethod === 'LINE Pay'
     }
   },
   async fetch() {
