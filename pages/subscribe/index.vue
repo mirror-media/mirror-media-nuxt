@@ -20,6 +20,23 @@
             </SubscribeWrapper>
           </div>
         </template>
+        <template v-else-if="shouldShowLinePayWarning.value">
+          <div class="subscribe-choose__textcard">
+            <SubscribeWrapper>
+              <div class="subscribe-choose__textcard_description">
+                LINE Pay
+                僅進行月訂閱續扣，如要改為年訂閱續扣，請取消目前訂閱後，以「信用卡」付款方式進行訂閱
+              </div>
+              <UiMembershipButtonPrimary
+                class="subscribe-choose__textcard_back"
+                @click.native="handleGoToSectionMember"
+              >
+                回會員專區
+              </UiMembershipButtonPrimary>
+            </SubscribeWrapper>
+          </div>
+        </template>
+
         <template v-else-if="memberStatus !== 'year'">
           <div class="subscribe-choose__wrapper">
             <h2
@@ -46,15 +63,15 @@
           <UiSubscribeInfo type="membership" :infoList="infoList" />
         </template>
         <template v-else>
-          <div class="subscribe-choose__year">
+          <div class="subscribe-choose__textcard">
             <SubscribeWrapper>
-              <h6 class="subscribe-choose__year_title">取想要變更方案嗎？</h6>
-              <div class="subscribe-choose__year_description">
+              <h6 class="subscribe-choose__textcard_title">想要變更方案嗎？</h6>
+              <div class="subscribe-choose__textcard_description">
                 您目前訂閱的方案為<span>鏡週刊 Premium 服務-年訂閱方案</span
                 >。如需變更，請先取消目前的方案，再重新訂閱新的方案。
               </div>
               <UiMembershipButtonPrimary
-                class="subscribe-choose__year_back"
+                class="subscribe-choose__textcard_back"
                 @click.native="handleSet"
               >
                 前往付款設定
@@ -71,13 +88,20 @@
 </template>
 
 <script>
-import { computed, useStore } from '@nuxtjs/composition-api'
+import {
+  computed,
+  useStore,
+  useContext,
+  useAsync,
+  ref,
+} from '@nuxtjs/composition-api'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
+
 export default {
   middleware: ['handle-go-to-marketing'],
   components: {
@@ -90,8 +114,17 @@ export default {
   },
   setup() {
     const memberStatus = useMemberStatus()
+    let shouldShowLinePayWarning = ref(false)
+    if (memberStatus.value === 'month') {
+      // if user is subscribe monthly, and paid by line pay, this page will show some warning to user
+      shouldShowLinePayWarning = useAsync(() =>
+        useShouldShowLinePayWarning(memberStatus)
+      )
+    }
+
     return {
       memberStatus,
+      shouldShowLinePayWarning,
     }
 
     function useMemberStatus() {
@@ -116,6 +149,20 @@ export default {
           return 'basic'
         }
       }
+    }
+
+    async function useShouldShowLinePayWarning(memberStatus) {
+      const { $getMemberShipStatus } = useContext()
+
+      const memberShipStatus = ref(null)
+      memberShipStatus.value = await $getMemberShipStatus(memberStatus)
+      const shouldShowLinePayWarning = computed(() =>
+        computeShouldShowLinePayWarning(memberShipStatus)
+      )
+      return shouldShowLinePayWarning
+    }
+    function computeShouldShowLinePayWarning(memberShipStatus) {
+      return memberShipStatus?.value?.payMethod === 'LINE Pay'
     }
   },
   async fetch() {
@@ -336,6 +383,19 @@ export default {
       return this.isPayByApp !== undefined
     },
   },
+  async created() {
+    if (process.server) return
+    try {
+      if (this.memberStatus !== 'none') {
+        this.memberShipStatus = await this.$getMemberShipStatus(
+          this.memberStatus
+        )
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  },
+
   methods: {
     handleGoToSectionMember() {
       window.location.assign('/section/member')

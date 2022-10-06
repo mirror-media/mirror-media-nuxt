@@ -34,7 +34,12 @@
     </div>
 
     <figure v-else class="g-story-figure story__hero">
-      <img :src="heroImg" alt="" />
+      <picture>
+        <source media="(min-width: 768px)" :srcset="heroImgTablet" />
+        <source :srcset="heroImgMobile" />
+        <img :src="heroImgMobile" alt="" />
+      </picture>
+
       <figcaption v-if="heroCaption" v-text="heroCaption" />
     </figure>
 
@@ -318,9 +323,16 @@ export default {
       )
     },
 
-    heroImg() {
+    heroImgMobile() {
       return (
         (this.story.heroImage?.image?.resizedTargets?.mobile?.url ||
+          this.story.thumb) ??
+        SITE_OG_IMG
+      )
+    },
+    heroImgTablet() {
+      return (
+        (this.story.heroImage?.image?.resizedTargets?.tablet?.url ||
           this.story.thumb) ??
         SITE_OG_IMG
       )

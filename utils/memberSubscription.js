@@ -639,14 +639,14 @@ async function getMemberShipStatus(context, memberShipStatusName) {
       name: MemberType.YearlyDisturbed,
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: null,
-      payMethod: null,
+      payMethod: payMethodText,
     }
   } else if (isCanceled && frequency === Frequency.Monthly) {
     return {
       name: MemberType.MonthlyDisturbed,
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: null,
-      payMethod: null,
+      payMethod: payMethodText,
     }
   } else {
     return {
