@@ -155,6 +155,7 @@ export default {
         updatedAt = '',
         relateds = [],
         isTruncated = false,
+        ogDescription = '',
       } = this.story
 
       const heroVideoSrc = heroVideo?.video?.url || ''
@@ -183,6 +184,7 @@ export default {
         updatedAt: dayjs(updatedAt).format('YYYY.M.D HH:mm'),
         relateds,
         isTruncated,
+        ogDescription,
       }
 
       function getCredits() {
@@ -323,8 +325,15 @@ export default {
   },
 
   head() {
-    const { title = '', brief = '', heroImage = {}, ogImage = {} } = this.post
-    const description = brief.map((item) => item.content).join('')
+    const {
+      title = '',
+      brief = '',
+      heroImage = {},
+      ogImage = {},
+      ogDescription = '',
+    } = this.post
+    const description =
+      ogDescription || brief.map((item) => item.content).join('')
     const image = ogImage.tablet?.url || heroImage.tablet?.url || SITE_OG_IMG
     const dableImgUrl = ogImage.tiny?.url || heroImage.tiny?.url || SITE_OG_IMG
 
