@@ -203,8 +203,15 @@ import Cookie from 'vue-cookie'
 import VueDfpProvider from 'plate-vue-dfp/DfpProvider.vue'
 import { currentYPosition, elmYPosition } from '../kc-scroll'
 import { adtracker } from './util/adtracking'
-import { currEnv, getTruncatedVal, getValue, unLockJS } from './util/comm'
+import {
+  currEnv,
+  getTruncatedVal,
+  getValue,
+  unLockJS,
+  getBrief,
+} from './util/comm'
 import { getRole } from './util/mmABRoleAssign'
+
 import {
   DFP_ID,
   DFP_UNITS,
@@ -754,6 +761,15 @@ export default {
         return 'desktop'
       }
     },
+
+    metaDescription() {
+      if (this?.topic?.ogDescription) {
+        return getTruncatedVal(this?.topic?.ogDescription, 50)
+      } else if (this.topic?.brief?.html) {
+        return getBrief(this.topic, 50)
+      }
+      return SITE_DESCRIPTION
+    },
   },
   watch: {
     uuid() {
@@ -1186,16 +1202,12 @@ export default {
   head() {
     const {
       heroImage = {},
-      ogDescription = '',
       ogImage = {},
       ogTitle = '',
       name = '',
       subtitle = '',
     } = this.topic
     const metaTitle = ogTitle || name
-    const metaDescription = ogDescription
-      ? getTruncatedVal(ogDescription, 50)
-      : SITE_DESCRIPTION
     const metaImage = ogImage
       ? _.get(ogImage, 'image.resizedTargets.desktop.url')
       : _.get(heroImage, 'image.resizedTargets.desktop.url', SITE_OGIMAGE)
@@ -1208,12 +1220,16 @@ export default {
         subtitle
           ? { hid: 'subtitle', name: 'subtitle', content: subtitle }
           : {},
-        { hid: 'description', name: 'description', content: metaDescription },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.metaDescription,
+        },
         { hid: 'og:title', property: 'og:title', content: metaTitle },
         {
           hid: 'og:description',
           property: 'og:description',
-          content: metaDescription,
+          content: this.metaDescription,
         },
         { hid: 'og:url', property: 'og:url', content: ogUrl },
         { hid: 'og:image', property: 'og:image', content: metaImage },
@@ -1221,7 +1237,7 @@ export default {
         {
           hid: 'twitter:description',
           name: 'twitter:description',
-          content: metaDescription,
+          content: this.metaDescription,
         },
         { hid: 'twitter:image', name: 'twitter:image', content: metaImage },
       ],
