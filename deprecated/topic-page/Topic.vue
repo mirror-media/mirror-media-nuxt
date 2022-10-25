@@ -420,7 +420,6 @@ const fetchAllArticlesByUuid = (store, uuid, type, useMetaEndpoint) => {
       }
     })
 }
-
 export default {
   name: 'Topic',
   layout: 'default',
@@ -769,6 +768,14 @@ export default {
         return getBrief(this.topic, 50)
       }
       return SITE_DESCRIPTION
+    },
+
+    // we transform array `this.tags` to string, and assign it as content of meta `keywords`
+    metaTopicKeywords() {
+      if (Array.isArray(this.tags) && this.tags.length !== 0) {
+        return this.tags.map((tag) => tag.name).join(', ')
+      }
+      return undefined
     },
   },
   watch: {
@@ -1234,6 +1241,13 @@ export default {
         { hid: 'og:url', property: 'og:url', content: ogUrl },
         { hid: 'og:image', property: 'og:image', content: metaImage },
         { hid: 'twitter:title', name: 'twitter:title', content: metaTitle },
+        this.metaTopicKeywords
+          ? {
+              hid: 'keywords',
+              property: 'keywords',
+              content: `${this.metaTopicKeywords}`,
+            }
+          : {},
         {
           hid: 'twitter:description',
           name: 'twitter:description',
