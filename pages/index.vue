@@ -501,7 +501,6 @@ export default {
         id = '',
         title = '',
         brief,
-        sections = [],
         publishedDate = '',
         redirect = '',
       } = item
@@ -515,7 +514,7 @@ export default {
         href: getHref(item, this.isPremiumMember),
         imgSrc: getImg(item),
         label: getLabel(item),
-        sectionName: item.partner ? 'external' : sections[0]?.name,
+        sectionName: getSectionName(item),
         publishedTimestamp: new Date(publishedDate).getTime(),
         redirect,
       }
@@ -758,7 +757,11 @@ function getLabel({ sections = [], categories = [], partner } = {}) {
   }
 
   if (sections.length > 0) {
-    return sections[0]?.title
+    if (sections.some((section) => section.name === 'member')) {
+      return '會員專區'
+    } else {
+      return sections[0]?.title
+    }
   }
 
   const [firstCategory = {}, secondCategory = {}] = categories
@@ -769,7 +772,14 @@ function getLabel({ sections = [], categories = [], partner } = {}) {
 
   return firstCategory.title
 }
-
+function getSectionName({ sections = [], partner } = {}) {
+  if (partner) {
+    return 'external'
+  } else if (sections?.some((section) => section.name === 'member')) {
+    return 'member'
+  }
+  return sections[0]?.name
+}
 function inThePeriodBetween(startDate, endDate) {
   if (startDate === undefined || endDate === undefined) {
     return false
