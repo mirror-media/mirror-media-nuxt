@@ -1,9 +1,10 @@
 <template>
   <div>
     <div ref="embeddedcode" />
-    <LazyRenderer @load="insertScriptsInBody(embeddedCode)">
+    <LazyRenderer v-if="!isInstagram" @load="insertScriptsInBody(embeddedCode)">
       <p v-if="caption" class="caption">{{ caption }}</p>
     </LazyRenderer>
+    <p v-if="caption && isInstagram" class="caption">{{ caption }}</p>
   </div>
 </template>
 
@@ -25,7 +26,17 @@ export default {
     embeddedCode() {
       return this.content?.embeddedCode ?? ''
     },
+    isInstagram() {
+      return this.embeddedCode?.includes('instagram-media')
+    },
   },
+
+  mounted() {
+    if (this.isInstagram) {
+      this.insertScriptsInBody(this.embeddedCode)
+    }
+  },
+
   methods: {
     insertScriptsInBody(embeddedCode) {
       const fragment = document.createDocumentFragment()
