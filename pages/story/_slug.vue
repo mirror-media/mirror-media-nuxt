@@ -826,6 +826,9 @@ export default {
               content: tagNamesStr,
             }
           : {},
+        tagNamesStr !== ''
+          ? { hid: 'keywords', name: 'keywords', content: tagNamesStr }
+          : {},
         this.hasSection
           ? { name: 'section-name', content: this.sectionName }
           : {},
