@@ -458,9 +458,25 @@ export default {
       )
       this.concatArticleList()
     }
+
+    /**
+     * function of computing variable `metaTopicKeywords`
+     * see comment at `metaTopicKeywords` to realize why use $fetchTopic and $fetchTags is needed.
+     * @type {{tags: string[]| [] }}}
+     */
+    const data = await this.$fetchTopic(this.$route.params.topicId)
+    if (data?.tags?.length !== 0) {
+      const tagsRes = await this.$fetchTags({
+        id: data?.tags,
+      })
+
+      this.tagsName = tagsRes.items.map((i) => i.name)
+    }
   },
   data() {
     return {
+      tagsName: [],
+
       // data for new feature
       pageOfNotFeaturedArticle: 1,
       pageOfIsFeaturedArticle: 1,
@@ -770,10 +786,17 @@ export default {
       return SITE_DESCRIPTION
     },
 
-    // we transform array `this.tags` to string, and assign it as content of meta `keywords`
+    /*
+     * Originally, we use computed variable `this.tags`and transform it to string, then assign it as content of meta `keywords`.
+     * However, some bug is happened at unknown situation:
+     * `this.tag` will not be updated to the status of cms at unknown situation.
+     * Because the structure of code at Topic page is too complex and hard to refactor, we not to trace root case, but rewrite another logic of getting tags:
+     * we use function `this.$fetchTopic` to get id of tags which certain topic page contain, and use function `this.$fetchTags` to get name of tags.
+     * After we get name of tags, we transform it to string, then assign it as content of meta `keywords`..
+     */
     metaTopicKeywords() {
-      if (Array.isArray(this.tags) && this.tags.length !== 0) {
-        return this.tags.map((tag) => tag.name).join(', ')
+      if (Array.isArray(this.tagsName) && this.tagsName.length !== 0) {
+        return this.tagsName.join(', ')
       }
       return undefined
     },
