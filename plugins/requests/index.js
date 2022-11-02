@@ -71,7 +71,8 @@ async function fetchApiData(url, fromMembershipGateway = false, token) {
     data.items?.length > 0 ||
     Object.keys(data.endpoints || {}).length > 0 ||
     data.hits?.total?.value > 0 || // properties response by /search api
-    (url.startsWith('/tags') && data.id)
+    (url.startsWith('/tags') && data.id) ||
+    (url.startsWith('/topics') && data.id)
 
   if (hasData) {
     return fromMembershipGateway
@@ -294,12 +295,14 @@ export default (context, inject) => {
   )
 
   inject('fetchTag', (id) => fetchApiData(`/tags/${id}`))
+  inject('fetchTags', (params) => fetchApiData(`/tags${buildParams(params)}`))
 
   inject('fetchTimeline', (id) => fetchApiData(`/timeline/${id}`))
 
   inject('fetchTopics', (params) =>
     fetchApiData(`/topics${buildParams(params)}`)
   )
+  inject('fetchTopic', (id) => fetchApiData(`/topics/${id}`))
 
   inject('fetchWatches', (params) =>
     fetchApiData(`/watches${buildParams(params)}`)
