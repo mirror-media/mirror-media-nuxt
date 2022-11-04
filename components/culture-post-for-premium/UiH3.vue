@@ -6,13 +6,13 @@
 
 <style lang="scss" scoped>
 h2 {
-  font-family: source-han-serif-tc, 'Songti TC', serif;
-  font-weight: bold;
+  font-family: 'PingFang TC';
+  font-weight: 400;
   font-size: 24px;
   line-height: 150%;
-  color: rgba(0, 0, 0, 0.87);
+  color: #555555;
   @include media-breakpoint-up(md) {
-    font-size: 28px;
+    font-size: 30px;
   }
 }
 </style>
