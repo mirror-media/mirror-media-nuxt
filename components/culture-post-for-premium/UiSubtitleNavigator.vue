@@ -4,7 +4,10 @@
       <li
         v-for="(item, index) in items"
         :key="item.id"
-        :class="{ active: currentIndex === index + 1 }"
+        :class="{
+          active: currentIndex === index + 1,
+          'type-two': item.type === 'header-two',
+        }"
       >
         <!-- eslint-disable vue/no-v-html -->
         <a
@@ -58,20 +61,26 @@ export default {
     margin: 0;
     padding: 0;
     li {
-      color: #404040de;
+      color: rgba(0, 0, 0, 0.87);
       display: inline;
-      font-family: source-han-serif-tc, 'Songti TC', serif;
-      font-size: 18px;
+      font-family: 'PingFang TC';
+      font-size: 16px;
       line-height: 1.5;
-      font-weight: 700;
+      font-weight: 400;
       cursor: pointer;
 
+      &.type-two {
+        color: rgba(158, 158, 158, 0.87);
+      }
+
       &.active a {
-        border-bottom: solid 2px #dec5a2;
+        font-weight: 500;
+        color: #054f77;
+        border-bottom: 2px solid #054f77;
       }
 
       + li {
-        margin-top: 19px;
+        margin-top: 23px;
       }
     }
   }

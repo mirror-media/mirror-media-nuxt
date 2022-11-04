@@ -346,6 +346,7 @@ export default {
         )
         .map((item) => ({
           id: item.id,
+          type: item.type,
           content: item.content[0],
         }))
     },
