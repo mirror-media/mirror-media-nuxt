@@ -50,6 +50,7 @@
             class="candidate"
           >
             <div class="name-party-wrapper">
+
               <div>{{ candidate.candNo }}</div>
               <div>{{ candidate.name }}</div>
               <img
@@ -72,6 +73,7 @@
         </div>
       </div>
     </div>
+
     <!-- slide2 -->
     <div class="slide" :class="{ isActive: slideIndex === 1 }">
       <div class="indicator">
@@ -92,6 +94,7 @@
             class="candidate"
           >
             <div class="name-party-wrapper">
+
               <div>{{ candidate.candNo }}</div>
               <div>{{ candidate.name }}</div>
               <img
@@ -100,6 +103,7 @@
               />
               <span v-else>{{ candidate.party }}</span>
               <img v-show="candidate.candVictor" :src="getWinSvg()" />
+
             </div>
             <div class="progress-bar">
               <div class="tks">
@@ -114,6 +118,7 @@
         </div>
       </div>
       <div class="city">
+
         <div class="city-title">{{ polling[3].city }}</div>
         <div class="candidates-wrapper">
           <div
@@ -187,6 +192,7 @@
       </div>
       <div class="city">
         <div class="city-title">{{ polling[5].city }}</div>
+
         <div class="candidates-wrapper">
           <div
             v-for="candidate in polling[5].candidates"
@@ -220,6 +226,7 @@
 </template>
 
 <script>
+
 import kmtSvg from '../assets/kmt.svg'
 import tmdSvg from '../assets/tmd.svg'
 import ddpSvg from '../assets/ddp.svg'
@@ -261,6 +268,7 @@ export default {
     setIndex0() {
       this.slideIndex = 0
     },
+
     getPartySvg(partyName) {
       switch (partyName) {
         case '中國國民黨':
@@ -284,6 +292,7 @@ export default {
     nextArrow() {
       return nextArrow
     },
+
   },
 }
 </script>
@@ -325,6 +334,7 @@ export default {
 .title {
   font-size: 18px;
   font-weight: 600;
+
   color: #1d9fb8;
 }
 
@@ -368,6 +378,7 @@ export default {
   line-height: 22px;
   color: #4a4a4a;
   padding: 6px 0px;
+
 }
 .progress-bar {
   position: relative;
@@ -378,7 +389,6 @@ export default {
 .tks-rate {
   width: 10%;
   height: 24px;
-
   background: #054f77;
   position: absolute;
   top: 0;

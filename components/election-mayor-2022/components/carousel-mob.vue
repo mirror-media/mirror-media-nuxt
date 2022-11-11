@@ -555,12 +555,14 @@ export default {
   font-size: 14px;
   line-height: 20px;
   color: #4a4a4a;
+
   @include media-breakpoint-up(md) {
     display: none;
   }
 }
 .current-city {
   color: #234f74;
+
   font-weight: 600;
   font-size: 14px;
 }
