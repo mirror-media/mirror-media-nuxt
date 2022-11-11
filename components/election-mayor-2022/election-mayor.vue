@@ -42,8 +42,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #dddddd;
+  background: #f3f5f7;
   height: 358px;
+  margin-bottom: 10px;
   @include media-breakpoint-up(md) {
     height: 209px;
   }

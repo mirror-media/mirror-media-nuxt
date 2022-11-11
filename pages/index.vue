@@ -225,7 +225,7 @@ export default {
       // 'https://whoareyou-gcs.readr.tw/elections/2022/mayor/special_municipality.json'
       'https://whoareyou-gcs.readr.tw/elections-dev/2022/mayor/special_municipality.json'
     )
-    console.log({ data })
+
     return {
       polling: data.data?.polling || [],
       updatedAt: data.data?.updatedAt || '',
