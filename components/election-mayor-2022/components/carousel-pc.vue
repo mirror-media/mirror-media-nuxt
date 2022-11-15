@@ -50,7 +50,6 @@
             class="candidate"
           >
             <div class="name-party-wrapper">
-
               <div>{{ candidate.candNo }}</div>
               <div>{{ candidate.name }}</div>
               <img
@@ -94,7 +93,6 @@
             class="candidate"
           >
             <div class="name-party-wrapper">
-
               <div>{{ candidate.candNo }}</div>
               <div>{{ candidate.name }}</div>
               <img
@@ -103,7 +101,6 @@
               />
               <span v-else>{{ candidate.party }}</span>
               <img v-show="candidate.candVictor" :src="getWinSvg()" />
-
             </div>
             <div class="progress-bar">
               <div class="tks">
@@ -118,7 +115,6 @@
         </div>
       </div>
       <div class="city">
-
         <div class="city-title">{{ polling[3].city }}</div>
         <div class="candidates-wrapper">
           <div
@@ -226,7 +222,6 @@
 </template>
 
 <script>
-
 import kmtSvg from '../assets/kmt.svg'
 import tmdSvg from '../assets/tmd.svg'
 import ddpSvg from '../assets/ddp.svg'
@@ -292,7 +287,6 @@ export default {
     nextArrow() {
       return nextArrow
     },
-
   },
 }
 </script>
@@ -378,7 +372,6 @@ export default {
   line-height: 22px;
   color: #4a4a4a;
   padding: 6px 0px;
-
 }
 .progress-bar {
   position: relative;

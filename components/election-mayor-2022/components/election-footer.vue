@@ -60,7 +60,7 @@ export default {
     text-decoration-line: underline;
     font-weight: 600;
     padding-top: 8px;
-    padding-left: 38%;
+    padding-left: 30%;
   }
   .date-source {
     display: flex;
