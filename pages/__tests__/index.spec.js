@@ -117,7 +117,7 @@ describe('編輯精選', () => {
     expect(article1.href).toBe(
       `/story/${choice1Mock.slug}/?${GA_UTM_EDITOR_CHOICES}`
     )
-    expect(article2.href).toBe(`/projects/${choice2Mock.slug}/`)
+    expect(article2.href).toBe(`/projects/${choice2Mock.slug}/index.html`)
 
     expect(article1.imgSrc).toBe(tablet.url)
     expect(article1.imgSrcMobile).toBe(mobile.url)

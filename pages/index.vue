@@ -1,5 +1,10 @@
 <template>
   <div class="home">
+    <ElectionMayor
+      v-if="polling.length"
+      :polling="polling"
+      :updatedAt="updatedAt"
+    />
     <main>
       <UiFlashNews
         class="home__flash-news"
@@ -127,6 +132,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mapGetters } from 'vuex'
 import _ from 'lodash'
 import localforage from 'localforage'
@@ -142,6 +148,7 @@ import UiArticleGalleryWithoutFocus from '~/components/UiArticleGalleryWithoutFo
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+import ElectionMayor from '~/components/election-mayor-2022/election-mayor.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
@@ -180,6 +187,7 @@ export default {
     UiArticleGalleryB,
     UiArticleGalleryWithoutFocus,
     SvgCloseIcon,
+    ElectionMayor,
   },
 
   async fetch() {
@@ -207,6 +215,20 @@ export default {
     this.getGroupedArticlesWithoutExternalLink()
 
     this.loadLatestListInitial()
+  },
+
+  async asyncData({ $config }) {
+    if ($config.electionMayorFeatureToggle !== 'on') {
+      return { polling: [] }
+    }
+    const data = await axios.get(
+      // 'https://whoareyou-gcs.readr.tw/elections/2022/mayor/special_municipality.json'
+      'https://whoareyou-gcs.readr.tw/elections-dev/2022/mayor/special_municipality.json'
+    )
+    return {
+      polling: data.data?.polling || [],
+      updatedAt: data.data?.updatedAt || '',
+    }
   },
 
   data() {
@@ -250,6 +272,9 @@ export default {
       observerOfLastSecondFocusList: undefined,
       canFixLastFocusList: false,
       shouldFixLastFocusList: false,
+
+      polling: [],
+      updatedAt: '',
     }
   },
 
@@ -718,11 +743,11 @@ function getHref(
     return `/external/${slug}/`
   }
   if (style === 'campaign') {
-    return `/campaigns/${slug}`
+    return `/campaigns/${slug}/index.html`
   } else if (style === 'projects') {
-    return `/projects/${slug}/`
+    return `/projects/${slug}/index.html`
   } else if (isPremiumMember) {
-    return `pre/story/${slug}/`
+    return `pre/story/${slug}`
   }
   return `/story/${slug}/`
 }
