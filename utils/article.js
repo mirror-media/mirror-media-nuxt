@@ -57,17 +57,17 @@ function checkCategoryHasMemberOnly({ categories = [] } = {}) {
 
 function getStoryPathByType(story) {
   return story.style === 'projects'
-    ? `/projects/${story.slug}`
+    ? `/projects/${story.slug}/index.html`
     : `/story/${story.slug}`
 }
 
 function getStoryPath(story = {}) {
   switch (story.style) {
     case 'campaign': {
-      return `/campaigns/${story.slug}`
+      return `/campaigns/${story.slug}/index.html`
     }
     case 'projects': {
-      return `/projects/${story.slug}/`
+      return `/projects/${story.slug}/index.html`
     }
     default: {
       return checkCategoryHasMemberOnly(story)

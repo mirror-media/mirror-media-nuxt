@@ -743,11 +743,11 @@ function getHref(
     return `/external/${slug}/`
   }
   if (style === 'campaign') {
-    return `/campaigns/${slug}`
+    return `/campaigns/${slug}/index.html`
   } else if (style === 'projects') {
-    return `/projects/${slug}/`
+    return `/projects/${slug}/index.html`
   } else if (isPremiumMember) {
-    return `pre/story/${slug}/`
+    return `pre/story/${slug}`
   }
   return `/story/${slug}/`
 }

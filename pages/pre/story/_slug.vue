@@ -189,9 +189,9 @@ export default {
           }
         }
         if (style === 'campaign') {
-          this.$nuxt.context.redirect(`/campaigns/${slug}`)
+          this.$nuxt.context.redirect(`/campaigns/${slug}/index.html`)
         } else if (style === 'projects') {
-          this.$nuxt.context.redirect(`/projects/${slug}/`)
+          this.$nuxt.context.redirect(`/projects/${slug}/index.html`)
         }
 
         this.$store.commit(

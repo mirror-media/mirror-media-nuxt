@@ -108,9 +108,9 @@ export function getHref(relAritlcle = {}, isAppPage = false) {
 
   switch (style) {
     case 'campaign':
-      return `/campaigns/${slug}`
+      return `/campaigns/${slug}/index.html`
     case 'projects':
-      return `/projects/${slug}`
+      return `/projects/${slug}/index.html`
     default:
       /*
        * if (_.split(href, '/')[1] === 'topic') {
@@ -127,9 +127,9 @@ export function getHrefFull(relAritlcle = {}, isAppPage = false) {
   const { style = '', slug } = relAritlcle
   switch (style) {
     case 'campaign':
-      return `${SITE_URL}/campaigns/${slug}`
+      return `${SITE_URL}/campaigns/${slug}/index.html`
     case 'projects':
-      return `${SITE_URL}/projects/${slug}`
+      return `${SITE_URL}/projects/${slug}/index.html`
     case 'readr':
       return `${SITE_PROJ_URL}/project/${slug}`
     default:
