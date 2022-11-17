@@ -431,6 +431,20 @@ export default {
     } catch (err) {
       this.$nuxt.context.error({ statusCode: 500 })
     }
+    const pollingMillisecond = 1 * 60 * 1000
+
+    setInterval(() => {
+      axios
+        .get(
+          'https://whoareyou-gcs.readr.tw/elections-dev/2022/mayor/special_municipality.json'
+        )
+        .then(({ data }) => {
+          this.polling = data?.polling || this.polling
+          this.updatedAt = data?.updatedAt || this.updatedAt
+          // console.log(data)
+        })
+        .catch((error) => console.error(error))
+    }, pollingMillisecond)
   },
   beforeDestroy() {
     this.cleanFixedLastFocusList()
