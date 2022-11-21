@@ -19,7 +19,8 @@ module.exports = function handleHeaders(req, res, next) {
     new RegExp(`/${API_PATH_FRONTEND}/saleor`, 'gs').test(url) ||
     new RegExp(`/${API_PATH_FRONTEND}/member-subscription`, 'gs').test(url) ||
     // member subscribe page paths
-    /(subscribe)/gs.test(url)
+    /(subscribe)/gs.test(url) ||
+    /(papermag)/gs.test(url)
   ) {
     res.setHeader('Cache-Control', 'no-store')
     return next()
