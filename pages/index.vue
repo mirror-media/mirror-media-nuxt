@@ -228,6 +228,7 @@ export default {
     return {
       polling: data.data?.polling || [],
       updatedAt: data.data?.updatedAt || '',
+      isRunning: data.data?.is_running || false,
     }
   },
 
@@ -275,6 +276,7 @@ export default {
 
       polling: [],
       updatedAt: '',
+      isRunning: false,
     }
   },
 
@@ -430,6 +432,22 @@ export default {
       this.insertMicroAds()
     } catch (err) {
       this.$nuxt.context.error({ statusCode: 500 })
+    }
+
+    if (this.isRunning) {
+      const pollingMillisecond = 1 * 60 * 1000
+
+      setInterval(() => {
+        axios
+          .get(
+            'https://whoareyou-gcs.readr.tw/elections-dev/2022/mayor/special_municipality.json'
+          )
+          .then(({ data }) => {
+            this.polling = data?.polling || this.polling
+            this.updatedAt = data?.updatedAt || this.updatedAt
+          })
+          .catch((error) => console.error(error))
+      }, pollingMillisecond)
     }
   },
   beforeDestroy() {

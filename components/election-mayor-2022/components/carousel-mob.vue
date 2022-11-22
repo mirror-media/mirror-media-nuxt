@@ -362,7 +362,7 @@ export default {
   mounted() {
     setInterval(() => {
       this.slideIndex++
-      if (this.slideIndex >= 3) this.slideIndex = 0
+      if (this.slideIndex >= 6) this.slideIndex = 0
     }, 3000)
   },
 
