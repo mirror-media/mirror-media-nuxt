@@ -218,7 +218,15 @@ export default {
   },
 
   async asyncData({ $config }) {
-    if ($config.electionMayorFeatureToggle !== 'on') {
+    const startTime = new Date(2022, 10, 25, 6)
+    const endTime = new Date(2022, 10, 28)
+    const now = new Date()
+
+    if (
+      $config.electionMayorFeatureToggle !== 'on' ||
+      startTime > now ||
+      endTime < now
+    ) {
       return { polling: [] }
     }
     const data = await axios.get(
@@ -434,7 +442,11 @@ export default {
       this.$nuxt.context.error({ statusCode: 500 })
     }
 
-    if (this.isRunning) {
+    const startTime = new Date(2022, 10, 25, 6)
+    const endTime = new Date(2022, 10, 28)
+    const now = new Date()
+
+    if (this.isRunning && startTime < now && endTime > now) {
       const pollingMillisecond = 1 * 60 * 1000
 
       setInterval(() => {
