@@ -9,6 +9,7 @@
       href="https://www.mirrormedia.mg/projects/election2022/index.html"
       rel="noopener noreferrer"
       target="_blank"
+      @click="sendGaEvent('click', '完整開票內容', undefined, 'homepage')"
       >完整開票內容</a
     >
   </div>
@@ -17,6 +18,7 @@
 <script>
 export default {
   name: 'ElectionFooter',
+
   props: {
     updatedAt: {
       type: String,
@@ -33,6 +35,16 @@ export default {
   computed: {
     formattedDate() {
       return this.updatedAt.slice(0, -3).replace('-', '/').replace('-', '/')
+    },
+  },
+  methods: {
+    sendGaEvent(eventAction, eventLabel, eventValue, eventCategory) {
+      this.$ga.event({
+        eventAction,
+        eventLabel,
+        eventCategory,
+        ...(eventValue === undefined ? {} : { eventValue }),
+      })
     },
   },
 }
