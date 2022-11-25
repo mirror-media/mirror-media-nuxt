@@ -218,7 +218,7 @@ export default {
   },
 
   async asyncData({ $config }) {
-    const startTime = new Date(Date.UTC(2022, 10, 25, 10))
+    const startTime = new Date(Date.UTC(2022, 10, 25, 22))
     const endTime = new Date(Date.UTC(2022, 10, 27, 16))
     const now = new Date()
 
@@ -441,11 +441,9 @@ export default {
       this.$nuxt.context.error({ statusCode: 500 })
     }
 
-    const startTime = new Date(Date.UTC(2022, 10, 25, 10))
+    const startTime = new Date(Date.UTC(2022, 10, 25, 22))
     const endTime = new Date(Date.UTC(2022, 10, 27, 16))
     const now = new Date()
-
-    console.log(startTime, endTime)
 
     if (this.isRunning && startTime < now && endTime > now) {
       const pollingMillisecond = 1 * 60 * 1000
