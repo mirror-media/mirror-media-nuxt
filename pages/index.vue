@@ -218,12 +218,19 @@ export default {
   },
 
   async asyncData({ $config }) {
-    if ($config.electionMayorFeatureToggle !== 'on') {
+    const startTime = new Date(Date.UTC(2022, 10, 25, 22))
+    const endTime = new Date(Date.UTC(2022, 10, 27, 16))
+    const now = new Date()
+
+    if (
+      $config.electionMayorFeatureToggle !== 'on' ||
+      startTime > now ||
+      endTime < now
+    ) {
       return { polling: [] }
     }
     const data = await axios.get(
-      // 'https://whoareyou-gcs.readr.tw/elections/2022/mayor/special_municipality.json'
-      'https://whoareyou-gcs.readr.tw/elections-dev/2022/mayor/special_municipality.json'
+      'https://whoareyou-gcs.readr.tw/elections/2022/mayor/special_municipality.json'
     )
     return {
       polling: data.data?.polling || [],
@@ -434,13 +441,17 @@ export default {
       this.$nuxt.context.error({ statusCode: 500 })
     }
 
-    if (this.isRunning) {
+    const startTime = new Date(Date.UTC(2022, 10, 25, 22))
+    const endTime = new Date(Date.UTC(2022, 10, 27, 16))
+    const now = new Date()
+
+    if (this.isRunning && startTime < now && endTime > now) {
       const pollingMillisecond = 1 * 60 * 1000
 
       setInterval(() => {
         axios
           .get(
-            'https://whoareyou-gcs.readr.tw/elections-dev/2022/mayor/special_municipality.json'
+            'https://whoareyou-gcs.readr.tw/elections/2022/mayor/special_municipality.json'
           )
           .then(({ data }) => {
             this.polling = data?.polling || this.polling
