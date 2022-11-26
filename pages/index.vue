@@ -446,8 +446,17 @@ export default {
     const now = new Date()
 
     if (this.isRunning && startTime < now && endTime > now) {
-      const pollingMillisecond = 1 * 60 * 1000
+      axios
+        .get(
+          'https://whoareyou-gcs.readr.tw/elections/2022/mayor/special_municipality.json'
+        )
+        .then(({ data }) => {
+          this.polling = data?.polling || this.polling
+          this.updatedAt = data?.updatedAt || this.updatedAt
+        })
+        .catch((error) => console.error(error))
 
+      const pollingMillisecond = 1 * 60 * 1000
       setInterval(() => {
         axios
           .get(
