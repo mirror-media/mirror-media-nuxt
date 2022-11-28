@@ -5,7 +5,12 @@
       <span>{{ perchasedPlan[0].detail }}</span>
       <span>NT$ {{ perchasedPlan[0].newPrice }}</span>
     </div>
-    <div class="perchase-info__row hint">
+    <div
+      class="perchase-info__row hint"
+      :class="{
+        'hint--blue': isYearlyOrMonthlyPlan,
+      }"
+    >
       <span>{{ perchasedPlan[0].hint }}</span>
     </div>
 
@@ -42,6 +47,14 @@ export default {
       default: true,
     },
   },
+  computed: {
+    isYearlyOrMonthlyPlan() {
+      return (
+        this.perchasedPlan[0].key === 'yearly' ||
+        this.perchasedPlan[0].key === 'monthly'
+      )
+    },
+  },
 }
 </script>
 
@@ -73,6 +86,9 @@ export default {
       line-height: 24px;
       color: rgba(0, 0, 0, 0.3);
       margin-bottom: 16px;
+      &--blue {
+        color: #054f77;
+      }
     }
 
     &:last-child {
