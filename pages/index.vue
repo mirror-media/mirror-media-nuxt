@@ -1,10 +1,5 @@
 <template>
   <div class="home">
-    <ElectionMayor
-      v-if="polling.length"
-      :polling="polling"
-      :updatedAt="updatedAt"
-    />
     <main>
       <UiFlashNews
         class="home__flash-news"
@@ -132,7 +127,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { mapGetters } from 'vuex'
 import _ from 'lodash'
 import localforage from 'localforage'
@@ -148,7 +142,6 @@ import UiArticleGalleryWithoutFocus from '~/components/UiArticleGalleryWithoutFo
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
-import ElectionMayor from '~/components/election-mayor-2022/election-mayor.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
@@ -187,7 +180,6 @@ export default {
     UiArticleGalleryB,
     UiArticleGalleryWithoutFocus,
     SvgCloseIcon,
-    ElectionMayor,
   },
 
   async fetch() {
@@ -215,28 +207,6 @@ export default {
     this.getGroupedArticlesWithoutExternalLink()
 
     this.loadLatestListInitial()
-  },
-
-  async asyncData({ $config }) {
-    const startTime = new Date(Date.UTC(2022, 10, 25, 22))
-    const endTime = new Date(Date.UTC(2022, 10, 27, 16))
-    const now = new Date()
-
-    if (
-      $config.electionMayorFeatureToggle !== 'on' ||
-      startTime > now ||
-      endTime < now
-    ) {
-      return { polling: [] }
-    }
-    const data = await axios.get(
-      'https://whoareyou-gcs.readr.tw/elections/2022/mayor/special_municipality.json'
-    )
-    return {
-      polling: data.data?.polling || [],
-      updatedAt: data.data?.updatedAt || '',
-      isRunning: data.data?.is_running || false,
-    }
   },
 
   data() {
@@ -280,10 +250,6 @@ export default {
       observerOfLastSecondFocusList: undefined,
       canFixLastFocusList: false,
       shouldFixLastFocusList: false,
-
-      polling: [],
-      updatedAt: '',
-      isRunning: false,
     }
   },
 
@@ -439,35 +405,6 @@ export default {
       this.insertMicroAds()
     } catch (err) {
       this.$nuxt.context.error({ statusCode: 500 })
-    }
-
-    const startTime = new Date(Date.UTC(2022, 10, 25, 22))
-    const endTime = new Date(Date.UTC(2022, 10, 27, 16))
-    const now = new Date()
-
-    if (this.isRunning && startTime < now && endTime > now) {
-      axios
-        .get(
-          'https://whoareyou-gcs.readr.tw/elections/2022/mayor/special_municipality.json'
-        )
-        .then(({ data }) => {
-          this.polling = data?.polling || this.polling
-          this.updatedAt = data?.updatedAt || this.updatedAt
-        })
-        .catch((error) => console.error(error))
-
-      const pollingMillisecond = 1 * 60 * 1000
-      setInterval(() => {
-        axios
-          .get(
-            'https://whoareyou-gcs.readr.tw/elections/2022/mayor/special_municipality.json'
-          )
-          .then(({ data }) => {
-            this.polling = data?.polling || this.polling
-            this.updatedAt = data?.updatedAt || this.updatedAt
-          })
-          .catch((error) => console.error(error))
-      }, pollingMillisecond)
     }
   },
   beforeDestroy() {
