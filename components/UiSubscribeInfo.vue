@@ -3,7 +3,13 @@
     <h2>注意事項</h2>
     <ul>
       <li v-for="info in infoList" :key="info.id">
-        <p v-html="info.text" />
+        <p
+          class="subscribe-info__content"
+          :class="{
+            'subscribe-info__content--warning': info.style === 'warning',
+          }"
+          v-html="info.text"
+        />
         <ul>
           <li
             v-for="infoChild in infoSubList(info)"
@@ -61,6 +67,12 @@ export default {
 
     @include media-breakpoint-up(sm) {
       font-size: 24px;
+    }
+  }
+  &__content {
+    color: #000000de;
+    &--warning {
+      color: red;
     }
   }
   ul {
