@@ -23,6 +23,11 @@
         >
       </div>
     </div>
+    <p v-if="isPremium" class="membership-status__title_hint">
+      月 /
+      年訂閱購買的同時會開啓自動續費（扣款），在訂閱到期時將依據原訂閱方案自動扣款，並延續訂閱。
+    </p>
+
     <div v-if="isPremium" class="membership-status__form">
       <div class="membership-status__form_row">
         <div>方案</div>
@@ -158,6 +163,16 @@ export default {
         line-height: 22px;
         height: 38px;
         width: auto;
+      }
+    }
+    &_hint {
+      font-size: 15px;
+      line-height: 21px;
+      color: #054f77;
+      margin-top: 12px;
+      @include media-breakpoint-up(md) {
+        font-size: 16px;
+        line-height: 24px;
       }
     }
   }
