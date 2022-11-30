@@ -625,8 +625,6 @@ module.exports = {
     headerExternalsFeatureToggle:
       process.env.HEADER_EXTERNALS_FEATURE_TOGGLE || 'off',
     linepayUiToggle: process.env.LINEPAY_PAYMENT_UI_TOGGLE === 'on',
-    electionMayorFeatureToggle:
-      process.env.ELECTION_MAYOR_FEATURE_TOGGLE || 'off',
   },
 
   env: {
