@@ -31,10 +31,7 @@ export const actions = {
       'membership-subscribe/getFeatureToggleStatus',
       app.$config.noAdFeatureToggle
     )
-    commit(
-      'membership/getFeatureToggleStatus',
-      app.$config.emailVerifyFeatureToggle
-    )
+
     if (isPageRequesting(req)) {
       try {
         const utmObj = req.cookies.utm

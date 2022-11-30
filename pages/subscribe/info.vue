@@ -169,7 +169,6 @@ export default {
     'authenticate',
     'handle-go-to-marketing',
     'handle-go-to-email-verify',
-    'handle-go-to-service-rule',
   ],
   components: {
     SubscribeStepProgress,
