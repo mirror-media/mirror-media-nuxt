@@ -557,10 +557,7 @@ export default {
       return _.slice(this.articles, 12)
     },
     shouldRenderRedesignTopicList() {
-      return (
-        this.$config.topicListFeatureToggle === 'on' &&
-        this.topicType === 'list'
-      )
+      return this.topicType === 'list'
     },
     shouldLoadMoreNotFeaturedArticles() {
       return (
