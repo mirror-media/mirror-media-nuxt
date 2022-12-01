@@ -27,14 +27,7 @@ export const actions = {
     commit('search-url/SET_SEARCH_URL', SEARCH_URL)
     const sectionsResponse = await dispatch('fetchGlobalData')
     commitSectionsData(commit, sectionsResponse)
-    commit(
-      'membership-subscribe/getFeatureToggleStatus',
-      app.$config.noAdFeatureToggle
-    )
-    commit(
-      'membership/getFeatureToggleStatus',
-      app.$config.emailVerifyFeatureToggle
-    )
+
     if (isPageRequesting(req)) {
       try {
         const utmObj = req.cookies.utm
