@@ -617,8 +617,6 @@ module.exports = {
    */
 
   publicRuntimeConfig: {
-    subscriptionPriceFeatureToggle:
-      process.env.SUBSCRIPTION_PRICE_FEATURE_TOGGLE || 'off',
     headerExternalsFeatureToggle:
       process.env.HEADER_EXTERNALS_FEATURE_TOGGLE || 'off',
     linepayUiToggle: process.env.LINEPAY_PAYMENT_UI_TOGGLE === 'on',
