@@ -3,15 +3,11 @@ import mapValues from 'lodash/mapValues'
 import { fetchMemberBasicInfo } from '~/apollo/queries/memberSubscriptionQuery.gql'
 export const state = () => ({
   basicInfo: {},
-  noAdFeatureToggle: '',
 })
 
 export const mutations = {
   SET_BASIC_INFO(state, value = {}) {
     Vue.set(state, 'basicInfo', value)
-  },
-  getFeatureToggleStatus(state, featureToggle) {
-    state.noAdFeatureToggle = featureToggle
   },
 }
 
@@ -56,9 +52,8 @@ export function mapMemberTypeOfSubscribeGroupToMarketing(object) {
 export const getters = {
   isPremiumMember(state) {
     return (
-      state.noAdFeatureToggle === 'on' &&
-      (state.basicInfo.type === 'subscribe_yearly' ||
-        state.basicInfo.type === 'subscribe_monthly')
+      state.basicInfo.type === 'subscribe_yearly' ||
+      state.basicInfo.type === 'subscribe_monthly'
     )
   },
   storyPageBaseUrl(state, getters) {
