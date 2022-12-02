@@ -146,7 +146,7 @@
 <script>
 import qs from 'qs'
 import { required, email, sameAs } from 'vuelidate/lib/validators'
-import { useRoute, useStore, useContext } from '@nuxtjs/composition-api'
+import { useRoute, useStore } from '@nuxtjs/composition-api'
 import {
   ENV,
   DOMAIN_NAME,
@@ -198,7 +198,6 @@ export default {
 
     function usePerchasedPlan() {
       const route = useRoute()
-      const { $config } = useContext()
 
       switch (route.value.query.plan) {
         case Frequency.OneTimeHyphen:
@@ -206,14 +205,9 @@ export default {
             {
               id: route.value.query['one-time-post-id'],
               detail: '鏡週刊Basic會員（單篇）',
-              hint:
-                $config.subscriptionPriceFeatureToggle === 'on'
-                  ? '$5 元可享單篇好文 14 天無限瀏覽'
-                  : '單篇 $1 元，享 14 天內無限次觀看',
-              price: `原價 NT$${
-                $config.subscriptionPriceFeatureToggle === 'on' ? 5 : 1
-              }`,
-              newPrice: $config.subscriptionPriceFeatureToggle === 'on' ? 5 : 1,
+              hint: '$5 元可享單篇好文 14 天無限瀏覽',
+              price: '原價 NT$5',
+              newPrice: 5,
               key: 'basic',
             },
           ]
