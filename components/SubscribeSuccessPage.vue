@@ -86,30 +86,13 @@ export default {
   computed: {
     orderPlanPrice() {
       let orderPlanPrice
-      if (this.$config.subscriptionPriceFeatureToggle === 'on') {
-        if (this.orderInfo?.amount) {
-          orderPlanPrice = this.orderInfo?.amount
-        } else {
-          switch (this.orderInfo.frequency) {
-            // set default price if can not fetch orderInfo
-            case 'one time': {
-              orderPlanPrice = 5
-              break
-            }
-            case 'monthly': {
-              orderPlanPrice = 49
-              break
-            }
-            case 'yearly': {
-              orderPlanPrice = 499
-              break
-            }
-          }
-        }
+      if (this.orderInfo?.amount) {
+        orderPlanPrice = this.orderInfo?.amount
       } else {
         switch (this.orderInfo.frequency) {
-          case 'one_time': {
-            orderPlanPrice = 1
+          // set default price if can not fetch orderInfo
+          case 'one time': {
+            orderPlanPrice = 5
             break
           }
           case 'monthly': {
@@ -122,6 +105,7 @@ export default {
           }
         }
       }
+
       return orderPlanPrice
     },
     perchasedList() {
