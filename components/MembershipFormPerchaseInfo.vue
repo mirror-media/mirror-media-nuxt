@@ -8,7 +8,7 @@
     <div
       class="perchase-info__row hint"
       :class="{
-        'hint--blue': isYearlyPlan,
+        'hint--blue': isYearlyOrMonthlyPlan,
       }"
     >
       <span>{{ perchasedPlan[0].hint }}</span>
@@ -48,8 +48,11 @@ export default {
     },
   },
   computed: {
-    isYearlyPlan() {
-      return this.perchasedPlan[0].key === 'yearly'
+    isYearlyOrMonthlyPlan() {
+      return (
+        this.perchasedPlan[0].key === 'yearly' ||
+        this.perchasedPlan[0].key === 'monthly'
+      )
     },
   },
 }
