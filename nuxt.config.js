@@ -389,7 +389,7 @@ module.exports = {
             default: {
               return {
                 apiKey: 'AIzaSyAavk46-8OQ4B2cv0TOqxOMjd5Fe4tIauc',
-                authDomain: 'mirrormediaapptest.firebaseapp.com',
+                authDomain: 'dev.mirrormedia.mg',
                 databaseURL: 'https://mirrormediaapptest.firebaseio.com',
                 projectId: 'mirrormediaapptest',
                 storageBucket: 'mirrormediaapptest.appspot.com',
