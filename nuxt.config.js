@@ -377,7 +377,7 @@ module.exports = {
             case 'staging': {
               return {
                 apiKey: 'AIzaSyD-cFjoIjlEn7-dZtl3zw7OYCRPerl5URs',
-                authDomain: 'mirrormedia-staging.firebaseapp.com',
+                authDomain: 'staging.mirrormedia.mg',
                 projectId: 'mirrormedia-staging',
                 storageBucket: 'mirrormedia-staging.appspot.com',
                 messagingSenderId: '388524095772',
