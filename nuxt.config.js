@@ -365,7 +365,7 @@ module.exports = {
             case 'prod': {
               return {
                 apiKey: 'AIzaSyBZVaJXDbtc6O6Iy36OeYDG8Cd9pB2vq54',
-                authDomain: 'mirror-weekly.firebaseapp.com',
+                authDomain: 'www.mirrormedia.mg',
                 projectId: 'mirror-weekly',
                 storageBucket: 'mirror-weekly.appspot.com',
                 messagingSenderId: '814835936704',
