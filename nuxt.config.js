@@ -365,7 +365,7 @@ module.exports = {
             case 'prod': {
               return {
                 apiKey: 'AIzaSyBZVaJXDbtc6O6Iy36OeYDG8Cd9pB2vq54',
-                authDomain: 'mirror-weekly.firebaseapp.com',
+                authDomain: 'www.mirrormedia.mg',
                 projectId: 'mirror-weekly',
                 storageBucket: 'mirror-weekly.appspot.com',
                 messagingSenderId: '814835936704',
@@ -377,7 +377,7 @@ module.exports = {
             case 'staging': {
               return {
                 apiKey: 'AIzaSyD-cFjoIjlEn7-dZtl3zw7OYCRPerl5URs',
-                authDomain: 'mirrormedia-staging.firebaseapp.com',
+                authDomain: 'www-staging.mirrormedia.mg',
                 projectId: 'mirrormedia-staging',
                 storageBucket: 'mirrormedia-staging.appspot.com',
                 messagingSenderId: '388524095772',
@@ -389,7 +389,7 @@ module.exports = {
             default: {
               return {
                 apiKey: 'AIzaSyAavk46-8OQ4B2cv0TOqxOMjd5Fe4tIauc',
-                authDomain: 'mirrormediaapptest.firebaseapp.com',
+                authDomain: 'dev.mirrormedia.mg',
                 databaseURL: 'https://mirrormediaapptest.firebaseio.com',
                 projectId: 'mirrormediaapptest',
                 storageBucket: 'mirrormediaapptest.appspot.com',
