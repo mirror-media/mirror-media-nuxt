@@ -19,7 +19,7 @@ import {
   isMemberPaidSubscriptionWithMobile,
 } from '~/utils/memberSubscription'
 
-import { API_TIMEOUT, ENV, API_PATH_FRONTEND } from '~/configs/config.js'
+import { ENV, API_PATH_FRONTEND } from '~/configs/config.js'
 
 const baseUrl = process.browser
   ? `//${location.host}/`
@@ -161,7 +161,7 @@ async function fetchGcsData(filename) {
 
     if (ENV === 'prod' || !process.browser) {
       apiUrl = `https://statics.mirrormedia.mg/json/${filename}.json`
-      ;({ data = {} } = await axios.get(apiUrl, { timeout: API_TIMEOUT }))
+      ;({ data = {} } = await axios.get(apiUrl, { timeout: 3000 }))
     } else {
       // 由於 CORS 的問題，不能直接在 browser 端打 api（除了生產環境），而是必須透過前端 server 去打
       apiUrl = `${baseUrl}${API_PATH_FRONTEND}/gcs/${filename}`
@@ -192,7 +192,7 @@ async function fetchGcsGroupData(filename) {
 
     if (ENV === 'prod' || !process.browser) {
       apiUrl = `https://storage.googleapis.com/statics.mirrormedia.mg/${path}/${filename}.json`
-      ;({ data = {} } = await axios.get(apiUrl, { timeout: API_TIMEOUT }))
+      ;({ data = {} } = await axios.get(apiUrl, { timeout: 3000 }))
     } else {
       // 由於 CORS 的問題，不能直接在 browser 端打 api（除了生產環境），而是必須透過前端 server 去打
       apiUrl = `${baseUrl}${API_PATH_FRONTEND}/grouped-gcs/${filename}`
