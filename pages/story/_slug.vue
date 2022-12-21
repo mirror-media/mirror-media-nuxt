@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div>{{ shouldShowAdPcFloating }}</div>
     <error v-if="$fetchState.error" :error="$fetchState.error" />
     <div
       v-else
@@ -162,7 +163,7 @@
 
           <UiAdultContentWarning v-if="story.isAdult" />
 
-          <div v-show="shouldShowAdPcFloating" class="ad-pc-floating">
+          <div v-if="shouldShowAdPcFloating" class="ad-pc-floating">
             <ContainerGptAd
               :pageKey="sectionCarandwatchId"
               adKey="PC_FLOATING"
