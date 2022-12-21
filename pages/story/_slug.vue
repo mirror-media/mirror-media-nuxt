@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div>{{ shouldShowAdPcFloating }}</div>
+    <div>{{ sectionIdForAd === this.sectionCarandwatchId }}</div>
+    <div>{{ this.canAdvertise }}</div>
+    <div>{{ this.isDesktopWidth }}</div>
+    <div>{{ this.doesHaveAdPcFloating }}</div>
+    <div>{{ !this.doesClickCloseAdPcFloating }}</div>
     <error v-if="$fetchState.error" :error="$fetchState.error" />
     <div
       v-else
