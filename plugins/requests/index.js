@@ -160,8 +160,9 @@ async function fetchGcsData(filename) {
     let data
 
     if (ENV === 'prod' || !process.browser) {
+      // not set timeout to prevent exceed timeout at client side,
       apiUrl = `https://statics.mirrormedia.mg/json/${filename}.json`
-      ;({ data = {} } = await axios.get(apiUrl, { timeout: 3000 }))
+      ;({ data = {} } = await axios.get(apiUrl))
     } else {
       // 由於 CORS 的問題，不能直接在 browser 端打 api（除了生產環境），而是必須透過前端 server 去打
       apiUrl = `${baseUrl}${API_PATH_FRONTEND}/gcs/${filename}`
@@ -191,8 +192,9 @@ async function fetchGcsGroupData(filename) {
     const path = isStagingOrProd ? 'json' : 'dev'
 
     if (ENV === 'prod' || !process.browser) {
-      apiUrl = `https://storage.googleapis.com/statics.mirrormedia.mg/${path}/${filename}.json`
-      ;({ data = {} } = await axios.get(apiUrl, { timeout: 3000 }))
+      // not set timeout to prevent exceed timeout at client side,
+      apiUrl = `https://statics.mirrormedia.mg/${path}/${filename}.json`
+      ;({ data = {} } = await axios.get(apiUrl))
     } else {
       // 由於 CORS 的問題，不能直接在 browser 端打 api（除了生產環境），而是必須透過前端 server 去打
       apiUrl = `${baseUrl}${API_PATH_FRONTEND}/grouped-gcs/${filename}`
