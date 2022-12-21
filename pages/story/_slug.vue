@@ -168,7 +168,7 @@
 
           <UiAdultContentWarning v-if="story.isAdult" />
 
-          <div v-if="shouldShowAdPcFloating" class="ad-pc-floating">
+          <div v-show="shouldShowAdPcFloating" class="ad-pc-floating">
             <ContainerGptAd
               :pageKey="sectionCarandwatchId"
               adKey="PC_FLOATING"
