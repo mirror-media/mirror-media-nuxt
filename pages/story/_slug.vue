@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div>{{ shouldShowAdPcFloating }}</div>
     <error v-if="$fetchState.error" :error="$fetchState.error" />
     <div
       v-else
