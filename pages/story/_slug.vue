@@ -164,6 +164,7 @@
 
           <div v-show="shouldShowAdPcFloating" class="ad-pc-floating">
             <ContainerGptAd
+              v-if="sectionIdForAd === sectionCarandwatchId"
               :pageKey="sectionCarandwatchId"
               adKey="PC_FLOATING"
               @slotRenderEnded="handleRenderEndedAdPcFloating"
@@ -519,7 +520,6 @@ export default {
 
     shouldShowAdPcFloating() {
       return (
-        this.sectionIdForAd === this.sectionCarandwatchId &&
         this.canAdvertise &&
         this.isDesktopWidth &&
         this.doesHaveAdPcFloating &&
