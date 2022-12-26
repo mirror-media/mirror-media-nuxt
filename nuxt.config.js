@@ -238,7 +238,6 @@ module.exports = {
    * Plugins to load before mounting the App
    */
   plugins: [
-    '~/plugins/vuePluginsCustomRouter.js',
     '~/plugins/vuePluginsGlobal.js',
     '~/plugins/vuePluginsGlobal.client.js',
     '~/plugins/vueDirectivesGlobal.js',
@@ -255,7 +254,6 @@ module.exports = {
   serverMiddleware: [
     express.urlencoded({ extended: true }),
     '~/api/headers.js',
-    '~/serverMiddleware/appendUtmToUrl.js',
     {
       path: `/${API_PATH_FRONTEND}/gcs`,
       handler: '~/api/gcs.js',

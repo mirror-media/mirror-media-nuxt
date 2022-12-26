@@ -7,7 +7,7 @@ import UiMembershipEmailInput from '~/components/UiMembershipEmailInput.vue'
 
 const createWrapper = createWrapperHelper({
   mocks: {
-    $customRouter: {
+    $router: {
       replace: () => {},
     },
     $fire: {
@@ -66,7 +66,7 @@ describe('email validations', function () {
     }
     const wrapper = createWrapper(page, {
       mocks: {
-        $customRouter: mockRouter,
+        $router: mockRouter,
         $route: {
           query: {},
         },
