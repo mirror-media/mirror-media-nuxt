@@ -15,6 +15,7 @@ import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import { RETURN_CODE } from '~/constants/linepay'
+import uploadMemberArticleHistory from '~/mixins/upload-member-article-history'
 
 import {
   linepayClient,
@@ -34,6 +35,7 @@ export default {
     SubscribeSuccessPage,
     SubscribeFail,
   },
+  mixins: [uploadMemberArticleHistory],
   async asyncData({ req, redirect }) {
     if (req.method !== 'GET') return redirect('/subscribe')
 
@@ -194,7 +196,7 @@ export default {
           },
         }
       }
-
+      console.log('test')
       return {
         status: 'success',
         orderInfo: {
@@ -202,6 +204,7 @@ export default {
           promoteId: subscription.promoteId,
           frequency: subscription.frequency,
           amount: subscription.amount,
+          subscriptionId: subscription.id,
         },
       }
     } catch (e) {

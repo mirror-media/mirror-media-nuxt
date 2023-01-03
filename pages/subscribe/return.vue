@@ -13,6 +13,7 @@ import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import { NEWEBPAY_KEY, NEWEBPAY_IV, ISRAFEL_ORIGIN } from '~/configs/config'
+import uploadMemberArticleHistory from '~/mixins/upload-member-article-history'
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
@@ -22,6 +23,7 @@ export default {
     SubscribeSuccessPage,
     SubscribeFail,
   },
+  mixins: [uploadMemberArticleHistory],
   async asyncData({ req, redirect }) {
     if (req.method !== 'POST') return redirect('/subscribe')
 
@@ -112,6 +114,7 @@ export default {
           promoteId: decryptedTradeInfo.promoteId,
           frequency: decryptInfoData.frequency,
           amount: decryptInfoData.amount,
+          subscriptionId: decryptInfoData.id,
         },
       }
     } catch (e) {
