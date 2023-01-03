@@ -247,7 +247,7 @@ export default {
       }
 
       switch (carrierType) {
-        case 'mail':
+        case 'Email 載具':
           return '2'
 
         case '手機條碼':
