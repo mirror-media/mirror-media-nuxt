@@ -1,10 +1,14 @@
 export default {
   mounted() {
+    if (!this.$config?.recordMemberArticleToggle) {
+      return
+    }
     const userId = this.$store.state.membership?.userUid
     const articleSlug = this.storySlug
     if (userId) {
       const nowTs = new Date().valueOf()
-      const expireTs = nowTs - 30 * 60 * 1000
+      const expireTs =
+        nowTs - this.$config.recordMemberArticleMaxAge * 60 * 1000
       const newArticleRecord = { ts: nowTs, slug: articleSlug }
       const newMemberArticleRecords = {}
       const memberArticleRecords = JSON.parse(

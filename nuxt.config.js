@@ -616,6 +616,10 @@ module.exports = {
 
   publicRuntimeConfig: {
     linepayUiToggle: process.env.LINEPAY_PAYMENT_UI_TOGGLE === 'on',
+    recordMemberArticleToggle:
+      process.env.RECORD_MEMBER_ARTICLE_HISTORY_FEATURE_TOGGLE === 'on',
+    recordMemberArticleMaxAge:
+      parseInt(process.env.MEMBER_ARTICLE_HISTORY_MAX_AGE) || 30,
   },
 
   env: {
