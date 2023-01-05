@@ -71,7 +71,7 @@
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "superagent": "^5.2.1",
-    "swiper": "^5.0.0",
+    "swiper": "^6.5.1",
     "timeme.js": "^2.1.0",
     "truncate": "^2.1.0",
     "uuid": "^3.3.3",
