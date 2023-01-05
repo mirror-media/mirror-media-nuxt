@@ -59,7 +59,7 @@
     "lodash": "^4.17.20",
     "mirror-media-constants": "mirror-media/constants#semver:^2.0.0",
     "moment": "^2.29.1",
-    "moment-timezone": "^0.5.28",
+    "moment-timezone": "^0.5.35",
     "nuxt": "^2.14.5",
     "nuxt-user-agent": "^1.2.2",
     "plate-vue-dfp": "^1.3.66",
