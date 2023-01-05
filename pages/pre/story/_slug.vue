@@ -137,6 +137,7 @@ import ContainerHeader from '~/components/ContainerHeader.vue'
 import ContainerCulturePost from '~/components/culture-post/ContainerCulturePost.vue'
 import { DOMAIN_NAME, ENV, PREVIEW_QUERY } from '~/configs/config'
 import { getSectionColor } from '~/utils/index.js'
+import saveMemberArticleHistoryLocally from '~/mixins/save-member-article-history-locally'
 
 // import { DABLE_WIDGET_IDS, MICRO_AD_UNITS } from '~/constants/ads'
 import {
@@ -168,6 +169,7 @@ export default {
   setup() {
     useViewport()
   },
+  mixins: [saveMemberArticleHistoryLocally],
   async fetch() {
     const processPostResponse = (response) => {
       if (response.status === 'fulfilled') {
@@ -294,7 +296,6 @@ export default {
       showShareLinksAside: false,
     }
   },
-
   computed: {
     storySlug() {
       return this.$route.params.slug

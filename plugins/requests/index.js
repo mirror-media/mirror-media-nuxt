@@ -17,6 +17,7 @@ import {
   getPremiumMemberSubscriptionInfo,
   updateSubscriptionFromMonthToYear,
   isMemberPaidSubscriptionWithMobile,
+  updateSubscriptionNote,
 } from '~/utils/memberSubscription'
 
 import { ENV, API_PATH_FRONTEND } from '~/configs/config.js'
@@ -396,6 +397,9 @@ export default (context, inject) => {
   })
   inject('updateSubscriptionFromMonthToYear', async (subscriptionId) => {
     return await updateSubscriptionFromMonthToYear(context, subscriptionId)
+  })
+  inject('updateSubscriptionNote', async (subscriptionId, note) => {
+    return await updateSubscriptionNote(context, subscriptionId, note)
   })
   inject('isMemberPaidSubscriptionWithMobile', async () => {
     return await isMemberPaidSubscriptionWithMobile(context)
