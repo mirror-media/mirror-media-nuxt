@@ -1,7 +1,17 @@
 export default {
   mounted() {
-    // return if feature toggle is off or no subscriptionId provided (payment error)
-    if (!this.$config?.recordMemberArticleToggle || !this.subscriptionId) {
+    if (
+      !this.$config?.recordMemberArticleToggle ||
+      !this.orderInfo?.subscriptionId
+    ) {
+      return
+    }
+
+    // return if no subscriptionId provided (payment error) or the subscription is one_time only
+    if (
+      !this.orderInfo?.subscriptionId ||
+      this.orderInfo?.frequency === 'one_time'
+    ) {
       return
     }
 

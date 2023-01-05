@@ -196,7 +196,7 @@ export default {
           },
         }
       }
-      console.log('test')
+
       return {
         status: 'success',
         orderInfo: {
