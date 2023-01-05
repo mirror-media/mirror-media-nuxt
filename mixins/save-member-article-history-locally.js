@@ -1,8 +1,15 @@
 export default {
   mounted() {
-    if (!this.$config?.recordMemberArticleToggle) {
+    // return if feature toggle is off or no slug to record
+    if (!this.$config?.recordMemberArticleToggle || !this.storySlug) {
       return
     }
+
+    /**
+     * Save member's article(story, pre/story) browsing history.
+     * Renew the localStorage.memberArticleRecors every time with fresh record corresponding to the logged-in user.
+     * Use .env MEMBER_ARTICLE_HISTORY_MAX_AGE to dynamic change max age.
+     */
     const userId = this.$store.state.membership?.userUid
     const articleSlug = this.storySlug
     if (userId) {
