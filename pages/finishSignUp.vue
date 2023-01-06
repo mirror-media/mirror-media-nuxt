@@ -138,7 +138,7 @@ export default {
       this.emailInput = value
     },
     handleBackToForm() {
-      this.$customRouter.replace('/login')
+      this.$router.replace('/login')
     },
   },
 }

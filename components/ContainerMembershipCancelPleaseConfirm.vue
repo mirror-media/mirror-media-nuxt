@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     handleRouterBackClick() {
-      this.$customRouter.back()
+      this.$router.back()
     },
     async handleConfirmCancelButtonClick() {
       if (this.isLoading) return

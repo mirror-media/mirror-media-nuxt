@@ -7,6 +7,13 @@ mutation setMemberTosToTrue($id: ID!) {
   }
 }
 
+mutation setSubscriptionNote($id: ID!, $note: String) {
+  updatesubscription(id: $id, data: { note: $note }) {
+    id
+    note
+  }
+}
+
 mutation unsubscribe($id: ID!, $note: String) {
   updatesubscription(id: $id, data: { isCanceled: true, note: $note }) {
     id
@@ -18,7 +25,14 @@ mutation unsubscribe($id: ID!, $note: String) {
 }
 
 mutation setSubscriptionFromMonthToYear($id: ID!, $changeDate: String!) {
-  updatesubscription(id: $id, data: { nextFrequency: yearly, isCanceled: false, changePlanDatetime: $changeDate }) {
+  updatesubscription(
+    id: $id
+    data: {
+      nextFrequency: yearly
+      isCanceled: false
+      changePlanDatetime: $changeDate
+    }
+  ) {
     orderNumber
     id
     frequency

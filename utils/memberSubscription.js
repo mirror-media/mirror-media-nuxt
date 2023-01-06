@@ -19,6 +19,7 @@ import {
   fetchPaymentDataOfSubscriptionRecurring,
   fetchPaymentDataOfSubscriptionOneTime,
   setSubscriptionFromMonthToYear,
+  setSubscriptionNote,
 } from '~/apollo/mutations/memberSubscriptionMutation.gql'
 
 const baseUrl = process.browser
@@ -788,6 +789,20 @@ async function updateSubscriptionFromMonthToYear(context, subscriptionId) {
   )
 }
 
+async function updateSubscriptionNote(context, subscriptionId, note) {
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return null
+
+  return await fireGqlRequestNewApi(
+    setSubscriptionNote,
+    {
+      id: subscriptionId,
+      note,
+    },
+    context
+  )
+}
+
 export {
   getUserFirebaseId,
   getFirebaseToken,
@@ -805,4 +820,5 @@ export {
   getMemberShipStatus,
   getPremiumMemberSubscriptionInfo,
   updateSubscriptionFromMonthToYear,
+  updateSubscriptionNote,
 }
