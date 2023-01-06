@@ -34,9 +34,7 @@ export default {
   position: relative;
 }
 /*  should remove these css style below after 2023 lunar year vacation --> */
-::v-deep .choose-plan {
-  padding-top: 0px;
-}
+
 .notice__wrapper {
   padding: 16px 8px;
   @include media-breakpoint-up(xl) {
