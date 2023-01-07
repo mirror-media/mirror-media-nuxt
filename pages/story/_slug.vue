@@ -239,6 +239,7 @@ import {
 } from '~/utils/article'
 
 import handleStoryPremiumRedirect from '~/middleware/handle-story-premium-redirect'
+import saveMemberArticleHistoryLocally from '~/mixins/save-member-article-history-locally'
 
 const PROJECTS_2022_SEA_TURTLE_SLUG = [
   'sea_turtle2022_seaghost',
@@ -280,6 +281,7 @@ export default {
 
     SvgCloseIcon,
   },
+  mixins: [saveMemberArticleHistoryLocally],
 
   async fetch() {
     const processPostResponse = (response) => {
@@ -497,7 +499,7 @@ export default {
       return this.sectionId
     },
     storySlug() {
-      return this.$route.params.slug
+      return this.$route?.params.slug
     },
     sectionName() {
       return this.section.name ?? ''

@@ -4,7 +4,7 @@ import createWrapperHelper from '~/test/helpers/createWrapperHelper'
 
 const createWrapper = createWrapperHelper({
   mocks: {
-    $customRouter: {
+    $router: {
       push: jest.fn(),
     },
     $ga: {

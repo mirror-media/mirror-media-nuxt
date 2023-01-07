@@ -238,7 +238,6 @@ module.exports = {
    * Plugins to load before mounting the App
    */
   plugins: [
-    '~/plugins/vuePluginsCustomRouter.js',
     '~/plugins/vuePluginsGlobal.js',
     '~/plugins/vuePluginsGlobal.client.js',
     '~/plugins/vueDirectivesGlobal.js',
@@ -255,7 +254,6 @@ module.exports = {
   serverMiddleware: [
     express.urlencoded({ extended: true }),
     '~/api/headers.js',
-    '~/serverMiddleware/appendUtmToUrl.js',
     {
       path: `/${API_PATH_FRONTEND}/gcs`,
       handler: '~/api/gcs.js',
@@ -618,6 +616,10 @@ module.exports = {
 
   publicRuntimeConfig: {
     linepayUiToggle: process.env.LINEPAY_PAYMENT_UI_TOGGLE === 'on',
+    recordMemberArticleToggle:
+      process.env.RECORD_MEMBER_ARTICLE_HISTORY_FEATURE_TOGGLE === 'on',
+    recordMemberArticleMaxAge:
+      parseInt(process.env.MEMBER_ARTICLE_HISTORY_MAX_AGE) || 30,
   },
 
   env: {

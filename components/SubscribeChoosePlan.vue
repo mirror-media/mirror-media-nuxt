@@ -115,4 +115,12 @@ export default {
     }
   }
 }
+/*  should remove these css style below after 2023 lunar year vacation --> */
+.choose-plan {
+  padding-top: 0px;
+  @include media-breakpoint-up(sm) {
+    padding-top: 0px;
+  }
+}
+/*  should remove these css style above after 2023 lunar year vacation --> */
 </style>

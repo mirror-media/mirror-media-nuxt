@@ -46,7 +46,7 @@ test('should call router back method if we click the back button', function () {
   const mockBack = jest.fn()
   const wrapper = createWrapper(page, {
     mocks: {
-      $customRouter: {
+      $router: {
         back: mockBack,
       },
     },

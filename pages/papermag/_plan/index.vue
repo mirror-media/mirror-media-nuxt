@@ -76,7 +76,7 @@ export default {
 
         if (data.status !== 'success') {
           console.error(data.message)
-          this.$customRouter.push('/papermag/return', { 'order-fail': true })
+          this.$router.push(`/papermag/return?order-fail=true`)
         }
 
         this.paymentPayload = data.data
@@ -89,7 +89,7 @@ export default {
         console.error(err)
 
         // payment fail
-        this.$customRouter.push('/papermag/return', { 'order-fail': true })
+        this.$router.push(`/papermag/return?order-fail=true`)
       }
     },
 
