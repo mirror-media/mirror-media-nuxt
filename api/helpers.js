@@ -2,7 +2,6 @@ const { default: errors } = require('@twreporter/errors')
 const axios = require('axios')
 const moment = require('moment-timezone')
 const { createLinePayClient } = require('line-pay-merchant')
-const { PubSub } = require('@google-cloud/pubsub')
 const REQUEST_STATUS = require('../constants/request').STATUS
 const {
   API_TIMEOUT,
@@ -125,6 +124,9 @@ async function fireGqlRequest(query, variables, apiUrl) {
  * @return {Boolean} success
  */
 async function publishMessageToPubSub(topicName, projectId, message) {
+  // dynamic import to prevent client side error cause vue component break
+  const { PubSub } = await import('@google-cloud/pubsub')
+
   try {
     const pubsub = new PubSub({
       projectId,
