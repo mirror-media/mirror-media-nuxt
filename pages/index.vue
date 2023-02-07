@@ -398,14 +398,14 @@ export default {
         )
         this.groupedArticles = groupedResponse
         this.getGroupedArticlesWithoutExternalLink()
-
         this.loadLatestListInitial()
       }
-      this.hasLoadedFirstGroupedArticle = true
-      this.insertMicroAds()
     } catch (err) {
-      this.$nuxt.context.error({ statusCode: 500 })
+      console.error(err)
     }
+    this.hasLoadedFirstGroupedArticle = true
+
+    this.insertMicroAds()
   },
   beforeDestroy() {
     this.cleanFixedLastFocusList()
@@ -478,12 +478,16 @@ export default {
         this.isNoNeedToFetchLatestList = true
         return []
       }
-      const { latest = [] } = await this.$fetchGroupedWithExternal(
-        `post_external0${this.fileId}`
-      )
-
-      this.fileId += 1
-      return latest
+      try {
+        const { latest = [] } = await this.$fetchGroupedWithExternal(
+          `post_external0${this.fileId}`
+        )
+        this.fileId += 1
+        return latest
+      } catch (err) {
+        this.fileId += 1
+        return []
+      }
     },
     pushLatestItems(items = []) {
       this.latestList.items.push(
