@@ -26,13 +26,16 @@ function getSectionColor(name) {
  */
 
 /**
- * @param {ArticleList[]} articleList
+ * @param {ArticleList[]} [articleList]
  * @return {ArticleList[]}
  */
 
 function removeArticleWithExternalLink(articleList) {
-  return articleList.filter((item) => {
-    const redirectLink = item.redirect.trim()
+  if (!articleList || !Array.isArray(articleList)) {
+    return []
+  }
+  return articleList?.filter((item) => {
+    const redirectLink = item.redirect?.trim()
     return (
       !redirectLink.startsWith('https://') &&
       !redirectLink.startsWith('http://') &&
