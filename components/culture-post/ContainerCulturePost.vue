@@ -438,6 +438,7 @@ export default {
   }
 }
 .donate {
+  width: fit-content;
   margin: 20px auto 0;
   @include media-breakpoint-up(md) {
     margin: 12px auto 0;
