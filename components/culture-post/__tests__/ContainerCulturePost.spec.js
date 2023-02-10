@@ -16,6 +16,9 @@ const createWrapper = createWrapperHelper({
         'viewport/isViewportWidthUpXl': false,
       },
     },
+    $config: {
+      donateFeatureToggle: false,
+    },
   },
 })
 
