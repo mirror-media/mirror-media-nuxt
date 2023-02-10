@@ -18,6 +18,8 @@ export default {
   height: 32px;
   padding: 9px 12px 9px 13.33px;
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 5.33px;
   font-size: 14px;
   line-height: 1;
@@ -25,8 +27,7 @@ export default {
   border-radius: 32px;
   color: white;
   img {
-    width: 13.33px;
-    height: 13.33px;
+    height: 100%;
   }
   &:focus {
     outline: none;

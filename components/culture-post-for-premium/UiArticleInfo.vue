@@ -181,6 +181,7 @@ export default {
 }
 .donate {
   margin-top: 20px;
+  width: fit-content;
   @include media-breakpoint-up(md) {
     margin-top: 24px;
   }
