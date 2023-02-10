@@ -24,6 +24,7 @@
       <div class="credit">
         <span v-for="credit in post.credits" :key="credit">{{ credit }}</span>
       </div>
+      <UiDonateButton v-if="$config.donateFeatureToggle" class="donate" />
     </div>
 
     <UiArticleBody
@@ -75,7 +76,7 @@ import UiArticleIndex from './UiArticleIndex.vue'
 import UiListRelated from './UiListRelated.vue'
 import UiArticleBodyForPremium from '~/components/culture-post-for-premium/UiArticleBody.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
-
+import UiDonateButton from '~/components/UiDonateButton.vue'
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName } from '~/utils/article.js'
 
@@ -89,6 +90,7 @@ export default {
     UiListRelated,
     UiWineWarning,
     UiArticleBodyForPremium,
+    UiDonateButton,
   },
 
   props: {
@@ -435,7 +437,12 @@ export default {
     }
   }
 }
-
+.donate {
+  margin: 20px auto 0;
+  @include media-breakpoint-up(md) {
+    margin: 12px auto 0;
+  }
+}
 .list-related-container {
   margin-left: 10px;
   margin-right: 10px;
