@@ -77,6 +77,10 @@
     <p v-if="isUpdatedAtVisible" class="story__updated-at">
       更新時間｜<span v-text="updatedAt" />
     </p>
+    <UiDonateBanner
+      v-if="$config.donateFeatureToggle"
+      class="story__donate-banner"
+    />
 
     <UiSocialNetworkServices style="margin: 30px auto 0 auto" />
 
@@ -103,7 +107,6 @@
         >了解內容授權資訊</a
       >。
     </p>
-
     <div class="magazine">
       <div>月費、年費會員免費線上閱讀動態雜誌</div>
       <button type="button" @click="enterMagazinePage">線上閱讀</button>
@@ -154,7 +157,7 @@ import UiShareSidebox from '~/components/UiShareSidebox.vue'
 import UiSocialNetworkServices from '~/components/UiSocialNetworkServices.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiAnniversary from '~/components/UiAnniversary.vue'
-
+import UiDonateBanner from '~/components/UiDonateBanner.vue'
 import {
   AUTH_LINK,
   SUBSCRIBE_LINK,
@@ -190,6 +193,7 @@ export default {
     UiShareSidebox,
     ContainerGptAd,
     UiAnniversary,
+    UiDonateBanner,
   },
   props: {
     story: {
@@ -661,7 +665,12 @@ export {
   &__member-info {
     margin: 30px auto 0;
   }
-
+  &__donate-banner {
+    margin-top: 24px;
+    @include media-breakpoint-up(md) {
+      margin-top: 32px;
+    }
+  }
   &__tags {
     margin-top: 1.5em;
     margin-bottom: -0.6em;
