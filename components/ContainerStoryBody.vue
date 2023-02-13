@@ -28,7 +28,10 @@
         <UiShareFb class="share__logo" />
         <UiShareLine class="share__logo" />
       </div>
-      <div v-if="$config.donateFeatureToggle" class="donate">
+      <div
+        v-if="$config.donateFeatureToggle && !isExternalArticle"
+        class="donate"
+      >
         <div class="share__br" />
         <UiDonateButton class="share__logo--wider" />
       </div>
@@ -382,6 +385,9 @@ export default {
     },
     doesHaveTags() {
       return this.tags.length > 0
+    },
+    isExternalArticle() {
+      return this.story?.partner
     },
   },
 
