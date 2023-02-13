@@ -16,11 +16,11 @@ export default {
   height: 48px;
   padding: 12px;
   border-radius: 50%;
+  border: 1px solid #ffffff;
   color: white;
   transition: all 0.1s ease-out;
   img {
-    width: 24px;
-    height: 24px;
+    height: 100%;
   }
   &:focus {
     outline: none;
