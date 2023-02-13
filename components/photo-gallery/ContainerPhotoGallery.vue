@@ -722,7 +722,7 @@ body {
     .share {
       width: 48px;
       border-radius: 50%;
-
+      border: 1px solid #fff;
       transition: all 0.1s ease-out;
       cursor: pointer;
 
