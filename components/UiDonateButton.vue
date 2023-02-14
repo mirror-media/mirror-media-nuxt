@@ -14,7 +14,7 @@ export default {
 <style lang="scss" scoped>
 .donate {
   background-color: black;
-  width: 100px;
+  width: fit-content;
   height: 32px;
   padding: 9px 12px 9px 13.33px;
   display: flex;
@@ -25,12 +25,14 @@ export default {
   line-height: 1;
   font-weight: 400;
   border-radius: 32px;
-  color: white;
   img {
     height: 100%;
   }
   &:focus {
     outline: none;
+  }
+  span {
+    color: white;
   }
 }
 </style>
