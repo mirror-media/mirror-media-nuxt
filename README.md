@@ -53,6 +53,7 @@ To avoid unpredictable error occur when developing, please use Classic Stable ve
 | PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME | 字串 | 'linepay-webhook-dev' | LINE Pay 付款資訊寫入 PubSub 的主題名稱 |
 | SEARCH_URL | 字串 | 'search-url/search' | 搜尋頁面url |
 | MEMBER_ARTICLE_HISTORY_MAX_AGE | 字串 | '30' | 會員訂閱前閱覽紀錄有效期限，以分鐘為單位 |
+| DONATION_PAGE_URL | 字串 | undefined | 捐款頁網址（目前捐款頁為外部頁面，使用 `/donate` 作為 proxy ） |
 
 ## Feature Toggle
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
