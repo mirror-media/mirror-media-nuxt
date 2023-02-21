@@ -12,7 +12,7 @@ const createWrapper = createWrapperHelper({
       name: '',
     },
     $config: {
-      donateFeatureToggle: 'off',
+      donateFeatureToggle: false,
     },
   },
 })
