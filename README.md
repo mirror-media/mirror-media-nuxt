@@ -63,7 +63,8 @@ To avoid unpredictable error occur when developing, please use Classic Stable ve
 | TOPIC_LIST_FEATURE_TOGGLE | 'on', 'off' | 'off' | |
 | SUBSCRIPTION_PRICE_FEATURE_TOGGLE | 'on', 'off' | 'off' | |
 | HEADER_EXTERNALS_FEATURE_TOGGLE | 'on', 'off' | 'off' | |
-| LINEPAY_PAYMENT_UI_TOGGLE | 布林值 | 'on', 'off' | 'off' | 確認付款頁 LINEPay 支付功能啟用開關 |
-| RECORD_MEMBER_ARTICLE_HISTORY_FEATURE_TOGGLE | 布林值 | 'on', 'off' | 'off' | 記錄會員訂閱前閱覽紀錄 |
+| LINEPAY_PAYMENT_UI_TOGGLE | 'on', 'off' | 'off' | 確認付款頁 LINEPay 支付功能啟用開關 |
+| RECORD_MEMBER_ARTICLE_HISTORY_FEATURE_TOGGLE | 'on', 'off' | 'off' | 記錄會員訂閱前閱覽紀錄 |
+| DONATE_FEATURE_TOGGLE | 'on', 'off' | 'off' | 捐款功能啟用開關 |
 
 ※ 在執行指令時，使用 `key=value` 的前綴來執行，例如：`ENV=dev yarn dev`，即可設定執行時的環境變數。
