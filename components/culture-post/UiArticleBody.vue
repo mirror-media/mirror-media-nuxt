@@ -130,6 +130,11 @@ export default {
       color: rgba(199, 159, 101, 0.87);
       text-decoration: underline;
     }
+    .donate-banner {
+      a {
+        text-decoration: none;
+      }
+    }
   }
 
   .brief {
