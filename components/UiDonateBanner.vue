@@ -47,10 +47,9 @@ export default {
   font-size: 18px;
   margin: 10px 0;
   color: white;
-
   @include media-breakpoint-up(md) {
     margin: 6px 0;
-    width: 139px;
+    width: 140px;
   }
 }
 </style>
