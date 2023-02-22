@@ -2,7 +2,6 @@
   <div class="donate-banner">
     <div>
       <p class="title">小心意大意義，小額贊助鏡週刊！</p>
-      <p class="content">&emsp;</p>
     </div>
     <UiDonateButton class="donate-button" />
   </div>
@@ -21,6 +20,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.87);
   padding: 32px;
   display: flex;
+
   flex-direction: column;
   color: white;
   font-size: 18px;
@@ -28,14 +28,10 @@ export default {
   @include media-breakpoint-up(md) {
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
   }
   .title {
     color: white;
-  }
-  .content {
-    color: #eac151;
-    font-size: 14px;
-    line-height: 1.5;
   }
 }
 
@@ -47,10 +43,9 @@ export default {
   font-size: 18px;
   margin: 10px 0;
   color: white;
-
   @include media-breakpoint-up(md) {
     margin: 6px 0;
-    width: 139px;
+    width: 140px;
   }
 }
 </style>
