@@ -20,6 +20,9 @@ const createWrapper = createWrapperHelper({
         store: { getters: {} },
       },
     },
+    $config: {
+      donateFeatureToggle: false,
+    },
   },
   stubs: ['ClientOnly'],
 })

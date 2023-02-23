@@ -14,7 +14,10 @@
       </div>
 
       <ContentHandler v-for="item in content" :key="item.id" :item="item" />
-
+      <UiDonateBanner
+        v-if="$config.donateFeatureToggle"
+        class="donate-banner"
+      />
       <template v-if="pageState === 'premiumPageIsLogin'">
         <div class="copyright-warning">
           <p>
@@ -34,13 +37,14 @@
 <script>
 import ContentHandler from './ContentHandler.vue'
 import UiPremiumInviteToLogin from '~/components/UiPremiumInviteToLogin.vue'
-
+import UiDonateBanner from '~/components/UiDonateBanner.vue'
 export default {
   name: 'UiArticleBody',
 
   components: {
     ContentHandler,
     UiPremiumInviteToLogin,
+    UiDonateBanner,
   },
 
   props: {
@@ -126,6 +130,11 @@ export default {
       color: rgba(199, 159, 101, 0.87);
       text-decoration: underline;
     }
+    .donate-banner {
+      a {
+        text-decoration: none;
+      }
+    }
   }
 
   .brief {
@@ -187,6 +196,12 @@ export default {
       max-width: 170px;
       line-height: 27px;
     }
+  }
+}
+.donate-banner {
+  margin: 0 27px 24px;
+  @include media-breakpoint-up(md) {
+    margin: 0 33px 32px;
   }
 }
 </style>

@@ -11,6 +11,9 @@ const createWrapper = createWrapperHelper({
     $route: {
       name: '',
     },
+    $config: {
+      donateFeatureToggle: false,
+    },
   },
 })
 

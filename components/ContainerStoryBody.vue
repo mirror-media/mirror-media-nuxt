@@ -16,16 +16,25 @@
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-if="credit" class="story__credit" v-html="credit"></div>
 
-    <div class="story__share share">
-      <img
-        src="../assets/logo@2x.png"
-        alt="Mirror Media"
-        class="share__logo"
-        @click="handleClickHomeLogo"
-      />
-      <div class="share__br" />
-      <UiShareFb />
-      <UiShareLine />
+    <div class="story__share-and-donate share-and-donate">
+      <div class="share">
+        <img
+          src="../assets/logo@2x.png"
+          alt="Mirror Media"
+          class="share__logo"
+          @click="handleClickHomeLogo"
+        />
+        <div class="share__br" />
+        <UiShareFb class="share__logo" />
+        <UiShareLine class="share__logo" />
+      </div>
+      <div
+        v-if="$config.donateFeatureToggle && !isExternalArticle"
+        class="donate"
+      >
+        <div class="share__br" />
+        <UiDonateButton class="share__logo--wider" />
+      </div>
     </div>
 
     <div v-if="heroVideoSrc" class="story__hero">
@@ -68,6 +77,10 @@
     <p v-if="isUpdatedAtVisible" class="story__updated-at">
       更新時間｜<span v-text="updatedAt" />
     </p>
+    <UiDonateBanner
+      v-if="$config.donateFeatureToggle && !isExternalArticle"
+      class="story__donate-banner"
+    />
 
     <UiSocialNetworkServices style="margin: 30px auto 0 auto" />
 
@@ -94,7 +107,6 @@
         >了解內容授權資訊</a
       >。
     </p>
-
     <div class="magazine">
       <div>月費、年費會員免費線上閱讀動態雜誌</div>
       <button type="button" @click="enterMagazinePage">線上閱讀</button>
@@ -139,12 +151,13 @@ import utc from 'dayjs/plugin/utc'
 import UiStoryContentHandler from './UiStoryContentHandler.vue'
 import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
+import UiDonateButton from '~/components/UiDonateButton.vue'
 import UiStoryVideo from '~/components/UiStoryVideo.vue'
 import UiShareSidebox from '~/components/UiShareSidebox.vue'
 import UiSocialNetworkServices from '~/components/UiSocialNetworkServices.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiAnniversary from '~/components/UiAnniversary.vue'
-
+import UiDonateBanner from '~/components/UiDonateBanner.vue'
 import {
   AUTH_LINK,
   SUBSCRIBE_LINK,
@@ -175,10 +188,12 @@ export default {
     UiStoryContentHandler,
     UiShareFb,
     UiShareLine,
+    UiDonateButton,
     UiStoryVideo,
     UiShareSidebox,
     ContainerGptAd,
     UiAnniversary,
+    UiDonateBanner,
   },
   props: {
     story: {
@@ -375,6 +390,9 @@ export default {
     doesHaveTags() {
       return this.tags.length > 0
     },
+    isExternalArticle() {
+      return this.story?.partner
+    },
   },
 
   methods: {
@@ -565,19 +583,29 @@ export {
     }
   }
 
-  &__share {
+  &__share-and-donate {
     display: flex;
     margin-bottom: 45px;
-    align-items: center;
-
-    a {
-      width: 35px;
-
-      + a {
-        margin-left: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px 0px;
+    @include media-breakpoint-up(md) {
+      flex-direction: row;
+      align-items: center;
+    }
+    .share,
+    .donate {
+      display: flex;
+      align-items: center;
+    }
+    .donate {
+      .share__br {
+        display: none;
+        @include media-breakpoint-up(md) {
+          display: block;
+        }
       }
     }
-
     .share__br {
       content: '';
       display: block;
@@ -590,8 +618,14 @@ export {
     .share__logo {
       width: 35px;
       display: flex;
+      &--wider {
+        width: fit-content;
+      }
       &:hover {
         cursor: pointer;
+      }
+      + .share__logo {
+        margin-left: 10px;
       }
     }
   }
@@ -631,7 +665,12 @@ export {
   &__member-info {
     margin: 30px auto 0;
   }
-
+  &__donate-banner {
+    margin-top: 24px;
+    @include media-breakpoint-up(md) {
+      margin-top: 32px;
+    }
+  }
   &__tags {
     margin-top: 1.5em;
     margin-bottom: -0.6em;
