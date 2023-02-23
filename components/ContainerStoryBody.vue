@@ -78,7 +78,7 @@
       更新時間｜<span v-text="updatedAt" />
     </p>
     <UiDonateBanner
-      v-if="$config.donateFeatureToggle"
+      v-if="$config.donateFeatureToggle && !isExternalArticle"
       class="story__donate-banner"
     />
 
