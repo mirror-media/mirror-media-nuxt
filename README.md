@@ -53,6 +53,7 @@ To avoid unpredictable error occur when developing, please use Classic Stable ve
 | PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME | 字串 | 'linepay-webhook-dev' | LINE Pay 付款資訊寫入 PubSub 的主題名稱 |
 | SEARCH_URL | 字串 | 'search-url/search' | 搜尋頁面url |
 | MEMBER_ARTICLE_HISTORY_MAX_AGE | 字串 | '30' | 會員訂閱前閱覽紀錄有效期限，以分鐘為單位 |
+| DONATION_PAGE_URL | 字串 | undefined | 捐款頁網址（目前捐款頁為外部頁面，使用 `/donate` 作為 proxy ） |
 
 ## Feature Toggle
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
@@ -62,7 +63,8 @@ To avoid unpredictable error occur when developing, please use Classic Stable ve
 | TOPIC_LIST_FEATURE_TOGGLE | 'on', 'off' | 'off' | |
 | SUBSCRIPTION_PRICE_FEATURE_TOGGLE | 'on', 'off' | 'off' | |
 | HEADER_EXTERNALS_FEATURE_TOGGLE | 'on', 'off' | 'off' | |
-| LINEPAY_PAYMENT_UI_TOGGLE | 布林值 | 'on', 'off' | 'off' | 確認付款頁 LINEPay 支付功能啟用開關 |
-| RECORD_MEMBER_ARTICLE_HISTORY_FEATURE_TOGGLE | 布林值 | 'on', 'off' | 'off' | 記錄會員訂閱前閱覽紀錄 |
+| LINEPAY_PAYMENT_UI_TOGGLE | 'on', 'off' | 'off' | 確認付款頁 LINEPay 支付功能啟用開關 |
+| RECORD_MEMBER_ARTICLE_HISTORY_FEATURE_TOGGLE | 'on', 'off' | 'off' | 記錄會員訂閱前閱覽紀錄 |
+| DONATE_FEATURE_TOGGLE | 'on', 'off' | 'off' | 捐款功能啟用開關 |
 
 ※ 在執行指令時，使用 `key=value` 的前綴來執行，例如：`ENV=dev yarn dev`，即可設定執行時的環境變數。

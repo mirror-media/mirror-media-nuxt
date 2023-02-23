@@ -20,6 +20,7 @@
           <SvgLineIcon class="line" />
         </a>
       </div>
+      <UiDonateButtonCircle v-if="$config.donateFeatureToggle" class="donate" />
     </div>
 
     <div
@@ -139,7 +140,7 @@ import { creditHtml } from '~/utils/article.js'
 import SvgShareIcon from '~/assets/share.svg?inline'
 import SvgFbIcon from '~/assets/fb-logo.svg?inline'
 import SvgLineIcon from '~/assets/line-logo.svg?inline'
-
+import UiDonateButtonCircle from '~/components/UiDonateButtonCircle.vue'
 export default {
   name: 'ContainerPhotoGallery',
 
@@ -159,6 +160,7 @@ export default {
     SvgShareIcon,
     SvgFbIcon,
     SvgLineIcon,
+    UiDonateButtonCircle,
   },
 
   props: {
@@ -720,6 +722,7 @@ body {
     .share {
       width: 48px;
       border-radius: 50%;
+      border: 1px solid #fff;
       transition: all 0.1s ease-out;
       cursor: pointer;
 
@@ -729,6 +732,7 @@ body {
     }
 
     > a {
+      width: 0;
       opacity: 0;
 
       .fb {
@@ -753,12 +757,15 @@ body {
     }
 
     &:hover > a {
+      width: 48px;
       opacity: 1;
       margin-left: 10px;
     }
   }
 }
-
+.donate {
+  margin-left: 10px;
+}
 .btn-toggle-description {
   background-position: center;
   background-repeat: no-repeat;

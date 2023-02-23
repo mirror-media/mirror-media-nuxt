@@ -17,6 +17,9 @@ const createWrapper = createWrapperHelper({
         'membership/isLoggedIn': false,
       },
     },
+    $config: {
+      donateFeatureToggle: false,
+    },
   },
 })
 
