@@ -370,12 +370,16 @@ export default {
     },
     observeScrollDepthForGa() {
       import('intersection-observer').then(() => {
-        const { popularList } = this.$refs
+        const { dableWidget, popularList } = this.$refs
 
         const triggers = [
           {
             elem: document.getElementById('story-end'),
             eventLabel: 'end',
+          },
+          {
+            elem: dableWidget,
+            eventLabel: 'matched',
           },
           {
             elem: popularList.$el,
@@ -465,6 +469,31 @@ export default {
         { property: 'article:published_time', content: publishedDateIso },
       ],
       link: [{ rel: 'canonical', href: pageUrl }],
+
+      script: [
+        {
+          hid: 'dable',
+          skip: !this.shouldLoadDableScript,
+          innerHTML: `
+            (function (d, a, b, l, e, _) {
+              if (d[b] && d[b].q) return
+              d[b] = function () {
+                ;(d[b].q = d[b].q || []).push(arguments)
+              }
+              e = a.createElement(l)
+              e.async = 1
+              e.charset = 'utf-8'
+              e.src = '//static.dable.io/dist/plugin.min.js'
+              _ = a.getElementsByTagName(l)[0]
+              _.parentNode.insertBefore(e, _)
+            })(window, document, 'dable', 'script')
+            dable('setService', 'mirrormedia.mg')
+            dable('sendLogOnce')
+            dable('renderWidget', 'dablewidget_${DABLE_WIDGET_IDS.MB}')
+            dable('renderWidget', 'dablewidget_${DABLE_WIDGET_IDS.PC}')
+          `,
+        },
+      ],
     }
   },
 }
