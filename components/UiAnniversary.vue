@@ -6,7 +6,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
+  computed: {
+    ...mapGetters({
+      isLoggedIn: 'membership/isLoggedIn',
+    }),
+  },
   methods: {
     enterMemberSectionPage() {
       this.enterPageAfterLoggedIn('/subscribe')
