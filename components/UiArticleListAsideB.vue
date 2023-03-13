@@ -99,7 +99,7 @@ export default {
     flex-direction: row-reverse;
     margin-bottom: 18px;
     @include media-breakpoint-up(md) {
-      height: 200px;
+      height: auto;
       margin-bottom: 16px;
     }
     @include media-breakpoint-up(xl) {
@@ -118,9 +118,6 @@ export default {
       border-top: 1px solid #dedede;
       @include media-breakpoint-up(md) {
         padding-top: 16px;
-      }
-      @include media-breakpoint-up(md) {
-        padding-top: 18px;
       }
     }
     &__image {
@@ -152,7 +149,7 @@ export default {
       flex: 1;
       padding: 0 20px 0 0;
       @include media-breakpoint-up(md) {
-        padding: 36px 32px 36px 0;
+        padding: 0 32px 0 0;
       }
       @include media-breakpoint-up(xl) {
         padding: 0 20px 0 0;
