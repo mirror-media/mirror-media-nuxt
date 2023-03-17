@@ -142,7 +142,14 @@
                       :items="popularStories"
                       :isStyleAdjusted="true"
                       @sendGa="sendGaForClick('popular')"
-                    />
+                    >
+                      <template v-slot:_popIn_recommend_hot
+                        ><div id="_popIn_recommend_hot"></div>
+                      </template>
+                      <template v-slot:_popIn_recommend_hot_2>
+                        <div id="_popIn_recommend_hot_2"></div>
+                      </template>
+                    </UiArticleListAsideB>
                   </section>
                 </div>
                 <ClientOnly>
@@ -907,7 +914,6 @@ export default {
         },
         {
           hid: 'popinAd',
-          skip: !this.shouldLoadPopinScript,
           innerHTML: `
             (function () {
               var pa = document.createElement('script')
