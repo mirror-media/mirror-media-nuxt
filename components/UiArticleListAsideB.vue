@@ -4,7 +4,69 @@
 
     <div class="list">
       <div
-        v-for="item in items"
+        v-for="item in listFirst"
+        :key="item.slug"
+        class="item"
+        :class="item.sectionName"
+      >
+        <a
+          :href="item.href"
+          class="item__image"
+          target="_blank"
+          rel="noopener noreferrer"
+          :class="{ adjusted: isStyleAdjusted }"
+          @click="$emit('sendGa')"
+        >
+          <img :src="item.imgSrc" alt="" />
+        </a>
+
+        <div class="item__title-wrapper">
+          <div class="item__label">{{ item.label }}</div>
+          <a
+            :href="item.href"
+            class="item__title"
+            target="_blank"
+            rel="noopener noreferrer"
+            :class="{ adjusted: isStyleAdjusted }"
+            @click="$emit('sendGa')"
+            >{{ item.title }}</a
+          >
+        </div>
+      </div>
+      <slot name="_popIn_recommend_hot" />
+      <div
+        v-for="item in listSecond"
+        :key="item.slug"
+        class="item"
+        :class="item.sectionName"
+      >
+        <a
+          :href="item.href"
+          class="item__image"
+          target="_blank"
+          rel="noopener noreferrer"
+          :class="{ adjusted: isStyleAdjusted }"
+          @click="$emit('sendGa')"
+        >
+          <img :src="item.imgSrc" alt="" />
+        </a>
+
+        <div class="item__title-wrapper">
+          <div class="item__label">{{ item.label }}</div>
+          <a
+            :href="item.href"
+            class="item__title"
+            target="_blank"
+            rel="noopener noreferrer"
+            :class="{ adjusted: isStyleAdjusted }"
+            @click="$emit('sendGa')"
+            >{{ item.title }}</a
+          >
+        </div>
+      </div>
+      <slot name="_popIn_recommend_hot_2" />
+      <div
+        v-for="item in listThird"
         :key="item.slug"
         class="item"
         :class="item.sectionName"
@@ -54,6 +116,17 @@ export default {
       type: Boolean,
       required: true,
       default: false,
+    },
+  },
+  computed: {
+    listFirst() {
+      return this.items.slice(0, 2)
+    },
+    listSecond() {
+      return this.items.slice(2, 4)
+    },
+    listThird() {
+      return this.items.slice(4)
     },
   },
 }
