@@ -11,9 +11,24 @@
         <ContainerGptAd
           key="ad-first"
           pageKey="global"
-          adKey="MB_BT"
+          adKey="MB_FS"
           @slotRequested="setTimerForClosedBtn"
           @slotRenderEnded="handleAdRenderEndedFirst"
+        />
+      </UiFullScreenAd>
+      <UiFullScreenAd
+        v-if="hasAd2First"
+        v-show="isAd2FirstVisible"
+        :hasDefaultStyle="true"
+        :isClosedBtnVisible="isAdFirstClosedBtnVisible"
+      >
+        <!-- 加 key 的原因：當廣告在 v-if 之間切換時，render 會出現錯誤 -->
+        <ContainerGptAd
+          key="ad-first"
+          pageKey="global"
+          adKey="MB_BT"
+          @slotRequested="setTimerForClosedBtn"
+          @slotRenderEnded="handleAdRenderEndedFirst2"
         />
       </UiFullScreenAd>
       <UiFullScreenAd
@@ -72,6 +87,7 @@ export default {
   data() {
     return {
       hasAdFirst: true,
+      hasAd2First: false,
       hasAdSecond: false,
       hasAdThird: false,
       hasModifiedStyle: true,
@@ -82,7 +98,12 @@ export default {
   },
   computed: {
     hasFullScreenAd() {
-      return this.hasAdFirst || this.hasAdSecond || this.hasAdThird
+      return (
+        this.hasAdFirst ||
+        this.hasAd2First ||
+        this.hasAdSecond ||
+        this.hasAdThird
+      )
     },
     hasAdSecondOrThird() {
       return this.hasAdSecond || this.hasAdThird
@@ -96,6 +117,12 @@ export default {
       this.hasAdThird = true
     })
   },
+  updated() {
+    console.log('this.hasAdFirst', this.hasAdFirst)
+    console.log('this.hasAd2First', this.hasAd2First)
+    console.log('this.hasAdSecond', this.hasAdSecond)
+    console.log('this.hasAdThird', this.hasAdThird)
+  },
   methods: {
     setTimerForClosedBtn() {
       this.timerClosedBtn = setTimeout(() => {
@@ -108,6 +135,18 @@ export default {
       }
       this.isAdFirstVisible = true
       this.hasAdFirst = !event.isEmpty
+
+      // this.hasAdSecond = event.isEmpty
+      this.hasAd2First = event.isEmpty
+    },
+    handleAdRenderEndedFirst2(event) {
+      if (event.isEmpty) {
+        clearTimeout(this.timerClosedBtn)
+      }
+      this.isAd2FirstVisible = true
+
+      this.hasAd2First = !event.isEmpty
+
       this.hasAdSecond = event.isEmpty
     },
     disableModifiedStyle() {
