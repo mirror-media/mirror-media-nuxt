@@ -24,7 +24,7 @@
       >
         <!-- 加 key 的原因：當廣告在 v-if 之間切換時，render 會出現錯誤 -->
         <ContainerGptAd
-          key="ad-first"
+          key="ad-first2"
           pageKey="global"
           adKey="MB_BT"
           @slotRequested="setTimerForClosedBtn"
