@@ -1,7 +1,11 @@
 <template>
   <div
     v-if="isEnabled"
-    :class="{ default: hasDefaultStyle, modified: hasModifiedStyle }"
+    :class="{
+      default: hasDefaultStyle,
+      modified: hasModifiedStyle,
+      bottom: isAtBottomStyle,
+    }"
     class="full-screen-ad ad-cover"
   >
     <div class="full-screen-ad__wrapper">
@@ -31,6 +35,10 @@ export default {
       default: false,
     },
     isClosedBtnVisible: {
+      type: Boolean,
+      default: false,
+    },
+    isAtBottomStyle: {
       type: Boolean,
       default: false,
     },
@@ -68,6 +76,7 @@ export default {
       height: 480px;
     }
   }
+
   // 因為 GPT Lazy loading 需要知道何時載入的位置，所以預設此樣式來觸發廣告載入
   &.modified {
     position: fixed;
@@ -75,7 +84,14 @@ export default {
     bottom: 0;
     z-index: 1200;
   }
-
+  // 用於render MB_BT 廣告，該廣告位於螢幕下方且高度僅有180px
+  &.bottom {
+    background-color: transparent;
+    top: initial;
+    .full-screen-ad__wrapper {
+      height: 180px;
+    }
+  }
   &__btn {
     position: absolute;
     top: 5px;

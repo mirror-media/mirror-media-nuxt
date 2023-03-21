@@ -17,14 +17,14 @@ describe('computed', () => {
     })
     expect(wrapper.vm.hasFullScreenAd).toBe(true)
   })
-  test('should has proper hasAdSecondOrThird computed value', () => {
+  test('should has proper hasAdThirdOrFourth computed value', () => {
     const wrapper = createWrapper(ContainerFullScreenAds, {
       data() {
         return {
-          hasAdSecond: true,
+          hasAdThird: true,
         }
       },
     })
-    expect(wrapper.vm.hasAdSecondOrThird).toBe(true)
+    expect(wrapper.vm.hasAdThirdOrFourth).toBe(true)
   })
 })
