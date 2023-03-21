@@ -11,7 +11,7 @@
         <ContainerGptAd
           key="ad-first"
           pageKey="global"
-          adKey="MB_FS"
+          adKey="MB_BT"
           @slotRequested="setTimerForClosedBtn"
           @slotRenderEnded="handleAdRenderEndedFirst"
         />
