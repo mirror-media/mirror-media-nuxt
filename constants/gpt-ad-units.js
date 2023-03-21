@@ -52,9 +52,9 @@ export default {
       ],
     },
     MB_BT: {
-      adUnit: 'mirror_m_ros_320x480_BT',
+      adUnit: 'mirror_m_ros_320x180_BT',
       adSize: [
-        [320, 480],
+        [320, 180],
         [1, 1],
       ],
     },
