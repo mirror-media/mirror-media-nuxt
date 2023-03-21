@@ -1,5 +1,11 @@
 <template>
   <client-only>
+    <div class="test-block">
+      <p>{{ hasAdFirst }}</p>
+      <p>{{ hasAd2First }}</p>
+      <p>{{ hasAdSecond }}</p>
+      <p>{{ hasAdThird }}</p>
+    </div>
     <div v-if="hasFullScreenAd" class="full-screen-ads">
       <UiFullScreenAd
         v-if="hasAdFirst"
@@ -14,6 +20,21 @@
           adKey="MB_FS"
           @slotRequested="setTimerForClosedBtn"
           @slotRenderEnded="handleAdRenderEndedFirst"
+        />
+      </UiFullScreenAd>
+      <UiFullScreenAd
+        v-if="hasAd2First"
+        v-show="isAdFirst2Visible"
+        :hasDefaultStyle="true"
+        :isClosedBtnVisible="isAdFirstClosedBtnVisible"
+      >
+        <!-- 加 key 的原因：當廣告在 v-if 之間切換時，render 會出現錯誤 -->
+        <ContainerGptAd
+          key="ad-first2"
+          pageKey="global"
+          adKey="MB_BT"
+          @slotRequested="setTimerForClosedBtn"
+          @slotRenderEnded="handleAdRenderEndedFirst2"
         />
       </UiFullScreenAd>
       <UiFullScreenAd
@@ -72,10 +93,12 @@ export default {
   data() {
     return {
       hasAdFirst: true,
+      hasAdFirst2: false,
       hasAdSecond: false,
       hasAdThird: false,
       hasModifiedStyle: true,
       isAdFirstVisible: false,
+      isAdFirst2Visible: false,
       isAdFirstClosedBtnVisible: false,
       timerClosedBtn: null,
     }
@@ -107,8 +130,18 @@ export default {
         clearTimeout(this.timerClosedBtn)
       }
       this.isAdFirstVisible = true
-      this.hasAdFirst = !event.isEmpty
-      this.hasAdSecond = event.isEmpty
+      this.hasAdFirst = !event.isEmpty // !false = true or !true = false
+      // this.hasAdSecond = event.isEmpty // !true = false
+      console.log('handleAdRenderEndedFirst FS')
+    },
+    handleAdRenderEndedFirst2(event) {
+      if (event.isEmpty) {
+        clearTimeout(this.timerClosedBtn)
+      }
+      this.isAdFirst2Visible = true
+      this.hasAdFirst2 = !event.isEmpty // !false = true
+      this.hasAdSecond = event.isEmpty // !true = false
+      console.log('handleAdRenderEndedFirst2 BT')
     },
     disableModifiedStyle() {
       this.hasModifiedStyle = false
@@ -116,3 +149,15 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.test-block {
+  position: fixed;
+  z-index: 9999999999;
+  bottom: 0;
+  left: 0;
+  color: white;
+  padding: 5px;
+  background-color: gray;
+}
+</style>
