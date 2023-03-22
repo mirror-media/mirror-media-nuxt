@@ -123,10 +123,10 @@ export default {
       return this.items.slice(0, 2)
     },
     listSecond() {
-      return this.items.slice(2, 4)
+      return this.items.slice(2, 3)
     },
     listThird() {
-      return this.items.slice(4)
+      return this.items.slice(3)
     },
   },
 }
