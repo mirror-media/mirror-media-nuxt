@@ -72,7 +72,7 @@
                     class="latest-list"
                     heading="最新文章"
                     :items="latestStories"
-                    :isStyleAdjusted="false"
+                    :isStyleAdjusted="true"
                     @sendGa="sendGaForClick('latest')"
                   />
                 </LazyRenderer>
@@ -94,11 +94,11 @@
                   class="story__popular-list"
                   @load="fetchPopularStories"
                 >
-                  <UiArticleListAside
+                  <UiArticleListAsideB
                     v-if="doesHavePopularStories"
                     heading="熱門文章"
                     :items="popularStories"
-                    :isStyleAdjusted="false"
+                    :isStyleAdjusted="true"
                     @sendGa="sendGaForClick('popular')"
                   />
                 </LazyRenderer>
@@ -142,6 +142,7 @@ import ContainerHeader from '~/components/ContainerHeader.vue'
 import ContainerStoryBody from '~/components/ContainerStoryBody.vue'
 import FbPage from '~/components/FbPage.vue'
 import UiArticleListAside from '~/components/UiArticleListAside.vue'
+import UiArticleListAsideB from '~/components/UiArticleListAsideB.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
@@ -164,7 +165,7 @@ export default {
     ContainerStoryBody,
     FbPage,
     UiArticleListAside,
-
+    UiArticleListAsideB,
     ContainerGptAd,
     UiStickyAd,
     ContainerFullScreenAds,

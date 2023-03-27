@@ -4,7 +4,69 @@
 
     <div class="list">
       <div
-        v-for="item in items"
+        v-for="item in listFirst"
+        :key="item.slug"
+        class="item"
+        :class="item.sectionName"
+      >
+        <a
+          :href="item.href"
+          class="item__image"
+          target="_blank"
+          rel="noopener noreferrer"
+          :class="{ adjusted: isStyleAdjusted }"
+          @click="$emit('sendGa')"
+        >
+          <img :src="item.imgSrc" alt="" />
+        </a>
+
+        <div class="item__title-wrapper">
+          <div class="item__label">{{ item.label }}</div>
+          <a
+            :href="item.href"
+            class="item__title"
+            target="_blank"
+            rel="noopener noreferrer"
+            :class="{ adjusted: isStyleAdjusted }"
+            @click="$emit('sendGa')"
+            >{{ item.title }}</a
+          >
+        </div>
+      </div>
+      <slot name="_popIn_recommend_hot" />
+      <div
+        v-for="item in listSecond"
+        :key="item.slug"
+        class="item"
+        :class="item.sectionName"
+      >
+        <a
+          :href="item.href"
+          class="item__image"
+          target="_blank"
+          rel="noopener noreferrer"
+          :class="{ adjusted: isStyleAdjusted }"
+          @click="$emit('sendGa')"
+        >
+          <img :src="item.imgSrc" alt="" />
+        </a>
+
+        <div class="item__title-wrapper">
+          <div class="item__label">{{ item.label }}</div>
+          <a
+            :href="item.href"
+            class="item__title"
+            target="_blank"
+            rel="noopener noreferrer"
+            :class="{ adjusted: isStyleAdjusted }"
+            @click="$emit('sendGa')"
+            >{{ item.title }}</a
+          >
+        </div>
+      </div>
+      <slot name="_popIn_recommend_hot_2" />
+      <div
+        v-for="item in listThird"
         :key="item.slug"
         class="item"
         :class="item.sectionName"
@@ -56,6 +118,17 @@ export default {
       default: false,
     },
   },
+  computed: {
+    listFirst() {
+      return this.items.slice(0, 2)
+    },
+    listSecond() {
+      return this.items.slice(2, 3)
+    },
+    listThird() {
+      return this.items.slice(3)
+    },
+  },
 }
 </script>
 
@@ -99,7 +172,7 @@ export default {
     flex-direction: row-reverse;
     margin-bottom: 18px;
     @include media-breakpoint-up(md) {
-      height: 200px;
+      height: auto;
       margin-bottom: 16px;
     }
     @include media-breakpoint-up(xl) {
@@ -118,9 +191,6 @@ export default {
       border-top: 1px solid #dedede;
       @include media-breakpoint-up(md) {
         padding-top: 16px;
-      }
-      @include media-breakpoint-up(md) {
-        padding-top: 18px;
       }
     }
     &__image {
@@ -152,7 +222,7 @@ export default {
       flex: 1;
       padding: 0 20px 0 0;
       @include media-breakpoint-up(md) {
-        padding: 36px 32px 36px 0;
+        padding: 0 32px 0 0;
       }
       @include media-breakpoint-up(xl) {
         padding: 0 20px 0 0;
