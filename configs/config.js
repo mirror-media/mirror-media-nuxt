@@ -39,6 +39,8 @@ const DONATION_PAGE_URL = process.env.DONATION_PAGE_URL
 const WARN_LIFE_FEATURE_TOGGLE =
   process.env.WARN_LIFE_FEATURE_TOGGLE === 'on' || false
 
+console.log(45666, process.env.WARN_LIFE_FEATURE_TOGGLE === 'on')
+
 // The following variables are given values according to different `ENV`
 let API_HOST = ''
 let API_HOST_MEMBERSHIP_GATEWAY = ''
