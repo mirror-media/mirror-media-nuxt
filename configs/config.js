@@ -36,6 +36,8 @@ const LINEPAY_CLIENT_MODE = ['development', 'production'].includes(
   : 'development'
 const SEARCH_URL = process.env.SEARCH_URL || 'search-url/search'
 const DONATION_PAGE_URL = process.env.DONATION_PAGE_URL
+const WARN_LIFE_FEATURE_TOGGLE =
+  process.env.WARN_LIFE_FEATURE_TOGGLE === 'on' || false
 
 // The following variables are given values according to different `ENV`
 let API_HOST = ''
@@ -174,4 +176,5 @@ export {
   SEARCH_URL,
   PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME,
   DONATION_PAGE_URL,
+  WARN_LIFE_FEATURE_TOGGLE,
 }
