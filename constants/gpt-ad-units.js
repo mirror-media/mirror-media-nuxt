@@ -51,6 +51,13 @@ export default {
         [1, 1],
       ],
     },
+    MB_BT: {
+      adUnit: 'mirror_m_ros_320x180_BT',
+      adSize: [
+        [320, 180],
+        [1, 1],
+      ],
+    },
     MB_AD2: {
       adUnit: 'mirror_m_ros_320x480_AD2',
       adSize: [
