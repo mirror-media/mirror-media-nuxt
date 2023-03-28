@@ -28,7 +28,8 @@ export default {
   computed: {
     // should remove this div above after 2023 Ching Ming Festival
     shouldShowNotice() {
-      return new Date() < new Date(2023, 3, 7)
+      const nowUtc = Date.now()
+      return new Date(nowUtc) < new Date(Date.UTC(2023, 3, 6, 16))
     },
   },
 }
