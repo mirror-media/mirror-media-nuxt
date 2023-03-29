@@ -16,6 +16,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import axios from 'axios'
 import ContainerList from '~/components/ContainerList.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
 import UiStickyAd from '~/components/UiStickyAd.vue'
@@ -42,6 +43,12 @@ export default {
     ...mapGetters({
       partners: 'partners/displayedPartners',
     }),
+    isWarnLife() {
+      return (
+        this.$route.params.name === 'warnlife' &&
+        this.$config.warmlifeFeatureToggle
+      )
+    },
     partnerName() {
       return this.$route.params.name
     },
@@ -56,6 +63,7 @@ export default {
       return this.partnerData.id ?? ''
     },
     partnerTitle() {
+      if (this.isWarnLife) return '生活暖流'
       return this.partnerData.display ?? ''
     },
   },
@@ -70,6 +78,24 @@ export default {
   },
   methods: {
     async fetchList(page) {
+      if (this.isWarnLife) {
+        try {
+          const { data } = await axios(
+            'https://storage.googleapis.com/statics.mirrormedia.mg/json/life_feed.json'
+          )
+          return {
+            items: data._items,
+            links: data._links,
+            meta: {
+              ...data._meta,
+              total: data._items?.length || 0,
+            },
+          }
+        } catch (error) {
+          console.log(error)
+          return []
+        }
+      }
       return await this.$fetchExternals({
         maxResults: 9,
         sort: '-publishedDate',

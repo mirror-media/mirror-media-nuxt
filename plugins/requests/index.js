@@ -240,9 +240,9 @@ export default (context, inject) => {
 
   inject('fetchEvent', (params) => fetchApiData(`/event${buildParams(params)}`))
 
-  inject('fetchExternals', (params) =>
-    fetchApiData(`/externals${buildParams(params)}`)
-  )
+  inject('fetchExternals', (params) => {
+    return fetchApiData(`/externals${buildParams(params)}`)
+  })
 
   inject('fetchImages', (params) =>
     fetchApiData(`/images${buildParams(params)}`)
