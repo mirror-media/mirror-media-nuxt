@@ -1032,7 +1032,7 @@ function getLabel([item = {}] = []) {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 99999;
+  z-index: 400;
   @include media-breakpoint-up(xl) {
     display: none;
   }
