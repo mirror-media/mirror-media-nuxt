@@ -690,9 +690,9 @@ $article-body-width-in-xxl-viewport: 774px;
 
 .share-toggled {
   position: fixed;
-  bottom: 20px;
+  bottom: 100px;
   right: 20px;
-  z-index: 99999;
+  z-index: 400;
   @include media-breakpoint-up(xl) {
     display: none;
   }
