@@ -88,6 +88,7 @@ export default {
   },
   computed: {
     displayPartners() {
+      console.log('public config to test: ', this.$config)
       if (this.$config.warmlifeFeatureToggle) {
         return [
           {
