@@ -1,11 +1,11 @@
 export const state = () => ({
   data: {},
-  isWarnlifeFeatureToggleOn: false,
+  isWarmlifeFeatureToggleOn: false,
 })
 
 export const getters = {
   displayedPartners(state) {
-    if (state.isWarnlifeFeatureToggleOn) {
+    if (state.isWarmlifeFeatureToggleOn) {
       return state.data.items
     }
     return state.data.items?.filter((partner) => partner.public) ?? []
@@ -16,8 +16,8 @@ export const mutations = {
   setPartnersData(state, data) {
     state.data = data
   },
-  setIsWarnlifeFeaturToggleOn(state, isWarnlifeFeatureToggleOn) {
-    state.isWarnlifeFeatureToggleOn = isWarnlifeFeatureToggleOn
+  setIsWarmlifeFeaturToggleOn(state, isWarmlifeFeatureToggleOn) {
+    state.isWarmlifeFeatureToggleOn = isWarmlifeFeatureToggleOn
   },
 }
 
@@ -28,6 +28,6 @@ export const actions = {
       (await this.$fetchPartners({ maxResults: 25, page: 1 })) || {}
 
     commit('setPartnersData', response)
-    commit('setIsWarnlifeFeaturToggleOn', featureToggle)
+    commit('setIsWarmlifeFeaturToggleOn', featureToggle)
   },
 }

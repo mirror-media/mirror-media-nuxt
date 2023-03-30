@@ -129,7 +129,7 @@ export default {
     listItemsInLoadmorePage() {
       if (
         this.$config.warmlifeFeatureToggle &&
-        this.$route.params?.name === 'warnlife'
+        this.$route.params?.name === 'warmlife'
       ) {
         return removeArticleWithExternalLink(this.listItemsAfterRedirect).slice(
           this.maxResults,

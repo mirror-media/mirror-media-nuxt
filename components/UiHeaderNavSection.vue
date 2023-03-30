@@ -91,7 +91,7 @@ export default {
       if (this.$config.warmlifeFeatureToggle) {
         return [
           {
-            name: 'warnlife',
+            name: 'warmlife',
             display: '生活暖流',
           },
         ]

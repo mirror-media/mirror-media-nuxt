@@ -97,7 +97,7 @@ export default function fetchListAndLoadmore({
         const brief =
           (typeof item.brief === 'string' ? item.brief : item.brief?.html) ?? ''
 
-        // for warnlife, just for prod
+        // for warmlife, just for prod
         item.slug = item.slug || item.name
         return {
           id: item.id || item._id,

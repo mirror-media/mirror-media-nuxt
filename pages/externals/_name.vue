@@ -43,9 +43,9 @@ export default {
     ...mapGetters({
       partners: 'partners/displayedPartners',
     }),
-    isWarnLife() {
+    isWarmLife() {
       return (
-        this.$route.params.name === 'warnlife' &&
+        this.$route.params.name === 'warmlife' &&
         this.$config.warmlifeFeatureToggle
       )
     },
@@ -63,7 +63,7 @@ export default {
       return this.partnerData.id ?? ''
     },
     partnerTitle() {
-      if (this.isWarnLife) return '生活暖流'
+      if (this.isWarmLife) return '生活暖流'
       return this.partnerData.display ?? ''
     },
   },
@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     async fetchList(page) {
-      if (this.isWarnLife) {
+      if (this.isWarmLife) {
         try {
           const { data } = await axios(
             'https://storage.googleapis.com/statics.mirrormedia.mg/json/life_feed.json'

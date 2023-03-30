@@ -56,7 +56,7 @@ To avoid unpredictable error occur when developing, please use Classic Stable ve
 | SEARCH_URL                        | 字串             | 'search-url/search'                          | 搜尋頁面 url                                                                  |
 | MEMBER_ARTICLE_HISTORY_MAX_AGE    | 字串             | '30'                                         | 會員訂閱前閱覽紀錄有效期限，以分鐘為單位                                      |
 | DONATION_PAGE_URL                 | 字串             | undefined                                    | 捐款頁網址（目前捐款頁為外部頁面，使用 `/donate` 作為 proxy ）                |
-| WARN_LIFE_FEATURE_TOGGLE          | 布林值           | false                                        | 用 'on' 啟用的數值 ...                                                        |
+| WARM_LIFE_FEATURE_TOGGLE          | 布林值           | false                                        | 用 'on' 啟用的數值 ...                                                        |
 
 ## Feature Toggle
 
