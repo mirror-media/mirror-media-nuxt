@@ -106,7 +106,10 @@ export default {
     transformListItemContent(item) {
       let imgText
       let imgTextBackgroundColor
-      if (this.partnerName === 'healthnews') {
+      if (
+        this.partnerName === 'healthnews' ||
+        this.partnerName === 'warmlife'
+      ) {
         imgText = '生活'
         imgTextBackgroundColor = '#30bac8'
       } else if (this.partnerName === 'ebc') {
