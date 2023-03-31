@@ -88,9 +88,18 @@ export default {
   },
   computed: {
     displayPartners() {
-      return (
-        this.partners.filter((partner) => partner.name === 'healthnews') ?? []
-      )
+      if (this.$config.warmlifeFeatureToggle) {
+        return [
+          {
+            name: 'warmlife',
+            display: '生活暖流',
+          },
+        ]
+      } else {
+        return (
+          this.partners.filter((partner) => partner.name === 'healthnews') ?? []
+        )
+      }
     },
   },
   methods: {

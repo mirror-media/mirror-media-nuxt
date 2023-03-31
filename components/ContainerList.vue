@@ -127,6 +127,15 @@ export default {
       )
     },
     listItemsInLoadmorePage() {
+      if (
+        this.$config.warmlifeFeatureToggle &&
+        this.$route.params?.name === 'warmlife'
+      ) {
+        return removeArticleWithExternalLink(this.listItemsAfterRedirect).slice(
+          this.maxResults,
+          this.nowPage * this.maxResults
+        )
+      }
       return removeArticleWithExternalLink(this.listItemsAfterRedirect).slice(
         this.maxResults,
         Infinity

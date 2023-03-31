@@ -11,6 +11,9 @@ export default function fetchListAndLoadmore({
   getListTotal = function (response = {}) {
     return response.meta?.total ?? 0
   },
+  getPage = function (response = {}) {
+    return response.meta?.total ?? 0
+  },
   transformListItemContent,
 } = {}) {
   return {
@@ -33,10 +36,12 @@ export default function fetchListAndLoadmore({
           }
         )
       },
+      nowPage() {
+        return this.$data.$_fetchListAndLoadmore_list.page
+      },
       shouldLoadmore() {
         return this.$data.$_fetchListAndLoadmore_list.maxPage >= 2
       },
-
       maxResults() {
         if (!maxResults) {
           throw new TypeError(
@@ -92,10 +97,13 @@ export default function fetchListAndLoadmore({
         const brief =
           (typeof item.brief === 'string' ? item.brief : item.brief?.html) ?? ''
 
+        // for warmlife, just for prod
+        item.slug = item.slug || item.name
         return {
-          id: item.id,
+          id: item.id || item._id,
           href: getStoryPath(item),
-          imgSrc: item.heroImage?.image?.resizedTargets?.mobile?.url,
+          imgSrc:
+            item.heroImage?.image?.resizedTargets?.mobile?.url || item.thumb,
           imgText: section.title ?? '',
           imgTextBackgroundColor: section.name && getSectionColor(section.name),
           infoTitle: item.title ?? '',
@@ -108,7 +116,6 @@ export default function fetchListAndLoadmore({
       async infiniteHandler(state) {
         try {
           await this.$_fetchListAndLoadmore_loadList()
-
           if (
             this.$data.$_fetchListAndLoadmore_list.page >=
             this.$data.$_fetchListAndLoadmore_list.maxPage
