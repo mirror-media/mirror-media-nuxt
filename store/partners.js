@@ -5,9 +5,6 @@ export const state = () => ({
 
 export const getters = {
   displayedPartners(state) {
-    if (state.isWarmlifeFeatureToggleOn) {
-      return state.data.items
-    }
     return state.data.items?.filter((partner) => partner.public) ?? []
   },
 }
