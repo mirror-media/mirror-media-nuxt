@@ -24,7 +24,7 @@
       <div class="credit">
         <span v-for="credit in post.credits" :key="credit">{{ credit }}</span>
       </div>
-      <UiDonateButton v-if="$config.donateFeatureToggle" class="donate" />
+      <UiDonateButton v-if="shouldShowDonate" class="donate" />
     </div>
 
     <UiArticleBody
@@ -139,6 +139,13 @@ export default {
     ...mapGetters({
       isViewportWidthUpXl: 'viewport/isViewportWidthUpXl',
     }),
+    shouldShowDonate() {
+      const slug = this.$route?.params?.slug ?? ''
+      if (/^\d{8}(mkt|cnt|prf|corpmkt)/.test(slug)) {
+        return false
+      }
+      return this.$config.donateFeatureToggle
+    },
     post() {
       const {
         id = '',

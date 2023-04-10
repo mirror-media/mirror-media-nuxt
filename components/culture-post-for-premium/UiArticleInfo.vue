@@ -60,7 +60,7 @@
         />
       </ClientOnly>
     </div>
-    <UiDonateButton v-if="$config.donateFeatureToggle" class="donate" />
+    <UiDonateButton v-if="shouldShowDonate" class="donate" />
   </div>
 </template>
 
@@ -110,6 +110,13 @@ export default {
     },
     updateTimeFormat() {
       return this.formatTime(this.updateTime)
+    },
+    shouldShowDonate() {
+      const slug = this.$route?.params?.slug ?? ''
+      if (/^\d{8}(mkt|cnt|prf|corpmkt)/.test(slug)) {
+        return false
+      }
+      return this.$config.donateFeatureToggle
     },
   },
   methods: {

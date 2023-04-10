@@ -211,10 +211,12 @@ export default {
 
     shouldShowDonate() {
       const slug = this.$route?.params?.slug ?? ''
-      if (/mkt|cnt|prf|corpmkt/.test(slug)) {
+      if (/^\d{8}(mkt|cnt|prf|corpmkt)/.test(slug)) {
+        return false
+      } else if (this.isExternalArticle) {
         return false
       }
-      return this.$config.donateFeatureToggle && !this.isExternalArticle
+      return this.$config.donateFeatureToggle
     },
 
     brief() {
