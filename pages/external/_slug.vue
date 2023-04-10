@@ -132,7 +132,14 @@
                     :items="popularStories"
                     :isStyleAdjusted="true"
                     @sendGa="sendGaForClick('popular')"
-                  />
+                  >
+                    <template v-slot:_popIn_recommend_hot
+                      ><div id="_popIn_recommend_hot"></div>
+                    </template>
+                    <template v-slot:_popIn_recommend_hot_2>
+                      <div id="_popIn_recommend_hot_2"></div>
+                    </template>
+                  </UiArticleListAsideB>
                 </LazyRenderer>
 
                 <LazyRenderer v-if="isDesktopWidth" class="story__fb-page">
@@ -553,7 +560,29 @@ export default {
             dable('renderWidget', 'dablewidget_${DABLE_WIDGET_IDS.PC}')
           `,
         },
+        {
+          hid: 'popinAd',
+          innerHTML: `
+            (function () {
+              var pa = document.createElement('script')
+              pa.type = 'text/javascript'
+              pa.charset = 'utf-8'
+              pa.async = true
+
+              pa.src =
+                window.location.protocol +
+                '//api.popin.cc/searchbox/mirrormedia_tw.js'
+
+              var s = document.getElementsByTagName('script')[0]
+              s.parentNode.insertBefore(pa, s)
+            })()
+          `,
+        },
       ],
+      __dangerouslyDisableSanitizersByTagID: {
+        dable: ['innerHTML'],
+        popinAd: ['innerHTML'],
+      },
     }
   },
 }
