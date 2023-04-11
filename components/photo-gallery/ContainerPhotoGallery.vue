@@ -20,7 +20,7 @@
           <SvgLineIcon class="line" />
         </a>
       </div>
-      <UiDonateButtonCircle v-if="$config.donateFeatureToggle" class="donate" />
+      <UiDonateButtonCircle v-if="shouldShowDonate" class="donate" />
     </div>
 
     <div
@@ -201,6 +201,14 @@ export default {
       isViewportWidthUpMd: 'viewport/isViewportWidthUpMd',
       isViewportWidthUpXl: 'viewport/isViewportWidthUpXl',
     }),
+
+    shouldShowDonate() {
+      const slug = this.$route?.params?.slug ?? ''
+      if (/^\d{8}(mkt|cnt|prf|corpmkt)/.test(slug)) {
+        return false
+      }
+      return this.$config.donateFeatureToggle
+    },
 
     brief() {
       return this.story.brief?.apiData || []

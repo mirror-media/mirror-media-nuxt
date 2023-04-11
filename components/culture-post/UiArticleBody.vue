@@ -14,10 +14,7 @@
       </div>
 
       <ContentHandler v-for="item in content" :key="item.id" :item="item" />
-      <UiDonateBanner
-        v-if="$config.donateFeatureToggle"
-        class="donate-banner"
-      />
+      <UiDonateBanner v-if="shouldShowDonate" class="donate-banner" />
       <template v-if="pageState === 'premiumPageIsLogin'">
         <div class="copyright-warning">
           <p>
@@ -74,6 +71,13 @@ export default {
   computed: {
     doesHaveBrief() {
       return this.brief.length > 0
+    },
+    shouldShowDonate() {
+      const slug = this.$route?.params?.slug ?? ''
+      if (/^\d{8}(mkt|cnt|prf|corpmkt)/.test(slug)) {
+        return false
+      }
+      return this.$config.donateFeatureToggle
     },
   },
   methods: {

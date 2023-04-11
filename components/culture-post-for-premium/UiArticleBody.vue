@@ -10,10 +10,7 @@
       <UiArticleSkeleton v-show="isLoading" />
 
       <ClientOnly>
-        <UiDonateBanner
-          v-if="$config.donateFeatureToggle"
-          class="donate-banner"
-        />
+        <UiDonateBanner v-if="shouldShowDonate" class="donate-banner" />
         <template v-if="pageState === 'premiumPageIsLogin'">
           <UiReloadArticle
             v-show="isFail"
@@ -152,6 +149,13 @@ export default {
     ...mapGetters({
       isViewportWidthUpXl: 'viewport/isViewportWidthUpMd',
     }),
+    shouldShowDonate() {
+      const slug = this.$route?.params?.slug ?? ''
+      if (/^\d{8}(mkt|cnt|prf|corpmkt)/.test(slug)) {
+        return false
+      }
+      return this.$config.donateFeatureToggle
+    },
     contentWithAd() {
       let content = this.content
       if (!this.isViewportWidthUpMd) {
