@@ -28,10 +28,7 @@
         <UiShareFb class="share__logo" />
         <UiShareLine class="share__logo" />
       </div>
-      <div
-        v-if="$config.donateFeatureToggle && !isExternalArticle"
-        class="donate"
-      >
+      <div v-if="shouldShowDonate" class="donate">
         <div class="share__br" />
         <UiDonateButton class="share__logo--wider" />
       </div>
@@ -77,10 +74,7 @@
     <p v-if="isUpdatedAtVisible" class="story__updated-at">
       更新時間｜<span v-text="updatedAt" />
     </p>
-    <UiDonateBanner
-      v-if="$config.donateFeatureToggle && !isExternalArticle"
-      class="story__donate-banner"
-    />
+    <UiDonateBanner v-if="shouldShowDonate" class="story__donate-banner" />
 
     <UiSocialNetworkServices style="margin: 30px auto 0 auto" />
 
@@ -214,6 +208,16 @@ export default {
     ...mapGetters({
       isLoggedIn: 'membership/isLoggedIn',
     }),
+
+    shouldShowDonate() {
+      const slug = this.$route?.params?.slug ?? ''
+      if (/^\d{8}(mkt|cnt|prf|corpmkt)/.test(slug)) {
+        return false
+      } else if (this.isExternalArticle) {
+        return false
+      }
+      return this.$config.donateFeatureToggle
+    },
 
     brief() {
       if (this.isString(this.story.brief)) {
