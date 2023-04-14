@@ -185,6 +185,11 @@ export default {
           statusCode,
         })
       }
+
+      this.$store.commit(
+        'setCanAdvertise',
+        !this.story.hiddenAdvertised ?? true
+      )
     },
     async fetchPost(token) {
       if (this.isLoading && this.failTimes) return
