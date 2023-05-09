@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import { SITE_OG_IMG } from '~/constants/index.js'
+import { getFormattedTimeStr } from '~/utils/article'
 
 export default {
   props: {
@@ -67,7 +67,7 @@ export default {
       return this.imgText && this.imgText !== ''
     },
     theInfoDate() {
-      return dayjs(this.infoDate).format('YYYY/MM/DD HH:mm')
+      return getFormattedTimeStr(this.infoDate)
     },
   },
 }

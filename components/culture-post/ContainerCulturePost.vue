@@ -68,7 +68,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import dayjs from 'dayjs'
 
 import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
@@ -78,7 +77,7 @@ import UiArticleBodyForPremium from '~/components/culture-post-for-premium/UiArt
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import UiDonateButton from '~/components/UiDonateButton.vue'
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
-import { doesContainWineName } from '~/utils/article.js'
+import { doesContainWineName, getFormattedTimeStr } from '~/utils/article.js'
 
 export default {
   name: 'ContainerCulturePost',
@@ -189,8 +188,8 @@ export default {
           heroImage: heroImgsResized,
           mobileImage: mobileImage?.image?.resizedTargets || {},
         },
-        publishedDate: dayjs(publishedDate).format('YYYY.M.D'),
-        updatedAt: dayjs(updatedAt).format('YYYY.M.D HH:mm'),
+        publishedDate: getFormattedTimeStr(publishedDate),
+        updatedAt: getFormattedTimeStr(updatedAt),
         relateds,
         isTruncated,
         ogDescription,

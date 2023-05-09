@@ -65,11 +65,11 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import UiLink from '~/components/culture-post-for-premium/UiLink.vue'
 import UiTag from '~/components/culture-post-for-premium/UiTag.vue'
 import UiDonateButton from '~/components/UiDonateButton.vue'
 import UiShareLinksHasCopyLink from '~/components/UiShareLinksHasCopyLink.vue'
+import { getFormattedTimeStr } from '~/utils/article'
 
 export default {
   components: {
@@ -106,10 +106,10 @@ export default {
   },
   computed: {
     publishTimeFormat() {
-      return this.formatTime(this.publishTime)
+      return getFormattedTimeStr(this.publishTime)
     },
     updateTimeFormat() {
-      return this.formatTime(this.updateTime)
+      return getFormattedTimeStr(this.updateTime)
     },
     shouldShowDonate() {
       const slug = this.$route?.params?.slug ?? ''
@@ -120,9 +120,6 @@ export default {
     },
   },
   methods: {
-    formatTime(time = new Date()) {
-      return dayjs(time).format('YYYY.MM.DD HH:mm')
-    },
     handleShareLinksVisibilityChanged(isVisible) {
       this.$emit('shareLinksVisibilityChanged', isVisible)
     },

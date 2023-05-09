@@ -1,3 +1,8 @@
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import { ARTICLE_DATE_TIME_POSTFIX } from '~/constants'
+dayjs.extend(utc)
+
 function creditHtml({
   writers = [],
   photographers = [],
@@ -77,10 +82,23 @@ function getStoryPath(story = {}) {
   }
 }
 
+function getFormattedTimeStr(time) {
+  if (dayjs(time).isValid()) {
+    return (
+      dayjs(time).utcOffset(8).format('YYYY.MM.DD HH:mm') +
+      ' ' +
+      ARTICLE_DATE_TIME_POSTFIX
+    )
+  } else {
+    return 'Invalid Date'
+  }
+}
+
 export {
   creditHtml,
   stripHtmlTags,
   doesContainWineName,
   checkCategoryHasMemberOnly,
   getStoryPath,
+  getFormattedTimeStr,
 }
