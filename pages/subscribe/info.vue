@@ -317,11 +317,7 @@ export default {
       return [Frequency.Monthly, Frequency.Yearly].includes(this.frequency)
     },
     disallowToSubmit() {
-      if (
-        (this.$store.state.membership.emailVerifyFeatureToggle === 'on' &&
-          !this.isServicesRuleAgree) ||
-        this.$v.isCheckingServiceRule.sameAs
-      ) {
+      if (this.isServicesRuleAgree || this.isCheckingServiceRule) {
         return (
           this.paymentMethod === '' ||
           !this.frequency ||
