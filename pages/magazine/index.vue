@@ -158,8 +158,8 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import { mapGetters } from 'vuex'
+import dayjs from '~/utils/dayjs'
 import UiMagazineFeatured from '~/components/UiMagazineFeatured.vue'
 import UiMagazineShowcaseItem from '~/components/UiMagazineShowcaseItem.vue'
 import UiMagazineShowcaseItemSpecial from '~/components/UiMagazineShowcaseItemSpecial.vue'
@@ -271,7 +271,7 @@ export default {
         type: item.type,
         title: item.title,
         issue: item.issue,
-        publishedDate: dayjs(item.publishedDate).format('YYYY/MM/DD'),
+        publishedDate: dayjs.utc(item.publishedDate).format('YYYY/MM/DD'),
         coverImgUrl: item.coverPhoto?.image?.resizedTargets?.mobile?.url,
         pdfLink: item?.magazine?.url,
         onlineLink:

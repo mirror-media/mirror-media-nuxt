@@ -1,7 +1,5 @@
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
+import dayjs from './dayjs'
 import { ARTICLE_DATE_TIME_POSTFIX } from '~/constants'
-dayjs.extend(utc)
 
 function creditHtml({
   writers = [],

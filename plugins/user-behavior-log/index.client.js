@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import debounce from 'lodash/debounce'
 import TimeMe from 'timeme.js'
 import {
@@ -8,6 +7,7 @@ import {
   premiumStoryInfoForLogger,
   getFormattedPageType,
 } from './util'
+import dayjs from '~/utils/dayjs'
 const debug = require('debug')('user-behavior-log')
 
 export default (context, inject) => {
@@ -111,7 +111,10 @@ export default (context, inject) => {
         description: '',
         'event-type': 'exit',
         'page-type': getFormattedPageType(context?.route?.name),
-        'exit-time': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
+        'exit-time': dayjs
+          .utc(Date.now())
+          .utcOffset(8)
+          .format('YYYY.MM.DD HH:mm:ss'),
 
         'member-info-firebase': {
           userEmailVerified:
@@ -199,7 +202,10 @@ export default (context, inject) => {
           xstate,
           description,
           eventType,
-          time: dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
+          time: dayjs
+            .utc(Date.now())
+            .utcOffset(8)
+            .format('YYYY.MM.DD HH:mm:ss'),
         })
         debug(
           'Prepare to send exit event user behavior log to server, data: ',
