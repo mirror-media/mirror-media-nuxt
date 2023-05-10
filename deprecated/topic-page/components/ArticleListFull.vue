@@ -32,9 +32,7 @@
                 />
                 <span
                   class="articleListFull-post__meta--date"
-                  v-text="
-                    moment(new Date(item.publishedDate)).format('Y.MM.DD')
-                  "
+                  v-text="dayjs(new Date(item.publishedDate)).format('Y.MM.DD')"
                 />
               </div>
               <p class="articleListFull-post__brief">
@@ -53,8 +51,8 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { getAuthor, getBrief, getHref, getImage, getValue } from '../util/comm'
+import dayjs from '~/utils/dayjs'
 
 export default {
   name: 'ArticleListFull',
@@ -66,7 +64,7 @@ export default {
     getHref,
     getImage,
     getValue,
-    moment,
+    dayjs,
   },
 }
 </script>
