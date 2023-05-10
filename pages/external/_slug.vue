@@ -42,6 +42,7 @@
                         :key="unit.name"
                         :unitId="unit.id"
                       />
+                      <div id="_popIn_recommend"></div>
                     </ClientOnly>
                   </template>
                 </UiStoryListRelated>
@@ -860,6 +861,71 @@ aside {
 
     .popListVert-list__item--text a {
       font-weight: 400 !important;
+    }
+  }
+}
+
+#_popIn_recommend {
+  position: relative;
+  &::v-deep {
+    ._popIn_recommend_container {
+      padding-bottom: 0;
+    }
+
+    ._popIn_recommend_article {
+      &::before {
+        flex-shrink: 0;
+        position: static;
+        height: auto;
+      }
+    }
+
+    ._popIn_recommend_art_title {
+      flex-grow: 1;
+      margin-left: 0;
+      white-space: normal;
+      @include media-breakpoint-up(md) {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+
+      a {
+        display: block;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+
+    ._popIn_recommend_art_img {
+      flex-shrink: 0;
+      width: 33%;
+      padding-top: calc(33% * 0.75);
+      @include media-breakpoint-up(md) {
+        width: 25%;
+        padding-top: calc(25% * 0.75);
+      }
+      @include media-breakpoint-up(xl) {
+        width: 20%;
+        padding-top: calc(20% * 0.75);
+      }
+      &::after {
+        content: '特企';
+        z-index: 2;
+        padding: 4px;
+        background: rgba(188, 188, 188, 1);
+        color: #ffffff;
+        font-weight: 300;
+        font-size: 12px;
+        line-height: 12px;
+        position: absolute;
+        transform: translate(0, -100%);
+        @include media-breakpoint-up(md) {
+          font-size: 14px;
+          line-height: 14px;
+        }
+      }
     }
   }
 }

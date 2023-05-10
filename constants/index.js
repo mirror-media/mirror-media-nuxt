@@ -163,6 +163,8 @@ const SECTION_MEMBER_NAME = [
   'timesquare',
 ]
 
+const ARTICLE_DATE_TIME_POSTFIX = '臺北時間'
+
 export { default as SITE_OG_IMG } from '~/assets/default-og-img.png'
 export {
   READR_URL,
@@ -179,4 +181,5 @@ export {
   SITE_URL,
   SECTION_MEMBER_NAME,
   DIGITAL_LINK,
+  ARTICLE_DATE_TIME_POSTFIX,
 }

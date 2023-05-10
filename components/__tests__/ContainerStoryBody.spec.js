@@ -6,6 +6,7 @@ import UiStoryVideo from '../UiStoryVideo.vue'
 import UiShareSidebox from '../UiShareSidebox.vue'
 
 import createWrapperHelper from '~/test/helpers/createWrapperHelper'
+import { ARTICLE_DATE_TIME_POSTFIX } from '~/constants'
 
 const createWrapper = createWrapperHelper({
   propsData: {
@@ -43,7 +44,7 @@ describe('render the proper content from props "story"', () => {
       },
     })
     expect(wrapper.get('.story__published-date').text()).toBe(
-      '2020.09.14 16:29 臺北時間'
+      `2020.09.14 16:29 ${ARTICLE_DATE_TIME_POSTFIX}`
     )
   })
 
@@ -231,7 +232,7 @@ describe('render the proper content from props "story"', () => {
       },
     })
     expect(wrapper.get('.story__updated-at').text()).toBe(
-      '更新時間｜2020.09.14 16:29'
+      `更新時間｜2020.09.14 16:29 ${ARTICLE_DATE_TIME_POSTFIX}`
     )
   })
 

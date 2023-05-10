@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-
 import { SITE_OG_IMG, SITE_URL } from '~/constants/index'
 import { processResponseItems } from '~/utils/youtube'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
@@ -61,6 +59,7 @@ import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
 import UiYoutubeIframe from '~/components/UiYoutubeIframe.vue'
 import UiYoutubePolicies from '~/components/UiYoutubePolicies.vue'
+import { getFormattedTimeStr } from '~/utils/article'
 
 export default {
   name: 'Video',
@@ -108,7 +107,10 @@ export default {
       return this.videoData?.channelId
     },
     datetime() {
-      return dayjs(this.videoData?.publishedAt).format('YYYY/MM/DD HH:mm:ss')
+      return getFormattedTimeStr(
+        this.videoData?.publishedAt,
+        'YYYY/MM/DD HH:mm:ss'
+      )
     },
     descriptionParsed() {
       const description = this.videoData?.description ?? ''

@@ -1,3 +1,6 @@
+import dayjs from './dayjs'
+import { ARTICLE_DATE_TIME_POSTFIX } from '~/constants'
+
 function creditHtml({
   writers = [],
   photographers = [],
@@ -77,10 +80,21 @@ function getStoryPath(story = {}) {
   }
 }
 
+function getFormattedTimeStr(time, format = 'YYYY.MM.DD HH:mm') {
+  if (dayjs(time).isValid()) {
+    return (
+      dayjs(time).utcOffset(8).format(format) + ' ' + ARTICLE_DATE_TIME_POSTFIX
+    )
+  } else {
+    return 'Invalid Date'
+  }
+}
+
 export {
   creditHtml,
   stripHtmlTags,
   doesContainWineName,
   checkCategoryHasMemberOnly,
   getStoryPath,
+  getFormattedTimeStr,
 }

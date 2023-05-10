@@ -245,7 +245,7 @@ export default {
       email: '',
       paymentMethod: '',
       receiptData: {
-        receiptPlan: '捐贈',
+        receiptPlan: '',
         donateOrganization: '',
         carrierType: '',
         carrierNumber: '',
@@ -257,7 +257,7 @@ export default {
       validateOn: true,
       formStatus: {
         payment: 'OK',
-        receipt: 'OK',
+        receipt: 'ERROR',
       },
       paymentPayload: {},
       newebpayApiUrl: NEWEBPAY_MEMBERSHIP_API_URL,
@@ -317,7 +317,16 @@ export default {
       return [Frequency.Monthly, Frequency.Yearly].includes(this.frequency)
     },
     disallowToSubmit() {
-      return this.paymentMethod === '' || !this.frequency
+      if (this.isServicesRuleAgree || this.isCheckingServiceRule) {
+        return (
+          this.paymentMethod === '' ||
+          !this.frequency ||
+          this.formStatus.receipt !== 'OK' ||
+          !this.email ||
+          (!this.$v.email.email && this.$v.email.$error)
+        )
+      }
+      return true
     },
   },
   watch: {
@@ -360,6 +369,9 @@ export default {
     },
     setReceiptData(editedReceiptData) {
       this.receiptData = editedReceiptData
+      this.$nextTick(function () {
+        this.$refs.receiptDOM.check()
+      })
     },
     setFormStatus(type, formStatus) {
       this.formStatus[type] = formStatus
