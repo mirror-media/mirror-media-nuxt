@@ -80,12 +80,10 @@ function getStoryPath(story = {}) {
   }
 }
 
-function getFormattedTimeStr(time) {
+function getFormattedTimeStr(time, format = 'YYYY.MM.DD HH:mm') {
   if (dayjs(time).isValid()) {
     return (
-      dayjs(time).utcOffset(8).format('YYYY.MM.DD HH:mm') +
-      ' ' +
-      ARTICLE_DATE_TIME_POSTFIX
+      dayjs(time).utcOffset(8).format(format) + ' ' + ARTICLE_DATE_TIME_POSTFIX
     )
   } else {
     return 'Invalid Date'

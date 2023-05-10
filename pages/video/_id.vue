@@ -107,7 +107,10 @@ export default {
       return this.videoData?.channelId
     },
     datetime() {
-      return getFormattedTimeStr(this.videoData?.publishedAt)
+      return getFormattedTimeStr(
+        this.videoData?.publishedAt,
+        'YYYY/MM/DD HH:mm:ss'
+      )
     },
     descriptionParsed() {
       const description = this.videoData?.description ?? ''
