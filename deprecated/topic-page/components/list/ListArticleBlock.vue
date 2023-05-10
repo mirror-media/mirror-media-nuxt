@@ -242,7 +242,6 @@
 
 <script>
 import _ from 'lodash'
-import moment from 'moment'
 import LazyImage from '../common/LazyImage.vue'
 import { SECTION_MAP, MARKETING_CATGORY_ID } from '../../constants'
 import {
@@ -254,6 +253,7 @@ import {
   getValue,
   sendGaClickEvent,
 } from '../../util/comm'
+import dayjs from '~/utils/dayjs'
 
 export default {
   components: {
@@ -389,7 +389,7 @@ export default {
       this.audioDuration = this.$refs.audio.duration
     },
     getAudioTime(duration) {
-      return moment.utc(duration * 1000).format('HH:mm:ss')
+      return dayjs.utc(duration * 1000).format('HH:mm:ss')
     },
     getTruncatedVal,
     getValue,
