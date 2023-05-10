@@ -10,7 +10,7 @@
         />
         <SubscribeSuccessOrderInfoContentRow
           title="訂單日期"
-          :data="orderInfo.date"
+          :data="clientDateTime"
         />
         <SubscribeSuccessOrderInfoContentRow
           v-if="orderInfo.discountPrice"
@@ -78,6 +78,7 @@
 <script>
 import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOrderInfoContentRow.vue'
 import SubscribeSuccessOrderInfoContentRowPurchasedList from '~/components/SubscribeSuccessOrderInfoContentRowPurchasedList.vue'
+import dayjs from '~/utils/dayjs'
 
 export default {
   components: {
@@ -127,6 +128,9 @@ export default {
         return acc || curr
       }, false)
       return isAnyValueInCustomInfoTruthy
+    },
+    clientDateTime() {
+      return dayjs(this.orderInfo.date).format('YYYY-MM-DD')
     },
   },
 }

@@ -2,7 +2,7 @@
 import _ from 'lodash'
 import Vue from 'vue'
 import Vuex from 'vuex'
-import moment from 'moment-timezone'
+import timezone from 'dayjs/plugin/timezone'
 
 // import { OATH_PLAYLIST } from '../constants'
 import {
@@ -36,6 +36,8 @@ import {
 } from './api'
 
 import watches from './modules/watches'
+import dayjs from '~/utils/dayjs'
+dayjs.extend(timezone)
 
 Vue.use(Vuex)
 
@@ -119,10 +121,10 @@ export function createStore() {
           const data = _.cloneDeep(articles)
           const articlesItem = _.get(articles, 'items')
           data.items = articlesItem.map((article) => {
-            article.publishedDate = moment
+            article.publishedDate = dayjs
               .tz(article.publishedDate, 'Asia/Taipei')
               .format('YYYY.MM.DD HH:mm:ss')
-            article.updatedAt = moment
+            article.updatedAt = dayjs
               .tz(article.updatedAt, 'Asia/Taipei')
               .format('YYYY.MM.DD HH:mm:ss')
             return article
@@ -315,7 +317,7 @@ export function createStore() {
         return fetchNodes(params).then((nodes) => {
           nodes.items = _.sortBy(_.concat(orig, _.get(nodes, ['items'])), [
             function (o) {
-              return moment(new Date(o.nodeDate))
+              return dayjs(new Date(o.nodeDate))
             },
           ])
           commit('SET_NODES', { nodes })

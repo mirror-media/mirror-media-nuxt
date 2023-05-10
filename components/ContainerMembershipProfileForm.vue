@@ -189,7 +189,7 @@ import { validationMixin } from 'vuelidate'
 import { required, requiredIf, between } from 'vuelidate/lib/validators'
 import countriesData from 'mirror-media-constants/lib/countries.json'
 import twDistrictsData from 'mirror-media-constants/lib/taiwan-districts.json'
-import dayjs from 'dayjs'
+import dayjs from '~/utils/dayjs'
 import UiMembershipDropdownMenu from '~/components/UiMembershipDropdownMenu.vue'
 import userUpdate from '~/apollo/mutations/userUpdate.gql'
 import { fetchMemberProfile } from '~/apollo/queries/userQuery.gql'
@@ -241,13 +241,13 @@ export default {
         this.gender = gender
         this.genderDefaultIndex = ['不透露', '男', '女'].indexOf(gender)
 
-        const birthday = data?.member?.birthday ?? null
-        this.birthdayYear = dayjs(birthday).year()
-        const month = dayjs(birthday).month()
+        const birthdayObj = dayjs.utc(data?.member?.birthday ?? null)
+        this.birthdayYear = birthdayObj.year()
+        const month = birthdayObj.month()
         this.birthdayMonth = typeof month === 'number' ? month + 1 : null
         this.birthdayMonthDefaultIndex =
           typeof month === 'number' ? month : null
-        this.birthdayDay = dayjs(birthday).date()
+        this.birthdayDay = birthdayObj.date()
 
         this.phone = data?.member?.phone ?? null
 
@@ -526,7 +526,7 @@ export default {
           return null
         }
         const date = `${this.birthdayYear}-${this.birthdayMonth}-${this.birthdayDay}`
-        return dayjs(date).format('YYYY-MM-DD')
+        return dayjs.utc(date).format('YYYY-MM-DD')
       }
 
       const getAddress = () => {

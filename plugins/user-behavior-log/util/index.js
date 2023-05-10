@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import isEmpty from 'lodash/isEmpty'
 import getBrowserInfo from './browser'
 import getClientOsInfo from './client-os'
@@ -14,6 +13,7 @@ import getClientId from './client-id'
 import getSessionId from './session-id'
 import getRref from './rref'
 import isInApp from './is-in-app-browser'
+import dayjs from '~/utils/dayjs'
 import { API_PATH_FRONTEND } from '~/configs/config'
 const _ = { isEmpty }
 
@@ -26,7 +26,7 @@ export function createUserBehaviorLog({ target = {}, ...props } = {}) {
     'client-os': getClientOsInfo(),
 
     'curr-url': window.location.href,
-    datetime: dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
+    datetime: dayjs.utc(Date.now()).utcOffset(8).format('YYYY.MM.DD HH:mm:ss'),
 
     'redirect-to': getAlinkHref(target),
     referrer: document.referrer,
@@ -41,7 +41,10 @@ export function createUserBehaviorLog({ target = {}, ...props } = {}) {
     'target-window-size': getWindowSizeInfo(),
 
     'client-id': getClientId(),
-    'current-runtime-start': dayjs(Date.now()).format('YYYY.MM.DD HH:mm:ss'),
+    'current-runtime-start': dayjs
+      .utc(Date.now())
+      .utcOffset(8)
+      .format('YYYY.MM.DD HH:mm:ss'),
     'session-id': getSessionId(),
 
     ...props,
