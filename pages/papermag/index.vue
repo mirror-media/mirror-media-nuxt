@@ -1,17 +1,17 @@
 <template>
   <div class="subscribe-magazine-page">
     <SubscribeStepProgress :currentStep="1" />
-    <!-- should remove this div below after 2023 Ching Ming Festival -->
+    <!-- should remove this div below after 2023 Dragon Boat Festival -->
     <div v-if="shouldShowNotice" class="notice__wrapper">
       <div class="notice">
         <h3>訂戶派送公告</h3>
-        <p>預祝假期愉快！</p>
+        <p>預祝端午佳節愉快！</p>
         <p>
-          因逢清明連續假期，340期將延至4/6(四)起陸續派送，造成困擾敬請見諒。
+          因逢端午連續假期，351期(6/21出刊)的雜誌最晚6/26(一)完成配送，造成困擾敬請見諒。
         </p>
       </div>
     </div>
-    <!-- should remove this div above after 2023 Ching Ming Festival -->
+    <!-- should remove this div above after 2023 Dragon Boat Festival -->
     <SubscribeChoosePlan />
   </div>
 </template>
@@ -26,17 +26,22 @@ export default {
     SubscribeChoosePlan,
   },
   computed: {
-    // should remove this div above after 2023 Ching Ming Festival
+    // should remove this div above after 2023 Dragon Boat Festival
     shouldShowNotice() {
-      const nowUtc = Date.now()
-      return new Date(nowUtc) < new Date(Date.UTC(2023, 3, 6, 16))
+      const nowUtc = new Date(Date.now())
+
+      // 2023.6.7 ~ 28
+      return (
+        nowUtc < new Date(Date.UTC(2023, 6, 27, 16)) &&
+        nowUtc > new Date(Date.UTC(2023, 6, 6, 16))
+      )
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-/*  should remove these css style below after 2023 Ching Ming Festival */
+/*  should remove these css style below after 2023 Dragon Boat Festival */
 .notice__wrapper {
   padding: 16px 8px;
   @include media-breakpoint-up(xl) {
