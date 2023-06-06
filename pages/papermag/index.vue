@@ -32,8 +32,8 @@ export default {
 
       // 2023.6.7 ~ 28
       return (
-        nowUtc < new Date(Date.UTC(2023, 6, 27, 16)) &&
-        nowUtc > new Date(Date.UTC(2023, 6, 6, 16))
+        nowUtc < new Date(Date.UTC(2023, 5, 27, 16)) &&
+        nowUtc > new Date(Date.UTC(2023, 5, 6, 16))
       )
     },
   },
@@ -80,7 +80,7 @@ export default {
     }
   }
 }
-/*  should remove these css style above after 2023 Ching Ming Festival --> */
+/*  should remove these css style above after 2023 Dragon Boat Festival --> */
 .subscribe-magazine-page {
   position: relative;
 }
