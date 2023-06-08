@@ -21,6 +21,7 @@
         </a>
       </div>
       <UiDonateButtonCircle v-if="shouldShowDonate" class="donate" />
+      <UiBeSubscriberButton v-if="shouldShowDonate" class="subscribe" />
     </div>
 
     <div
@@ -126,7 +127,7 @@
 import { mapGetters } from 'vuex'
 
 import UiArticleList from './UiArticleList.vue'
-
+import UiBeSubscriberButton from '~/components/UiBeSubscriberButton.vue'
 import {
   OnePageScroller,
   currentYPosition,
@@ -161,6 +162,7 @@ export default {
     SvgFbIcon,
     SvgLineIcon,
     UiDonateButtonCircle,
+    UiBeSubscriberButton,
   },
 
   props: {
@@ -706,6 +708,13 @@ body {
   padding: 20px;
   z-index: 99;
   display: flex;
+
+  .subscribe {
+    padding: 8px 12px;
+    width: 108px;
+    height: 40px;
+    margin-top: 4px;
+  }
 
   .mm-icon {
     width: 48px;

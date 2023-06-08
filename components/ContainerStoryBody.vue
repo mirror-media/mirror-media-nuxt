@@ -31,6 +31,7 @@
       <div v-if="shouldShowDonate" class="donate">
         <div class="share__br" />
         <UiDonateButton class="share__logo--wider" />
+        <UiBeSubscriberButton />
       </div>
     </div>
 
@@ -141,6 +142,7 @@ import { mapState, mapGetters } from 'vuex'
 import { ref, computed, onMounted, useContext } from '@nuxtjs/composition-api'
 
 import UiStoryContentHandler from './UiStoryContentHandler.vue'
+import UiBeSubscriberButton from './UiBeSubscriberButton.vue'
 import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
 import UiDonateButton from '~/components/UiDonateButton.vue'
@@ -185,6 +187,7 @@ export default {
     ContainerGptAd,
     UiAnniversary,
     UiDonateBanner,
+    UiBeSubscriberButton,
   },
   props: {
     story: {
@@ -596,6 +599,7 @@ export {
       align-items: center;
     }
     .donate {
+      margin-right: 8px;
       .share__br {
         display: none;
         @include media-breakpoint-up(md) {

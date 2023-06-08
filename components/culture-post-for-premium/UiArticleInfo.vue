@@ -60,11 +60,15 @@
         />
       </ClientOnly>
     </div>
-    <UiDonateButton v-if="shouldShowDonate" class="donate" />
+    <div v-if="shouldShowDonate" class="donate">
+      <UiDonateButton />
+      <UiBeSubscriberButton />
+    </div>
   </div>
 </template>
 
 <script>
+import UiBeSubscriberButton from '../UiBeSubscriberButton.vue'
 import UiLink from '~/components/culture-post-for-premium/UiLink.vue'
 import UiTag from '~/components/culture-post-for-premium/UiTag.vue'
 import UiDonateButton from '~/components/UiDonateButton.vue'
@@ -77,6 +81,7 @@ export default {
     UiTag,
     UiLink,
     UiDonateButton,
+    UiBeSubscriberButton,
   },
   props: {
     publishTime: {
@@ -184,8 +189,13 @@ export default {
   }
 }
 .donate {
+  display: flex;
+
+  align-items: center;
+  :not(:last-child) {
+    margin-right: 8px;
+  }
   margin-top: 20px;
-  width: fit-content;
   @include media-breakpoint-up(md) {
     margin-top: 24px;
   }
