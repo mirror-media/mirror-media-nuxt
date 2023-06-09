@@ -1,18 +1,27 @@
 <template>
-  <a class="donate" target="_blank" href="/subscribe" rel="noopener noreferrer">
+  <a
+    class="subscribe"
+    target="_blank"
+    href="/subscribe"
+    rel="noopener noreferrer"
+  >
     <span>加入訂閱會員</span>
   </a>
 </template>
 
 <script>
 export default {
-  name: 'UiDonateButton',
+  name: 'UiBeSubscriberButton',
 }
 </script>
 
 <style lang="scss" scoped>
-.donate {
+.subscribe {
   background-color: #1d9fb8;
+  &:hover {
+    background: #054f77;
+    transition: background 0.3s ease;
+  }
   display: flex;
   flex-direction: row;
   justify-content: center;
