@@ -61,7 +61,7 @@
       </ClientOnly>
     </div>
     <div v-if="shouldShowDonate" class="donate">
-      <UiDonateButton />
+      <UiDonateButton class="donate-btn" />
       <UiBeSubscriberButton />
     </div>
   </div>
@@ -190,12 +190,12 @@ export default {
 }
 .donate {
   display: flex;
-
   align-items: center;
-  :not(:last-child) {
+  margin-top: 20px;
+  .donate-btn {
+    margin-top: 0;
     margin-right: 8px;
   }
-  margin-top: 20px;
   @include media-breakpoint-up(md) {
     margin-top: 24px;
   }
