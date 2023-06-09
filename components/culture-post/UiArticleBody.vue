@@ -14,7 +14,7 @@
       </div>
 
       <ContentHandler v-for="item in content" :key="item.id" :item="item" />
-      <UiDonateBanner v-if="shouldShowDonate" class="donate-banner" />
+      <UiSupportBox v-if="shouldShowDonate" class="donate-banner" />
       <template v-if="pageState === 'premiumPageIsLogin'">
         <div class="copyright-warning">
           <p>
@@ -33,15 +33,15 @@
 
 <script>
 import ContentHandler from './ContentHandler.vue'
+import UiSupportBox from '~/components/UiSupportBoxBox.vue'
 import UiPremiumInviteToLogin from '~/components/UiPremiumInviteToLogin.vue'
-import UiDonateBanner from '~/components/UiDonateBanner.vue'
 export default {
   name: 'UiArticleBody',
 
   components: {
     ContentHandler,
     UiPremiumInviteToLogin,
-    UiDonateBanner,
+    UiSupportBox,
   },
 
   props: {

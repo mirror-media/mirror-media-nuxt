@@ -25,8 +25,8 @@
         <span v-for="credit in post.credits" :key="credit">{{ credit }}</span>
       </div>
       <div v-if="shouldShowDonate" class="donate">
-        <UiDonateButton />
-        <UiBeSubscriberButton />
+        <UiDonateButton class="donate-btn" />
+        <UiBeSubscriberButton class="subscribe-btn" />
       </div>
     </div>
 
@@ -452,15 +452,18 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  :not(:last-child) {
-    margin-right: 8px;
-  }
+
   margin-top: 20px;
   @include media-breakpoint-up(md) {
     margin-top: 12px;
   }
   @include media-breakpoint-up(xl) {
     margin-top: 24px;
+  }
+
+  .donate-btn {
+    margin-top: 0;
+    margin-right: 8px;
   }
 }
 .list-related-container {

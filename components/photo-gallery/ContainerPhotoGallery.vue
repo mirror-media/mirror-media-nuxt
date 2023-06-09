@@ -21,7 +21,7 @@
         </a>
       </div>
       <UiDonateButtonCircle v-if="shouldShowDonate" class="donate" />
-      <UiBeSubscriberButton v-if="shouldShowDonate" class="subscribe" />
+      <UiBeSubscriberButton v-if="shouldShowDonate" class="subscribe-btn" />
     </div>
 
     <div
@@ -709,11 +709,12 @@ body {
   z-index: 99;
   display: flex;
 
-  .subscribe {
+  .subscribe-btn {
     padding: 8px 12px;
     width: 108px;
     height: 40px;
     margin-top: 4px;
+    margin-left: 8px;
   }
 
   .mm-icon {

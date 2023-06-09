@@ -1,6 +1,6 @@
 <template>
   <a class="donate" target="_blank" href="/donate" rel="noopener noreferrer">
-    <img src="~/assets/donate.png" alt="donate" />
+    <img src="~/assets/donate.svg" alt="donate" />
     <span>贊助本文</span>
   </a>
 </template>
@@ -14,6 +14,10 @@ export default {
 <style lang="scss" scoped>
 .donate {
   background-color: black;
+  &:hover {
+    background: rgba(0, 0, 0, 0.87);
+    transition: background 0.3s ease;
+  }
   width: fit-content;
   height: 32px;
   padding: 9px 12px 9px 13.33px;
@@ -25,9 +29,7 @@ export default {
   line-height: 1;
   font-weight: 400;
   border-radius: 32px;
-  img {
-    height: 100%;
-  }
+
   &:focus {
     outline: none;
   }
