@@ -711,7 +711,6 @@ body {
 
   .subscribe-btn {
     padding: 8px 12px;
-    width: 108px;
     height: 40px;
     margin-top: 4px;
     margin-left: 8px;
