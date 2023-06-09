@@ -31,7 +31,6 @@ export default {
   line-height: 1;
   font-weight: 400;
   padding: 8px 12px;
-  width: 108px;
   height: 32px;
   border-radius: 32px;
 
