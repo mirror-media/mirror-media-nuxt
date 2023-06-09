@@ -24,7 +24,10 @@
       <div class="credit">
         <span v-for="credit in post.credits" :key="credit">{{ credit }}</span>
       </div>
-      <UiDonateButton v-if="shouldShowDonate" class="donate" />
+      <div v-if="shouldShowDonate" class="donate">
+        <UiDonateButton class="donate-btn" />
+        <UiBeSubscriberButton class="subscribe-btn" />
+      </div>
     </div>
 
     <UiArticleBody
@@ -68,7 +71,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
+import UiBeSubscriberButton from '../UiBeSubscriberButton.vue'
 import UiTheCover from './UiTheCover.vue'
 import UiArticleBody from './UiArticleBody.vue'
 import UiArticleIndex from './UiArticleIndex.vue'
@@ -76,6 +79,7 @@ import UiListRelated from './UiListRelated.vue'
 import UiArticleBodyForPremium from '~/components/culture-post-for-premium/UiArticleBody.vue'
 import UiWineWarning from '~/components/UiWineWarning.vue'
 import UiDonateButton from '~/components/UiDonateButton.vue'
+
 import { SITE_OG_IMG, SITE_TITLE, SITE_URL } from '~/constants/index'
 import { doesContainWineName, getFormattedTimeStr } from '~/utils/article.js'
 
@@ -90,6 +94,7 @@ export default {
     UiWineWarning,
     UiArticleBodyForPremium,
     UiDonateButton,
+    UiBeSubscriberButton,
   },
 
   props: {
@@ -444,10 +449,21 @@ export default {
   }
 }
 .donate {
-  width: fit-content;
-  margin: 20px auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 20px;
   @include media-breakpoint-up(md) {
-    margin: 12px auto 0;
+    margin-top: 12px;
+  }
+  @include media-breakpoint-up(xl) {
+    margin-top: 24px;
+  }
+
+  .donate-btn {
+    margin-top: 0;
+    margin-right: 8px;
   }
 }
 .list-related-container {

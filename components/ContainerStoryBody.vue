@@ -31,6 +31,7 @@
       <div v-if="shouldShowDonate" class="donate">
         <div class="share__br" />
         <UiDonateButton class="share__logo--wider" />
+        <UiBeSubscriberButton />
       </div>
     </div>
 
@@ -74,7 +75,7 @@
     <p v-if="isUpdatedAtVisible" class="story__updated-at">
       更新時間｜<span v-text="updatedAt" />
     </p>
-    <UiDonateBanner v-if="shouldShowDonate" class="story__donate-banner" />
+    <UiSupportBox v-if="shouldShowDonate" class="story__donate-banner" />
 
     <UiSocialNetworkServices style="margin: 30px auto 0 auto" />
 
@@ -141,6 +142,8 @@ import { mapState, mapGetters } from 'vuex'
 import { ref, computed, onMounted, useContext } from '@nuxtjs/composition-api'
 
 import UiStoryContentHandler from './UiStoryContentHandler.vue'
+import UiBeSubscriberButton from './UiBeSubscriberButton.vue'
+import UiSupportBox from './UiSupportBoxBox.vue'
 import UiShareFb from '~/components/UiShareFb.vue'
 import UiShareLine from '~/components/UiShareLine.vue'
 import UiDonateButton from '~/components/UiDonateButton.vue'
@@ -149,7 +152,7 @@ import UiShareSidebox from '~/components/UiShareSidebox.vue'
 import UiSocialNetworkServices from '~/components/UiSocialNetworkServices.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import UiAnniversary from '~/components/UiAnniversary.vue'
-import UiDonateBanner from '~/components/UiDonateBanner.vue'
+
 import {
   AUTH_LINK,
   SUBSCRIBE_LINK,
@@ -184,7 +187,8 @@ export default {
     UiShareSidebox,
     ContainerGptAd,
     UiAnniversary,
-    UiDonateBanner,
+    UiBeSubscriberButton,
+    UiSupportBox,
   },
   props: {
     story: {
@@ -596,6 +600,7 @@ export {
       align-items: center;
     }
     .donate {
+      margin-right: 8px;
       .share__br {
         display: none;
         @include media-breakpoint-up(md) {
