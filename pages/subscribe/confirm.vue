@@ -3,7 +3,12 @@
 <template>
   <div class="subscribe-return">
     <SubscribeStepProgress :currentStep="step" />
-    <SubscribeSuccessPage v-if="status === 'success'" :orderInfo="orderInfo" />
+    <SubscribeSuccessPage v-if="isSuccessStatus" :orderInfo="orderInfo" />
+
+    <SubscribeInProgressPage
+      v-else-if="isInProgressStatus"
+      :orderInfo="orderInfo"
+    />
 
     <SubscribeFail v-else category="linepay" />
   </div>
@@ -14,6 +19,7 @@ import errors from '@twreporter/errors'
 import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
+import SubscribeInProgressPage from '~/components/SubscribeInProgress.vue'
 import { RETURN_CODE } from '~/constants/linepay'
 import uploadMemberArticleHistory from '~/mixins/upload-member-article-history'
 
@@ -28,11 +34,23 @@ import {
   GCP_PROJECT_ID,
 } from '~/configs/config'
 
+const TRANSACTION_STATUS = {
+  SUCCESS: 'success',
+  PROCESSING: 'processing',
+  FAIL: 'fail',
+}
+
+const shouldNotGoBackStatus = [
+  TRANSACTION_STATUS.SUCCESS,
+  TRANSACTION_STATUS.PROCESSING,
+]
+
 export default {
   middleware: ['handle-go-to-marketing'],
   components: {
     SubscribeStepProgress,
     SubscribeSuccessPage,
+    SubscribeInProgressPage,
     SubscribeFail,
   },
   mixins: [uploadMemberArticleHistory],
@@ -92,10 +110,7 @@ export default {
       } = queryResult
       if (allSubscriptions === undefined || allSubscriptions.length === 0) {
         return {
-          status: 'fail',
-          errorData: {
-            message: 'linepay-fail',
-          },
+          status: TRANSACTION_STATUS.FAIL,
         }
       }
 
@@ -142,15 +157,29 @@ export default {
         )
 
         confirmResult = error.data
-        if (confirmResult.returnCode === RETURN_CODE.ORDER_NUMBER_DUPLICATED) {
-          // A record of transaction with the same order number already exists.
 
-          return {
-            status: 'fail',
-            errorData: {
-              message: 'linepay-fail',
-            },
-          }
+        switch (confirmResult.returnCode) {
+          case RETURN_CODE.API_CALL_DUPLICATED:
+            /*
+             * The page should show in-progress messsage and tell user to check payemnt result at member page.
+             *
+             * If we show 'transaction is failed' in this condition, user will get confused because of inconsistence between
+             * multiple tabs.  And user will try to make the same payment request again.
+             * So that we might need to make refund to user manaually again.
+             */
+
+            return {
+              status: TRANSACTION_STATUS.PROCESSING,
+              orderInfo: {
+                orderId,
+              },
+            }
+          case RETURN_CODE.ORDER_NUMBER_DUPLICATED:
+            return {
+              status: TRANSACTION_STATUS.FAIL,
+            }
+          default:
+            break
         }
       }
 
@@ -190,15 +219,12 @@ export default {
       if (confirmResult.returnCode !== RETURN_CODE.SUCCESS) {
         // Not success
         return {
-          status: 'fail',
-          errorData: {
-            message: 'linepay-fail',
-          },
+          status: TRANSACTION_STATUS.FAIL,
         }
       }
 
       return {
-        status: 'success',
+        status: TRANSACTION_STATUS.SUCCESS,
         orderInfo: {
           orderId,
           promoteId: subscription.promoteId,
@@ -222,14 +248,19 @@ export default {
   },
   data() {
     return {
-      status: 'fail',
-      errorData: {},
+      status: TRANSACTION_STATUS.FAIL,
       orderInfo: {},
     }
   },
   computed: {
     step() {
-      return this.status === 'success' ? 3 : 2
+      return shouldNotGoBackStatus.includes(this.status) ? 3 : 2
+    },
+    isSuccessStatus() {
+      return this.status === TRANSACTION_STATUS.SUCCESS
+    },
+    isInProgressStatus() {
+      return this.status === TRANSACTION_STATUS.PROCESSING
     },
   },
 }
