@@ -1,34 +1,11 @@
-import * as firebaseAdmin from 'firebase-admin'
 import { shouldBypassAuthInAppWebview } from './utils'
 
 export default async function ({ req, store, app, redirect }) {
   if (shouldBypassAuthInAppWebview({ app })) {
     return
   }
-
-  let token = store.state.membership.userToken
-  let email = store.state.membership.userEmail
-
-  if (!token || !email) {
-    /*
-     * In some suitation, there is no userToken data in Vuex store,
-     * so we need to fallback to use firebase-admin with authorization header to retrieve user data
-     */
-
-    try {
-      const authToken = req?.headers?.authorization?.split(' ')[1]
-
-      if (authToken) {
-        const user = await firebaseAdmin.auth().verifyIdToken(authToken)
-
-        token = token ?? authToken
-        email = email ?? user?.email
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
+  const token = store.state.membership.userToken
+  const email = store.state.membership.userEmail
   try {
     const response = await app.$fetchTokenState(token)
 
