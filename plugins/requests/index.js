@@ -12,6 +12,7 @@ import {
   getMemberType,
   getPaymentDataOfSubscription,
   getMemberOneTimeSubscriptions,
+  getMemberOneTimeSubscriptionsK6,
   getSubscriptionPayments,
   getMemberShipStatus,
   getPremiumMemberSubscriptionInfo,
@@ -385,6 +386,9 @@ export default (context, inject) => {
   })
   inject('getMemberOneTimeSubscriptions', async (gateWayPayload) => {
     return await getMemberOneTimeSubscriptions(context, gateWayPayload)
+  })
+  inject('getMemberOneTimeSubscriptionsK6', async (gateWayPayload) => {
+    return await getMemberOneTimeSubscriptionsK6(context, gateWayPayload)
   })
   inject('getSubscriptionPayments', async (gateWayPayload) => {
     return await getSubscriptionPayments(context, gateWayPayload)

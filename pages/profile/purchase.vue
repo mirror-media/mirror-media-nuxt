@@ -124,6 +124,11 @@ export default {
         if (this.isBasic) {
           // fetch onetime subscription list
           this.postList = await this.$getMemberOneTimeSubscriptions({})
+
+          if (this.$config.purchaseOneTimeFeatureToggle) {
+            const resultOfK6 = await this.$getMemberOneTimeSubscriptionsK6({})
+            this.postList = [...this.postList, ...resultOfK6]
+          }
         }
 
         this.payRecords = await this.$getSubscriptionPayments({})

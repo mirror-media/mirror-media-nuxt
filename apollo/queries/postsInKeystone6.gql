@@ -1,0 +1,7 @@
+query postOnlyId($id: [ID!]) {
+  posts(where: { id: { in: $id } }) {
+    id
+    title
+    slug
+  }
+}

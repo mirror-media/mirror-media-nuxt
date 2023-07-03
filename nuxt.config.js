@@ -622,6 +622,8 @@ module.exports = {
       parseInt(process.env.MEMBER_ARTICLE_HISTORY_MAX_AGE) || 30,
     donateFeatureToggle: process.env.DONATE_FEATURE_TOGGLE === 'on',
     warmlifeFeatureToggle: process.env.WARM_LIFE_FEATURE_TOGGLE === 'on',
+    purchaseOneTimeFeatureToggle:
+      process.env.PURCHASE_ONE_TIME_FEATURE_TOGGLE === 'on',
   },
 
   env: {
