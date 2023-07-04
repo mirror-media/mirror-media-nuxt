@@ -356,25 +356,28 @@ export default {
       if (ENV === 'lighthouse') {
         return
       }
-
-      const { report: items = [] } = await this.$fetchPopular()
-      this.popularStories = items
-        .slice(0, 9)
-        .map(function transformContent({
-          slug = '',
-          title = '',
-          heroImage = {},
-          sections = [],
-        }) {
-          return {
-            slug,
-            title,
-            href: slug,
-            imgSrc: getImgSrc(heroImage),
-            label: getLabel(sections),
-            sectionName: sections[0]?.name,
-          }
-        })
+      try {
+        const { report: items = [] } = await this.$fetchPopular()
+        this.popularStories = items
+          .slice(0, 9)
+          .map(function transformContent({
+            slug = '',
+            title = '',
+            heroImage = {},
+            sections = [],
+          }) {
+            return {
+              slug,
+              title,
+              href: slug,
+              imgSrc: getImgSrc(heroImage),
+              label: getLabel(sections),
+              sectionName: sections[0]?.name,
+            }
+          })
+      } catch (err) {
+        this.popularStories = []
+      }
     },
     handleLoadDableWidget() {
       this.shouldLoadDableScript = true
