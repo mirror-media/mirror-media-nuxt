@@ -13,9 +13,16 @@
 
     <h2 v-if="story.subtitle" class="story__subtitle">{{ story.subtitle }}</h2>
 
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <div v-if="credit" class="story__credit" v-html="credit"></div>
-
+    <div class="story__credit_wrapper">
+      <div
+        v-if="credit && isExternalArticle"
+        class="story__credit story__credit--external"
+      >
+        鏡週刊
+      </div>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div v-if="credit" class="story__credit" v-html="credit"></div>
+    </div>
     <div class="story__share-and-donate share-and-donate">
       <div class="share">
         <img
@@ -572,13 +579,23 @@ export {
       }
     }
   }
-
+  &__credit_wrapper {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
   &__credit {
     color: #34495e;
     margin-top: 25px;
     margin-bottom: 25px;
     line-height: 1.5;
 
+    &--external {
+      margin-right: 16px;
+      padding: 4px 8px;
+      border: 1px solid #34495e;
+      border-radius: 2px;
+    }
     &::v-deep a {
       color: #0b4fa2;
     }
