@@ -1,7 +1,10 @@
 import { print } from 'graphql/language/printer'
 import axios from 'axios'
 import _ from 'lodash'
-import { API_PATH_FRONTEND } from '~/configs/config.js'
+import {
+  API_PATH_FRONTEND,
+  WEEKLY_API_SERVER_ORIGIN,
+} from '~/configs/config.js'
 import { PaymentMethod, MemberType, Frequency } from '~/constants/common'
 
 import {
@@ -21,7 +24,7 @@ import {
   setSubscriptionFromMonthToYear,
   setSubscriptionNote,
 } from '~/apollo/mutations/memberSubscriptionMutation.gql'
-
+import { postOnlyId } from '~/apollo/queries/postsInKeystone6.gql'
 const baseUrl = process.browser
   ? `${location.origin}/`
   : 'http://localhost:3000/'
@@ -29,6 +32,7 @@ const apiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v0`
 const newApiUrl = `${baseUrl}${API_PATH_FRONTEND}/member-subscription/v2`
 const k3ApiUrl = `${baseUrl}${API_PATH_FRONTEND}/getposts`
 
+const weeklyApiServerUrl = `https://${WEEKLY_API_SERVER_ORIGIN}/content/graphql`
 function getUserFirebaseId(context) {
   const currentUserUid = context.store?.state?.membership?.userUid
 
@@ -521,9 +525,46 @@ async function getMemberOneTimeSubscriptions(context, loadmoreConfig) {
 
   // get member's all subscriptions
   const subscriptions = result?.data?.member?.subscription
-  return getMemberSubscribePosts(subscriptions)
+  const subscriptionsK3Id = subscriptions?.filter(
+    (item) => item?.postId?.length === 24
+  )
+
+  return getMemberSubscribePosts(subscriptionsK3Id)
 }
 
+async function getMemberOneTimeSubscriptionsK6(context) {
+  const firebaseId = await getUserFirebaseId(context)
+  if (!firebaseId) return null
+
+  // get user's subscription state
+  let result
+  if (context.$config.linepayUiToggle) {
+    result = await fireGqlRequestNewApi(
+      fetchOneTimeSubscriptionsWithLINEPay,
+      {
+        firebaseId,
+      },
+      context
+    )
+  } else {
+    // TODO: remove this section when LINE Pay feature is stable in production
+    result = await fireGqlRequest(
+      fetchOneTimeSubscriptions,
+      {
+        firebaseId,
+      },
+      context
+    )
+  }
+
+  // get member's all subscriptions
+  const subscriptions = result?.data?.member?.subscription
+  const subscriptionsK6Id = subscriptions?.filter(
+    (item) => item?.postId?.length !== 24
+  )
+
+  return getMemberSubscribePostsK6(subscriptionsK6Id)
+}
 async function getMemberSubscribePosts(subscriptionList) {
   if (!subscriptionList?.length) return []
   const postList = []
@@ -550,6 +591,52 @@ async function getMemberSubscribePosts(subscriptionList) {
   subscriptionList.forEach((subscription, index) => {
     const correspondPost = _items.find((post) => {
       return post._id === subscription.postId
+    })
+
+    const post = {
+      id: subscription.postId,
+      title: correspondPost.title,
+      url: `/story/${correspondPost.slug}`,
+      deadline: getFormatDateWording(subscription.oneTimeEndDatetime),
+    }
+    postList.push(post)
+  })
+
+  // return newest unique posts
+  return _.uniqBy(postList, 'id')
+}
+
+async function getMemberSubscribePostsK6(subscriptionList) {
+  if (!subscriptionList?.length) return []
+  const postList = []
+
+  // get subscription-ontime's id array
+  const postIdList = subscriptionList.map((subscription) => {
+    return subscription.postId
+  })
+
+  // fetch post's info via post id from keystone 6
+  const {
+    data: {
+      data: { posts },
+    },
+  } = await axios({
+    url: weeklyApiServerUrl,
+    method: 'post',
+    data: {
+      query: print(postOnlyId),
+      variables: { id: [...postIdList] },
+    },
+    headers: {
+      'content-type': 'application/json',
+      'Cache-Control': 'no-store',
+    },
+  })
+
+  // put post title/url into postList
+  subscriptionList.forEach((subscription, index) => {
+    const correspondPost = posts.find((post) => {
+      return post.id === subscription.postId
     })
 
     const post = {
@@ -816,6 +903,7 @@ export {
   getPaymentDataOfSubscription,
   formatMemberType,
   getMemberOneTimeSubscriptions,
+  getMemberOneTimeSubscriptionsK6,
   getSubscriptionPayments,
   getMemberShipStatus,
   getPremiumMemberSubscriptionInfo,
