@@ -612,7 +612,9 @@ export default {
             slug,
             title,
             href: `/story/${slug}/`,
-            imgSrc: getImgSrc(heroImage),
+            imgSrc: heroImage
+              ? getImgSrc(heroImage)
+              : require('~/assets/default-og-img.png'),
             label: getLabel(categories),
             sectionName: sections[0]?.name,
           }
