@@ -1,5 +1,5 @@
 <template>
-  <div class="choose-plan">
+  <div class="choose-plan" :class="{ 'no-padding-top': shouldShowNotice }">
     <div class="choose-plan__wrapper">
       <div class="choose-plan__plan_container">
         <SubscribeChoosePlanCard
@@ -25,6 +25,12 @@ export default {
   components: {
     SubscribeChoosePlanCard,
     UiSubscribeInfo,
+  },
+  props: {
+    shouldShowNotice: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -97,6 +103,10 @@ export default {
 
   @include media-breakpoint-up(sm) {
     padding: 49px 8px 47px;
+  }
+
+  &.no-padding-top {
+    padding-top: 0;
   }
 
   &__wrapper {
