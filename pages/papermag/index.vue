@@ -9,7 +9,7 @@
         <p>（3）「團go」一次訂滿3份，52期∕$2580∕份</p>
       </div>
     </div>
-    <SubscribeChoosePlan />
+    <SubscribeChoosePlan :shouldShowNotice="shouldShowNotice" />
   </div>
 </template>
 
