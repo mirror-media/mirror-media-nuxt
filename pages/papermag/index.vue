@@ -6,7 +6,7 @@
         <h3>2023期間限定</h3>
         <p>（1）「半年嘗鮮」28期 $1680</p>
         <p>（2）「365年度」52期 $2780</p>
-        <p>（3）「團go」一次訂滿3份，52期∕$2580∕份</p>
+        <p>（3）「團go」一次訂滿3份，52期 ∕ $2580 ∕ 份</p>
       </div>
     </div>
     <SubscribeChoosePlan :shouldShowNotice="shouldShowNotice" />
