@@ -1,18 +1,15 @@
 <template>
   <div class="subscribe-magazine-page">
     <SubscribeStepProgress :currentStep="1" />
-    <!-- should remove this div below after 2023 Dragon Boat Festival -->
     <div v-if="shouldShowNotice" class="notice__wrapper">
       <div class="notice">
-        <h3>訂戶派送公告</h3>
-        <p>預祝端午佳節愉快！</p>
-        <p>
-          因逢端午連續假期，351期(6/21出刊)的雜誌最晚6/26(一)完成配送，造成困擾敬請見諒。
-        </p>
+        <h3>2023期間限定</h3>
+        <p>（1）「半年嘗鮮」28期 $1680</p>
+        <p>（2）「365年度」52期 $2780</p>
+        <p>（3）「團go」一次訂滿3份，52期 ∕ $2580 ∕ 份</p>
       </div>
     </div>
-    <!-- should remove this div above after 2023 Dragon Boat Festival -->
-    <SubscribeChoosePlan />
+    <SubscribeChoosePlan :shouldShowNotice="shouldShowNotice" />
   </div>
 </template>
 
@@ -26,15 +23,11 @@ export default {
     SubscribeChoosePlan,
   },
   computed: {
-    // should remove this div above after 2023 Dragon Boat Festival
     shouldShowNotice() {
       const nowUtc = new Date(Date.now())
 
-      // 2023.6.7 ~ 28
-      return (
-        nowUtc < new Date(Date.UTC(2023, 5, 27, 16)) &&
-        nowUtc > new Date(Date.UTC(2023, 5, 6, 16))
-      )
+      // now ~ 2023.9.30
+      return nowUtc < new Date(Date.UTC(2023, 8, 29, 16))
     },
   },
 }
