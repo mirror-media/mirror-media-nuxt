@@ -7,6 +7,7 @@
             :href="item.href"
             target="_blank"
             rel="noopener noreferrer"
+            class="GTM-homepage-latest-list"
             @click="$emit('sendGa')"
           >
             <article>
@@ -31,7 +32,7 @@
                 <h1>
                   <span>{{ item.title }}</span>
                 </h1>
-                <p class="description">{{ item.description }}</p>
+                <p class="description">{{ item.description }}222</p>
               </div>
             </article>
           </a>

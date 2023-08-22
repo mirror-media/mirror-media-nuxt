@@ -7,6 +7,7 @@
             :href="item.href"
             target="_blank"
             rel="noopener noreferrer"
+            class="GTM-homepage-latest-list"
             @click="$emit('sendGa')"
           >
             <article>

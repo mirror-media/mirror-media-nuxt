@@ -55,7 +55,7 @@
           <a
             v-for="article in articles"
             :key="article.slug"
-            class="swiper-slide"
+            class="swiper-slide GTM-editorchoice-list"
             :href="article.href"
             target="_blank"
             rel="noopener noreferrer"
@@ -75,11 +75,13 @@
           slot="btnPrev"
           src="~/assets/arrow-prev-editor-choices.png"
           :class="slideshow.btnPrevClass"
+          class="swiper-button"
         />
         <img
           slot="btnNext"
           src="~/assets/arrow-next-editor-choices.png"
           :class="slideshow.btnNextClass"
+          class="swiper-button"
         />
       </UiSlideshow>
     </div>
