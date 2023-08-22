@@ -53,6 +53,9 @@ export default {
       if (this.sectionName === 'mirrorcolumn') {
         return '5964418a4bbe120f002a3198'
       }
+      if (this.sectionName === 'other') {
+        return 'other'
+      }
       return this.sectionId
     },
     sectionTitle() {
