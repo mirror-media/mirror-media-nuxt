@@ -503,6 +503,9 @@ export default {
       if (this.section.name === 'mirrorcolumn') {
         return '5964418a4bbe120f002a3198'
       }
+      if (this.section.name === 'life') {
+        return 'other'
+      }
       return this.sectionId
     },
     storySlug() {
