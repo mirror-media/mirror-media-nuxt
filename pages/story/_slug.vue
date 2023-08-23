@@ -15,7 +15,10 @@
       />
 
       <div v-else class="article">
-        <ContainerHeader :currentSectionName="sectionName" />
+        <ContainerHeader
+          :currentSectionName="sectionName"
+          :currentCategoryName="categoryName"
+        />
 
         <div class="story-container">
           <ContainerGptAd
@@ -481,6 +484,9 @@ export default {
     },
     categoryTitle() {
       return this.category.title ?? ''
+    },
+    categoryName() {
+      return this.category.name ?? ''
     },
     doesHaveWineCategory() {
       return doesContainWineName(this.categories)
