@@ -427,11 +427,10 @@ const DEFAULT_NORMAL_SECTIONS_DATA = [
   },
   {
     order: 10,
-    type: 'category',
-    slug: 'mafalda-1',
+    type: 'section',
+    slug: 'mafalda',
     name: '瑪法達',
-    isMemberOnly: false,
-    sections: [],
+    categories: [],
   },
 ]
 
