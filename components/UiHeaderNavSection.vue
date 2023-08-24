@@ -31,19 +31,6 @@
         </div>
       </div>
 
-      <div
-        v-for="partner in displayPartners"
-        :key="partner.id"
-        class="section section--external"
-      >
-        <a
-          :href="`/externals/${partner.name}`"
-          @click="emitGa(`external ${partner.name}`)"
-        >
-          <h2>{{ partner.display }}</h2>
-        </a>
-      </div>
-
       <!-- <div class="section section&#45;&#45;external">
         <h2>合作媒體</h2>
         <div class="section__dropdown">
@@ -84,22 +71,7 @@ export default {
       default: () => [],
     },
   },
-  computed: {
-    displayPartners() {
-      if (this.$config.warmlifeFeatureToggle) {
-        return [
-          {
-            name: 'warmlife',
-            display: '生活暖流',
-          },
-        ]
-      } else {
-        return (
-          this.partners.filter((partner) => partner.name === 'healthnews') ?? []
-        )
-      }
-    },
-  },
+
   methods: {
     isCurrentSection(section) {
       const sectionType = section.type
