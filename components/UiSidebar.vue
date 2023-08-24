@@ -26,27 +26,30 @@
       <div
         v-for="section in sections"
         :key="section.id"
-        :class="`section section--${section.name}`"
+        :class="`section section--${getSectionSlug(section)}`"
       >
         <a
-          :href="`/section/${section.name}`"
+          :href="section.href"
           class="section__title"
-          @click="emitGa(`section ${section.name}`)"
+          @click="emitGa(`section ${section.slug}`)"
         >
-          <h2>{{ section.title }}</h2>
+          <h2>{{ section.name }}</h2>
         </a>
 
         <div
-          v-if="shouldOpenCategories(section.categories)"
+          v-if="
+            section.type === 'section' &&
+            shouldOpenCategories(section.categories)
+          "
           class="section__categories"
         >
           <a
             v-for="category in section.categories"
             :key="category.id"
-            :href="getCategoryHref(section.name, category.name)"
-            @click="emitGa(`category ${category.name}`)"
+            :href="category.href"
+            @click="emitGa(`category ${category.slug}`)"
           >
-            <h3>{{ category.title }}</h3>
+            <h3>{{ category.name }}</h3>
           </a>
         </div>
       </div>
@@ -162,6 +165,16 @@ export default {
     },
   },
   methods: {
+    getSectionSlug(section) {
+      switch (section.type) {
+        case 'section':
+          return section.slug
+        case 'category':
+          return section?.sections?.[0]
+        default:
+          return null
+      }
+    },
     shouldOpenCategories(categories = []) {
       return categories.length > 0
     },

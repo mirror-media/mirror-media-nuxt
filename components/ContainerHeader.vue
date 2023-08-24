@@ -77,7 +77,7 @@
         <UiSidebar
           v-if="shouldOpenSidebar"
           :topics="topics"
-          :sections="sections"
+          :sections="displayedHeaderData"
           :partners="partners"
           :subBrands="SUB_BRAND_LINKS"
           :promotions="PROMOTION_LINKS"
