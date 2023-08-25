@@ -106,12 +106,12 @@ export default {
     transformListItemContent(item) {
       let imgText
       let imgTextBackgroundColor
-      if (
-        this.partnerName === 'healthnews' ||
-        this.partnerName === 'warmlife'
-      ) {
+      if (this.partnerName === 'healthnews') {
         imgText = '生活'
         imgTextBackgroundColor = '#30bac8'
+      } else if (this.partnerName === 'warmlife') {
+        imgText = '生活'
+        imgTextBackgroundColor = '#2ECDA7'
       } else if (this.partnerName === 'ebc') {
         imgText = '時事'
         imgTextBackgroundColor = '#30bac8'

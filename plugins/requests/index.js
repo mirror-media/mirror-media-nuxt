@@ -338,6 +338,7 @@ export default (context, inject) => {
 
   inject('fetchPopular', () => fetchGcsData('popularlist'))
 
+  inject('fetchHeadersNew', () => fetchGcsData('headers_new'))
   inject('fetchMemberSections', () => fetchGcsData('member_sections'))
 
   inject('fetchMemberSectionsArticles', () =>

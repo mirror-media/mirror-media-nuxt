@@ -59,8 +59,9 @@
 
     <nav class="header-nav">
       <UiHeaderNavSection
-        :sections="sections"
+        :sections="displayedHeaderData"
         :currentSectionName="sectionName"
+        :currentCategoryName="currentCategoryName"
         :partners="partners"
         @sendGa="handleSendGa"
       />
@@ -76,7 +77,7 @@
         <UiSidebar
           v-if="shouldOpenSidebar"
           :topics="topics"
-          :sections="sections"
+          :sections="displayedHeaderData"
           :partners="partners"
           :subBrands="SUB_BRAND_LINKS"
           :promotions="PROMOTION_LINKS"
@@ -111,6 +112,147 @@ import {
 
 let headerHight = 0
 
+const DEFAULT_NORMAL_SECTIONS_DATA = [
+  {
+    order: 1,
+    type: 'section',
+    slug: 'member',
+    name: '會員專區',
+    categories: [
+      { id: '49', slug: 'somebody', name: '一鏡到底', isMemberOnly: true },
+      { id: '51', slug: 'truth', name: '心內話', isMemberOnly: true },
+      { id: '50', slug: 'world', name: '鏡相人間', isMemberOnly: true },
+      { id: '52', slug: 'mogul', name: '財經人物', isMemberOnly: true },
+      { id: '19', slug: 'money', name: '理財', isMemberOnly: true },
+      { id: '94', slug: 'timesquare', name: '時代現場', isMemberOnly: true },
+      { id: '25', slug: 'celebrity', name: '鏡大咖', isMemberOnly: true },
+      { id: '27', slug: 'column', name: '影劇專欄', isMemberOnly: true },
+      { id: '1', slug: 'food', name: '美食焦點', isMemberOnly: true },
+      { id: '2', slug: 'traveltaiwan', name: '旅行台灣', isMemberOnly: true },
+      { id: '7', slug: 'seetheworld', name: '看見世界', isMemberOnly: true },
+      { id: '8', slug: 'kitchenplay', name: '廚房密技', isMemberOnly: true },
+      { id: '35', slug: 'wine', name: '好酒情報', isMemberOnly: true },
+      { id: '112', slug: 'dig', name: '完整全文', isMemberOnly: false },
+    ],
+  },
+  {
+    order: 2,
+    type: 'category',
+    slug: 'news',
+    name: '焦點',
+    isMemberOnly: false,
+    sections: ['news'],
+  },
+  {
+    order: 3,
+    type: 'section',
+    slug: 'entertainment',
+    name: '娛樂',
+    categories: [
+      { id: '24', slug: 'latestnews', name: '娛樂頭條', isMemberOnly: false },
+      { id: '61', slug: 'rookie', name: '試鏡間', isMemberOnly: false },
+      { id: '62', slug: 'fashion', name: '穿衣鏡', isMemberOnly: false },
+      { id: '63', slug: 'madam', name: '蘭蘭夫人', isMemberOnly: false },
+      {
+        id: '64',
+        slug: 'superstar',
+        name: '我眼中的大明星',
+        isMemberOnly: false,
+      },
+      { id: '36', slug: 'insight', name: '娛樂透視', isMemberOnly: false },
+      { id: '48', slug: 'comic', name: '動漫遊戲', isMemberOnly: false },
+    ],
+  },
+  {
+    order: 4,
+    type: 'category',
+    slug: 'political',
+    name: '政治',
+    isMemberOnly: false,
+    sections: ['news'],
+  },
+  {
+    order: 5,
+    type: 'category',
+    slug: 'business',
+    name: '財經',
+    isMemberOnly: false,
+    sections: ['businessmoney'],
+  },
+  {
+    order: 6,
+    type: 'category',
+    slug: 'city-news',
+    name: '社會',
+    isMemberOnly: false,
+    sections: ['news'],
+  },
+  {
+    order: 8,
+    type: 'category',
+    slug: 'global',
+    name: '國際要聞',
+    isMemberOnly: false,
+    sections: ['news', 'international'],
+  },
+  {
+    order: 9,
+    type: 'section',
+    slug: 'carandwatch',
+    name: '汽車鐘錶',
+    categories: [
+      { id: '56', slug: 'car_focus', name: '車壇焦點', isMemberOnly: false },
+      {
+        id: '57',
+        slug: 'car_features',
+        name: '鏡車專題',
+        isMemberOnly: false,
+      },
+      {
+        id: '58',
+        slug: 'test_drives',
+        name: '靚俥試駕',
+        isMemberOnly: false,
+      },
+      { id: '59', slug: 'pit_zone', name: '鏡車經', isMemberOnly: false },
+      { id: '11', slug: 'watchfocus', name: '錶壇焦點', isMemberOnly: false },
+      {
+        id: '12',
+        slug: 'watchfeature',
+        name: '鐘錶專題',
+        isMemberOnly: false,
+      },
+      { id: '15', slug: 'blog', name: '編輯幕後', isMemberOnly: false },
+      {
+        id: '107',
+        slug: 'newwatches2021',
+        name: '新錶2021',
+        isMemberOnly: false,
+      },
+      { id: '111', slug: 'luxury', name: '奢華誌', isMemberOnly: false },
+      {
+        id: '114',
+        slug: 'newwatches2022',
+        name: '新錶2022',
+        isMemberOnly: false,
+      },
+      {
+        id: '115',
+        slug: 'newwatches2023',
+        name: '新錶2023',
+        isMemberOnly: false,
+      },
+    ],
+  },
+  {
+    order: 10,
+    type: 'section',
+    slug: 'mafalda',
+    name: '瑪法達',
+    categories: [],
+  },
+]
+
 export default {
   name: 'ContainerHeader',
   components: {
@@ -130,13 +272,26 @@ export default {
       type: String,
       default: undefined,
     },
+    currentCategoryName: {
+      type: String,
+      default: undefined,
+    },
+  },
+  async fetch() {
+    try {
+      const res = await this.$fetchHeadersNew()
+      this.headerData = res.headers
+    } catch (error) {
+      console.error(error)
+      this.headerData = []
+    }
   },
 
   data() {
     return {
       shouldFixHeader: false,
       SITE_TITLE,
-
+      headerData: [],
       eventLogo: {},
       now: new Date(),
       intervalIdOfUpdateNow: undefined,
@@ -159,7 +314,131 @@ export default {
       topics: 'topics/displayedTopics',
       isDesktopWidth: 'viewport/isViewportWidthUpXl',
     }),
+    displayedHeaderData() {
+      const formatSectionItem = (section) => {
+        const sectionWithMagazine = insertMagazineIntoSectionMember(section)
+        const sectionsAndCategoriesWithHref =
+          getSectionAndCategoryHref(sectionWithMagazine)
+        return sectionsAndCategoriesWithHref
 
+        function insertMagazineIntoSectionMember(section) {
+          if (section.slug === 'member') {
+            return {
+              ...section,
+              categories: [
+                {
+                  id: '7a7482edb739242537f11e24760d2c79', // hash for ensure it is unique from other category, no other usage.
+                  slug: 'magazine',
+                  name: '動態雜誌',
+                  isMemberOnly: false,
+                },
+                ...section.categories,
+              ],
+            }
+          } else if (section.slug === 'life') {
+            return {
+              ...section,
+              categories: [
+                ...section.categories,
+                {
+                  id: '306dac073da6dc1ddb4e34c228035915', // hash for ensure it is unique from other category, no other usage.
+                  slug: 'warmlife',
+                  name: '暖流',
+                  isMemberOnly: false,
+                },
+              ],
+            }
+          }
+          return { ...section }
+        }
+
+        function getSectionAndCategoryHref(section) {
+          return {
+            ...section,
+            href: getSectionHref(section.slug),
+            categories: getCategoryInSectionWithHref(section),
+          }
+
+          function getSectionHref(sectionSlug) {
+            if (sectionSlug === 'member') {
+              return `/premiumsection/${sectionSlug}`
+            } else {
+              return `/section/${sectionSlug}`
+            }
+          }
+
+          function getCategoryInSectionWithHref(section) {
+            const { categories = [] } = section
+            return categories.map((category) => {
+              return {
+                ...category,
+                href: getCategoryHref(section.slug, category.slug),
+              }
+            })
+
+            /**
+             * @param {HeadersDataSection['slug']} sectionSlug
+             * @param {import('./nav-sections').CategoryInHeadersDataSection['slug']} categorySlug
+             * @returns {string}
+             */
+            function getCategoryHref(sectionSlug, categorySlug) {
+              if (sectionSlug === 'videohub') {
+                return `/video_category/${categorySlug}`
+              }
+              if (categorySlug === 'magazine') {
+                return '/magazine/'
+              }
+              if (sectionSlug === 'life' && categorySlug === 'warmlife') {
+                return '/externals/warmlife'
+              }
+              return `/category/${categorySlug}`
+            }
+          }
+        }
+      }
+
+      const formatCategoryItem = (category) => {
+        return getSectionAndCategoryHref(category)
+
+        function getSectionAndCategoryHref(section) {
+          return {
+            ...section,
+            href: getCategoryHref(section.sections, section.slug),
+          }
+
+          function getCategoryHref(sections, categorySlug) {
+            if (
+              sections &&
+              sections.length &&
+              sections.some((section) => section === 'videohub')
+            ) {
+              return `/video_category/${categorySlug}`
+            }
+            return `/category/${categorySlug}`
+          }
+        }
+      }
+
+      const formatSections = (sectionsData) => {
+        const _sectionsData =
+          sectionsData && sectionsData.length
+            ? sectionsData
+            : DEFAULT_NORMAL_SECTIONS_DATA
+        const formattedSectionData = _sectionsData.map((item) => {
+          switch (item.type) {
+            case 'section':
+              return formatSectionItem(item)
+            case 'category':
+              return formatCategoryItem(item)
+            default:
+              return null
+          }
+        })
+
+        return formattedSectionData
+      }
+      return formatSections(this.headerData)
+    },
     sectionName() {
       let sectionName
 
@@ -184,7 +463,6 @@ export default {
             }
           } else if (path.startsWith(cat)) {
             const categoryName = removePrefix(path, cat)
-
             sectionName = this.getSectionByCategoryName(categoryName).name
           }
         }

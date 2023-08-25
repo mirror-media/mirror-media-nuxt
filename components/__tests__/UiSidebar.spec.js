@@ -19,10 +19,62 @@ const mockTopic = {
   id: '5d8c26c23c4cad5f87630d37',
 }
 const mockSection = {
-  name: 'culture',
-  title: '文化',
-  isFeatured: true,
-  categories: [{ name: 'bookreview', title: '書評' }],
+  order: 3,
+  type: 'section',
+  slug: 'entertainment',
+  name: '娛樂',
+  categories: [
+    {
+      id: '24',
+      slug: 'latestnews',
+      name: '娛樂頭條',
+      isMemberOnly: false,
+      href: '/category/latestnews',
+    },
+    {
+      id: '36',
+      slug: 'insight',
+      name: '娛樂透視',
+      isMemberOnly: false,
+      href: '/category/insight',
+    },
+    {
+      id: '48',
+      slug: 'comic',
+      name: '動漫遊戲',
+      isMemberOnly: false,
+      href: '/category/comic',
+    },
+    {
+      id: '61',
+      slug: 'rookie',
+      name: '試鏡間',
+      isMemberOnly: false,
+      href: '/category/rookie',
+    },
+    {
+      id: '62',
+      slug: 'fashion',
+      name: '穿衣鏡',
+      isMemberOnly: false,
+      href: '/category/fashion',
+    },
+    {
+      id: '63',
+      slug: 'madam',
+      name: '蘭蘭夫人',
+      isMemberOnly: false,
+      href: '/category/madam',
+    },
+    {
+      id: '64',
+      slug: 'superstar',
+      name: '我眼中的大明星',
+      isMemberOnly: false,
+      href: '/category/superstar',
+    },
+  ],
+  href: '/section/entertainment',
 }
 
 /*
@@ -78,8 +130,8 @@ describe('sections', () => {
       },
     })
 
-    const link = wrapper.get(`[href="/section/${mockSection.name}"]`)
-    expect(link.text()).toBe(mockSection.title)
+    const link = wrapper.get(`[href="${mockSection.href}"]`)
+    expect(link.text()).toBe(mockSection.name)
   })
 
   test('render the proper category link', () => {
@@ -90,8 +142,8 @@ describe('sections', () => {
     })
 
     const [mockCategory] = mockSection.categories
-    const link = wrapper.get(`[href="/category/${mockCategory.name}"]`)
-    expect(link.text()).toBe(mockCategory.title)
+    const link = wrapper.get(`[href="${mockCategory.href}"]`)
+    expect(link.text()).toBe(mockCategory.name)
   })
 
   test('close the categories if the section.categories has no data', () => {
@@ -211,13 +263,13 @@ describe('emitGa method', () => {
       },
     })
 
-    const sectionLink = wrapper.get(`[href="/section/${mockSection.name}"]`)
+    const sectionLink = wrapper.get(`[href="${mockSection.href}"]`)
     sectionLink.trigger('click')
     expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'sidebar',
         eventAction: 'click',
-        eventLabel: `section ${mockSection.name}`,
+        eventLabel: `section ${mockSection.slug}`,
       },
     ])
   })
@@ -230,13 +282,13 @@ describe('emitGa method', () => {
     })
 
     const [mockCategory] = mockSection.categories
-    const categoryLink = wrapper.get(`[href="/category/${mockCategory.name}"]`)
+    const categoryLink = wrapper.get(`[href="${mockCategory.href}"]`)
     categoryLink.trigger('click')
     expect(wrapper.emitted().sendGa[0]).toEqual([
       {
         eventCategory: 'sidebar',
         eventAction: 'click',
-        eventLabel: `category ${mockCategory.name}`,
+        eventLabel: `category ${mockCategory.slug}`,
       },
     ])
   })
