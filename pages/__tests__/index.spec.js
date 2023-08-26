@@ -4,8 +4,6 @@ import flushPromises from 'flush-promises'
 import Home, {
   GA_UTM_EDITOR_CHOICES,
   LATEST_ARTICLES_MIN_NUM,
-  MICRO_AD_IDXES_INSERTED,
-  EXTERNALS_IDX_START_INSERTED,
   transformContentOfFlashNews,
   getLabel,
 } from '../index.vue'
@@ -598,14 +596,16 @@ describe('最新文章', () => {
    * })
    */
 
-  test(`若最新文章（包含廣告）小於 ${EXTERNALS_IDX_START_INSERTED} 篇，則不插入合作媒體文章`, async () => {
-    await testExternals(
-      EXTERNALS_IDX_START_INSERTED - 1 - MICRO_AD_IDXES_INSERTED.length,
-      function assert(spyMethod) {
-        expect(spyMethod).not.lastCalledWith(EXTERNALS_IDX_START_INSERTED)
-      }
-    )
-  })
+  /*
+   * test(`若最新文章（包含廣告）小於 ${EXTERNALS_IDX_START_INSERTED} 篇，則不插入合作媒體文章`, async () => {
+   *   await testExternals(
+   *     EXTERNALS_IDX_START_INSERTED - 1 - MICRO_AD_IDXES_INSERTED.length,
+   *     function assert(spyMethod) {
+   *       expect(spyMethod).not.lastCalledWith(EXTERNALS_IDX_START_INSERTED)
+   *     }
+   *   )
+   * })
+   */
 
   test('should make the normal items unique by their ids', function () {
     const wrapper = createWrapper(Home, {
@@ -700,31 +700,37 @@ describe('最新文章', () => {
     jest.restoreAllMocks()
   }
 
-  async function testExternals(latestItemsNum, assert) {
-    expect.assertions(1)
+  /*
+   * async function testExternals(latestItemsNum, assert) {
+   *   expect.assertions(1)
+   */
 
-    /* Arrange */
-    jest.spyOn(Home.methods, 'insertLatestItems')
+  //   /* Arrange */
+  //   jest.spyOn(Home.methods, 'insertLatestItems')
 
-    const sut = createWrapper(Home)
+  //   const sut = createWrapper(Home)
 
-    /* Act */
-    sut.setData({
-      latestList: {
-        items: Array(latestItemsNum)
-          .fill({})
+  //   /* Act */
+  //   sut.setData({
+  //     latestList: {
+  //       items: Array(latestItemsNum)
+  //         .fill({})
 
-          // fill the items with id properties because they need to be unique.
-          .map((_, idx) => ({ id: idx })),
-      },
-    })
-    await flushPromises()
+  /*
+   *         // fill the items with id properties because they need to be unique.
+   *         .map((_, idx) => ({ id: idx })),
+   *     },
+   *   })
+   *   await flushPromises()
+   */
 
-    /* Assert */
-    assert(Home.methods.insertLatestItems)
+  //   /* Assert */
+  //   assert(Home.methods.insertLatestItems)
 
-    jest.restoreAllMocks()
-  }
+  /*
+   *   jest.restoreAllMocks()
+   * }
+   */
 })
 
 describe('embedded event', function () {

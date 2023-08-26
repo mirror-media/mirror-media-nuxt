@@ -10,7 +10,7 @@
       />
       <ContainerGptAd class="home__ad home__ad--hd" pageKey="home" adKey="HD" />
 
-      <section class="editor-choices-container">
+      <section v-if="!isHomepageEditorChoiceB" class="editor-choices-container">
         <UiColumnHeader
           title="編輯精選"
           class="home__column-header home__column-header--editor-choices"
@@ -19,6 +19,29 @@
           :articles="editorChoicesArticles"
           @sendGa="sendGaForClick('choice')"
         />
+      </section>
+
+      <section v-else class="editor-choices-and-latest-container">
+        <section class="editor-choices-container">
+          <UiColumnHeader
+            title="編輯精選"
+            class="home__column-header home__column-header--editor-choices"
+          />
+          <UiEditorChoicesB
+            :articles="editorChoicesArticles"
+            @sendGa="sendGaForClick('choice')"
+          />
+        </section>
+        <div
+          v-if="itemsBesideEditorChoices.length"
+          class="latest-beside-editor-choices-container"
+        >
+          <UiArticleListAsideItem
+            v-for="item in itemsBesideEditorChoices"
+            :key="item.slug"
+            :item="item"
+          />
+        </div>
       </section>
 
       <ContainerGptAd
@@ -72,20 +95,20 @@
             <UiColumnHeader title="最新文章" class="home__column-header" />
             <UiArticleGalleryB
               v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
-              :items="latestItems"
+              :items="itemsOfLatestList"
               :isPremiumMember="isPremiumMember"
               @sendGa="sendGaForClick('latest')"
             />
             <UiArticleGallery
               v-if="shouldShowFocus"
               :isPremiumMember="isPremiumMember"
-              :items="latestItems"
+              :items="itemsOfLatestList"
               @sendGa="sendGaForClick('latest')"
             />
             <UiArticleGalleryWithoutFocus
               v-else
               :isPremiumMember="isPremiumMember"
-              :items="latestItems"
+              :items="itemsOfLatestList"
               @sendGa="sendGaForClick('latest')"
             />
             <UiInfiniteLoading
@@ -134,6 +157,7 @@ import localforage from 'localforage'
 import UiFlashNews from '~/components/UiFlashNews.vue'
 import UiColumnHeader from '~/components/UiColumnHeader.vue'
 import UiEditorChoices from '~/components/UiEditorChoices.vue'
+import UiEditorChoicesB from '~/components/UiEditorChoicesB.vue'
 import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
@@ -142,6 +166,7 @@ import UiArticleGalleryWithoutFocus from '~/components/UiArticleGalleryWithoutFo
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
+import UiArticleListAsideItem from '~/components/UiArticleListAsideItem.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
@@ -160,7 +185,7 @@ const GA_UTM_EDITOR_CHOICES = 'utm_source=mmweb&utm_medium=editorchoice'
  * 東森新聞
  * const PARTNER_ID_EBC = '5ea7fd55a66f9e0f00a04e9a'
  */
-const MICRO_AD_IDXES_INSERTED = [2, 5, 8]
+
 const LATEST_ARTICLES_MIN_NUM = 6
 const EXTERNALS_IDX_START_INSERTED = 12
 const EXTERNALS_MAX_RESULTS = 6
@@ -180,6 +205,8 @@ export default {
     UiArticleGalleryB,
     UiArticleGalleryWithoutFocus,
     SvgCloseIcon,
+    UiArticleListAsideItem,
+    UiEditorChoicesB,
   },
 
   async fetch() {
@@ -313,6 +340,15 @@ export default {
       })
     },
 
+    itemsOfLatestList() {
+      return this.isHomepageEditorChoiceB
+        ? this.latestItems.slice(6)
+        : this.latestItems
+    },
+    itemsBesideEditorChoices() {
+      return this.isHomepageEditorChoiceB ? this.latestItems.slice(0, 5) : []
+    },
+
     isValidEventModItem() {
       if (!this.doesHaveEventModItem) {
         return false
@@ -378,6 +414,12 @@ export default {
         }
       }
     },
+    isHomepageEditorChoiceB() {
+      return false && this.isDesktopWidth
+    },
+    microAdIndexInserted() {
+      return this.isHomepageEditorChoiceB ? [7, 10, 13] : [2, 5, 8]
+    },
   },
 
   watch: {
@@ -433,7 +475,7 @@ export default {
         return
       }
 
-      MICRO_AD_IDXES_INSERTED.forEach((idxInserted, idxUnit) => {
+      this.microAdIndexInserted.forEach((idxInserted, idxUnit) => {
         this.insertLatestItems(idxInserted, {
           isMicroAd: true,
           idx: idxUnit,
@@ -797,7 +839,6 @@ function inThePeriodBetween(startDate, endDate) {
 export {
   GA_UTM_EDITOR_CHOICES,
   LATEST_ARTICLES_MIN_NUM,
-  MICRO_AD_IDXES_INSERTED,
   EXTERNALS_IDX_START_INSERTED,
   EXTERNALS_MAX_RESULTS,
   transformContentOfFlashNews,
@@ -890,11 +931,24 @@ $width--aside: 226px;
   }
 }
 
+.editor-choices-and-latest-container {
+  display: flex;
+  .editor-choices-container {
+    width: 640px;
+  }
+}
+
 .editor-choices-container {
   margin-bottom: 20px;
+
   @include media-breakpoint-up(sm) {
     margin-bottom: 40px;
   }
+}
+
+.latest-beside-editor-choices-container {
+  width: 368px;
+  margin-left: 16px;
 }
 
 .column-container {
