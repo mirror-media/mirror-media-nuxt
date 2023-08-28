@@ -10,7 +10,10 @@
       />
       <ContainerGptAd class="home__ad home__ad--hd" pageKey="home" adKey="HD" />
 
-      <section v-if="!isHomepageEditorChoiceB" class="editor-choices-container">
+      <section
+        v-if="!showHomepageEditorChoiceB"
+        class="editor-choices-container"
+      >
         <UiColumnHeader
           title="編輯精選"
           class="home__column-header home__column-header--editor-choices"
@@ -341,12 +344,12 @@ export default {
     },
 
     itemsOfLatestList() {
-      return this.isHomepageEditorChoiceB
+      return this.showHomepageEditorChoiceB
         ? this.latestItems.slice(6)
         : this.latestItems
     },
     itemsBesideEditorChoices() {
-      return this.isHomepageEditorChoiceB ? this.latestItems.slice(0, 5) : []
+      return this.showHomepageEditorChoiceB ? this.latestItems.slice(0, 5) : []
     },
 
     isValidEventModItem() {
@@ -414,11 +417,14 @@ export default {
         }
       }
     },
-    isHomepageEditorChoiceB() {
-      return false && this.isDesktopWidth
+    showHomepageEditorChoiceB() {
+      return (
+        this.$GOExp?.['homepage-editor-choices-redesigned']?.variant === '1' &&
+        this.isDesktopWidth
+      )
     },
     microAdIndexInserted() {
-      return this.isHomepageEditorChoiceB ? [7, 10, 13] : [2, 5, 8]
+      return this.showHomepageEditorChoiceB ? [7, 10, 13] : [2, 5, 8]
     },
   },
 
