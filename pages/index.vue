@@ -418,13 +418,14 @@ export default {
       }
     },
     showHomepageEditorChoiceB() {
+      // return this.isDesktopWidth
       return (
         this.$GOExp?.['homepage-editor-choices-redesigned']?.variant === '1' &&
         this.isDesktopWidth
       )
     },
     microAdIndexInserted() {
-      return this.showHomepageEditorChoiceB ? [7, 10, 13] : [2, 5, 8]
+      return this.showHomepageEditorChoiceB ? [8, 11, 14] : [2, 5, 8]
     },
   },
 
