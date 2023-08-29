@@ -32,7 +32,7 @@ function useViewport() {
      */
     ;({ innerWidth: viewport.width, innerHeight: viewport.height } = window)
 
-    store.commit('viewport/setViewport', viewport)
+    store?.commit('viewport/setViewport', viewport)
   }
 
   function updateViewportWithRaf() {
@@ -40,6 +40,8 @@ function useViewport() {
       updateViewport()
     })
   }
+
+  return viewport
 }
 
 export { useViewport }
