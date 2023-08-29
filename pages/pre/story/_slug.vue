@@ -93,6 +93,7 @@
           <section v-if="doesHaveLatestStories">
             <UiArticleListCompact
               :items="latestStories"
+              :isStyleAdjusted="true"
               @sendGa="sendGaForClick('popular')"
             />
           </section>
