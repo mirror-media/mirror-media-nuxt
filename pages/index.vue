@@ -288,6 +288,7 @@ export default {
       observerOfLastSecondFocusList: undefined,
       canFixLastFocusList: false,
       shouldFixLastFocusList: false,
+      microAdIndexInserted: [],
     }
   },
 
@@ -431,9 +432,6 @@ export default {
         this.viewport?.width >= 1200
       )
     },
-    microAdIndexInserted() {
-      return this.showHomepageEditorChoiceB ? [8, 11, 14] : [2, 5, 8]
-    },
   },
 
   watch: {
@@ -441,6 +439,7 @@ export default {
     canFixLastFocusList: ['handleFixLastFocusList'],
 
     hasScrolled: ['loadFixedEventMod', 'loadEventEmbedded'],
+    showHomepageEditorChoiceB: ['insertMicroAds'],
   },
 
   beforeMount() {
@@ -460,6 +459,10 @@ export default {
       console.error(err)
     }
     this.hasLoadedFirstGroupedArticle = true
+
+    this.microAdIndexInserted = this.showHomepageEditorChoiceB
+      ? [8, 11, 14]
+      : [2, 5, 8]
 
     this.insertMicroAds()
   },
@@ -482,6 +485,11 @@ export default {
       return currentTimestamp - articlesUpdateTimestamp > 1000 * 180
     },
     insertMicroAds() {
+      const newIndex = this.showHomepageEditorChoiceB ? [8, 11, 14] : [2, 5, 8]
+      if (newIndex[0] !== this.microAdIndexInserted[0]) {
+        this.areMicroAdsInserted = false
+      }
+      this.microAdIndexInserted = newIndex
       if (
         this.latestItems.length < LATEST_ARTICLES_MIN_NUM ||
         this.areMicroAdsInserted
@@ -489,6 +497,9 @@ export default {
         return
       }
 
+      this.latestList.items = this.latestList.items.filter(
+        (item) => !item.isMicroAd
+      )
       this.microAdIndexInserted.forEach((idxInserted, idxUnit) => {
         this.insertLatestItems(idxInserted, {
           isMicroAd: true,
