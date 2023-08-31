@@ -1,7 +1,7 @@
 <template>
   <div class="editor-choices">
     <ul class="editor-choices__article-list">
-      <li v-for="article in articles" :key="article.slug">
+      <li v-for="article in articles" :key="`${article.slug}-b`">
         <a
           :href="article.href"
           target="_blank"
@@ -54,7 +54,7 @@
         <template slot="default">
           <a
             v-for="article in articles"
-            :key="article.slug"
+            :key="`${article.slug}-b-slide-item`"
             class="swiper-slide GTM-editorchoice-list"
             :href="article.href"
             target="_blank"

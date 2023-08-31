@@ -11,7 +11,7 @@
       <ContainerGptAd class="home__ad home__ad--hd" pageKey="home" adKey="HD" />
 
       <section
-        v-if="!showHomepageEditorChoiceB"
+        v-show="!showHomepageEditorChoiceB"
         class="editor-choices-container"
       >
         <UiColumnHeader
@@ -24,7 +24,10 @@
         />
       </section>
 
-      <section v-else class="editor-choices-and-latest-container">
+      <section
+        v-show="showHomepageEditorChoiceB"
+        class="editor-choices-and-latest-container"
+      >
         <section class="editor-choices-container">
           <UiColumnHeader
             title="編輯精選"
@@ -36,12 +39,12 @@
           />
         </section>
         <div
-          v-if="itemsBesideEditorChoices.length"
+          v-show="itemsBesideEditorChoices.length"
           class="latest-beside-editor-choices-container"
         >
           <UiArticleListAsideItem
             v-for="item in itemsBesideEditorChoices"
-            :key="item.slug"
+            :key="`${item.slug}-aside`"
             :item="item"
           />
         </div>
