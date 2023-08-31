@@ -43,8 +43,8 @@
           class="latest-beside-editor-choices-container"
         >
           <UiArticleListAsideItem
-            v-for="item in itemsBesideEditorChoices"
-            :key="`${item.slug}-aside`"
+            v-for="(item, index) in itemsBesideEditorChoices"
+            :key="`${item.slug}-aside-${index}`"
             :item="item"
           />
         </div>
