@@ -118,7 +118,6 @@
                   class="latest-list"
                   heading="最新文章"
                   :items="latestStories"
-                  :isStyleAdjusted="true"
                   @sendGa="sendGaForClick('latest')"
                 />
               </div>
