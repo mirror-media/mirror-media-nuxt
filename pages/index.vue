@@ -99,6 +99,26 @@
 
           <section class="container">
             <UiColumnHeader title="最新文章" class="home__column-header" />
+            <section v-show="!showHomepageEditorChoiceB">
+              <UiArticleGalleryB
+                v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
+                :items="itemsBesideEditorChoices"
+                :isPremiumMember="isPremiumMember"
+                @sendGa="sendGaForClick('latest')"
+              />
+              <UiArticleGallery
+                v-if="shouldShowFocus"
+                :isPremiumMember="isPremiumMember"
+                :items="itemsBesideEditorChoices"
+                @sendGa="sendGaForClick('latest')"
+              />
+              <UiArticleGalleryWithoutFocus
+                v-else
+                :isPremiumMember="isPremiumMember"
+                :items="itemsBesideEditorChoices"
+                @sendGa="sendGaForClick('latest')"
+              />
+            </section>
             <UiArticleGalleryB
               v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
               :items="itemsOfLatestList"
@@ -168,6 +188,7 @@ import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
 import UiArticleGalleryB from '~/components/UiArticleGalleryB.vue'
+
 import UiArticleGalleryWithoutFocus from '~/components/UiArticleGalleryWithoutFocus.vue'
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
@@ -209,6 +230,7 @@ export default {
     ContainerGptAd,
     ContainerFullScreenAds,
     UiArticleGalleryB,
+
     UiArticleGalleryWithoutFocus,
     SvgCloseIcon,
     UiArticleListAsideItem,
@@ -348,12 +370,10 @@ export default {
     },
 
     itemsOfLatestList() {
-      return this.showHomepageEditorChoiceB
-        ? this.latestItems.slice(6)
-        : this.latestItems
+      return this.latestItems.slice(6)
     },
     itemsBesideEditorChoices() {
-      return this.showHomepageEditorChoiceB ? this.latestItems.slice(0, 5) : []
+      return this.latestItems.slice(0, 5)
     },
 
     isValidEventModItem() {
@@ -422,13 +442,6 @@ export default {
       }
     },
     showHomepageEditorChoiceB() {
-      console.log(
-        'experiment info:',
-        this.$GOExp?.['homepage-editor-choices-redesigned'],
-        'show b:',
-        this.$GOExp?.['homepage-editor-choices-redesigned']?.variant === '1' &&
-          this.isDesktopWidth
-      )
       return (
         this.$GOExp?.['homepage-editor-choices-redesigned']?.variant === '1' &&
         this.isDesktopWidth
