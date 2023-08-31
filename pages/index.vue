@@ -419,6 +419,13 @@ export default {
       }
     },
     showHomepageEditorChoiceB() {
+      console.log(
+        'experiment info:',
+        this.$GOExp?.['homepage-editor-choices-redesigned'],
+        'show b:',
+        this.$GOExp?.['homepage-editor-choices-redesigned']?.variant === '1' &&
+          this.isDesktopWidth
+      )
       return (
         this.$GOExp?.['homepage-editor-choices-redesigned']?.variant === '1' &&
         this.isDesktopWidth
