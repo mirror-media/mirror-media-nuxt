@@ -173,8 +173,6 @@ import UiArticleListAsideItem from '~/components/UiArticleListAsideItem.vue'
 
 import SvgCloseIcon from '~/assets/close-black.svg?inline'
 
-import { useViewport } from '~/composition/viewport.js'
-
 // import { isTruthy } from '~/utils/index.js'
 import { stripHtmlTags } from '~/utils/article.js'
 import { removeArticleWithExternalLink } from '~/utils/index.js'
@@ -212,12 +210,6 @@ export default {
     SvgCloseIcon,
     UiArticleListAsideItem,
     UiEditorChoicesB,
-  },
-
-  setup() {
-    useViewport()
-    const viewport = useViewport()
-    return { viewport }
   },
 
   async fetch() {
@@ -429,7 +421,7 @@ export default {
     showHomepageEditorChoiceB() {
       return (
         this.$GOExp?.['homepage-editor-choices-redesigned']?.variant === '1' &&
-        this.viewport?.width >= 1200
+        this.isDesktopWidth
       )
     },
   },

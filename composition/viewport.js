@@ -40,8 +40,6 @@ function useViewport() {
       updateViewport()
     })
   }
-
-  return viewport
 }
 
 export { useViewport }
