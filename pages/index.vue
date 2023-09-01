@@ -99,48 +99,50 @@
 
           <section class="container">
             <UiColumnHeader title="最新文章" class="home__column-header" />
-            <section v-show="!showHomepageEditorChoiceB">
+            <section v-if="!showHomepageEditorChoiceB">
               <UiArticleGalleryB
                 v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
-                :items="itemsBesideEditorChoices"
+                :items="latestItems"
                 :isPremiumMember="isPremiumMember"
                 @sendGa="sendGaForClick('latest')"
               />
               <UiArticleGallery
                 v-if="shouldShowFocus"
                 :isPremiumMember="isPremiumMember"
-                :items="itemsBesideEditorChoices"
+                :items="latestItems"
                 @sendGa="sendGaForClick('latest')"
               />
               <UiArticleGalleryWithoutFocus
                 v-else
                 :isPremiumMember="isPremiumMember"
-                :items="itemsBesideEditorChoices"
+                :items="latestItems"
                 @sendGa="sendGaForClick('latest')"
               />
             </section>
-            <UiArticleGalleryB
-              v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
-              :items="itemsOfLatestList"
-              :isPremiumMember="isPremiumMember"
-              @sendGa="sendGaForClick('latest')"
-            />
-            <UiArticleGallery
-              v-if="shouldShowFocus"
-              :isPremiumMember="isPremiumMember"
-              :items="itemsOfLatestList"
-              @sendGa="sendGaForClick('latest')"
-            />
-            <UiArticleGalleryWithoutFocus
-              v-else
-              :isPremiumMember="isPremiumMember"
-              :items="itemsOfLatestList"
-              @sendGa="sendGaForClick('latest')"
-            />
-            <UiInfiniteLoading
-              v-if="hasLoadedFirstGroupedArticle && latestItems.length > 3"
-              @infinite="handleInfiniteLoad"
-            />
+            <section v-else>
+              <UiArticleGalleryB
+                v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
+                :items="itemsOfLatestList"
+                :isPremiumMember="isPremiumMember"
+                @sendGa="sendGaForClick('latest')"
+              />
+              <UiArticleGallery
+                v-if="shouldShowFocus"
+                :isPremiumMember="isPremiumMember"
+                :items="itemsOfLatestList"
+                @sendGa="sendGaForClick('latest')"
+              />
+              <UiArticleGalleryWithoutFocus
+                v-else
+                :isPremiumMember="isPremiumMember"
+                :items="itemsOfLatestList"
+                @sendGa="sendGaForClick('latest')"
+              />
+              <UiInfiniteLoading
+                v-if="hasLoadedFirstGroupedArticle && latestItems.length > 3"
+                @infinite="handleInfiniteLoad"
+              />
+            </section>
           </section>
         </div>
       </div>
