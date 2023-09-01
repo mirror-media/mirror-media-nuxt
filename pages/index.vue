@@ -138,11 +138,11 @@
                 :items="itemsOfLatestList"
                 @sendGa="sendGaForClick('latest')"
               />
-              <UiInfiniteLoading
-                v-if="hasLoadedFirstGroupedArticle && latestItems.length > 3"
-                @infinite="handleInfiniteLoad"
-              />
             </section>
+            <UiInfiniteLoading
+              v-if="hasLoadedFirstGroupedArticle && latestItems.length > 3"
+              @infinite="handleInfiniteLoad"
+            />
           </section>
         </div>
       </div>
