@@ -99,50 +99,23 @@
 
           <section class="container">
             <UiColumnHeader title="最新文章" class="home__column-header" />
-            <section v-if="!showHomepageEditorChoiceB">
-              <UiArticleGalleryB
-                v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
-                :items="latestItems"
-                :isPremiumMember="isPremiumMember"
-                @sendGa="sendGaForClick('latest')"
-              />
-              <UiArticleGallery
-                v-if="shouldShowFocus"
-                :isPremiumMember="isPremiumMember"
-                :items="latestItems"
-                @sendGa="sendGaForClick('latest')"
-              />
-              <UiArticleGalleryWithoutFocus
-                v-else
-                :isPremiumMember="isPremiumMember"
-                :items="latestItems"
-                @sendGa="sendGaForClick('latest')"
-              />
-            </section>
-            <section v-else>
-              <UiArticleGalleryB
-                v-if="$GOExp['homepage-latest-redesign'].variant === '1'"
-                :items="itemsOfLatestList"
-                :isPremiumMember="isPremiumMember"
-                @sendGa="sendGaForClick('latest')"
-              />
-              <UiArticleGallery
-                v-if="shouldShowFocus"
-                :isPremiumMember="isPremiumMember"
-                :items="itemsOfLatestList"
-                @sendGa="sendGaForClick('latest')"
-              />
-              <UiArticleGalleryWithoutFocus
-                v-else
-                :isPremiumMember="isPremiumMember"
-                :items="itemsOfLatestList"
-                @sendGa="sendGaForClick('latest')"
-              />
-              <UiInfiniteLoading
-                v-if="hasLoadedFirstGroupedArticle && latestItems.length > 3"
-                @infinite="handleInfiniteLoad"
-              />
-            </section>
+            <UiArticleGallery
+              v-if="shouldShowFocus"
+              :isPremiumMember="isPremiumMember"
+              :items="itemsOfLatestList"
+              @sendGa="sendGaForClick('latest')"
+            />
+            <UiArticleGalleryWithoutFocus
+              v-else
+              :isPremiumMember="isPremiumMember"
+              :items="latestItems"
+              :showTopFive="!showHomepageEditorChoiceB"
+              @sendGa="sendGaForClick('latest')"
+            />
+            <UiInfiniteLoading
+              v-if="hasLoadedFirstGroupedArticle && latestItems.length > 3"
+              @infinite="handleInfiniteLoad"
+            />
           </section>
         </div>
       </div>
@@ -189,9 +162,9 @@ import UiEditorChoicesB from '~/components/UiEditorChoicesB.vue'
 import UiVideoModal from '~/components/UiVideoModal.vue'
 import UiArticleListFocus from '~/components/UiArticleListFocus.vue'
 import UiArticleGallery from '~/components/UiArticleGallery.vue'
-import UiArticleGalleryB from '~/components/UiArticleGalleryB.vue'
 
 import UiArticleGalleryWithoutFocus from '~/components/UiArticleGalleryWithoutFocus.vue'
+
 import UiInfiniteLoading from '~/components/UiInfiniteLoading.vue'
 import ContainerGptAd from '~/components/ContainerGptAd.vue'
 import ContainerFullScreenAds from '~/components/ContainerFullScreenAds.vue'
@@ -228,10 +201,10 @@ export default {
     UiVideoModal,
     UiArticleListFocus,
     UiArticleGallery,
+
     UiInfiniteLoading,
     ContainerGptAd,
     ContainerFullScreenAds,
-    UiArticleGalleryB,
 
     UiArticleGalleryWithoutFocus,
     SvgCloseIcon,
@@ -478,7 +451,7 @@ export default {
     this.hasLoadedFirstGroupedArticle = true
 
     this.microAdIndexInserted = this.showHomepageEditorChoiceB
-      ? [8, 11, 14]
+      ? [7, 10, 13]
       : [2, 5, 8]
 
     this.insertMicroAds()
@@ -502,7 +475,7 @@ export default {
       return currentTimestamp - articlesUpdateTimestamp > 1000 * 180
     },
     insertMicroAds() {
-      const newIndex = this.showHomepageEditorChoiceB ? [8, 11, 14] : [2, 5, 8]
+      const newIndex = this.showHomepageEditorChoiceB ? [7, 10, 13] : [2, 5, 8]
       if (newIndex[0] !== this.microAdIndexInserted[0]) {
         this.areMicroAdsInserted = false
       }
@@ -915,6 +888,13 @@ $width--aside: 226px;
       }
       @include media-breakpoint-up(xl) {
         display: none;
+      }
+    }
+
+    .column-header__top-five {
+      display: span;
+      ul {
+        display: span;
       }
     }
   }
