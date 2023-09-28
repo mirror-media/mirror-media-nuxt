@@ -73,7 +73,8 @@ switch (ENV) {
       'https://core.newebpay.com/MPG/mpg_gateway'
     PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME =
       process.env.PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME || 'linepay-webhook'
-    WEEKLY_API_SERVER_ORIGIN = ''
+    WEEKLY_API_SERVER_ORIGIN =
+      'adam-weekly-api-server-prod-ufaummkd5q-de.a.run.app'
     break
   case 'staging':
     API_HOST = 'tr-projects-rest'
@@ -94,7 +95,8 @@ switch (ENV) {
       'https://ccore.newebpay.com/MPG/mpg_gateway'
     PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME =
       process.env.PUBSUB_LINEPAY_WEBHOOK_TOPIC_NAME || 'linepay-webhook-staging'
-    WEEKLY_API_SERVER_ORIGIN = ''
+    WEEKLY_API_SERVER_ORIGIN =
+      'adam-weekly-api-server-staging-ufaummkd5q-de.a.run.app'
     break
   case 'dev':
     API_HOST = 'rest-service'
