@@ -11,20 +11,6 @@
             {{ detail.text }}
           </span>
         </li>
-        <li
-          v-for="discountDetail in discountDetails"
-          :key="discountDetail.text"
-        >
-          <img src="~/assets/list-style-ckeck.svg" />
-          <span class="hightlight">
-            {{ discountDetail.text }}
-            <a
-              href="mailto: MM-onlineservice@mirrormedia.mg"
-              class="membership-subscribe__blue"
-              >MM-onlineservice@mirrormedia.mg</a
-            >
-          </span>
-        </li>
       </ul>
     </div>
 
@@ -73,11 +59,6 @@ export default {
       default: '',
     },
     details: {
-      type: Array,
-      isRequired: true,
-      default: () => [],
-    },
-    discountDetails: {
       type: Array,
       isRequired: true,
       default: () => [],
