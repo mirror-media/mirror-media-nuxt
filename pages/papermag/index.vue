@@ -3,12 +3,11 @@
     <SubscribeStepProgress :currentStep="1" />
     <div v-if="shouldShowNotice" class="notice__wrapper">
       <div class="notice">
-        <h3>2023期間限定方案</h3>
-        <p>（1）「半年嘗鮮」28期 $1680</p>
-        <p>（2）「365年度」52期 $2780</p>
-        <p>（3）「團go」一次訂滿3份，52期 ∕ $2580 ∕ 份</p>
-        <br />
-        <p>洽詢電話：(02) 6633-3882，電子信箱： service@mirrormedia.mg</p>
+        <h3>[2月份訂戶派送異動公告]</h3>
+        <p>預祝新春如意！造成困擾敬請見諒。</p>
+        <p>第384期(原2/7)提前於2/3(六)出刊，2/6(二)完成配送。</p>
+        <p>第385期(原2/14)提前於2/7(三)出刊，因逢春節期間2/16(五)完成配送 。</p>
+        <p>第387期(原2/28)延至2/29(四)起配送，3/1(五)完成配送。</p>
       </div>
     </div>
     <SubscribeChoosePlan :shouldShowNotice="shouldShowNotice" />
@@ -26,10 +25,12 @@ export default {
   },
   computed: {
     shouldShowNotice() {
+      const startUtc = new Date(Date.UTC(2024, 0, 23, 16))
+      const endUtc = new Date(Date.UTC(2024, 1, 29, 16))
       const nowUtc = new Date(Date.now())
 
-      // now ~ 2023.9.30
-      return nowUtc < new Date(Date.UTC(2023, 8, 29, 16))
+      // 2024/1/24 ~ 3/1
+      return nowUtc > startUtc && nowUtc < endUtc
     },
   },
 }
