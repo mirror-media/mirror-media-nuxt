@@ -70,6 +70,14 @@ export default {
       password: '',
       isPasswordValid: false,
       isLoading: false,
+
+      /**
+       * 該email是否已被註冊過。
+       * 由於在該元件中，使用者可以修改原本在 `ContainerLoginFormInitial`所輸入的email，
+       * 所以可能會發生一個情形：
+       * 在`ContainerLoginFormInitial`所輸入的email尚未被註冊，但是進入到該元件時卻修改了email。
+       * 所以需要檢查是否email有被註冊過。於函式 `handleSubmit` 中檢查。
+       */
       isDuplicateEmailMember: false,
     }
   },
@@ -105,6 +113,17 @@ export default {
       this.isPasswordValid = value
     },
 
+    /**
+     * 當點擊送出按鈕後，會執行的非同步函式。
+     * 會依序執行三件事情：
+     * 1. 將狀態 `this.isLoading` 設為true
+     * 2. 執行非同步函式 `this.$fire.auth.createUserWithEmailAndPassword`
+     *    - 該非同步函式會於firebase創建User，並回傳使用者資訊。
+     *    - 使用者資訊的型別為 `UserCredential`，詳見[firebase 文件](https://firebase.google.com/docs/reference/js/v8/firebase.auth#usercredential)
+     *    - 如果創建成功的話，會 emit 事件 `registerSuccess`。emit後會在父元件 `login.vue`執行函式 `handleRegisterSuccess`。
+     *    - 如果創建失敗的話，會檢查email是否已被使用，如果是的話則將 `this.isDuplicateEmailMember`設為true；反之如果是其他錯誤的話，則emit 事件 `registerFail`，。emit後會在父元件 `login.vue`執行函式 `handleRegisterFail`
+     * 3. 非同步完畢執行完畢後，將狀態 `this.isLoading` 設為false。
+     */
     async handleSubmit() {
       this.isLoading = true
       try {

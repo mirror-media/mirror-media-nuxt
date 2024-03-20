@@ -69,6 +69,15 @@ export default {
       this.isPasswordValid = value
     },
 
+    /**
+     * 當點擊送出按鈕後，會執行的非同步函式。
+     * 會依序執行三件事情：
+     * 1. 將狀態 `this.isLoading` 設為true
+     * 2. 執行非同步函式 `this.$fire.auth.signInWithEmailAndPassword`
+     *    - 如果登入成功的話，會emit 事件 `loginSuccess`。emit後會在父元件 `login.vue`執行函式 `handleLoginSuccess`。
+     *    - 如果登入失敗的話，會檢查是否為密碼輸入錯誤，如果是的話則顯示對應的錯誤訊息；反之如果是其他錯誤的話，則emit 事件 `loginFail`，。emit後會在父元件 `login.vue`執行函式 `handleLoginFail`
+     * 3. 非同步完畢執行完畢後，將狀態 `this.isLoading` 設為false。
+     */
     async handleSubmit() {
       this.isLoading = true
       try {

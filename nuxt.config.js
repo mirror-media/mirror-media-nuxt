@@ -387,13 +387,13 @@ module.exports = {
             default: {
               return {
                 apiKey: 'AIzaSyAavk46-8OQ4B2cv0TOqxOMjd5Fe4tIauc',
-                authDomain: 'dev.mirrormedia.mg',
+                authDomain: 'mirrormediaapptest.firebaseapp.com',
                 databaseURL: 'https://mirrormediaapptest.firebaseio.com',
                 projectId: 'mirrormediaapptest',
                 storageBucket: 'mirrormediaapptest.appspot.com',
                 messagingSenderId: '305253456270',
                 appId: '1:305253456270:web:21f9851dd09f60ebfbacdf',
-                measurementId: 'G-EY5CYC602Z',
+                measurementId: 'G-8YH4MW9NX5',
               }
             }
           }

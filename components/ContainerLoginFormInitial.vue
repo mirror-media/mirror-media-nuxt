@@ -21,6 +21,8 @@
       <span>或</span>
     </div>
     <div class="login-form__email-login email-login">
+      <!-- 當使用點擊下一步又回到上一步後，原本輸入的值會被清空。
+      3.0希望保留email，不要被清空 -->
       <UiMembershipInputEmailInvalidation
         class="email-login__email-input"
         :shouldShowInvalidHint="isSubmitButtonClicked"
@@ -80,8 +82,22 @@ export default {
   },
   data() {
     return {
+      /**
+       * 使用者輸入的email資訊是否合乎email格式
+       */
       isEmailInputValid: false,
+
+      /**
+       * UI related state.
+       * 會影響子元件 `UiMembershipInputEmailInvalidation` 是否會顯示hint。
+       * 詳細邏輯請見子元件。
+       */
       isSubmitButtonClicked: false,
+
+      /**
+       * UI related state.
+       * 當執行函式 handleSubmit 中 `this.$fire.auth.fetchSignInMethodsForEmail`時，會改為true，避免多次觸發造成race condition。
+       */
       isLoading: false,
     }
   },
@@ -104,6 +120,14 @@ export default {
   },
 
   methods: {
+    /**
+     * 在輸入帳號密碼並點擊按鈕後執行。
+     * 會依序做三件事情：
+     * 1. 將狀態 `this.isSubmitButtonClicked` 與 `this.isLoading` 的值改為true。
+     * 2. 執行非同步函式 `this.$fire.auth.fetchSignInMethodsForEmail(this.email)`，該函式會取得特定email的登入方式，
+     * 並依據登入方式，emit 事件 `verifyEmailSignInMethod`。 emit 後會於父元件 `ContainerLoginForm.vue` 與 `login.vue`修改狀態 `this.prevAuthMethod`
+     * 3.再將狀態 `this.isLoading` 改為 false
+     */
     async handleSubmit() {
       this.isSubmitButtonClicked = true
 
@@ -161,6 +185,7 @@ export default {
       this.isLoading = false
     },
     handleInput(value) {
+      // 更新父元件的data this.email
       this.$emit('update:email', value)
     },
     handleInputValidStateChange(value) {
