@@ -3,11 +3,11 @@
     <SubscribeStepProgress :currentStep="1" />
     <div v-if="shouldShowNotice" class="notice__wrapper">
       <div class="notice">
-        <h3>[2月份訂戶派送異動公告]</h3>
-        <p>預祝新春如意！造成困擾敬請見諒。</p>
-        <p>第384期(原2/7)提前於2/3(六)出刊，2/6(二)完成配送。</p>
-        <p>第385期(原2/14)提前於2/7(三)出刊，因逢春節期間2/16(五)完成配送 。</p>
-        <p>第387期(原2/28)延至2/29(四)起配送，3/1(五)完成配送。</p>
+        <h3>[4月份訂戶派送異動公告]</h3>
+        <p>預祝清明佳節愉快！</p>
+        <p>
+          因逢清明連續假期，392期(4/3出刊)的雜誌最晚4/8(一)完成配送，造成困擾敬請見諒。
+        </p>
       </div>
     </div>
     <SubscribeChoosePlan :shouldShowNotice="shouldShowNotice" />
@@ -25,11 +25,11 @@ export default {
   },
   computed: {
     shouldShowNotice() {
-      const startUtc = new Date(Date.UTC(2024, 0, 23, 16))
-      const endUtc = new Date(Date.UTC(2024, 1, 29, 16))
+      const startUtc = new Date(Date.UTC(2024, 2, 19, 16))
+      const endUtc = new Date(Date.UTC(2024, 3, 8, 16))
       const nowUtc = new Date(Date.now())
 
-      // 2024/1/24 ~ 3/1
+      // 2024/3/20 ~ 4/9
       return nowUtc > startUtc && nowUtc < endUtc
     },
   },
