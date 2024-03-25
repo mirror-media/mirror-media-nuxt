@@ -7,7 +7,7 @@
         <UiDonateButton class="donate-button" />
       </div>
       <div class="inner-box">
-        <p class="desc">每月 $49 元全站看到飽，暢享無廣告閱讀體驗</p>
+        <p class="desc">每月 $79 元全站看到飽，暢享無廣告閱讀體驗</p>
         <UiBeSubscriberButton class="donate-button" />
       </div>
     </div>
