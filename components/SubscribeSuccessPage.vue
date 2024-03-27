@@ -92,11 +92,11 @@ export default {
         switch (this.orderInfo.frequency) {
           // set default price if can not fetch orderInfo
           case 'one time': {
-            orderPlanPrice = 5
+            orderPlanPrice = 10
             break
           }
           case 'monthly': {
-            orderPlanPrice = 49
+            orderPlanPrice = 79
             break
           }
           case 'yearly': {

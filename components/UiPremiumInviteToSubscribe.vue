@@ -6,7 +6,7 @@
         <div class="plans__plan plan plan--highlight-border">
           <div>
             <div class="plan__description">
-              <p>限時優惠每月$49元<br />全站看到飽</p>
+              <p>限時優惠每月$79元<br />全站看到飽</p>
             </div>
             <UiMembershipButtonPrimary
               class="plan__button"
@@ -21,7 +21,7 @@
       <div class="plans__plan plan">
         <div>
           <div class="plan__description">
-            <p>$5 元可享單篇好文 14 天無限瀏覽</p>
+            <p>$10 元可享單篇好文 14 天無限瀏覽</p>
           </div>
           <UiMembershipButtonLight
             class="plan__button"
