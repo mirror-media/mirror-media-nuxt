@@ -3,8 +3,23 @@
     <template v-if="doesHaveIsPayByAppValue">
       <SubscribeStepProgress :currentStep="1" />
       <ClientOnly>
-        <div>
-          <span>鏡週刊官網和APP訂閱方案自 2025年6月調漲!</span>
+        <div class="increase">
+          <div class="increase__title">
+            {{ increaseNotice.title }}
+          </div>
+          <div class="increase__detail detail">
+            <div v-for="item in increaseNotice.details" :key="item.type">
+              <div class="detail__title">{{ item.type }}</div>
+              <div
+                v-for="(line, index) in item.lines"
+                :key="index"
+                class="detail__line"
+              >
+                {{ line }}
+              </div>
+            </div>
+          </div>
+          <div class="increase__desc" v-html="increaseNotice.desc" />
         </div>
         <template v-if="isPayByApp">
           <div class="subscribe-choose__textcard">
@@ -242,6 +257,20 @@ export default {
         },
       ],
       isPayByApp: undefined,
+      increaseNotice: {
+        title: '鏡週刊官網和APP訂閱方案自 2025年6月調漲!',
+        details: [
+          {
+            type: '官網訂閱',
+            lines: ['月訂閱：99 元／每月', '年訂閱：799元／年'],
+          },
+          {
+            type: 'APP訂閱',
+            lines: ['月訂閱：100元／每月', '年訂閱：799元／年'],
+          },
+        ],
+        desc: '感謝您的每一筆付費，讓我們能為社會帶來更多深度報導~<br/>立即續訂，把握最後原價優惠!',
+      },
     }
   },
   computed: {
@@ -474,6 +503,53 @@ export default {
   margin-bottom: 48px;
   @include media-breakpoint-up(md) {
     margin-bottom: 60px;
+  }
+}
+
+.increase {
+  margin: 0 auto;
+  margin-top: 44px;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  font-family: 'PingFang TC';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  @include media-breakpoint-up(md) {
+    margin-top: 60px;
+  }
+  &__title {
+    color: #ea4335;
+  }
+
+  .detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+    @include media-breakpoint-up(md) {
+      flex-direction: row;
+      gap: 32px;
+    }
+    @include media-breakpoint-up(xl) {
+      gap: 60px;
+    }
+    &__title {
+      color: #414141;
+    }
+    &__line {
+      color: #808080;
+    }
+  }
+
+  &__desc {
+    color: #676767;
+    text-align: center;
   }
 }
 </style>
