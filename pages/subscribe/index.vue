@@ -3,6 +3,9 @@
     <template v-if="doesHaveIsPayByAppValue">
       <SubscribeStepProgress :currentStep="1" />
       <ClientOnly>
+        <div>
+          <span>鏡週刊官網和APP訂閱方案自 2025年6月調漲!</span>
+        </div>
         <template v-if="isPayByApp">
           <div class="subscribe-choose__textcard">
             <SubscribeWrapper>
