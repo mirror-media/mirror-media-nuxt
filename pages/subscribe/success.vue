@@ -85,7 +85,6 @@ export default {
             {
               detail: '鏡週刊Basic會員（單篇）',
               hint: '單篇 $10 元，享 14 天內無限次觀看',
-              price: '原價 NT$10',
               newPrice: 10,
               key: 'basic',
             },
