@@ -126,6 +126,7 @@ export default {
             {
               detail: '鏡週刊Premium會員（月方案）',
               hint: `每月 $${this.orderPlanPrice} 元，信用卡自動續扣`,
+              price: '原價 NT$99',
               newPrice: this.orderPlanPrice,
               key: 'month',
             },

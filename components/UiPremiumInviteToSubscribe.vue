@@ -6,7 +6,7 @@
         <div class="plans__plan plan plan--highlight-border">
           <div>
             <div class="plan__description">
-              <p>限時優惠每月$99元<br />全站看到飽</p>
+              <p>限時優惠每月$79元<br />全站看到飽</p>
             </div>
             <UiMembershipButtonPrimary
               class="plan__button"

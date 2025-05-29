@@ -206,6 +206,7 @@ export default {
               id: route.value.query['one-time-post-id'],
               detail: '鏡週刊Basic會員（單篇）',
               hint: '$10 元可享單篇好文 14 天無限瀏覽',
+              price: '原價 NT$10',
               newPrice: 10,
               key: 'basic',
             },
@@ -215,8 +216,9 @@ export default {
             {
               id: 1,
               detail: '鏡週刊Premium會員（月方案）',
-              hint: '每月 $99 元，信用卡自動續扣',
-              newPrice: 99,
+              hint: '每月 $79 元，信用卡自動續扣',
+              price: '原價 NT$99',
+              newPrice: 79,
               key: 'monthly',
             },
           ]
@@ -225,9 +227,9 @@ export default {
             {
               id: 1,
               detail: '鏡週刊Premium會員（年方案）',
-              hint: '每年 $799 元，信用卡自動續扣',
-              price: '原價 NT$1,188',
-              newPrice: 799,
+              hint: '每年 $499 元，信用卡自動續扣',
+              price: '原價 NT$1188',
+              newPrice: 499,
               key: 'yearly',
             },
           ]
