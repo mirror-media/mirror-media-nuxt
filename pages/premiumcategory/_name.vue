@@ -143,7 +143,6 @@ export default {
       )
     },
     gptAdFTPostion() {
-      console.log('here')
       if (!this.isViewportWidthUpXl && this.isViewportWidthUpMd) {
         return 8
       }
