@@ -41,7 +41,7 @@ const SUBSCRIBE_LINK = {
 const MAGAZINE_LINK = {
   name: 'magazine',
   title: '訂閱電子雜誌',
-  href: 'https://mybook.taiwanmobile.com/contentGroup/MIR0100100001',
+  href: 'https://www.momoshop.com.tw/category/DgrpCategory.jsp?d_code=4003200172&p_orderType=5',
 }
 const DIGITAL_LINK = {
   name: 'digital',
