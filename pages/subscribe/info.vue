@@ -443,6 +443,8 @@ export default {
           ENV === 'local'
             ? `http://localhost:3000/subscribe/return`
             : `https://${DOMAIN_NAME}/subscribe/return`
+        tradeInfo.CREDIT = 1
+        tradeInfo.Version = '2.2'
 
         // // encrypt tradeInfo
         this.paymentPayload = await this.$axios.$post(
