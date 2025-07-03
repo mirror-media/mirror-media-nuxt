@@ -1,6 +1,5 @@
 const NewebPay = require('@mirrormedia/newebpay-node')
 const { NEWEBPAY_KEY, NEWEBPAY_IV } = require('../configs/config')
-const { Frequency } = require('~/constants/common')
 
 module.exports = async function (req, res) {
   const tradeInfo = req.body
@@ -12,20 +11,22 @@ module.exports = async function (req, res) {
     let totalPrice = 0
     const { frequency } = tradeInfo
     switch (frequency) {
-      case Frequency.OneTimeHyphen:
+      case 'one_time':
         totalPrice = 10
         break
-      case Frequency.Monthly:
+      case 'monthly':
         totalPrice = 99
         break
-      case Frequency.Yearly:
+      case 'yearly':
         totalPrice = 799
         break
       default:
     }
 
     if (totalPrice !== parseInt(tradeInfo.Amt)) {
-      throw new Error('Amt is not correct input')
+      throw new Error(
+        `Amt is not correct input, it is ${tradeInfo.Amt} but should be ${totalPrice}`
+      )
     }
 
     const newebpay = new NewebPay(NEWEBPAY_KEY, NEWEBPAY_IV)
