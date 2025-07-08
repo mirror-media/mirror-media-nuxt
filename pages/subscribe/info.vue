@@ -438,6 +438,7 @@ export default {
         // emit apiGateWay
         const result = await this.getPaymentDataFromApiGateWay()
         const tradeInfo = qs.parse(result)
+        console.log(123, result)
 
         tradeInfo.ReturnURL =
           ENV === 'local'
@@ -453,7 +454,9 @@ export default {
         )
         this.$nextTick(() => {
           const formDOM = document.forms.newebpay
-          formDOM.submit()
+          console.log({ formDOM }, this.paymentPayload)
+
+          // formDOM.submit()
         })
       } catch (error) {
         console.error(error.message)
