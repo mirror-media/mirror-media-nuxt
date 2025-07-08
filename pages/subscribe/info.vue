@@ -166,11 +166,9 @@ import { Frequency, MemberType, PaymentMethod } from '~/constants/common'
 
 export default {
   middleware: [
-    /*
-     * 'authenticate',
-     * 'handle-go-to-marketing',
-     * 'handle-go-to-email-verify',
-     */
+    'authenticate',
+    'handle-go-to-marketing',
+    'handle-go-to-email-verify',
   ],
   components: {
     SubscribeStepProgress,

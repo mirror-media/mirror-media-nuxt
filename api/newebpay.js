@@ -1,3 +1,4 @@
+import errors from '@twreporter/errors'
 const NewebPay = require('@mirrormedia/newebpay-node')
 const { NEWEBPAY_KEY, NEWEBPAY_IV } = require('../configs/config')
 
@@ -34,6 +35,41 @@ module.exports = async function (req, res) {
 
     res.send(encryptPostData)
   } catch (e) {
-    res.send(e)
+    const annotatingError = errors.helpers.wrap(
+      e.message,
+      'UnhandledError',
+      'Error occurs while submit papermag'
+    )
+    console.log(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: errors.helpers.printAll(
+          annotatingError,
+          {
+            withStack: true,
+            withPayload: true,
+          },
+          0,
+          0
+        ),
+      })
+    )
+
+    /*
+     * console.error(
+     *   JSON.stringify({
+     *     message: `papermag payload:`,
+     *     debugPayload: {
+     *       'req.body': req.body,
+     *       error: e.message, // Print the whole error object
+     *     },
+     *     'logging.googleapis.com/trace': `projects/mirrormedia-1470651750304/traces/papermag`,
+     *   })
+     * )
+     */
+    res.status(500).send({
+      status: 'error',
+      message: e.message,
+    })
   }
 }
