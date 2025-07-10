@@ -165,11 +165,13 @@ import { Frequency, MemberType, PaymentMethod } from '~/constants/common'
 // import redirectDestination from '~/utils/redirect-destination'
 
 export default {
-  middleware: [
-    'authenticate',
-    'handle-go-to-marketing',
-    'handle-go-to-email-verify',
-  ],
+  /*
+   * middleware: [
+   *   'authenticate',
+   *   'handle-go-to-marketing',
+   *   'handle-go-to-email-verify',
+   * ],
+   */
   components: {
     SubscribeStepProgress,
     MembershipFormPlanList,
