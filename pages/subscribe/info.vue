@@ -165,13 +165,12 @@ import { Frequency, MemberType, PaymentMethod } from '~/constants/common'
 // import redirectDestination from '~/utils/redirect-destination'
 
 export default {
-  /*
-   * middleware: [
-   *   'authenticate',
-   *   'handle-go-to-marketing',
-   *   'handle-go-to-email-verify',
-   * ],
-   */
+  middleware: [
+    'authenticate',
+    'handle-go-to-marketing',
+    'handle-go-to-email-verify',
+  ],
+
   components: {
     SubscribeStepProgress,
     MembershipFormPlanList,
@@ -440,7 +439,6 @@ export default {
         // emit apiGateWay
         const result = await this.getPaymentDataFromApiGateWay()
         const tradeInfo = qs.parse(result)
-        console.log(123, result)
 
         tradeInfo.ReturnURL =
           ENV === 'local'
@@ -448,6 +446,7 @@ export default {
             : `https://${DOMAIN_NAME}/subscribe/return`
         tradeInfo.CREDIT = 1
         tradeInfo.Version = '2.2'
+        tradeInfo.frequency = this.frequency
 
         // // encrypt tradeInfo
         this.paymentPayload = await this.$axios.$post(
@@ -456,9 +455,7 @@ export default {
         )
         this.$nextTick(() => {
           const formDOM = document.forms.newebpay
-          console.log({ formDOM }, this.paymentPayload)
-
-          // formDOM.submit()
+          formDOM.submit()
         })
       } catch (error) {
         console.error(error.message)
