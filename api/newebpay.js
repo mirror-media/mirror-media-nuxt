@@ -26,9 +26,11 @@ module.exports = async function (req, res) {
     }
 
     if (totalPrice !== parseInt(tradeInfo.Amt)) {
-      throw new Error(
+      console.log(
+        tradeInfo.email,
         `Amt is not correct input, it is ${tradeInfo.Amt} but should be ${totalPrice}`
       )
+      throw new Error(`Amt is not correct input`)
     }
 
     const newebpay = new NewebPay(NEWEBPAY_KEY, NEWEBPAY_IV)
