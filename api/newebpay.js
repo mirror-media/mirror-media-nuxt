@@ -10,7 +10,7 @@ module.exports = async function (req, res) {
      * 詳見：https://app.asana.com/1/614399484723017/project/1210077071799813/task/1210384428427743?focus=true
      */
 
-    let totalPrice = 0
+    let totalPrice = 99999
     const { frequency } = tradeInfo
     switch (frequency) {
       case 'one_time':
@@ -36,6 +36,7 @@ module.exports = async function (req, res) {
 
     res.send(encryptPostData)
   } catch (e) {
+    console.log(tradeInfo.email, 'conter error:', e.message)
     res.status(500).send({
       status: 'error',
       message: e.message,
