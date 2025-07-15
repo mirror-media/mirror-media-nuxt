@@ -170,6 +170,7 @@ export default {
     'handle-go-to-marketing',
     'handle-go-to-email-verify',
   ],
+
   components: {
     SubscribeStepProgress,
     MembershipFormPlanList,
@@ -445,6 +446,7 @@ export default {
             : `https://${DOMAIN_NAME}/subscribe/return`
         tradeInfo.CREDIT = 1
         tradeInfo.Version = '2.2'
+        tradeInfo.frequency = this.frequency
 
         // // encrypt tradeInfo
         this.paymentPayload = await this.$axios.$post(
