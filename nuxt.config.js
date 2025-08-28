@@ -624,6 +624,8 @@ module.exports = {
     warmlifeFeatureToggle: process.env.WARM_LIFE_FEATURE_TOGGLE === 'on',
     purchaseOneTimeFeatureToggle:
       process.env.PURCHASE_ONE_TIME_FEATURE_TOGGLE === 'on',
+    anniversaryPromoFeatureToggle:
+      process.env.ANNIVERSARY_PROMO_FEATURE_TOGGLE === 'on',
   },
 
   env: {
