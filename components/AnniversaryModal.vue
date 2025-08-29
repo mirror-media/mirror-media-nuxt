@@ -56,6 +56,10 @@ export default {
 
   mounted() {
     this.checkModalStatus()
+    console.log(
+      'AnniversaryModal mounted, status:',
+      ANNIVERSARY_PROMO_FEATURE_TOGGLE
+    )
   },
 
   methods: {
