@@ -80,6 +80,12 @@ export default {
 
     checkModalStatus() {
       const hasSeenModal = this.getCookie('anniversary_modal_seen')
+      console.log(
+        'checkModalStatus',
+        hasSeenModal,
+        this.isSubscribe,
+        ANNIVERSARY_PROMO_FEATURE_TOGGLE
+      )
       if (
         (!hasSeenModal || this.isSubscribe) &&
         ANNIVERSARY_PROMO_FEATURE_TOGGLE
