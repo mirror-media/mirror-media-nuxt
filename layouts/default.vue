@@ -54,19 +54,12 @@ export default {
     },
     isSubscribePage() {
       const subscribeRoutes = [
-        'subscribe-index',
+        'subscribe',
         'subscribe-info',
         'subscribe-confirm',
         'subscribe-success',
         'subscribe-fail',
       ]
-      console.log('Current route name:', this.$route.name)
-      console.log('Current route path:', this.$route.path)
-      console.log('Subscribe routes:', subscribeRoutes)
-      console.log(
-        'isSubscribePage result:',
-        subscribeRoutes.includes(this.$route.name)
-      )
       return subscribeRoutes.includes(this.$route.name)
     },
     isListing() {
