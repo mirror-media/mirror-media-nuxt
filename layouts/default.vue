@@ -60,6 +60,7 @@ export default {
         'subscribe-success',
         'subscribe-fail',
       ]
+      console.log('isSubscribePage', subscribeRoutes.includes(this.$route.name))
       return subscribeRoutes.includes(this.$route.name)
     },
     isListing() {
@@ -74,7 +75,6 @@ export default {
         'tag-id',
         'externals-name',
       ]
-      console.log('isListing', listingRouteNames.includes(this.$route.name))
       return listingRouteNames.includes(this.$route.name)
     },
     isSearchPage() {
