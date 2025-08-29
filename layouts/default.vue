@@ -60,7 +60,13 @@ export default {
         'subscribe-success',
         'subscribe-fail',
       ]
-      console.log('isSubscribePage', subscribeRoutes.includes(this.$route.name))
+      console.log('Current route name:', this.$route.name)
+      console.log('Current route path:', this.$route.path)
+      console.log('Subscribe routes:', subscribeRoutes)
+      console.log(
+        'isSubscribePage result:',
+        subscribeRoutes.includes(this.$route.name)
+      )
       return subscribeRoutes.includes(this.$route.name)
     },
     isListing() {
