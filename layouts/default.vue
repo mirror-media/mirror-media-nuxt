@@ -10,6 +10,7 @@
   >
     <ContainerHeader />
     <div class="content">
+      <AnniversaryModal v-if="!isSubscribePage" :isSubscribe="false" />
       <nuxt />
     </div>
     <UiFooter :class="[{ 'footer--listing': isListing }]" />
@@ -24,7 +25,7 @@
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
-
+import AnniversaryModal from '~/components/AnniversaryModal.vue'
 import { useMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
 import { useViewport } from '~/composition/viewport.js'
 import { fireActivationEvent } from '~/utils/google-optimize.js'
@@ -34,6 +35,7 @@ export default {
     UiFooter,
     TheGdpr,
     ContainerHeader,
+    AnniversaryModal,
   },
   setup() {
     useViewport()
@@ -49,6 +51,16 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters['membership/isLoggedIn']
+    },
+    isSubscribePage() {
+      const subscribeRoutes = [
+        'subscribe-index',
+        'subscribe-info',
+        'subscribe-confirm',
+        'subscribe-success',
+        'subscribe-fail',
+      ]
+      return subscribeRoutes.includes(this.$route.name)
     },
     isListing() {
       const listingRouteNames = [

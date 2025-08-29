@@ -11,7 +11,10 @@
 </template>
 
 <script>
-import { NEWEBPAY_MEMBERSHIP_API_URL } from '~/configs/config.js'
+import {
+  NEWEBPAY_MEMBERSHIP_API_URL,
+  ANNIVERSARY_PROMO_FEATURE_TOGGLE,
+} from '~/configs/config.js'
 import NewebpayForm from '~/components/NewebpayForm.vue'
 
 export default {
@@ -45,7 +48,9 @@ export default {
   mounted() {
     // submit newebpay form-post to redirect to newebpay page
     const formDOM = document.forms.newebpay
-    formDOM.submit()
+    if (!ANNIVERSARY_PROMO_FEATURE_TOGGLE) {
+      formDOM.submit()
+    }
   },
   methods: {
     storeToSessionStorage(name, value) {

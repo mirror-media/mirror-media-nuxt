@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <AnniversaryModal :isSubscribe="false" />
     <div class="message-container">
       <div class="page__info">
         <h1 v-text="errorState.statusCode" />

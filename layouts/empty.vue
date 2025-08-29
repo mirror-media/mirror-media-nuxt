@@ -10,7 +10,6 @@
 
 <script>
 import TheGdpr from '~/components/TheGdpr.vue'
-
 import { fireActivationEvent } from '~/utils/google-optimize.js'
 
 import { useViewport } from '~/composition/viewport.js'

@@ -1,5 +1,6 @@
 <template>
   <div class="subscribe-choose">
+    <AnniversaryModal :isSubscribe="true" />
     <template v-if="doesHaveIsPayByAppValue">
       <SubscribeStepProgress :currentStep="1" />
       <ClientOnly>
@@ -100,6 +101,7 @@ import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
+import AnniversaryModal from '~/components/AnniversaryModal.vue'
 
 export default {
   middleware: ['handle-go-to-marketing'],
@@ -110,6 +112,7 @@ export default {
     SubscribeWrapper,
     UiMembershipButtonPrimary,
     UiLoadingCover,
+    AnniversaryModal,
   },
   setup() {
     const memberStatus = useMemberStatus()

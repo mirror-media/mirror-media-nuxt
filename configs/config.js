@@ -38,6 +38,8 @@ const SEARCH_URL = process.env.SEARCH_URL || 'search-url/search'
 const DONATION_PAGE_URL = process.env.DONATION_PAGE_URL
 const WARM_LIFE_FEATURE_TOGGLE =
   process.env.WARM_LIFE_FEATURE_TOGGLE === 'on' || false
+const ANNIVERSARY_PROMO_FEATURE_TOGGLE =
+  process.env.ANNIVERSARY_PROMO_FEATURE_TOGGLE === 'on' || false
 
 // The following variables are given values according to different `ENV`
 let API_HOST = ''
@@ -186,4 +188,5 @@ export {
   DONATION_PAGE_URL,
   WARM_LIFE_FEATURE_TOGGLE,
   WEEKLY_API_SERVER_ORIGIN,
+  ANNIVERSARY_PROMO_FEATURE_TOGGLE,
 }
