@@ -74,6 +74,7 @@ export default {
         'tag-id',
         'externals-name',
       ]
+      console.log('isListing', listingRouteNames.includes(this.$route.name))
       return listingRouteNames.includes(this.$route.name)
     },
     isSearchPage() {
