@@ -23,9 +23,13 @@
         <div class="anniversary-modal__time">
           {{ wordings.time }}
         </div>
-        <button v-if="isSubscribe" class="anniversary-modal__home-btn">
-          回首頁
-        </button>
+        <NuxtLink
+          v-if="isSubscribe"
+          class="anniversary-modal__home-btn"
+          href="/"
+        >
+          <span>回首頁</span>
+        </NuxtLink>
       </div>
     </div>
   </div>
@@ -54,10 +58,6 @@ export default {
 
   mounted() {
     this.checkModalStatus()
-    console.log(
-      'AnniversaryModal mounted, status:',
-      this.$config.anniversaryPromoFeatureToggle
-    )
   },
 
   methods: {
@@ -78,12 +78,6 @@ export default {
 
     checkModalStatus() {
       const hasSeenModal = this.getCookie('anniversary_modal_seen')
-      console.log(
-        'checkModalStatus',
-        hasSeenModal,
-        this.isSubscribe,
-        this.$config.anniversaryPromoFeatureToggle
-      )
       if (
         (!hasSeenModal || this.isSubscribe) &&
         this.$config.anniversaryPromoFeatureToggle
@@ -181,7 +175,8 @@ export default {
 
   &__home-btn {
     padding-top: 10px;
-    color: white;
+    color: #fff;
+    text-decoration: none;
     border: none;
     border-radius: 8px;
     background: #054f77;
