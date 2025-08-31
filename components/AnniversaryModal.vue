@@ -32,8 +32,6 @@
 </template>
 
 <script>
-import { ANNIVERSARY_PROMO_FEATURE_TOGGLE } from '~/configs/config'
-
 export default {
   name: 'AnniversaryModal',
 
@@ -58,7 +56,7 @@ export default {
     this.checkModalStatus()
     console.log(
       'AnniversaryModal mounted, status:',
-      ANNIVERSARY_PROMO_FEATURE_TOGGLE
+      this.$config.anniversaryPromoFeatureToggle
     )
   },
 
@@ -84,11 +82,11 @@ export default {
         'checkModalStatus',
         hasSeenModal,
         this.isSubscribe,
-        ANNIVERSARY_PROMO_FEATURE_TOGGLE
+        this.$config.anniversaryPromoFeatureToggle
       )
       if (
         (!hasSeenModal || this.isSubscribe) &&
-        ANNIVERSARY_PROMO_FEATURE_TOGGLE
+        this.$config.anniversaryPromoFeatureToggle
       ) {
         this.isModalOpen = true
       }
