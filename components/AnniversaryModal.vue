@@ -23,13 +23,9 @@
         <div class="anniversary-modal__time">
           {{ wordings.time }}
         </div>
-        <NuxtLink
-          v-if="isSubscribe"
-          class="anniversary-modal__home-btn"
-          href="/"
-        >
+        <a v-if="isSubscribe" class="anniversary-modal__home-btn" href="/">
           <span>回首頁</span>
-        </NuxtLink>
+        </a>
       </div>
     </div>
   </div>
@@ -175,6 +171,7 @@ export default {
 
   &__home-btn {
     padding-top: 10px;
+    display: block;
     color: #fff;
     text-decoration: none;
     border: none;
