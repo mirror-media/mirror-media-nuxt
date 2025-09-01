@@ -56,6 +56,10 @@ export default {
     this.checkModalStatus()
   },
 
+  beforeDestroy() {
+    this.enableScroll()
+  },
+
   methods: {
     getCookie(name) {
       if (typeof document === 'undefined' || this.isSubscribe) return null
@@ -79,11 +83,27 @@ export default {
         this.$config.anniversaryPromoFeatureToggle
       ) {
         this.isModalOpen = true
+        this.disableScroll()
       }
+    },
+
+    disableScroll() {
+      if (typeof document === 'undefined') return
+      document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
+    },
+
+    enableScroll() {
+      if (typeof document === 'undefined') return
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
     },
 
     handleCloseClick() {
       this.isModalOpen = false
+      this.enableScroll()
       if (!this.isSubscribe) {
         this.setCookie('anniversary_modal_seen', 'true', 365)
       }
