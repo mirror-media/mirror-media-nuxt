@@ -79,7 +79,7 @@ export default {
     checkModalStatus() {
       const hasSeenModal = this.getCookie('anniversary_modal_seen')
       if (!this.isSubscribe) {
-        if (this.$config.anniversaryModalFeatureToggle && !hasSeenModal) {
+        if (!hasSeenModal) {
           this.isModalOpen = true
           this.disableScroll()
         }
