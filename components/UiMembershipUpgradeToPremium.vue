@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="purchase__message">{{ messageTitle }}</div>
-    <div class="purchase__upgrade">
+    <!-- <div class="purchase__upgrade">
       <div class="purchase__upgrade_title">
         準備好升級為鏡週刊 Premium 會員了嗎？
       </div>
@@ -11,17 +11,19 @@
       <UiMembershipButtonPrimary @click.native="$emit('upgrade')">
         升級 Premium 會員
       </UiMembershipButtonPrimary>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
+// import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 
 export default {
-  components: {
-    UiMembershipButtonPrimary,
-  },
+  /*
+   * components: {
+   *   UiMembershipButtonPrimary,
+   * },
+   */
   props: {
     messageTitle: {
       type: String,
