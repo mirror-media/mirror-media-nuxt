@@ -45,7 +45,9 @@ export default {
   mounted() {
     // submit newebpay form-post to redirect to newebpay page
     const formDOM = document.forms.newebpay
-    formDOM.submit()
+    if (!this.$config.anniversaryPromoFeatureToggle) {
+      formDOM.submit()
+    }
   },
   methods: {
     storeToSessionStorage(name, value) {
