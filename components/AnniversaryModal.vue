@@ -82,10 +82,10 @@ export default {
         if (this.$config.anniversaryModalFeatureToggle && !hasSeenModal) {
           this.isModalOpen = true
           this.disableScroll()
-        } else if (this.$config.anniversaryPromoFeatureToggle) {
-          this.isModalOpen = true
-          this.disableScroll()
         }
+      } else if (this.$config.anniversaryPromoFeatureToggle) {
+        this.isModalOpen = true
+        this.disableScroll()
       }
     },
     disableScroll() {
