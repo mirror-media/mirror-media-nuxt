@@ -626,8 +626,6 @@ module.exports = {
       process.env.PURCHASE_ONE_TIME_FEATURE_TOGGLE === 'on',
     anniversaryPromoFeatureToggle:
       process.env.ANNIVERSARY_PROMO_FEATURE_TOGGLE === 'on',
-    anniversaryModalFeatureToggle:
-      process.env.ANNIVERSARY_MODAL_FEATURE_TOGGLE === 'on',
   },
 
   env: {
