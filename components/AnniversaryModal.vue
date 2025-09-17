@@ -78,15 +78,22 @@ export default {
 
     checkModalStatus() {
       const hasSeenModal = this.getCookie('anniversary_modal_seen')
-      if (!this.isSubscribe) {
-        if (this.$config.anniversaryModalFeatureToggle && !hasSeenModal) {
-          this.isModalOpen = true
-          this.disableScroll()
-        }
-      } else if (this.$config.anniversaryPromoFeatureToggle) {
+      if (!hasSeenModal && !this.isSubscribe) {
         this.isModalOpen = true
         this.disableScroll()
       }
+
+      /*
+       * if (!this.isSubscribe) {
+       *   if (!hasSeenModal) {
+       *     this.isModalOpen = true
+       *     this.disableScroll()
+       *   }
+       * } else if (this.$config.anniversaryPromoFeatureToggle) {
+       *   this.isModalOpen = true
+       *   this.disableScroll()
+       * }
+       */
     },
     disableScroll() {
       if (typeof document === 'undefined') return
@@ -244,16 +251,16 @@ export default {
 
     &-icon {
       position: relative;
-      width: 16px;
-      height: 2px;
-      background: white;
-      border-radius: 1px;
+      width: 18px;
+      height: 18px;
 
       &::before,
       &::after {
         content: '';
         position: absolute;
-        width: 16px;
+        top: 50%;
+        left: 50%;
+        width: 18px;
         height: 2px;
         background: white;
         border-radius: 1px;
@@ -261,11 +268,11 @@ export default {
       }
 
       &::before {
-        transform: rotate(45deg);
+        transform: translate(-50%, -50%) rotate(45deg);
       }
 
       &::after {
-        transform: rotate(-45deg);
+        transform: translate(-50%, -50%) rotate(-45deg);
       }
     }
   }
