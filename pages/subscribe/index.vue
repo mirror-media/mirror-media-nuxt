@@ -40,6 +40,7 @@
 
         <template v-else-if="memberStatus !== 'year'">
           <div class="subscribe-choose__wrapper">
+            <AnniversaryMessage />
             <h2
               v-if="memberStatus !== 'month'"
               class="subscribe-choose__wrapper_title"
@@ -102,6 +103,7 @@ import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
 import AnniversaryModal from '~/components/AnniversaryModal.vue'
+import AnniversaryMessage from '~/pages/subscribe/anniversary-message.vue'
 
 export default {
   middleware: ['handle-go-to-marketing'],
@@ -113,6 +115,7 @@ export default {
     UiMembershipButtonPrimary,
     UiLoadingCover,
     AnniversaryModal,
+    AnniversaryMessage,
   },
   setup() {
     const memberStatus = useMemberStatus()
