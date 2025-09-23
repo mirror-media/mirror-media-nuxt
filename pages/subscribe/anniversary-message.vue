@@ -17,6 +17,7 @@ export default {
 
 <style lang="scss" scoped>
 .anniversary-message {
+  font-family: 'PingFang TC';
   margin: 0 auto 24px;
 
   @include media-breakpoint-up(md) {
@@ -28,6 +29,8 @@ export default {
     font-weight: 500;
     line-height: 1;
     color: #e51731;
+    letter-spacing: 0;
+    margin-bottom: 5px;
 
     @include media-breakpoint-up(md) {
       font-size: 24px;
@@ -40,6 +43,7 @@ export default {
     font-size: 16px;
     font-weight: 400;
     line-height: 1.5;
+    letter-spacing: 0;
 
     @include media-breakpoint-up(md) {
       font-size: 18px;
