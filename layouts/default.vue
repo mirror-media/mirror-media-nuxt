@@ -10,7 +10,7 @@
   >
     <ContainerHeader />
     <div class="content">
-      <AnniversaryModal :isSubscribe="false" />
+      <AnniversaryModal :isSubscribe="isSubscribePage" />
       <nuxt />
     </div>
     <UiFooter :class="[{ 'footer--listing': isListing }]" />
