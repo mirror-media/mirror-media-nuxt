@@ -78,22 +78,16 @@ export default {
 
     checkModalStatus() {
       const hasSeenModal = this.getCookie('anniversary_modal_seen')
-      if (!hasSeenModal && !this.isSubscribe) {
+
+      if (!this.isSubscribe) {
+        if (!hasSeenModal) {
+          this.isModalOpen = true
+          this.disableScroll()
+        }
+      } else {
         this.isModalOpen = true
         this.disableScroll()
       }
-
-      /*
-       * if (!this.isSubscribe) {
-       *   if (!hasSeenModal) {
-       *     this.isModalOpen = true
-       *     this.disableScroll()
-       *   }
-       * } else if (this.$config.anniversaryPromoFeatureToggle) {
-       *   this.isModalOpen = true
-       *   this.disableScroll()
-       * }
-       */
     },
     disableScroll() {
       if (typeof document === 'undefined') return
