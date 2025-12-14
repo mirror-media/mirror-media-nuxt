@@ -1,6 +1,5 @@
 <template>
   <div class="subscribe-choose">
-    <AnniversaryModal :isSubscribe="true" />
     <template v-if="doesHaveIsPayByAppValue">
       <SubscribeStepProgress :currentStep="1" />
       <ClientOnly>
@@ -102,7 +101,6 @@ import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
-import AnniversaryModal from '~/components/AnniversaryModal.vue'
 import AnniversaryMessage from '~/pages/subscribe/anniversary-message.vue'
 
 export default {
@@ -114,7 +112,6 @@ export default {
     SubscribeWrapper,
     UiMembershipButtonPrimary,
     UiLoadingCover,
-    AnniversaryModal,
     AnniversaryMessage,
   },
   setup() {

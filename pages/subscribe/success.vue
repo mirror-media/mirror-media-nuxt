@@ -1,7 +1,6 @@
 <template>
   <section>
     <SubscribeStepProgress :currentStep="3" />
-    <AnniversaryModal :isSubscribe="true" />
     <div class="subscribe-success">
       <div class="subscribe-success__message">
         {{ successMessage }}
@@ -54,7 +53,6 @@ import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOr
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import { useCustomEventToFbPixel } from '~/composition/fb-pixel.js'
-import AnniversaryModal from '~/components/AnniversaryModal.vue'
 export default {
   middleware: ['handle-go-to-marketing'],
   setup() {
@@ -67,7 +65,6 @@ export default {
     SubscribeSuccessOrderInfoContentRow,
     MembershipFormPerchaseInfo,
     UiMembershipButtonSecondary,
-    AnniversaryModal,
   },
   data() {
     return {

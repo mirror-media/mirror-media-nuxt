@@ -1,7 +1,6 @@
 <template>
   <div>
     <SubscribeStepProgress :currentStep="2" />
-    <AnniversaryModal :isSubscribe="true" />
     <SubscribeFail category="newebpay" />
   </div>
 </template>
@@ -9,14 +8,12 @@
 <script>
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
-import AnniversaryModal from '~/components/AnniversaryModal.vue'
 
 export default {
   middleware: ['handle-go-to-marketing'],
   components: {
     SubscribeFail,
     SubscribeStepProgress,
-    AnniversaryModal,
   },
   data() {
     return {

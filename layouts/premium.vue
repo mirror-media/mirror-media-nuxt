@@ -1,6 +1,5 @@
 <template>
   <div>
-    <AnniversaryModal :isSubscribe="false" />
     <ContainerHeaderSectionMember
       class="header"
       @sidebarToggle="handleIndexActive(!isIndexActive)"

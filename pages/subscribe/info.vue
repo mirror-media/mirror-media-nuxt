@@ -4,7 +4,6 @@
       :currentStep="2"
       :isUpgradeFromMonthToYear="isUpgradeFromMonthToYear"
     />
-    <AnniversaryModal :isSubscribe="true" />
 
     <div class="subscribe-info__form">
       <div class="subscribe-info__form_wrapper">
@@ -162,7 +161,6 @@ import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
 import { STATUS as REQUEST_STATUS } from '~/constants/request.js'
 import { Frequency, MemberType, PaymentMethod } from '~/constants/common'
-import AnniversaryModal from '~/components/AnniversaryModal.vue'
 
 // import redirectDestination from '~/utils/redirect-destination'
 
@@ -181,7 +179,6 @@ export default {
     SubscribeFormReceipt,
     UiSubscribeButton,
     NewebpayForm,
-    AnniversaryModal,
   },
   setup() {
     const route = useRoute()
