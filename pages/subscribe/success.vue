@@ -74,7 +74,6 @@ export default {
 
       // TODO: remove due to not use anymore
       hasLink: false,
-      isUpgradeFromMonthToYear: true,
     }
   },
   computed: {
@@ -87,16 +86,6 @@ export default {
               hint: '單篇 $10 元，享 14 天內無限次觀看',
               newPrice: 10,
               key: 'basic',
-            },
-          ]
-        }
-        case 'monthly': {
-          return [
-            {
-              detail: '鏡週刊Premium會員（月方案）',
-              hint: '每月 $99 元，信用卡自動續扣',
-              newPrice: 99,
-              key: 'month',
             },
           ]
         }
@@ -117,11 +106,7 @@ export default {
       }
     },
     successMessage() {
-      if (this.isUpgradeFromMonthToYear) {
-        return '訂單處理中，請稍候在訂閱紀錄確認訂單狀況。'
-      } else {
-        return '您已完成付款，以下為本次訂購資訊，已同步寄送至您的信箱。'
-      }
+      return '您已完成付款，以下為本次訂購資訊，已同步寄送至您的信箱。'
     },
   },
   methods: {

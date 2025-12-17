@@ -86,38 +86,19 @@ export default {
       return this.isPremium ? '會員等級：Premium會員' : '會員等級：Basic 會員'
     },
     premiumPlan() {
-      return this.memberShipStatus.name === MemberType.Yearly ||
-        this.memberShipStatus.name === MemberType.YearlyToMonthly ||
-        this.memberShipStatus.name === MemberType.YearlyDisturbed
-        ? '年訂閱'
-        : '月訂閱'
+      return '年訂閱'
     },
     canUpdateToYearly() {
-      return (
-        (this.memberShipStatus.name === MemberType.Monthly ||
-          this.memberShipStatus.name === MemberType.MonthlyDisturbed) &&
-        this.memberShipStatus.payMethod !== 'LINE Pay'
-      )
+      return false
     },
     isDisturb() {
       return (
-        this.memberShipStatus.name === MemberType.MonthlyDisturbed ||
         this.memberShipStatus.name === MemberType.YearlyDisturbed ||
         this.memberShipStatus.name === MemberType.Disturbed
       )
     },
     updatePrompt() {
-      if (this.memberShipStatus.name === MemberType.MonthlyToYearly) {
-        return {
-          isReadyToUpdate: true,
-          updateHint: `您已成功完成年訂閱方案變更，年訂閱將於本次週期結束後生效。`,
-        }
-      } else if (this.memberShipStatus.name === MemberType.YearlyToMonthly) {
-        return {
-          isReadyToUpdate: true,
-          updateHint: `您已成功完成月訂閱方案變更，月訂閱將於本次週期結束後生效。`,
-        }
-      } else return { isReadyToUpdate: false }
+      return { isReadyToUpdate: false }
     },
   },
   methods: {
