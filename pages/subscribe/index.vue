@@ -20,27 +20,9 @@
             </SubscribeWrapper>
           </div>
         </template>
-        <template v-else-if="shouldShowLinePayWarning.value">
-          <div class="subscribe-choose__textcard">
-            <SubscribeWrapper>
-              <div class="subscribe-choose__textcard_description">
-                LINE Pay
-                僅進行月訂閱續扣，如要改為年訂閱續扣，請取消目前訂閱後，以「信用卡」付款方式進行訂閱
-              </div>
-              <UiMembershipButtonPrimary
-                class="subscribe-choose__textcard_back"
-                @click.native="handleGoToSectionMember"
-              >
-                回會員專區
-              </UiMembershipButtonPrimary>
-            </SubscribeWrapper>
-          </div>
-        </template>
-
         <template v-else-if="memberStatus !== 'year'">
           <div class="subscribe-choose__wrapper">
             <h2
-              v-if="memberStatus !== 'month'"
               class="subscribe-choose__wrapper_title"
               :class="{ basic: memberStatus === 'basic' }"
             >
@@ -87,13 +69,7 @@
 </template>
 
 <script>
-import {
-  computed,
-  useStore,
-  useContext,
-  useAsync,
-  ref,
-} from '@nuxtjs/composition-api'
+import { computed, useStore } from '@nuxtjs/composition-api'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
@@ -113,17 +89,9 @@ export default {
   },
   setup() {
     const memberStatus = useMemberStatus()
-    let shouldShowLinePayWarning = ref(false)
-    if (memberStatus.value === 'month') {
-      // if user is subscribe monthly, and paid by line pay, this page will show some warning to user
-      shouldShowLinePayWarning = useAsync(() =>
-        useShouldShowLinePayWarning(memberStatus)
-      )
-    }
 
     return {
       memberStatus,
-      shouldShowLinePayWarning,
     }
 
     function useMemberStatus() {
@@ -139,29 +107,10 @@ export default {
           'subscribe_yearly'
         ) {
           return 'year'
-        } else if (
-          state?.['membership-subscribe']?.basicInfo?.type ===
-          'subscribe_monthly'
-        ) {
-          return 'month'
         } else {
           return 'basic'
         }
       }
-    }
-
-    async function useShouldShowLinePayWarning(memberStatus) {
-      const { $getMemberShipStatus } = useContext()
-
-      const memberShipStatus = ref(null)
-      memberShipStatus.value = await $getMemberShipStatus(memberStatus)
-      const shouldShowLinePayWarning = computed(() =>
-        computeShouldShowLinePayWarning(memberShipStatus)
-      )
-      return shouldShowLinePayWarning
-    }
-    function computeShouldShowLinePayWarning(memberShipStatus) {
-      return memberShipStatus?.value?.payMethod === 'LINE Pay'
     }
   },
   async fetch() {
@@ -226,28 +175,6 @@ export default {
     planShowed() {
       let planShowed = []
       switch (this.memberStatus) {
-        case 'month':
-          planShowed = [
-            {
-              title: '變更為年訂閱方案',
-              details: [
-                { text: '支持鏡週刊報導精神' },
-                { text: '暢讀鏡週刊獨家報導' },
-                { text: '兩本一冊好文分類流暢閱讀' },
-                { text: '隨身攜帶讀物' },
-                { text: '全台唯一綜合類型雜誌' },
-                { text: '每期只要 $35 元' },
-                { text: '年方案定價$2,600元，限時優惠$1,800' },
-              ],
-              buttons: [
-                {
-                  title: '訂閱年方案',
-                  hint: '優惠 $1800 元',
-                },
-              ],
-            },
-          ]
-          break
         case 'basic':
           planShowed = [
             {
@@ -311,12 +238,7 @@ export default {
     },
 
     hintUnderButton() {
-      switch (this.memberStatus) {
-        case 'month':
-          return '升級將在本次收費週期結束時生效'
-        default:
-          return null
-      }
+      return null
     },
     doesHaveIsPayByAppValue() {
       return this.isPayByApp !== undefined
