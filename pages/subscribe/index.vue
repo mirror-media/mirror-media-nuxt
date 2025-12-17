@@ -213,7 +213,7 @@ export default {
               buttons: [
                 {
                   title: '訂閱年方案',
-                  hint: '優惠 $799 元',
+                  hint: '優惠 $1800 元',
                 },
               ],
             },

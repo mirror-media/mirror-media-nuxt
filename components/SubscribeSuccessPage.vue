@@ -100,7 +100,7 @@ export default {
             break
           }
           case 'yearly': {
-            orderPlanPrice = 499
+            orderPlanPrice = 1800
             break
           }
         }
