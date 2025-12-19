@@ -159,12 +159,12 @@ export default {
         },
         {
           id: 3,
-          text: '如有訂閱及退款相關問題，請洽客服信箱service@mirrormedia.mg或電: (02) 6633-3882，有專人為您服務。服務時間：週一～週五 10:00~18:00、國定例假日',
+          text: '如有訂閱及退款相關問題，請洽客服信箱service@mirrormedia.mg或電: (02) 6633-3882，有專人為您服務。',
           style: 'normal',
         },
         {
           id: 4,
-          text: '服務時間：週一～週五 10:00~18:00、國定例假日',
+          text: '服務時間：週一～週五 10:00~18:00',
           style: 'normal',
         },
       ],
@@ -221,9 +221,9 @@ export default {
               title: 'Basic 會員',
               details: [
                 { text: '支持鏡週刊報導精神' },
-                { text: '好文解鎖 隨心所欲' },
+                { text: '內容無限暢讀' },
                 {
-                  text: '$10 元可享單篇好文 14 天無限瀏覽',
+                  text: '熱門專題、人物故事、精彩報導一次掌握',
                 },
               ],
               buttons: [
