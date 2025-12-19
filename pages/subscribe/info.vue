@@ -1,21 +1,15 @@
 <template>
   <div class="subscribe-info">
-    <SubscribeStepProgress
-      :currentStep="2"
-      :isUpgradeFromMonthToYear="isUpgradeFromMonthToYear"
-    />
-    <AnniversaryModal :isSubscribe="true" />
+    <SubscribeStepProgress :currentStep="2" />
 
     <div class="subscribe-info__form">
       <div class="subscribe-info__form_wrapper">
         <div class="subscribe-info__form_left">
           <MembershipFormPlanList
             :perchasedPlan="perchasedPlan"
-            :isUpgradeFromMonthToYear="isUpgradeFromMonthToYear"
             @back="handleBack"
           />
           <div
-            v-if="!isUpgradeFromMonthToYear"
             class="subscribe-info__form_left_email"
             :class="{ error: $v.email.$error }"
           >
@@ -41,7 +35,7 @@
             >
           </div>
           <SubscribeFormPayment
-            v-if="showLINEPayUI && !isUpgradeFromMonthToYear"
+            v-if="showLINEPayUI"
             ref="paymentDOM"
             :setPaymentMethod="setPaymentMethod"
             :validateOn="validateOn"
@@ -49,7 +43,6 @@
             :frequency="frequency"
           />
           <SubscribeFormReceipt
-            v-if="!isUpgradeFromMonthToYear"
             ref="receiptDOM"
             :setReceiptData="setReceiptData"
             :validateOn="validateOn"
@@ -79,10 +72,7 @@
               >
             </label>
           </div>
-          <p
-            v-if="!isUpgradeFromMonthToYear"
-            class="subscribe-info__form_left_hint"
-          >
+          <p class="subscribe-info__form_left_hint">
             <template v-if="showLINEPayUI">
               按下開始結帳後，頁面將會跳離，抵達由藍新金流 NewebPay&#xff0f;LINE
               Pay 所提供的線上結帳頁面，完成後將會再跳回到鏡週刊
@@ -94,36 +84,18 @@
           </p>
           <template v-if="showLINEPayUI">
             <UiSubscribeButton
-              v-if="isUpgradeFromMonthToYear"
-              class="change-plan-btn"
-              title="確認變更方案"
+              title="開始結帳"
               :isLoading="isLoading"
-              @click.native="updateHandler"
+              :class="{ disabled: disallowToSubmit }"
+              @click.native="submitHandler"
             />
-            <template v-else>
-              <UiSubscribeButton
-                title="開始結帳"
-                :isLoading="isLoading"
-                :class="{ disabled: disallowToSubmit }"
-                @click.native="submitHandler"
-              />
-            </template>
           </template>
           <template v-else>
             <UiSubscribeButton
-              v-if="isUpgradeFromMonthToYear"
-              class="change-plan-btn"
-              title="確認變更方案"
+              title="使用信用卡結帳"
               :isLoading="isLoading"
-              @click.native="updateHandler"
+              @click.native="submitHandler"
             />
-            <template v-else>
-              <UiSubscribeButton
-                title="使用信用卡結帳"
-                :isLoading="isLoading"
-                @click.native="submitHandler"
-              />
-            </template>
           </template>
         </div>
         <div class="subscribe-info__form_right">
@@ -161,8 +133,7 @@ import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
 import { STATUS as REQUEST_STATUS } from '~/constants/request.js'
-import { Frequency, MemberType, PaymentMethod } from '~/constants/common'
-import AnniversaryModal from '~/components/AnniversaryModal.vue'
+import { Frequency, PaymentMethod } from '~/constants/common'
 
 // import redirectDestination from '~/utils/redirect-destination'
 
@@ -181,7 +152,6 @@ export default {
     SubscribeFormReceipt,
     UiSubscribeButton,
     NewebpayForm,
-    AnniversaryModal,
   },
   setup() {
     const route = useRoute()
@@ -192,9 +162,6 @@ export default {
     const isNeedToCheck = false
     return {
       perchasedPlan,
-      isUpgradeFromMonthToYear:
-        route.value.query.plan === Frequency.Yearly &&
-        state['membership-subscribe'].basicInfo.type === MemberType.Monthly,
       isServicesRuleAgree,
       isCheckingServiceRule,
       isNeedToCheck,
@@ -214,24 +181,14 @@ export default {
               key: 'basic',
             },
           ]
-        case Frequency.Monthly:
-          return [
-            {
-              id: 1,
-              detail: '鏡週刊Premium會員（月方案）',
-              hint: '每月 $99 元，信用卡自動續扣',
-              newPrice: 99,
-              key: 'monthly',
-            },
-          ]
         case Frequency.Yearly:
           return [
             {
               id: 1,
               detail: '鏡週刊Premium會員（年方案）',
-              hint: '每年 $799 元，信用卡自動續扣',
-              price: '原價 NT$1,188',
-              newPrice: 799,
+              hint: '每年 $1800 元，信用卡自動續扣',
+              price: '原價 NT$2600',
+              newPrice: 1800,
               key: 'yearly',
             },
           ]
@@ -271,7 +228,6 @@ export default {
       const planFrequency = this.perchasedPlan?.[0]?.key
       const map = {
         basic: Frequency.OneTime,
-        monthly: Frequency.Monthly,
         yearly: Frequency.Yearly,
       }
       return map[planFrequency]
@@ -316,7 +272,7 @@ export default {
       return this.linepayUiToggle
     },
     isPremiumPurchase() {
-      return [Frequency.Monthly, Frequency.Yearly].includes(this.frequency)
+      return Frequency.Yearly === this.frequency
     },
     disallowToSubmit() {
       if (this.isServicesRuleAgree || this.isCheckingServiceRule) {
@@ -467,35 +423,6 @@ export default {
         e.massage = 'not found'
         e.code = '404'
         throw e
-      }
-    },
-    async updateHandler(e) {
-      e.preventDefault()
-      if (this.isLoading) return
-
-      try {
-        this.isLoading = true
-
-        // get this member's current subscription id
-        const currentSubscription =
-          await this.$getPremiumMemberSubscriptionInfo()
-        if (!currentSubscription) return
-
-        // update subscription from month to year
-        const updatedSubscription =
-          await this.$updateSubscriptionFromMonthToYear(currentSubscription.id)
-        this.isLoading = false
-
-        window.alert('方案已升級為年訂閱，下次扣款日立即生效。')
-
-        const orderNumber =
-          updatedSubscription?.data?.updatesubscription?.orderNumber
-        this.$router.push(
-          `/subscribe/success?orderNumber=${orderNumber}&code=${Frequency.Yearly}`
-        )
-      } catch (error) {
-        console.error(error)
-        this.isLoading = false
       }
     },
 

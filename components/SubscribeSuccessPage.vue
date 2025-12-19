@@ -100,7 +100,7 @@ export default {
             break
           }
           case 'yearly': {
-            orderPlanPrice = 499
+            orderPlanPrice = 1800
             break
           }
         }
@@ -136,7 +136,7 @@ export default {
             {
               detail: '鏡週刊Premium會員（年方案）',
               hint: `每年 $${this.orderPlanPrice} 元，信用卡自動續扣`,
-              price: '原價 NT$1188',
+              price: '原價 NT$2,600',
               newPrice: this.orderInfo.amount,
               key: 'year',
             },
