@@ -136,7 +136,7 @@ export default {
           buttons: [
             {
               title: '訂閱年方案',
-              hint: '優惠 $1800 元',
+              hint: '52期優惠$1800元',
             },
           ],
         },
@@ -191,7 +191,7 @@ export default {
               buttons: [
                 {
                   title: '訂閱年方案',
-                  hint: '優惠 $1800 元',
+                  hint: '52期優惠$1800元',
                 },
               ],
             },
@@ -213,7 +213,7 @@ export default {
               buttons: [
                 {
                   title: '訂閱年方案',
-                  hint: '優惠 $1800 元',
+                  hint: '52期優惠$1800元',
                 },
               ],
             },

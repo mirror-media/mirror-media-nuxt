@@ -49,29 +49,6 @@
             :setFormStatus="setFormStatus"
             :email="email"
           />
-          <div v-if="!isServicesRuleAgree" class="service-rule">
-            <span
-              v-if="isNeedToCheck && !isCheckingServiceRule"
-              class="service-rule__error"
-              >以下尚未勾選
-            </span>
-            <label>
-              <input
-                v-model="isCheckingServiceRule"
-                type="checkbox"
-                :checked="isCheckingServiceRule"
-              />
-              <span
-                >我同意與接受鏡傳媒的<a
-                  href="https://www.mirrormedia.mg/story/service-rule/"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  class="service-rule__link"
-                  >《服務條款》</a
-                ></span
-              >
-            </label>
-          </div>
           <p class="subscribe-info__form_left_hint">
             <template v-if="showLINEPayUI">
               按下開始結帳後，頁面將會跳離，抵達由藍新金流 NewebPay&#xff0f;LINE
@@ -118,8 +95,8 @@
 
 <script>
 import qs from 'qs'
-import { required, email, sameAs } from 'vuelidate/lib/validators'
-import { useRoute, useStore } from '@nuxtjs/composition-api'
+import { required, email } from 'vuelidate/lib/validators'
+import { useRoute } from '@nuxtjs/composition-api'
 import {
   ENV,
   DOMAIN_NAME,
@@ -154,16 +131,10 @@ export default {
     NewebpayForm,
   },
   setup() {
-    const route = useRoute()
-    const { state } = useStore()
     const perchasedPlan = usePerchasedPlan()
-    const isServicesRuleAgree = state['membership-subscribe'].basicInfo.tos
-    const isCheckingServiceRule = false
     const isNeedToCheck = false
     return {
       perchasedPlan,
-      isServicesRuleAgree,
-      isCheckingServiceRule,
       isNeedToCheck,
     }
 
@@ -186,7 +157,7 @@ export default {
             {
               id: 1,
               detail: '鏡週刊Premium會員（年方案）',
-              hint: '每年 $1800 元，信用卡自動續扣',
+              hint: '信用卡自動續扣',
               price: '原價 NT$2600',
               newPrice: 1800,
               key: 'yearly',
@@ -275,16 +246,13 @@ export default {
       return Frequency.Yearly === this.frequency
     },
     disallowToSubmit() {
-      if (this.isServicesRuleAgree || this.isCheckingServiceRule) {
-        return (
-          this.paymentMethod === '' ||
-          !this.frequency ||
-          this.formStatus.receipt !== 'OK' ||
-          !this.email ||
-          (!this.$v.email.email && this.$v.email.$error)
-        )
-      }
-      return true
+      return (
+        this.paymentMethod === '' ||
+        !this.frequency ||
+        this.formStatus.receipt !== 'OK' ||
+        !this.email ||
+        (!this.$v.email.email && this.$v.email.$error)
+      )
     },
   },
   watch: {
@@ -301,7 +269,6 @@ export default {
       email,
       required,
     },
-    isCheckingServiceRule: { required, sameAs: sameAs(() => true) },
   },
   async created() {
     /*
@@ -352,17 +319,8 @@ export default {
           this.$refs.paymentDOM.check()
         }
         this.$v.email.$touch()
-        if (
-          this.$store.state.membership.emailVerifyFeatureToggle === 'on' &&
-          !this.isServicesRuleAgree
-        ) {
-          if (this.$v.isCheckingServiceRule.sameAs) {
-            this.$setMemberServiceRuleStatusToTrue()
-          } else {
-            this.isLoading = false
-            this.isNeedToCheck = true
-            return
-          }
+        if (this.$store.state.membership.emailVerifyFeatureToggle === 'on') {
+          this.$setMemberServiceRuleStatusToTrue()
         }
 
         if (
