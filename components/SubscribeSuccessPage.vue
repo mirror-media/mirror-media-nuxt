@@ -135,7 +135,7 @@ export default {
           return [
             {
               detail: '鏡週刊Premium會員（年方案）',
-              hint: `每年 $${this.orderPlanPrice} 元，信用卡自動續扣`,
+              hint: `信用卡自動續扣`,
               price: '原價 NT$2,600',
               newPrice: this.orderInfo.amount,
               key: 'year',
