@@ -1,7 +1,6 @@
 <template>
   <section>
     <SubscribeStepProgress :currentStep="3" />
-    <AnniversaryModal :isSubscribe="true" />
     <div class="subscribe-success">
       <div class="subscribe-success__message">
         {{ successMessage }}
@@ -54,7 +53,6 @@ import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOr
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import { useCustomEventToFbPixel } from '~/composition/fb-pixel.js'
-import AnniversaryModal from '~/components/AnniversaryModal.vue'
 export default {
   middleware: ['handle-go-to-marketing'],
   setup() {
@@ -67,7 +65,6 @@ export default {
     SubscribeSuccessOrderInfoContentRow,
     MembershipFormPerchaseInfo,
     UiMembershipButtonSecondary,
-    AnniversaryModal,
   },
   data() {
     return {
@@ -77,7 +74,6 @@ export default {
 
       // TODO: remove due to not use anymore
       hasLink: false,
-      isUpgradeFromMonthToYear: true,
     }
   },
   computed: {
@@ -93,23 +89,13 @@ export default {
             },
           ]
         }
-        case 'monthly': {
-          return [
-            {
-              detail: '鏡週刊Premium會員（月方案）',
-              hint: '每月 $99 元，信用卡自動續扣',
-              newPrice: 99,
-              key: 'month',
-            },
-          ]
-        }
         case 'yearly': {
           return [
             {
               detail: '鏡週刊Premium會員（年方案）',
-              hint: '每年 $799 元，信用卡自動續扣',
-              price: '原價 NT$1,188',
-              newPrice: 799,
+              hint: '每年 $1800 元，信用卡自動續扣',
+              price: '原價 NT$2,600',
+              newPrice: 1800,
               key: 'year',
             },
           ]
@@ -120,11 +106,7 @@ export default {
       }
     },
     successMessage() {
-      if (this.isUpgradeFromMonthToYear) {
-        return '訂單處理中，請稍候在訂閱紀錄確認訂單狀況。'
-      } else {
-        return '您已完成付款，以下為本次訂購資訊，已同步寄送至您的信箱。'
-      }
+      return '您已完成付款，以下為本次訂購資訊，已同步寄送至您的信箱。'
     },
   },
   methods: {

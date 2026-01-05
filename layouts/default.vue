@@ -10,7 +10,6 @@
   >
     <ContainerHeader />
     <div class="content">
-      <AnniversaryModal :isSubscribe="isSubscribePage" />
       <nuxt />
     </div>
     <UiFooter :class="[{ 'footer--listing': isListing }]" />
@@ -25,7 +24,6 @@
 import ContainerHeader from '~/components/ContainerHeader.vue'
 import UiFooter from '~/components/UiFooter.vue'
 import TheGdpr from '~/components/TheGdpr.vue'
-import AnniversaryModal from '~/components/AnniversaryModal.vue'
 import { useMemberPageViewToFbPixel } from '~/composition/fb-pixel.js'
 import { useViewport } from '~/composition/viewport.js'
 import { fireActivationEvent } from '~/utils/google-optimize.js'
@@ -35,7 +33,6 @@ export default {
     UiFooter,
     TheGdpr,
     ContainerHeader,
-    AnniversaryModal,
   },
   setup() {
     useViewport()

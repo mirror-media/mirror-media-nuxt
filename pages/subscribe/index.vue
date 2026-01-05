@@ -1,6 +1,5 @@
 <template>
   <div class="subscribe-choose">
-    <AnniversaryModal :isSubscribe="true" />
     <template v-if="doesHaveIsPayByAppValue">
       <SubscribeStepProgress :currentStep="1" />
       <ClientOnly>
@@ -21,28 +20,9 @@
             </SubscribeWrapper>
           </div>
         </template>
-        <template v-else-if="shouldShowLinePayWarning.value">
-          <div class="subscribe-choose__textcard">
-            <SubscribeWrapper>
-              <div class="subscribe-choose__textcard_description">
-                LINE Pay
-                僅進行月訂閱續扣，如要改為年訂閱續扣，請取消目前訂閱後，以「信用卡」付款方式進行訂閱
-              </div>
-              <UiMembershipButtonPrimary
-                class="subscribe-choose__textcard_back"
-                @click.native="handleGoToSectionMember"
-              >
-                回會員專區
-              </UiMembershipButtonPrimary>
-            </SubscribeWrapper>
-          </div>
-        </template>
-
         <template v-else-if="memberStatus !== 'year'">
           <div class="subscribe-choose__wrapper">
-            <AnniversaryMessage />
             <h2
-              v-if="memberStatus !== 'month'"
               class="subscribe-choose__wrapper_title"
               :class="{ basic: memberStatus === 'basic' }"
             >
@@ -89,21 +69,13 @@
 </template>
 
 <script>
-import {
-  computed,
-  useStore,
-  useContext,
-  useAsync,
-  ref,
-} from '@nuxtjs/composition-api'
+import { computed, useStore } from '@nuxtjs/composition-api'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
-import AnniversaryModal from '~/components/AnniversaryModal.vue'
-import AnniversaryMessage from '~/pages/subscribe/anniversary-message.vue'
 
 export default {
   middleware: ['handle-go-to-marketing'],
@@ -114,22 +86,12 @@ export default {
     SubscribeWrapper,
     UiMembershipButtonPrimary,
     UiLoadingCover,
-    AnniversaryModal,
-    AnniversaryMessage,
   },
   setup() {
     const memberStatus = useMemberStatus()
-    let shouldShowLinePayWarning = ref(false)
-    if (memberStatus.value === 'month') {
-      // if user is subscribe monthly, and paid by line pay, this page will show some warning to user
-      shouldShowLinePayWarning = useAsync(() =>
-        useShouldShowLinePayWarning(memberStatus)
-      )
-    }
 
     return {
       memberStatus,
-      shouldShowLinePayWarning,
     }
 
     function useMemberStatus() {
@@ -145,29 +107,10 @@ export default {
           'subscribe_yearly'
         ) {
           return 'year'
-        } else if (
-          state?.['membership-subscribe']?.basicInfo?.type ===
-          'subscribe_monthly'
-        ) {
-          return 'month'
         } else {
           return 'basic'
         }
       }
-    }
-
-    async function useShouldShowLinePayWarning(memberStatus) {
-      const { $getMemberShipStatus } = useContext()
-
-      const memberShipStatus = ref(null)
-      memberShipStatus.value = await $getMemberShipStatus(memberStatus)
-      const shouldShowLinePayWarning = computed(() =>
-        computeShouldShowLinePayWarning(memberShipStatus)
-      )
-      return shouldShowLinePayWarning
-    }
-    function computeShouldShowLinePayWarning(memberShipStatus) {
-      return memberShipStatus?.value?.payMethod === 'LINE Pay'
     }
   },
   async fetch() {
@@ -183,36 +126,17 @@ export default {
           title: 'Premium 會員',
           details: [
             { text: '支持鏡週刊報導精神' },
-            { text: '暢讀鏡週刊全站內容' },
-            { text: '會員專區零廣告純淨閱覽' },
-            { text: '專區好文不分頁流暢閱讀' },
-            { text: '免費閱讀數位版動態雜誌' },
-            { text: '每月只要 $99 元' },
-            { text: '年方案定價 $1,188 元，限時優惠 $799 元' },
+            { text: '暢讀鏡週刊獨家報導' },
+            { text: '兩本一冊好文分類流暢閱讀' },
+            { text: '隨身攜帶讀物' },
+            { text: '全台唯一綜合類型雜誌' },
+            { text: '每期只要 $35 元' },
+            { text: '年方案定價$2,600元，限時優惠$1,800' },
           ],
           buttons: [
             {
               title: '訂閱年方案',
-              hint: '優惠 $799 元',
-            },
-            {
-              title: '訂閱月方案',
-              hint: '優惠 $99 元',
-            },
-          ],
-        },
-        {
-          title: 'Basic 會員',
-          details: [
-            { text: '支持鏡週刊報導精神' },
-            { text: '好文解鎖 隨心所欲' },
-            {
-              text: '$10 元可享單篇好文 14 天無限瀏覽',
-            },
-          ],
-          buttons: [
-            {
-              title: '加入會員',
+              hint: '52期優惠$1800元',
             },
           ],
         },
@@ -220,27 +144,27 @@ export default {
       infoList: [
         {
           id: 0,
-          text: '月方案計算天數為 30 日，年方案計算天數為 365 日。',
+          text: '一年訂閱方案（52期）。',
           style: 'normal',
         },
         {
           id: 1,
-          text: '月訂閱方案經會員授權扣款購買即為完成服務，因此月費會員無法退費，但可取消繼續訂閱。',
+          text: '每週三當日上架閱讀，惟本公司保留調整上架時間之權利。',
           style: 'normal',
         },
         {
           id: 2,
-          text: '訂閱購買的同時會開啓自動續費(扣款)，在訂閱到期時將依據原訂閱方案自動扣款，並延續訂閱。',
+          text: '本次訂閱同時開啟屆期自動續訂及付費功能，原訂閱期滿將依據原訂閱方案自動扣款。如有特殊需求請洽本公司客服人員。',
           style: 'warning',
         },
         {
           id: 3,
-          text: '訂閱相關問題請 email 至會員專屬客服信箱 <a href = "mailto: MM-onlineservice@mirrormedia.mg" class="membership-subscribe__blue">MM-onlineservice@mirrormedia.mg</a>，我們會盡快為您協助處理。',
+          text: '如有訂閱及退款相關問題，請洽客服信箱service@mirrormedia.mg或電: (02) 6633-3882，有專人為您服務。',
           style: 'normal',
         },
         {
           id: 4,
-          text: '更多詳細內容，請至<a href = "/story/service-rule/" class="membership-subscribe__blue">服務條款</a>。',
+          text: '服務時間：週一～週五 10:00~18:00',
           style: 'normal',
         },
       ],
@@ -251,49 +175,23 @@ export default {
     planShowed() {
       let planShowed = []
       switch (this.memberStatus) {
-        case 'month':
-          planShowed = [
-            {
-              title: '變更為年訂閱方案',
-              details: [
-                { text: '支持鏡週刊報導精神' },
-                { text: '暢讀鏡週刊全站內容' },
-                { text: '會員專區零廣告純淨閱覽' },
-                { text: '專區好文不分頁流暢閱讀' },
-                { text: '免費閱讀數位版動態雜誌' },
-                { text: '每月只要 $99 元' },
-                { text: '年方案定價 $1,188 元，限時優惠 $799 元' },
-              ],
-              buttons: [
-                {
-                  title: '訂閱年方案',
-                  hint: '優惠 $799 元',
-                },
-              ],
-            },
-          ]
-          break
         case 'basic':
           planShowed = [
             {
               title: 'Premium 會員',
               details: [
                 { text: '支持鏡週刊報導精神' },
-                { text: '暢讀鏡週刊全站內容' },
-                { text: '會員專區零廣告純淨閱覽' },
-                { text: '專區好文不分頁流暢閱讀' },
-                { text: '免費閱讀數位版動態雜誌' },
-                { text: '每月只要 $99 元' },
-                { text: '年方案定價 $1,188 元，限時優惠 $799 元' },
+                { text: '暢讀鏡週刊獨家報導' },
+                { text: '兩本一冊好文分類流暢閱讀' },
+                { text: '隨身攜帶讀物' },
+                { text: '全台唯一綜合類型雜誌' },
+                { text: '每期只要 $35 元' },
+                { text: '年方案定價$2,600元，限時優惠$1,800' },
               ],
               buttons: [
                 {
                   title: '訂閱年方案',
-                  hint: '優惠 $799 元',
-                },
-                {
-                  title: '訂閱月方案',
-                  hint: '優惠 $99 元',
+                  hint: '52期優惠$1800元',
                 },
               ],
             },
@@ -305,21 +203,17 @@ export default {
               title: 'Premium 會員',
               details: [
                 { text: '支持鏡週刊報導精神' },
-                { text: '暢讀鏡週刊全站內容' },
-                { text: '會員專區零廣告純淨閱覽' },
-                { text: '專區好文不分頁流暢閱讀' },
-                { text: '免費閱讀數位版動態雜誌' },
-                { text: '每月只要 $99 元' },
-                { text: '年方案定價 $1,188 元，限時優惠 $799 元' },
+                { text: '暢讀鏡週刊獨家報導' },
+                { text: '兩本一冊好文分類流暢閱讀' },
+                { text: '隨身攜帶讀物' },
+                { text: '全台唯一綜合類型雜誌' },
+                { text: '每期只要 $35 元' },
+                { text: '年方案定價$2,600元，限時優惠$1,800' },
               ],
               buttons: [
                 {
                   title: '訂閱年方案',
-                  hint: '優惠 $799 元',
-                },
-                {
-                  title: '訂閱月方案',
-                  hint: '優惠 $99 元',
+                  hint: '52期優惠$1800元',
                 },
               ],
             },
@@ -327,9 +221,9 @@ export default {
               title: 'Basic 會員',
               details: [
                 { text: '支持鏡週刊報導精神' },
-                { text: '好文解鎖 隨心所欲' },
+                { text: '內容無限暢讀' },
                 {
-                  text: '$10 元可享單篇好文 14 天無限瀏覽',
+                  text: '熱門專題、人物故事、精彩報導一次掌握',
                 },
               ],
               buttons: [
@@ -344,12 +238,7 @@ export default {
     },
 
     hintUnderButton() {
-      switch (this.memberStatus) {
-        case 'month':
-          return '升級將在本次收費週期結束時生效'
-        default:
-          return null
-      }
+      return null
     },
     doesHaveIsPayByAppValue() {
       return this.isPayByApp !== undefined
@@ -384,7 +273,6 @@ export default {
       function getEventType(planTitle) {
         const eventMap = {
           訂閱年方案: 'yearly',
-          訂閱月方案: 'monthly',
         }
         return eventMap[planTitle]
       }

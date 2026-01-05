@@ -3,7 +3,6 @@
 <template>
   <div class="subscribe-return">
     <SubscribeStepProgress :currentStep="step" />
-    <AnniversaryModal :isSubscribe="true" />
     <SubscribeSuccessPage v-if="isSuccessStatus" :orderInfo="orderInfo" />
 
     <SubscribeInProgressPage
@@ -21,7 +20,6 @@ import SubscribeSuccessPage from '~/components/SubscribeSuccessPage.vue'
 import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeInProgressPage from '~/components/SubscribeInProgress.vue'
-import AnniversaryModal from '~/components/AnniversaryModal.vue'
 import { RETURN_CODE } from '~/constants/linepay'
 import uploadMemberArticleHistory from '~/mixins/upload-member-article-history'
 
@@ -54,7 +52,6 @@ export default {
     SubscribeSuccessPage,
     SubscribeInProgressPage,
     SubscribeFail,
-    AnniversaryModal,
   },
   mixins: [uploadMemberArticleHistory],
   async asyncData({ req, redirect }) {

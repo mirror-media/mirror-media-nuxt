@@ -1,21 +1,15 @@
 <template>
   <div class="subscribe-info">
-    <SubscribeStepProgress
-      :currentStep="2"
-      :isUpgradeFromMonthToYear="isUpgradeFromMonthToYear"
-    />
-    <AnniversaryModal :isSubscribe="true" />
+    <SubscribeStepProgress :currentStep="2" />
 
     <div class="subscribe-info__form">
       <div class="subscribe-info__form_wrapper">
         <div class="subscribe-info__form_left">
           <MembershipFormPlanList
             :perchasedPlan="perchasedPlan"
-            :isUpgradeFromMonthToYear="isUpgradeFromMonthToYear"
             @back="handleBack"
           />
           <div
-            v-if="!isUpgradeFromMonthToYear"
             class="subscribe-info__form_left_email"
             :class="{ error: $v.email.$error }"
           >
@@ -41,7 +35,7 @@
             >
           </div>
           <SubscribeFormPayment
-            v-if="showLINEPayUI && !isUpgradeFromMonthToYear"
+            v-if="showLINEPayUI"
             ref="paymentDOM"
             :setPaymentMethod="setPaymentMethod"
             :validateOn="validateOn"
@@ -49,40 +43,13 @@
             :frequency="frequency"
           />
           <SubscribeFormReceipt
-            v-if="!isUpgradeFromMonthToYear"
             ref="receiptDOM"
             :setReceiptData="setReceiptData"
             :validateOn="validateOn"
             :setFormStatus="setFormStatus"
             :email="email"
           />
-          <div v-if="!isServicesRuleAgree" class="service-rule">
-            <span
-              v-if="isNeedToCheck && !isCheckingServiceRule"
-              class="service-rule__error"
-              >以下尚未勾選
-            </span>
-            <label>
-              <input
-                v-model="isCheckingServiceRule"
-                type="checkbox"
-                :checked="isCheckingServiceRule"
-              />
-              <span
-                >我同意與接受鏡傳媒的<a
-                  href="https://www.mirrormedia.mg/story/service-rule/"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  class="service-rule__link"
-                  >《服務條款》</a
-                ></span
-              >
-            </label>
-          </div>
-          <p
-            v-if="!isUpgradeFromMonthToYear"
-            class="subscribe-info__form_left_hint"
-          >
+          <p class="subscribe-info__form_left_hint">
             <template v-if="showLINEPayUI">
               按下開始結帳後，頁面將會跳離，抵達由藍新金流 NewebPay&#xff0f;LINE
               Pay 所提供的線上結帳頁面，完成後將會再跳回到鏡週刊
@@ -94,36 +61,18 @@
           </p>
           <template v-if="showLINEPayUI">
             <UiSubscribeButton
-              v-if="isUpgradeFromMonthToYear"
-              class="change-plan-btn"
-              title="確認變更方案"
+              title="開始結帳"
               :isLoading="isLoading"
-              @click.native="updateHandler"
+              :class="{ disabled: disallowToSubmit }"
+              @click.native="submitHandler"
             />
-            <template v-else>
-              <UiSubscribeButton
-                title="開始結帳"
-                :isLoading="isLoading"
-                :class="{ disabled: disallowToSubmit }"
-                @click.native="submitHandler"
-              />
-            </template>
           </template>
           <template v-else>
             <UiSubscribeButton
-              v-if="isUpgradeFromMonthToYear"
-              class="change-plan-btn"
-              title="確認變更方案"
+              title="使用信用卡結帳"
               :isLoading="isLoading"
-              @click.native="updateHandler"
+              @click.native="submitHandler"
             />
-            <template v-else>
-              <UiSubscribeButton
-                title="使用信用卡結帳"
-                :isLoading="isLoading"
-                @click.native="submitHandler"
-              />
-            </template>
           </template>
         </div>
         <div class="subscribe-info__form_right">
@@ -146,8 +95,8 @@
 
 <script>
 import qs from 'qs'
-import { required, email, sameAs } from 'vuelidate/lib/validators'
-import { useRoute, useStore } from '@nuxtjs/composition-api'
+import { required, email } from 'vuelidate/lib/validators'
+import { useRoute } from '@nuxtjs/composition-api'
 import {
   ENV,
   DOMAIN_NAME,
@@ -161,8 +110,7 @@ import SubscribeFormReceipt from '~/components/SubscribeFormReceipt.vue'
 import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
 import { STATUS as REQUEST_STATUS } from '~/constants/request.js'
-import { Frequency, MemberType, PaymentMethod } from '~/constants/common'
-import AnniversaryModal from '~/components/AnniversaryModal.vue'
+import { Frequency, PaymentMethod } from '~/constants/common'
 
 // import redirectDestination from '~/utils/redirect-destination'
 
@@ -181,22 +129,12 @@ export default {
     SubscribeFormReceipt,
     UiSubscribeButton,
     NewebpayForm,
-    AnniversaryModal,
   },
   setup() {
-    const route = useRoute()
-    const { state } = useStore()
     const perchasedPlan = usePerchasedPlan()
-    const isServicesRuleAgree = state['membership-subscribe'].basicInfo.tos
-    const isCheckingServiceRule = false
     const isNeedToCheck = false
     return {
       perchasedPlan,
-      isUpgradeFromMonthToYear:
-        route.value.query.plan === Frequency.Yearly &&
-        state['membership-subscribe'].basicInfo.type === MemberType.Monthly,
-      isServicesRuleAgree,
-      isCheckingServiceRule,
       isNeedToCheck,
     }
 
@@ -214,24 +152,14 @@ export default {
               key: 'basic',
             },
           ]
-        case Frequency.Monthly:
-          return [
-            {
-              id: 1,
-              detail: '鏡週刊Premium會員（月方案）',
-              hint: '每月 $99 元，信用卡自動續扣',
-              newPrice: 99,
-              key: 'monthly',
-            },
-          ]
         case Frequency.Yearly:
           return [
             {
               id: 1,
               detail: '鏡週刊Premium會員（年方案）',
-              hint: '每年 $799 元，信用卡自動續扣',
-              price: '原價 NT$1,188',
-              newPrice: 799,
+              hint: '信用卡自動續扣',
+              price: '原價 NT$2600',
+              newPrice: 1800,
               key: 'yearly',
             },
           ]
@@ -271,7 +199,6 @@ export default {
       const planFrequency = this.perchasedPlan?.[0]?.key
       const map = {
         basic: Frequency.OneTime,
-        monthly: Frequency.Monthly,
         yearly: Frequency.Yearly,
       }
       return map[planFrequency]
@@ -316,19 +243,16 @@ export default {
       return this.linepayUiToggle
     },
     isPremiumPurchase() {
-      return [Frequency.Monthly, Frequency.Yearly].includes(this.frequency)
+      return Frequency.Yearly === this.frequency
     },
     disallowToSubmit() {
-      if (this.isServicesRuleAgree || this.isCheckingServiceRule) {
-        return (
-          this.paymentMethod === '' ||
-          !this.frequency ||
-          this.formStatus.receipt !== 'OK' ||
-          !this.email ||
-          (!this.$v.email.email && this.$v.email.$error)
-        )
-      }
-      return true
+      return (
+        this.paymentMethod === '' ||
+        !this.frequency ||
+        this.formStatus.receipt !== 'OK' ||
+        !this.email ||
+        (!this.$v.email.email && this.$v.email.$error)
+      )
     },
   },
   watch: {
@@ -345,7 +269,6 @@ export default {
       email,
       required,
     },
-    isCheckingServiceRule: { required, sameAs: sameAs(() => true) },
   },
   async created() {
     /*
@@ -396,17 +319,8 @@ export default {
           this.$refs.paymentDOM.check()
         }
         this.$v.email.$touch()
-        if (
-          this.$store.state.membership.emailVerifyFeatureToggle === 'on' &&
-          !this.isServicesRuleAgree
-        ) {
-          if (this.$v.isCheckingServiceRule.sameAs) {
-            this.$setMemberServiceRuleStatusToTrue()
-          } else {
-            this.isLoading = false
-            this.isNeedToCheck = true
-            return
-          }
+        if (this.$store.state.membership.emailVerifyFeatureToggle === 'on') {
+          this.$setMemberServiceRuleStatusToTrue()
         }
 
         if (
@@ -467,35 +381,6 @@ export default {
         e.massage = 'not found'
         e.code = '404'
         throw e
-      }
-    },
-    async updateHandler(e) {
-      e.preventDefault()
-      if (this.isLoading) return
-
-      try {
-        this.isLoading = true
-
-        // get this member's current subscription id
-        const currentSubscription =
-          await this.$getPremiumMemberSubscriptionInfo()
-        if (!currentSubscription) return
-
-        // update subscription from month to year
-        const updatedSubscription =
-          await this.$updateSubscriptionFromMonthToYear(currentSubscription.id)
-        this.isLoading = false
-
-        window.alert('方案已升級為年訂閱，下次扣款日立即生效。')
-
-        const orderNumber =
-          updatedSubscription?.data?.updatesubscription?.orderNumber
-        this.$router.push(
-          `/subscribe/success?orderNumber=${orderNumber}&code=${Frequency.Yearly}`
-        )
-      } catch (error) {
-        console.error(error)
-        this.isLoading = false
       }
     },
 
