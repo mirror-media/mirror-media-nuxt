@@ -100,6 +100,17 @@ export default {
             },
           ]
         }
+        case 'halfyearly': {
+          return [
+            {
+              detail: '鏡週刊Premium會員（半年方案）',
+              hint: '每半年 $1000 元，信用卡自動續扣',
+              price: '原價 NT$1,300',
+              newPrice: 1000,
+              key: 'halfyear',
+            },
+          ]
+        }
         default: {
           return [{}]
         }

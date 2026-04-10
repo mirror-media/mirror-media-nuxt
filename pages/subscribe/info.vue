@@ -163,6 +163,17 @@ export default {
               key: 'yearly',
             },
           ]
+        case Frequency.HalfYearly:
+          return [
+            {
+              id: 2,
+              detail: '鏡週刊Premium會員（半年方案）',
+              hint: '信用卡自動續扣',
+              price: '原價 NT$1300',
+              newPrice: 1000,
+              key: 'halfyearly',
+            },
+          ]
         default:
           return [{}]
       }
@@ -200,6 +211,7 @@ export default {
       const map = {
         basic: Frequency.OneTime,
         yearly: Frequency.Yearly,
+        halfyearly: Frequency.HalfYearly,
       }
       return map[planFrequency]
     },
@@ -243,7 +255,10 @@ export default {
       return this.linepayUiToggle
     },
     isPremiumPurchase() {
-      return Frequency.Yearly === this.frequency
+      return (
+        Frequency.Yearly === this.frequency ||
+        Frequency.HalfYearly === this.frequency
+      )
     },
     disallowToSubmit() {
       return (

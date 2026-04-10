@@ -137,6 +137,10 @@ function formatMemberType(israfelMemberType) {
     case Frequency.Yearly:
       return MemberType.Yearly
 
+    case MemberType.HalfYearly:
+    case Frequency.HalfYearly:
+      return MemberType.HalfYearly
+
     case MemberType.Marketing:
       return MemberType.Marketing
     case MemberType.None:
@@ -331,6 +335,8 @@ function getSubscriptionTypeWording(type) {
   switch (type) {
     case Frequency.Yearly:
       return '年訂閱'
+    case Frequency.HalfYearly:
+      return '半年訂閱'
     case Frequency.Monthly:
       return '月訂閱'
     case Frequency.OneTime:
