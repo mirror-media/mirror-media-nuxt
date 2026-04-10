@@ -70,6 +70,7 @@
 
 <script>
 import { computed, useStore } from '@nuxtjs/composition-api'
+import { PLAN_YEARLY, PLAN_HALFYEARLY } from '~/constants/subscription-plans.js'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
@@ -152,61 +153,38 @@ export default {
     }
   },
   computed: {
+    premiumPlanCard() {
+      return {
+        title: 'Premium 會員',
+        details: [
+          { text: '支持鏡週刊報導精神' },
+          { text: '暢讀鏡週刊獨家報導' },
+          { text: '兩本一冊好文分類流暢閱讀' },
+          { text: '隨身攜帶讀物' },
+          { text: '全台唯一綜合類型雜誌' },
+          { text: '每期最低只要 $35 元' },
+          { text: PLAN_YEARLY.detailText },
+          { text: PLAN_HALFYEARLY.detailText },
+        ],
+        buttons: [
+          {
+            title: PLAN_YEARLY.buttonTitle,
+            hint: PLAN_YEARLY.buttonHint,
+          },
+          {
+            title: PLAN_HALFYEARLY.buttonTitle,
+            hint: PLAN_HALFYEARLY.buttonHint,
+          },
+        ],
+      }
+    },
     planShowed() {
-      let planShowed = []
       switch (this.memberStatus) {
         case 'basic':
-          planShowed = [
-            {
-              title: 'Premium 會員',
-              details: [
-                { text: '支持鏡週刊報導精神' },
-                { text: '暢讀鏡週刊獨家報導' },
-                { text: '兩本一冊好文分類流暢閱讀' },
-                { text: '隨身攜帶讀物' },
-                { text: '全台唯一綜合類型雜誌' },
-                { text: '每期最低只要 $35 元' },
-                { text: '年方案定價$2,600元，限時優惠$1,800' },
-                { text: '半年方案定價$1,300元，限時優惠$1,000' },
-              ],
-              buttons: [
-                {
-                  title: '訂閱年方案',
-                  hint: '52期優惠$1800元',
-                },
-                {
-                  title: '訂閱半年方案',
-                  hint: '26期優惠$1000元',
-                },
-              ],
-            },
-          ]
-          break
+          return [this.premiumPlanCard]
         default:
-          planShowed = [
-            {
-              title: 'Premium 會員',
-              details: [
-                { text: '支持鏡週刊報導精神' },
-                { text: '暢讀鏡週刊獨家報導' },
-                { text: '兩本一冊好文分類流暢閱讀' },
-                { text: '隨身攜帶讀物' },
-                { text: '全台唯一綜合類型雜誌' },
-                { text: '每期最低只要 $35 元' },
-                { text: '年方案定價$2,600元，限時優惠$1,800' },
-                { text: '半年方案定價$1,300元，限時優惠$1,000' },
-              ],
-              buttons: [
-                {
-                  title: '訂閱年方案',
-                  hint: '52期優惠$1800元',
-                },
-                {
-                  title: '訂閱半年方案',
-                  hint: '26期優惠$1000元',
-                },
-              ],
-            },
+          return [
+            this.premiumPlanCard,
             {
               title: 'Basic 會員',
               details: [
@@ -224,7 +202,6 @@ export default {
             },
           ]
       }
-      return planShowed
     },
 
     hintUnderButton() {

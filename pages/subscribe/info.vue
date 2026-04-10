@@ -111,6 +111,11 @@ import UiSubscribeButton from '~/components/UiSubscribeButton.vue'
 import NewebpayForm from '~/components/NewebpayForm.vue'
 import { STATUS as REQUEST_STATUS } from '~/constants/request.js'
 import { Frequency, PaymentMethod } from '~/constants/common'
+import {
+  PLAN_YEARLY,
+  PLAN_HALFYEARLY,
+  PLAN_ONE_TIME,
+} from '~/constants/subscription-plans.js'
 
 // import redirectDestination from '~/utils/redirect-destination'
 
@@ -146,9 +151,9 @@ export default {
           return [
             {
               id: route.value.query['one-time-post-id'],
-              detail: '鏡週刊Basic會員（單篇）',
+              detail: PLAN_ONE_TIME.detail,
               hint: '$10 元可享單篇好文 14 天無限瀏覽',
-              newPrice: 10,
+              newPrice: PLAN_ONE_TIME.price,
               key: 'basic',
             },
           ]
@@ -156,10 +161,10 @@ export default {
           return [
             {
               id: 1,
-              detail: '鏡週刊Premium會員（年方案）',
+              detail: PLAN_YEARLY.detail,
               hint: '信用卡自動續扣',
-              price: '原價 NT$2600',
-              newPrice: 1800,
+              price: PLAN_YEARLY.priceLabel,
+              newPrice: PLAN_YEARLY.price,
               key: 'yearly',
             },
           ]
@@ -167,10 +172,10 @@ export default {
           return [
             {
               id: 2,
-              detail: '鏡週刊Premium會員（半年方案）',
+              detail: PLAN_HALFYEARLY.detail,
               hint: '信用卡自動續扣',
-              price: '原價 NT$1300',
-              newPrice: 1000,
+              price: PLAN_HALFYEARLY.priceLabel,
+              newPrice: PLAN_HALFYEARLY.price,
               key: 'halfyearly',
             },
           ]

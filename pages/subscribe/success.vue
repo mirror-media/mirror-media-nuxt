@@ -53,6 +53,11 @@ import SubscribeSuccessOrderInfoContentRow from '~/components/SubscribeSuccessOr
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
 import UiMembershipButtonSecondary from '~/components/UiMembershipButtonSecondary.vue'
 import { useCustomEventToFbPixel } from '~/composition/fb-pixel.js'
+import {
+  PLAN_YEARLY,
+  PLAN_HALFYEARLY,
+  PLAN_ONE_TIME,
+} from '~/constants/subscription-plans.js'
 export default {
   middleware: ['handle-go-to-marketing'],
   setup() {
@@ -82,9 +87,9 @@ export default {
         case 'one_time': {
           return [
             {
-              detail: '鏡週刊Basic會員（單篇）',
+              detail: PLAN_ONE_TIME.detail,
               hint: '單篇 $10 元，享 14 天內無限次觀看',
-              newPrice: 10,
+              newPrice: PLAN_ONE_TIME.price,
               key: 'basic',
             },
           ]
@@ -92,10 +97,10 @@ export default {
         case 'yearly': {
           return [
             {
-              detail: '鏡週刊Premium會員（年方案）',
-              hint: '每年 $1800 元，信用卡自動續扣',
-              price: '原價 NT$2,600',
-              newPrice: 1800,
+              detail: PLAN_YEARLY.detail,
+              hint: `每年 $${PLAN_YEARLY.price} 元，信用卡自動續扣`,
+              price: PLAN_YEARLY.priceLabel,
+              newPrice: PLAN_YEARLY.price,
               key: 'year',
             },
           ]
@@ -103,10 +108,10 @@ export default {
         case 'halfyearly': {
           return [
             {
-              detail: '鏡週刊Premium會員（半年方案）',
-              hint: '每半年 $1000 元，信用卡自動續扣',
-              price: '原價 NT$1,300',
-              newPrice: 1000,
+              detail: PLAN_HALFYEARLY.detail,
+              hint: `每半年 $${PLAN_HALFYEARLY.price} 元，信用卡自動續扣`,
+              price: PLAN_HALFYEARLY.priceLabel,
+              newPrice: PLAN_HALFYEARLY.price,
               key: 'halfyear',
             },
           ]
