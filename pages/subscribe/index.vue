@@ -125,7 +125,7 @@ export default {
       infoList: [
         {
           id: 0,
-          text: '一年訂閱方案（52期）及半年訂閱方案（26期）。',
+          text: '一年訂閱方案（52期）、半年訂閱方案（26期）。',
           style: 'normal',
         },
         {
@@ -153,7 +153,7 @@ export default {
     }
   },
   computed: {
-    premiumPlanCard() {
+    yearlyPlanCard() {
       return {
         title: 'Premium 會員',
         details: [
@@ -162,15 +162,32 @@ export default {
           { text: '兩本一冊好文分類流暢閱讀' },
           { text: '隨身攜帶讀物' },
           { text: '全台唯一綜合類型雜誌' },
+          { text: '理財鎖定報導' },
           { text: '每期最低只要 $35 元' },
           { text: PLAN_YEARLY.detailText },
-          { text: PLAN_HALFYEARLY.detailText },
         ],
         buttons: [
           {
             title: PLAN_YEARLY.buttonTitle,
             hint: PLAN_YEARLY.buttonHint,
           },
+        ],
+      }
+    },
+    halfYearlyPlanCard() {
+      return {
+        title: 'Premium 會員',
+        details: [
+          { text: '支持鏡週刊報導精神' },
+          { text: '暢讀鏡週刊獨家報導' },
+          { text: '兩本一冊好文分類流暢閱讀' },
+          { text: '隨身攜帶讀物' },
+          { text: '全台唯一綜合類型雜誌' },
+          { text: '理財鎖定報導' },
+          { text: '每期只要 $38 元' },
+          { text: PLAN_HALFYEARLY.detailText },
+        ],
+        buttons: [
           {
             title: PLAN_HALFYEARLY.buttonTitle,
             hint: PLAN_HALFYEARLY.buttonHint,
@@ -181,10 +198,11 @@ export default {
     planShowed() {
       switch (this.memberStatus) {
         case 'basic':
-          return [this.premiumPlanCard]
+          return [this.yearlyPlanCard, this.halfYearlyPlanCard]
         default:
           return [
-            this.premiumPlanCard,
+            this.yearlyPlanCard,
+            this.halfYearlyPlanCard,
             {
               title: 'Basic 會員',
               details: [

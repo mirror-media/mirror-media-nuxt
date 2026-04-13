@@ -23,7 +23,7 @@ const PLAN_HALFYEARLY = {
   priceLabel: '原價 NT$1300',
   buttonTitle: '訂閱半年方案',
   buttonHint: '26期優惠$1000元',
-  detailText: '半年方案定價$1,300元，限時優惠$1,000',
+  detailText: '半年方案定價$1,300，搶購優惠$1,000',
 }
 
 const PLAN_ONE_TIME = {
