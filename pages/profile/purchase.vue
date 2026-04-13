@@ -91,6 +91,7 @@ export default {
       const status = this.memberShipStatusName
       return (
         status === MemberType.Yearly ||
+        status === MemberType.HalfYearly ||
         status === MemberType.Monthly ||
         status === MemberType.Disturbed
       )

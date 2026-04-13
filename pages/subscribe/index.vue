@@ -70,6 +70,7 @@
 
 <script>
 import { computed, useStore } from '@nuxtjs/composition-api'
+import { PLAN_YEARLY, PLAN_HALFYEARLY } from '~/constants/subscription-plans.js'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
@@ -121,30 +122,10 @@ export default {
   },
   data() {
     return {
-      planList: [
-        {
-          title: 'Premium 會員',
-          details: [
-            { text: '支持鏡週刊報導精神' },
-            { text: '暢讀鏡週刊獨家報導' },
-            { text: '兩本一冊好文分類流暢閱讀' },
-            { text: '隨身攜帶讀物' },
-            { text: '全台唯一綜合類型雜誌' },
-            { text: '每期只要 $35 元' },
-            { text: '年方案定價$2,600元，限時優惠$1,800' },
-          ],
-          buttons: [
-            {
-              title: '訂閱年方案',
-              hint: '52期優惠$1800元',
-            },
-          ],
-        },
-      ],
       infoList: [
         {
           id: 0,
-          text: '一年訂閱方案（52期）。',
+          text: '一年訂閱方案（52期）、半年訂閱方案（26期）。',
           style: 'normal',
         },
         {
@@ -172,51 +153,56 @@ export default {
     }
   },
   computed: {
+    yearlyPlanCard() {
+      return {
+        title: 'Premium 會員',
+        details: [
+          { text: '支持鏡週刊報導精神' },
+          { text: '暢讀鏡週刊獨家報導' },
+          { text: '兩本一冊好文分類流暢閱讀' },
+          { text: '隨身攜帶讀物' },
+          { text: '全台唯一綜合類型雜誌' },
+          { text: '理財鎖定報導' },
+          { text: '每期最低只要 $35 元' },
+          { text: PLAN_YEARLY.detailText },
+        ],
+        buttons: [
+          {
+            title: PLAN_YEARLY.buttonTitle,
+            hint: PLAN_YEARLY.buttonHint,
+          },
+        ],
+      }
+    },
+    halfYearlyPlanCard() {
+      return {
+        title: 'Premium 會員',
+        details: [
+          { text: '支持鏡週刊報導精神' },
+          { text: '暢讀鏡週刊獨家報導' },
+          { text: '兩本一冊好文分類流暢閱讀' },
+          { text: '隨身攜帶讀物' },
+          { text: '全台唯一綜合類型雜誌' },
+          { text: '理財鎖定報導' },
+          { text: '每期只要 $38 元' },
+          { text: PLAN_HALFYEARLY.detailText },
+        ],
+        buttons: [
+          {
+            title: PLAN_HALFYEARLY.buttonTitle,
+            hint: PLAN_HALFYEARLY.buttonHint,
+          },
+        ],
+      }
+    },
     planShowed() {
-      let planShowed = []
       switch (this.memberStatus) {
         case 'basic':
-          planShowed = [
-            {
-              title: 'Premium 會員',
-              details: [
-                { text: '支持鏡週刊報導精神' },
-                { text: '暢讀鏡週刊獨家報導' },
-                { text: '兩本一冊好文分類流暢閱讀' },
-                { text: '隨身攜帶讀物' },
-                { text: '全台唯一綜合類型雜誌' },
-                { text: '每期只要 $35 元' },
-                { text: '年方案定價$2,600元，限時優惠$1,800' },
-              ],
-              buttons: [
-                {
-                  title: '訂閱年方案',
-                  hint: '52期優惠$1800元',
-                },
-              ],
-            },
-          ]
-          break
+          return [this.yearlyPlanCard, this.halfYearlyPlanCard]
         default:
-          planShowed = [
-            {
-              title: 'Premium 會員',
-              details: [
-                { text: '支持鏡週刊報導精神' },
-                { text: '暢讀鏡週刊獨家報導' },
-                { text: '兩本一冊好文分類流暢閱讀' },
-                { text: '隨身攜帶讀物' },
-                { text: '全台唯一綜合類型雜誌' },
-                { text: '每期只要 $35 元' },
-                { text: '年方案定價$2,600元，限時優惠$1,800' },
-              ],
-              buttons: [
-                {
-                  title: '訂閱年方案',
-                  hint: '52期優惠$1800元',
-                },
-              ],
-            },
+          return [
+            this.yearlyPlanCard,
+            this.halfYearlyPlanCard,
             {
               title: 'Basic 會員',
               details: [
@@ -234,7 +220,6 @@ export default {
             },
           ]
       }
-      return planShowed
     },
 
     hintUnderButton() {
@@ -273,6 +258,7 @@ export default {
       function getEventType(planTitle) {
         const eventMap = {
           訂閱年方案: 'yearly',
+          訂閱半年方案: 'halfyearly',
         }
         return eventMap[planTitle]
       }

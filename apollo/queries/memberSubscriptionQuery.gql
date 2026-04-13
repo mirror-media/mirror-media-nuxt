@@ -72,7 +72,7 @@ query fetchRecurringSubscription($firebaseId: String!) {
     type
     subscription(
       first: 1
-      where: { frequency_in: [yearly, monthly], isActive: true }
+      where: { frequency_in: [yearly, halfyearly, monthly], isActive: true }
       orderBy: { periodEndDatetime: desc }
     ) {
       id
