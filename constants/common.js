@@ -20,6 +20,7 @@ const MemberType = {
   MonthlyToYearly: 'subscribe_monthly_update_to_yearly',
   YearlyToMonthly: 'subscribe_yearly_update_to_monthly',
   Yearly: 'subscribe_yearly',
+  HalfYearly: 'subscribe_halfyearly',
   Monthly: 'subscribe_monthly',
   OneTime: 'subscribe_one_time',
   Marketing: 'marketing',
@@ -33,6 +34,7 @@ const MemberType = {
 const Frequency = {
   Marketing: 'marketing',
   Monthly: 'monthly',
+  HalfYearly: 'halfyearly',
   OneTime: 'one_time',
   OneTimeHyphen: 'one-time',
   Yearly: 'yearly',

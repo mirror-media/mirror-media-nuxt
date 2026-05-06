@@ -22,6 +22,9 @@ module.exports = async function (req, res) {
       case 'yearly':
         totalPrice = 1800
         break
+      case 'halfyearly':
+        totalPrice = 1000
+        break
       default:
     }
 

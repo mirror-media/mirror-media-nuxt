@@ -103,6 +103,10 @@ export default {
             orderPlanPrice = 1800
             break
           }
+          case 'halfyearly': {
+            orderPlanPrice = 1000
+            break
+          }
         }
       }
 
@@ -139,6 +143,17 @@ export default {
               price: '原價 NT$2,600',
               newPrice: this.orderInfo.amount,
               key: 'year',
+            },
+          ]
+        }
+        case 'halfyearly': {
+          return [
+            {
+              detail: '鏡週刊Premium會員（半年方案）',
+              hint: `信用卡自動續扣`,
+              price: '原價 NT$1,300',
+              newPrice: this.orderInfo.amount,
+              key: 'halfyear',
             },
           ]
         }

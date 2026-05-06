@@ -34,8 +34,10 @@ export default {
 
     const isPremiumOrVip = [
       Frequency.Yearly,
+      Frequency.HalfYearly,
       Frequency.Monthly,
       MemberType.Yearly,
+      MemberType.HalfYearly,
       MemberType.Monthly,
       MemberType.Marketing,
     ].includes(memberType)
