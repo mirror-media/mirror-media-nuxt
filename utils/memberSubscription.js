@@ -137,6 +137,10 @@ function formatMemberType(israfelMemberType) {
     case Frequency.Yearly:
       return MemberType.Yearly
 
+    case MemberType.HalfYearly:
+    case Frequency.HalfYearly:
+      return MemberType.HalfYearly
+
     case MemberType.Marketing:
       return MemberType.Marketing
     case MemberType.None:
@@ -331,6 +335,8 @@ function getSubscriptionTypeWording(type) {
   switch (type) {
     case Frequency.Yearly:
       return '年訂閱'
+    case Frequency.HalfYearly:
+      return '半年訂閱'
     case Frequency.Monthly:
       return '月訂閱'
     case Frequency.OneTime:
@@ -478,9 +484,11 @@ async function getPaymentDataOfSubscription(context, gateWayPayload) {
   if (!firebaseId) return null
 
   const { frequency } = gateWayPayload
-  const isRecurringPurchase = [Frequency.Monthly, Frequency.Yearly].includes(
-    frequency
-  )
+  const isRecurringPurchase = [
+    Frequency.Monthly,
+    Frequency.HalfYearly,
+    Frequency.Yearly,
+  ].includes(frequency)
   let query
 
   if (isRecurringPurchase) {
@@ -725,6 +733,13 @@ async function getMemberShipStatus(context, memberShipStatusName) {
   if (isCanceled && frequency === Frequency.Yearly) {
     return {
       name: MemberType.YearlyDisturbed,
+      dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
+      nextPayDate: null,
+      payMethod: payMethodText,
+    }
+  } else if (isCanceled && frequency === Frequency.HalfYearly) {
+    return {
+      name: MemberType.Disturbed,
       dueDate: `至 ${getFormatDateWording(periodEndDatetime)}`,
       nextPayDate: null,
       payMethod: payMethodText,

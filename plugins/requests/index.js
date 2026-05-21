@@ -190,8 +190,7 @@ async function fetchGcsGroupData(filename) {
   try {
     let data
 
-    const isStagingOrProd = ENV === 'prod' || ENV === 'staging'
-    const path = isStagingOrProd ? 'json' : 'dev'
+    const path = 'json'
 
     if (ENV === 'prod' || !process.browser) {
       // not set timeout to prevent exceed timeout at client side,

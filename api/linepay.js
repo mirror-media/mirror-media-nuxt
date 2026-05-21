@@ -512,7 +512,8 @@ app.post('/', async (req, res) => {
   const { frequency } = req.query
   switch (frequency) {
     case 'monthly':
-    case 'yearly': {
+    case 'yearly':
+    case 'halfyearly': {
       return await getLINEPayInfoOfRecurring(req, res)
     }
     case 'one_time': {
