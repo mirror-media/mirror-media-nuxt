@@ -34,6 +34,7 @@
                 :key="plan.title"
                 :title="plan.title"
                 :details="plan.details"
+                :campaign="plan.campaign"
                 :buttons="plan.buttons"
                 :hintUnderButton="hintUnderButton"
                 @subscribePlan="handleSubscribePlan"
@@ -42,6 +43,10 @@
             </div>
           </div>
           <UiSubscribeInfo type="membership" :infoList="infoList" />
+          <UiSubscribeCampaignInfo
+            type="membership"
+            :campaignInfoList="campaignInfoList"
+          />
         </template>
         <template v-else>
           <div class="subscribe-choose__textcard">
@@ -74,6 +79,7 @@ import { PLAN_YEARLY, PLAN_HALFYEARLY } from '~/constants/subscription-plans.js'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import SubscribeMembershipChoosePlanCard from '~/components/SubscribeMembershipChoosePlanCard.vue'
 import UiSubscribeInfo from '~/components/UiSubscribeInfo.vue'
+import UiSubscribeCampaignInfo from '~/components/UiSubscribeCampaignInfo.vue'
 import SubscribeWrapper from '~/components/SubscribeWrapper.vue'
 import UiMembershipButtonPrimary from '~/components/UiMembershipButtonPrimary.vue'
 import UiLoadingCover from '~/components/UiLoadingCover.vue'
@@ -83,6 +89,7 @@ export default {
   components: {
     SubscribeStepProgress,
     UiSubscribeInfo,
+    UiSubscribeCampaignInfo,
     SubscribeMembershipChoosePlanCard,
     SubscribeWrapper,
     UiMembershipButtonPrimary,
@@ -149,6 +156,43 @@ export default {
           style: 'normal',
         },
       ],
+      campaignInfoList: [
+        {
+          id: 0,
+          text: '本活動獎項寄送地區僅限臺澎金馬地區。',
+          style: 'normal',
+        },
+        {
+          id: 1,
+          text: '每週三當日上架閱讀，惟本公司保留調整上架時間之權利。',
+          style: 'normal',
+        },
+        {
+          id: 2,
+          text: '本活動限單筆購買「1年期訂閱方案」之用戶參與，每單筆符合資格之訂閱訂單可獲得1次抽獎機會。參加者自取得抽獎資格起至該筆1年期訂閱期間屆滿止，該訂閱契約應持續有效。如於抽獎前取消訂閱、解除契約或完成退費者，即喪失該筆訂單之抽獎資格；如於中獎後至1年期訂閱期間屆滿前取消訂閱、解除契約或退費者，視為不符合本活動中獎資格，本公司得取消其中獎資格；獎品已交付者，本公司得要求返還獎品。',
+          style: 'normal',
+        },
+        {
+          id: 3,
+          text: '本公司因辦理本活動所蒐集之活動參與者及中獎者姓名、電話、地址、身分證字號及其他個人資料，僅於辦理本活動、確認參加及中獎資格、通知中獎、寄送獎品及依法辦理所得申報、扣繳等必要範圍內蒐集、處理及利用，並依個人資料保護法及相關法令規定辦理。',
+          style: 'normal',
+        },
+        {
+          id: 4,
+          text: '獎品以實物為準，不得要求更換、折現或轉讓。',
+          style: 'normal',
+        },
+        {
+          id: 5,
+          text: '本訂閱服務是否適用通訊交易解除權及其合理例外情事，依消費者保護法、通訊交易解除權合理例外情事適用準則及相關法令規定辦理。',
+          style: 'normal',
+        },
+        {
+          id: 6,
+          text: '鏡週刊保有最終修改、變更、活動解釋及取消本活動之權利，若有相關異動將會公告於網站，恕不另行通知。',
+          style: 'normal',
+        },
+      ],
       isPayByApp: undefined,
     }
   },
@@ -165,6 +209,10 @@ export default {
           { text: '理財鎖定報導' },
           { text: '每期最低只要 $35 元' },
           { text: PLAN_YEARLY.detailText },
+        ],
+        campaign: [
+          { text: '2026/11/01-2027/01/31' },
+          { text: '驚喜月月抽 iPhone Duo' },
         ],
         buttons: [
           {
@@ -344,13 +392,6 @@ export default {
     span {
       color: #054f77;
     }
-  }
-}
-
-.subscribe-info {
-  margin-bottom: 48px;
-  @include media-breakpoint-up(md) {
-    margin-bottom: 60px;
   }
 }
 </style>
