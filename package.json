@@ -16,7 +16,7 @@
     "postinstall": "patch-package"
   },
   "engines": {
-    "node": "~16.14.1"
+    "node": ">=24"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint --ext .js,.vue --ignore-path .gitignore"
