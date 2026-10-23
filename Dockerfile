@@ -1,4 +1,4 @@
-FROM node:16.14.2-alpine3.15
+FROM node:24-alpine
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ RUN apk upgrade --no-cache \
 COPY package.json .
 COPY yarn.lock .
 COPY patches ./patches
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --ignore-engines
 
 ENV NUXT_HOST 0.0.0.0
 ENV NUXT_PORT 3000
@@ -21,4 +21,4 @@ COPY . .
 
 ARG ENV
 ENV ENV ${ENV}
-RUN yarn build && apk add --no-cache ca-certificates
+RUN NODE_OPTIONS=--openssl-legacy-provider yarn build && apk add --no-cache ca-certificates
