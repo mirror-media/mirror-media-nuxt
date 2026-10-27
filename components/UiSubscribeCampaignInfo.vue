@@ -3,16 +3,7 @@
     <h2>活動注意事項</h2>
     <ul>
       <li v-for="info in campaignInfoList" :key="info.id">
-        <p>{{ info.text }}</p>
-        <ul>
-          <li
-            v-for="infoChild in infoSubList(info)"
-            :key="infoChild.id"
-            class="subscribe-info__sub"
-          >
-            <p>{{ infoChild.text }}</p>
-          </li>
-        </ul>
+        {{ info.text }}
       </li>
     </ul>
   </div>
@@ -30,11 +21,6 @@ export default {
       type: Array,
       require: true,
       default: () => [],
-    },
-  },
-  methods: {
-    infoSubList(info) {
-      return info.child ? info.child : []
     },
   },
 }
@@ -77,10 +63,6 @@ export default {
       line-height: 2;
       letter-spacing: normal;
       color: #000000de;
-      .subscribe-info__sub {
-        list-style: circle;
-        margin-left: 8px;
-      }
     }
   }
 }
