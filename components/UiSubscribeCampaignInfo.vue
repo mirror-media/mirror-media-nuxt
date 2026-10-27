@@ -8,8 +8,9 @@
           :class="{
             'subscribe-info__content--warning': info.style === 'warning',
           }"
-          v-html="info.text"
-        />
+        >
+          {{ info.text }}
+        </p>
         <ul>
           <li
             v-for="infoChild in infoSubList(info)"
