@@ -3,14 +3,7 @@
     <h2>活動注意事項</h2>
     <ul>
       <li v-for="info in campaignInfoList" :key="info.id">
-        <p
-          class="subscribe-info__content"
-          :class="{
-            'subscribe-info__content--warning': info.style === 'warning',
-          }"
-        >
-          {{ info.text }}
-        </p>
+        <p>{{ info.text }}</p>
         <ul>
           <li
             v-for="infoChild in infoSubList(info)"
@@ -68,12 +61,6 @@ export default {
 
     @include media-breakpoint-up(sm) {
       font-size: 24px;
-    }
-  }
-  &__content {
-    color: #000000de;
-    &--warning {
-      color: red;
     }
   }
   ul {
