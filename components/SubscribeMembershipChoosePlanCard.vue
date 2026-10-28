@@ -12,6 +12,12 @@
           </span>
         </li>
       </ul>
+
+      <ul v-if="campaign && campaign.length" class="plan-card__info_campaign">
+        <li v-for="detail in campaign" :key="detail.text">
+          {{ detail.text }}
+        </li>
+      </ul>
     </div>
 
     <div class="plan-card__button_group">
@@ -59,6 +65,11 @@ export default {
       default: '',
     },
     details: {
+      type: Array,
+      isRequired: true,
+      default: () => [],
+    },
+    campaign: {
       type: Array,
       isRequired: true,
       default: () => [],
@@ -127,6 +138,7 @@ export default {
       color: rgba(0, 0, 0, 0.87);
       @include media-breakpoint-up(sm) {
         margin: 32px 0;
+        margin-bottom: 12px;
       }
       li {
         display: flex;
@@ -145,6 +157,16 @@ export default {
       .hightlight {
         color: #054f77;
       }
+    }
+
+    &_campaign {
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      padding-top: 12px;
+      padding-bottom: 24px;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 130%;
+      color: #e51731;
     }
   }
 
