@@ -163,7 +163,7 @@ export default {
       border-top: 1px solid rgba(0, 0, 0, 0.1);
       padding-top: 12px;
       padding-bottom: 24px;
-      font-size: 14px;
+      font-size: 18px;
       font-weight: 700;
       line-height: 130%;
       color: #e51731;
