@@ -12,9 +12,12 @@
           </span>
         </li>
       </ul>
-      <p v-if="campaign && campaign.length" class="plan-card__info_campaign">
-        {{ campaign }}
-      </p>
+
+      <ul v-if="campaign && campaign.length" class="plan-card__info_campaign">
+        <li v-for="detail in campaign" :key="detail.text">
+          {{ detail.text }}
+        </li>
+      </ul>
     </div>
 
     <div class="plan-card__button_group">
@@ -67,9 +70,9 @@ export default {
       default: () => [],
     },
     campaign: {
-      type: String,
+      type: Array,
       isRequired: true,
-      default: '',
+      default: () => [],
     },
     buttons: {
       type: Array,
@@ -160,7 +163,7 @@ export default {
       border-top: 1px solid rgba(0, 0, 0, 0.1);
       padding-top: 12px;
       padding-bottom: 24px;
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 700;
       line-height: 130%;
       color: #e51731;
