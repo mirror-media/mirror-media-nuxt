@@ -210,7 +210,10 @@ export default {
           { text: '每期最低只要 $35 元' },
           { text: PLAN_YEARLY.detailText },
         ],
-        campaign: '2026/11/01-2027/01/31，驚喜月月抽 iPhone Duo',
+        campaign: [
+          { text: '2026/11/01-2027/01/31' },
+          { text: '驚喜月月抽 iPhone Duo' },
+        ],
         buttons: [
           {
             title: PLAN_YEARLY.buttonTitle,
