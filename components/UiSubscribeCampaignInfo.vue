@@ -2,7 +2,11 @@
   <div class="subscribe-campaign-info" :class="type">
     <h2>活動注意事項</h2>
     <ul>
-      <li v-for="info in campaignInfoList" :key="info.id">
+      <li
+        v-for="info in campaignInfoList"
+        :key="info.id"
+        :class="{ warning: info.style === 'warning' }"
+      >
         {{ info.text }}
       </li>
     </ul>
@@ -63,6 +67,14 @@ export default {
       line-height: 2;
       letter-spacing: normal;
       color: #000000de;
+
+      &.warning {
+        color: red;
+
+        &::marker {
+          color: #000000de;
+        }
+      }
     }
   }
 }
