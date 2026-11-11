@@ -14,6 +14,7 @@ import SubscribeFail from '~/components/SubscribeFail.vue'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import { NEWEBPAY_KEY, NEWEBPAY_IV, ISRAFEL_ORIGIN } from '~/configs/config'
 import uploadMemberArticleHistory from '~/mixins/upload-member-article-history'
+import { verifyTradeSha, parseNewebpayCallback } from '~/api/newebpay-helpers'
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
@@ -29,22 +30,46 @@ export default {
 
     try {
       const infoData = req.body
-      if (infoData.Status !== 'SUCCESS') {
-        return {
-          status: infoData.Status,
-          errorData: {
-            message: infoData.Status,
-          },
-        }
+      if (
+        !verifyTradeSha(
+          infoData.TradeInfo,
+          infoData.TradeSha,
+          NEWEBPAY_KEY,
+          NEWEBPAY_IV
+        )
+      ) {
+        console.log(
+          JSON.stringify({
+            severity: 'WARNING',
+            message: 'subscribe return rejected: TradeSha mismatch',
+          })
+        )
+        return { errorData: { message: 'invalid TradeSha' } }
       }
 
       const newebpay = new NewebPay(NEWEBPAY_KEY, NEWEBPAY_IV)
-      const decryptedTradeInfo = await newebpay.getDecryptedTradeInfo(
-        infoData.TradeInfo
+      const callback = parseNewebpayCallback(
+        await newebpay.getDecryptedTradeInfo(infoData.TradeInfo)
       )
-      const MerchantOrderNo =
-        decryptedTradeInfo.Result?.MerchantOrderNo ||
-        JSON.parse(Object.keys(decryptedTradeInfo)[0]).Result.MerchantOrderNo
+      if (!callback) {
+        console.log(
+          JSON.stringify({
+            severity: 'WARNING',
+            message:
+              'subscribe return rejected: TradeInfo is not a NewebPay result',
+          })
+        )
+        return { errorData: { message: 'invalid TradeInfo' } }
+      }
+      if (callback.status !== 'SUCCESS') {
+        return {
+          status: callback.status,
+          errorData: {
+            message: callback.status,
+          },
+        }
+      }
+      const MerchantOrderNo = callback.merchantOrderNo
 
       const query = `query fetchSubscriprionByOrderNumber($orderNumber: String) {
         allSubscriptions(
@@ -111,7 +136,7 @@ export default {
         status: 'success',
         orderInfo: {
           orderId: decryptInfoData.orderNumber,
-          promoteId: decryptedTradeInfo.promoteId,
+          promoteId: callback.result.promoteId,
           frequency: decryptInfoData.frequency,
           amount: decryptInfoData.amount,
           subscriptionId: decryptInfoData.id,
