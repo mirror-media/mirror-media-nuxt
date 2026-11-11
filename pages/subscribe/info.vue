@@ -97,11 +97,7 @@
 import qs from 'qs'
 import { required, email } from 'vuelidate/lib/validators'
 import { useRoute } from '@nuxtjs/composition-api'
-import {
-  ENV,
-  DOMAIN_NAME,
-  NEWEBPAY_MEMBERSHIP_API_URL,
-} from '~/configs/config.js'
+import { NEWEBPAY_MEMBERSHIP_API_URL } from '~/configs/config.js'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
@@ -377,18 +373,18 @@ export default {
         const result = await this.getPaymentDataFromApiGateWay()
         const tradeInfo = qs.parse(result)
 
-        tradeInfo.ReturnURL =
-          ENV === 'local'
-            ? `http://localhost:3000/subscribe/return`
-            : `https://${DOMAIN_NAME}/subscribe/return`
-        tradeInfo.CREDIT = 1
-        tradeInfo.Version = '2.2'
+        // ReturnURL / CREDIT / Version 由 /api/v2/newebpay/v1 決定
         tradeInfo.frequency = this.frequency
 
-        // // encrypt tradeInfo
+        // encrypt tradeInfo（server 端會驗會員 token，匿名不給產生 TradeSha）
         this.paymentPayload = await this.$axios.$post(
           `${window.location.origin}/api/v2/newebpay/v1`,
-          tradeInfo
+          tradeInfo,
+          {
+            headers: {
+              Authorization: `Bearer ${this.$store.state.membership.userToken}`,
+            },
+          }
         )
         this.$nextTick(() => {
           const formDOM = document.forms.newebpay

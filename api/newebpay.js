@@ -1,50 +1,86 @@
-// import errors from '@twreporter/errors'
+const axios = require('axios')
 const NewebPay = require('@mirrormedia/newebpay-node')
-const { NEWEBPAY_KEY, NEWEBPAY_IV } = require('../configs/config')
+const {
+  NEWEBPAY_KEY,
+  NEWEBPAY_IV,
+  ENV,
+  DOMAIN_NAME,
+  API_PROTOCOL,
+  API_HOST_MEMBERSHIP_GATEWAY,
+  API_PORT_MEMBERSHIP_GATEWAY,
+  API_TIMEOUT,
+} = require('../configs/config')
+const {
+  buildMembershipTradeInfo,
+  TradeInfoValidationError,
+} = require('./newebpay-helpers')
+
+const RETURN_URL =
+  ENV === 'local'
+    ? 'http://localhost:3000/subscribe/return'
+    : `https://${DOMAIN_NAME}/subscribe/return`
+
+const TOKEN_STATE_URL = `${API_PROTOCOL}://${API_HOST_MEMBERSHIP_GATEWAY}:${API_PORT_MEMBERSHIP_GATEWAY}/api/v1/tokenState`
+
+/*
+ * 只有登入中的會員可以產生 TradeInfo / TradeSha。
+ * 沿用 authenticate middleware 的判斷：apigateway tokenState 以 OK 開頭才算有效。
+ */
+async function isMemberTokenValid(authorization) {
+  if (
+    typeof authorization !== 'string' ||
+    !/^Bearer \S+$/.test(authorization)
+  ) {
+    return false
+  }
+  try {
+    const { data } = await axios.get(TOKEN_STATE_URL, {
+      headers: { Authorization: authorization },
+      timeout: API_TIMEOUT,
+    })
+    return (
+      typeof data?.tokenState === 'string' && data.tokenState.startsWith('OK')
+    )
+  } catch (e) {
+    return false
+  }
+}
+
+function log(severity, message, extra = {}) {
+  console.log(JSON.stringify({ severity, message, ...extra }))
+}
 
 module.exports = async function (req, res) {
-  const tradeInfo = req.body
+  if (req.method !== 'POST') {
+    res.status(405).send({ status: 'error', message: 'method not allowed' })
+    return
+  }
+
+  if (!(await isMemberTokenValid(req.headers?.authorization))) {
+    res.status(401).send({ status: 'error', message: 'unauthorized' })
+    return
+  }
+
+  let tradeInfo
   try {
-    /*
-     * 防止使用者自行修改 Amt 的值
-     * 詳見：https://app.asana.com/1/614399484723017/project/1210077071799813/task/1210384428427743?focus=true
-     */
+    tradeInfo = buildMembershipTradeInfo(req.body, { returnUrl: RETURN_URL })
+  } catch (e) {
+    if (!(e instanceof TradeInfoValidationError)) throw e
+    log('WARNING', `newebpay/v1 rejected tradeInfo: ${e.message}`, {
+      email: req.body?.Email,
+    })
+    res.status(400).send({ status: 'error', message: e.message })
+    return
+  }
 
-    let totalPrice = 99999
-    const { frequency } = tradeInfo
-    switch (frequency) {
-      case 'one_time':
-        totalPrice = 10
-        break
-      case 'monthly':
-        totalPrice = 99
-        break
-      case 'yearly':
-        totalPrice = 1800
-        break
-      case 'halfyearly':
-        totalPrice = 1000
-        break
-      default:
-    }
-
-    if (totalPrice !== parseInt(tradeInfo.Amt)) {
-      console.log(
-        tradeInfo.email,
-        `Amt is not correct input, it is ${tradeInfo.Amt} but should be ${totalPrice}`
-      )
-      throw new Error(`Amt is not correct input`)
-    }
-
+  try {
     const newebpay = new NewebPay(NEWEBPAY_KEY, NEWEBPAY_IV)
     const encryptPostData = await newebpay.getEncryptedFormPostData(tradeInfo)
-
     res.send(encryptPostData)
   } catch (e) {
-    console.log(tradeInfo.email, 'conter error:', e.message)
-    res.status(500).send({
-      status: 'error',
-      message: e.message,
+    log('ERROR', `newebpay/v1 encrypt error: ${e.message}`, {
+      email: tradeInfo.Email,
     })
+    res.status(500).send({ status: 'error', message: 'encrypt failed' })
   }
 }
