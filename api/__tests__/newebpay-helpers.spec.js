@@ -5,7 +5,9 @@ const {
   TradeInfoValidationError,
   verifyTradeSha,
   parseNewebpayCallback,
+  buildSubscriptionVariables,
   buildMembershipTradeInfo,
+  buildForwardedFor,
   buildOrderBindingCookie,
   readCookie,
   isOrderBoundToRequest,
@@ -110,30 +112,126 @@ describe('parseNewebpayCallback', () => {
   })
 })
 
-describe('buildMembershipTradeInfo', () => {
-  const returnUrl = 'https://www.mirrormedia.mg/subscribe/return'
-  const valid = {
-    MerchantID: 'M1',
-    Amt: '1800',
-    Email: 'a@b.c',
-    EmailModify: '0',
-    LoginType: '0',
-    MerchantOrderNo: 'S2026111100001',
-    NotifyURL: 'https://hook',
-    RespondType: 'JSON',
-    TimeStamp: '1700000000',
-    CREDITAGREEMENT: '1',
-    ItemDesc: '鏡週刊年訂閱',
+describe('buildSubscriptionVariables', () => {
+  const form = {
+    email: 'a@b.c',
     frequency: 'yearly',
+    paymentMethod: 'newebpay',
+    status: 'paying',
+    promoteId: 0,
+    loveCode: null,
+    carrierType: '',
+    carrierNum: '',
+    buyerName: '',
+    buyerUBN: '',
+    category: 'B2C',
   }
 
-  test('keeps the allowed fields and sets ReturnURL/CREDIT/Version itself', () => {
-    const result = buildMembershipTradeInfo(
-      { ...valid, ReturnURL: 'https://evil', CREDIT: 0, Version: '1.0' },
-      { returnUrl }
+  test('maps a recurring form to the recurring mutation variables', () => {
+    expect(buildSubscriptionVariables(form)).toEqual({
+      isOneTime: false,
+      variables: {
+        email: 'a@b.c',
+        frequency: 'yearly',
+        paymentMethod: 'newebpay',
+        status: 'paying',
+        promoteId: 0,
+        loveCode: null,
+        carrierType: '',
+        carrierNum: '',
+        buyerName: '',
+        buyerUBN: '',
+        category: 'B2C',
+      },
+    })
+  })
+
+  test('maps a one_time form to the one-time mutation variables', () => {
+    const result = buildSubscriptionVariables({
+      ...form,
+      frequency: 'one_time',
+      postId: '123',
+      loveCode: '919',
+      carrierType: '2',
+      carrierNum: 'a@b.c',
+    })
+    expect(result.isOneTime).toBe(true)
+    expect(result.variables).toMatchObject({
+      postId: '123',
+      loveCode: 919,
+      carrierType: '2',
+      carrierNum: 'a@b.c',
+    })
+    expect(result.variables.frequency).toBeUndefined()
+  })
+
+  test('paymentMethod and status always come from the server', () => {
+    expect(
+      buildSubscriptionVariables({
+        ...form,
+        paymentMethod: 'linepay',
+        status: 'paid',
+      }).variables
+    ).toMatchObject({ paymentMethod: 'newebpay', status: 'paying' })
+  })
+
+  test('rejects unknown fields and NewebPay payload fields', () => {
+    expect(() => buildSubscriptionVariables({ ...form, Amt: 1 })).toThrow(
+      /unexpected field: Amt/
     )
-    expect(result).toMatchObject({
-      ...valid,
+    expect(() =>
+      buildSubscriptionVariables({ ...form, NotifyURL: 'https://evil' })
+    ).toThrow(TradeInfoValidationError)
+    expect(() =>
+      buildSubscriptionVariables({ ...form, MerchantOrderNo: 'X' })
+    ).toThrow(TradeInfoValidationError)
+  })
+
+  test('rejects missing or invalid values', () => {
+    expect(() => buildSubscriptionVariables({ ...form, email: '' })).toThrow(
+      /missing field: email/
+    )
+    expect(() =>
+      buildSubscriptionVariables({ ...form, frequency: 'weekly' })
+    ).toThrow(/frequency/)
+    expect(() =>
+      buildSubscriptionVariables({ ...form, category: 'B2G' })
+    ).toThrow(/category/)
+    expect(() =>
+      buildSubscriptionVariables({ ...form, frequency: 'one_time' })
+    ).toThrow(/missing field: postId/)
+    expect(() =>
+      buildSubscriptionVariables({ ...form, promoteId: 'abc' })
+    ).toThrow(/promoteId/)
+    expect(() =>
+      buildSubscriptionVariables({ ...form, buyerName: 'x'.repeat(201) })
+    ).toThrow(/buyerName/)
+    expect(() => buildSubscriptionVariables(null)).toThrow(
+      TradeInfoValidationError
+    )
+    expect(() => buildSubscriptionVariables([form])).toThrow(
+      TradeInfoValidationError
+    )
+  })
+})
+
+describe('buildMembershipTradeInfo', () => {
+  const returnUrl = 'https://www.mirrormedia.mg/subscribe/return'
+  const payload =
+    'MerchantID=M1&Amt=1800&Email=a%40b.c&MerchantOrderNo=S2026111100001' +
+    '&NotifyURL=https%3A%2F%2Fhook%2Fnewebpay%2Fpremium%3Fcode%3Dyearly' +
+    '&RespondType=String&TimeStamp=1700000000&CREDITAGREEMENT=1&TokenTerm=uid'
+
+  test('parses the apigateway payload and sets ReturnURL/CREDIT/Version itself', () => {
+    expect(buildMembershipTradeInfo(payload, { returnUrl })).toEqual({
+      MerchantID: 'M1',
+      Amt: '1800',
+      Email: 'a@b.c',
+      MerchantOrderNo: 'S2026111100001',
+      NotifyURL: 'https://hook/newebpay/premium?code=yearly',
+      TimeStamp: '1700000000',
+      CREDITAGREEMENT: '1',
+      TokenTerm: 'uid',
       ReturnURL: returnUrl,
       CREDIT: 1,
       Version: '2.2',
@@ -141,53 +239,34 @@ describe('buildMembershipTradeInfo', () => {
     })
   })
 
-  test('rejects unknown fields', () => {
-    expect(() =>
-      buildMembershipTradeInfo({ ...valid, Status: 'SUCCESS' }, { returnUrl })
-    ).toThrow(TradeInfoValidationError)
-    expect(() =>
-      buildMembershipTradeInfo({ ...valid, Result: {} }, { returnUrl })
-    ).toThrow(/unexpected field: Result/)
-  })
-
-  test('rejects missing required fields, unknown frequency and wrong Amt', () => {
-    const { Email, ...noEmail } = valid
-    expect(() => buildMembershipTradeInfo(noEmail, { returnUrl })).toThrow(
-      /missing field: Email/
-    )
-    expect(() =>
-      buildMembershipTradeInfo({ ...valid, frequency: 'weekly' }, { returnUrl })
-    ).toThrow(/frequency/)
-    expect(() =>
-      buildMembershipTradeInfo({ ...valid, Amt: '1' }, { returnUrl })
-    ).toThrow(/Amt/)
-    expect(() => buildMembershipTradeInfo(null, { returnUrl })).toThrow(
+  test('rejects an empty payload or one missing the fields NewebPay needs', () => {
+    expect(() => buildMembershipTradeInfo('', { returnUrl })).toThrow(
       TradeInfoValidationError
     )
-    expect(() => buildMembershipTradeInfo([valid], { returnUrl })).toThrow(
+    expect(() => buildMembershipTradeInfo(undefined, { returnUrl })).toThrow(
       TradeInfoValidationError
     )
+    expect(() =>
+      buildMembershipTradeInfo('MerchantID=M1&Amt=1800', { returnUrl })
+    ).toThrow(/missing field: MerchantOrderNo, NotifyURL/)
+  })
+})
+
+describe('buildForwardedFor', () => {
+  test('appends the socket address to an existing X-Forwarded-For', () => {
+    expect(
+      buildForwardedFor({
+        headers: { 'x-forwarded-for': '203.0.113.9, 10.0.0.2' },
+        socket: { remoteAddress: '10.4.0.7' },
+      })
+    ).toBe('203.0.113.9, 10.0.0.2, 10.4.0.7')
   })
 
-  test('accepts every plan price', () => {
+  test('falls back to the socket address alone', () => {
     expect(
-      buildMembershipTradeInfo(
-        { ...valid, Amt: 10, frequency: 'one_time' },
-        { returnUrl }
-      ).Amt
-    ).toBe(10)
-    expect(
-      buildMembershipTradeInfo(
-        { ...valid, Amt: 99, frequency: 'monthly' },
-        { returnUrl }
-      ).Amt
-    ).toBe(99)
-    expect(
-      buildMembershipTradeInfo(
-        { ...valid, Amt: 1000, frequency: 'halfyearly' },
-        { returnUrl }
-      ).Amt
-    ).toBe(1000)
+      buildForwardedFor({ headers: {}, socket: { remoteAddress: '10.4.0.7' } })
+    ).toBe('10.4.0.7')
+    expect(buildForwardedFor({ headers: {} })).toBe('')
   })
 })
 

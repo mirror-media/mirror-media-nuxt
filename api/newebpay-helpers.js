@@ -1,4 +1,5 @@
 const crypto = require('crypto')
+const { parse: parseQueryString } = require('querystring')
 
 const ORDER_BINDING_COOKIE = 'mm_papermag_order'
 const ORDER_BINDING_MAX_AGE = 60 * 60 * 2
@@ -53,51 +54,31 @@ function parseNewebpayCallback(decryptedTradeInfo) {
   }
 }
 
-const MEMBERSHIP_PRICE_BY_FREQUENCY = {
-  one_time: 10,
-  monthly: 99,
-  yearly: 1800,
-  halfyearly: 1000,
-}
+const MEMBERSHIP_FREQUENCIES = ['one_time', 'monthly', 'halfyearly', 'yearly']
+const MEMBERSHIP_CATEGORIES = ['B2B', 'B2C']
 
-/*
- * apigateway 產生的 newebpayPayload 會出現的欄位（見 apigateway/payment/newebpay.go），
- * 加上前端補的 frequency。其他欄位一律拒絕。
- */
-const MEMBERSHIP_TRADE_INFO_FIELDS = new Set([
-  'MerchantID',
-  'Amt',
-  'Email',
-  'EmailModify',
-  'LoginType',
-  'MerchantOrderNo',
-  'NotifyURL',
-  'RespondType',
-  'TimeStamp',
-  'TokenTerm',
-  'ClientBackURL',
-  'CREDITAGREEMENT',
-  'ItemDesc',
-  'OrderComment',
-  'P3D',
-  'TradeLimit',
+// 前端表單會送上來的欄位；paymentMethod / status 收下但由 server 決定
+const SUBSCRIPTION_INPUT_FIELDS = new Set([
+  'email',
   'frequency',
+  'paymentMethod',
+  'status',
+  'promoteId',
+  'postId',
+  'loveCode',
+  'carrierType',
+  'carrierNum',
+  'buyerName',
+  'buyerUBN',
+  'category',
 ])
-
-// 舊版前端會一起送上來，收下但一律以 server 的值覆蓋
-const MEMBERSHIP_TRADE_INFO_OVERRIDDEN = new Set([
-  'ReturnURL',
-  'CREDIT',
-  'Version',
-])
-
-const MEMBERSHIP_TRADE_INFO_REQUIRED = [
-  'MerchantID',
-  'Amt',
-  'Email',
-  'MerchantOrderNo',
-  'frequency',
+const SUBSCRIPTION_OPTIONAL_STRING_FIELDS = [
+  'carrierType',
+  'carrierNum',
+  'buyerName',
+  'buyerUBN',
 ]
+const SUBSCRIPTION_STRING_MAX_LENGTH = 200
 
 class TradeInfoValidationError extends Error {
   constructor(message) {
@@ -106,50 +87,116 @@ class TradeInfoValidationError extends Error {
   }
 }
 
+function toOptionalInt(value, name) {
+  if (value === undefined || value === null || value === '') return null
+  if (typeof value === 'number' && Number.isNaN(value)) return null
+  const number = Number(value)
+  if (!Number.isInteger(number)) {
+    throw new TradeInfoValidationError(`${name} must be an integer`)
+  }
+  return number
+}
+
 /**
- * 會員訂閱送藍新前的收斂：只保留白名單欄位、金額必須和方案一致、
- * ReturnURL / CREDIT / Version / RespondType 由 server 決定，不吃前端送來的值。
+ * 把訂閱表單整理成 apigateway createSubscription mutation 的 variables。
+ * paymentMethod / status 一律由 server 給；藍新 payload（含 Amt、MerchantOrderNo、NotifyURL）
+ * 之後由 apigateway 產生，前端完全碰不到。
  */
-function buildMembershipTradeInfo(body, { returnUrl }) {
+function buildSubscriptionVariables(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
-    throw new TradeInfoValidationError('tradeInfo must be an object')
+    throw new TradeInfoValidationError('body must be an object')
   }
   const unknown = Object.keys(body).filter(
-    (key) =>
-      !MEMBERSHIP_TRADE_INFO_FIELDS.has(key) &&
-      !MEMBERSHIP_TRADE_INFO_OVERRIDDEN.has(key)
+    (key) => !SUBSCRIPTION_INPUT_FIELDS.has(key)
   )
   if (unknown.length) {
     throw new TradeInfoValidationError(
       `unexpected field: ${unknown.sort().join(', ')}`
     )
   }
-  const missing = MEMBERSHIP_TRADE_INFO_REQUIRED.filter(
-    (key) => body[key] === undefined || body[key] === null || body[key] === ''
+  if (typeof body.email !== 'string' || !body.email.trim()) {
+    throw new TradeInfoValidationError('missing field: email')
+  }
+  if (!MEMBERSHIP_FREQUENCIES.includes(body.frequency)) {
+    throw new TradeInfoValidationError('frequency is not supported')
+  }
+  if (!MEMBERSHIP_CATEGORIES.includes(body.category)) {
+    throw new TradeInfoValidationError('category is not supported')
+  }
+  const isOneTime = body.frequency === 'one_time'
+  if (isOneTime && (typeof body.postId !== 'string' || !body.postId)) {
+    throw new TradeInfoValidationError('missing field: postId')
+  }
+
+  const variables = {
+    email: body.email.trim(),
+    paymentMethod: 'newebpay',
+    status: 'paying',
+    promoteId: toOptionalInt(body.promoteId, 'promoteId') ?? 0,
+    loveCode: toOptionalInt(body.loveCode, 'loveCode'),
+    category: body.category,
+  }
+  SUBSCRIPTION_OPTIONAL_STRING_FIELDS.forEach((key) => {
+    const value = body[key]
+    if (value === undefined || value === null) {
+      variables[key] = ''
+      return
+    }
+    if (
+      typeof value !== 'string' ||
+      value.length > SUBSCRIPTION_STRING_MAX_LENGTH
+    ) {
+      throw new TradeInfoValidationError(`${key} is not valid`)
+    }
+    variables[key] = value
+  })
+  if (isOneTime) {
+    variables.postId = body.postId
+  } else {
+    variables.frequency = body.frequency
+  }
+  return { isOneTime, variables }
+}
+
+/**
+ * apigateway 回的 newebpayPayload 是 querystring；解開後由 server 補上
+ * ReturnURL / CREDIT / Version / RespondType 再加密。
+ */
+function buildMembershipTradeInfo(newebpayPayload, { returnUrl }) {
+  if (typeof newebpayPayload !== 'string' || !newebpayPayload) {
+    throw new TradeInfoValidationError('newebpayPayload is empty')
+  }
+  const tradeInfo = { ...parseQueryString(newebpayPayload) }
+  const missing = ['MerchantID', 'Amt', 'MerchantOrderNo', 'NotifyURL'].filter(
+    (key) => typeof tradeInfo[key] !== 'string' || !tradeInfo[key]
   )
   if (missing.length) {
     throw new TradeInfoValidationError(
-      `missing field: ${missing.sort().join(', ')}`
+      `newebpayPayload missing field: ${missing.join(', ')}`
     )
   }
-
-  const expectedAmt = MEMBERSHIP_PRICE_BY_FREQUENCY[body.frequency]
-  if (expectedAmt === undefined) {
-    throw new TradeInfoValidationError('frequency is not supported')
-  }
-  if (String(body.Amt) !== String(expectedAmt)) {
-    throw new TradeInfoValidationError('Amt is not correct input')
-  }
-
-  const tradeInfo = {}
-  MEMBERSHIP_TRADE_INFO_FIELDS.forEach((key) => {
-    if (body[key] !== undefined) tradeInfo[key] = body[key]
-  })
   tradeInfo.ReturnURL = returnUrl
   tradeInfo.CREDIT = 1
   tradeInfo.Version = '2.2'
   tradeInfo.RespondType = 'JSON'
   return tradeInfo
+}
+
+/**
+ * nuxt 代打 apigateway 時把原始客戶端 IP 接在 X-Forwarded-For 後面，
+ * 讓 apigateway 看到的不是 nuxt pod 的 IP。
+ */
+function buildForwardedFor(req) {
+  const remote = req?.socket?.remoteAddress || req?.connection?.remoteAddress
+  const existing = req?.headers?.['x-forwarded-for']
+  const parts = []
+  if (typeof existing === 'string' && existing.trim()) {
+    parts.push(existing.trim())
+  } else if (Array.isArray(existing)) {
+    parts.push(...existing.filter(Boolean))
+  }
+  if (remote) parts.push(remote)
+  return parts.join(', ')
 }
 
 function getOrderBindingSecret(key, iv) {
@@ -212,7 +259,9 @@ module.exports = {
   TradeInfoValidationError,
   verifyTradeSha,
   parseNewebpayCallback,
+  buildSubscriptionVariables,
   buildMembershipTradeInfo,
+  buildForwardedFor,
   getOrderBindingSecret,
   buildOrderBindingCookie,
   readCookie,

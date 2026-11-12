@@ -3,6 +3,10 @@ jest.mock('@mirrormedia/newebpay-node')
 const axios = require('axios')
 const NewebPay = require('@mirrormedia/newebpay-node')
 const handler = require('../newebpay')
+const {
+  API_PROTOCOL,
+  API_MEMBER_SUBSCRIPTION_GATEWAY,
+} = require('../../configs/config')
 
 const FORM = {
   MerchantID: 'M1',
@@ -11,19 +15,33 @@ const FORM = {
   Version: '2.2',
 }
 
-const validBody = {
-  MerchantID: 'M1',
-  Amt: '1800',
-  Email: 'member@example.com',
-  EmailModify: '0',
-  LoginType: '0',
-  MerchantOrderNo: 'S2026111100001',
-  NotifyURL: 'https://hook',
-  RespondType: 'JSON',
-  TimeStamp: '1700000000',
-  CREDITAGREEMENT: '1',
-  ItemDesc: 'yearly',
+const PAYLOAD =
+  'MerchantID=M1&Amt=1800&Email=member%40example.com&MerchantOrderNo=S2026111100001' +
+  '&NotifyURL=https%3A%2F%2Fhook%2Fnewebpay%2Fpremium%3Fcode%3Dyearly' +
+  '&RespondType=String&TimeStamp=1700000000&CREDITAGREEMENT=1&TokenTerm=uid'
+
+const recurringForm = {
+  email: 'member@example.com',
   frequency: 'yearly',
+  paymentMethod: 'newebpay',
+  status: 'paying',
+  promoteId: 0,
+  loveCode: null,
+  carrierType: '',
+  carrierNum: '',
+  buyerName: '',
+  buyerUBN: '',
+  category: 'B2C',
+}
+
+const oneTimeForm = {
+  ...recurringForm,
+  frequency: 'one_time',
+  postId: '123',
+}
+
+function gatewayResponse(field, payload = PAYLOAD) {
+  return { data: { data: { [field]: { newebpayPayload: payload } } } }
 }
 
 function createRes() {
@@ -35,8 +53,18 @@ function createRes() {
   return res
 }
 
-function createReq({ method = 'POST', authorization, body = validBody } = {}) {
-  return { method, headers: authorization ? { authorization } : {}, body }
+function createReq({
+  method = 'POST',
+  authorization = 'Bearer t',
+  body = recurringForm,
+  headers = {},
+} = {}) {
+  return {
+    method,
+    headers: authorization ? { authorization, ...headers } : headers,
+    body,
+    socket: { remoteAddress: '10.4.0.7' },
+  }
 }
 
 describe('/api/v2/newebpay/v1', () => {
@@ -46,7 +74,7 @@ describe('/api/v2/newebpay/v1', () => {
     jest.spyOn(console, 'log').mockImplementation(() => {})
     getEncryptedFormPostData = jest.fn(() => FORM)
     NewebPay.mockImplementation(() => ({ getEncryptedFormPostData }))
-    axios.get.mockResolvedValue({ data: { tokenState: 'OK' } })
+    axios.post.mockResolvedValue(gatewayResponse('createSubscriptionRecurring'))
   })
   afterEach(() => {
     console.log.mockRestore()
@@ -54,88 +82,127 @@ describe('/api/v2/newebpay/v1', () => {
 
   test('rejects non-POST', async () => {
     const res = createRes()
-    await handler(createReq({ method: 'GET', authorization: 'Bearer t' }), res)
+    await handler(createReq({ method: 'GET' }), res)
     expect(res.status).toHaveBeenCalledWith(405)
-    expect(axios.get).not.toHaveBeenCalled()
+    expect(axios.post).not.toHaveBeenCalled()
   })
 
-  test('rejects anonymous requests without calling tokenState', async () => {
+  test('rejects anonymous requests before touching apigateway', async () => {
     const res = createRes()
-    await handler(createReq(), res)
+    await handler(createReq({ authorization: null }), res)
     expect(res.status).toHaveBeenCalledWith(401)
-    expect(axios.get).not.toHaveBeenCalled()
+    expect(axios.post).not.toHaveBeenCalled()
     expect(getEncryptedFormPostData).not.toHaveBeenCalled()
   })
 
-  test('rejects a token apigateway does not accept', async () => {
-    axios.get.mockResolvedValue({ data: { tokenState: 'EXPIRED' } })
+  test('rejects NewebPay fields sent from the browser with 400', async () => {
     const res = createRes()
-    await handler(createReq({ authorization: 'Bearer bad' }), res)
-    expect(axios.get).toHaveBeenCalledWith(
-      expect.stringMatching(/\/api\/v1\/tokenState$/),
-      expect.objectContaining({ headers: { Authorization: 'Bearer bad' } })
-    )
-    expect(res.status).toHaveBeenCalledWith(401)
-    expect(getEncryptedFormPostData).not.toHaveBeenCalled()
-  })
-
-  test('treats a tokenState failure as unauthorized', async () => {
-    axios.get.mockRejectedValue(new Error('boom'))
-    const res = createRes()
-    await handler(createReq({ authorization: 'Bearer t' }), res)
-    expect(res.status).toHaveBeenCalledWith(401)
-  })
-
-  test('rejects unknown fields and wrong Amt with 400', async () => {
-    let res = createRes()
     await handler(
       createReq({
-        authorization: 'Bearer t',
-        body: { ...validBody, Status: 'SUCCESS' },
+        body: { ...recurringForm, Amt: 10, MerchantOrderNo: 'VICTIM' },
       }),
       res
     )
     expect(res.status).toHaveBeenCalledWith(400)
     expect(res.send).toHaveBeenCalledWith({
       status: 'error',
-      message: 'unexpected field: Status',
+      message: 'unexpected field: Amt, MerchantOrderNo',
     })
-
-    res = createRes()
-    await handler(
-      createReq({ authorization: 'Bearer t', body: { ...validBody, Amt: 1 } }),
-      res
-    )
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.send).toHaveBeenCalledWith({
-      status: 'error',
-      message: 'Amt is not correct input',
-    })
-    expect(getEncryptedFormPostData).not.toHaveBeenCalled()
+    expect(axios.post).not.toHaveBeenCalled()
   })
 
-  test('encrypts the sanitized tradeInfo for a logged-in member', async () => {
+  test('creates the subscription through apigateway with the member token and client IP', async () => {
     const res = createRes()
     await handler(
       createReq({
-        authorization: 'Bearer t',
-        body: { ...validBody, ReturnURL: 'https://evil', Version: '1.0' },
+        headers: { 'x-forwarded-for': '203.0.113.9' },
       }),
       res
     )
+
+    expect(axios.post).toHaveBeenCalledTimes(1)
+    const [url, body, config] = axios.post.mock.calls[0]
+    expect(url).toBe(`${API_PROTOCOL}://${API_MEMBER_SUBSCRIPTION_GATEWAY}`)
+    expect(body.query).toMatch(/createSubscriptionRecurring/)
+    expect(body.variables).toEqual({
+      email: 'member@example.com',
+      frequency: 'yearly',
+      paymentMethod: 'newebpay',
+      status: 'paying',
+      promoteId: 0,
+      loveCode: null,
+      carrierType: '',
+      carrierNum: '',
+      buyerName: '',
+      buyerUBN: '',
+      category: 'B2C',
+    })
+    expect(config.headers).toMatchObject({
+      Authorization: 'Bearer t',
+      'X-Forwarded-For': '203.0.113.9, 10.4.0.7',
+    })
+
     expect(res.status).toHaveBeenCalledTimes(0)
     expect(res.send).toHaveBeenCalledWith(FORM)
-    const passed = getEncryptedFormPostData.mock.calls[0][0]
-    expect(passed).toMatchObject({
-      ...validBody,
+    expect(getEncryptedFormPostData.mock.calls[0][0]).toEqual({
+      MerchantID: 'M1',
+      Amt: '1800',
+      Email: 'member@example.com',
+      MerchantOrderNo: 'S2026111100001',
+      NotifyURL: 'https://hook/newebpay/premium?code=yearly',
+      TimeStamp: '1700000000',
+      CREDITAGREEMENT: '1',
+      TokenTerm: 'uid',
       ReturnURL: 'http://localhost:3000/subscribe/return',
       CREDIT: 1,
       Version: '2.2',
       RespondType: 'JSON',
     })
-    expect(Object.keys(passed).sort()).toEqual(
-      [...Object.keys(validBody), 'ReturnURL', 'CREDIT', 'Version'].sort()
+  })
+
+  test('uses the one-time mutation for one_time purchases', async () => {
+    axios.post.mockResolvedValue(gatewayResponse('createsSubscriptionOneTime'))
+    const res = createRes()
+    await handler(createReq({ body: oneTimeForm }), res)
+    const [, body] = axios.post.mock.calls[0]
+    expect(body.query).toMatch(/createsSubscriptionOneTime/)
+    expect(body.variables).toMatchObject({ postId: '123' })
+    expect(body.variables.frequency).toBeUndefined()
+    expect(res.send).toHaveBeenCalledWith(FORM)
+  })
+
+  test('maps an apigateway 401 to 401', async () => {
+    axios.post.mockRejectedValue({ response: { status: 401 } })
+    const res = createRes()
+    await handler(createReq(), res)
+    expect(res.status).toHaveBeenCalledWith(401)
+    expect(getEncryptedFormPostData).not.toHaveBeenCalled()
+  })
+
+  test('returns 502 when apigateway fails or answers with errors', async () => {
+    axios.post.mockRejectedValue(new Error('ECONNREFUSED'))
+    let res = createRes()
+    await handler(createReq(), res)
+    expect(res.status).toHaveBeenCalledWith(502)
+
+    axios.post.mockResolvedValue({
+      data: { errors: [{ message: 'member not found' }] },
+    })
+    res = createRes()
+    await handler(createReq(), res)
+    expect(res.status).toHaveBeenCalledWith(502)
+
+    axios.post.mockResolvedValue(
+      gatewayResponse('createSubscriptionRecurring', 'Amt=1800')
     )
+    res = createRes()
+    await handler(createReq(), res)
+    expect(res.status).toHaveBeenCalledWith(502)
+    expect(res.send).toHaveBeenLastCalledWith({
+      status: 'error',
+      message: 'create subscription failed',
+    })
+    expect(getEncryptedFormPostData).not.toHaveBeenCalled()
   })
 
   test('returns 500 without leaking details when encryption fails', async () => {
@@ -143,7 +210,7 @@ describe('/api/v2/newebpay/v1', () => {
       throw new Error('Invalid key length')
     })
     const res = createRes()
-    await handler(createReq({ authorization: 'Bearer t' }), res)
+    await handler(createReq(), res)
     expect(res.status).toHaveBeenCalledWith(500)
     expect(res.send).toHaveBeenCalledWith({
       status: 'error',
