@@ -94,14 +94,9 @@
 </template>
 
 <script>
-import qs from 'qs'
 import { required, email } from 'vuelidate/lib/validators'
 import { useRoute } from '@nuxtjs/composition-api'
-import {
-  ENV,
-  DOMAIN_NAME,
-  NEWEBPAY_MEMBERSHIP_API_URL,
-} from '~/configs/config.js'
+import { NEWEBPAY_MEMBERSHIP_API_URL } from '~/configs/config.js'
 import SubscribeStepProgress from '~/components/SubscribeStepProgress.vue'
 import MembershipFormPlanList from '~/components/MembershipFormPlanList.vue'
 import MembershipFormPerchaseInfo from '~/components/MembershipFormPerchaseInfo.vue'
@@ -373,23 +368,8 @@ export default {
           return
         }
 
-        // emit apiGateWay
-        const result = await this.getPaymentDataFromApiGateWay()
-        const tradeInfo = qs.parse(result)
-
-        tradeInfo.ReturnURL =
-          ENV === 'local'
-            ? `http://localhost:3000/subscribe/return`
-            : `https://${DOMAIN_NAME}/subscribe/return`
-        tradeInfo.CREDIT = 1
-        tradeInfo.Version = '2.2'
-        tradeInfo.frequency = this.frequency
-
-        // // encrypt tradeInfo
-        this.paymentPayload = await this.$axios.$post(
-          `${window.location.origin}/api/v2/newebpay/v1`,
-          tradeInfo
-        )
+        // 建單和藍新 payload 都在 server 端完成，瀏覽器拿到的只有加密後的表單欄位
+        this.paymentPayload = await this.getNewebpayPaymentPayload()
         this.$nextTick(() => {
           const formDOM = document.forms.newebpay
           formDOM.submit()
@@ -463,7 +443,7 @@ export default {
     },
 
     // for Newebpay Payment
-    async getPaymentDataFromApiGateWay() {
+    async getNewebpayPaymentPayload() {
       let gateWayPayload
 
       if (this.isPremiumPurchase) {
@@ -485,6 +465,7 @@ export default {
         const subscribePostId = this.perchasedPlan?.[0]?.id
         gateWayPayload = {
           email: this.email,
+          frequency: this.frequency,
           paymentMethod: PaymentMethod.NewebPay,
           status: 'paying',
           promoteId: this.promoteId, // 折扣碼 (TODO)
@@ -498,7 +479,15 @@ export default {
         }
       }
 
-      return await this.$getPaymentDataOfSubscription(gateWayPayload)
+      return await this.$axios.$post(
+        `${window.location.origin}/api/v2/newebpay/v1`,
+        gateWayPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${this.$store.state.membership.userToken}`,
+          },
+        }
+      )
     },
     getCategory() {
       switch (this.receiptData.receiptPlan) {

@@ -28,6 +28,12 @@ import {
   NEWEBPAY_PAPERMAG_IV,
   ISRAFEL_ORIGIN,
 } from '~/configs/config'
+import {
+  verifyTradeSha,
+  parseNewebpayCallback,
+  getOrderBindingSecret,
+  isOrderBoundToRequest,
+} from '~/api/newebpay-helpers'
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 export default {
@@ -44,16 +50,17 @@ export default {
     }
 
     const trace = req.header('X-Cloud-Trace-Context')?.split('/')
-    console.log(
-      JSON.stringify({
-        message: `Request: ${req.method} ${req.originalUrl}`,
-        debugPayload: {
-          'req.headers': req.headers,
-          'req.body': req.body,
-        },
-        'logging.googleapis.com/trace': `projects/mirrormedia-1470651750304/traces/${trace}`,
-      })
-    )
+    const log = (message, severity = 'INFO') =>
+      console.log(
+        JSON.stringify({
+          severity,
+          message,
+          'logging.googleapis.com/trace': `projects/mirrormedia-1470651750304/traces/${trace}`,
+        })
+      )
+
+    // TradeInfo / TradeSha 不進 log，避免被拿去重放
+    log(`Request: ${req.method} ${req.originalUrl} Status=${req.body?.Status}`)
 
     if (req.method !== 'POST') {
       redirect('/papermag')
@@ -68,13 +75,30 @@ export default {
 
     try {
       const infoData = req.body
+      if (
+        !verifyTradeSha(
+          infoData.TradeInfo,
+          infoData.TradeSha,
+          NEWEBPAY_PAPERMAG_KEY,
+          NEWEBPAY_PAPERMAG_IV
+        )
+      ) {
+        log('papermag return rejected: TradeSha mismatch', 'WARNING')
+        return { status: 'order-fail' }
+      }
+
       const newebpay = new NewebPay(NEWEBPAY_PAPERMAG_KEY, NEWEBPAY_PAPERMAG_IV)
-      const decryptedTradeInfo = await newebpay.getDecryptedTradeInfo(
-        infoData.TradeInfo
+      const callback = parseNewebpayCallback(
+        await newebpay.getDecryptedTradeInfo(infoData.TradeInfo)
       )
-      const MerchantOrderNo =
-        decryptedTradeInfo.Result?.MerchantOrderNo ||
-        JSON.parse(Object.keys(decryptedTradeInfo)[0]).Result.MerchantOrderNo
+      if (!callback) {
+        log(
+          'papermag return rejected: TradeInfo is not a NewebPay result',
+          'WARNING'
+        )
+        return { status: 'order-fail' }
+      }
+      const MerchantOrderNo = callback.merchantOrderNo
 
       const { data: result } = await axios({
         url: `${ISRAFEL_ORIGIN}/api/graphql`,
@@ -92,22 +116,36 @@ export default {
       const decryptInfoData = result?.data?.allMagazineOrders[0]
       if (!decryptInfoData) {
         return {
-          req: infoData,
           errorData: {
             orderId: '',
             message: '訂單編號不存在',
           },
         }
       }
-      if (infoData.Status !== 'SUCCESS') {
+      if (callback.status !== 'SUCCESS') {
         return {
-          req: infoData,
-          status: infoData.Status,
+          status: callback.status,
           errorData: {
             orderId: decryptInfoData.orderNumber,
-            message: infoData.Status,
+            message: callback.status,
           },
         }
+      }
+
+      /*
+       * TradeSha 只能證明這筆 TradeInfo 是藍新簽的，擋不了拿別人的結果頁 POST 重放。
+       * 個資只給下單時拿到綁定 cookie 的那個瀏覽器看，其他情況只顯示訂單與金額。
+       */
+      const isOrderBound = isOrderBoundToRequest(
+        req.headers.cookie,
+        MerchantOrderNo,
+        getOrderBindingSecret(NEWEBPAY_PAPERMAG_KEY, NEWEBPAY_PAPERMAG_IV)
+      )
+      if (!isOrderBound) {
+        log(
+          `papermag return: order ${MerchantOrderNo} not bound to this browser, customer info hidden`,
+          'WARNING'
+        )
       }
 
       const { name, shippingFeePerCount } = merchandiseWithoutShippingFee({
@@ -137,8 +175,7 @@ export default {
       })
 
       return {
-        req: infoData,
-        status: infoData.Status,
+        status: callback.status,
         orderInfo: {
           orderId: decryptInfoData.orderNumber,
           date: new Date(decryptInfoData.createdAt),
@@ -146,18 +183,20 @@ export default {
           discount_code: decryptInfoData.promoteCode,
         },
         orderInfoPurchasedList,
-        customerInfo: {
-          pur_name: decryptInfoData.purchaseName,
-          pur_mail: decryptInfoData.purchaseEmail,
-          pur_cell: decryptInfoData.purchaseMobile,
-          pur_addr: decryptInfoData.purchaseAddress,
-          rec_name: decryptInfoData.receiveName,
-          rec_cell: decryptInfoData.receiveMobile,
-          rec_addr: decryptInfoData.receiveAddress,
-        },
+        customerInfo: isOrderBound
+          ? {
+              pur_name: decryptInfoData.purchaseName,
+              pur_mail: decryptInfoData.purchaseEmail,
+              pur_cell: decryptInfoData.purchaseMobile,
+              pur_addr: decryptInfoData.purchaseAddress,
+              rec_name: decryptInfoData.receiveName,
+              rec_cell: decryptInfoData.receiveMobile,
+              rec_addr: decryptInfoData.receiveAddress,
+            }
+          : {},
       }
     } catch (e) {
-      console.log(e)
+      log(`papermag return error: ${e.message}`, 'ERROR')
     }
   },
   provide: {
@@ -165,7 +204,6 @@ export default {
   },
   data() {
     return {
-      req: {},
       status: 'order-fail',
       orderInfo: {},
       orderInfoPurchasedList: [],
