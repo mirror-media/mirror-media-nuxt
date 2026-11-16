@@ -4,7 +4,6 @@ const { Logging } = require('@google-cloud/logging')
 const config = require('../configs/config')
 const loggingClient = new Logging({
   projectId: config.GCP_PROJECT_ID,
-  keyFilename: config.GCP_KEYFILE,
 })
 
 module.exports = function (req, res, next) {
