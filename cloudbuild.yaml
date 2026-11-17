@@ -9,24 +9,6 @@ steps:
       - rm
       - "-rf"
       - ./configs/*
-  - name: gcr.io/cloud-builders/gcloud
-    args:
-      - source
-      - repos
-      - clone
-      - configs
-      - configs.build
-  - name: bash
-    args:
-      - cp
-      - "-R"
-      - ./configs.build/mirror-media/mirror-media-nuxt/gcskeyfile.json
-      - ./gcskeyfile.json
-  - name: bash
-    args:
-      - rm
-      - "-R"
-      - ./configs.build
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "bash"
     args:

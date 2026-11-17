@@ -1,4 +1,8 @@
 import { fireGqlRequest } from './helpers'
+import {
+  buildOrderBindingCookie,
+  getOrderBindingSecret,
+} from './newebpay-helpers'
 const NewebPay = require('@mirrormedia/newebpay-node')
 
 const {
@@ -63,6 +67,14 @@ module.exports = async function (req, res) {
       })
     )
 
+    // 結果頁用這張 cookie 確認是同一個瀏覽器下的單，才顯示訂購人資料
+    res.setHeader(
+      'Set-Cookie',
+      buildOrderBindingCookie(
+        infoForNewebpay.MerchantOrderNo,
+        getOrderBindingSecret(NEWEBPAY_PAPERMAG_KEY, NEWEBPAY_PAPERMAG_IV)
+      )
+    )
     res.send({
       status: 'success',
       data: encryptPostData,
